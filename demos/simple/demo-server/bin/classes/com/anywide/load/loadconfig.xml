@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hosts>
+	<host name="core">  
+		<package>com.anywide.interceptor</package>
+	</host>  
+	<host name="user"><!-- user模块   -->
+		<package type="bean">com.anywide.service.user</package><!-- bean 模式可以直接在 客户端使用 一般为service接口和实体bean-->
+		<package>com.anywide.controller.user</package><!-- controller可以不配置或配置为controller-->
+		<package type="bean">com.anywide.bean.user</package>
+		<package>com.anywide.web.listener</package>
+	</host>
+</hosts>

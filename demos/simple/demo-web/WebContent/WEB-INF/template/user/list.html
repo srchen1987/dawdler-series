@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>demo</title>
+    <script src="../js/jquery.min.js"></script>
+     <script src="../js/src_controlvalidate_4sir_v2.js"></script>
+	<script src="../js/user/user.js"></script>
+</head>
+<body>
+<a href="init.html">添加用户</a><br>
+<table border="1">
+	<thead>
+		<tr>
+			<th>用户ID</th>
+			<th>用户名称</th>
+			<th>年龄</th>
+			<th >操作</th>
+		</tr>
+	</thead>
+	<tbody>
+	#foreach($user in $userList)
+		<tr>
+			<td>$!{user.userid}</td>
+			<td>$!{user.username}</td>
+			<td>$!{user.age}</td>
+			<td>
+				<a href="init.html?userid=$!{user.userid}">修改</a><br>
+				<a href="#" class="deleteUser" data-id="$!{user.userid}">删除</a>
+			</td>
+		</tr>
+	#end
+	</tbody>
+	#pages("list.html?pageon=~p")
+</table>
+</body>
+</html>     

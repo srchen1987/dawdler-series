@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>demo</title>
+    <script src="../js/jquery.min.js"></script>
+    <script src="../js/jquery-form.js"></script>
+    <script src="../js/src_controlvalidate_4sir_v2.js"></script>
+    <script src="../js/user/user.js"></script>
+</head>
+<body>
+	<form id="userForm">
+	<input type="hidden" name="userid" value="$!{user.userid}"/>
+	用户姓名：<input type="text" name="username" value="$!{user.username}"/><br>
+	年龄：<input type="text" name="age"  value="$!{user.age}"/><br>
+	<button type="button"  id="userSubmit">提交</button>
+	</form>
+</body>
+</html>

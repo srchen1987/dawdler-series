@@ -1,0 +1,352 @@
+2018-10-15 20:40:29,893 [myid:] - INFO  [main:QuorumPeerConfig@116] - Reading configuration from: /Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../conf/zoo.cfg
+2018-10-15 20:40:29,897 [myid:] - WARN  [main:VerifyingFileFactory@59] - D:dawdlerzookeeper-3.5.2-alphadata is relative. Prepend ./ to indicate that you're sure!
+2018-10-15 20:40:29,898 [myid:] - INFO  [main:QuorumPeerConfig@318] - clientPortAddress is 0.0.0.0/0.0.0.0:2181
+2018-10-15 20:40:29,899 [myid:] - INFO  [main:QuorumPeerConfig@322] - secureClientPort is not set
+2018-10-15 20:40:29,901 [myid:] - INFO  [main:DatadirCleanupManager@78] - autopurge.snapRetainCount set to 3
+2018-10-15 20:40:29,901 [myid:] - INFO  [main:DatadirCleanupManager@79] - autopurge.purgeInterval set to 0
+2018-10-15 20:40:29,901 [myid:] - INFO  [main:DatadirCleanupManager@101] - Purge task is not scheduled.
+2018-10-15 20:40:29,901 [myid:] - WARN  [main:QuorumPeerMain@122] - Either no config or no quorum defined in config, running  in standalone mode
+2018-10-15 20:40:29,903 [myid:] - INFO  [main:ManagedUtil@46] - Log4j found with jmx enabled.
+2018-10-15 20:40:29,915 [myid:] - INFO  [main:QuorumPeerConfig@116] - Reading configuration from: /Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../conf/zoo.cfg
+2018-10-15 20:40:29,915 [myid:] - WARN  [main:VerifyingFileFactory@59] - D:dawdlerzookeeper-3.5.2-alphadata is relative. Prepend ./ to indicate that you're sure!
+2018-10-15 20:40:29,915 [myid:] - INFO  [main:QuorumPeerConfig@318] - clientPortAddress is 0.0.0.0/0.0.0.0:2181
+2018-10-15 20:40:29,915 [myid:] - INFO  [main:QuorumPeerConfig@322] - secureClientPort is not set
+2018-10-15 20:40:29,915 [myid:] - INFO  [main:ZooKeeperServerMain@113] - Starting server
+2018-10-15 20:40:29,937 [myid:] - INFO  [main:Environment@109] - Server environment:zookeeper.version=3.5.2-alpha-1750793, built on 06/30/2016 13:15 GMT
+2018-10-15 20:40:29,938 [myid:] - INFO  [main:Environment@109] - Server environment:host.name=192.168.0.5
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:java.version=1.8.0_181
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:java.vendor=Oracle Corporation
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:java.home=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:java.class.path=/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../build/classes:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../build/lib/*.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/slf4j-log4j12-1.7.5.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/slf4j-api-1.7.5.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/servlet-api-2.5-20081211.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/netty-3.10.5.Final.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/log4j-1.2.17.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/jline-2.11.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/jetty-util-6.1.26.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/jetty-6.1.26.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/javacc.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/jackson-mapper-asl-1.9.11.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/jackson-core-asl-1.9.11.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../lib/commons-cli-1.2.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../zookeeper-3.5.2-alpha.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../src/java/lib/*.jar:/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin/../conf:
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:java.library.path=/Users/srchen/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:java.io.tmpdir=/var/folders/1g/ffybhzjx6c96gfkcqz5jj34c0000gn/T/
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:java.compiler=<NA>
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:os.name=Mac OS X
+2018-10-15 20:40:29,939 [myid:] - INFO  [main:Environment@109] - Server environment:os.arch=x86_64
+2018-10-15 20:40:29,940 [myid:] - INFO  [main:Environment@109] - Server environment:os.version=10.13.6
+2018-10-15 20:40:29,940 [myid:] - INFO  [main:Environment@109] - Server environment:user.name=srchen
+2018-10-15 20:40:29,940 [myid:] - INFO  [main:Environment@109] - Server environment:user.home=/Users/srchen
+2018-10-15 20:40:29,940 [myid:] - INFO  [main:Environment@109] - Server environment:user.dir=/Users/srchen/myserver/zookeeper-3.5.2-alpha/bin
+2018-10-15 20:40:29,940 [myid:] - INFO  [main:Environment@109] - Server environment:os.memory.free=235MB
+2018-10-15 20:40:29,940 [myid:] - INFO  [main:Environment@109] - Server environment:os.memory.max=889MB
+2018-10-15 20:40:29,940 [myid:] - INFO  [main:Environment@109] - Server environment:os.memory.total=245MB
+2018-10-15 20:40:29,941 [myid:] - INFO  [main:ZooKeeperServer@858] - minSessionTimeout set to 4000
+2018-10-15 20:40:29,941 [myid:] - INFO  [main:ZooKeeperServer@867] - maxSessionTimeout set to 40000
+2018-10-15 20:40:29,941 [myid:] - INFO  [main:ZooKeeperServer@156] - Created server with tickTime 2000 minSessionTimeout 4000 maxSessionTimeout 40000 datadir D:dawdlerzookeeper-3.5.2-alphadata/version-2 snapdir D:dawdlerzookeeper-3.5.2-alphadata/version-2
+2018-10-15 20:40:29,979 [myid:] - INFO  [main:Slf4jLog@67] - Logging to org.slf4j.impl.Log4jLoggerAdapter(org.mortbay.log) via org.mortbay.log.Slf4jLog
+2018-10-15 20:40:30,009 [myid:] - INFO  [main:Slf4jLog@67] - jetty-6.1.26
+2018-10-15 20:40:30,062 [myid:] - INFO  [main:Slf4jLog@67] - Started SelectChannelConnector@0.0.0.0:18080
+2018-10-15 20:40:30,069 [myid:] - INFO  [main:JettyAdminServer@105] - Started AdminServer on address 0.0.0.0, port 18080 and command URL /commands
+2018-10-15 20:40:30,083 [myid:] - INFO  [main:NIOServerCnxnFactory@673] - Configuring NIO connection handler with 10s sessionless connection timeout, 2 selector thread(s), 16 worker threads, and 64 kB direct buffers.
+2018-10-15 20:40:30,085 [myid:] - INFO  [main:NIOServerCnxnFactory@686] - binding to port 0.0.0.0/0.0.0.0:2181
+2018-10-15 20:40:30,108 [myid:] - INFO  [main:FileSnap@83] - Reading snapshot D:dawdlerzookeeper-3.5.2-alphadata/version-2/snapshot.b93
+2018-10-15 20:40:30,133 [myid:] - INFO  [main:FileTxnSnapLog@298] - Snapshotting: 0xbc8 to D:dawdlerzookeeper-3.5.2-alphadata/version-2/snapshot.bc8
+2018-10-15 20:40:30,152 [myid:] - INFO  [main:ContainerManager@64] - Using checkIntervalMs=60000 maxPerMinute=10000
+2018-10-15 20:40:39,367 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52252
+2018-10-15 20:40:39,377 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52252
+2018-10-15 20:40:39,377 [myid:] - INFO  [SyncThread:0:FileTxnLog@204] - Creating new log file: log.bc9
+2018-10-15 20:40:39,393 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780000 with negotiated timeout 40000 for client /127.0.0.1:52252
+2018-10-15 20:40:48,795 [myid:] - WARN  [NIOWorkerThread-3:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780000, likely client has closed socket
+2018-10-15 20:40:48,795 [myid:] - INFO  [NIOWorkerThread-3:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780000]
+2018-10-15 20:40:48,796 [myid:] - INFO  [NIOWorkerThread-3:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52252 which had sessionid 0x100009d79780000
+2018-10-15 20:41:11,896 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x1000002c3f6000c, timeout of 40000ms exceeded
+2018-10-15 20:41:11,897 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x1000002c3f60008, timeout of 40000ms exceeded
+2018-10-15 20:41:11,897 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x1000002c3f6000c
+2018-10-15 20:41:11,897 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x1000002c3f6000a, timeout of 40000ms exceeded
+2018-10-15 20:41:11,897 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x1000002c3f6000d, timeout of 40000ms exceeded
+2018-10-15 20:41:11,898 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x1000002c3f60007, timeout of 40000ms exceeded
+2018-10-15 20:41:11,904 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x1000002c3f60008
+2018-10-15 20:41:11,904 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x1000002c3f6000a
+2018-10-15 20:41:11,904 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x1000002c3f6000d
+2018-10-15 20:41:11,904 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x1000002c3f60007
+2018-10-15 20:41:21,895 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780000, timeout of 40000ms exceeded
+2018-10-15 20:41:21,895 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780000
+2018-10-15 20:41:24,321 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52258
+2018-10-15 20:41:24,332 [myid:] - INFO  [NIOWorkerThread-4:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52258
+2018-10-15 20:41:24,338 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780001 with negotiated timeout 40000 for client /127.0.0.1:52258
+2018-10-15 20:41:33,094 [myid:] - WARN  [NIOWorkerThread-5:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780001, likely client has closed socket
+2018-10-15 20:41:33,095 [myid:] - INFO  [NIOWorkerThread-5:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780001]
+2018-10-15 20:41:33,095 [myid:] - INFO  [NIOWorkerThread-5:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52258 which had sessionid 0x100009d79780001
+2018-10-15 20:41:46,594 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52264
+2018-10-15 20:41:46,604 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52264
+2018-10-15 20:41:46,610 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780002 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52264
+2018-10-15 20:41:54,896 [myid:] - WARN  [NIOWorkerThread-8:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780002, likely client has closed socket
+2018-10-15 20:41:54,897 [myid:] - INFO  [NIOWorkerThread-8:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780002]
+2018-10-15 20:41:54,897 [myid:] - INFO  [NIOWorkerThread-8:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52264 which had sessionid 0x100009d79780002
+2018-10-15 20:42:05,897 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780001, timeout of 40000ms exceeded
+2018-10-15 20:42:05,898 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780001
+2018-10-15 20:42:27,897 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780002, timeout of 40000ms exceeded
+2018-10-15 20:42:27,897 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780002
+2018-10-15 20:44:50,192 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52274
+2018-10-15 20:44:50,196 [myid:] - INFO  [NIOWorkerThread-9:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52274
+2018-10-15 20:44:50,197 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780003 with negotiated timeout 40000 for client /127.0.0.1:52274
+2018-10-15 20:44:50,233 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780003 type:create cxid:0x4 zxid:0xbd6 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:44:50,269 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52275
+2018-10-15 20:44:50,270 [myid:] - INFO  [NIOWorkerThread-5:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52275
+2018-10-15 20:44:50,272 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780004 with negotiated timeout 40000 for client /127.0.0.1:52275
+2018-10-15 20:44:50,277 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780004 type:create cxid:0x4 zxid:0xbd9 txntype:-1 reqpath:n/a Error Path:/dubbo/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /dubbo/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:44:54,317 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52276
+2018-10-15 20:44:54,324 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52276
+2018-10-15 20:44:54,326 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780005 with negotiated timeout 40000 for client /127.0.0.1:52276
+2018-10-15 20:44:54,351 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780005 type:create cxid:0x4 zxid:0xbdc txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers
+2018-10-15 20:44:54,364 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780005 type:create cxid:0x7 zxid:0xbdd txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:44:54,368 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780005 type:create cxid:0xa zxid:0xbde txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers
+2018-10-15 20:45:04,556 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780005
+2018-10-15 20:45:04,557 [myid:] - INFO  [NIOWorkerThread-1:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780005]
+2018-10-15 20:45:04,558 [myid:] - INFO  [NIOWorkerThread-1:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52276 which had sessionid 0x100009d79780005
+2018-10-15 20:45:05,440 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780003
+2018-10-15 20:45:05,441 [myid:] - INFO  [NIOWorkerThread-5:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780003]
+2018-10-15 20:45:05,441 [myid:] - INFO  [NIOWorkerThread-5:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52274 which had sessionid 0x100009d79780003
+2018-10-15 20:45:05,449 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780004
+2018-10-15 20:45:05,449 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780004]
+2018-10-15 20:45:05,450 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52275 which had sessionid 0x100009d79780004
+2018-10-15 20:45:13,296 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52278
+2018-10-15 20:45:13,299 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52278
+2018-10-15 20:45:13,306 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780006 with negotiated timeout 40000 for client /127.0.0.1:52278
+2018-10-15 20:45:13,327 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780006 type:create cxid:0x4 zxid:0xbe7 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:45:13,352 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52279
+2018-10-15 20:45:13,353 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52279
+2018-10-15 20:45:13,354 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780007 with negotiated timeout 40000 for client /127.0.0.1:52279
+2018-10-15 20:45:13,359 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780007 type:create cxid:0x4 zxid:0xbea txntype:-1 reqpath:n/a Error Path:/dubbo/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /dubbo/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:45:17,719 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52281
+2018-10-15 20:45:17,727 [myid:] - INFO  [NIOWorkerThread-2:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52281
+2018-10-15 20:45:17,733 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780008 with negotiated timeout 40000 for client /127.0.0.1:52281
+2018-10-15 20:45:17,757 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780008 type:create cxid:0x4 zxid:0xbed txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers
+2018-10-15 20:45:17,771 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780008 type:create cxid:0x7 zxid:0xbee txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:45:17,774 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780008 type:create cxid:0xa zxid:0xbef txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers
+2018-10-15 20:45:27,060 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780008
+2018-10-15 20:45:27,062 [myid:] - INFO  [NIOWorkerThread-1:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780008]
+2018-10-15 20:45:27,062 [myid:] - INFO  [NIOWorkerThread-1:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52281 which had sessionid 0x100009d79780008
+2018-10-15 20:45:33,720 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52283
+2018-10-15 20:45:33,728 [myid:] - INFO  [NIOWorkerThread-2:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52283
+2018-10-15 20:45:33,735 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780009 with negotiated timeout 40000 for client /127.0.0.1:52283
+2018-10-15 20:45:33,763 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780009 type:create cxid:0x4 zxid:0xbf4 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers
+2018-10-15 20:45:33,778 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780009 type:create cxid:0x7 zxid:0xbf5 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:45:33,782 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d79780009 type:create cxid:0xa zxid:0xbf6 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers
+2018-10-15 20:45:41,809 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780009
+2018-10-15 20:45:41,810 [myid:] - INFO  [NIOWorkerThread-1:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780009]
+2018-10-15 20:45:41,810 [myid:] - INFO  [NIOWorkerThread-1:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52283 which had sessionid 0x100009d79780009
+2018-10-15 20:45:46,549 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52285
+2018-10-15 20:45:46,556 [myid:] - INFO  [NIOWorkerThread-2:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52285
+2018-10-15 20:45:46,562 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978000a with negotiated timeout 40000 for client /127.0.0.1:52285
+2018-10-15 20:45:46,585 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d7978000a type:create cxid:0x4 zxid:0xbfb txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers
+2018-10-15 20:45:46,599 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d7978000a type:create cxid:0x7 zxid:0xbfc txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:45:46,602 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d7978000a type:create cxid:0xa zxid:0xbfd txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers
+2018-10-15 20:45:54,845 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978000a
+2018-10-15 20:45:54,846 [myid:] - INFO  [NIOWorkerThread-1:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978000a]
+2018-10-15 20:45:54,846 [myid:] - INFO  [NIOWorkerThread-1:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52285 which had sessionid 0x100009d7978000a
+2018-10-15 20:46:14,965 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52309
+2018-10-15 20:46:14,973 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52309
+2018-10-15 20:46:14,980 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978000b with negotiated timeout 40000 for client /127.0.0.1:52309
+2018-10-15 20:46:15,008 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d7978000b type:create cxid:0x4 zxid:0xc02 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/providers
+2018-10-15 20:46:15,023 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d7978000b type:create cxid:0x7 zxid:0xc03 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/configurators
+2018-10-15 20:46:15,026 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@841] - Got user-level KeeperException when processing sessionid:0x100009d7978000b type:create cxid:0xa zxid:0xc04 txntype:-1 reqpath:n/a Error Path:/aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers Error:KeeperErrorCode = NodeExists for /aaa/com.alibaba.dubbo.samples.basic.api.DemoService/routers
+2018-10-15 20:46:23,504 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978000b
+2018-10-15 20:46:23,505 [myid:] - INFO  [NIOWorkerThread-5:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978000b]
+2018-10-15 20:46:23,505 [myid:] - INFO  [NIOWorkerThread-5:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52309 which had sessionid 0x100009d7978000b
+2018-10-15 20:46:24,059 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780006
+2018-10-15 20:46:24,059 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780006]
+2018-10-15 20:46:24,060 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52278 which had sessionid 0x100009d79780006
+2018-10-15 20:46:24,064 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780007
+2018-10-15 20:46:24,065 [myid:] - INFO  [NIOWorkerThread-13:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780007]
+2018-10-15 20:46:24,065 [myid:] - INFO  [NIOWorkerThread-13:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52279 which had sessionid 0x100009d79780007
+2018-10-15 20:46:52,058 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52311
+2018-10-15 20:46:52,066 [myid:] - INFO  [NIOWorkerThread-14:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52311
+2018-10-15 20:46:52,073 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978000c with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52311
+2018-10-15 20:47:05,436 [myid:] - WARN  [NIOWorkerThread-16:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978000c, likely client has closed socket
+2018-10-15 20:47:05,436 [myid:] - INFO  [NIOWorkerThread-16:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d7978000c]
+2018-10-15 20:47:05,437 [myid:] - INFO  [NIOWorkerThread-16:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52311 which had sessionid 0x100009d7978000c
+2018-10-15 20:47:09,254 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52318
+2018-10-15 20:47:09,261 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52318
+2018-10-15 20:47:09,268 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978000d with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52318
+2018-10-15 20:47:25,068 [myid:] - WARN  [NIOWorkerThread-6:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978000d, likely client has closed socket
+2018-10-15 20:47:25,068 [myid:] - INFO  [NIOWorkerThread-6:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d7978000d]
+2018-10-15 20:47:25,068 [myid:] - INFO  [NIOWorkerThread-6:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52318 which had sessionid 0x100009d7978000d
+2018-10-15 20:47:33,903 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978000c, timeout of 40000ms exceeded
+2018-10-15 20:47:33,903 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978000c
+2018-10-15 20:47:43,188 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52325
+2018-10-15 20:47:43,194 [myid:] - INFO  [NIOWorkerThread-7:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52325
+2018-10-15 20:47:43,200 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978000e with negotiated timeout 40000 for client /127.0.0.1:52325
+2018-10-15 20:47:51,626 [myid:] - WARN  [NIOWorkerThread-9:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978000e, likely client has closed socket
+2018-10-15 20:47:51,627 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978000e]
+2018-10-15 20:47:51,627 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52325 which had sessionid 0x100009d7978000e
+2018-10-15 20:48:02,070 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52330
+2018-10-15 20:48:02,077 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52330
+2018-10-15 20:48:02,080 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978000f with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52330
+2018-10-15 20:48:03,906 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978000d, timeout of 40000ms exceeded
+2018-10-15 20:48:03,906 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978000d
+2018-10-15 20:48:10,875 [myid:] - WARN  [NIOWorkerThread-11:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978000f, likely client has closed socket
+2018-10-15 20:48:10,876 [myid:] - INFO  [NIOWorkerThread-11:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d7978000f]
+2018-10-15 20:48:10,876 [myid:] - INFO  [NIOWorkerThread-11:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52330 which had sessionid 0x100009d7978000f
+2018-10-15 20:48:15,002 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52333
+2018-10-15 20:48:15,010 [myid:] - INFO  [NIOWorkerThread-12:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52333
+2018-10-15 20:48:15,016 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780010 with negotiated timeout 40000 for client /127.0.0.1:52333
+2018-10-15 20:48:23,577 [myid:] - WARN  [NIOWorkerThread-15:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780010, likely client has closed socket
+2018-10-15 20:48:23,577 [myid:] - INFO  [NIOWorkerThread-15:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780010]
+2018-10-15 20:48:23,577 [myid:] - INFO  [NIOWorkerThread-15:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52333 which had sessionid 0x100009d79780010
+2018-10-15 20:48:25,904 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978000e, timeout of 40000ms exceeded
+2018-10-15 20:48:25,904 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978000e
+2018-10-15 20:48:43,909 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978000f, timeout of 40000ms exceeded
+2018-10-15 20:48:43,910 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978000f
+2018-10-15 20:48:57,908 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780010, timeout of 40000ms exceeded
+2018-10-15 20:48:57,909 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780010
+2018-10-15 21:05:54,332 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52413
+2018-10-15 21:05:54,339 [myid:] - INFO  [NIOWorkerThread-16:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52413
+2018-10-15 21:05:54,340 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780011 with negotiated timeout 40000 for client /127.0.0.1:52413
+2018-10-15 21:07:18,861 [myid:] - WARN  [NIOWorkerThread-15:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780011, likely client has closed socket
+2018-10-15 21:07:18,861 [myid:] - INFO  [NIOWorkerThread-15:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780011]
+2018-10-15 21:07:18,861 [myid:] - INFO  [NIOWorkerThread-15:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52413 which had sessionid 0x100009d79780011
+2018-10-15 21:07:24,123 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52434
+2018-10-15 21:07:24,130 [myid:] - INFO  [NIOWorkerThread-16:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52434
+2018-10-15 21:07:24,136 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780012 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52434
+2018-10-15 21:07:55,680 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780011, timeout of 40000ms exceeded
+2018-10-15 21:07:55,680 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780011
+2018-10-15 21:10:09,364 [myid:] - WARN  [NIOWorkerThread-9:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780012, likely client has closed socket
+2018-10-15 21:10:09,364 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780012]
+2018-10-15 21:10:09,364 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52434 which had sessionid 0x100009d79780012
+2018-10-15 21:10:21,969 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52444
+2018-10-15 21:10:21,976 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52444
+2018-10-15 21:10:21,982 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780013 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52444
+2018-10-15 21:10:45,679 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780012, timeout of 40000ms exceeded
+2018-10-15 21:10:45,690 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780012
+2018-10-15 21:14:47,925 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780013, likely client has closed socket
+2018-10-15 21:14:47,925 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780013]
+2018-10-15 21:14:47,925 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52444 which had sessionid 0x100009d79780013
+2018-10-15 21:15:21,260 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780013, timeout of 40000ms exceeded
+2018-10-15 21:15:21,261 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780013
+2018-10-18 19:57:19,146 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:50639
+2018-10-18 19:57:19,166 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:50639
+2018-10-18 19:57:19,174 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780014 with negotiated timeout 40000 for client /127.0.0.1:50639
+2018-10-18 19:57:26,405 [myid:] - WARN  [NIOWorkerThread-16:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780014, likely client has closed socket
+2018-10-18 19:57:26,406 [myid:] - INFO  [NIOWorkerThread-16:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780014]
+2018-10-18 19:57:26,407 [myid:] - INFO  [NIOWorkerThread-16:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:50639 which had sessionid 0x100009d79780014
+2018-10-18 19:57:49,497 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:50646
+2018-10-18 19:57:49,506 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:50646
+2018-10-18 19:57:49,512 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780015 with negotiated timeout 40000 for client /127.0.0.1:50646
+2018-10-18 19:57:57,171 [myid:] - WARN  [NIOWorkerThread-4:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780015, likely client has closed socket
+2018-10-18 19:57:57,172 [myid:] - INFO  [NIOWorkerThread-4:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780015]
+2018-10-18 19:57:57,172 [myid:] - INFO  [NIOWorkerThread-4:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:50646 which had sessionid 0x100009d79780015
+2018-10-18 19:58:01,163 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780014, timeout of 40000ms exceeded
+2018-10-18 19:58:01,163 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780014
+2018-10-18 19:58:31,160 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780015, timeout of 40000ms exceeded
+2018-10-18 19:58:31,169 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780015
+2018-10-18 21:02:37,059 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:50937
+2018-10-18 21:02:37,074 [myid:] - INFO  [NIOWorkerThread-5:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:50937
+2018-10-18 21:02:37,076 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780016 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:50937
+2018-10-18 21:02:45,412 [myid:] - WARN  [NIOWorkerThread-8:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780016, likely client has closed socket
+2018-10-18 21:02:45,413 [myid:] - INFO  [NIOWorkerThread-8:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780016]
+2018-10-18 21:02:45,413 [myid:] - INFO  [NIOWorkerThread-8:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:50937 which had sessionid 0x100009d79780016
+2018-10-18 21:02:52,192 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:50944
+2018-10-18 21:02:52,202 [myid:] - INFO  [NIOWorkerThread-9:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:50944
+2018-10-18 21:02:52,209 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780017 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:50944
+2018-10-18 21:03:18,541 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780016, timeout of 40000ms exceeded
+2018-10-18 21:03:18,542 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780016
+2018-10-18 21:04:45,245 [myid:] - WARN  [NIOWorkerThread-11:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780017, likely client has closed socket
+2018-10-18 21:04:45,245 [myid:] - INFO  [NIOWorkerThread-11:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780017]
+2018-10-18 21:04:45,246 [myid:] - INFO  [NIOWorkerThread-11:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:50944 which had sessionid 0x100009d79780017
+2018-10-18 21:04:51,391 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:50952
+2018-10-18 21:04:51,403 [myid:] - INFO  [NIOWorkerThread-12:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:50952
+2018-10-18 21:04:51,409 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780018 with negotiated timeout 40000 for client /127.0.0.1:50952
+2018-10-18 21:05:05,595 [myid:] - WARN  [NIOWorkerThread-15:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780018, likely client has closed socket
+2018-10-18 21:05:05,595 [myid:] - INFO  [NIOWorkerThread-15:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780018]
+2018-10-18 21:05:05,596 [myid:] - INFO  [NIOWorkerThread-15:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:50952 which had sessionid 0x100009d79780018
+2018-10-18 21:05:20,542 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780017, timeout of 40000ms exceeded
+2018-10-18 21:05:20,542 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780017
+2018-10-18 21:05:32,547 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780018, timeout of 40000ms exceeded
+2018-10-18 21:05:32,547 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780018
+2018-10-18 21:12:51,883 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51008
+2018-10-18 21:12:51,894 [myid:] - INFO  [NIOWorkerThread-16:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51008
+2018-10-18 21:12:51,900 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780019 with negotiated timeout 40000 for client /127.0.0.1:51008
+2018-10-18 21:13:07,996 [myid:] - WARN  [NIOWorkerThread-4:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780019, likely client has closed socket
+2018-10-18 21:13:07,997 [myid:] - INFO  [NIOWorkerThread-4:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780019]
+2018-10-18 21:13:07,997 [myid:] - INFO  [NIOWorkerThread-4:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51008 which had sessionid 0x100009d79780019
+2018-10-18 21:13:28,304 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51014
+2018-10-18 21:13:28,313 [myid:] - INFO  [NIOWorkerThread-5:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51014
+2018-10-18 21:13:28,319 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978001a with negotiated timeout 40000 for client /127.0.0.1:51014
+2018-10-18 21:13:46,787 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780019, timeout of 40000ms exceeded
+2018-10-18 21:13:46,788 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780019
+2018-10-18 21:14:33,591 [myid:] - WARN  [NIOWorkerThread-15:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978001a, likely client has closed socket
+2018-10-18 21:14:33,592 [myid:] - INFO  [NIOWorkerThread-15:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978001a]
+2018-10-18 21:14:33,592 [myid:] - INFO  [NIOWorkerThread-15:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51014 which had sessionid 0x100009d7978001a
+2018-10-18 21:14:59,077 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51023
+2018-10-18 21:14:59,088 [myid:] - INFO  [NIOWorkerThread-16:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51023
+2018-10-18 21:14:59,095 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978001b with negotiated timeout 40000 for client /127.0.0.1:51023
+2018-10-18 21:15:02,786 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978001a, timeout of 40000ms exceeded
+2018-10-18 21:15:02,798 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978001a
+2018-10-18 21:15:14,590 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51026
+2018-10-18 21:15:14,595 [myid:] - INFO  [NIOWorkerThread-5:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51026
+2018-10-18 21:15:14,601 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978001c with negotiated timeout 40000 for client /127.0.0.1:51026
+2018-10-18 21:15:19,387 [myid:] - WARN  [NIOWorkerThread-7:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978001b, likely client has closed socket
+2018-10-18 21:15:19,387 [myid:] - WARN  [NIOWorkerThread-8:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978001c, likely client has closed socket
+2018-10-18 21:15:19,387 [myid:] - INFO  [NIOWorkerThread-8:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978001c]
+2018-10-18 21:15:19,387 [myid:] - INFO  [NIOWorkerThread-7:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978001b]
+2018-10-18 21:15:19,388 [myid:] - INFO  [NIOWorkerThread-8:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51026 which had sessionid 0x100009d7978001c
+2018-10-18 21:15:19,388 [myid:] - INFO  [NIOWorkerThread-7:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51023 which had sessionid 0x100009d7978001b
+2018-10-18 21:15:54,785 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978001b, timeout of 40000ms exceeded
+2018-10-18 21:15:54,786 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978001b
+2018-10-18 21:15:56,786 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978001c, timeout of 40000ms exceeded
+2018-10-18 21:15:56,787 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978001c
+2018-10-19 09:53:21,272 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51436
+2018-10-19 09:53:21,282 [myid:] - INFO  [NIOWorkerThread-9:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51436
+2018-10-19 09:53:21,290 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978001d with negotiated timeout 40000 for client /127.0.0.1:51436
+2018-10-19 09:56:56,246 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:51459
+2018-10-19 09:56:56,254 [myid:] - INFO  [NIOWorkerThread-12:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:51459
+2018-10-19 09:56:56,261 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978001e with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:51459
+2018-10-19 09:57:08,845 [myid:] - WARN  [NIOWorkerThread-15:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978001e, likely client has closed socket
+2018-10-19 09:57:08,846 [myid:] - INFO  [NIOWorkerThread-15:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d7978001e]
+2018-10-19 09:57:08,846 [myid:] - INFO  [NIOWorkerThread-15:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:51459 which had sessionid 0x100009d7978001e
+2018-10-19 09:57:11,078 [myid:] - WARN  [NIOWorkerThread-2:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978001d, likely client has closed socket
+2018-10-19 09:57:11,078 [myid:] - INFO  [NIOWorkerThread-2:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978001d]
+2018-10-19 09:57:11,078 [myid:] - INFO  [NIOWorkerThread-2:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51436 which had sessionid 0x100009d7978001d
+2018-10-19 09:57:35,530 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51465
+2018-10-19 09:57:35,538 [myid:] - INFO  [NIOWorkerThread-3:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51465
+2018-10-19 09:57:35,539 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d7978001f with negotiated timeout 40000 for client /127.0.0.1:51465
+2018-10-19 09:57:37,482 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978001e, timeout of 40000ms exceeded
+2018-10-19 09:57:37,491 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978001e
+2018-10-19 09:57:49,477 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978001d, timeout of 40000ms exceeded
+2018-10-19 09:57:49,477 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978001d
+2018-10-19 09:58:58,005 [myid:] - WARN  [NIOWorkerThread-1:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d7978001f, likely client has closed socket
+2018-10-19 09:58:58,006 [myid:] - INFO  [NIOWorkerThread-1:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d7978001f]
+2018-10-19 09:58:58,009 [myid:] - INFO  [NIOWorkerThread-1:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51465 which had sessionid 0x100009d7978001f
+2018-10-19 09:59:03,832 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51500
+2018-10-19 09:59:03,842 [myid:] - INFO  [NIOWorkerThread-2:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51500
+2018-10-19 09:59:03,849 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780020 with negotiated timeout 40000 for client /127.0.0.1:51500
+2018-10-19 09:59:37,476 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d7978001f, timeout of 40000ms exceeded
+2018-10-19 09:59:37,486 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d7978001f
+2018-10-19 10:00:21,103 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780020, likely client has closed socket
+2018-10-19 10:00:21,103 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780020]
+2018-10-19 10:00:21,104 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51500 which had sessionid 0x100009d79780020
+2018-10-19 10:00:27,239 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:51511
+2018-10-19 10:00:27,249 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:51511
+2018-10-19 10:00:27,256 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780021 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:51511
+2018-10-19 10:00:42,537 [myid:] - WARN  [NIOWorkerThread-4:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780021, likely client has closed socket
+2018-10-19 10:00:42,538 [myid:] - INFO  [NIOWorkerThread-4:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780021]
+2018-10-19 10:00:42,539 [myid:] - INFO  [NIOWorkerThread-4:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:51511 which had sessionid 0x100009d79780021
+2018-10-19 10:00:53,477 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780020, timeout of 40000ms exceeded
+2018-10-19 10:00:53,478 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780020
+2018-10-19 10:01:02,255 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:51520
+2018-10-19 10:01:02,267 [myid:] - INFO  [NIOWorkerThread-5:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:51520
+2018-10-19 10:01:02,273 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780022 with negotiated timeout 40000 for client /127.0.0.1:51520
+2018-10-19 10:01:23,475 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780021, timeout of 40000ms exceeded
+2018-10-19 10:01:23,476 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780021
+2018-10-19 10:01:38,300 [myid:] - WARN  [NIOWorkerThread-11:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780022, likely client has closed socket
+2018-10-19 10:01:38,300 [myid:] - INFO  [NIOWorkerThread-11:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100009d79780022]
+2018-10-19 10:01:38,301 [myid:] - INFO  [NIOWorkerThread-11:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:51520 which had sessionid 0x100009d79780022
+2018-10-19 10:01:48,420 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:51545
+2018-10-19 10:01:48,431 [myid:] - INFO  [NIOWorkerThread-12:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:51545
+2018-10-19 10:01:48,437 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780023 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:51545
+2018-10-19 10:02:11,472 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780022, timeout of 40000ms exceeded
+2018-10-19 10:02:11,473 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780022
+2018-10-19 10:40:37,455 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780023, likely client has closed socket
+2018-10-19 10:40:37,457 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780023]
+2018-10-19 10:40:37,457 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:51545 which had sessionid 0x100009d79780023
+2018-10-19 10:41:16,954 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780023, timeout of 40000ms exceeded
+2018-10-19 10:41:16,954 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780023
+2018-10-19 11:01:32,340 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52164
+2018-10-19 11:01:32,350 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52164
+2018-10-19 11:01:32,352 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100009d79780024 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52164
+2018-10-19 11:02:27,980 [myid:] - WARN  [NIOWorkerThread-9:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100009d79780024, likely client has closed socket
+2018-10-19 11:02:27,981 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100009d79780024]
+2018-10-19 11:02:27,981 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52164 which had sessionid 0x100009d79780024
+2018-10-19 11:03:06,988 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100009d79780024, timeout of 40000ms exceeded
+2018-10-19 11:03:06,988 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100009d79780024

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<global-validator>
+	<validator-fields>
+		<validator-field name="username" explain="用户名" rules="notEmpty" globalrules="global"></validator-field>
+		<validator-field name="email" explain="邮箱" globalrules="global"></validator-field>
+		<validator-field name="phone" explain="电话" rules="phone"></validator-field>
+	</validator-fields>
+</global-validator>
+ 

@@ -1,0 +1,344 @@
+2018-11-14 16:11:44,946 [myid:] - INFO  [main:QuorumPeerConfig@116] - Reading configuration from: /Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../conf/zoo.cfg
+2018-11-14 16:11:44,952 [myid:] - INFO  [main:QuorumPeerConfig@318] - clientPortAddress is 0.0.0.0/0.0.0.0:2181
+2018-11-14 16:11:44,952 [myid:] - INFO  [main:QuorumPeerConfig@322] - secureClientPort is not set
+2018-11-14 16:11:44,955 [myid:] - INFO  [main:DatadirCleanupManager@78] - autopurge.snapRetainCount set to 3
+2018-11-14 16:11:44,956 [myid:] - INFO  [main:DatadirCleanupManager@79] - autopurge.purgeInterval set to 0
+2018-11-14 16:11:44,956 [myid:] - INFO  [main:DatadirCleanupManager@101] - Purge task is not scheduled.
+2018-11-14 16:11:44,956 [myid:] - WARN  [main:QuorumPeerMain@122] - Either no config or no quorum defined in config, running  in standalone mode
+2018-11-14 16:11:44,958 [myid:] - INFO  [main:ManagedUtil@46] - Log4j found with jmx enabled.
+2018-11-14 16:11:44,969 [myid:] - INFO  [main:QuorumPeerConfig@116] - Reading configuration from: /Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../conf/zoo.cfg
+2018-11-14 16:11:44,970 [myid:] - INFO  [main:QuorumPeerConfig@318] - clientPortAddress is 0.0.0.0/0.0.0.0:2181
+2018-11-14 16:11:44,970 [myid:] - INFO  [main:QuorumPeerConfig@322] - secureClientPort is not set
+2018-11-14 16:11:44,970 [myid:] - INFO  [main:ZooKeeperServerMain@113] - Starting server
+2018-11-14 16:11:49,991 [myid:] - INFO  [main:Environment@109] - Server environment:zookeeper.version=3.5.2-alpha-1750793, built on 06/30/2016 13:15 GMT
+2018-11-14 16:11:49,991 [myid:] - INFO  [main:Environment@109] - Server environment:host.name=172.28.5.54
+2018-11-14 16:11:49,991 [myid:] - INFO  [main:Environment@109] - Server environment:java.version=1.8.0_181
+2018-11-14 16:11:49,992 [myid:] - INFO  [main:Environment@109] - Server environment:java.vendor=Oracle Corporation
+2018-11-14 16:11:49,993 [myid:] - INFO  [main:Environment@109] - Server environment:java.home=/Library/Java/JavaVirtualMachines/jdk1.8.0_181.jdk/Contents/Home/jre
+2018-11-14 16:11:49,993 [myid:] - INFO  [main:Environment@109] - Server environment:java.class.path=/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../build/classes:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../build/lib/*.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/slf4j-log4j12-1.7.5.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/slf4j-api-1.7.5.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/servlet-api-2.5-20081211.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/netty-3.10.5.Final.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/log4j-1.2.17.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/jline-2.11.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/jetty-util-6.1.26.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/jetty-6.1.26.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/javacc.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/jackson-mapper-asl-1.9.11.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/jackson-core-asl-1.9.11.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../lib/commons-cli-1.2.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../zookeeper-3.5.2-alpha.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../src/java/lib/*.jar:/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin/../conf:
+2018-11-14 16:11:49,993 [myid:] - INFO  [main:Environment@109] - Server environment:java.library.path=/Users/srchen/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:.
+2018-11-14 16:11:49,993 [myid:] - INFO  [main:Environment@109] - Server environment:java.io.tmpdir=/var/folders/1g/ffybhzjx6c96gfkcqz5jj34c0000gn/T/
+2018-11-14 16:11:49,993 [myid:] - INFO  [main:Environment@109] - Server environment:java.compiler=<NA>
+2018-11-14 16:11:49,993 [myid:] - INFO  [main:Environment@109] - Server environment:os.name=Mac OS X
+2018-11-14 16:11:49,993 [myid:] - INFO  [main:Environment@109] - Server environment:os.arch=x86_64
+2018-11-14 16:11:49,994 [myid:] - INFO  [main:Environment@109] - Server environment:os.version=10.14
+2018-11-14 16:11:49,994 [myid:] - INFO  [main:Environment@109] - Server environment:user.name=srchen
+2018-11-14 16:11:49,994 [myid:] - INFO  [main:Environment@109] - Server environment:user.home=/Users/srchen
+2018-11-14 16:11:49,994 [myid:] - INFO  [main:Environment@109] - Server environment:user.dir=/Users/srchen/eclipse-workspace/maven_dawdler/dawdler-series/myserver/zookeeper-3.5.2-alpha/bin
+2018-11-14 16:11:49,994 [myid:] - INFO  [main:Environment@109] - Server environment:os.memory.free=235MB
+2018-11-14 16:11:49,994 [myid:] - INFO  [main:Environment@109] - Server environment:os.memory.max=889MB
+2018-11-14 16:11:49,994 [myid:] - INFO  [main:Environment@109] - Server environment:os.memory.total=245MB
+2018-11-14 16:11:49,996 [myid:] - INFO  [main:ZooKeeperServer@858] - minSessionTimeout set to 4000
+2018-11-14 16:11:49,996 [myid:] - INFO  [main:ZooKeeperServer@867] - maxSessionTimeout set to 40000
+2018-11-14 16:11:49,996 [myid:] - INFO  [main:ZooKeeperServer@156] - Created server with tickTime 2000 minSessionTimeout 4000 maxSessionTimeout 40000 datadir /Users/srchen/zookeeper/data/version-2 snapdir /Users/srchen/zookeeper/data/version-2
+2018-11-14 16:11:50,042 [myid:] - INFO  [main:Slf4jLog@67] - Logging to org.slf4j.impl.Log4jLoggerAdapter(org.mortbay.log) via org.mortbay.log.Slf4jLog
+2018-11-14 16:11:50,072 [myid:] - INFO  [main:Slf4jLog@67] - jetty-6.1.26
+2018-11-14 16:11:50,126 [myid:] - INFO  [main:Slf4jLog@67] - Started SelectChannelConnector@0.0.0.0:18080
+2018-11-14 16:11:50,133 [myid:] - INFO  [main:JettyAdminServer@105] - Started AdminServer on address 0.0.0.0, port 18080 and command URL /commands
+2018-11-14 16:11:50,145 [myid:] - INFO  [main:NIOServerCnxnFactory@673] - Configuring NIO connection handler with 10s sessionless connection timeout, 2 selector thread(s), 16 worker threads, and 64 kB direct buffers.
+2018-11-14 16:11:50,147 [myid:] - INFO  [main:NIOServerCnxnFactory@686] - binding to port 0.0.0.0/0.0.0.0:2181
+2018-11-14 16:11:50,163 [myid:] - INFO  [main:FileTxnSnapLog@298] - Snapshotting: 0x0 to /Users/srchen/zookeeper/data/version-2/snapshot.0
+2018-11-14 16:11:50,183 [myid:] - INFO  [main:ContainerManager@64] - Using checkIntervalMs=60000 maxPerMinute=10000
+2018-11-14 16:17:04,893 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:50749
+2018-11-14 16:17:04,905 [myid:] - WARN  [NIOWorkerThread-1:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:50749; will be dropped if server is in r-o mode
+2018-11-14 16:17:04,906 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:50749
+2018-11-14 16:17:04,908 [myid:] - INFO  [SyncThread:0:FileTxnLog@204] - Creating new log file: log.1
+2018-11-14 16:17:04,918 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0000 with negotiated timeout 30000 for client /127.0.0.1:50749
+2018-11-14 16:17:30,840 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0000, likely client has closed socket
+2018-11-14 16:17:30,841 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0000]
+2018-11-14 16:17:30,841 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:50749 which had sessionid 0x100104f68fc0000
+2018-11-14 16:18:00,500 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0000, timeout of 30000ms exceeded
+2018-11-14 16:18:00,501 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0000
+2018-11-14 16:34:01,282 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:51304
+2018-11-14 16:34:01,290 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:51304
+2018-11-14 16:34:01,292 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0001 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:51304
+2018-11-14 16:34:13,047 [myid:] - WARN  [NIOWorkerThread-13:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0001, likely client has closed socket
+2018-11-14 16:34:13,048 [myid:] - INFO  [NIOWorkerThread-13:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0001]
+2018-11-14 16:34:13,048 [myid:] - INFO  [NIOWorkerThread-13:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:51304 which had sessionid 0x100104f68fc0001
+2018-11-14 16:34:43,748 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0001, timeout of 40000ms exceeded
+2018-11-14 16:34:43,748 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0001
+2018-11-14 17:35:20,719 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52214
+2018-11-14 17:35:20,730 [myid:] - WARN  [NIOWorkerThread-14:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:52214; will be dropped if server is in r-o mode
+2018-11-14 17:35:20,730 [myid:] - INFO  [NIOWorkerThread-14:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52214
+2018-11-14 17:35:20,731 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:52214
+2018-11-14 17:36:11,693 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52255
+2018-11-14 17:36:11,701 [myid:] - INFO  [NIOWorkerThread-13:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52255
+2018-11-14 17:36:11,703 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0003 with negotiated timeout 40000 for client /127.0.0.1:52255
+2018-11-14 17:36:25,430 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52262
+2018-11-14 17:36:25,437 [myid:] - INFO  [NIOWorkerThread-13:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52262
+2018-11-14 17:36:25,438 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0004 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52262
+2018-11-14 17:36:55,289 [myid:] - WARN  [NIOWorkerThread-15:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0004, likely client has closed socket
+2018-11-14 17:36:55,289 [myid:] - WARN  [NIOWorkerThread-16:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0003, likely client has closed socket
+2018-11-14 17:36:55,295 [myid:] - INFO  [NIOWorkerThread-15:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0004]
+2018-11-14 17:36:55,295 [myid:] - INFO  [NIOWorkerThread-16:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0003]
+2018-11-14 17:36:55,295 [myid:] - INFO  [NIOWorkerThread-15:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52262 which had sessionid 0x100104f68fc0004
+2018-11-14 17:36:55,295 [myid:] - INFO  [NIOWorkerThread-16:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52255 which had sessionid 0x100104f68fc0003
+2018-11-14 17:37:33,971 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0004, timeout of 40000ms exceeded
+2018-11-14 17:37:33,971 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0003, timeout of 40000ms exceeded
+2018-11-14 17:37:33,972 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0004
+2018-11-14 17:37:33,972 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0003
+2018-11-14 17:37:51,072 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52278
+2018-11-14 17:37:51,081 [myid:] - INFO  [NIOWorkerThread-13:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52278
+2018-11-14 17:37:51,088 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0005 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52278
+2018-11-14 17:39:36,202 [myid:] - WARN  [NIOWorkerThread-13:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0005, likely client has closed socket
+2018-11-14 17:39:36,203 [myid:] - INFO  [NIOWorkerThread-13:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0005]
+2018-11-14 17:39:36,203 [myid:] - INFO  [NIOWorkerThread-13:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52278 which had sessionid 0x100104f68fc0005
+2018-11-14 17:40:04,053 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52302
+2018-11-14 17:40:04,060 [myid:] - INFO  [NIOWorkerThread-4:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52302
+2018-11-14 17:40:04,063 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0006 with negotiated timeout 40000 for client /127.0.0.1:52302
+2018-11-14 17:40:05,974 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0005, timeout of 40000ms exceeded
+2018-11-14 17:40:05,974 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0005
+2018-11-14 17:40:18,027 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52308
+2018-11-14 17:40:18,031 [myid:] - INFO  [NIOWorkerThread-4:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52308
+2018-11-14 17:40:18,037 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0007 with negotiated timeout 40000 for client /127.0.0.1:52308
+2018-11-14 17:40:30,382 [myid:] - WARN  [NIOWorkerThread-8:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0006, likely client has closed socket
+2018-11-14 17:40:30,382 [myid:] - WARN  [NIOWorkerThread-9:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0007, likely client has closed socket
+2018-11-14 17:40:30,382 [myid:] - INFO  [NIOWorkerThread-8:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0006]
+2018-11-14 17:40:30,383 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0007]
+2018-11-14 17:40:30,383 [myid:] - INFO  [NIOWorkerThread-8:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52302 which had sessionid 0x100104f68fc0006
+2018-11-14 17:40:30,383 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52308 which had sessionid 0x100104f68fc0007
+2018-11-14 17:40:48,795 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52317
+2018-11-14 17:40:48,803 [myid:] - INFO  [NIOWorkerThread-12:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52317
+2018-11-14 17:40:48,809 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0008 with negotiated timeout 40000 for client /127.0.0.1:52317
+2018-11-14 17:40:57,912 [myid:] - WARN  [NIOWorkerThread-13:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0008, likely client has closed socket
+2018-11-14 17:40:57,912 [myid:] - INFO  [NIOWorkerThread-13:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0008]
+2018-11-14 17:40:57,912 [myid:] - INFO  [NIOWorkerThread-13:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52317 which had sessionid 0x100104f68fc0008
+2018-11-14 17:40:59,975 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0007, timeout of 40000ms exceeded
+2018-11-14 17:40:59,975 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0006, timeout of 40000ms exceeded
+2018-11-14 17:40:59,975 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0007
+2018-11-14 17:40:59,976 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0006
+2018-11-14 17:41:03,743 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52326
+2018-11-14 17:41:03,751 [myid:] - INFO  [NIOWorkerThread-16:ZooKeeperServer@964] - Client attempting to establish new session at /0:0:0:0:0:0:0:1:52326
+2018-11-14 17:41:03,758 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc0009 with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:52326
+2018-11-14 17:41:19,733 [myid:] - WARN  [NIOWorkerThread-5:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0009, likely client has closed socket
+2018-11-14 17:41:19,734 [myid:] - INFO  [NIOWorkerThread-5:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0009]
+2018-11-14 17:41:19,734 [myid:] - INFO  [NIOWorkerThread-5:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52326 which had sessionid 0x100104f68fc0009
+2018-11-14 17:41:29,971 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0008, timeout of 40000ms exceeded
+2018-11-14 17:41:29,971 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0008
+2018-11-14 17:41:59,974 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc0009, timeout of 40000ms exceeded
+2018-11-14 17:41:59,975 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc0009
+2018-11-14 17:45:52,588 [myid:] - WARN  [NIOWorkerThread-10:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-14 17:45:52,588 [myid:] - INFO  [NIOWorkerThread-10:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-14 17:45:52,589 [myid:] - INFO  [NIOWorkerThread-10:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52214 which had sessionid 0x100104f68fc0002
+2018-11-14 17:45:52,784 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52421
+2018-11-14 17:45:52,786 [myid:] - WARN  [NIOWorkerThread-11:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:52421; will be dropped if server is in r-o mode
+2018-11-14 17:45:52,787 [myid:] - INFO  [NIOWorkerThread-11:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:52421
+2018-11-14 17:45:52,787 [myid:] - INFO  [NIOWorkerThread-11:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:52421
+2018-11-14 17:51:12,344 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52547
+2018-11-14 17:51:12,354 [myid:] - INFO  [NIOWorkerThread-11:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52547
+2018-11-14 17:51:12,361 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc000a with negotiated timeout 40000 for client /127.0.0.1:52547
+2018-11-14 17:51:57,385 [myid:] - WARN  [NIOWorkerThread-11:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc000a, likely client has closed socket
+2018-11-14 17:51:57,385 [myid:] - INFO  [NIOWorkerThread-11:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc000a]
+2018-11-14 17:51:57,386 [myid:] - INFO  [NIOWorkerThread-11:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52547 which had sessionid 0x100104f68fc000a
+2018-11-14 17:52:03,882 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52562
+2018-11-14 17:52:03,889 [myid:] - INFO  [NIOWorkerThread-14:ZooKeeperServer@964] - Client attempting to establish new session at /127.0.0.1:52562
+2018-11-14 17:52:03,896 [myid:] - INFO  [SyncThread:0:ZooKeeperServer@678] - Established session 0x100104f68fc000b with negotiated timeout 40000 for client /127.0.0.1:52562
+2018-11-14 17:52:34,950 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc000a, timeout of 40000ms exceeded
+2018-11-14 17:52:34,950 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc000a
+2018-11-14 17:56:30,327 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-14 17:56:30,327 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-14 17:56:30,328 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52421 which had sessionid 0x100104f68fc0002
+2018-11-14 17:56:31,124 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52659
+2018-11-14 17:56:31,125 [myid:] - WARN  [NIOWorkerThread-15:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:52659; will be dropped if server is in r-o mode
+2018-11-14 17:56:31,125 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:52659
+2018-11-14 17:56:31,125 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:52659
+2018-11-14 19:23:51,081 [myid:] - WARN  [NIOWorkerThread-5:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-14 19:23:51,082 [myid:] - INFO  [NIOWorkerThread-5:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-14 19:23:51,082 [myid:] - INFO  [NIOWorkerThread-5:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52659 which had sessionid 0x100104f68fc0002
+2018-11-14 19:23:51,684 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52900
+2018-11-14 19:23:51,685 [myid:] - WARN  [NIOWorkerThread-6:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:52900; will be dropped if server is in r-o mode
+2018-11-14 19:23:51,685 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:52900
+2018-11-14 19:23:51,685 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:52900
+2018-11-14 21:12:04,389 [myid:] - WARN  [NIOWorkerThread-4:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-14 21:12:04,395 [myid:] - INFO  [NIOWorkerThread-4:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-14 21:12:04,396 [myid:] - INFO  [NIOWorkerThread-4:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52900 which had sessionid 0x100104f68fc0002
+2018-11-14 21:12:05,332 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:52952
+2018-11-14 21:12:05,333 [myid:] - WARN  [NIOWorkerThread-5:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:52952; will be dropped if server is in r-o mode
+2018-11-14 21:12:05,333 [myid:] - INFO  [NIOWorkerThread-5:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:52952
+2018-11-14 21:12:05,333 [myid:] - INFO  [NIOWorkerThread-5:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:52952
+2018-11-14 23:00:05,801 [myid:] - WARN  [NIOWorkerThread-9:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-14 23:00:05,807 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-14 23:00:05,807 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:52952 which had sessionid 0x100104f68fc0002
+2018-11-14 23:00:06,519 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:52981
+2018-11-14 23:00:06,521 [myid:] - WARN  [NIOWorkerThread-10:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:52981; will be dropped if server is in r-o mode
+2018-11-14 23:00:06,521 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:52981
+2018-11-14 23:00:06,521 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:52981
+2018-11-14 23:15:19,844 [myid:] - WARN  [NIOWorkerThread-2:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-14 23:15:19,846 [myid:] - INFO  [NIOWorkerThread-2:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-14 23:15:19,846 [myid:] - INFO  [NIOWorkerThread-2:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52981 which had sessionid 0x100104f68fc0002
+2018-11-14 23:15:20,527 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53014
+2018-11-14 23:15:20,528 [myid:] - WARN  [NIOWorkerThread-3:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53014; will be dropped if server is in r-o mode
+2018-11-14 23:15:20,528 [myid:] - INFO  [NIOWorkerThread-3:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53014
+2018-11-14 23:15:20,528 [myid:] - INFO  [NIOWorkerThread-3:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53014
+2018-11-14 23:21:35,356 [myid:] - WARN  [NIOWorkerThread-5:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-14 23:21:35,500 [myid:] - INFO  [NIOWorkerThread-5:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-14 23:21:35,507 [myid:] - INFO  [NIOWorkerThread-5:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53014 which had sessionid 0x100104f68fc0002
+2018-11-14 23:21:35,554 [myid:] - WARN  [NIOWorkerThread-6:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc000b, likely client has closed socket
+2018-11-14 23:21:35,555 [myid:] - INFO  [NIOWorkerThread-6:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc000b]
+2018-11-14 23:21:35,555 [myid:] - INFO  [NIOWorkerThread-6:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:52562 which had sessionid 0x100104f68fc000b
+2018-11-14 23:21:36,096 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:53022
+2018-11-14 23:21:36,100 [myid:] - WARN  [NIOWorkerThread-7:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:53022; will be dropped if server is in r-o mode
+2018-11-14 23:21:36,100 [myid:] - INFO  [NIOWorkerThread-7:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:53022
+2018-11-14 23:21:36,102 [myid:] - INFO  [NIOWorkerThread-7:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:53022
+2018-11-14 23:21:36,227 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53023
+2018-11-14 23:21:36,234 [myid:] - INFO  [NIOWorkerThread-9:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc000b at /0:0:0:0:0:0:0:1:53023
+2018-11-14 23:21:36,235 [myid:] - INFO  [NIOWorkerThread-9:ZooKeeperServer@678] - Established session 0x100104f68fc000b with negotiated timeout 40000 for client /0:0:0:0:0:0:0:1:53023
+2018-11-15 01:22:15,146 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 01:22:15,183 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 01:22:15,194 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:53022 which had sessionid 0x100104f68fc0002
+2018-11-15 01:22:16,023 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53040
+2018-11-15 01:22:16,025 [myid:] - WARN  [NIOWorkerThread-1:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53040; will be dropped if server is in r-o mode
+2018-11-15 01:22:16,026 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53040
+2018-11-15 01:22:16,027 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53040
+2018-11-15 03:22:29,129 [myid:] - WARN  [NIOWorkerThread-4:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 03:22:29,142 [myid:] - INFO  [NIOWorkerThread-4:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 03:22:29,146 [myid:] - INFO  [NIOWorkerThread-4:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53040 which had sessionid 0x100104f68fc0002
+2018-11-15 03:22:29,648 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:53052
+2018-11-15 03:22:29,656 [myid:] - WARN  [NIOWorkerThread-6:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:53052; will be dropped if server is in r-o mode
+2018-11-15 03:22:29,656 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:53052
+2018-11-15 03:22:29,658 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:53052
+2018-11-15 05:22:46,650 [myid:] - WARN  [NIOWorkerThread-12:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 05:22:46,651 [myid:] - INFO  [NIOWorkerThread-12:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 05:22:46,653 [myid:] - INFO  [NIOWorkerThread-12:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:53052 which had sessionid 0x100104f68fc0002
+2018-11-15 05:22:47,098 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53068
+2018-11-15 05:22:47,101 [myid:] - WARN  [NIOWorkerThread-13:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53068; will be dropped if server is in r-o mode
+2018-11-15 05:22:47,101 [myid:] - INFO  [NIOWorkerThread-13:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53068
+2018-11-15 05:22:47,102 [myid:] - INFO  [NIOWorkerThread-13:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53068
+2018-11-15 06:08:30,511 [myid:] - WARN  [NIOWorkerThread-11:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 06:08:30,517 [myid:] - INFO  [NIOWorkerThread-11:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 06:08:30,519 [myid:] - INFO  [NIOWorkerThread-11:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53068 which had sessionid 0x100104f68fc0002
+2018-11-15 06:08:30,776 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:53086
+2018-11-15 06:08:30,780 [myid:] - WARN  [NIOWorkerThread-12:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:53086; will be dropped if server is in r-o mode
+2018-11-15 06:08:30,780 [myid:] - INFO  [NIOWorkerThread-12:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:53086
+2018-11-15 06:08:30,782 [myid:] - INFO  [NIOWorkerThread-12:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:53086
+2018-11-15 07:45:04,897 [myid:] - WARN  [NIOWorkerThread-2:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 07:45:04,906 [myid:] - INFO  [NIOWorkerThread-2:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 07:45:04,911 [myid:] - INFO  [NIOWorkerThread-2:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:53086 which had sessionid 0x100104f68fc0002
+2018-11-15 07:45:05,422 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53094
+2018-11-15 07:45:05,425 [myid:] - WARN  [NIOWorkerThread-3:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53094; will be dropped if server is in r-o mode
+2018-11-15 07:45:05,426 [myid:] - INFO  [NIOWorkerThread-3:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53094
+2018-11-15 07:45:05,427 [myid:] - INFO  [NIOWorkerThread-3:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53094
+2018-11-15 09:26:20,266 [myid:] - WARN  [NIOWorkerThread-7:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 09:26:20,266 [myid:] - INFO  [NIOWorkerThread-7:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 09:26:20,267 [myid:] - INFO  [NIOWorkerThread-7:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53094 which had sessionid 0x100104f68fc0002
+2018-11-15 09:26:20,676 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:53130
+2018-11-15 09:26:20,677 [myid:] - WARN  [NIOWorkerThread-8:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:53130; will be dropped if server is in r-o mode
+2018-11-15 09:26:20,677 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:53130
+2018-11-15 09:26:20,678 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:53130
+2018-11-15 09:47:10,908 [myid:] - WARN  [NIOWorkerThread-10:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 09:47:10,908 [myid:] - INFO  [NIOWorkerThread-10:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 09:47:10,909 [myid:] - INFO  [NIOWorkerThread-10:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:53130 which had sessionid 0x100104f68fc0002
+2018-11-15 09:47:11,490 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53239
+2018-11-15 09:47:11,491 [myid:] - WARN  [NIOWorkerThread-11:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53239; will be dropped if server is in r-o mode
+2018-11-15 09:47:11,491 [myid:] - INFO  [NIOWorkerThread-11:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53239
+2018-11-15 09:47:11,491 [myid:] - INFO  [NIOWorkerThread-11:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53239
+2018-11-15 10:07:51,247 [myid:] - WARN  [NIOWorkerThread-9:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 10:07:51,248 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 10:07:51,248 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53239 which had sessionid 0x100104f68fc0002
+2018-11-15 10:07:51,479 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:53289
+2018-11-15 10:07:51,480 [myid:] - WARN  [NIOWorkerThread-10:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:53289; will be dropped if server is in r-o mode
+2018-11-15 10:07:51,480 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:53289
+2018-11-15 10:07:51,481 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:53289
+2018-11-15 10:23:25,201 [myid:] - WARN  [NIOWorkerThread-8:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 10:23:25,202 [myid:] - INFO  [NIOWorkerThread-8:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 10:23:25,202 [myid:] - INFO  [NIOWorkerThread-8:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:53289 which had sessionid 0x100104f68fc0002
+2018-11-15 10:23:26,186 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53320
+2018-11-15 10:23:26,187 [myid:] - WARN  [NIOWorkerThread-9:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53320; will be dropped if server is in r-o mode
+2018-11-15 10:23:26,187 [myid:] - INFO  [NIOWorkerThread-9:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53320
+2018-11-15 10:23:26,187 [myid:] - INFO  [NIOWorkerThread-9:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53320
+2018-11-15 10:35:38,929 [myid:] - WARN  [NIOWorkerThread-7:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 10:35:38,929 [myid:] - INFO  [NIOWorkerThread-7:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 10:35:38,930 [myid:] - INFO  [NIOWorkerThread-7:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53320 which had sessionid 0x100104f68fc0002
+2018-11-15 10:35:39,331 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:53370
+2018-11-15 10:35:39,332 [myid:] - WARN  [NIOWorkerThread-8:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:53370; will be dropped if server is in r-o mode
+2018-11-15 10:35:39,332 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:53370
+2018-11-15 10:35:39,332 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:53370
+2018-11-15 10:45:27,085 [myid:] - WARN  [NIOWorkerThread-2:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 10:45:27,086 [myid:] - INFO  [NIOWorkerThread-2:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 10:45:27,086 [myid:] - INFO  [NIOWorkerThread-2:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:53370 which had sessionid 0x100104f68fc0002
+2018-11-15 10:45:27,408 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53410
+2018-11-15 10:45:27,409 [myid:] - WARN  [NIOWorkerThread-3:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53410; will be dropped if server is in r-o mode
+2018-11-15 10:45:27,409 [myid:] - INFO  [NIOWorkerThread-3:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53410
+2018-11-15 10:45:27,410 [myid:] - INFO  [NIOWorkerThread-3:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53410
+2018-11-15 10:55:26,154 [myid:] - WARN  [NIOWorkerThread-1:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 10:55:26,155 [myid:] - INFO  [NIOWorkerThread-1:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 10:55:26,155 [myid:] - INFO  [NIOWorkerThread-1:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53410 which had sessionid 0x100104f68fc0002
+2018-11-15 10:55:26,435 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:53460
+2018-11-15 10:55:26,436 [myid:] - WARN  [NIOWorkerThread-2:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:53460; will be dropped if server is in r-o mode
+2018-11-15 10:55:26,436 [myid:] - INFO  [NIOWorkerThread-2:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:53460
+2018-11-15 10:55:26,437 [myid:] - INFO  [NIOWorkerThread-2:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:53460
+2018-11-15 11:02:16,183 [myid:] - WARN  [NIOWorkerThread-16:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 11:02:16,183 [myid:] - INFO  [NIOWorkerThread-16:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 11:02:16,184 [myid:] - INFO  [NIOWorkerThread-16:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:53460 which had sessionid 0x100104f68fc0002
+2018-11-15 11:02:16,525 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:53538
+2018-11-15 11:02:16,526 [myid:] - WARN  [NIOWorkerThread-1:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:53538; will be dropped if server is in r-o mode
+2018-11-15 11:02:16,526 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:53538
+2018-11-15 11:02:16,527 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:53538
+2018-11-15 11:13:49,295 [myid:] - WARN  [NIOWorkerThread-4:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc000b, likely client has closed socket
+2018-11-15 11:13:49,296 [myid:] - INFO  [NIOWorkerThread-4:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc000b]
+2018-11-15 11:13:49,296 [myid:] - INFO  [NIOWorkerThread-4:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53023 which had sessionid 0x100104f68fc000b
+2018-11-15 11:14:20,709 [myid:] - INFO  [SessionTracker:ZooKeeperServer@384] - Expiring session 0x100104f68fc000b, timeout of 40000ms exceeded
+2018-11-15 11:14:20,710 [myid:] - INFO  [ProcessThread(sid:0 cport:2181)::PrepRequestProcessor@647] - Processed session termination for sessionid: 0x100104f68fc000b
+2018-11-15 11:55:55,368 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 11:55:55,368 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 11:55:55,369 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:53538 which had sessionid 0x100104f68fc0002
+2018-11-15 11:55:55,801 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:54664
+2018-11-15 11:55:55,802 [myid:] - WARN  [NIOWorkerThread-15:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:54664; will be dropped if server is in r-o mode
+2018-11-15 11:55:55,802 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:54664
+2018-11-15 11:55:55,803 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:54664
+2018-11-15 12:05:44,001 [myid:] - WARN  [NIOWorkerThread-4:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 12:05:44,002 [myid:] - INFO  [NIOWorkerThread-4:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 12:05:44,002 [myid:] - INFO  [NIOWorkerThread-4:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:54664 which had sessionid 0x100104f68fc0002
+2018-11-15 12:05:44,737 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:54709
+2018-11-15 12:05:44,737 [myid:] - WARN  [NIOWorkerThread-6:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:54709; will be dropped if server is in r-o mode
+2018-11-15 12:05:44,737 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:54709
+2018-11-15 12:05:44,738 [myid:] - INFO  [NIOWorkerThread-6:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:54709
+2018-11-15 12:15:43,467 [myid:] - WARN  [NIOWorkerThread-14:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 12:15:43,473 [myid:] - INFO  [NIOWorkerThread-14:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 12:15:43,474 [myid:] - INFO  [NIOWorkerThread-14:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:54709 which had sessionid 0x100104f68fc0002
+2018-11-15 12:15:44,548 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:54760
+2018-11-15 12:15:44,549 [myid:] - WARN  [NIOWorkerThread-15:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:54760; will be dropped if server is in r-o mode
+2018-11-15 12:15:44,549 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:54760
+2018-11-15 12:15:44,550 [myid:] - INFO  [NIOWorkerThread-15:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:54760
+2018-11-15 12:25:43,281 [myid:] - WARN  [NIOWorkerThread-7:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 12:25:43,282 [myid:] - INFO  [NIOWorkerThread-7:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 12:25:43,282 [myid:] - INFO  [NIOWorkerThread-7:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:54760 which had sessionid 0x100104f68fc0002
+2018-11-15 12:25:43,685 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:54813
+2018-11-15 12:25:43,686 [myid:] - WARN  [NIOWorkerThread-8:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:54813; will be dropped if server is in r-o mode
+2018-11-15 12:25:43,686 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:54813
+2018-11-15 12:25:43,686 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:54813
+2018-11-15 12:35:41,441 [myid:] - WARN  [NIOWorkerThread-16:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 12:35:41,441 [myid:] - INFO  [NIOWorkerThread-16:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 12:35:41,442 [myid:] - INFO  [NIOWorkerThread-16:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:54813 which had sessionid 0x100104f68fc0002
+2018-11-15 12:35:42,307 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:54854
+2018-11-15 12:35:42,308 [myid:] - WARN  [NIOWorkerThread-1:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:54854; will be dropped if server is in r-o mode
+2018-11-15 12:35:42,308 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:54854
+2018-11-15 12:35:42,309 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:54854
+2018-11-15 12:45:31,047 [myid:] - WARN  [NIOWorkerThread-7:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 12:45:31,047 [myid:] - INFO  [NIOWorkerThread-7:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 12:45:31,047 [myid:] - INFO  [NIOWorkerThread-7:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:54854 which had sessionid 0x100104f68fc0002
+2018-11-15 12:45:31,676 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:54904
+2018-11-15 12:45:31,677 [myid:] - WARN  [NIOWorkerThread-8:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:54904; will be dropped if server is in r-o mode
+2018-11-15 12:45:31,677 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:54904
+2018-11-15 12:45:31,677 [myid:] - INFO  [NIOWorkerThread-8:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:54904
+2018-11-15 12:55:29,424 [myid:] - WARN  [NIOWorkerThread-16:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 12:55:29,424 [myid:] - INFO  [NIOWorkerThread-16:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 12:55:29,424 [myid:] - INFO  [NIOWorkerThread-16:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:54904 which had sessionid 0x100104f68fc0002
+2018-11-15 12:55:30,123 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:54958
+2018-11-15 12:55:30,124 [myid:] - WARN  [NIOWorkerThread-1:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:54958; will be dropped if server is in r-o mode
+2018-11-15 12:55:30,124 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:54958
+2018-11-15 12:55:30,124 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:54958
+2018-11-15 14:46:35,771 [myid:] - WARN  [NIOWorkerThread-9:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 14:46:35,772 [myid:] - INFO  [NIOWorkerThread-9:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2=127.0.0.1,name3=0x100104f68fc0002]
+2018-11-15 14:46:35,772 [myid:] - INFO  [NIOWorkerThread-9:NIOServerCnxn@607] - Closed socket connection for client /127.0.0.1:54958 which had sessionid 0x100104f68fc0002
+2018-11-15 14:46:36,274 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /0:0:0:0:0:0:0:1:55025
+2018-11-15 14:46:36,275 [myid:] - WARN  [NIOWorkerThread-10:ZooKeeperServer@926] - Connection request from old client /0:0:0:0:0:0:0:1:55025; will be dropped if server is in r-o mode
+2018-11-15 14:46:36,275 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /0:0:0:0:0:0:0:1:55025
+2018-11-15 14:46:36,275 [myid:] - INFO  [NIOWorkerThread-10:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /0:0:0:0:0:0:0:1:55025
+2018-11-15 14:52:20,348 [myid:] - WARN  [NIOWorkerThread-16:NIOServerCnxn@365] - Unable to read additional data from client sessionid 0x100104f68fc0002, likely client has closed socket
+2018-11-15 14:52:20,373 [myid:] - INFO  [NIOWorkerThread-16:MBeanRegistry@128] - Unregister MBean [org.apache.ZooKeeperService:name0=StandaloneServer_port2181,name1=Connections,name2="0:0:0:0:0:0:0:1",name3=0x100104f68fc0002]
+2018-11-15 14:52:20,388 [myid:] - INFO  [NIOWorkerThread-16:NIOServerCnxn@607] - Closed socket connection for client /0:0:0:0:0:0:0:1:55025 which had sessionid 0x100104f68fc0002
+2018-11-15 14:52:20,770 [myid:] - INFO  [NIOServerCxnFactory.AcceptThread:0.0.0.0/0.0.0.0:2181:NIOServerCnxnFactory$AcceptThread@296] - Accepted socket connection from /127.0.0.1:55042
+2018-11-15 14:52:20,775 [myid:] - WARN  [NIOWorkerThread-1:ZooKeeperServer@926] - Connection request from old client /127.0.0.1:55042; will be dropped if server is in r-o mode
+2018-11-15 14:52:20,775 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@969] - Client attempting to renew session 0x100104f68fc0002 at /127.0.0.1:55042
+2018-11-15 14:52:20,778 [myid:] - INFO  [NIOWorkerThread-1:ZooKeeperServer@678] - Established session 0x100104f68fc0002 with negotiated timeout 30000 for client /127.0.0.1:55042
