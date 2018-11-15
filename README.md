@@ -4,7 +4,7 @@ dawdler-series 是rpc的一个解决方案，其特点简单、高效、安全�
 
 为什么要重复的发明轮子？dawdler早期应用在linuxsir开源社区上（如今的www.linuxsir.org 由于公司原因已不再是java语言开发的了），2008年之前采用ejb3.0通过jboss4.x版本进行，2010年采用nio写了一个版本，但容器部分功能未做完整，直到2014年之后开始基于aio重新编写了容器dawdler.
 
-dawdler成熟么？基于dawdler早先版本开发的linuxsir稳定运行在服务器上4年没有出现过任何性能问题（这块不足以证明，必定基于jboss）。dawdler还运行在了某一元购商城，某移动社区，某支付平台上，tps高峰时期可以达到上千，订单量每天在800-1000万条数据左右，稳定性方面表现的非常出色，没出现过问题。可放心使用出现问题可以打我，我不还手.通过本地测试单机下的dawdler每秒可以处理60000多次调用。
+dawdler成熟么？基于dawdler早先版本开发的linuxsir稳定运行在服务器上4年没有出现过任何性能问题（这块不足以证明，必定基于jboss）。dawdler还运行在了某一元购商城，某移动社区，某支付平台上，tps高峰时期可以达到上千，订单量每天在800-1000万条数据左右，稳定性方面表现的非常出色，没出现过问题。可放心使用.通过本地测试单机下的dawdler每秒可以处理60000多次调用。
 
 dawdler之美
 架构上支持容器数据源，数据库读写分离，心跳探测，断网重连，优雅关机，rpc请求负载均衡，过滤器，监听器，web端验证器（根据后端验证配置自动生成前端js表达式）等功能。
@@ -45,10 +45,10 @@ dawdler文件结构说明
         stopnow           Stop dawdler immediately 立刻停止dawdler，如果客户端有请求为处理完会收到一个强制停止的异常
 
 3. 启动zookeeper。执行 `sh zkServer.sh start`  启动zookeeper。
-4. 配置zookeeper，进入zooinspector-master的bin下执行 `sh zooinspector.sh run` 创建dawdler节点，在dawdler节点下创建defaultgroup 内容为 localhost:9530 这里的9530是dawdler的端口号。
+4. 配置zookeeper，进入zooinspector-master的bin下执行 `sh zooinspector.sh run` 创建dawdler节点，在dawdler节点下创建defaultgroup 内容为 localhost:9527 这里的9527是dawdler的端口号。
 
 如图下：
-![zooinspector的界面](https://images.gitee.com/uploads/images/2018/1022/203424_7a92112d_2248173.jpeg "1540211655325.jpg")
+![zooinspector的界面]![截图](https://images.gitee.com/uploads/images/2018/1115/112012_0f541a2f_2248173.jpeg "1542251928310.jpg")
 
 #### 快速入门
 1. 下载demos/simple/demo-server（服务提供者，需要部署在dawdler的deploys下），demos/simple/demo-web（部署到tomcat端）
@@ -76,23 +76,7 @@ dawdler文件结构说明
    
  
 
-3. 未完待续，还有好多要写的. 有问题可发送email：suxuan696@gmail.com或qq:121616325
+3. 未完待续，还有好多要写的. 如 校验器，过滤器，监听器，各种配置等。有问题可发送email：suxuan696@gmail.com或qq:121616325
 
 
 
-#### 参与贡献
-
-1. Fork 本项目
-2. 新建 Feat_xxx 分支
-3. 提交代码
-4. 新建 Pull Request
-
-
-#### 码云特技
-
-1. 使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2. 码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3. 你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4. [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5. 码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6. 码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
