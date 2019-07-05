@@ -1,6 +1,6 @@
 # dawdler-series
 #### 项目介绍
-dawdler-series 是rpc的一个解决方案，其特点简单、高效、安全。包含了容器，客户端，mvc,前后端一直的校验框架，数据库事务传播方式（同spring一致）等等常用研发组件等.
+dawdler-series 是rpc的一个解决方案，其特点简单、高效、安全。包含了容器，客户端，mvc,前后端一致的校验框架，数据库事务传播方式（同spring一致）等等常用研发组件等.
 
 为什么要重复的发明轮子？dawdler早期应用在linuxsir开源社区上（如今的www.linuxsir.org 由于公司原因已不再是java语言开发的了），2008年之前采用ejb3.0通过jboss4.x版本进行，2010年采用nio写了一个版本，但容器部分功能未做完整，直到2014年之后开始基于aio重新编写了容器dawdler.
 
