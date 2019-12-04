@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 package org.apache.naming;
-
 import javax.naming.StringRefAddr;
 
 /**

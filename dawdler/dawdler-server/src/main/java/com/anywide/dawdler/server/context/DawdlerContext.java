@@ -25,7 +25,6 @@ import com.anywide.dawdler.server.serivce.ServiceFactory;
 import com.anywide.dawdler.server.serivce.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
-import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.TLS;
 /**
  * 
@@ -68,13 +67,13 @@ public class DawdlerContext {
 		return sb==null?null:sb.getService();
 	}
 	public<T> T getService(Class<T> type) {
-		String name = DawdlerTool.getServiceName(type);
+		String name = ServiceFactory.getServiceName(type);
 		return (T) getService(name);
 	}
 	public<T> T getServiceProxy(Class<T> type) {
 		Object obj = getAttribute(ServiceBase.SERVICEEXECUTOR_PREFIX);
 		if(obj!=null)return ServiceFactory.getService(type, (ServiceExecutor)obj,this);
-		String name = DawdlerTool.getServiceName(type);
+		String name = ServiceFactory.getServiceName(type);
 		return (T) getService(name);
 	}
 	

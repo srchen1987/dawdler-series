@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 package org.apache.naming;
-
 import java.util.Hashtable;
-
 import javax.naming.Context;
 import javax.naming.NamingException;
 

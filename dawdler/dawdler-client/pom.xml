@@ -16,6 +16,16 @@
     	<artifactId>dawdler-core</artifactId>
     	<version>${project.build.version}</version>
     </dependency>
+	<dependency>  
+	    <groupId>cglib</groupId>
+	    <artifactId>cglib-nodep</artifactId>
+	    <version>3.2.8</version>
+	</dependency> 
+	<dependency>
+	    <groupId>org.javassist</groupId>
+	    <artifactId>javassist</artifactId>
+	    <version>3.23.1-GA</version>
+	</dependency>
     <dependency>
 	    <groupId>org.apache.curator</groupId>
 	    <artifactId>curator-client</artifactId>
@@ -38,9 +48,14 @@
 	    <version>3.3.0</version>
 	</dependency>
 	<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-simple</artifactId>
-    <version>1.7.25</version>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>20.0</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.zookeeper</groupId>
+    <artifactId>zookeeper</artifactId>
+    <version>3.5.2-alpha</version>
 </dependency>
   </dependencies>
 </project>

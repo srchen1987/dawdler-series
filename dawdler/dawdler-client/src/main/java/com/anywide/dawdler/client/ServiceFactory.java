@@ -32,9 +32,6 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 public class ServiceFactory {
 	private static ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> proxyObjects = new ConcurrentHashMap<>();
-	public static <T> T getService(final Class<T> delegate) throws Exception {
-		return getService(delegate, TransactionProvider.DEFAULTGRUOPNAME);
-	}
 	public static <T> T getService(final Class<T> delegate, String groupName) {
 		ConcurrentHashMap<Class<?>, Object> proxy = proxyObjects.get(groupName);
 		if (proxy == null) {
@@ -54,36 +51,39 @@ public class ServiceFactory {
 	}
 	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName)  {
 		Enhancer enhancer = new Enhancer();
-		enhancer.setCallback(new CglibInterceptor(getServiceName(delegate),groupName));
+		enhancer.setCallback(new CglibInterceptor(delegate,groupName));
 		enhancer.setInterfaces(new Class[] { delegate });
 		T cglibProxy = (T) enhancer.create();
 		return cglibProxy;
 	}
-	private static String getServiceName(Class<?> delegate) {
-		String serviceName = null;
-		RemoteService rs = delegate.getAnnotation(RemoteService.class);
-		if(rs!=null) {
-			serviceName =rs.value();
-		} 
-		if(serviceName==null||serviceName.equals("")) {
-			serviceName = delegate.getName();
-		}
-		return serviceName;
-	}
+	
 	private static class CglibInterceptor implements MethodInterceptor {
-		final String groupName;
-		final String serviceName;
-		CglibInterceptor(String serviceName,String groupName) {
+		private String groupName;
+		private String serviceName;
+		private int timeout;
+		CglibInterceptor(Class<?> delegate,String groupName) {
 			this.groupName = groupName;
-			this.serviceName=serviceName;
+			getServiceName(delegate);
 		}
-
+		private void getServiceName(Class<?> delegate) {
+			String serviceName = null;
+			RemoteService rs = delegate.getAnnotation(RemoteService.class);
+			if(rs!=null) {
+				serviceName =rs.value();
+				timeout = rs.timeout();
+			} 
+			if(serviceName==null||serviceName.equals("")) {
+				serviceName = delegate.getName();
+			}
+			this.serviceName =  serviceName;
+		}
 	public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy)
 				throws Throwable {
 			Transaction tr = TransactionProvider.getTransaction(groupName);
 			tr.setMethod(method.getName());
 			tr.setServiceName(serviceName);
 			tr.setFuzzy(true);
+			tr.setTimeout(timeout);
 			if (objects != null) {
 				for (Object obj : objects) {
 					Class<?> clazz = obj.getClass();

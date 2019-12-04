@@ -15,11 +15,9 @@
  * limitations under the License.
  */
 package org.apache.naming.factory;
-
 import javax.naming.NamingException;
 import javax.naming.Reference;
 import javax.naming.spi.ObjectFactory;
-
 import org.apache.naming.ResourceRef;
 
 /**

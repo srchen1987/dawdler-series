@@ -33,14 +33,12 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.clientplug.web.VelocityToolBox;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
@@ -152,6 +150,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 		logException(wf);
 		HttpServletRequest request = wf.getRequest();
 		HttpServletResponse response = wf.getResponse();
+		response.setContentType(MIME_TYPE_TEXT);
 		if (wf.getInvokeException() != null) {
 			logger.error("",wf.getInvokeException());
 			try {
