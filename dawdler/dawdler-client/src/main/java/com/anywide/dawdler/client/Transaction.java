@@ -22,7 +22,7 @@ import com.anywide.dawdler.client.filter.FilterProvider;
 import com.anywide.dawdler.client.filter.RequestWrapper;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.RequestBean;
-import com.anywide.dawdler.util.InvokeFuture;
+import com.anywide.dawdler.core.thread.InvokeFuture;
 /**
  * 
  * @Title:  Transaction.java
@@ -34,21 +34,27 @@ import com.anywide.dawdler.util.InvokeFuture;
  * modify 2015年03月22日 脱离jboss 采用自有容器
  */
 public class Transaction {
-	private SocketSession socketSession;
+//	private SocketSession socketSession;
 	private String path;
 	private String serviceName;
 	private String method;
 	private int serializer;
 	private boolean fuzzy;
 	private boolean single = true;
+	private int timeout;
 	private List<Class> types = new ArrayList();
 	private List values=new ArrayList();
+	private DawdlerConnection con;
 	public Transaction(SocketSession socketSession,String path,int serializer) {
-		this.socketSession = socketSession;
+//		this.socketSession = socketSession;
 		this.serializer = serializer;
 		this.path = path;
 	}
-
+	public Transaction(DawdlerConnection con) {
+		this.serializer = con.getSerializer();
+		this.path = con.getPath();
+		this.con = con;
+	}
 	public String getPath() {
 		return path;
 	}
@@ -129,7 +135,9 @@ public class Transaction {
 	public void setFuzzy(boolean fuzzy) {
 		this.fuzzy = fuzzy;
 	}
-
+	public void setTimeout(int timeout) {
+		this.timeout = timeout;
+	}
 	public boolean execute() throws Exception {
 		Object obj = innerExecute(false);
 		if (obj instanceof Boolean)
@@ -145,7 +153,7 @@ public class Transaction {
 	private Object innerExecute(boolean pure) throws Exception {
 		validate();
 		RequestBean request = new RequestBean();
-		request.setSeq(socketSession.getSequence());
+//		request.setSeq(socketSession.getSequence());
 		request.setServiceName(serviceName);
 		request.setMethodName(method);
 		request.setPath(path);
@@ -155,12 +163,17 @@ public class Transaction {
 		request.setSingle(single);
 		Object obj = null;
 		if(pure) {
-			InvokeFuture<List> future = new InvokeFuture<List>();
+			InvokeFuture<?> future = new InvokeFuture<>();
+			SocketSession socketSession = con.getSession();
 			socketSession.getFutures().put(request.getSeq(),future);
 			socketSession.getDawdlerConnection().write(path,request, socketSession);
-			obj = future.getResult(120, TimeUnit.SECONDS);
+			obj = future.getResult(timeout, TimeUnit.SECONDS);
 		}else { 
-			 obj = FilterProvider.doFilter(new RequestWrapper(request, socketSession));
+			
+			SocketSession socketSession = con.getSession();
+			
+			
+			obj = FilterProvider.doFilter(new RequestWrapper(request,socketSession,timeout));
 		}
 		return obj;
 	}

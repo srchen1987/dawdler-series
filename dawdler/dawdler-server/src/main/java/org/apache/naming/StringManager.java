@@ -16,7 +16,6 @@
  */
 
 package org.apache.naming;
-
 import java.text.MessageFormat;
 import java.util.Hashtable;
 import java.util.Locale;

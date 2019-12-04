@@ -40,6 +40,7 @@ public class JsonDisplayPlug extends AbstractDisplayPlug{
 	public void display(ViewForward wf) {
 		logException(wf);
 		HttpServletResponse response = wf.getResponse();
+		response.setContentType(MIME_TYPE_JSON);
 		String json = null;
 		if (wf.getInvokeException() != null) {
 			logger.error("",wf.getInvokeException());

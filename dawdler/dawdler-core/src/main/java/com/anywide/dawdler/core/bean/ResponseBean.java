@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.bean;
-
 import java.io.Serializable;
 /**
  * 

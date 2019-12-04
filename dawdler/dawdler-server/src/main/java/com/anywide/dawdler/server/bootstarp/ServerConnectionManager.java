@@ -81,7 +81,7 @@ public class ServerConnectionManager {
 	public void close() {
 		Collection<ServerConnection> collection = connections.values();
 		for(ServerConnection serverConnection : collection) {
-			if(!serverConnection.isRunning()) {
+			if(!serverConnection.isRunning()) { 
 				serverConnection.close();
 			}
 		}
