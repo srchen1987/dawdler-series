@@ -20,7 +20,6 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.client.ServiceFactory;
-import com.anywide.dawdler.client.TransactionProvider;
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
@@ -39,9 +38,9 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 	private static Logger logger = LoggerFactory.getLogger(InjectServiceCreateListener.class);
 	@Override
 	public void create(Object service,DawdlerContext dawdlerContext) {
-		injectDAO(service,dawdlerContext);
+		inject(service,dawdlerContext);
 	}
-	private void injectDAO(Object service,DawdlerContext dawdlerContext) {
+	private void inject(Object service,DawdlerContext dawdlerContext) {
 		Field[] fields =  service.getClass().getDeclaredFields();
 		for(Field filed : fields) {
 			Resource resource = filed.getAnnotation(Resource.class);
@@ -59,10 +58,10 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 //							filed.set(service, dawdlerContext.getService(name));
 //						}
 						if(remoteService.remote()) {
-							String groupName = (remoteService.value()==null||remoteService.value().equals(""))?TransactionProvider.DEFAULTGRUOPNAME:remoteService.value();
+							String groupName = remoteService.value();
 							try {
 								filed.set(service, ServiceFactory.getService(serviceClass, groupName));
-							} catch (Exception e) {
+							} catch (Exception e) { 
 								logger.error("",e);
 							}
 						}

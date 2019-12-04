@@ -21,7 +21,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.client.ServiceFactory;
-import com.anywide.dawdler.client.TransactionProvider;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoderFire;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
@@ -106,11 +105,11 @@ public class WebControllerClassLoaderFire implements RemoteClassLoderFire{
 	private void injectRemoteService(Class<?> clazz,Object target) {
 		Field[] fields =  clazz.getDeclaredFields();
 		for(Field filed : fields) {
-			RemoteService	rs = filed.getAnnotation(RemoteService.class);
+			RemoteService rs = filed.getAnnotation(RemoteService.class);
 			if(!filed.getType().isPrimitive()&&rs!=null) {
 				Class<?> serviceClass = filed.getType();
 				filed.setAccessible(true);
-				String groupName = (rs.value()==null||rs.value().equals(""))?TransactionProvider.DEFAULTGRUOPNAME:rs.value();
+				String groupName = rs.value();
 				try {
 					filed.set(target, ServiceFactory.getService(serviceClass, groupName));
 				} catch (Exception e) {

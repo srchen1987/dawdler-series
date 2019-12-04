@@ -17,7 +17,6 @@
 package com.anywide.dawdler.serverplug.load.bean;
 import java.io.Serializable;
 import java.util.List;
-
 import com.anywide.dawdler.util.SecurityPlus;
 /**
  * 

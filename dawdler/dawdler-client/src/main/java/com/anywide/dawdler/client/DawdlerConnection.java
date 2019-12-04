@@ -303,12 +303,12 @@ public class DawdlerConnection {
 		boolean shutdownNow = true;
 		if (list != null) {
 			connectManager.removeDisconnect(socketAddress);
-			// rebuildSessionGroup();
+			// rebuildSessionGroup(); 
 			for (SocketSession session : list) {
 				if (!session.getFutures().isEmpty()) {
 					session.markClose();
 					shutdownNow = false;
-				} else {
+				} else { 
 					session.close(false);
 				}
 			}
@@ -340,10 +340,10 @@ public class DawdlerConnection {
 		}
 	}
 
-	private List<SocketSession>[] list = new ArrayList[0];
+	private List<SocketSession>[] socketSessionList = new ArrayList[0];
 
 	public void rebuildSessionGroup() {
-		list = sessionGroup.values().toArray(new ArrayList[0]);
+		socketSessionList = sessionGroup.values().toArray(new ArrayList[0]);
 	}
 	
 
@@ -351,15 +351,15 @@ public class DawdlerConnection {
 		Lock lock = rwlock.readLock();
 		try {
 			lock.lock();
-			if (list.length == 0)
+			if (socketSessionList.length == 0)
 				return null;
 			long index = Math.abs(INDEX.getAndIncrement());
-			int position = (int) (index % list.length);
-			List<SocketSession> sessionList = list[position];
+			int position = (int) (index % socketSessionList.length);
+			List<SocketSession> sessionList = socketSessionList[position];
 			while (true) {
 				if (sessionList == null || sessionList.isEmpty()) {
-					if (list.length > 0) {
-						sessionList = list[(int) (++index % list.length)];
+					if (socketSessionList.length > 0) {
+						sessionList = socketSessionList[(int) (++index % socketSessionList.length)];
 						continue;
 					}
 					return null;

@@ -11,40 +11,27 @@
   <name>dawdler-client-plug</name>
   <packaging>jar</packaging>
   <dependencies>
-    <dependency>
-    <groupId>javax.servlet</groupId>
-	    <artifactId>javax.servlet-api</artifactId>
-	    <version>3.1.0</version>
-	    <scope>provided</scope>
-	</dependency>
+  <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
 	<dependency>
 	    <groupId>org.apache.velocity</groupId>
 	    <artifactId>velocity</artifactId>
 	    <version>1.7</version>
 	</dependency>
-	<dependency>
-	    <groupId>org.codehaus.jackson</groupId>
-	    <artifactId>jackson-core-lgpl</artifactId>
-	    <version>1.9.13</version>
-	</dependency>
-	<dependency>
-	    <groupId>org.codehaus.jackson</groupId>
-	    <artifactId>jackson-mapper-lgpl</artifactId>
-	    <version>1.9.13</version>
-	</dependency>
-	<dependency>
-	    <groupId>commons-fileupload</groupId>
-	    <artifactId>commons-fileupload</artifactId>
-	    <version>1.3.3</version>
-	</dependency>
-
-
-
 
 	<dependency>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-client</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>${project.build.version}</version>
+	</dependency>
+	<dependency>
+		<groupId>dawdler</groupId>
+		<artifactId>dawdler-client-plug-validator</artifactId>
+		<version>${project.build.version}</version>
 	</dependency>
   </dependencies>
 </project>

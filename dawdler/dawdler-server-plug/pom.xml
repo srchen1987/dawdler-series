@@ -10,7 +10,7 @@
   <artifactId>dawdler-server-plug</artifactId>
   <name>dawdler-server-plug</name>
   <dependencies>
-   <dependency> 
+   <dependency>
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-core</artifactId>
     	<version>${project.build.version}</version>
@@ -26,4 +26,4 @@
     	<version>${project.build.version}</version>
     </dependency>
   </dependencies>
-</project>
+</project> 

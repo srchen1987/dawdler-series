@@ -24,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import com.anywide.dawdler.clientplug.web.upload.UploadFile;
-import com.anywide.dawdler.core.bean.RequestBean;
-import com.anywide.dawdler.util.ReflectionUtil;
 /**
  * 
  * @Title:  TransactionController.java   

@@ -26,14 +26,6 @@ import com.anywide.dawdler.client.net.aio.session.SocketSession;
  * @email: suxuan696@gmail.com
  */
 public class TransactionProvider {
-	public final static String DEFAULTGRUOPNAME="defaultgroup";
-	public static Transaction getTransaction(){
-		ConnectionPool cp = ConnectionPool.getConnectionPool(DEFAULTGRUOPNAME);
-		DawdlerConnection con = cp.getConnection();
-		SocketSession session = con.getSession();
-		Transaction tr = new Transaction(session,con.getPath(),con.getSerializer());
-		return tr;
-	}
 	
 	public static Transaction getTransaction(String groupName){
 		ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
