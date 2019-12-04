@@ -30,7 +30,7 @@ import com.anywide.dawdler.core.exception.SessionCloseException;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
-import com.anywide.dawdler.util.InvokeFuture;
+import com.anywide.dawdler.core.thread.InvokeFuture;
 /**
  * 
  * @Title:  SocketSession.java

@@ -35,9 +35,12 @@ public interface BaseData {
 	public List<Map<String,Object>> queryListMaps(String sql)throws SQLException ;
 	public List<Map<String,Object>> queryListMapsPrepare(String sql,Object ...values)throws SQLException ;
 	public int update(String sql)throws SQLException ;
+//	public int updateObject(String sql)throws SQLException ;
 	public int updatePrepare(String sql,Object ...values)throws SQLException ;
 	public int insert(String sql)throws SQLException;
+//	public int insertObject(String sql)throws SQLException;
 	public int insertPrepare(String sql,Object ...values)throws SQLException;
+//	public int insertObjectGetKey(String sql)throws SQLException;
 	public int insertPrepareGetKey(String sql,Object ...values)throws SQLException;
 	public int insertMap(String tableName,Map<String,Object> datas) throws SQLException;
 	public int insertMapGetKey(String tableName,Map<String,Object> datas) throws SQLException;

@@ -15,11 +15,10 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.filter;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.RequestBean;
-import com.anywide.dawdler.util.InvokeFuture;
+import com.anywide.dawdler.core.thread.InvokeFuture;
 /**
  * 
  * @Title:  DefaultFilterChain.java
@@ -34,10 +33,10 @@ public class DefaultFilterChain implements FilterChain {
 	public Object doFilter(RequestBean request) throws Exception {
 		RequestWrapper rq = (RequestWrapper) request;
 		SocketSession socketSession = rq.getSession();
-		InvokeFuture<List> future = new InvokeFuture<List>();
+		InvokeFuture<?> future = new InvokeFuture<>();
 		socketSession.getFutures().put(request.getSeq(),future);
 		socketSession.getDawdlerConnection().write(rq.getPath(),rq.getRequest(), socketSession);
-		Object obj = future.getResult(120, TimeUnit.SECONDS);//FIXME time out 
+		Object obj = future.getResult(rq.getTimeout(), TimeUnit.SECONDS);//FIXME time out 
 		return obj;
 		//noop
 	}

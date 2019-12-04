@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import com.anywide.dawdler.util.DawdlerTool;
 /**
  * 
@@ -36,8 +37,8 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @email: suxuan696@gmail.com
  */
 public class DataAutomaticNewV2 {
-	private static final Map<String, Class[]> map = new HashMap<String, Class[]>();
-	private static final Map<Class, Map<String, Method>> cacheMethod = new java.util.concurrent.ConcurrentHashMap<Class, Map<String, Method>>();
+	private static final Map<String, Class[]> dataTypes = new HashMap<String, Class[]>();
+	private static final ConcurrentHashMap<Class, Map<String, Method>> cacheMethod = new java.util.concurrent.ConcurrentHashMap<Class, Map<String, Method>>();
 	// private static java.text.SimpleDateFormat sdf = new
 	// java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	static {
@@ -101,42 +102,43 @@ public class DataAutomaticNewV2 {
 
 	private final static void init() {
 		Class[] byteclass = new Class[] { byte[].class };
-		map.put("TINYINT", new Class[] { boolean.class, Boolean.class });
-		map.put("MEDIUMINT", new Class[] { int.class, Integer.class });
-		map.put("INTEGER", new Class[] { int.class, Integer.class });
-		map.put("INT", new Class[] { int.class, Integer.class });
-		map.put("BIGINT", new Class[] { long.class, Long.class });
-		map.put("FLOAT", new Class[] { float.class, Float.class });
-		map.put("DOUBLE", new Class[] { double.class, Double.class });
-		map.put("DECIMAL", new Class[] { java.math.BigDecimal.class });
+		dataTypes.put("TINYINT", new Class[] { boolean.class, Boolean.class });
+		dataTypes.put("MEDIUMINT", new Class[] { int.class, Integer.class });
+		dataTypes.put("INTEGER", new Class[] { int.class, Integer.class });
+		dataTypes.put("INT", new Class[] { int.class, Integer.class });
+		dataTypes.put("BIGINT", new Class[] { long.class, Long.class });
+		dataTypes.put("FLOAT", new Class[] { float.class, Float.class });
+		dataTypes.put("DOUBLE", new Class[] { double.class, Double.class });
+		dataTypes.put("DECIMAL", new Class[] { java.math.BigDecimal.class });
 
-		map.put("DATE", new Class[] { java.sql.Date.class, String.class });
-		map.put("DATETIME", new Class[] { java.sql.Timestamp.class, String.class });
-		map.put("TIMESTAMP", new Class[] { java.sql.Timestamp.class, String.class });
-		map.put("TIME", new Class[] { java.sql.Time.class, String.class });
-		map.put("YEAR", new Class[] { java.sql.Date.class, String.class });
-		map.put("VARCHAR", new Class[] { String.class });
+		dataTypes.put("DATE", new Class[] { java.sql.Date.class, String.class });
+		dataTypes.put("DATETIME", new Class[] { java.sql.Timestamp.class, String.class });
+		dataTypes.put("TIMESTAMP", new Class[] { java.sql.Timestamp.class, String.class });
+		dataTypes.put("TIME", new Class[] { java.sql.Time.class, String.class });
+		dataTypes.put("YEAR", new Class[] { java.sql.Date.class, String.class });
+		dataTypes.put("VARCHAR", new Class[] { String.class });
 
-		map.put("BINARY", byteclass);
-		map.put("TINYBLOB", byteclass);
-		map.put("BLOB", byteclass);
-		map.put("MEDIUMBLOB", byteclass);
-		map.put("LONGBLOB", byteclass);
-		map.put("VARBINARY", byteclass);
-		map.put("CHAR", new Class[] { String.class });
-		map.put("SMALLINT", new Class[] { short.class, Short.class, int.class, Integer.class });
+		dataTypes.put("BINARY", byteclass);
+		dataTypes.put("TINYBLOB", byteclass);
+		dataTypes.put("BLOB", byteclass);
+		dataTypes.put("MEDIUMBLOB", byteclass);
+		dataTypes.put("LONGBLOB", byteclass);
+		dataTypes.put("VARBINARY", byteclass);
+		dataTypes.put("CHAR", new Class[] { String.class });
+		dataTypes.put("SMALLINT", new Class[] { short.class, Short.class, int.class, Integer.class });
 	}
-
+	//FIXME method will be for many times
 	private final static void invoke(String columntypename, Class classbean, String setMethodName, Object obj,
 			Object object) {
 		Map<String, Method> methods = cacheMethod.get(classbean);
 		if (methods == null) {
-			methods = new HashMap<String, Method>();
-			cacheMethod.put(classbean, methods);
+			methods = new ConcurrentHashMap<String, Method>();
+			Map<String, Method> pre = cacheMethod.putIfAbsent(classbean, methods);
+			if(pre!=null)methods=pre;
 		}
 		Method method = methods.get(setMethodName);
 		if (method == null) {
-			Class[] classtypes = map.get(columntypename);
+			Class[] classtypes = dataTypes.get(columntypename);
 			if (object != null && classtypes != null) {
 				for (Class classtype : classtypes) {
 					try {

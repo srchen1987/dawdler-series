@@ -49,7 +49,6 @@ public class ViewFilter implements Filter{
 			return;
 		}
 		method=method.toUpperCase();
-		response.setContentType("text/html;charset=utf-8");
 		response.setCharacterEncoding("utf-8");
 		request.setCharacterEncoding("utf-8");
 		String uri = request.getRequestURI().toString();

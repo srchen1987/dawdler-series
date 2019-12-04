@@ -10,4 +10,37 @@
   <artifactId>dawdler-core</artifactId>
   <name>dawdler-core</name>
   <packaging>jar</packaging>
+  <dependencies> 
+  <dependency>
+	    <groupId>commons-lang</groupId>
+	    <artifactId>commons-lang</artifactId>
+	    <version>2.6</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-pool2</artifactId>
+	    <version>2.6.0</version>
+	</dependency>
+  <dependency>
+	    <groupId>com.esotericsoftware</groupId>
+	    <artifactId>kryo</artifactId>
+	    <version>4.0.2</version>
+	</dependency>
+	<dependency>
+	    <groupId>com.thoughtworks.xstream</groupId>
+	    <artifactId>xstream</artifactId>
+	    <version>1.4.10</version>
+	</dependency>
+	
+	<dependency>
+	    <groupId>xpp3</groupId>
+	    <artifactId>xpp3_min</artifactId>
+	    <version>1.1.4c</version>
+	</dependency> 
+    <dependency>
+    	<groupId>dawdler</groupId>
+    	<artifactId>dawdler-util</artifactId>
+    	<version>${project.build.version}</version>
+    </dependency>
+  </dependencies> 
 </project>

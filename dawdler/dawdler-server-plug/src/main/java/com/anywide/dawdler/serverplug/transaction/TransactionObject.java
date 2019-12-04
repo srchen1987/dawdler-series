@@ -16,9 +16,7 @@
  */
 package com.anywide.dawdler.serverplug.transaction;
 import java.sql.SQLException;
-
 import javax.sql.DataSource;
-
 import com.anywide.dawdler.serverplug.annotation.Isolation;
 /**
  * 

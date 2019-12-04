@@ -9,12 +9,17 @@
   </parent>
   <artifactId>dawdler-server</artifactId>
   <name>dawdler-server</name>
-  <packaging>jar</packaging>
-  <dependencies>
-    <dependency> 
+  <packaging>jar</packaging> 
+  <dependencies> 
+	<dependency>
+	    <groupId>cglib</groupId>
+	    <artifactId>cglib-nodep</artifactId>
+	    <version>3.2.8</version>
+	</dependency>
+    <dependency>
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-core</artifactId>
     	<version>${project.build.version}</version>
-    </dependency>
-  </dependencies>
+    </dependency> 
+  </dependencies> 
 </project>
