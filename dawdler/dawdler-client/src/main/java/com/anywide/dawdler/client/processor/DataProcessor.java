@@ -28,7 +28,7 @@ import com.anywide.dawdler.core.compression.strategy.ThresholdCompressionStrateg
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.Serializer;
-import com.anywide.dawdler.util.InvokeFuture;
+import com.anywide.dawdler.core.thread.InvokeFuture;
 /**
  * 
  * @Title:  DataProcessor.java

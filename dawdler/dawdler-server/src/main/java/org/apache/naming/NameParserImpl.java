@@ -17,7 +17,6 @@
 
 
 package org.apache.naming;
-
 import javax.naming.CompositeName;
 import javax.naming.Name;
 import javax.naming.NameParser;

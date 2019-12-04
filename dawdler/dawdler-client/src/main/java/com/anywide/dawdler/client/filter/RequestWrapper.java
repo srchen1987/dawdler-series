@@ -30,7 +30,8 @@ public class RequestWrapper extends RequestBean{
 	private static final long serialVersionUID = 2807385594696214109L;
 	private SocketSession session;
 	private RequestBean request;
-	public RequestWrapper(RequestBean request,SocketSession session) {
+	private int timeout;
+	public RequestWrapper(RequestBean request,SocketSession session,int timeout) {
 		super.setSeq(request.getSeq());
 		super.setServiceName(request.getServiceName());
 		super.setMethodName(request.getMethodName());
@@ -38,6 +39,7 @@ public class RequestWrapper extends RequestBean{
 		super.setArgs(request.getArgs());
 		super.setFuzzy(request.isFuzzy());
 		super.setPath(request.getPath());
+		this.timeout = timeout;
 		this.request = request;
 		this.session = session;
 	}
@@ -47,6 +49,9 @@ public class RequestWrapper extends RequestBean{
 	}
 	SocketSession getSession() {
 		return session;
+	}
+	public int getTimeout() {
+		return timeout;
 	}
 	@Override
 	public void setFuzzy(boolean fuzzy) {

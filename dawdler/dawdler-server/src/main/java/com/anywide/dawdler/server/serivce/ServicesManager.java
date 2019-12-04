@@ -80,37 +80,6 @@ public class ServicesManager {
 		services.clear();
 	}
 	
-	public void register(Object service) {
-		if (service == null) {
-			throw new NullPointerException("service");
-		}
-		if (service instanceof ServicesBean) {
-			ServicesBean bean = (ServicesBean) service;
-			this.services.put(bean.getName(),bean);
-			return;
-		}
-		boolean isValid = false;
-		Class<?>[] interfaceList = service.getClass().getInterfaces();
-		if (interfaceList != null) {
-			for (Class<?> clazz : interfaceList) {
-				RemoteService remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-				if (remoteServiceContract == null) {
-					continue;
-				}
-				String name = remoteServiceContract.value();
-				if (StringUtils.isBlank(name)) {
-					registerService(clazz, service,remoteServiceContract.single());
-				} else {
-					register(name, service,remoteServiceContract.single());
-				}
-				isValid = true;
-			}
-		}
-		if (!isValid) {
-			throw new IllegalArgumentException(service.getClass()
-					+ "isn't set @RemoteService!");
-		}
-	}
 	
 	
 	public void smartRegister(Class<?> service)throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

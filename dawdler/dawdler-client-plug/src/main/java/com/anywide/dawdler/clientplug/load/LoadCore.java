@@ -235,10 +235,10 @@ public class LoadCore implements Runnable{
 				Thread.sleep(time);
 			} catch (InterruptedException e) {
 			}
-				try {
-					toCheck();
-				} catch (Exception e) {
-				}
+			try {
+				toCheck();
+			} catch (Exception e) {
+			}
 		}
 		
 	}

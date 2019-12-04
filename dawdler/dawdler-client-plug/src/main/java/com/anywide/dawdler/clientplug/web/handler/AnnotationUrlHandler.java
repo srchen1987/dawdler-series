@@ -35,7 +35,6 @@ import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.ViewControllerContext;
 import com.anywide.dawdler.clientplug.web.upload.FileUploadExceptionHandler;
 import com.anywide.dawdler.clientplug.web.upload.FileUploadExceptionHolder;
-import com.anywide.dawdler.clientplug.web.validator.webbind.WebValidateExecutor;
 /**
  * 
  * @Title:  AnnotationUrlHandler.java   
