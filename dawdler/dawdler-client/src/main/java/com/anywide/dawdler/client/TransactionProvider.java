@@ -30,8 +30,7 @@ public class TransactionProvider {
 	public static Transaction getTransaction(String groupName){
 		ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
 		DawdlerConnection con = cp.getConnection();
-		SocketSession session = con.getSession();
-		Transaction tr = new Transaction(session,con.getPath(),con.getSerializer());
+		Transaction tr = new Transaction(con);
 		return tr;
 	}
 }

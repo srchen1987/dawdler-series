@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.deploys;
+
 import java.util.Hashtable;
 import java.util.Map;
 import javax.naming.Context;
@@ -26,17 +27,19 @@ import org.apache.naming.java.javaURLContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.server.conf.DataSourceParser;
+
 /**
  * 
- * @Title:  DataSourceNamingInit.java
- * @Description:    服务器端数据源初始化   
- * @author: jackson.song    
- * @date:   2015年03月06日    
- * @version V1.0 
+ * @Title: DataSourceNamingInit.java
+ * @Description: 服务器端数据源初始化
+ * @author: jackson.song
+ * @date: 2015年03月06日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DataSourceNamingInit {
 	private static Logger logger = LoggerFactory.getLogger(DataSourceNamingInit.class);
+
 	public static void init(ClassLoader classLoader)
 			throws ClassNotFoundException, NamingException, InstantiationException, IllegalAccessException {
 		Object token = new Object();
