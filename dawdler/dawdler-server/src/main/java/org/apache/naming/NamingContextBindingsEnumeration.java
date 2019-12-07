@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 
-
 package org.apache.naming;
+
 import java.util.Iterator;
 import javax.naming.Binding;
 import javax.naming.CompositeName;
@@ -29,102 +29,85 @@ import javax.naming.NamingException;
  *
  * @author Remy Maucherat
  */
-public class NamingContextBindingsEnumeration
-    implements NamingEnumeration<Binding> {
+public class NamingContextBindingsEnumeration implements NamingEnumeration<Binding> {
 
+	// ----------------------------------------------------------- Constructors
 
-    // ----------------------------------------------------------- Constructors
+	public NamingContextBindingsEnumeration(Iterator<NamingEntry> entries, Context ctx) {
+		iterator = entries;
+		this.ctx = ctx;
+	}
 
+	// -------------------------------------------------------------- Variables
 
-    public NamingContextBindingsEnumeration(Iterator<NamingEntry> entries,
-            Context ctx) {
-        iterator = entries;
-        this.ctx = ctx;
-    }
+	/**
+	 * Underlying enumeration.
+	 */
+	protected final Iterator<NamingEntry> iterator;
 
-    // -------------------------------------------------------------- Variables
+	/**
+	 * The context for which this enumeration is being generated.
+	 */
+	private final Context ctx;
 
+	// --------------------------------------------------------- Public Methods
 
-    /**
-     * Underlying enumeration.
-     */
-    protected final Iterator<NamingEntry> iterator;
+	/**
+	 * Retrieves the next element in the enumeration.
+	 */
+	@Override
+	public Binding next() throws NamingException {
+		return nextElementInternal();
+	}
 
+	/**
+	 * Determines whether there are any more elements in the enumeration.
+	 */
+	@Override
+	public boolean hasMore() throws NamingException {
+		return iterator.hasNext();
+	}
 
-    /**
-     * The context for which this enumeration is being generated.
-     */
-    private final Context ctx;
+	/**
+	 * Closes this enumeration.
+	 */
+	@Override
+	public void close() throws NamingException {
+	}
 
+	@Override
+	public boolean hasMoreElements() {
+		return iterator.hasNext();
+	}
 
-    // --------------------------------------------------------- Public Methods
+	@Override
+	public Binding nextElement() {
+		try {
+			return nextElementInternal();
+		} catch (NamingException e) {
+			throw new RuntimeException(e.getMessage(), e);
+		}
+	}
 
+	private Binding nextElementInternal() throws NamingException {
+		NamingEntry entry = iterator.next();
+		Object value;
 
-    /**
-     * Retrieves the next element in the enumeration.
-     */
-    @Override
-    public Binding next()
-        throws NamingException {
-        return nextElementInternal();
-    }
+		// If the entry is a reference, resolve it
+		if (entry.type == NamingEntry.REFERENCE || entry.type == NamingEntry.LINK_REF) {
+			try {
+				value = ctx.lookup(new CompositeName(entry.name));
+			} catch (NamingException e) {
+				throw e;
+			} catch (Exception e) {
+				NamingException ne = new NamingException(e.getMessage());
+				ne.initCause(e);
+				throw ne;
+			}
+		} else {
+			value = entry.value;
+		}
 
-
-    /**
-     * Determines whether there are any more elements in the enumeration.
-     */
-    @Override
-    public boolean hasMore()
-        throws NamingException {
-        return iterator.hasNext();
-    }
-
-
-    /**
-     * Closes this enumeration.
-     */
-    @Override
-    public void close()
-        throws NamingException {
-    }
-
-
-    @Override
-    public boolean hasMoreElements() {
-        return iterator.hasNext();
-    }
-
-
-    @Override
-    public Binding nextElement() {
-        try {
-            return nextElementInternal();
-        } catch (NamingException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    private Binding nextElementInternal() throws NamingException {
-        NamingEntry entry = iterator.next();
-        Object value;
-
-        // If the entry is a reference, resolve it
-        if (entry.type == NamingEntry.REFERENCE
-                || entry.type == NamingEntry.LINK_REF) {
-            try {
-                value = ctx.lookup(new CompositeName(entry.name));
-            } catch (NamingException e) {
-                throw e;
-            } catch (Exception e) {
-                NamingException ne = new NamingException(e.getMessage());
-                ne.initCause(e);
-                throw ne;
-            }
-        } else {
-            value = entry.value;
-        }
-
-        return new Binding(entry.name, value.getClass().getName(), value, true);
-    }
+		return new Binding(entry.name, value.getClass().getName(), value, true);
+	}
 }
-

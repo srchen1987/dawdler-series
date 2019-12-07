@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.bootstarp;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -26,18 +27,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfigParser;
+
 /**
  * 
- * @Title:  Bootstrap.java
- * @Description:    dawdler服务器启动类   
- * @author: jackson.song    
- * @date:   2015年04月09日    
- * @version V1.0 
+ * @Title: Bootstrap.java
+ * @Description: dawdler服务器启动类
+ * @author: jackson.song
+ * @date: 2015年04月09日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class Bootstrap {
 	private static ServerConfig serverConfig = ServerConfigParser.getServerConfig();
 	public final static Logger logger = LoggerFactory.getLogger("system.out");
+
 	public static void main(String[] args) throws IOException {
 		if (args != null && args.length > 0) {
 			String command = args[0].trim();
@@ -56,9 +59,10 @@ public class Bootstrap {
 				return;
 			}
 		}
-		
+
 		new DawdlerServer(serverConfig).start();
 	}
+
 	private static void toClose(String comment) throws UnknownHostException, IOException {
 		Socket socket = new Socket("127.0.0.1", serverConfig.getServer().getTcpShutdownPort());
 		OutputStream out = socket.getOutputStream();
@@ -67,6 +71,7 @@ public class Bootstrap {
 		pw.close();
 		socket.close();
 	}
+
 	public static void overrideOutPut() {
 		OutputStream output = new OutputStream() {
 			@Override

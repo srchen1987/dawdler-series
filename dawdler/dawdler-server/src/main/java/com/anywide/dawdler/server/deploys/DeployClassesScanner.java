@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.deploys;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -31,57 +32,59 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfigParser;
+
 /**
  * 
- * @Title:  DeployClassesScanner.java
- * @Description:    部署项目扫描类   
- * @author: jackson.song    
- * @date:   2013年03月11日    
- * @version V1.0 
+ * @Title: DeployClassesScanner.java
+ * @Description: 部署项目扫描类
+ * @author: jackson.song
+ * @date: 2013年03月11日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DeployClassesScanner {
 	private static Logger logger = LoggerFactory.getLogger(DeployClassesScanner.class);
-	
-	public static void findAndAddClassesInPackageByPath(String packageName,
-			String packagePath, final boolean recursive, Set<Class<?>> classes) {
+
+	public static void findAndAddClassesInPackageByPath(String packageName, String packagePath, final boolean recursive,
+			Set<Class<?>> classes) {
 		File dir = new File(packagePath);
 		if (!dir.exists() || !dir.isDirectory()) {
 			return;
 		}
 		Scanner scanner = ServerConfigParser.getServerConfig().getScanner();
 		File[] dirfiles = null;
-		if(scanner==null||scanner.getFile()==null||scanner.getFile().isEmpty()) {
+		if (scanner == null || scanner.getFile() == null || scanner.getFile().isEmpty()) {
 			dirfiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
-					return (recursive && file.isDirectory())
-							|| (file.getName().endsWith(".class"));
+					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
 				}
 			});
-		}else {
+		} else {
 			dirfiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
-					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class")) ||scanner.getFile().contains(file.getName());
+					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"))
+							|| scanner.getFile().contains(file.getName());
 				}
 			});
 		}
 		for (File file : dirfiles) {
 			if (file.isDirectory()) {
 				String fileName = file.getName();
-				if(fileName.equals("classes"))fileName="";
-				findAndAddClassesInPackageByPath(packageName.equals("")?fileName:(packageName+"."+ file.getName())
-						, file.getAbsolutePath(), recursive,
-						classes);
+				if (fileName.equals("classes"))
+					fileName = "";
+				findAndAddClassesInPackageByPath(
+						packageName.equals("") ? fileName : (packageName + "." + file.getName()),
+						file.getAbsolutePath(), recursive, classes);
 			} else {
-				if(file.getName().endsWith(".jar")) {
+				if (file.getName().endsWith(".jar")) {
 					JarFile jarFile;
 					try {
 						jarFile = new JarFile(file);
-						findAndAddClassesInPackageInJar(packageName,file.getParent(),jarFile, recursive, classes);
+						findAndAddClassesInPackageInJar(packageName, file.getParent(), jarFile, recursive, classes);
 					} catch (IOException e) {
-						logger.error("",e);
+						logger.error("", e);
 					}
-				}else {
+				} else {
 					String className = file.getName().substring(0, file.getName().length() - 6);
 					try {
 						classes.add(Thread.currentThread().getContextClassLoader()
@@ -93,39 +96,40 @@ public class DeployClassesScanner {
 			}
 		}
 	}
+
 	public static Set<Class<?>> getClassesInPath(File file) {
 		Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
-		findAndAddClassesInPackageByPath("", file.getPath(),true, classes);
+		findAndAddClassesInPackageByPath("", file.getPath(), true, classes);
 		return classes;
 	}
-	private static Set<Class<?>> getClassesInPath(File file,Set<Class<?>> classes) {
+
+	private static Set<Class<?>> getClassesInPath(File file, Set<Class<?>> classes) {
 		boolean recursive = true;
 		String packageName = "";
 		String packageDirName = packageName.replace('.', '/');
-		if(file.isDirectory()) {
+		if (file.isDirectory()) {
 			try {
 				File[] files = file.listFiles();
-				for(File f:files) {
-					if(f.getName().endsWith(".jar")) {
+				for (File f : files) {
+					if (f.getName().endsWith(".jar")) {
 						JarFile jarFile = new JarFile(f);
-						findAndAddClassesInPackageInJar(packageName, packageDirName,jarFile, recursive, classes);
-					}else {
+						findAndAddClassesInPackageInJar(packageName, packageDirName, jarFile, recursive, classes);
+					} else {
 						String filePath = URLDecoder.decode(f.getAbsolutePath(), "UTF-8");
-						findAndAddClassesInPackageByFile(packageName, filePath,
-								recursive, classes);
-					} 
+						findAndAddClassesInPackageByFile(packageName, filePath, recursive, classes);
+					}
 				}
 			} catch (IOException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 
 		}
-		
+
 		return classes;
 	}
-	
-	public static void findAndAddClassesInPackageInJar(String packageName,String packageDirName,
-			JarFile jar, final boolean recursive, Set<Class<?>> classes) {
+
+	public static void findAndAddClassesInPackageInJar(String packageName, String packageDirName, JarFile jar,
+			final boolean recursive, Set<Class<?>> classes) {
 		Enumeration<JarEntry> entries = jar.entries();
 		while (entries.hasMoreElements()) {
 			JarEntry entry = entries.nextElement();
@@ -136,24 +140,19 @@ public class DeployClassesScanner {
 			if (name.endsWith(".class")) {
 				int idx = name.lastIndexOf('/');
 				if (idx != -1) {
-					packageName = name.substring(0, idx)
-							.replace('/', '.');
+					packageName = name.substring(0, idx).replace('/', '.');
 				}
 				if ((idx != -1) || recursive) {
-					if (name.endsWith(".class")
-							&& !entry.isDirectory()) {
+					if (name.endsWith(".class") && !entry.isDirectory()) {
 						String className;
-						if(idx!=-1)
-							className = name.substring(
-								packageName.length() + 1, name
-										.length() - 6);
+						if (idx != -1)
+							className = name.substring(packageName.length() + 1, name.length() - 6);
 						else {
-							className = name.substring(0, name
-										.length() - 6);
+							className = name.substring(0, name.length() - 6);
 						}
 						try {
-							Class clazz = Thread.currentThread().getContextClassLoader().loadClass(idx==-1?className:(packageName + '.'
-											+ className));
+							Class clazz = Thread.currentThread().getContextClassLoader()
+									.loadClass(idx == -1 ? className : (packageName + '.' + className));
 							classes.add(clazz);
 						} catch (Throwable e) {
 						}
@@ -162,6 +161,7 @@ public class DeployClassesScanner {
 			}
 		}
 	}
+
 	public static Set<Class<?>> getAppClasses(String pack) {
 		Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
 		boolean recursive = true;
@@ -169,63 +169,61 @@ public class DeployClassesScanner {
 		String packageDirName = packageName.replace('.', '/');
 		Enumeration<URL> dirs;
 		try {
-			dirs = Thread.currentThread().getContextClassLoader().getResources(
-					packageDirName); 
+			dirs = Thread.currentThread().getContextClassLoader().getResources(packageDirName);
 			while (dirs.hasMoreElements()) {
 				URL url = dirs.nextElement();
 				String protocol = url.getProtocol();
 				if ("file".equals(protocol)) {
 					String filePath = URLDecoder.decode(url.getFile(), "UTF-8");
-					findAndAddClassesInPackageByFile(packageName, filePath,
-							recursive, classes);
+					findAndAddClassesInPackageByFile(packageName, filePath, recursive, classes);
 				} else if ("jar".equals(protocol)) {
-					findAndAddClassesInPackageByJar(packageName, packageDirName, url, recursive, classes);	
-				
+					findAndAddClassesInPackageByJar(packageName, packageDirName, url, recursive, classes);
+
 				}
 			}
 		} catch (IOException e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
 
 		return classes;
 	}
-	public static void findAndAddClassesInPackageByFile(String packageName,
-			String packagePath, final boolean recursive, Set<Class<?>> classes) {
+
+	public static void findAndAddClassesInPackageByFile(String packageName, String packagePath, final boolean recursive,
+			Set<Class<?>> classes) {
 		File dir = new File(packagePath);
 		if (!dir.exists() || !dir.isDirectory()) {
 			return;
 		}
 		File[] dirfiles = dir.listFiles(new FileFilter() {
 			public boolean accept(File file) {
-				return (recursive && file.isDirectory())
-						|| (file.getName().endsWith(".class"));
+				return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
 			}
 		});
 		for (File file : dirfiles) {
 			if (file.isDirectory()) {
-				findAndAddClassesInPackageByFile(packageName.equals("")?file.getName():(packageName+"."+ file.getName())
-						, file.getAbsolutePath(), recursive,
-						classes);
+				findAndAddClassesInPackageByFile(
+						packageName.equals("") ? file.getName() : (packageName + "." + file.getName()),
+						file.getAbsolutePath(), recursive, classes);
 			} else {
-				String className = file.getName().substring(0,
-						file.getName().length() - 6);
+				String className = file.getName().substring(0, file.getName().length() - 6);
 				try {
-                                        classes.add(Thread.currentThread().getContextClassLoader().loadClass(packageName.equals("")? className: (packageName + '.' + className)));  
-                               } catch (ClassNotFoundException e) {
-                            	   logger.error("",e);
+					classes.add(Thread.currentThread().getContextClassLoader()
+							.loadClass(packageName.equals("") ? className : (packageName + '.' + className)));
+				} catch (ClassNotFoundException e) {
+					logger.error("", e);
 				}
 			}
 		}
 	}
-	public static void findAndAddClassesInPackageByJar(String packageName,String packageDirName,
-			URL url, final boolean recursive, Set<Class<?>> classes) {
-		String protocol =  url.getProtocol();
-		if(url!=null){
-			if(("jar".equals(protocol))){
+
+	public static void findAndAddClassesInPackageByJar(String packageName, String packageDirName, URL url,
+			final boolean recursive, Set<Class<?>> classes) {
+		String protocol = url.getProtocol();
+		if (url != null) {
+			if (("jar".equals(protocol))) {
 				JarFile jar;
 				try {
-					jar = ((JarURLConnection) url.openConnection())
-							.getJarFile();
+					jar = ((JarURLConnection) url.openConnection()).getJarFile();
 					Enumeration<JarEntry> entries = jar.entries();
 					while (entries.hasMoreElements()) {
 						JarEntry entry = entries.nextElement();
@@ -236,19 +234,13 @@ public class DeployClassesScanner {
 						if (name.startsWith(packageDirName)) {
 							int idx = name.lastIndexOf('/');
 							if (idx != -1) {
-								packageName = name.substring(0, idx)
-										.replace('/', '.');
+								packageName = name.substring(0, idx).replace('/', '.');
 							}
 							if ((idx != -1) || recursive) {
-								if (name.endsWith(".class")
-										&& !entry.isDirectory()) {
-									String className = name.substring(
-											packageName.length() + 1, name
-													.length() - 6);
+								if (name.endsWith(".class") && !entry.isDirectory()) {
+									String className = name.substring(packageName.length() + 1, name.length() - 6);
 									try {
-										classes.add(Class
-												.forName(packageName + '.'
-														+ className));
+										classes.add(Class.forName(packageName + '.' + className));
 									} catch (ClassNotFoundException e) {
 									}
 								}
@@ -256,33 +248,32 @@ public class DeployClassesScanner {
 						}
 					}
 				} catch (IOException e) {
-					logger.error("",e);
+					logger.error("", e);
 				}
-			}else if("file".equals(protocol)) {
-					String filePath;
-					try {
-						filePath = URLDecoder.decode(url.getFile(), "UTF-8");
-						findAndAddClassesInPackageByFile(packageName,new File(filePath).getParent(), recursive, classes);
-					} catch (UnsupportedEncodingException e) {
-						logger.error("",e);
-					}
+			} else if ("file".equals(protocol)) {
+				String filePath;
+				try {
+					filePath = URLDecoder.decode(url.getFile(), "UTF-8");
+					findAndAddClassesInPackageByFile(packageName, new File(filePath).getParent(), recursive, classes);
+				} catch (UnsupportedEncodingException e) {
+					logger.error("", e);
+				}
 			}
 		}
 	}
-	
+
 	public static Set<Class<?>> getLibClasses(Class c) {
 		Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
-		if(c!=null){
-			URL url = c.getResource(c.getSimpleName()+".class");
+		if (c != null) {
+			URL url = c.getResource(c.getSimpleName() + ".class");
 			String pack = c.getPackage().getName();
-			boolean recursive =true;
+			boolean recursive = true;
 			String packageName = pack;
 			String packageDirName = packageName.replace('.', '/');
-			if(url!=null){
+			if (url != null) {
 				findAndAddClassesInPackageByJar(packageName, packageDirName, url, recursive, classes);
 			}
 		}
 		return classes;
 	}
 }
-

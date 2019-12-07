@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.deploys;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -41,20 +42,21 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
+
 /**
  * 
- * @Title:  ServiceBase.java
- * @Description:    deploy下服务模块具体实现类   
- * @author: jackson.song    
- * @date:   2015年03月22日   
- * @version V1.0 
+ * @Title: ServiceBase.java
+ * @Description: deploy下服务模块具体实现类
+ * @author: jackson.song
+ * @date: 2015年03月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class ServiceBase implements Service{
+public class ServiceBase implements Service {
 	private static Logger logger = LoggerFactory.getLogger(ServiceBase.class);
 	private static final String CLASSESPATH = "classes";
 	private static final String LIBPATH = "lib";
-	public static final String SERVICEEXECUTOR_PREFIX= "serviceExecutor_prefix";
+	public static final String SERVICEEXECUTOR_PREFIX = "serviceExecutor_prefix";
 	private DawdlerDeployClassLoader classLoader;
 	private File deploy;
 	private DawdlerContext dawdlerContext;
@@ -65,134 +67,154 @@ public class ServiceBase implements Service{
 	private DawdlerListenerProvider dawdlerListenerProvider = new DawdlerListenerProvider();
 	private ServicesManager servicesManager = new ServicesManager();
 	private FilterProvider filterProvider = new FilterProvider();
-	public ServiceBase(File deploy,ClassLoader parent) throws MalformedURLException {
-		this.deploy=deploy;
-		classLoader = DawdlerDeployClassLoader.createLoader(parent,getLibURL());
-		dawdlerContext = new DawdlerContext(classLoader,deploy.getName(),deploy.getPath(),getClassesDir().getPath(),servicesManager);
+
+	public ServiceBase(File deploy, ClassLoader parent) throws MalformedURLException {
+		this.deploy = deploy;
+		classLoader = DawdlerDeployClassLoader.createLoader(parent, getLibURL());
+		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
+				servicesManager);
 		classLoader.setDawdlerContext(dawdlerContext);
 		Thread.currentThread().setContextClassLoader(classLoader);
 	}
-	public ServicesBean getServiesBean(String name){
-		if(!complete){
+
+	public ServicesBean getServiesBean(String name) {
+		if (!complete) {
 			try {
 				semapphore.acquire();
 			} catch (InterruptedException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 		}
 		return servicesManager.getService(name);
-	} 
-	public ServicesBean getServiesBeanNoSafe(String name){
+	}
+
+	public ServicesBean getServiesBeanNoSafe(String name) {
 		return servicesManager.getService(name);
-	} 
-	private File getClassesDir(){
-		return new File(deploy,CLASSESPATH);
 	}
-	private URL[] getLibURL() throws MalformedURLException{
-		File file = new File(deploy,LIBPATH);
-		return PathUtils.getLibURL(file,getClassesDir().toURI().toURL());
+
+	private File getClassesDir() {
+		return new File(deploy, CLASSESPATH);
 	}
-	public Class<?> getClass(String className) throws ClassNotFoundException{
+
+	private URL[] getLibURL() throws MalformedURLException {
+		File file = new File(deploy, LIBPATH);
+		return PathUtils.getLibURL(file, getClassesDir().toURI().toURL());
+	}
+
+	public Class<?> getClass(String className) throws ClassNotFoundException {
 		return classLoader.loadClass(className);
 	}
+
 	@Override
 	public void start() throws Exception {
-//		Set<Class<?>> classes = DeployClassesScanner.getAppClasses("");
 		try {
 			Class<?> clazz = classLoader.loadClass("com.anywide.dawdler.serverplug.init.PlugInit");
 			clazz.getConstructor(DawdlerContext.class).newInstance(dawdlerContext);
 		} catch (Exception e) {
 		}
 		Object obj = dawdlerContext.getAttribute(SERVICEEXECUTOR_PREFIX);
-		if(obj!=null)serviceExecutor=(ServiceExecutor) obj;
+		if (obj != null)
+			serviceExecutor = (ServiceExecutor) obj;
 		Set<Class<?>> classes = DeployClassesScanner.getClassesInPath(deploy);
 		Set<Class<?>> tmpClasses = new HashSet<>();
-		for(Class<?> c : classes){
-			if(((c.getModifiers()&1024)!=1024)&&((c.getModifiers()&16)!=16)&&((c.getModifiers()&16384)!=16384)&&((c.getModifiers()&8192)!=8192)&&((c.getModifiers()&512)!=512)){
-				if(DawdlerServiceListener.class.isAssignableFrom(c)){
-						Order order = c.getAnnotation(Order.class);
-						DawdlerServiceListener dl = (DawdlerServiceListener) SunReflectionFactoryInstantiator.newInstance(c);
-						OrderData<DawdlerServiceListener> orderData = new OrderData<>();
-						orderData.setData(dl);
-						if(order!=null)orderData.setOrder(order.value());
-						dawdlerListenerProvider.addHandlerInterceptors(dl);
-				}
-				if(DawdlerServiceCreateListener.class.isAssignableFrom(c)){
+		for (Class<?> c : classes) {
+			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
+					&& ((c.getModifiers() & 16384) != 16384) && ((c.getModifiers() & 8192) != 8192)
+					&& ((c.getModifiers() & 512) != 512)) {
+				if (DawdlerServiceListener.class.isAssignableFrom(c)) {
 					Order order = c.getAnnotation(Order.class);
-					DawdlerServiceCreateListener dl = (DawdlerServiceCreateListener) SunReflectionFactoryInstantiator.newInstance(c);
+					DawdlerServiceListener dl = (DawdlerServiceListener) SunReflectionFactoryInstantiator
+							.newInstance(c);
+					OrderData<DawdlerServiceListener> orderData = new OrderData<>();
+					orderData.setData(dl);
+					if (order != null)
+						orderData.setOrder(order.value());
+					dawdlerListenerProvider.addHandlerInterceptors(dl);
+				}
+				if (DawdlerServiceCreateListener.class.isAssignableFrom(c)) {
+					Order order = c.getAnnotation(Order.class);
+					DawdlerServiceCreateListener dl = (DawdlerServiceCreateListener) SunReflectionFactoryInstantiator
+							.newInstance(c);
 					OrderData<DawdlerServiceCreateListener> orderData = new OrderData<>();
 					orderData.setData(dl);
-					if(order!=null)orderData.setOrder(order.value());
+					if (order != null)
+						orderData.setOrder(order.value());
 					servicesManager.getDawdlerServiceCreateProvider().addHandlerInterceptors(dl);
 				}
-				if(DawdlerFilter.class.isAssignableFrom(c)){
+				if (DawdlerFilter.class.isAssignableFrom(c)) {
 					Order order = c.getAnnotation(Order.class);
 					DawdlerFilter filter = (DawdlerFilter) SunReflectionFactoryInstantiator.newInstance(c);
 					OrderData<DawdlerFilter> orderData = new OrderData<>();
 					orderData.setData(filter);
-					if(order!=null)orderData.setOrder(order.value());
+					if (order != null)
+						orderData.setOrder(order.value());
 					filterProvider.addFilter(filter);
 				}
-				
-				if(servicesManager.isService(c)) {
+
+				if (servicesManager.isService(c)) {
 					tmpClasses.add(c);
 				}
 			}
 		}
-		for(Class<?> c:tmpClasses) {
+		for (Class<?> c : tmpClasses) {
 			servicesManager.smartRegister(c);
 		}
 		servicesManager.fireCreate(dawdlerContext);
 		dawdlerListenerProvider.order();
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		filterProvider.orderAndbuildChain();
-		
-		for(OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
+
+		for (OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
 			injectService(data.getData());
 		}
-		for(OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()){
+		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
 			ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
-			if(listenerConfig!=null&&listenerConfig.asyn()) {
-				 new Thread(()->{
-					 if(listenerConfig.delayMsec()>0) {
-						 try {
+			if (listenerConfig != null && listenerConfig.asyn()) {
+				new Thread(() -> {
+					if (listenerConfig.delayMsec() > 0) {
+						try {
 							Thread.sleep(listenerConfig.delayMsec());
 						} catch (InterruptedException e) {
 						}
-							orderData.getData().contextInitialized(dawdlerContext);
-					 }
-				 }) .start();
-			}else {
+						orderData.getData().contextInitialized(dawdlerContext);
+					}
+				}).start();
+			} else {
 				orderData.getData().contextInitialized(dawdlerContext);
 			}
 		}
-		complete=true;
+		complete = true;
 		semapphore.release(Integer.MAX_VALUE);
 	}
+
 	public FilterProvider getFilterProvider() {
 		return filterProvider;
 	}
+
 	@Override
 	public void stop() {
-		if(dawdlerListenerProvider.getListeners()!=null){
-			for(int i = dawdlerListenerProvider.getListeners().size();i>0;i--){
+		if (dawdlerListenerProvider.getListeners() != null) {
+			for (int i = dawdlerListenerProvider.getListeners().size(); i > 0; i--) {
 				try {
-					dawdlerListenerProvider.getListeners().get(i-1).getData().contextDestroyed(dawdlerContext);
-				}catch(Exception e){
-					logger.error("",e);
+					dawdlerListenerProvider.getListeners().get(i - 1).getData().contextDestroyed(dawdlerContext);
+				} catch (Exception e) {
+					logger.error("", e);
 				}
 			}
 		}
 		semapphore.release(Integer.MAX_VALUE);
 		servicesManager.clear();
 	}
+
 	public DawdlerContext getDawdlerContext() {
 		return dawdlerContext;
 	}
+
 	@Override
 	public ServiceExecutor getServiceExecutor() {
 		return serviceExecutor;
 	}
+
 	private void injectService(Object service) {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field filed : fields) {
@@ -203,16 +225,18 @@ public class ServiceBase implements Service{
 				try {
 					Object obj = null;
 					if (remoteService != null) {
-						if(!remoteService.remote()) {
-							obj = ServiceFactory.getService(serviceClass,serviceExecutor,dawdlerContext);
-						}else {
+						if (!remoteService.remote()) {
+							obj = ServiceFactory.getService(serviceClass, serviceExecutor, dawdlerContext);
+						} else {
 							Class c = classLoader.loadClass("com.anywide.dawdler.client.ServiceFactory");
-							Method method = c.getMethod("getService",Class.class,String.class);
-							String groupName = (remoteService.value()==null||remoteService.value().equals(""))?"defaultgroup":remoteService.value();
-							obj = method.invoke(null, serviceClass,groupName);
+							Method method = c.getMethod("getService", Class.class, String.class);
+							String groupName = (remoteService.value() == null || remoteService.value().equals(""))
+									? "defaultgroup"
+									: remoteService.value();
+							obj = method.invoke(null, serviceClass, groupName);
 						}
-						if(obj != null)
-							filed.set(service,obj);
+						if (obj != null)
+							filed.set(service, obj);
 					}
 				} catch (Exception e) {
 					logger.error("", e);
@@ -221,4 +245,3 @@ public class ServiceBase implements Service{
 		}
 	}
 }
-
