@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.bean;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import org.slf4j.Logger;
@@ -24,13 +25,14 @@ import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
+
 /**
  * 
- * @Title:  ServicesBean.java
- * @Description:    服务提供类   
- * @author: jackson.song    
- * @date:   2015年04月21日    
- * @version V1.0 
+ * @Title: ServicesBean.java
+ * @Description: 服务提供类
+ * @author: jackson.song
+ * @date: 2015年04月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ServicesBean {
@@ -39,51 +41,62 @@ public class ServicesBean {
 	private Object service;
 	private boolean single;
 	private DawdlerServiceCreateProvider dawdlerServiceCreateProvider;
-	public ServicesBean(String name,Object service,DawdlerServiceCreateProvider dawdlerServiceCreateProvider,boolean single) {
-		this.name=name;
-		this.service=service;
-		this.single=single;
-		this.dawdlerServiceCreateProvider=dawdlerServiceCreateProvider;
+
+	public ServicesBean(String name, Object service, DawdlerServiceCreateProvider dawdlerServiceCreateProvider,
+			boolean single) {
+		this.name = name;
+		this.service = service;
+		this.single = single;
+		this.dawdlerServiceCreateProvider = dawdlerServiceCreateProvider;
 	}
+
 	public void fireCreate(DawdlerContext dawdlerContext) {
-		notify(service,dawdlerContext);
+		notify(service, dawdlerContext);
 	}
-	private void notify(Object service,DawdlerContext dawdlerContext) {
+
+	private void notify(Object service, DawdlerContext dawdlerContext) {
 		List<OrderData<DawdlerServiceCreateListener>> list = dawdlerServiceCreateProvider.getListeners();
-		for(OrderData<DawdlerServiceCreateListener> listener:list) {
-			listener.getData().create(service,dawdlerContext);
+		for (OrderData<DawdlerServiceCreateListener> listener : list) {
+			listener.getData().create(service, dawdlerContext);
 		}
 	}
-	public ServicesBean(String name,Object service,DawdlerServiceCreateProvider dawdlerServiceCreateProvider) {
-		this(name,service,dawdlerServiceCreateProvider,true);
+
+	public ServicesBean(String name, Object service, DawdlerServiceCreateProvider dawdlerServiceCreateProvider) {
+		this(name, service, dawdlerServiceCreateProvider, true);
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public Object getService() {
-		if(!isSingle())
+		if (!isSingle())
 			try {
-				Object obj =SunReflectionFactoryInstantiator.newInstance(service.getClass());
-				notify(obj,DawdlerContext.getDawdlerContext());
+				Object obj = SunReflectionFactoryInstantiator.newInstance(service.getClass());
+				notify(obj, DawdlerContext.getDawdlerContext());
 				return obj;
-			} catch (InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException | SecurityException e) {
-				logger.error("",e);
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException | SecurityException e) {
+				logger.error("", e);
 			}
-		
+
 		return service;
 	}
+
 	public void setService(Object service) {
 		this.service = service;
 	}
+
 	public boolean isSingle() {
 		return single;
 	}
+
 	public void setSingle(boolean single) {
 		this.single = single;
 	}
-	
+
 }

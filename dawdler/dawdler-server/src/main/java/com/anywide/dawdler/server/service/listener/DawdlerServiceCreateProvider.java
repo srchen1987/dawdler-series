@@ -15,37 +15,41 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.service.listener;
+
 import java.util.ArrayList;
 import java.util.List;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
+
 /**
  * 
- * @Title:  DawdlerServiceCreateProvider.java
- * @Description:    服务创建监听器提供者 
- * @author: jackson.song    
- * @date:   2008年03月12日  
- * @version V1.0 
+ * @Title: DawdlerServiceCreateProvider.java
+ * @Description: 服务创建监听器提供者
+ * @author: jackson.song
+ * @date: 2008年03月12日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DawdlerServiceCreateProvider {
 	public List<OrderData<DawdlerServiceCreateListener>> getListeners() {
 		return listeners;
 	}
-	public void order(){
-			OrderComparator.sort(listeners);
+
+	public void order() {
+		OrderComparator.sort(listeners);
 	}
+
 	public void addHandlerInterceptors(DawdlerServiceCreateListener dawdlerServiceListener) {
 		Order co = dawdlerServiceListener.getClass().getAnnotation(Order.class);
 		OrderData<DawdlerServiceCreateListener> od = new OrderData<>();
 		od.setData(dawdlerServiceListener);
-		if(co!=null){
+		if (co != null) {
 			od.setOrder(co.value());
 		}
 		listeners.add(od);
 	}
 
 	private List<OrderData<DawdlerServiceCreateListener>> listeners = new ArrayList<>();
-	
+
 }

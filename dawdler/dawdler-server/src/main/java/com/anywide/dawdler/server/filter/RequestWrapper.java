@@ -15,24 +15,27 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.filter;
+
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
+
 /**
  * 
- * @Title:  RequestWrapper.java
- * @Description:    request的包装类   
- * @author: jackson.song    
- * @date:   2015年04月08日  
- * @version V1.0 
+ * @Title: RequestWrapper.java
+ * @Description: request的包装类
+ * @author: jackson.song
+ * @date: 2015年04月08日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class RequestWrapper extends RequestBean{
+public class RequestWrapper extends RequestBean {
 	private static final long serialVersionUID = 2807385594696214109L;
 	private RequestBean request;
 	private ServicesBean services;
 	private ServiceExecutor serviceExecutor;
-	public RequestWrapper(RequestBean request,ServicesBean services,ServiceExecutor serviceExecutor) {
+
+	public RequestWrapper(RequestBean request, ServicesBean services, ServiceExecutor serviceExecutor) {
 		super.setSeq(request.getSeq());
 		super.setServiceName(request.getServiceName());
 		super.setMethodName(request.getMethodName());
@@ -43,7 +46,7 @@ public class RequestWrapper extends RequestBean{
 		this.services = services;
 		this.serviceExecutor = serviceExecutor;
 	}
-	
+
 	public ServiceExecutor getServiceExecutor() {
 		return serviceExecutor;
 	}
@@ -55,6 +58,7 @@ public class RequestWrapper extends RequestBean{
 	RequestBean getRequest() {
 		return request;
 	}
+
 	@Override
 	public void setFuzzy(boolean fuzzy) {
 	}
