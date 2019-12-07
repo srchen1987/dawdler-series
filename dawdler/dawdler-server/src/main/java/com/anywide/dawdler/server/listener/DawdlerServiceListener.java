@@ -15,18 +15,20 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.listener;
+
 import com.anywide.dawdler.server.context.DawdlerContext;
+
 /**
  * 
- * @Title:  DawdlerServiceListener.java
- * @Description:   服务器启动监听器 服务器端的类实现此接口即可   
- * @author: jackson.song    
- * @date:   2015年04月19日 
- * @version V1.0 
+ * @Title: DawdlerServiceListener.java
+ * @Description: 服务器启动监听器 服务器端的类实现此接口即可
+ * @author: jackson.song
+ * @date: 2015年04月19日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface DawdlerServiceListener {
 	public void contextDestroyed(DawdlerContext dawdlerContext);
-    public void contextInitialized(DawdlerContext dawdlerContext);
-}
 
+	public void contextInitialized(DawdlerContext dawdlerContext);
+}

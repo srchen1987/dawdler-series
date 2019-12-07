@@ -46,9 +46,6 @@ public class FilterProvider {
 		FilterChain chain = new DefaultFilterChain();
 		lastChain = buildChain(chain);
 	}
-	public static List<OrderData<DawdlerClientFilter>> getFilters() {
-		return filters;
-	}
 	static void addFilters(DawdlerClientFilter filter) {
 		Order co = filter.getClass().getAnnotation(Order.class);
 		OrderData<DawdlerClientFilter> od = new OrderData<DawdlerClientFilter>();
