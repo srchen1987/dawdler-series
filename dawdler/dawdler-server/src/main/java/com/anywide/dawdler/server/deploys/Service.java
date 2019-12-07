@@ -15,26 +15,33 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.deploys;
+
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.filter.FilterProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
+
 /**
  * 
- * @Title:  Service.java
- * @Description:    deploy下服务模块定义的接口    
- * @author: jackson.song    
- * @date:   2015年03月22日    
- * @version V1.0 
+ * @Title: Service.java
+ * @Description: deploy下服务模块定义的接口
+ * @author: jackson.song
+ * @date: 2015年03月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface Service {
-	public void start()throws Exception;
+	public void start() throws Exception;
+
 	public void stop();
+
 	public ServicesBean getServiesBean(String name);
+
 	public ServicesBean getServiesBeanNoSafe(String name);
+
 	public DawdlerContext getDawdlerContext();
+
 	public ServiceExecutor getServiceExecutor();
+
 	public FilterProvider getFilterProvider();
 }
-

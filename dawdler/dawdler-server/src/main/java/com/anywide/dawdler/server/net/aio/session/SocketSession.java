@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.net.aio.session;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
@@ -27,13 +28,14 @@ import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
 import com.anywide.dawdler.server.bootstarp.ServerConnectionManager;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
 import com.anywide.dawdler.server.thread.processor.DataProcessor;
+
 /**
  * 
- * @Title:  SocketSession.java
- * @Description:    服务器端session具体实现类 还有在极端情况下触发的其他粘包规则没有进行System.copyArray优化   
- * @author: jackson.song    
- * @date:   2015年03月11日    
- * @version V1.0 
+ * @Title: SocketSession.java
+ * @Description: 服务器端session具体实现类 还有在极端情况下触发的其他粘包规则没有进行System.copyArray优化
+ * @author: jackson.song
+ * @date: 2015年03月11日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class SocketSession extends AbstractSocketSession {
@@ -42,6 +44,7 @@ public class SocketSession extends AbstractSocketSession {
 	private boolean completed;
 	private String path;
 	private byte pathLength;
+
 	public SocketSession(AsynchronousSocketChannel channel) throws IOException {
 		super(channel);
 	}

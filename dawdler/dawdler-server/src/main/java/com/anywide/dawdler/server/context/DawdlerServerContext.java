@@ -15,39 +15,46 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.context;
+
 import java.nio.channels.AsynchronousServerSocketChannel;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.deploys.ServiceRoot;
+
 /**
  * 
- * @Title:  DawdlerServerContext.java
- * @Description:    dawdler服务器上下文   
- * @author: jackson.song    
- * @date:   2015年3月21日    
- * @version V1.0 
+ * @Title: DawdlerServerContext.java
+ * @Description: dawdler服务器上下文
+ * @author: jackson.song
+ * @date: 2015年3月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DawdlerServerContext {
 	private ServiceRoot serviceRoot;
 	private ServerConfig serverConfig;
+
 	public ServerConfig getServerConfig() {
 		return serverConfig;
 	}
+
 	public DawdlerServerContext(ServerConfig serverConfig) {
 		serviceRoot = new ServiceRoot();
 		this.serverConfig = serverConfig;
 		initApplication();
 	}
+
 	private AsynchronousServerSocketChannel asynchronousServerSocketChannel;
+
 	public AsynchronousServerSocketChannel getAsynchronousServerSocketChannel() {
 		return asynchronousServerSocketChannel;
 	}
+
 	public void setAsynchronousServerSocketChannel(AsynchronousServerSocketChannel asynchronousServerSocketChannel) {
 		this.asynchronousServerSocketChannel = asynchronousServerSocketChannel;
 	}
-	
-	public void initApplication(){
-			serviceRoot.initApplication(this);
+
+	public void initApplication() {
+		serviceRoot.initApplication(this);
 	}
-	
+
 }

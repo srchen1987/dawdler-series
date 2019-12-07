@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.SQLException;
 import javax.sql.DataSource;
 import org.slf4j.Logger;
@@ -178,7 +179,6 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 					sb.setReadConnectionHolder(readConnectionHolder);
 				sb.released();
 			}
-			// close(write, read);
 		}
 	}
 
@@ -192,46 +192,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 				}
 			}
 	}
-	// private void setAutoCommit(Connection write) {
-	// if(write!=null)
-	// try {
-	// write.setAutoCommit(false);
-	// } catch (SQLException e) {
-	// logger.error("",e);
-	// }
-	// }
-	// private void commit(Connection write) {
-	// if(write!=null)
-	// try {
-	// write.commit();
-	// } catch (SQLException e) {
-	// logger.error("",e);
-	// }
-	// }
 
-	// private void rollback(Connection write) {
-	// if(write!=null)
-	// try {
-	// write.rollback();
-	// } catch (SQLException e) {
-	// logger.error("",e);
-	// }
-	// }
-
-	// private void close(Connection write,Connection read) {
-	// if(write!=null)
-	// try {
-	// write.close();
-	// } catch (SQLException e) {
-	// logger.error("",e);
-	// }
-	// if(read!=null&&read!=write)
-	// try {
-	// read.close();
-	// } catch (SQLException e) {
-	// logger.error("",e);
-	// }
-	// }
 	private boolean isNoRollBackFor(Class<? extends Throwable>[] noRollBackType, Throwable e) {
 		for (Class<? extends Throwable> cls : noRollBackType) {
 			if (cls.isInstance(e)) {

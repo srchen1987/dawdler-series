@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.net.aio.handler;
+
 import java.io.IOException;
 import java.net.StandardSocketOptions;
 import java.nio.channels.AsynchronousServerSocketChannel;
@@ -27,70 +28,73 @@ import com.anywide.dawdler.server.bootstarp.DawdlerServer;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
 import com.anywide.dawdler.server.net.aio.session.SocketSession;
+
 /**
  * 
- * @Title:  AcceptorHandler.java
- * @Description:    aio接收请求的处理者  
- * @author: jackson.song    
- * @date:   2015年03月12日       
- * @version V1.0 
+ * @Title: AcceptorHandler.java
+ * @Description: aio接收请求的处理者
+ * @author: jackson.song
+ * @date: 2015年03月12日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChannel,DawdlerServerContext> {
+public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChannel, DawdlerServerContext> {
 	static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
 	private static ReaderHandler readerHandler = new ReaderHandler();
 	private DawdlerServerContext dawdlerServerContext;
-	@Override
-	public void completed(AsynchronousSocketChannel channel, DawdlerServerContext dawdlerServerContext) {
-			this.dawdlerServerContext=dawdlerServerContext;
-			AsynchronousServerSocketChannel serverChannel = dawdlerServerContext.getAsynchronousServerSocketChannel();
-			config(channel);
-			SocketSession socketSession = null;
-			try {
-				socketSession = new SocketSession(channel);
-				socketSession.setDawdlerServerContext(dawdlerServerContext);
-				readerHandler.new ReadProcessor(socketSession).run();
-			} catch (Exception e) {
-				logger.error("",e);
-				if(socketSession!=null)
-					socketSession.close(false);
-			}
-			if(serverChannel.isOpen()&&DawdlerServer.isStart()){
-				serverChannel.accept(dawdlerServerContext,this);
-			} 
-		}
 
 	@Override
-	public void failed(Throwable exc,DawdlerServerContext dawdlerServerContext) {
+	public void completed(AsynchronousSocketChannel channel, DawdlerServerContext dawdlerServerContext) {
+		this.dawdlerServerContext = dawdlerServerContext;
 		AsynchronousServerSocketChannel serverChannel = dawdlerServerContext.getAsynchronousServerSocketChannel();
-		if(serverChannel.isOpen()){
-			serverChannel.accept(dawdlerServerContext,this);
+		config(channel);
+		SocketSession socketSession = null;
+		try {
+			socketSession = new SocketSession(channel);
+			socketSession.setDawdlerServerContext(dawdlerServerContext);
+			readerHandler.new ReadProcessor(socketSession).run();
+		} catch (Exception e) {
+			logger.error("", e);
+			if (socketSession != null)
+				socketSession.close(false);
 		}
-		
+		if (serverChannel.isOpen() && DawdlerServer.isStart()) {
+			serverChannel.accept(dawdlerServerContext, this);
+		}
 	}
-	public void config(AsynchronousSocketChannel channel){
+
+	@Override
+	public void failed(Throwable exc, DawdlerServerContext dawdlerServerContext) {
+		AsynchronousServerSocketChannel serverChannel = dawdlerServerContext.getAsynchronousServerSocketChannel();
+		if (serverChannel.isOpen()) {
+			serverChannel.accept(dawdlerServerContext, this);
+		}
+
+	}
+
+	public void config(AsynchronousSocketChannel channel) {
 		Server server = dawdlerServerContext.getServerConfig().getServer();
 		try {
 			channel.setOption(StandardSocketOptions.TCP_NODELAY, server.isTcpNoDelay());
 		} catch (IOException e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
 
 		try {
 			channel.setOption(StandardSocketOptions.SO_KEEPALIVE, server.isTcpKeepAlive());
 		} catch (IOException e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
 		try {
-			channel.setOption(StandardSocketOptions.SO_SNDBUF,server.getTcpSendBuffer());
+			channel.setOption(StandardSocketOptions.SO_SNDBUF, server.getTcpSendBuffer());
 		} catch (IOException e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
 
 		try {
 			channel.setOption(StandardSocketOptions.SO_RCVBUF, server.getTcpReceiveBuffer());
 		} catch (IOException e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
 
 	}

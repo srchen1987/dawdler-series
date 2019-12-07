@@ -45,11 +45,6 @@ public class Transaction {
 	private List<Class> types = new ArrayList();
 	private List values=new ArrayList();
 	private DawdlerConnection con;
-	public Transaction(SocketSession socketSession,String path,int serializer) {
-//		this.socketSession = socketSession;
-		this.serializer = serializer;
-		this.path = path;
-	}
 	public Transaction(DawdlerConnection con) {
 		this.serializer = con.getSerializer();
 		this.path = con.getPath();
@@ -152,8 +147,9 @@ public class Transaction {
 	}
 	private Object innerExecute(boolean pure) throws Exception {
 		validate();
+		SocketSession socketSession = con.getSession();
 		RequestBean request = new RequestBean();
-//		request.setSeq(socketSession.getSequence());
+		request.setSeq(socketSession.getSequence());
 		request.setServiceName(serviceName);
 		request.setMethodName(method);
 		request.setPath(path);
@@ -164,15 +160,10 @@ public class Transaction {
 		Object obj = null;
 		if(pure) {
 			InvokeFuture<?> future = new InvokeFuture<>();
-			SocketSession socketSession = con.getSession();
 			socketSession.getFutures().put(request.getSeq(),future);
 			socketSession.getDawdlerConnection().write(path,request, socketSession);
 			obj = future.getResult(timeout, TimeUnit.SECONDS);
 		}else { 
-			
-			SocketSession socketSession = con.getSession();
-			
-			
 			obj = FilterProvider.doFilter(new RequestWrapper(request,socketSession,timeout));
 		}
 		return obj;
