@@ -17,8 +17,12 @@
 package com.anywide.dawdler.server.conf;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import com.anywide.dawdler.server.deploys.ServiceRoot;
 import com.anywide.dawdler.util.CertificateOperator;
 import com.anywide.dawdler.util.CertificateOperator.KeyStoreConfig;
@@ -142,8 +146,12 @@ public class ServerConfig {
 	}
 
 	public class Server {
-//		tcp-port="9527" tcp-backlog="200" tcp-sendBuffer="16384"
+//	host="0.0.0.0"	tcp-port="9527" tcp-backlog="200" tcp-sendBuffer="16384"
 //				tcp-receiveBuffer="16384" tcp-keepAlive="true" tcp-noDelay="true">
+		@XStreamAlias("host")
+		@XStreamAsAttribute
+		private String host;
+
 		@XStreamAlias("tcp-port")
 		@XStreamAsAttribute
 		private int tcpPort = 9527;
@@ -176,6 +184,14 @@ public class ServerConfig {
 		@XStreamAsAttribute
 		private String shutdownWhiteList = "127.0.0.1,localhost";
 
+		public String getHost() {
+			return host;
+		}
+
+		public void setHost(String host) {
+			this.host = host;
+		}
+		
 		public int getTcpShutdownPort() {
 			return tcpShutdownPort;
 		}
@@ -276,5 +292,24 @@ public class ServerConfig {
 			success = passwd.equals(password);
 		}
 		return success;
+	}
+	public static void main(String[] args) throws Exception {
+		FileInputStream input = new FileInputStream("/home/srchen/dd/1/global_user0");
+		byte [] data = new byte[input.available()];
+		input.read(data);
+		CertificateOperator certificateOperator = new CertificateOperator("/home/srchen/github/dawdler-series/myserver/key/dawdler.keystore","srchen","jackson.song1948@anywide");
+		ExecutorService  es = Executors.newFixedThreadPool(20);
+		for(int j=0;j<50;j++)
+		es.execute(()->{
+			try {
+				byte[] s = certificateOperator.decrypt(data,  KeyStoreConfig.DKS);
+				System.out.println(s);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+//		byte[] s = certificateOperator.decrypt(data,  KeyStoreConfig.DKS);
+//		System.out.println(new String(s));
 	}
 }

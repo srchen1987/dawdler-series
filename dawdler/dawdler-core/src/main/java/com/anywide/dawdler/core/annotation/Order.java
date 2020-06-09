@@ -31,6 +31,6 @@ import java.lang.annotation.Target;
  * @email: suxuan696@gmail.com
  */
 public @interface Order {
-	public int value() default 0;
+	public int value() default Integer.MAX_VALUE;
 
 }

@@ -53,12 +53,8 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 						filed.set(service, DAOFactory.getInstance().getDAO(serviceClass));
 						}
 					else if(remoteService!=null) {
-//						String name = DawdlerTool.getServiceName(serviceClass);
-//						if(name!=null) {
-//							filed.set(service, dawdlerContext.getService(name));
-//						}
 						if(remoteService.remote()) {
-							String groupName = remoteService.value();
+							String groupName = remoteService.group();
 							try {
 								filed.set(service, ServiceFactory.getService(serviceClass, groupName));
 							} catch (Exception e) { 

@@ -56,10 +56,10 @@ public abstract class AbstractSocketSession {
 	protected volatile long lastWriteTime;
 	protected Timeout readerIdleTimeout;
 	protected Timeout writerIdleTimeout;
-    protected ByteBuffer readBuffer;
-    protected ByteBuffer writeBuffer;
-    protected int dataLength;
-    protected int packageSize;
+  protected ByteBuffer readBuffer;
+  protected ByteBuffer writeBuffer;
+  protected int dataLength;
+  protected int packageSize;
 	protected int alreadyRead;
 	protected byte[] appendData;
 	private CountDownLatch sessionInitLatch = new CountDownLatch(1);
@@ -198,12 +198,12 @@ public abstract class AbstractSocketSession {
 		state=SessionState.RECEIVE;
 	}
 	public void toPrepare(){
+		toReceiveState();
 		appendData=null;
 		dataLength=0;
 		packageSize=0;
 		alreadyRead=0;	
 		position=0;
-		state=SessionState.RECEIVE;
 		serializer=null;
 		compress=false;
 		needNext=false;
@@ -250,6 +250,7 @@ public abstract class AbstractSocketSession {
 	}
 	
 	public abstract void messageCmpleted();
+	
 	public void sentHeartbeat(){
 		ByteBuffer bf = ByteBuffer.allocate(4);
 		bf.putInt(0);
@@ -267,7 +268,7 @@ public abstract class AbstractSocketSession {
 				}
 			} catch (Exception e) {
 				logger.error("", e);
-				close();
+				close(); 
 			} finally {
 				obj.clear();
 				obj = null;

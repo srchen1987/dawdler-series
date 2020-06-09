@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
@@ -66,17 +68,10 @@ public class ServiceRoot {
 		return new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
 	}
 
-	private URL[] getLibURL() throws MalformedURLException {
+	private URL[] getLibURL() throws MalformedURLException { 
 		return PathUtils.getLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH), null);
 	}
 
-//	public static ServicesBean getService(String path,String name){
-//		Service sb = services.get(path);
-//		if(sb==null)return null;
-//		Thread.currentThread().setContextClassLoader(sb.getDawdlerContext().getClassLoader());
-//		DawdlerContext.setDawdlerContext(sb.getDawdlerContext());
-//		return sb.getServiesBean(name); 
-//	}
 	public static Service getService(String path) {
 		Service sb = services.get(path);
 		if (sb == null)
@@ -94,22 +89,23 @@ public class ServiceRoot {
 		if (files.length > 0) {
 			ExecutorService es = Executors.newCachedThreadPool();
 			ClassLoader classLoader = createServerClassLoader();
-			if (classLoader != null) {
+			if (classLoader != null) { 
 				try {
 					DataSourceNamingInit.init(classLoader);
 				} catch (ClassNotFoundException | NamingException | InstantiationException | IllegalAccessException e) {
 					logger.error("", e);
 				}
 			}
+			Server server =  dawdlerServerContext.getServerConfig().getServer();
 			for (File f : files) {
 				if (f.isDirectory()) {
 					es.execute(() -> {
 						String deployName = f.getName();
 						try {
-							long serviceStart = System.currentTimeMillis();
-							Service service = new ServiceBase(f, classLoader);
+							long serviceStart = System.currentTimeMillis(); 
+							Service service = new ServiceBase(f,server.getHost(),server.getTcpPort(),classLoader);
 							services.put(deployName, service);
-							service.start();
+							service.start(); 
 							long serviceEnd = System.currentTimeMillis();
 							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
 						} catch (Exception e) {
@@ -129,8 +125,15 @@ public class ServiceRoot {
 				return;
 			}
 			long end = System.currentTimeMillis();
-			System.out.println("Server startup in " + (end - start) + " ms!");
-
+			System.out.println("Server startup in " + (end - start) + " ms,Listening port: "+dawdlerServerContext.getServerConfig().getServer().getTcpPort()+"!");
 		}
 	}
+	
+	
+	public void destroyedApplication() {
+		services.values().forEach(v->{
+			v.stop();
+		});
+	}
+	
 }

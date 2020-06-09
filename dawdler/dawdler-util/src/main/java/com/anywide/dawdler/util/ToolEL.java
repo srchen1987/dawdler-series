@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 /**
  * 
  * @Title:  ToolEL.java
- * @Description:    通过反射实现的建议版EL语言，只建议在配置中使用
+ * @Description:    通过反射实现的简易版EL语言，只建议在配置中使用
  * @author: jackson.song    
  * @date:   2006年03月26日    
  * @version V1.0 

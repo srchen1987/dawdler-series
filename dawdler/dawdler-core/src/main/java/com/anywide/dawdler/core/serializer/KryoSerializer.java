@@ -45,6 +45,7 @@ public class KryoSerializer implements Serializer {
 			kryo = new Kryo();
 			kryo.setReferences(true);
 			kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+			
 //			  ((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
 //              .setFallbackInstantiatorStrategy(new StdInstantiatorStrategy());
 //			input = new UnsafeInput();

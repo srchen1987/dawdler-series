@@ -49,7 +49,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 	private static ConcurrentHashMap<String, RequestUrlData> urlRules = new ConcurrentHashMap<String, RequestUrlData>();
 	private static AntPathMatcher antPathMatcher = new AntPathMatcher();
 	public boolean handleUrl(String urishort, String httpMethod,
-			HttpServletRequest request, HttpServletResponse response) {
+			HttpServletRequest request, HttpServletResponse response) throws ServletException{
 		Set<Entry<String, RequestUrlData>> set = urlRules.entrySet();
 		Map<String, String> variables = new LinkedHashMap<String, String>();
 		for (Entry<String, RequestUrlData> entry : set) {

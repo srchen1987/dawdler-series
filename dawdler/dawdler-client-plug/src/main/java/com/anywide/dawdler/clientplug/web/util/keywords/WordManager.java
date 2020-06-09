@@ -65,7 +65,6 @@ public class WordManager {
 		return kwfile.lastModified()!=lastModified.get();
 	}
 	private void loadFile() throws IOException{
-		System.out.println(Thread.currentThread()+"\tload file....");
 		this.lastModified.compareAndSet(lastModified.get(),kwfile.lastModified());
 		FileInputStream fin = new FileInputStream(kwfile);
 		InputStreamReader in = new InputStreamReader(fin);
