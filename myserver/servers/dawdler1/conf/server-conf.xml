@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<scanner>
-		<file>dawdler-server-plug-0.0.1-SNAPSHOT.jar</file>
+		<file>dawdler-server-plug-0.0.1-RELEASES.jar</file>
 	</scanner>
 	<keyStore keyStorePath="${DAWDLER_BASE_PATH}key/dawdler.keystore" alias="srchen" password="jackson.song1948@anywide"></keyStore>
 	<server tcp-port="9527" shutdownWhiteList="127.0.0.1,localhost"

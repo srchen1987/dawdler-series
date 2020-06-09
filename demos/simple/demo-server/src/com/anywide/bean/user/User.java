@@ -48,5 +48,4 @@ public class User implements Serializable{
 		this.sex = sex;
 	}
 	
-	
 }

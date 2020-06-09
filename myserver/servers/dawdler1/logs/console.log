@@ -1,0 +1,82 @@
+16:50:28,561 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+16:50:28,561 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+16:50:28,562 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/home/srchen/%e6%a1%8c%e9%9d%a2/dawdler/servers/dawdler1/bin/logback.xml]
+16:50:28,726 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - Will scan for changes in [file:/home/srchen/%e6%a1%8c%e9%9d%a2/dawdler/servers/dawdler1/bin/logback.xml] 
+16:50:28,727 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - Setting ReconfigureOnChangeTask scanning period to 1 minutes
+16:50:28,732 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+16:50:28,736 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [DEBUG]
+16:50:28,766 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@555590 - No compression will be used
+16:50:28,767 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@555590 - Large window sizes are not allowed.
+16:50:28,767 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@555590 - MaxIndex reduced to 21
+16:50:28,771 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+16:50:28,798 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[DEBUG] - Active log file name: /home/srchen/logs/debug_server.log
+16:50:28,799 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[DEBUG] - File property is set to [/home/srchen/logs/debug_server.log]
+16:50:28,800 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+16:50:28,800 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [INFO]
+16:50:28,802 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@1ae369b7 - No compression will be used
+16:50:28,802 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@1ae369b7 - Large window sizes are not allowed.
+16:50:28,802 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@1ae369b7 - MaxIndex reduced to 21
+16:50:28,803 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+16:50:28,805 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[INFO] - Active log file name: /home/srchen/logs/info_server.log
+16:50:28,805 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[INFO] - File property is set to [/home/srchen/logs/info_server.log]
+16:50:28,806 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+16:50:28,806 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [WARN]
+16:50:28,808 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@6fffcba5 - No compression will be used
+16:50:28,809 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@6fffcba5 - Large window sizes are not allowed.
+16:50:28,809 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@6fffcba5 - MaxIndex reduced to 21
+16:50:28,812 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+16:50:28,813 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[WARN] - Active log file name: /home/srchen/logs/warn_server.log
+16:50:28,813 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[WARN] - File property is set to [/home/srchen/logs/warn_server.log]
+16:50:28,813 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+16:50:28,814 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [ERROR]
+16:50:28,815 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@34340fab - No compression will be used
+16:50:28,815 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@34340fab - Large window sizes are not allowed.
+16:50:28,815 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@34340fab - MaxIndex reduced to 21
+16:50:28,816 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+16:50:28,818 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[ERROR] - Active log file name: /home/srchen/logs/error_server.log
+16:50:28,818 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[ERROR] - File property is set to [/home/srchen/logs/error_server.log]
+16:50:28,818 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+16:50:28,818 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [SERVERCONSOLE]
+16:50:28,819 |-INFO in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@2aafb23c - No compression will be used
+16:50:28,819 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@2aafb23c - Large window sizes are not allowed.
+16:50:28,819 |-WARN in ch.qos.logback.core.rolling.FixedWindowRollingPolicy@2aafb23c - MaxIndex reduced to 21
+16:50:28,820 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+16:50:28,822 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[SERVERCONSOLE] - Active log file name: ../logs/console.log
+16:50:28,822 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[SERVERCONSOLE] - File property is set to [../logs/console.log]
+16:50:28,823 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [system.out] to INFO
+16:50:28,823 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting additivity of logger [system.out] to false
+16:50:28,823 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [SERVERCONSOLE] to Logger[system.out]
+16:50:28,823 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to DEBUG
+16:50:28,824 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [INFO] to Logger[ROOT]
+16:50:28,824 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [WARN] to Logger[ROOT]
+16:50:28,824 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [ERROR] to Logger[ROOT]
+16:50:28,824 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+16:50:28,825 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@28864e92 - Registering current configuration as safe fallback point
+demo_one启动。。。。
+---new----com.mchange.v2.c3p0.ComboPooledDataSource[ identityToken -> z8kfltaa14tkvnulr9bkm|7ee8290b, dataSourceName -> z8kfltaa14tkvnulr9bkm|7ee8290b ]
+what?.....................!com.anywide.listener.ListenerOne@7e1b5dce
+mydemo startup failed!
+Server startup in 1068 ms,Listening port: 9527!
+Exception in thread "main" java.net.BindException: 地址已在使用
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.AsynchronousServerSocketChannelImpl.bind(AsynchronousServerSocketChannelImpl.java:162)
+	at com.anywide.dawdler.server.bootstarp.DawdlerServer.<init>(DawdlerServer.java:80)
+	at com.anywide.dawdler.server.bootstarp.Bootstrap.main(Bootstrap.java:63)
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/
+file:/home/srchen/桌面/dawdler/servers/dawdler1/deploys/mydemo/classes/

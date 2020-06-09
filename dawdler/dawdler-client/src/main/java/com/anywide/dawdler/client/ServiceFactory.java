@@ -17,6 +17,8 @@
 package com.anywide.dawdler.client;
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
+import org.apache.commons.lang.StringUtils;
+import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.annotation.RemoteService;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -60,10 +62,13 @@ public class ServiceFactory {
 	private static class CglibInterceptor implements MethodInterceptor {
 		private String groupName;
 		private String serviceName;
+		private Class delegate;
+		private boolean fuzzy;
 		private int timeout;
 		CglibInterceptor(Class<?> delegate,String groupName) {
 			this.groupName = groupName;
 			getServiceName(delegate);
+			this.delegate = delegate;
 		}
 		private void getServiceName(Class<?> delegate) {
 			String serviceName = null;
@@ -71,8 +76,9 @@ public class ServiceFactory {
 			if(rs!=null) {
 				serviceName =rs.value();
 				timeout = rs.timeout();
+				fuzzy=rs.fuzzy();
 			} 
-			if(serviceName==null||serviceName.equals("")) {
+			if(StringUtils.isBlank(serviceName)) {
 				serviceName = delegate.getName();
 			}
 			this.serviceName =  serviceName;
@@ -82,13 +88,14 @@ public class ServiceFactory {
 			Transaction tr = TransactionProvider.getTransaction(groupName);
 			tr.setMethod(method.getName());
 			tr.setServiceName(serviceName);
-			tr.setFuzzy(true);
+			tr.setFuzzy(fuzzy);
 			tr.setTimeout(timeout);
-			if (objects != null) {
-				for (Object obj : objects) {
-					Class<?> clazz = obj.getClass();
-					tr.addObjectParam(clazz, obj);
-				}
+			tr.setCircuitBreaker(method.getAnnotation(CircuitBreaker.class));
+			tr.setProxyInterface(delegate);
+			Class<?>[] types = method.getParameterTypes();
+			for (int i = 0; i < types.length; i++) {
+				Class<?> typeClass = types[i];
+				tr.addObjectParam(typeClass, objects[i]);
 			}
 			return tr.executeResult();
 		}

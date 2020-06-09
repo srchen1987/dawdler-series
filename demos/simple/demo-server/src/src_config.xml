@@ -3,10 +3,10 @@
 <datasources>
 <!-- 数据源配置 根据不同的数据库连接池进行配置即可 -->
 <datasource id="read1" code="com.mchange.v2.c3p0.ComboPooledDataSource">
-      <attribute name="JdbcUrl">jdbc:mysql://localhost:3306/welife_community?characterEncoding=utf8&amp;useSSL=false</attribute>
+      <attribute name="JdbcUrl">jdbc:mysql://127.0.0.1:3306/welife_community?characterEncoding=utf8&amp;useSSL=false</attribute>
       <attribute name="DriverClass">com.mysql.cj.jdbc.Driver</attribute>
       <attribute name="User">root</attribute>
-      <attribute name="Password">12345678</attribute>
+      <attribute name="Password">123456</attribute>
 
       <!-- Uncomment and set any of the optional parameters below -->
       <!-- See c3p0's docs for more info.                         -->
@@ -45,4 +45,9 @@
 <datasource_expression id="test1" latent_expression="write=[read1],read=[read1|read1]"/><!-- 数据源表达式配置  id为标识 latent_expression为读写配置 其中write为写连接 read为读连接 读连接可以配置多个用|分开 轮询方式调用 -->
 <decision mapping="com.anywide.service.user.impl" latent_expression="test1" /><!-- mapping 需要注入数据源的service包   latent_expression 为数据源表达式配置中的id -->
 <remote_load package="${classpath}/com/anywide/load/loadconfig.xml"></remote_load><!-- 远端加载类模版的配置文件-->
+
+<server-datas>
+<server-data id="discoveryServer" type="zk" url="localhost:2181">目前只支持zk</server-data>
+</server-datas>
+
 </config>

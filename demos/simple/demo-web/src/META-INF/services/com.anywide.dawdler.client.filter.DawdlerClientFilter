@@ -1,1 +1,2 @@
 com.anywide.dawdler.client.filter.AccessFilter
+com.anywide.dawdler.breaker.filter.CircuitBreakerFilter

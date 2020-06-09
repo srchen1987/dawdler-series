@@ -1,9 +1,13 @@
 package com.anywide.service.user.impl;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Resource;
+
 import com.anywide.bean.user.User;
 import com.anywide.dao.user.UserDAO;
 import com.anywide.dawdler.serverplug.annotation.DBTransaction;
@@ -18,12 +22,20 @@ public class UserServiceImpl implements UserService{
 	@DBTransaction(mode=MODE.forceReadOnWrite,propagation=Propagation.REQUIRED)
 	public Map<String, Object> selectList(Map<String, Object> map) throws SQLException {
 		int pageon = Integer.parseInt(map.get("pageon")+"");
+		if(pageon==2)throw new RuntimeException("error!");
+		if(pageon==3) {
+			try {
+				Thread.sleep(15000);
+			} catch (InterruptedException e) {
+			}
+		}
 		int row  = Integer.parseInt(map.get("row")+"");
 		Page page = new Page(pageon, row);
 		List<User> userList = userDAO.selectUserList(page);
 		Map<String,Object> resultMap =new HashMap<String,Object>();
 		resultMap.put("userList", userList);
 		resultMap.put("page", page);
+		System.out.println(Thread.currentThread().getContextClassLoader().getResource(""));
 		return resultMap;
 	}
 
@@ -67,4 +79,10 @@ public class UserServiceImpl implements UserService{
 		return result;
 	}
 
+	@Override
+	public String hello(int userId) throws SQLException {
+//		System.out.println(LocalConnectionFacotry.getReadConnection());
+		return "hello"+userId;
+	}
+	
 }

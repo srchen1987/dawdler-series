@@ -19,7 +19,7 @@
 			<version>5.2</version>
 		</dependency>
 		<dependency>
-			<groupId>jaxen</groupId>
+			<groupId>jaxen</groupId> 
 			<artifactId>jaxen</artifactId>
 			<version>1.1.6</version>
 		</dependency>

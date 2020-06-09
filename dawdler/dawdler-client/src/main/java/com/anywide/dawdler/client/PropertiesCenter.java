@@ -32,18 +32,19 @@ import com.anywide.dawdler.client.conf.ClientConfigParser;
 /**
  * 
  * @Title: PropertiesCenter.java
- * @Description: 配置中心，目前采用zookeeper
- * @author: jackson.song
+ * @Description: 配置中心，目前采用zookeeper  update  此类淘汰了 请参考DiscoveryCenter接口
+ * @author: jackson.song 
  * @date: 2015年03月18日
  * @version V1.0
  * @email: suxuan696@gmail.com
  */
+@Deprecated
 public class PropertiesCenter {
 	private static Logger logger = LoggerFactory.getLogger(PropertiesCenter.class);
 	private static PropertiesCenter instance = new PropertiesCenter();
 	private static final String ROOTPATH = "/dawdler";
 	private TreeCache treeCache = null;
-	private static CuratorFramework client;
+	private CuratorFramework client;
 
 	private PropertiesCenter() {
 		ClientConfig clientConfig = ClientConfigParser.getClientConfig();
@@ -53,7 +54,7 @@ public class PropertiesCenter {
 		client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
 		client.start();
 		try {
-			initListenter();
+			initListener();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
@@ -67,7 +68,7 @@ public class PropertiesCenter {
 		return new String(client.getData().forPath(ROOTPATH + "/" + path));
 	}
 
-	private void initListenter() throws Exception {
+	private void initListener() throws Exception {
 		treeCache = new TreeCache(client, ROOTPATH);
 		treeCache.getListenable().addListener(new TreeCacheListener() {
 			@Override
@@ -87,7 +88,7 @@ public class PropertiesCenter {
 						String gid = data.getPath().replace(ROOTPATH + "/", "");
 						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 						if (cp != null) {
-							cp.doChange("update", new String(data.getData()), gid);
+							cp.doChange(gid,"update", new String(data.getData()));
 						}
 						break;
 					}

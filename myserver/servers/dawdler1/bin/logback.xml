@@ -1,5 +1,5 @@
 <configuration debug="true" scan="true" scanPeriod="60 seconds">  
-	<property name="log_dir" value="/Users/srchen/Desktop/logs/" />
+	<property name="log_dir" value="/home/srchen/logs/" />
 	<!-- 日志最大的历史 30天 -->
 	<property name="maxHistory" value="30" />
   <!-- 

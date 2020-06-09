@@ -16,11 +16,12 @@
  */
 package com.anywide.dawdler.client.filter;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
+import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * 
  * @Title:  RequestWrapper.java
- * @Description:    TODO   
+ * @Description:    一个request的包装类   
  * @author: jackson.song    
  * @date:   2015年04月06日     
  * @version V1.0 
@@ -31,7 +32,11 @@ public class RequestWrapper extends RequestBean{
 	private SocketSession session;
 	private RequestBean request;
 	private int timeout;
-	public RequestWrapper(RequestBean request,SocketSession session,int timeout) {
+	
+	private CircuitBreaker circuitBreaker;
+	private Class proxyInterface;
+	
+	public RequestWrapper(RequestBean request,SocketSession session,CircuitBreaker circuitBreaker,Class proxyInterface,int timeout) {
 		super.setSeq(request.getSeq());
 		super.setServiceName(request.getServiceName());
 		super.setMethodName(request.getMethodName());
@@ -42,8 +47,18 @@ public class RequestWrapper extends RequestBean{
 		this.timeout = timeout;
 		this.request = request;
 		this.session = session;
+		this.circuitBreaker = circuitBreaker;
+		this.proxyInterface = proxyInterface;
 	}
 	
+	public Class getProxyInterface() {
+		return proxyInterface;
+	}
+
+	public CircuitBreaker getCircuitBreaker() {
+		return circuitBreaker;
+	}
+
 	RequestBean getRequest() {
 		return request;
 	}

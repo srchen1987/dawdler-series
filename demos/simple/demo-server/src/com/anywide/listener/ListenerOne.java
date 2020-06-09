@@ -1,5 +1,7 @@
 package com.anywide.listener;
 import javax.naming.NamingException;
+
+import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 import com.anywide.dawdler.serverplug.transaction.LocalConnectionFacotry;
@@ -11,12 +13,13 @@ import com.anywide.dawdler.serverplug.transaction.LocalConnectionFacotry;
 public class ListenerOne implements DawdlerServiceListener{
 	@Override
 	public void contextDestroyed(DawdlerContext dawdlerContext) {
+		System.out.println("what?.....................!"+this);
 	}
 
 	@Override
 	public void contextInitialized(DawdlerContext dawdlerContext) {
 		System.out.println("demo_one启动。。。。");
-	try {
+		try {
 		//获取数据源
 		System.out.println("---new----"+LocalConnectionFacotry.getDataSourceInDawdler("read1"));
 	} catch (NamingException e) {

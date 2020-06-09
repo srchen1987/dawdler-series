@@ -39,8 +39,6 @@ import com.anywide.dawdler.util.DawdlerTool;
 public class DataAutomaticNewV2 {
 	private static final Map<String, Class[]> dataTypes = new HashMap<String, Class[]>();
 	private static final ConcurrentHashMap<Class, Map<String, Method>> cacheMethod = new java.util.concurrent.ConcurrentHashMap<Class, Map<String, Method>>();
-	// private static java.text.SimpleDateFormat sdf = new
-	// java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	static {
 		init();
 	}

@@ -39,6 +39,21 @@ public class UserController extends TransactionController{
 		setTemplatePath("user/list.html");
 	}
 	
+	//viewType 有三种展现方式用于前端显示 json velocity jsp 
+	@RequestMapping(value="/listJson.html" ,viewType=ViewType.json)
+	public void userListJson() throws Exception  {
+		System.out.println("hello world");
+		
+		int pageon = paramInt("pageon");
+		int row = paramInt("row",10);
+		Map<String,Object>  map=new HashMap<String,Object>();
+		map.put("pageon", pageon);
+		map.put("row", row);
+		Map<String,Object> resultMap = userService.selectList(map);
+		setData(resultMap);
+	}
+	
+	
 	/**
 	 * 查询详情
 	 * @throws SQLException

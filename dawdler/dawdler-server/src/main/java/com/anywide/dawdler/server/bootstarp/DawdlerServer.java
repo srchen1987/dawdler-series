@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.util.concurrent.Executors;
@@ -36,6 +37,7 @@ import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
 import com.anywide.dawdler.server.net.aio.handler.AcceptorHandler;
+import com.anywide.dawdler.util.NetworkUtil;
 
 /**
  * 
@@ -66,16 +68,24 @@ public class DawdlerServer {
 		Server server = serverConfig.getServer();
 		int port = server.getTcpPort();
 		int backlog = server.getTcpBacklog();
+		String host = server.getHost();
 		serverChannel = AsynchronousServerSocketChannel.open(asynchronousChannelGroup);
-		serverChannel.bind(new InetSocketAddress(port), backlog);
+		String addressString = NetworkUtil.getInetAddress(host);
+		if(addressString==null) {
+			throw new UnknownHostException("server-conf.xml server host :  "+server.getHost());
+		} 
+		server.setHost(addressString);
+		dawdlerServerContext.initApplication(); 
+		InetSocketAddress address = new InetSocketAddress(addressString,port);
+		serverChannel.bind(address, backlog);
 		dawdlerServerContext.setAsynchronousServerSocketChannel(serverChannel);
 	}
 
 	public void await() {
 		try {
 			asynchronousChannelGroup.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-		} catch (InterruptedException e1) {
-			logger.error("", e1);
+		} catch (InterruptedException e) {
+			logger.error("", e);
 		}
 
 	}
@@ -90,6 +100,7 @@ public class DawdlerServer {
 		String[] shutdownWhiteListArray = shutdownWhiteList.split(",");
 		ServerSocket sk = null;
 		Socket socket = null;
+		BufferedReader br = null;
 		boolean closed = false;
 		try {
 			sk = new ServerSocket(port, 2);
@@ -108,11 +119,11 @@ public class DawdlerServer {
 					}
 					socket.setSoTimeout(300);
 					InputStream input = socket.getInputStream();
-					BufferedReader br = new BufferedReader(new InputStreamReader(input));
+					br = new BufferedReader(new InputStreamReader(input));
 					String command = br.readLine();
 					if (command != null) {
 						if ("stop".equals(command.trim())) {
-							shutdown();
+							shutdown();  
 							closed = true;
 							return;
 						} else if ("stopnow".equals(command.trim())) {
@@ -125,6 +136,7 @@ public class DawdlerServer {
 					logger.error("", e);
 				} finally {
 					try {
+						if(br!=null)br.close();
 						socket.close();
 					} catch (IOException e) {
 					}
@@ -156,7 +168,7 @@ public class DawdlerServer {
 				}
 			});
 			new Thread(new Waiter(this)).start();
-			new Thread(new Closer()).start();
+			new Thread(new Closer()).start(); 
 		}
 
 	}
@@ -167,13 +179,14 @@ public class DawdlerServer {
 
 	public void shutdownNow() throws IOException {
 		if (started.compareAndSet(true, false)) {
+			dawdlerServerContext.destroyedApplication();
 			ServerConnectionManager.getInstance().closeNow();
 			DataProcessWorkerPool.getInstance().shutdownNow();
+			if (serverChannel.isOpen())
+				serverChannel.close();
 			if (!asynchronousChannelGroup.isShutdown()) {
 				asynchronousChannelGroup.shutdownNow();
 			}
-			if (serverChannel.isOpen())
-				serverChannel.close();
 		}
 	}
 
@@ -181,19 +194,25 @@ public class DawdlerServer {
 		if (started.compareAndSet(true, false)) {
 			ServerConnectionManager sm = ServerConnectionManager.getInstance();
 			while (sm.hasTask()) {
-				sm.close();
+//				sm.close();  
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
 				}
-			}
+			} 
+			
+			dawdlerServerContext.destroyedApplication();
 			sm.closeNow();
 			DataProcessWorkerPool.getInstance().shutdown();
-			if (!asynchronousChannelGroup.isShutdown()) {
-				asynchronousChannelGroup.shutdown();
-			}
 			if (serverChannel.isOpen())
 				serverChannel.close();
+			
+			if (!asynchronousChannelGroup.isShutdown()) {
+				asynchronousChannelGroup.shutdown();
+			} 
+		
+			dawdlerServerContext.destroyedApplication();
+			
 		}
 	}
 

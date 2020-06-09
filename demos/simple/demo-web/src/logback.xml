@@ -1,4 +1,7 @@
 ﻿<configuration debug="true" scan="true" scanPeriod="60 seconds">  
+	<property name="log_dir" value="/home/srchen/logs/" />
+	<!-- 日志最大的历史 30天 -->
+	<property name="maxHistory" value="30" />
   <!-- 
 <contextListener class="my.listener.Demo" />  --> 
  
@@ -7,10 +10,10 @@
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %c - %L %msg%n</pattern> 
     </encoder> 
   </appender>  -->
- <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">   
-    <file>/Users/srchen/Desktop/logs/debug_webclient.log</file>   
+ <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+    <file>${log_dir}debug_client.log</file>   
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">   
-      <fileNamePattern>/Users/srchen/Desktop/logs/debug_webclient.%i.log</fileNamePattern>   
+      <fileNamePattern>${log_dir}debug_client.%i.log</fileNamePattern>   
       <minIndex>1</minIndex>   
       <maxIndex>30</maxIndex>   
     </rollingPolicy>   
@@ -22,12 +25,16 @@
      <!-- <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>   -->  
      <!-- %d{HH:mm:ss.SSS} [%thread] %-5level %c %L - %msg%n -->
     </encoder>   
+    <filter class="ch.qos.logback.classic.filter.LevelFilter">  
+    <level>DEBUG</level>  
+    <onMatch>ACCEPT</onMatch>  
+    <onMismatch>DENY</onMismatch>  
+	</filter>  
   </appender>   
- 
- <appender name="SERVERCONSOLE" class="ch.qos.logback.core.rolling.RollingFileAppender">   
-    <file>../logs/console.log</file>   
+  <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+    <file>${log_dir}info_client.log</file>   
     <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">   
-      <fileNamePattern>../logs/console.%i.log</fileNamePattern>   
+      <fileNamePattern>${log_dir}info_client.%i.log</fileNamePattern>   
       <minIndex>1</minIndex>   
       <maxIndex>30</maxIndex>   
     </rollingPolicy>   
@@ -35,18 +42,66 @@
       <maxFileSize>50MB</maxFileSize>   
     </triggeringPolicy>   
     <encoder>   
-    <pattern>%msg</pattern>
+    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %c -  %L %msg%n</pattern>
      <!-- <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>   -->  
      <!-- %d{HH:mm:ss.SSS} [%thread] %-5level %c %L - %msg%n -->
     </encoder>   
+     <filter class="ch.qos.logback.classic.filter.LevelFilter">  
+    <level>INFO</level>  
+    <onMatch>ACCEPT</onMatch>  
+    <onMismatch>DENY</onMismatch>  
+	</filter>  
   </appender>   
  
-  <logger name="system.out" level="INFO" additivity="false">
-  <appender-ref ref="SERVERCONSOLE" /> 
-  </logger>
-  <root level="INFO">           
-   <!--  <appender-ref ref="STDOUT" />  -->
-    <appender-ref ref="FILE" /> 
+ 
+   <appender name="WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+    <file>${log_dir}warn_client.log</file>   
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">   
+      <fileNamePattern>${log_dir}warn_client.%i.log</fileNamePattern>   
+      <minIndex>1</minIndex>   
+      <maxIndex>30</maxIndex>   
+    </rollingPolicy>   
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">   
+      <maxFileSize>50MB</maxFileSize>   
+    </triggeringPolicy>   
+    <encoder>   
+    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %c -  %L %msg%n</pattern>
+     <!-- <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>   -->  
+     <!-- %d{HH:mm:ss.SSS} [%thread] %-5level %c %L - %msg%n -->
+    </encoder>   
+     <filter class="ch.qos.logback.classic.filter.LevelFilter">  
+    <level>WARN</level>  
+    <onMatch>ACCEPT</onMatch>  
+    <onMismatch>DENY</onMismatch>  
+	</filter>  
+  </appender>   
+  <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">   
+    <file>${log_dir}error_client.log</file>   
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">   
+      <fileNamePattern>${log_dir}error_client.%i.log</fileNamePattern>   
+      <minIndex>1</minIndex>   
+      <maxIndex>30</maxIndex>   
+    </rollingPolicy>   
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">   
+      <maxFileSize>50MB</maxFileSize>   
+    </triggeringPolicy>   
+    <encoder>   
+    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %c -  %L %msg%n</pattern>
+     <!-- <pattern>%-4relative [%thread] %-5level %logger{35} - %msg%n</pattern>   -->  
+     <!-- %d{HH:mm:ss.SSS} [%thread] %-5level %c %L - %msg%n -->
+    </encoder>   
+     <filter class="ch.qos.logback.classic.filter.LevelFilter">  
+    <level>ERROR</level>  
+    <onMatch>ACCEPT</onMatch>  
+    <onMismatch>DENY</onMismatch>  
+	</filter>  
+  </appender>   
+ 
+  
+  <root level="DEBUG">           
+    <appender-ref ref="INFO" /> 
+    <appender-ref ref="WARN" /> 
+    <appender-ref ref="ERROR" /> 
   </root>   
    
  </configuration>

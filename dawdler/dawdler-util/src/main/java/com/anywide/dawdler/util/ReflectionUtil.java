@@ -21,7 +21,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-import com.anywide.util.reflectasm.MethodAccess;
+
+import com.anywide.dawdler.util.reflectasm.MethodAccess;
 /**
  * 
  * @Title:  ReflectionUtil.java
@@ -54,7 +55,6 @@ public class ReflectionUtil {
 		MethodAccess methodAccess = methodAccessCache.get(objectClass);
 		if(methodAccess==null){
 			methodAccess = MethodAccess.get(objectClass);
-			methodAccessCache.put(objectClass, methodAccess);
 			MethodAccess preMethodAccess =methodAccessCache.putIfAbsent(objectClass, methodAccess);
 			if(preMethodAccess!=null)methodAccess=preMethodAccess;
 		}
@@ -63,40 +63,6 @@ public class ReflectionUtil {
 	public static int getMethodIndex(MethodAccess methodAccess,String methodName,Class ...paramTypes) {
 		return methodAccess.getIndex(methodName, paramTypes);
 	}
-//	public static Object invokeNative(Object object, String methodName, Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException {
-//		if (object == null) {
-//			throw new IllegalArgumentException("object can not be null.");
-//		}
-//		if (methodName == null || "".equals(methodName)) {
-//			throw new IllegalArgumentException("methodName can not be null or empty.");
-//		}
-//		Method method ;
-//			Class<?>[] parameterTypes;
-//			if (args == null || args.length == 0) {
-//				parameterTypes = new Class[0];
-//			} else {
-//				parameterTypes = new Class[args.length];
-//				for (int i = 0; i < args.length; i++) {
-//					if (args[i] != null) {
-//						parameterTypes[i] = args[i].getClass();
-//					}
-//				}
-//			} 
-//				 method  = MethodUtils.getMatchingAccessibleMethod(object.getClass(), methodName, parameterTypes);
-//				if (method == null) {
-//					throw new NoSuchMethodException("class " + object.getClass() + " has no method with name " + methodName
-//							+ " matchs parameters:" + args);
-//				}
-//			method.setAccessible(true);
-//			return method.invoke(object, args);
-////			MethodAccess methodAccess = methodAccessCache.get(object.getClass());
-////			if(methodAccess==null){
-////				methodAccess = MethodAccess.get(object.getClass());
-////				methodAccessCache.put(object.getClass(), methodAccess);
-////			}
-////			return methodAccess.invoke(object, methodName, args);
-//		
-//	}
 
 	public static Object invoke(Object object, Method method, Object... args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 			return method.invoke(object, args);
@@ -122,7 +88,6 @@ public class ReflectionUtil {
 				return false;
 			}
 		}
-
 		return null;
 	}
 

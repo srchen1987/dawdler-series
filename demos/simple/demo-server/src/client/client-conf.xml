@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 <zk_host>localhost:2181</zk_host><!-- zookeeeper的地址 -->
-<certificatePath>/Users/srchen/key/dawdler.cer</certificatePath><!-- 公钥路径  -->
+<certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath><!-- 公钥路径  -->
 <server-channel-group channel-group-id="defaultgroup"
  service-path="mydemo" connection-num="1"
  session-num="2" serializer="1"

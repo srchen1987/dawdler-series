@@ -4,7 +4,7 @@
 <certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath><!-- 公钥路径  -->
 <server-channel-group channel-group-id="defaultgroup"
  service-path="mydemo" connection-num="1"
- session-num="2" serializer="1"
+ session-num="4" serializer="2"
   user="global_user" password="song">
 </server-channel-group> 
 <!-- 

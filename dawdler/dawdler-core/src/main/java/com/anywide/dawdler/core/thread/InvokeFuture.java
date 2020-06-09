@@ -54,14 +54,7 @@ public class InvokeFuture<V> {
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			} 
-			/*synchronized (this) {
-				try {
-					wait();
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}*/
+		 
 		}
 		if (cause != null) {
 			if (cause instanceof DawdlerOperateException) {
@@ -69,7 +62,6 @@ public class InvokeFuture<V> {
 			}
 			throw new DawdlerOperateException(cause);
 		}
-		//
 		return this.result;
 	}
 
@@ -77,9 +69,6 @@ public class InvokeFuture<V> {
 		this.result = result;
 		done.set(true);
 		success.set(true);
-		/*synchronized (this) {
-				notify();
-		}*/
 		semaphore.release();
 	}
 
@@ -87,7 +76,7 @@ public class InvokeFuture<V> {
 		if (!isDone()) {
 			try {
 				if (!semaphore.tryAcquire(timeout, unit)) {
-					setCause(new TimeoutException("time out."));
+					setCause(new TimeoutException("get result time out,"+timeout+"\t"+unit+"!"));
 				}
 			} catch (InterruptedException e) {
 				throw new DawdlerOperateException(e);
@@ -124,5 +113,8 @@ public class InvokeFuture<V> {
 	public void setChannel(Channel channel) {
 		this.channel = channel;
 	}
+	
+	
+	
 	
 }

@@ -30,7 +30,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @email: suxuan696@gmail.com
  */
 public class JsonProcessUtil {
-	private static ObjectMapper mapper = new ObjectMapper();;
+	private static ObjectMapper mapper = new ObjectMapper();
 
 	public static ObjectMapper getMapperInstance() {
 		return mapper;

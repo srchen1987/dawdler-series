@@ -124,7 +124,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 			ps.put("file.resource.loader.path",path);
 			ps.put("file.resource.loader.cache", "true");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("",e);
 		}finally{
 			if(fin!=null)
 				try {
@@ -147,7 +147,6 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 
 	@Override
 	public void display(ViewForward wf) {
-		logException(wf);
 		HttpServletRequest request = wf.getRequest();
 		HttpServletResponse response = wf.getResponse();
 		response.setContentType(MIME_TYPE_TEXT);
@@ -194,13 +193,6 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 			mergeTemplate(request, response, tpath, wf);
 		} catch (Exception e) {
 			logger.error("",e);
-			try {
-				response.sendError(
-						HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
-						e.getMessage());
-			} catch (IOException e1) {
-				logger.error("",e1);
-			}
 			return;
 		}
 	}

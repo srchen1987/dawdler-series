@@ -83,7 +83,7 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 				session.setPackageSize(dataLength);
 				int readLength = buffer.remaining();
 				if(readLength>dataLength){
-					session.parseHead(buffer);
+					session.parseHead(buffer); 
 					session.appendReadLenth(dataLength);
 					buffer.get(session.getAppendData());
 					session.messageCmpleted();  
@@ -104,7 +104,7 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 					int remain = buffer.remaining();
 					if(remain>0) {
 						byte [] data = new byte[remain];
-						buffer.get(data);
+						buffer.get(data); 
 						session.appendData(data);
 					}
 					session.clearBuffer(buffer);

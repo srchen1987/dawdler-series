@@ -31,8 +31,10 @@ import java.lang.annotation.Target;
  * @email: suxuan696@gmail.com
  */
 public @interface RemoteService {
-	String value() default "defaultgroup";
+	String value() default "";
+	String group() default "defaultgroup";
 	boolean single() default true;
 	boolean remote() default false;
-	int timeout() default 120; 
+	int timeout() default 120;
+	public boolean fuzzy() default true;
 }

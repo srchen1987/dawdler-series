@@ -6,6 +6,6 @@ CREATE TABLE `user` (
   `age` int(11) DEFAULT NULL COMMENT '年龄',
   `sex` tinyint(1) DEFAULT NULL COMMENT '性别',
   `create_time` bigint(20) DEFAULT NULL COMMENT '创建时间',
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='demo用户表';
 
