@@ -47,4 +47,7 @@
 <decision mapping="com.anywide.demo" reference="test1" />
 <decision mapping="com.anywide.service.user.impl" latent_expression="test1" />
 <remote_load package="${classpath}/com/anywide/load/loadconfig.xml">存放加载文件</remote_load>
+<server-datas>
+<server-data id="discoveryServer" type="zk" url="localhost:2181">目前只支持zk</server-data>
+</server-datas>
 </config>

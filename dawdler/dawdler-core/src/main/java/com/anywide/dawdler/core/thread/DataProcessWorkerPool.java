@@ -37,7 +37,7 @@ public class DataProcessWorkerPool {
                 new SynchronousQueue<Runnable>());*/
 //		executor=Executors.newCachedThreadPool(new DefaultThreadFactory(DataProcessWorkerPool.class));
 //		executor=Executors.newWorkStealingPool();
-		executor=Executors.newFixedThreadPool(200,new DefaultThreadFactory(DataProcessWorkerPool.class));
+		executor=Executors.newFixedThreadPool(200,new DefaultThreadFactory(DataProcessWorkerPool.class));//FIXME 动态配置 池大小
 	}
 	public static DataProcessWorkerPool getInstance(){
 		return processWorkerPool;

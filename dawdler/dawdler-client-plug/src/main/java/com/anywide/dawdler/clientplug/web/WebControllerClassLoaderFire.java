@@ -109,7 +109,7 @@ public class WebControllerClassLoaderFire implements RemoteClassLoderFire{
 			if(!filed.getType().isPrimitive()&&rs!=null) {
 				Class<?> serviceClass = filed.getType();
 				filed.setAccessible(true);
-				String groupName = rs.value();
+				String groupName = rs.group();
 				try {
 					filed.set(target, ServiceFactory.getService(serviceClass, groupName));
 				} catch (Exception e) {

@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.net.aio.handler;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.CompletionHandler;
 import org.slf4j.Logger;
@@ -53,14 +54,13 @@ public class ConnectorHandler implements CompletionHandler<Void,SocketSession>{
 	    			auth.setUser(session.getUser());
 	    			auth.setPassword(certificate.encrypt(session.getPassword().getBytes()));
 	    			auth.setPath(session.getPath());
-	    			session.getDawdlerConnection().write(session.getPath(),auth, session);
+	    			session.getDawdlerConnection().writeFirst(session.getPath(),auth, session);
 	    			readerHandler.new ReadProcessor(session).run();
 	    		} catch (Exception e) {
 	    			session.close(false);
 	    			logger.error("",e);
 	    		}
     	}
-//		ProcessWorkerPool.getInstance().execute(readerHandler.new ReadProcessor(session));
 	}
 	@Override
 	public void failed(Throwable exc, SocketSession socketSession) {

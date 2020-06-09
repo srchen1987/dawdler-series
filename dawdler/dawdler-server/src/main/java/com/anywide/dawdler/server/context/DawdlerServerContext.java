@@ -40,7 +40,6 @@ public class DawdlerServerContext {
 	public DawdlerServerContext(ServerConfig serverConfig) {
 		serviceRoot = new ServiceRoot();
 		this.serverConfig = serverConfig;
-		initApplication();
 	}
 
 	private AsynchronousServerSocketChannel asynchronousServerSocketChannel;
@@ -56,5 +55,9 @@ public class DawdlerServerContext {
 	public void initApplication() {
 		serviceRoot.initApplication(this);
 	}
-
+	
+	public void destroyedApplication() { 
+		serviceRoot.destroyedApplication();
+	}
+	
 }

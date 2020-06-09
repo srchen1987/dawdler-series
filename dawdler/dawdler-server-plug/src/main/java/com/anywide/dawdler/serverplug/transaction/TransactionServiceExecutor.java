@@ -32,7 +32,7 @@ import com.anywide.dawdler.serverplug.annotation.DBTransaction.READCONFIG;
 import com.anywide.dawdler.serverplug.datasource.RWSplittingDataSourceManager;
 import com.anywide.dawdler.serverplug.datasource.RWSplittingDataSourceManager.MappingDecision;
 import com.anywide.dawdler.util.ReflectionUtil;
-import com.anywide.util.reflectasm.MethodAccess;
+import com.anywide.dawdler.util.reflectasm.MethodAccess;
 
 /**
  * 

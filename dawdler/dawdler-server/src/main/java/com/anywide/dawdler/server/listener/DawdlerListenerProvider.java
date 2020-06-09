@@ -18,6 +18,7 @@ package com.anywide.dawdler.server.listener;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
@@ -51,4 +52,27 @@ public class DawdlerListenerProvider {
 	}
 
 	private List<OrderData<DawdlerServiceListener>> listeners = new ArrayList<>();
+	public static void main(String[] args) {
+		List<OrderData<String>> list = new ArrayList();
+		
+		OrderData o3 = new OrderData();
+		o3.setOrder(3);
+		o3.setData("3");
+		
+		list.add(o3);
+		
+		OrderData o = new OrderData();
+		o.setOrder(1);
+		o.setData("1");
+		list.add(o);
+		
+		OrderData o1 = new OrderData();
+		o1.setOrder(2);
+		o1.setData("2");
+		list.add(o1);
+		
+		
+		OrderComparator.sort(list);
+		System.out.println(list);
+	}
 }
