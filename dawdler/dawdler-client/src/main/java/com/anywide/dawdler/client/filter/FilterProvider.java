@@ -35,7 +35,7 @@ import com.anywide.dawdler.core.order.OrderData;
  */
 public class FilterProvider {
 	public static FilterChain lastChain;
-	private static List<OrderData<DawdlerClientFilter>>  filters = new ArrayList<OrderData<DawdlerClientFilter>>(); 
+	private static List<OrderData<DawdlerClientFilter>> filters = new ArrayList<OrderData<DawdlerClientFilter>>(); 
 	private static AtomicBoolean order = new AtomicBoolean(false);
 	static{
 		ServiceLoader<DawdlerClientFilter> loader = ServiceLoader.load(DawdlerClientFilter.class);

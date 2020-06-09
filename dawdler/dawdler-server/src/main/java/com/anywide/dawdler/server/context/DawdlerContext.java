@@ -19,6 +19,7 @@ package com.anywide.dawdler.server.context;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.deploys.DawdlerDeployClassLoader;
 import com.anywide.dawdler.server.deploys.ServiceBase;
@@ -42,16 +43,20 @@ public class DawdlerContext {
 	private String deployPath;
 	private String deployName;
 	private String deployClassPath;
+	private String host;
+	private int port;
 	private ServicesManager servicesManager;
 	private Map<Object, Object> attributes = new HashMap<>();
-	private static final String DAWDLERCONTEXT_PREFIX = "dawdlercontext_prefix";
+	private static final String DAWDLERCONTEXT_PREFIX = "dawdler_context_prefix";
 
 	public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
-			ServicesManager servicesManager) {
+			String host,int port,ServicesManager servicesManager) {
 		this.classLoader = classLoader;
 		this.deployPath = deployPath + File.separator;
 		this.deployName = deployName;
 		this.deployClassPath = deployClassPath + File.separator;
+		this.host = host;
+		this.port = port;
 		this.servicesManager = servicesManager;
 	}
 
@@ -70,6 +75,14 @@ public class DawdlerContext {
 	public String getDeployName() {
 		return deployName;
 	}
+	
+	public String getHost() {
+		return host;
+	}
+
+	public int getPort() {
+		return port;
+	}
 
 	public Object getService(String name) {
 		ServicesBean sb = servicesManager.getService(name);
@@ -85,8 +98,7 @@ public class DawdlerContext {
 		Object obj = getAttribute(ServiceBase.SERVICEEXECUTOR_PREFIX);
 		if (obj != null)
 			return ServiceFactory.getService(type, (ServiceExecutor) obj, this);
-		String name = ServiceFactory.getServiceName(type);
-		return (T) getService(name);
+		return getService(type);
 	}
 
 	public static void setDawdlerContext(DawdlerContext dawdlerContext) {

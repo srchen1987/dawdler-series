@@ -23,7 +23,7 @@ import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.core.exception.DawdlerOperateException;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.util.ReflectionUtil;
-import com.anywide.util.reflectasm.MethodAccess;
+import com.anywide.dawdler.util.reflectasm.MethodAccess;
 
 /**
  * 

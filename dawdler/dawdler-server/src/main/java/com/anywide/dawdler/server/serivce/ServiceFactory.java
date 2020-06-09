@@ -15,18 +15,20 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.serivce;
-
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.apache.commons.lang.StringUtils;
+
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
+import com.anywide.dawdler.util.DawdlerTool;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -42,39 +44,6 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 public class ServiceFactory {
 	private static ConcurrentHashMap<Class<?>, Object> proxyObjects = new ConcurrentHashMap<>();
-	private static Map<Class, String> servicesName = new HashMap<>();
-
-	public static String getServiceName(Class<?> service) {
-		String name = servicesName.get(service);
-		if (name != null)
-			return name;
-		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
-		if (remoteServiceContract != null) {
-			name = remoteServiceContract.value();
-			if (StringUtils.isBlank(name)) {
-				name = service.getName();
-			}
-			servicesName.put(service, name);
-			return name;
-		} else {
-			Class<?>[] interfaceList = service.getInterfaces();
-			if (interfaceList != null) {
-				for (Class<?> clazz : interfaceList) {
-					remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-					if (remoteServiceContract == null) {
-						continue;
-					}
-					name = remoteServiceContract.value();
-					if (StringUtils.isBlank(name)) {
-						name = service.getName();
-					}
-					servicesName.put(service, name);
-					return name;
-				}
-			}
-			return null;
-		}
-	}
 
 	public static <T> T getService(final Class<T> delegate, ServiceExecutor serviceExecutor,
 			DawdlerContext dawdlerContext) {
@@ -123,6 +92,37 @@ public class ServiceFactory {
 			if (responseBean.getCause() != null)
 				throw responseBean.getCause();
 			return responseBean.getTarget();
+		}
+	}
+	private static Map<Class,String> servicesName = new HashMap<>();
+	public static String getServiceName(Class<?> service) {
+		String name = servicesName.get(service);
+		if(name!=null)return name;
+		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
+		if(remoteServiceContract!=null){
+			 name = remoteServiceContract.value();
+			if (StringUtils.isBlank(name)) {
+				name = service.getName();
+			} 
+			servicesName.put(service, name);
+			return name;
+		}else{
+			Class<?>[] interfaceList = service.getInterfaces();
+			if (interfaceList != null) {
+				for (Class<?> clazz : interfaceList) {
+					remoteServiceContract = clazz.getAnnotation(RemoteService.class);
+					if (remoteServiceContract == null) {
+						continue;
+					}
+					name = remoteServiceContract.value();
+					if (StringUtils.isBlank(name)) {
+						name =  service.getName();
+					}
+					servicesName.put(service, name);
+					return name;
+				}
+			}
+			return null;
 		}
 	}
 }
