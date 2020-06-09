@@ -46,31 +46,23 @@ public class XmlConfig {
 	private static XmlObject xmlobject = null;
 	private static Map<String, Map<String, String>> datas = Collections.synchronizedMap(new HashMap<>());
 	static {
-		isupdate();
+		isUpdate();
 		loadXML();
 	}
 
 	private XmlConfig() {
 	}
 
-//	public synchronized static XmlConfig newInstance() {
-//		if (isupdate()) {
-//			loadXML();
-//		}
-//		if (xmlconfig == null)
-//			xmlconfig = new XmlConfig();
-//		return xmlconfig;
-//	}
 
 	public static XmlObject getConfig() {
-		if (isupdate()) {
+		if (isUpdate()) {
 			loadXML();
 		}
 		return xmlobject;
 	}
 
 	public static String getRemoteLoad() {
-		if (isupdate()) {
+		if (isUpdate()) {
 			loadXML();
 		}
 		Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote_load");
@@ -80,7 +72,7 @@ public class XmlConfig {
 		return path;
 	}
 
-	private static boolean isupdate() {
+	private static boolean isUpdate() {
 		File file = new File(DawdlerTool.getcurrentPath() + File.separator + CONFIGPATH);
 		if (!file.exists()) {
 			System.out.println("not found " + CONFIGPATH);
@@ -92,16 +84,13 @@ public class XmlConfig {
 		return false;
 	}
 
-	public Map<String, Map<String, String>> getDatas() {
-		if (isupdate()) {
+	public static Map<String, Map<String, String>> getDatas() {
+		if (isUpdate()) {
 			loadXML();
 		}
 		return datas;
 	}
 
-	public Object getSesource(String path) {
-		return ToolEL.getBeanValue(this, "datas" + path);
-	}
 
 	private static void loadXML() {
 		try {
@@ -109,10 +98,11 @@ public class XmlConfig {
 		} catch (DocumentException | IOException e) {
 			logger.error("", e);
 		}
-		setMap();
+		loadDataSource();
 	}
+	
 
-	private static void setMap() {
+	private static void loadDataSource() {
 		List<Element> list = xmlobject.getRoot().selectNodes("/config/server-datas/server-data");
 		for (Iterator<Element> it = list.iterator(); it.hasNext();) {
 			Element ele = it.next();

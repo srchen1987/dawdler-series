@@ -4,7 +4,7 @@
 		<file>dawdler-server-plug-0.0.1-SNAPSHOT.jar</file><!-- 扫描的插件包名 -->
 	</scanner>
 	<keyStore keyStorePath="${DAWDLER_BASE_PATH}/key/dawdler.keystore" alias="srchen" password="jackson.song1948@anywide"></keyStore><!--  keyStorePath 私钥路径 alias帐号 password 密码-->
-	<server tcp-port="9527" shutdownWhiteList="127.0.0.1,localhost"
+	<server host="0.0.0.0" tcp-port="9527" shutdownWhiteList="127.0.0.1,localhost"
 		tcp-shutdownPort="19530" tcp-backlog="200" tcp-sendBuffer="163840"
 		tcp-receiveBuffer="163840" tcp-keepAlive="false" tcp-noDelay="false">
 	</server>

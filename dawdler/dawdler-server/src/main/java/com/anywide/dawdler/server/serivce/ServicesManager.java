@@ -105,12 +105,6 @@ public class ServicesManager {
 			}
 		} else {
 			Class<?>[] interfaceList = service.getInterfaces();
-//			if(service.getSimpleName().equals("CheckUpdateImpl")) {
-//				URL url = service.getResource(service.getSimpleName()+".class");
-//				for (Class<?> clazz : interfaceList) {
-//					remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-//				}
-//			}
 			if (interfaceList != null) {
 				for (Class<?> clazz : interfaceList) {
 					remoteServiceContract = clazz.getAnnotation(RemoteService.class);

@@ -61,10 +61,7 @@ public abstract class AbstractUrlHandler{
 		}
 	}
 	public abstract boolean handleUrl(String urishort,String method,HttpServletRequest request,HttpServletResponse response)throws ServletException;
-	/*public void addHandlerInterceptors(List handlerInterceptors){
-		this.handlerInterceptors=handlerInterceptors;
-	}*/
-	
+
 	protected boolean invokeMethod(TransactionController targetobj,
 			Method method, ViewForward wf) {
 		try {

@@ -75,7 +75,6 @@ public class ViewFilter implements Filter{
 	}
 	@Override
 	public void destroy() {
-		// TODO Auto-generated method stub
 		
 	}
 }

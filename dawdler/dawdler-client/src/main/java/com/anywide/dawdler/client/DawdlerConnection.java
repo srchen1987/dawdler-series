@@ -76,12 +76,10 @@ public class DawdlerConnection {
 	AsynchronousChannelGroup asynchronousChannelGroup;
 	private ScheduledExecutorService reconnectScheduled;
 	private static ConnectorHandler connectorHandler = new ConnectorHandler();
-	private AtomicBoolean connected= new AtomicBoolean();
-	public boolean initconnected;
+//	private AtomicBoolean connected= new AtomicBoolean();
 	private AtomicBoolean complete= new AtomicBoolean();
 	protected Semaphore semaphore = new Semaphore(0);
 	private ReadWriteLock rwlock = new ReentrantReadWriteLock();
-	private String[] addresses;
 	private static Logger logger = LoggerFactory.getLogger(DawdlerConnection.class);
 	public Semaphore getSemaphore() {
 		return semaphore;
@@ -89,13 +87,6 @@ public class DawdlerConnection {
 	public AtomicBoolean getComplete() {
 		return complete;
 	}
-	public boolean isConnected() {
-		return connected.get();
-	}
-	public AtomicBoolean getConnected() {
-		return connected;
-	}
-
 	
 	public ConnectManager getConnectManager() {
 		return connectManager;
@@ -136,9 +127,10 @@ public class DawdlerConnection {
 		return host + "#ID:" + UUID.randomUUID().toString();
 	}
 
-	public DawdlerConnection(String gid,String [] addresses,String path,int serializer, int sessionNum,String user,String password) throws IOException {
+	public DawdlerConnection(
+			String gid/* ,String [] addresses */,String path,int serializer, int sessionNum,String user,String password) throws IOException {
 		this.gid = gid;
-		this.addresses = addresses;
+//		this.addresses = addresses;
 		this.path = path; 
 		this.groupName = getDefaultGroupName();
 		this.sessionNum = sessionNum;
@@ -151,14 +143,14 @@ public class DawdlerConnection {
 		reconnectScheduled = Executors.newScheduledThreadPool(1);
 		startReconnect(); 
 	}
-
-	public void startReconnect() {
+	public void startReconnect() { 
 		reconnectScheduled.scheduleWithFixedDelay(() -> {
+			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
+			if(disconnAddressList.isEmpty())return;
 			Lock lock = rwlock.writeLock();
 			try {
 				lock.lock();
 				boolean activate = false;
-				Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
 				for (final SocketAddress socketAddress : disconnAddressList) {
 					Integer num = connectManager.removeDisconnect(socketAddress).get();
 					if (num == 0) {
@@ -224,17 +216,22 @@ public class DawdlerConnection {
 		Set<SocketAddress> disconnectedAddressSet = connectManager.getDisconnectAddress();
 		addressSet.removeAll(disconnectedAddressSet);
 		for (SocketAddress address : addressSet) {
-			connect(address);
+			connect(address); 
 		}
-		rebuildSessionGroup();
+//		rebuildSessionGroup();
 	}
 
-	public void connect() {
-		connect(toSocketAddresses(addresses));
-	}
 
-	public void refreshConnect(String... addresses) {
-		refreshConnect(toSocketAddresses(addresses));
+	public void refreshConnection(String... addresses) {
+			refreshConnection(toSocketAddresses(addresses));
+	}
+	
+	public void addConnection(String address) {
+		connect(toSocketAddress(address));
+	}
+	
+	public void disConnection(String address) {
+		shutdown(toSocketAddress(address));
 	}
 
 	public SocketAddress[] toSocketAddresses(String... addresses) {
@@ -243,14 +240,25 @@ public class DawdlerConnection {
 		}
 		SocketAddress[] socketAddresses = new SocketAddress[addresses.length];
 		for (int i = 0; i < addresses.length; i++) {
-			String[] s = addresses[i].split(":");
-			String ip = s[0];
-			String port = s[1];
-			socketAddresses[i] = new InetSocketAddress(ip, Integer.parseInt(port));
+			socketAddresses[i] = toSocketAddress(addresses[i]);
 		}
 		return socketAddresses;
 	}
-	public void refreshConnect(SocketAddress... addressArray) {
+	
+	public SocketAddress toSocketAddress(String address) {
+		if (address == null || address.trim().equals("")) {
+			throw new IllegalArgumentException("address can not be null or empty!");
+		}
+		String[] s = address.split(":");
+		if(s.length!=2)
+			throw new IllegalArgumentException("address is not a compliant rule!");
+		String ip = s[0];
+		String port = s[1];
+		SocketAddress socketAddress  = new InetSocketAddress(ip, Integer.parseInt(port));
+		return socketAddress;
+	}
+	
+	public void refreshConnection(SocketAddress... addressArray) {
 		if ((addressArray == null || addressArray.length == 0)) {
 			return;
 		}
@@ -279,7 +287,7 @@ public class DawdlerConnection {
 		if (addList.size() > 0) {
 			SocketAddress[] addresses = new SocketAddress[addList.size()];
 			addList.toArray(addresses);
-			connect(addresses);
+			connect(addresses); 
 		}
 
 		for (SocketAddress socketAddress : removeList) {
@@ -288,47 +296,34 @@ public class DawdlerConnection {
 		}
 
 	}
-	/*
-	 * public void shutdown(SocketAddress socketAddress){ List<SocketSession> list =
-	 * SocketSessionGroup.getInstance().getSessions(getGroupName()); for
-	 * (SocketSession session:list) { if(session.getRemoteAddress()==socketAddress){
-	 * if(!session.getFutures().isEmpty()){ session.markClose(); }else{
-	 * session.close(); } } }
-	 * 
-	 * }
-	 */
 
 	public void shutdown(SocketAddress socketAddress) {
 		List<SocketSession> list = sessionGroup.remove(socketAddress);
 		boolean shutdownNow = true;
 		if (list != null) {
-			connectManager.removeDisconnect(socketAddress);
-			// rebuildSessionGroup(); 
+			 connectManager.removeDisconnect(socketAddress);
+			 rebuildSessionGroup(); 
 			for (SocketSession session : list) {
 				if (!session.getFutures().isEmpty()) {
-					session.markClose();
+					session.markClose(); 
 					shutdownNow = false;
-				} else { 
+				} else {   
 					session.close(false);
 				}
 			}
 			if (sessionGroup.isEmpty()) {
-				logger.debug("close and shutdown");
 				ConnectionPool.getConnectionPool(gid).remove(this);
 				reconnectScheduled.shutdown();
 				if (shutdownNow)
-					asynchronousChannelGroup.shutdown();
+					try {
+						asynchronousChannelGroup.shutdownNow();
+					} catch (IOException e) {
+						logger.error("",e);
+					}
 				else {
-					new Thread(() -> {
-						try {
-							Thread.sleep(3000);
-						} catch (InterruptedException e) {
-						}
-						asynchronousChannelGroup.shutdown();
-					}).start();
+					asynchronousChannelGroup.shutdown();
 				}
 			}
-
 		}
 	}
 
@@ -378,10 +373,9 @@ public class DawdlerConnection {
 		} finally {
 			lock.unlock();
 		}
-
 	}
-
-	public void write(String path,Object obj, SocketSession socketSession) throws Exception {
+	
+	public void writeFirst(String path,Object obj, SocketSession socketSession) throws Exception {
 		IoHandlerFactory.getInstance().messageSent(socketSession, obj);
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] datas = serializer.serialize(obj);
@@ -394,7 +388,7 @@ public class DawdlerConnection {
 			byte pathLength = (byte) pathBytes.length;
 			int size = datas.length+2+pathLength;
 			int capacity = size+4;
-			try {
+			try { 
 			if(capacity > SocketSession.CAPACITY) {
 				pb = PoolBuffer.selectPool(capacity);
 				if(pb==null) {
@@ -413,13 +407,48 @@ public class DawdlerConnection {
 			socketSession.write(bf);
 			}finally {
 				bf.clear();
-				if(pb != null) {
+				if(pb != null)
 					pb.release(bf);
-				}
 			}
 		}
 	}
 
+	public void write(Object obj, SocketSession socketSession) throws Exception {
+		IoHandlerFactory.getInstance().messageSent(socketSession, obj);
+		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
+		byte[] datas = serializer.serialize(obj);
+		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(datas);
+		datas = cr.getBuffer();
+		synchronized (socketSession) {
+			ByteBuffer bf = socketSession.getWriteBuffer();
+			PoolBuffer pb = null;
+			int size = datas.length+1;
+			int capacity = size+4;
+			try { 
+			if(capacity > SocketSession.CAPACITY) {
+				pb = PoolBuffer.selectPool(capacity);
+				if(pb==null) {
+					bf = ByteBuffer.allocate(capacity);
+					logger.warn("The serialized object("+obj.getClass().getName()+") is too large.\t size :"+capacity);
+				}else
+					bf = pb.getByteBuffer();
+			}
+			bf.putInt(size);
+			int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
+			bf.put((byte) head);
+			bf.put(datas);
+			bf.flip();
+			socketSession.write(bf);
+			}finally {
+				bf.clear();
+				if(pb != null)
+					pb.release(bf);
+			}
+		}
+	}
+
+	
+	
 	public void config(AsynchronousSocketChannel channel) {
 		// NOOP
 		try {

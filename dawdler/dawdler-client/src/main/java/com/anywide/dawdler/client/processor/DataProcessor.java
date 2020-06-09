@@ -85,14 +85,14 @@ public class DataProcessor implements Runnable {
 		    		List<SocketSession> preSessions = socketSession.getDawdlerConnection().getSessionGroup().putIfAbsent(socketSession.getRemoteAddress(), sessions);
 		    		if(preSessions!=null){
 		    			sessions=preSessions;
-		    		}
+		    	     	}
 		    		sessions.add(socketSession);
-		    		socketSession.getDawdlerConnection().rebuildSessionGroup();
 		    		IoHandlerFactory.getInstance().channelOpen(socketSession);
 		    		socketSession.getInitLatch().countDown(); 
+		    		socketSession.getDawdlerConnection().rebuildSessionGroup();
 		    		if(socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
 		    			socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
-		    		}
+		    			}
 			}else {
 					socketSession.getInitLatch().countDown(); 
 				 throw new IllegalAccessException("Invalid auth !");

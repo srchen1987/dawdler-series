@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client;
-import com.anywide.dawdler.client.net.aio.session.SocketSession;
+
 /**
  * 
  * @Title:  TransactionProvider.java
@@ -29,6 +29,7 @@ public class TransactionProvider {
 	
 	public static Transaction getTransaction(String groupName){
 		ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
+		if(cp==null)throw new IllegalArgumentException("not find "+groupName+" provider!");
 		DawdlerConnection con = cp.getConnection();
 		Transaction tr = new Transaction(con);
 		return tr;

@@ -75,7 +75,7 @@ public class ServerConnectionManager {
 		Collection<ServerConnection> collection = connections.values();
 		for (ServerConnection serverConnection : collection) {
 			if (serverConnection.isRunning())
-				return true;
+				return true; 
 		}
 		return false;
 	}
@@ -83,9 +83,7 @@ public class ServerConnectionManager {
 	public void closeNow() {
 		Collection<ServerConnection> collection = connections.values();
 		for (ServerConnection serverConnection : collection) {
-			if (!serverConnection.isRunning()) {
-				serverConnection.closeNow();
-			}
+				serverConnection.closeNow(); 
 		}
 	}
 
@@ -135,7 +133,7 @@ public class ServerConnectionManager {
 		}
 
 		public synchronized void closeNow() {
-			List<SocketSession> closeSessions = new ArrayList();
+			List<SocketSession> closeSessions = new ArrayList<>();
 			for (SocketSession session : sessions) {
 				closeSessions.add(session);
 			}
@@ -145,7 +143,7 @@ public class ServerConnectionManager {
 		}
 
 		public synchronized void close() {
-			List<SocketSession> closeSessions = new ArrayList();
+			List<SocketSession> closeSessions = new ArrayList<>();
 			for (SocketSession session : sessions) {
 				if (session.getFutures().isEmpty())
 					closeSessions.add(session);

@@ -1,4 +1,4 @@
-package com.anywide.util.reflectasm;
+package com.anywide.dawdler.util.reflectasm;
 import static org.objectweb.asm.Opcodes.AALOAD;
 import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.ACC_SUPER;
@@ -29,6 +29,9 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
+
+import com.anywide.dawdler.util.reflectasm.AccessClassLoader;
+import com.anywide.dawdler.util.reflectasm.MethodAccess;
 /**
  * 
  * @Title:  MethodAccess.java
@@ -167,12 +170,12 @@ public abstract class MethodAccess {
 					ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 					MethodVisitor mv;
 					cw.visit(V1_1, ACC_PUBLIC + ACC_SUPER, accessClassNameInternal, null,
-						"com/anywide/util/reflectasm/MethodAccess", null);
+						"com/anywide/dawdler/util/reflectasm/MethodAccess", null);
 					{
 						mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
 						mv.visitCode();
 						mv.visitVarInsn(ALOAD, 0);
-						mv.visitMethodInsn(INVOKESPECIAL, "com/anywide/util/reflectasm/MethodAccess", "<init>", "()V",false);
+						mv.visitMethodInsn(INVOKESPECIAL, "com/anywide/dawdler/util/reflectasm/MethodAccess", "<init>", "()V",false);
 						mv.visitInsn(RETURN);
 						mv.visitMaxs(0, 0);
 						mv.visitEnd();

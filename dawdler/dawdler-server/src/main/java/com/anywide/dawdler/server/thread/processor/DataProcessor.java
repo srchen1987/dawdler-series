@@ -16,7 +16,10 @@
  */
 package com.anywide.dawdler.server.thread.processor;
 
+import java.io.FileOutputStream;
 import java.nio.ByteBuffer;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.core.bean.AuthRequestBean;
@@ -118,8 +121,13 @@ public class DataProcessor implements Runnable {
 			AuthRequestBean authRequest = (AuthRequestBean) obj;
 			AuthResponseBean authResponse = new AuthResponseBean();
 			ServerConfig serverConfig = socketSession.getDawdlerServerContext().getServerConfig();
-			boolean success = serverConfig.auth(authRequest.getPath(), authRequest.getUser(),
-					authRequest.getPassword());
+			boolean success = false;
+			try {
+				success	= serverConfig.auth(authRequest.getPath(), authRequest.getUser(),
+						authRequest.getPassword());
+			} catch (Exception e) {
+				logger.error("",e);
+			}
 			if (success) {
 				authResponse.setSuccess(true);
 				socketSession.setAuthored(true);

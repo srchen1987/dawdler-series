@@ -41,7 +41,7 @@ import com.anywide.dawdler.server.thread.processor.DataProcessor;
 public class SocketSession extends AbstractSocketSession {
 	private static Logger logger = LoggerFactory.getLogger(SocketSession.class);
 	private DawdlerServerContext dawdlerServerContext;
-	private boolean completed;
+//	private boolean completed;
 	private String path;
 	private byte pathLength;
 
@@ -93,16 +93,15 @@ public class SocketSession extends AbstractSocketSession {
 	}
 
 	public void appendData(byte[] data) {
-		if (data.length > 0) {
-			if (!completed) {
+			if (path==null) {
 				if (pathLength > 0) {
 					if (position == 0) {
 						dataLength = dataLength - pathLength - 2;
 						appendData = new byte[dataLength];
-					}
-					super.appendData(data);
+					} 
+					super.appendData(data);  
 					if (position > pathLength)
-						swapPathByte();
+						swapPathByte(); 
 					return;
 				} else {
 					pathLength = data[0];
@@ -116,7 +115,6 @@ public class SocketSession extends AbstractSocketSession {
 							i++;
 						}
 						path = new String(pathByte);
-						completed = true;
 						if (data.length >= pathLength + 2) {
 							byte[] temp = data;
 							data = new byte[data.length - pathLength - 1];
@@ -128,7 +126,6 @@ public class SocketSession extends AbstractSocketSession {
 				}
 			}
 			super.appendData(data);
-		}
 	}
 
 	private void swapPathByte() {
@@ -143,7 +140,6 @@ public class SocketSession extends AbstractSocketSession {
 			appendData = new byte[dataLength];
 		} else
 			System.arraycopy(appendData, pathLength + 1, appendData, 0, appendData.length - pathLength - 1);
-		completed = true;
 	}
 
 	public void messageCmpleted() {
@@ -160,15 +156,18 @@ public class SocketSession extends AbstractSocketSession {
 		data = (byte) (data >> 1);
 		serializer = SerializeDecider.decide(data);
 		if (buffer.remaining() > 0) {
-			pathLength = buffer.get();
-			if (buffer.remaining() > pathLength) {
-				byte[] pathByte = new byte[pathLength];
-				buffer.get(pathByte);
-				path = new String(pathByte);
-				completed = true;
-				dataLength = dataLength - pathLength - 2;
-				appendData = new byte[dataLength];
+			if(path==null) {
+				pathLength = buffer.get();
+				if (buffer.remaining() > pathLength) {
+					byte[] pathByte = new byte[pathLength];
+					buffer.get(pathByte);
+					path = new String(pathByte);
+					dataLength = dataLength - pathLength - 2;
+				}
+			}else {
+				dataLength = dataLength - 1;
 			}
+			appendData = new byte[dataLength];
 		}
 
 	}
@@ -179,8 +178,6 @@ public class SocketSession extends AbstractSocketSession {
 
 	public void toPrepare() {
 		super.toPrepare();
-		this.completed = false;
-		this.pathLength = 0;
 	}
 
 	public String getPath() {

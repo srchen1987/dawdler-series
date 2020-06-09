@@ -91,7 +91,7 @@ public class CertificateOperator {
 		return certificate;
 	}
 
-	private Certificate getCertificate( KeyStoreConfig keyStore)
+	private Certificate getCertificate(KeyStoreConfig keyStore)
 			throws Exception {
 		KeyStore ks = getKeyStore(keyStore);
 		return getCertificate(ks);
@@ -102,7 +102,7 @@ public class CertificateOperator {
 		return certificate;
 	}
 
-	public KeyStore getKeyStore(KeyStoreConfig keyStore) throws Exception {
+	public synchronized KeyStore getKeyStore(KeyStoreConfig keyStore) throws Exception {
 		KeyStore store = null;
 		FileInputStream is = new FileInputStream(keyStorePath);
 		store = getKeyStore(is, keyStore);
@@ -110,13 +110,13 @@ public class CertificateOperator {
 		return store;
 	}
 
-	public KeyStore getKeyStore(InputStream in, KeyStoreConfig keyStore) throws Exception {
+	public synchronized KeyStore getKeyStore(InputStream in, KeyStoreConfig keyStore) throws Exception {
 		KeyStore ks = KeyStore.getInstance(keyStore.getName());
 		ks.load(in, password);
 		return ks;
 	}
 
-	public byte[] encrypt(byte[] data, KeyStoreConfig keyStore)
+	public synchronized byte[] encrypt(byte[] data, KeyStoreConfig keyStore)
 			throws Exception {
 		if(privateEncryptCipher != null) 
 			return privateEncryptCipher.doFinal(data);
@@ -133,7 +133,7 @@ public class CertificateOperator {
 	}
 
 	private Cipher publicEncryptCipher = null; 
-	public byte[] encrypt(byte[] data) throws Exception {
+	public synchronized byte[] encrypt(byte[] data) throws Exception {
 		if(publicEncryptCipher != null)
 			return publicEncryptCipher.doFinal(data);
 		PublicKey publicKey = getPublicKey();
@@ -149,8 +149,8 @@ public class CertificateOperator {
 
 	}
 
-	private Cipher privateDecryptCipher = null;
-	public byte[] decrypt(byte[] data,KeyStoreConfig keyStore)
+	private  Cipher privateDecryptCipher = null;
+	public synchronized byte[] decrypt(byte[] data,KeyStoreConfig keyStore)
 			throws Exception {
 		if(privateDecryptCipher!=null)
 			return privateDecryptCipher.doFinal(data);
@@ -165,7 +165,7 @@ public class CertificateOperator {
 		return cipher.doFinal(data);
 	}
 
-	public byte[] decrypt(byte[] data) throws Exception {
+	public synchronized byte[] decrypt(byte[] data) throws Exception {
 		if(publicDecryptCipher != null)
 			return publicDecryptCipher.doFinal(data);
 		PublicKey publicKey = getPublicKey();
@@ -180,11 +180,11 @@ public class CertificateOperator {
 
 	}
 
-	public boolean verifyCertificate() {
+	public synchronized boolean verifyCertificate() {
 		return verifyCertificate(new Date());
 	}
 
-	public boolean verifyCertificate(Date date) {
+	public synchronized boolean verifyCertificate(Date date) {
 		boolean status = true;
 		try {
 			Certificate certificate = getCertificate();
@@ -251,38 +251,4 @@ public class CertificateOperator {
 	public boolean verifyCertificate(KeyStoreConfig keyStore) {
 		return verifyCertificate(new Date(), keyStore);
 	}
-//	public static void main(String[] args) throws Exception {
-//		String certificatePath = "/Users/jackson.song/Desktop/key/dawdler.cer";
-//		String keystore = "/Users/jackson.song/Desktop/key/dawdler.keystore";
-//		CertificateOperator publicC = new CertificateOperator(certificatePath);
-//		CertificateOperator publicP = new CertificateOperator(keystore,"www.dawdler.com","123456");
-//		byte[] bs = publicC.encrypt("shff".getBytes());
-//		System.out.println(bs);
-////		bs = CertificateUtils.getInstance().decrypt(bs, publicPath);
-////		System.out.println(bs);
-//		
-//		bs = publicP.decrypt(bs, KeyStoreConfig.DKS);
-//		String s = new String(bs);
-//		System.out.println(s);
-//		long t1 = System.currentTimeMillis();
-//		for(int i =0;i<1;i++) {
-////			bs = CertificateUtils.getInstance().encrypt("hello wordhello wordhello wordhello wordhello wordhello wordhello wordhello wordhello word".getBytes(), keystore,"www.dawdler.com", "123456".toCharArray(),KeyStoreConfig.DKS);
-////			 bs = CertificateUtils.getInstance().decrypt(bs,publicPath);
-//			bs = publicP.encrypt("hello wordhello wordhello wordhello wordhello wordhe".getBytes(),KeyStoreConfig.DKS);
-//			bs = publicC.decrypt(bs);
-//		}
-//		s = new String(bs);
-//		
-////		bs = CertificateUtils.getInstance().encrypt("hello wordhello wordhello wordhello wordhello wordhello wordhello wordhello wordhello word".getBytes(), keystore,"www.dawdler.com", "123456".toCharArray(),KeyStoreConfig.DKS);
-////		 bs = CertificateUtils.getInstance().decrypt(bs,publicPath);
-//		System.out.println(bs);
-////		bs = CertificateUtils.getInstance().decrypt(bs, publicPath);
-////		System.out.println(bs);
-//		long t2 = System.currentTimeMillis();
-//		System.out.println(t2-t1);
-//		System.out.println(s);
-//		
-//		
-//		
-//	}
 }

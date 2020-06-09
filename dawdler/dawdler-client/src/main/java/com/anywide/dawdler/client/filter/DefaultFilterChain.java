@@ -35,10 +35,8 @@ public class DefaultFilterChain implements FilterChain {
 		SocketSession socketSession = rq.getSession();
 		InvokeFuture<?> future = new InvokeFuture<>();
 		socketSession.getFutures().put(request.getSeq(),future);
-		socketSession.getDawdlerConnection().write(rq.getPath(),rq.getRequest(), socketSession);
-		Object obj = future.getResult(rq.getTimeout(), TimeUnit.SECONDS);//FIXME time out 
-		return obj;
-		//noop
+		socketSession.getDawdlerConnection().write(rq.getRequest(), socketSession);
+		return future.getResult(rq.getTimeout(), TimeUnit.SECONDS);
 	}
 
 }

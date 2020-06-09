@@ -31,7 +31,7 @@ import com.anywide.dawdler.serverplug.transaction.LocalConnectionFacotry;
  * @version V1.0 
  * @email: suxuan696@gmail.com
  */
-public  class SuperDAO implements BaseData{
+public class SuperDAO implements BaseData{
 	protected Connection con;
 	private BaseData basedata;
 	

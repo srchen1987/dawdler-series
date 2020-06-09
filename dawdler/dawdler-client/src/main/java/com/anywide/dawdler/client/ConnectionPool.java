@@ -15,97 +15,118 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client;
+
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.client.conf.ClientConfig;
 import com.anywide.dawdler.client.conf.ClientConfig.ServerChannelGroup;
 import com.anywide.dawdler.client.conf.ClientConfigParser;
+import com.anywide.dawdler.client.discoverycenter.ZkDiscoveryCenterClient;
+import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 
 /**
  * 
- * @Title:  ConnectionPool.java
- * @Description:    客户端连接池   
- * @author: jackson.song    
- * @date:   2015年03月16日    
- * @version V1.0 
+ * @Title: ConnectionPool.java
+ * @Description: 客户端连接池
+ * @author: jackson.song
+ * @date: 2015年03月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 
 public class ConnectionPool {
 	private static Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 	private static ConcurrentHashMap<String, ConnectionPool> groups = new ConcurrentHashMap<>();
+	private static	Map<String,ServerChannelGroup> serverChannelGroup = new HashMap<String,ServerChannelGroup>();
 	private ReadWriteLock rwlock = new ReentrantReadWriteLock();
-	Object lock = new Object();
+	private static DiscoveryCenter discoveryCenter = null;
 	static {
 		try {
 			ClientConfig clientConfig = ClientConfigParser.getClientConfig();
+			String connectString = clientConfig.getZkHost();
+			discoveryCenter = new ZkDiscoveryCenterClient(connectString,null,null);
 			List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
 			if (sgs != null) {
 				for (ServerChannelGroup sg : sgs) {
 					String gid = sg.getGroupId();
-					String path = sg.getPath();
-					String user = sg.getUser();
-					String password = sg.getPassword();
-					int connectionNum = sg.getConnectionNum();
-					int serializer = sg.getSerializer();
-					int sessionNum = sg.getSessionNum();
-					if (connectionNum <= 0)
-						connectionNum = 1;
-					if (sessionNum <= 0)
-						sessionNum = 1;
-					// String addresses = "10.26.173.10:9527";
-					String addresses = null;
+					serverChannelGroup.put(gid, sg);
+					List<String> addresses = null;
 					try {
-						addresses = PropertiesCenter.getInstance().getValue(gid);
+						addresses = discoveryCenter.getServiceList(gid);
 					} catch (Exception e) {
 						logger.error("", e);
 						continue;
 					}
-					if (addresses == null)
+					if (addresses == null || addresses.isEmpty())
 						continue;
 					// gid get addresses;
-					for (int j = 0; j < connectionNum; j++) {
-						ConnectionPool cp = getConnectionPool(gid);
-						if (cp == null) {
-							cp = new ConnectionPool();
-							addGroup(gid, cp);
-						}
-						DawdlerConnection dc;
-						try {
-							dc = new DawdlerConnection(gid,addresses.split(","), path, serializer, sessionNum, user, password);
-							cp.add(dc);
-						} catch (IOException e) {
-							logger.error("", e);
-						}
+					ConnectionPool cp = getConnectionPool(gid);
+					if (cp == null) {
+						cp = new ConnectionPool();
+						ConnectionPool pre = addGroup(gid, cp);
+						if(pre!=null)cp = pre;
 					}
+					initConnection(gid);
 				}
+				
 			}
 		} catch (Exception e) {
 			logger.error("", e);
 		}
 
 	}
+	
+	public static void initConnection(String gid) {
+			ConnectionPool cp = getConnectionPool(gid);
+			ServerChannelGroup sg = serverChannelGroup.get(gid);
+			if(sg==null)throw new NullPointerException("not configure "+gid+"!");
+			String path = sg.getPath();
+			String user = sg.getUser();
+			String password = sg.getPassword();
+			int connectionNum = sg.getConnectionNum();
+			int serializer = sg.getSerializer();
+			int sessionNum = sg.getSessionNum();
+			if (connectionNum <= 0)
+				connectionNum = 1;
+			if (sessionNum <= 0)
+				sessionNum = 1;
+			for (int j = 0; j < connectionNum; j++) {
+				DawdlerConnection dc;
+				try {
+					dc = new DawdlerConnection(gid, path, serializer,
+							sessionNum, user, password);
+					cp.add(dc);
+				} catch (IOException e) {
+					logger.error("", e);
+				}
+			}
+	}
 
 	public static ConnectionPool getConnectionPool(String groupName) {
 		return groups.get(groupName);
 	}
 
-	public static void addGroup(String groupName, ConnectionPool cp) {
-		groups.put(groupName, cp);
+	public static ConnectionPool addGroup(String groupName, ConnectionPool cp) {
+		return groups.putIfAbsent(groupName,cp);
 	}
-
-	public static void shutdown() {
+	//provider for web container call
+	public static void shutdown() throws Exception {
 		for (ConnectionPool c : groups.values()) {
 			c.close();
 		}
-		PropertiesCenter.getInstance().close();
+		discoveryCenter.destroy();
+		groups.clear();
 		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
 	}
 
@@ -121,14 +142,10 @@ public class ConnectionPool {
 
 	public DawdlerConnection getConnection() {
 		DawdlerConnection con = cq.get();
-		if(!con.initconnected) {
-			if(con.getConnected().compareAndSet(false, true)) {
-				con.connect();
-				con.initconnected=true;
-			}
+		if(!con.getComplete().get()) {
 			try {
 				con.semaphore.acquire();
-			} catch (InterruptedException e) {
+			}catch (InterruptedException e) {
 			}
 		}
 		return con;
@@ -142,22 +159,59 @@ public class ConnectionPool {
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: updateConnection   
+	 * @Description: 废弃了 不需要之前的存储结构进行刷新连接了 之前结构/dawdler/gid/[provider,provider1] 
+	 * 如今换成这种格式，直接用add和del即可 
+	 * /dawdler/gid/provider
+	 * 						  +provider1
+	 * 						  +provider2
+	 * @param ipaddresses
+	 * @return: void     
+	 * @throws 
+	 * @author: jackson.song     
+	 * @date:   2018年8月13日 
+	 */
+	@Deprecated
 	public void updateConnection(String ipaddresses) {
 		cq.refreshConnection(ipaddresses);
 	}
+	
+	public void addConnection(String gid,String ipaddress) {
+		if(cq.first==null) {
+			initConnection(gid);
+		}
+		cq.addConnection(ipaddress);
+	}
+	
+	public void delConnection(String ipaddress) {
+		cq.delConnection(ipaddress);
+	}
 
-	public void doChange(String action, String addresses, String groupid) {
+	public void doChange(String gid,String action, String address) {
 		switch (action) {
 		case "del": {
-			ConnectionPool pool = groups.remove(groupid);
-			pool.close();
+			delConnection(address);
 			break;
 		}
-		case "update": {
-			ConnectionPool pool = groups.get(groupid);
-			pool.updateConnection(addresses);
-		}
+		case "add": {
+			addConnection(gid,address);
 			break;
+		}
+			
+//    以下是之前上个版本的 之后不需要通过删除一个gid的方式来关闭
+//		case "del": {
+//			ConnectionPool pool = groups.remove(groupid);
+//			pool.close(); 
+//			break;
+//		}
+//		   以下是之前上个版本的 之后不需要通过upate方式来更新节点了 只保留 add del
+//		case "update": {
+//		ConnectionPool2 pool = groups.get(groupid);
+//		pool.updateConnection(addresses);
+//		break;
+//	}
 		default:
 			break;
 		}
@@ -235,41 +289,67 @@ public class ConnectionPool {
 				Node<T> temp = first;
 				while (temp != null) {
 					DawdlerConnection con = (DawdlerConnection) temp.value;
-					con.refreshConnect(addresses.split(","));
+					con.refreshConnection(addresses.split(","));
 					temp = temp.next;
 				}
 			} finally {
 				lock.unlock();
 			}
-
 		}
 
-		public T get() {
-			Lock lock = rwlock.readLock();
+		
+		public void addConnection(String address) {
+			Lock lock = rwlock.writeLock();
 			try {
 				lock.lock();
-				synchronized (lock) {
-					boolean exist = currentNode != null;
-					if (exist) {
-						Node<T> temp = currentNode.next;
-						currentNode = temp;
-						if (temp != null) {
-							return temp.value;
-						}
-						currentNode = temp = first;
-						if (temp != null) {
-							return temp.value;
-						}
-					}
-					if (first == null)
-						return null;
-					return get();
+				Node<T> temp = first;
+				while (temp != null) {
+					DawdlerConnection con = (DawdlerConnection) temp.value;
+					con.addConnection(address);
+					temp = temp.next;
 				}
 			} finally {
 				lock.unlock();
 			}
-
-			// return null;
+		}
+		
+		public void delConnection(String address) {
+			Lock lock = rwlock.writeLock();
+			try {
+				lock.lock();
+				Node<T> temp = first;
+				while (temp != null) {
+					DawdlerConnection con = (DawdlerConnection) temp.value;
+					con.disConnection(address);
+					temp = temp.next;
+				}
+			} finally {
+				lock.unlock();
+			}
+		}
+		
+		public T get() {
+			Lock lock = rwlock.readLock();
+			try {
+				lock.lock();
+				boolean exist = currentNode != null;
+				if (exist) {
+					Node<T> temp = currentNode.next;
+					currentNode = temp;
+					if (temp != null) {
+						return temp.value;
+					}
+					currentNode = temp = first;
+					if (temp != null) {
+						return temp.value;
+					}
+				}
+				if (first == null)
+					return null;
+				return get();
+			} finally {
+				lock.unlock();
+			}
 		}
 
 	}
@@ -286,5 +366,4 @@ public class ConnectionPool {
 		}
 
 	}
-
 }
