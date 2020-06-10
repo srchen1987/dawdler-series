@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+ <parent>
+    <groupId>dawdler</groupId>
+    <artifactId>dawdler</artifactId>
+    <version>${project.build.version}</version>
+  </parent>
+  <artifactId>dawdler-circuit-breaker</artifactId>
+  <name>dawdler-circuit-breaker</name>
+  <packaging>jar</packaging>
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		 <metrics.version>4.1.0</metrics.version>
+	</properties>
+
+	<dependencies>
+ <dependency> 
+    	<groupId>dawdler</groupId>
+    	<artifactId>dawdler-client</artifactId>
+    	<version>${project.build.version}</version>
+    </dependency>
+	</dependencies>
+</project>
