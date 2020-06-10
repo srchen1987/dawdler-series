@@ -45,7 +45,7 @@ dawdler文件结构说明
         stopnow           Stop dawdler immediately 立刻停止dawdler，如果客户端有请求为处理完会收到一个强制停止的异常
 
 3. 启动zookeeper。执行 `sh zkServer.sh start`  启动zookeeper。
-4. 配置zookeeper，进入zooinspector-master的bin下执行 `sh zooinspector.sh run` 创建dawdler节点，在dawdler节点下创建defaultgroup 内容为 localhost:9527 这里的9527是dawdler的端口号。
+4. 配置zookeeper，进入zooinspector-master的bin下执行 `sh zooinspector.sh run`可以看到dawdler注册的节点。
 
 如图下：
 ![zooinspector的界面]![截图](https://images.gitee.com/uploads/images/2018/1115/112012_0f541a2f_2248173.jpeg "1542251928310.jpg")
