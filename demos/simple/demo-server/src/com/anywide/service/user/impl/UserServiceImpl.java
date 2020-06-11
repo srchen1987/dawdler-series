@@ -1,6 +1,4 @@
 package com.anywide.service.user.impl;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +16,14 @@ import com.anywide.service.user.UserService;
 public class UserServiceImpl implements UserService{
 	@Resource
 	private UserDAO userDAO;
+	
+	
 	@Override
 	@DBTransaction(mode=MODE.forceReadOnWrite,propagation=Propagation.REQUIRED)
 	public Map<String, Object> selectList(Map<String, Object> map) throws SQLException {
 		int pageon = Integer.parseInt(map.get("pageon")+"");
 		if(pageon==2)throw new RuntimeException("error!");
-		if(pageon==3) {
+		if(pageon==3){
 			try {
 				Thread.sleep(15000);
 			} catch (InterruptedException e) {
