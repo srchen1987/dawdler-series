@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.net.aio.handler;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.CompletionHandler;
 import org.slf4j.Logger;
