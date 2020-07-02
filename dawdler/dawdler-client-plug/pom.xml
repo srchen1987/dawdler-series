@@ -14,24 +14,20 @@
   <dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 	<dependency>
 	    <groupId>org.apache.velocity</groupId>
 	    <artifactId>velocity</artifactId>
-	    <version>1.7</version>
 	</dependency>
 
 	<dependency>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-client</artifactId>
-		<version>${project.build.version}</version>
 	</dependency>
 	<dependency>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-client-plug-validator</artifactId>
-		<version>${project.build.version}</version>
 	</dependency>
   </dependencies>
 </project>

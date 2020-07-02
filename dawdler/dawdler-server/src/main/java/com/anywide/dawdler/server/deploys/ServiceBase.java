@@ -141,12 +141,16 @@ public class ServiceBase implements Service {
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		servicesManager.fireCreate(dawdlerContext);
 		dawdlerListenerProvider.order();
-		
 		filterProvider.orderAndbuildChain();
 
 		for (OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
 			injectService(data.getData());
 		}
+		
+		for (OrderData<DawdlerFilter> data : filterProvider.getFilters()) {
+			injectService(data.getData());
+		}
+		
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
 			ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
 			if (listenerConfig != null && listenerConfig.asyn()) {

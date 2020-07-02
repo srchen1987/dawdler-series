@@ -13,17 +13,14 @@
    <dependency>
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-core</artifactId>
-    	<version>${project.build.version}</version>
     </dependency>
     <dependency> 
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-server</artifactId>
-    	<version>${project.build.version}</version>
     </dependency>
     <dependency> 
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-client</artifactId>
-    	<version>${project.build.version}</version>
     </dependency>
   </dependencies>
 </project> 

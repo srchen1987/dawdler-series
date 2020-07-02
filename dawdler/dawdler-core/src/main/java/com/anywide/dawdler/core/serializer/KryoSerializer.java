@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.serializer;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -39,8 +44,8 @@ public class KryoSerializer implements Serializer {
 	};
 	public static class KryoLocal{
 		private Kryo kryo;
-//		private Input input;
-//		private Output out;
+		private Input input;
+		private Output out;
 		public KryoLocal() {
 			kryo = new Kryo();
 			kryo.setReferences(true);
@@ -48,8 +53,8 @@ public class KryoSerializer implements Serializer {
 			
 //			  ((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
 //              .setFallbackInstantiatorStrategy(new StdInstantiatorStrategy());
-//			input = new UnsafeInput();
-//			out = new UnsafeOutput(2048,-1);
+			input = new UnsafeInput();
+			out = new UnsafeOutput(2048,-1);
 		}
 		public Kryo getKryo() {
 			kryo.setClassLoader(Thread.currentThread().getContextClassLoader());
@@ -58,47 +63,68 @@ public class KryoSerializer implements Serializer {
 		public void setKryo(Kryo kryo) {
 			this.kryo = kryo;
 		}
-//		public Input getInput() {
-//			return input;
-//		}
-//		public void setInput(Input input) {
-//			this.input = input;
-//		}
-//		public Output getOut() {
-//			return out;
-//		}
-//		public void setOut(Output out) {
-//			this.out = out;
-//		}
 	}
 	@Override
 	public Object deserialize(byte[] bytes) throws Exception {
-		Kryo kryo = kryos.get().getKryo();
-//		Input input = kryos.get().input;
-		Input input = new UnsafeInput();
+		KryoLocal kryoLocal = kryos.get();
+		Kryo kryo = kryoLocal.getKryo();
+		Input input = kryoLocal.input;
+//		Input input = new UnsafeInput();
 		input.setBuffer(bytes);
-		Object obj;
-		try{
-			obj = kryo.readClassAndObject(input);
-		}finally{
-			input.close();
-		}
+	Object obj = kryo.readClassAndObject(input);
 		return obj;
 	}
 
 	@Override
 	public byte[] serialize(Object object) throws Exception {
-		Kryo kryo = kryos.get().kryo;
-//		Output out = kryos.get().out;
-		Output out = new UnsafeOutput(2048,-1);
+		KryoLocal kryoLocal = kryos.get();
+		Kryo kryo = kryoLocal.kryo;
+		Output out = kryoLocal.out;
+//		Output out = new UnsafeOutput(2048,-1);
 		byte []datas = null;
 		try {
 			kryo.writeClassAndObject(out, object);
 			datas = out.toBytes();
 		}finally {
-			out.flush();
-			out.close();
+			out.clear();
 		}
 		return datas;
+	}
+	public static void main(String[] args) throws Exception {
+		Thread.sleep(5000);
+		int count = 65535;
+		ExecutorService es = Executors.newFixedThreadPool(32);
+		CountDownLatch dl = new CountDownLatch(count);
+		long t1 = System.currentTimeMillis();
+		for(int i=0;i<count;i++) {
+			es.execute(()->{
+				KryoSerializer sk = new KryoSerializer();
+				byte[] data;
+				try {
+					Map map = new HashMap();
+					map.put("jackson", "12345676");
+					for(int j=0;j<10;j++) {
+						data = sk.serialize(map);
+						sk.deserialize(data);
+						data = sk.serialize(map);
+						sk.deserialize(data);
+						data = sk.serialize(map);
+						sk.deserialize(data);
+						data = sk.serialize(map);
+						sk.deserialize(data);
+					}
+					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				dl.countDown();
+			});
+		}
+		dl.await();
+		long t2 = System.currentTimeMillis();
+		System.out.println("cost:"+(t2-t1));
+		es.shutdown();
+		
 	}
 }
