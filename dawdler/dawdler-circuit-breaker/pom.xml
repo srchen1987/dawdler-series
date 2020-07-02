@@ -10,17 +10,10 @@
   <artifactId>dawdler-circuit-breaker</artifactId>
   <name>dawdler-circuit-breaker</name>
   <packaging>jar</packaging>
-	<properties>
-		<java.version>1.8</java.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		 <metrics.version>4.1.0</metrics.version>
-	</properties>
-
 	<dependencies>
- <dependency> 
+  <dependency> 
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-client</artifactId>
-    	<version>${project.build.version}</version>
     </dependency>
 	</dependencies>
 </project>

@@ -73,7 +73,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 				if (dm != null) {
 					MappingDecision mappingDecision = dm.getMappingDecision(object.getClass().getPackage().getName());
 					status = new JdbcReadConnectionStatus(dbt);
-					if (dbt.readConfig() == READCONFIG.idem) {
+					if (dbt.readConfig() == READCONFIG.idem) { 
 						if (sb == null) {
 							sb = new SynReadConnectionObject(mappingDecision, dbt);
 							LocalConnectionFacotry.setSynReadConnectionObject(sb);
