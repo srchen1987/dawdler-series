@@ -19,12 +19,10 @@
 	<dependency>  
 	    <groupId>cglib</groupId>
 	    <artifactId>cglib-nodep</artifactId>
-	    <version>3.2.8</version>
 	</dependency> 
 	<dependency>
 	    <groupId>org.javassist</groupId>
 	    <artifactId>javassist</artifactId>
-	    <version>3.23.1-GA</version>
 	</dependency>
   </dependencies>
 </project>

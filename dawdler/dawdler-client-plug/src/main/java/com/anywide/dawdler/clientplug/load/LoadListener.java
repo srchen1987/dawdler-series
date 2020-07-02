@@ -96,10 +96,6 @@ public class LoadListener implements ServletContextListener {
 			}
 		}
 		WebContextListenerProvider.listenerRun(true,arg0.getServletContext());
-//		Map<String, RequestUrlData> mappings = AnnotationUrlHandler.getUrlRules();
-//		for(RequestUrlData rd : mappings.values()) {
-//			injectRemoteService(rd.getTarget().getClass(), rd.getTarget());
-//		}
 		arg0.getServletContext().addFilter("ViewController",ViewFilter.class).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.FORWARD,DispatcherType.ERROR,DispatcherType.INCLUDE),true,"/*");
 		
 //		arg0.getServletContext().addFilter("ViewController",ViewController.class).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.FORWARD,DispatcherType.ERROR),true,"/*");

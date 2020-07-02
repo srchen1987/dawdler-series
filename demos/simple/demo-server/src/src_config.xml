@@ -47,7 +47,7 @@
 <remote_load package="${classpath}/com/anywide/load/loadconfig.xml"></remote_load><!-- 远端加载类模版的配置文件-->
 
 <server-datas>
-<server-data id="discoveryServer" type="zk" url="localhost:2181">目前只支持zk</server-data>
+<server-data id="discoveryServer" type="zk" url="localhost:2181" channel-group-id="defaultgroup">目前只支持zk</server-data>
 </server-datas>
 
 </config>
