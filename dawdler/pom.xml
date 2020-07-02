@@ -1,36 +1,184 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.version>0.0.1-RELEASES</project.build.version>
-  </properties>
-  <groupId>dawdler</groupId>
-  <artifactId>dawdler</artifactId>
-  <version>${project.build.version}</version>
-  <name>dawdler</name>
-  <packaging>pom</packaging>
-  <dependencies>
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.version>0.0.1-RELEASES</project.build.version>
+		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
+		<org.slf4j.version>1.7.25</org.slf4j.version>
+		<org.ow2.asm.version>5.2</org.ow2.asm.version>
+		<jaxen.version>1.1.6</jaxen.version>
+		<dom4j.version>1.6.1</dom4j.version>
+		<commons-lang.version>2.6</commons-lang.version>
+		<commons-pool2.version>2.8.0</commons-pool2.version>
+		<kryo.version>4.0.2</kryo.version>
+		<xstream.version>1.4.12</xstream.version>
+		<xpp3_min.version>1.1.4c</xpp3_min.version>
+		<org.apache.curator.version>3.3.0</org.apache.curator.version>
+		<guava.version>22.0</guava.version>
+		<zookeeper.version>3.5.5</zookeeper.version>
+	  <cglib-nodep.version>3.2.8</cglib-nodep.version>
+	  <javassist.version>3.23.1-GA</javassist.version>
+		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+		<jackson-core-lgpl.version>1.9.13</jackson-core-lgpl.version>
+		<commons-fileupload.version>1.3.3</commons-fileupload.version>
+		<velocity.version>1.7</velocity.version>
+		
+	</properties>
+	<groupId>dawdler</groupId>
+	<artifactId>dawdler</artifactId>
+	<version>${project.build.version}</version>
+	<name>dawdler</name>
+	<packaging>pom</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-access</artifactId>
+			<version>${ch.qos.logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${ch.qos.logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>${org.slf4j.version}</version>
+		</dependency>
+	</dependencies>
+	<dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>${org.ow2.asm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId> 
+			<artifactId>jaxen</artifactId>
+			<version>${jaxen.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>${dom4j.version}</version>
+		</dependency>
+			<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>${commons-lang.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+			<version>${commons-pool2.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.esotericsoftware</groupId>
+			<artifactId>kryo</artifactId>
+			<version>${kryo.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.thoughtworks.xstream</groupId>
+			<artifactId>xstream</artifactId>
+			<version>${xstream.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>xpp3</groupId>
+			<artifactId>xpp3_min</artifactId>
+			<version>${xpp3_min.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-client</artifactId>
+			<version>${org.apache.curator.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>*</groupId>
+					<artifactId>*</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-framework</artifactId>
+			<version>${org.apache.curator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>${org.apache.curator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>${guava.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>${zookeeper.version}</version>
+		</dependency>
+		<dependency>  
+	    <groupId>cglib</groupId>
+	    <artifactId>cglib-nodep</artifactId>
+	    <version>${cglib-nodep.version}</version>
+	</dependency> 
 	<dependency>
-	    <groupId>ch.qos.logback</groupId>
-	    <artifactId>logback-access</artifactId>
-	    <version>1.2.3</version>
+	    <groupId>org.javassist</groupId>
+	    <artifactId>javassist</artifactId>
+	    <version>${javassist.version}</version>
 	</dependency>
-	
-	<dependency>
-    	<groupId>ch.qos.logback</groupId>
-    	<artifactId>logback-classic</artifactId>
-    	<version>1.2.3</version>
-	</dependency>
-	
-	<dependency>
-    <groupId>org.slf4j</groupId>
-    <artifactId>slf4j-simple</artifactId>
-    <version>1.7.25</version>
-</dependency>
-	
-  </dependencies>
+	<dependency> 
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax.servlet-api.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-lgpl</artifactId>
+			<version>${jackson-core-lgpl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-lgpl</artifactId>
+			<version>${jackson-core-lgpl.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-fileupload.version}</version>
+		</dependency>
+		<dependency>
+	    <groupId>org.apache.velocity</groupId>
+	    <artifactId>velocity</artifactId>
+	    <version>${velocity.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-client</artifactId>
+			<version>${project.build.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-client-plug-validator</artifactId>
+			<version>${project.build.version}</version>
+		</dependency>
+		<dependency>
+    	<groupId>dawdler</groupId>
+    	<artifactId>dawdler-core</artifactId>
+    	<version>${project.build.version}</version>
+    </dependency>
+    <dependency> 
+    	<groupId>dawdler</groupId>
+    	<artifactId>dawdler-server</artifactId>
+    	<version>${project.build.version}</version>
+    </dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>
@@ -48,14 +196,15 @@
 		<defaultGoal>compile</defaultGoal>
 	</build>
 	<modules>
-	<module>dawdler-util</module>
+		<module>dawdler-util</module>
 		<module>dawdler-core</module>
 		<module>dawdler-client</module>
 		<module>dawdler-server</module>
 		<module>dawdler-client-plug-validator</module>
 		<module>dawdler-client-plug</module>
+		<module>dawdler-client-plug-session</module>
 		<module>dawdler-server-plug</module>
 		<module>dawdler-circuit-breaker</module>
-		<module>springboot-validator</module> 
+		<module>springboot-validator</module>
 	</modules>
 </project>
