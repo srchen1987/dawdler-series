@@ -48,6 +48,7 @@
 			<version>${org.slf4j.version}</version>
 		</dependency>
 	</dependencies>
+	
 	<dependencyManagement>
 	<dependencies>
 		<dependency>
@@ -177,6 +178,11 @@
     	<artifactId>dawdler-server</artifactId>
     	<version>${project.build.version}</version>
     </dependency>
+    <dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-util</artifactId>
+			<version>${project.build.version}</version>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -202,9 +208,9 @@
 		<module>dawdler-server</module>
 		<module>dawdler-client-plug-validator</module>
 		<module>dawdler-client-plug</module>
-		<module>dawdler-client-plug-session</module>
+	<!--	<module>dawdler-client-plug-session</module> -->
 		<module>dawdler-server-plug</module>
 		<module>dawdler-circuit-breaker</module>
-		<module>springboot-validator</module>
+	<!--	<module>springboot-validator</module> -->
 	</modules>
 </project>
