@@ -46,7 +46,7 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-client-plug-validator</artifactId>
-			<version>${dawdler.build.version}</version>
+			<version>0.0.1-RELEASES</version>
 		</dependency>
 	</dependencies>
 </project>
