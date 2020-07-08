@@ -250,13 +250,17 @@ public class DawdlerConnection {
 			throw new IllegalArgumentException("address can not be null or empty!");
 		}
 		String[] s = address.split(":");
-		if(s.length!=2)
+		
+		int index = address.lastIndexOf(":");
+		if(index<=0) {
 			throw new IllegalArgumentException("address is not a compliant rule!");
-		String ip = s[0];
-		String port = s[1];
+		}
+		String ip  = address.substring(0,index);
+		String port = address.substring(index+1,address.length());
 		SocketAddress socketAddress  = new InetSocketAddress(ip, Integer.parseInt(port));
 		return socketAddress;
 	}
+	
 	
 	public void refreshConnection(SocketAddress... addressArray) {
 		if ((addressArray == null || addressArray.length == 0)) {
