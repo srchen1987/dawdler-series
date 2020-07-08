@@ -5,7 +5,7 @@
   <parent>
     <groupId>dawdler</groupId>
     <artifactId>dawdler</artifactId>
-    <version>${project.build.version}</version>
+    <version>0.0.1-RELEASES</version>
   </parent>
   <artifactId>dawdler-client</artifactId>
   <name>dawdler-client</name>
@@ -14,7 +14,6 @@
    <dependency> 
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-core</artifactId>
-    	<version>${project.build.version}</version>
     </dependency>
 	<dependency>  
 	    <groupId>cglib</groupId>

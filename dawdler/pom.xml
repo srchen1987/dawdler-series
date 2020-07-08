@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.build.version>0.0.1-RELEASES</project.build.version>
+		<dawdler.build.version>0.0.1-RELEASES</dawdler.build.version>
 		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 		<org.slf4j.version>1.7.25</org.slf4j.version>
 		<org.ow2.asm.version>5.2</org.ow2.asm.version>
@@ -28,7 +28,7 @@
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>${project.build.version}</version>
+	<version>0.0.1-RELEASES</version>
 	<name>dawdler</name>
 	<packaging>pom</packaging>
 	<dependencies>
@@ -161,27 +161,27 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-client</artifactId>
-			<version>${project.build.version}</version>
+			<version>0.0.1-RELEASES</version>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-client-plug-validator</artifactId>
-			<version>${project.build.version}</version>
+			<version>0.0.1-RELEASES</version>
 		</dependency>
 		<dependency>
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-core</artifactId>
-    	<version>${project.build.version}</version>
+    	<version>0.0.1-RELEASES</version>
     </dependency>
     <dependency> 
     	<groupId>dawdler</groupId>
     	<artifactId>dawdler-server</artifactId>
-    	<version>${project.build.version}</version>
+    	<version>0.0.1-RELEASES</version>
     </dependency>
     <dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
-			<version>${project.build.version}</version>
+			<version>0.0.1-RELEASES</version>
 		</dependency>
 		</dependencies>
 	</dependencyManagement>
