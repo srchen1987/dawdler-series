@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-<load-url>/Users/jackson.song/Desktop/load</load-url>
+<!-- <load-url>load_path</load-url> -->
 <zk_host>localhost:2181</zk_host>
 <certificatePath>/Users/jackson.song/Desktop/key/dawdler.cer</certificatePath>
 <server-channel-group channel-group-id="defaultgroup"

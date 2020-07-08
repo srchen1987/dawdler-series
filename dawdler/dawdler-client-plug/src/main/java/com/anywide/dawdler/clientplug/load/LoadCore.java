@@ -81,15 +81,11 @@ public class LoadCore implements Runnable{
 				String s = System.getProperty("java.io.tmpdir")+UUID.randomUUID().toString();
 				if(s!=null)
 					path=s;
-				else
-					path = currentpath.substring(0,currentpath.length()-1);
 			}
 		}else{
-			String s = System.getProperty("java.io.tmpdir");
+			String s = System.getProperty("java.io.tmpdir")+UUID.randomUUID().toString();
 			if(s!=null)
 				path=s;
-			else
-				path = currentpath.substring(0,currentpath.length()-1);
 		}
 	}
 	public LoadCore(String host,long time,String channelGroupId) {

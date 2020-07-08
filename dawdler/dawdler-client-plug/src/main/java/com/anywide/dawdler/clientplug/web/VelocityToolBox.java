@@ -25,7 +25,7 @@ package com.anywide.dawdler.clientplug.web;
  * @version V1.0 
  * @email: suxuan696@gmail.com
  */
-public abstract class  VelocityToolBox {
+public abstract class VelocityToolBox {
 	private String name;
 	public VelocityToolBox(String name){
 		this.name=name;
