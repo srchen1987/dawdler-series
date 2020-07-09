@@ -24,15 +24,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.client.Transaction;
 import com.anywide.dawdler.client.TransactionProvider;
 import com.anywide.dawdler.serverplug.bean.XmlBean;
@@ -64,36 +61,42 @@ public class LoadCore implements Runnable {
 		XmlObject xmlo = ClientConfig.getInstance().getXml();
 		Element ele = xmlo.selectSingleNode("/config/load-url");
 		currentpath = DawdlerTool.getcurrentPath();
+
+		String tmpPath = System.getProperty("user.home");
+		if (tmpPath != null) {
+			tmpPath = tmpPath + File.separator + ".load"+currentpath;
+			File file = new File(tmpPath);
+			if (!file.exists()) {
+				if (!file.mkdirs())
+					tmpPath = currentpath;
+			}
+		} else
+			tmpPath = currentpath;
+		path = tmpPath;
 		if (ele != null) {
 			if (!ele.getTextTrim().equals("")) {
 				File f = new File(ele.getTextTrim());
 				if (!f.isDirectory()) {
-					if (!f.mkdirs()) {
-						String s = System.getProperty("java.io.tmpdir");
-						if (s != null)
-							path = s;
-					} else
+					if (f.mkdirs()) {
 						path = f.getAbsolutePath();
+					}
 				} else {
 					path = f.getAbsolutePath();
 				}
-			} else {
-				String s = System.getProperty("java.io.tmpdir") + UUID.randomUUID().toString();
-				if (s != null)
-					path = s;
 			}
-		} else {
-			String s = System.getProperty("java.io.tmpdir") + UUID.randomUUID().toString();
-			if (s != null)
-				path = s;
 		}
 	}
+
 
 	public LoadCore(String host, long time, String channelGroupId) {
 		this.host = host;
 		if (time > 1000)
 			this.time = time;
 		this.channelGroupId = channelGroupId;
+	}
+	
+	public String getLogFilePath() {
+		return path + File.separator +channelGroupId+host + PREFIX;
 	}
 
 	public void toCheck() throws IOException {
@@ -110,8 +113,7 @@ public class LoadCore implements Runnable {
 		if (xmlb == null)
 			throw new NullPointerException("not found host " + host + "!");
 		XmlObject xmlo = new XmlObject(xmlb.getDocument());
-		String path = DawdlerTool.getcurrentPath();
-		String filepath = path + File.separator + host + PREFIX;
+		String filepath = getLogFilePath();
 		File file = new File(filepath);
 		if (!file.exists()) {
 			xmlo.setFilepath(filepath);
@@ -139,6 +141,7 @@ public class LoadCore implements Runnable {
 		}
 	}
 
+
 	private void initClassMap(XmlObject xmlo) throws IOException {
 		willLoad(xmlo, "bean");
 	}
@@ -154,15 +157,14 @@ public class LoadCore implements Runnable {
 		loadClass(tem);
 	}
 
-	private boolean willCheckAndLoad(XmlObject local, XmlObject remote) throws IOException {
-		String type = "bean";
+	private boolean willCheckAndLoad(XmlObject local, XmlObject remote, String type) throws IOException {
+		boolean isbean = type.equals("bean");
 		boolean remark = false;
 		List<String> list = new ArrayList<String>();
 		Set<String> set = new HashSet<String>();
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
 		for (Object item : local.getNode("/hosts/host[@type='" + type + "']/item")) {
 			Element ele = (Element) item;
-//			String name = ele.attributeValue("name");
 			String checkname = ele.attributeValue("checkname");
 			for (Object item2 : remote
 					.getNode("/hosts/host[@type='" + type + "']/item[@checkname='" + checkname + "']")) {
@@ -175,6 +177,7 @@ public class LoadCore implements Runnable {
 				}
 			}
 		}
+		String classFilePath = (isbean ? currentpath : (path + File.separator));
 		Set<String> temset = new HashSet<String>();
 		for (String names : list) {// 循环客户端和服务器端都有的类
 			for (Object item : local.getNode("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
@@ -183,7 +186,7 @@ public class LoadCore implements Runnable {
 						&& !temset.contains(ele.attributeValue("checkname"))) {// 如果list里面不包含并且set中也不包含
 					temset.add(ele.attributeValue("checkname"));// set中添加进去
 					remark = true;
-					File file = new File(path + File.separator + classNameToFilePath(ele.getText()));
+					File file = new File(classFilePath + classNameToFilePath(ele.getText()));
 					if (file.exists())
 						file.delete();
 				}
@@ -196,9 +199,10 @@ public class LoadCore implements Runnable {
 					temset.add(ele.attributeValue("checkname"));
 					remark = true;
 					set.add(ele.getText());
-					File file = new File(path + File.separator + classNameToFilePath(ele.getText()));
+					File file = new File(classFilePath + classNameToFilePath(ele.getText()));
 					if (file.exists())
 						file.delete();
+					 
 				}
 			}
 		}
@@ -228,7 +232,7 @@ public class LoadCore implements Runnable {
 	}
 
 	private boolean check(XmlObject local, XmlObject remote) throws IOException {
-		return willCheckAndLoad(local, remote);
+		return willCheckAndLoad(local, remote, "bean") | willCheckAndLoad(local, remote, "controller");
 	}
 
 	private final static String classNameToFilePath(String classname) {
@@ -239,13 +243,6 @@ public class LoadCore implements Runnable {
 	}
 
 	private void loadClass(String[] tem) throws IOException {
-		/*
-		 * if(ListenLoad.DEBUG){ System.out.println("------------"); for(String t:tem){
-		 * System.out.println(t); } System.out.println("------------"); }
-		 */
-//		Object o = RemoteFactory.getInstance().getRemoteBean(DOWNLOADFILE);
-//		DownloadFile df = (DownloadFile) o;
-//		RemoteFiles rfs = (RemoteFiles) df.download(tem);
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
 		tr.setServiceName("com.anywide.dawdler.serverplug.service.DownloadFile");
 		tr.setMethod("download");
@@ -291,7 +288,6 @@ public class LoadCore implements Runnable {
 				}
 			}
 		}
-//		if(LoadListener.DEBUG)System.out.println("load over \t"+host+"\tmodel !");
 	}
 
 	public String getHost() {

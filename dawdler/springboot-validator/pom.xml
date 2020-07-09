@@ -4,19 +4,21 @@
 	xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
+	<!-- <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.6.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath />  
+	</parent> -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.1.RELEASE</version>
+		<relativePath />
 	</parent>
 	<artifactId>springboot-validator</artifactId>
 	<name>springboot-validator</name>
 	<packaging>jar</packaging>
-	<properties>
-	<dawdler.build.version>0.0.1-RELEASES</dawdler.build.version>
-	</properties>
-	
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>
