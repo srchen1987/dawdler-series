@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.dom4j.DocumentException;
@@ -64,7 +65,7 @@ public class LoadCore implements Runnable {
 
 		String tmpPath = System.getProperty("user.home");
 		if (tmpPath != null) {
-			tmpPath = tmpPath + File.separator + ".load"+currentpath;
+			tmpPath = tmpPath + File.separator + ".load"+File.separator+UUID.randomUUID().toString();
 			File file = new File(tmpPath);
 			if (!file.exists()) {
 				if (!file.mkdirs())
@@ -96,7 +97,7 @@ public class LoadCore implements Runnable {
 	}
 	
 	public String getLogFilePath() {
-		return path + File.separator +channelGroupId+host + PREFIX;
+		return path + File.separator +channelGroupId+"-"+host + PREFIX;
 	}
 
 	public void toCheck() throws IOException {
