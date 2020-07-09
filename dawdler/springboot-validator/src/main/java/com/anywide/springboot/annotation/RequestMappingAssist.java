@@ -20,5 +20,5 @@ public @interface RequestMappingAssist {
 	String input() default "";
 //	boolean hasJsonBody() default false;
 //	ViewType viewType() default ViewType.jsonView;
-	boolean generateValidator() default true;
+	boolean generateValidator() default false;
 }

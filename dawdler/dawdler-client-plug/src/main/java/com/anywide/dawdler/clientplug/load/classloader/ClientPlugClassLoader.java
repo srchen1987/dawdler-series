@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.load.classloader;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -74,11 +75,18 @@ public class ClientPlugClassLoader {
 		return remoteClass.get(key);
 	}
 	public void updateLoad(String path){
+		URLClassLoader oldUrlCL = urlCL;
 		try {
 			URL url = new URL("file:"+path+"/");
 			this.urlCL = ClientClassLoader.newInstance(new URL[] {url},getClass().getClassLoader());
 		} catch (MalformedURLException e) {
 			logger.error("",e);
+		}finally {
+			try {
+				if(oldUrlCL!=null)
+						oldUrlCL.close();
+			} catch (IOException e) {
+			}
 		}
 	}
 }
