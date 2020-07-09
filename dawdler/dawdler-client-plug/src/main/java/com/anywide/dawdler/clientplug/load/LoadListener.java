@@ -79,6 +79,7 @@ public class LoadListener implements ServletContextListener {
 				} catch (Exception e) {
 				}
 			}
+			arg0.getServletContext().getContextPath();
 			String channelGroupId = ele.attributeValue("channel-group-id");
 			LoadCore loadCore = new LoadCore(host,sleep,channelGroupId);
 			try {
