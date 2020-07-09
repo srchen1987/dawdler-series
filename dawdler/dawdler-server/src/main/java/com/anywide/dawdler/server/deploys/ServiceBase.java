@@ -129,7 +129,7 @@ public class ServiceBase implements Service {
 						orderData.setOrder(order.value());
 					filterProvider.addFilter(filter);
 				}
-
+				
 				if (servicesManager.isService(c)) {
 					serviceClasses.add(c);
 				}
