@@ -59,14 +59,14 @@ public class RuleOperatorProvider {
 		if(ro==null)return;
 		if(ro.getRuleKey()!=null){
 			if(stringRules.containsKey(ro.getRuleKey())){
-				logger.warn(ro.getRuleKey()+"\twas existed in "+stringRules.get(ro.getRuleKey()).getClass().getName()+"!");
+				logger.warn(ro.getRuleKey()+"\talready exists in "+stringRules.get(ro.getRuleKey()).getClass().getName()+"!");
 			}else{
 				stringRules.put(ro.getRuleKey(),(StringRuleOperator)ro);
 			}
 		}
 		else if(ro.getPattern()!=null){
 			if(stringRegexRules.containsKey(ro.getPattern().pattern())){
-				logger.warn(ro.getPattern().pattern()+"\twas existed in "+stringRegexRules.get(ro.getPattern().pattern()).getClass().getName()+"!");
+				logger.warn(ro.getPattern().pattern()+"\talready exists in "+stringRegexRules.get(ro.getPattern().pattern()).getClass().getName()+"!");
 			}else{
 				regexRules.put(ro.getPattern(),(RegexRuleOperator)ro);
 				stringRegexRules.put(ro.getPattern().pattern(),(RegexRuleOperator)ro);

@@ -107,7 +107,7 @@ public class DataAutomaticNewV2 {
 		dataTypes.put("BIGINT", new Class[] { long.class, Long.class });
 		dataTypes.put("FLOAT", new Class[] { float.class, Float.class });
 		dataTypes.put("DOUBLE", new Class[] { double.class, Double.class });
-		dataTypes.put("DECIMAL", new Class[] { java.math.BigDecimal.class });
+		dataTypes.put("DECIMAL", new Class[] { java.math.BigDecimal.class ,double.class, Double.class});
 
 		dataTypes.put("DATE", new Class[] { java.sql.Date.class, String.class });
 		dataTypes.put("DATETIME", new Class[] { java.sql.Timestamp.class, String.class });

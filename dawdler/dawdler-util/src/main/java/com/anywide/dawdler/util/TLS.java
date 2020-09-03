@@ -37,11 +37,23 @@ public class TLS {
 		Map<Object, Object> map = createIfNotExist();
 		return map.get(key);
 	}
+	
+	
 	public static Object remove(Object key) {
 		Map<Object, Object> map = threadLocal.get();
 		if (map != null) {
 			return map.remove(key);
 		}
+		return null;
+	}
+	
+	
+	public static Object clear() {
+		Map<Object, Object> map = threadLocal.get();
+		if (map != null) {
+				map.clear();
+		}
+		threadLocal.remove();
 		return null;
 	}
 	

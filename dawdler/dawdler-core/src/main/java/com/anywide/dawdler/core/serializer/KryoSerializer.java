@@ -15,11 +15,6 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.serializer;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import org.objenesis.strategy.StdInstantiatorStrategy;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -89,42 +84,5 @@ public class KryoSerializer implements Serializer {
 			out.clear();
 		}
 		return datas;
-	}
-	public static void main(String[] args) throws Exception {
-		Thread.sleep(5000);
-		int count = 65535;
-		ExecutorService es = Executors.newFixedThreadPool(32);
-		CountDownLatch dl = new CountDownLatch(count);
-		long t1 = System.currentTimeMillis();
-		for(int i=0;i<count;i++) {
-			es.execute(()->{
-				KryoSerializer sk = new KryoSerializer();
-				byte[] data;
-				try {
-					Map map = new HashMap();
-					map.put("jackson", "12345676");
-					for(int j=0;j<10;j++) {
-						data = sk.serialize(map);
-						sk.deserialize(data);
-						data = sk.serialize(map);
-						sk.deserialize(data);
-						data = sk.serialize(map);
-						sk.deserialize(data);
-						data = sk.serialize(map);
-						sk.deserialize(data);
-					}
-					
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				dl.countDown();
-			});
-		}
-		dl.await();
-		long t2 = System.currentTimeMillis();
-		System.out.println("cost:"+(t2-t1));
-		es.shutdown();
-		
 	}
 }
