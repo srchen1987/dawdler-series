@@ -1,0 +1,71 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.anywide.dawdler.clientplug.web.session;
+import java.util.concurrent.TimeUnit;
+import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
+import com.github.benmanes.caffeine.cache.Caffeine;
+import com.github.benmanes.caffeine.cache.LoadingCache;
+/**
+ * 
+ * @Title:  DistributedCaffeineSessionManager.java
+ * @Description:   caffeine session管理器的一个实现
+ * @author: jackson.song    
+ * @date:   2016年6月16日  
+ * @version V1.0 
+ * @email: suxuan696@gmail.com
+ */
+public class DistributedCaffeineSessionManager extends AbstractDistributedSessionManager {
+	LoadingCache<String,DawdlerHttpSession> sessions = null;
+	private int maxInactiveInterval = 3600;
+	public DistributedCaffeineSessionManager() {
+		sessions = Caffeine.newBuilder().maximumSize(100000)
+					.expireAfterAccess(maxInactiveInterval,TimeUnit.SECONDS)
+						    .build(key -> createExpensiveGraph(key));		
+		
+	}
+	
+	public DawdlerHttpSession getSession(String sessionkey){
+		return sessions.getIfPresent(sessionkey);
+	}
+	
+	public int getMaxInactiveInterval() {
+		return maxInactiveInterval;
+	}
+
+	private DawdlerHttpSession createExpensiveGraph(String key) {
+		return null;
+	}
+
+	@Override
+	public void close() {
+		sessions.cleanUp();
+	}
+ 
+
+	@Override
+	public void removeSession(String sessionkey) {
+		sessions.invalidate(sessionkey);
+	}
+
+	@Override
+	public void addSession(String sessionkey,DawdlerHttpSession dawdlerHttpSession) {
+		sessions.put(sessionkey,dawdlerHttpSession);
+	}
+
+	
+
+}
