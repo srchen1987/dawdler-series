@@ -41,7 +41,7 @@ public class FileUploadExceptionHolder {
 	public static void regist(short id,FileUploadExceptionHandler handler) {
 		FileUploadExceptionHandler handlerPre = handles.putIfAbsent(id, handler);
 		if(handlerPre!=null) {
-			logger.warn("FileUploadExceptionHandler id : "+id +"\twas existed!");
+			logger.warn("FileUploadExceptionHandler id : "+id +"\talready exists!");
 		}
 	}
 	public static FileUploadExceptionHandler getFileUploadExceptionHandler(short id) {

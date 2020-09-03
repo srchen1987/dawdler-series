@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 
  * @Title:  RegexRules.java   
- * @Description:    TODO   
+ * @Description:    正则实现验证规则的存储类   
  * @author: jackson.song    
  * @date:   2007年07月21日     
  * @version V1.0 
@@ -41,7 +41,7 @@ public class RegexRules {
 	
 	public static void  registerRule(String key,String regex,String explain){
 		if(regexRules.containsKey(key)){
-			logger.warn(key+" was existed!");
+			logger.warn(key+" already exists!");
 			return;
 		}
 		Pattern pattern= Pattern.compile(regex);
@@ -50,7 +50,7 @@ public class RegexRules {
 	}
 	public static void registerRule(String key,Pattern pattern,String explain){
 		if(regexRules.containsKey(key)){
-			logger.warn(key+" was existed!");
+			logger.warn(key+" already exists!");
 			return;
 		}
 		regexRules.put(key,pattern);

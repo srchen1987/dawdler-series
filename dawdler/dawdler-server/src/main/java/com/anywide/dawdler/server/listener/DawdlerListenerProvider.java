@@ -52,27 +52,4 @@ public class DawdlerListenerProvider {
 	}
 
 	private List<OrderData<DawdlerServiceListener>> listeners = new ArrayList<>();
-	public static void main(String[] args) {
-		List<OrderData<String>> list = new ArrayList();
-		
-		OrderData o3 = new OrderData();
-		o3.setOrder(3);
-		o3.setData("3");
-		
-		list.add(o3);
-		
-		OrderData o = new OrderData();
-		o.setOrder(1);
-		o.setData("1");
-		list.add(o);
-		
-		OrderData o1 = new OrderData();
-		o1.setOrder(2);
-		o1.setData("2");
-		list.add(o1);
-		
-		
-		OrderComparator.sort(list);
-		System.out.println(list);
-	}
 }
