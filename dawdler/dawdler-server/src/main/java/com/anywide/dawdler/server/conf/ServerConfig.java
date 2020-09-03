@@ -293,23 +293,4 @@ public class ServerConfig {
 		}
 		return success;
 	}
-	public static void main(String[] args) throws Exception {
-		FileInputStream input = new FileInputStream("/home/srchen/dd/1/global_user0");
-		byte [] data = new byte[input.available()];
-		input.read(data);
-		CertificateOperator certificateOperator = new CertificateOperator("/home/srchen/github/dawdler-series/myserver/key/dawdler.keystore","srchen","jackson.song1948@anywide");
-		ExecutorService  es = Executors.newFixedThreadPool(20);
-		for(int j=0;j<50;j++)
-		es.execute(()->{
-			try {
-				byte[] s = certificateOperator.decrypt(data,  KeyStoreConfig.DKS);
-				System.out.println(s);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-//		byte[] s = certificateOperator.decrypt(data,  KeyStoreConfig.DKS);
-//		System.out.println(new String(s));
-	}
 }

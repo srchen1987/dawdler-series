@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 
  * @Title:  AbstractValidator.java   
- * @Description:    TODO   
+ * @Description:    验证器的抽象类   
  * @author: jackson.song    
  * @date:   2007年07月21日   
  * @version V1.0 

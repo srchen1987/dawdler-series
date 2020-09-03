@@ -15,37 +15,55 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.db.dao;
+
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+
 /**
  * 
- * @Title:  BaseData.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月15日     
- * @version V1.0 
+ * @Title: BaseData.java
+ * @Description: TODO
+ * @author: jackson.song
+ * @date: 2007年04月15日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface BaseData {
-	public <T extends Object> List<T> queryList(String sql,Class<T> c)throws SQLException ;
-	public <T extends Object> List<T> queryListPrepare(String sql,Class<T> c,Object ...values)throws SQLException ;
-	public <T extends Object> T queryObject(String sql,Class<T> c)throws SQLException ;
-	public <T extends Object> T queryObjectPrepare(String sql,Class<T> c,Object ...values)throws SQLException ;
-	public List<Map<String,Object>> queryListMaps(String sql)throws SQLException ;
-	public List<Map<String,Object>> queryListMapsPrepare(String sql,Object ...values)throws SQLException ;
-	public int update(String sql)throws SQLException ;
+	public <T extends Object> List<T> queryList(String sql, Class<T> c) throws SQLException;
+
+	public <T extends Object> List<T> queryListPrepare(String sql, Class<T> c, Object... values) throws SQLException;
+
+	public <T extends Object> T queryObject(String sql, Class<T> c) throws SQLException;
+
+	public <T extends Object> T queryObjectPrepare(String sql, Class<T> c, Object... values) throws SQLException;
+
+	public List<Map<String, Object>> queryListMaps(String sql) throws SQLException;
+
+	public List<Map<String, Object>> queryListMapsPrepare(String sql, Object... values) throws SQLException;
+
+	public int update(String sql) throws SQLException;
+
 //	public int updateObject(String sql)throws SQLException ;
-	public int updatePrepare(String sql,Object ...values)throws SQLException ;
-	public int insert(String sql)throws SQLException;
+	public int updatePrepare(String sql, Object... values) throws SQLException;
+
+	public int insert(String sql) throws SQLException;
+
 //	public int insertObject(String sql)throws SQLException;
-	public int insertPrepare(String sql,Object ...values)throws SQLException;
+	public int insertPrepare(String sql, Object... values) throws SQLException;
+
 //	public int insertObjectGetKey(String sql)throws SQLException;
-	public int insertPrepareGetKey(String sql,Object ...values)throws SQLException;
-	public int insertMap(String tableName,Map<String,Object> datas) throws SQLException;
-	public int insertMapGetKey(String tableName,Map<String,Object> datas) throws SQLException;
-	public int delete(String sql)throws SQLException;
-	public int deletePrepare(String sql,Object ...values)throws SQLException;
-	public int queryCount(String sql)throws SQLException;
-	public int queryCountPrepare(String sql,Object ...values)throws SQLException;
+	public int insertPrepareGetKey(String sql, Object... values) throws SQLException;
+
+	public int insertMap(String tableName, Map<String, Object> datas) throws SQLException;
+
+	public int insertMapGetKey(String tableName, Map<String, Object> datas) throws SQLException;
+
+	public int delete(String sql) throws SQLException;
+
+	public int deletePrepare(String sql, Object... values) throws SQLException;
+
+	public int queryCount(String sql) throws SQLException;
+
+	public int queryCountPrepare(String sql, Object... values) throws SQLException;
 }
