@@ -38,12 +38,15 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.clientplug.web.session.base.SessionIdGeneratorBase;
 import com.anywide.dawdler.clientplug.web.session.base.StandardSessionIdGenerator;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
+import com.anywide.dawdler.clientplug.web.session.message.MessageOperator;
+import com.anywide.dawdler.clientplug.web.session.message.RedisMessageOperator;
 import com.anywide.dawdler.clientplug.web.session.store.DistributedSessionRedisUtil;
 import com.anywide.dawdler.clientplug.web.session.store.RedisSessionStore;
 import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.util.DawdlerTool;
+import redis.clients.jedis.JedisPoolAbstract;
 /**
  * 
  * @Title:  DawdlerSessionFilter.java
@@ -60,13 +63,16 @@ public class DawdlerSessionFilter implements Filter {
 	public static String domain;
 	public static String path;
 	public static boolean secure;
+	private static int maxInactiveInterval = 1800;
+	private static int maxSize = 65525;
 	private SessionIdGeneratorBase sessionIdGenerator = new StandardSessionIdGenerator();
 	AbstractDistributedSessionManager abstractDistributedSessionManager;
 	private ServletContext servletContext;
 	private Serializer serializer;
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
-
+	private JedisPoolAbstract jedisPoolAbstract;
+	private MessageOperator messageOperator;
 	
 	static {
 		String filePath = DawdlerTool.getcurrentPath() + "identityConfig.properties";
@@ -81,9 +87,29 @@ public class DawdlerSessionFilter implements Filter {
 			}
 			path = ps.getProperty("path");
 			cookieName = ps.getProperty("cookieName");
-			if (ps.getProperty("secure") != null) {
-				secure = Boolean.parseBoolean(ps.getProperty("secure"));
+			String secureString = ps.getProperty("secure");
+			if (secureString != null) {
+				secure = Boolean.parseBoolean(secureString);
 			}
+			
+			String maxInactiveIntervalString = ps.getProperty("maxInactiveInterval");
+			if (maxInactiveIntervalString != null) {
+				try {
+					maxInactiveInterval = Integer.parseInt(maxInactiveIntervalString);
+				} catch (Exception e) {
+				}
+			}
+			
+			String maxSizeString = ps.getProperty("maxSize");
+			if (maxSizeString != null) {
+				try {
+					maxSize = Integer.parseInt(maxSizeString);
+				} catch (Exception e) {
+				}
+			}
+			
+			
+			
 		} catch (Exception e) {
 			logger.error("", e);
 		} finally {
@@ -101,11 +127,14 @@ public class DawdlerSessionFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
+		jedisPoolAbstract = DistributedSessionRedisUtil.getJedisPool();
 		servletContext = filterConfig.getServletContext();
-		abstractDistributedSessionManager = new DistributedCaffeineSessionManager();
+		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize);
 		serializer = SerializeDecider.decide((byte) 2);//默认为kroy 需要其他的可以自行扩展
-		sessionStore = new RedisSessionStore(DistributedSessionRedisUtil.getJedisPool(), serializer); 
-		sessionOperator = new SessionOperator(abstractDistributedSessionManager, sessionStore, serializer, servletContext);
+		sessionStore = new RedisSessionStore(jedisPoolAbstract, serializer); 
+		messageOperator = new RedisMessageOperator(serializer, sessionStore, abstractDistributedSessionManager, jedisPoolAbstract);
+		sessionOperator = new SessionOperator(abstractDistributedSessionManager, sessionStore, messageOperator, serializer, servletContext);
+		messageOperator.listenExpireAndDelAndChange(); 
 	}
 
 	@Override
@@ -116,15 +145,15 @@ public class DawdlerSessionFilter implements Filter {
 		try {
 			httpRequest = new HttpServletRequestWrapper(httpRequest, httpReponse);
 			chain.doFilter(httpRequest, httpReponse);
-		} finally {
+		}finally {
 			DawdlerHttpSession session = (DawdlerHttpSession) httpRequest.getSession(false);
 			if (session != null) {
 				try {
 					sessionStore.saveSession(session);
 				} catch (Exception e) {
 					logger.error("",e);
-				} 
-					session.finish();
+				}
+				session.finish();
 			}
 		}
 
@@ -162,7 +191,7 @@ public class DawdlerSessionFilter implements Filter {
 				String sessionkey = getCookieValue(request.getCookies(), cookieName);
 				if (sessionkey != null) { 
 					try {
-						session = sessionOperator.operationSession(sessionkey);
+						session = sessionOperator.operationSession(sessionkey, maxInactiveInterval);
 					} catch (Exception e) {
 						logger.error("",e);
 					}
@@ -177,7 +206,7 @@ public class DawdlerSessionFilter implements Filter {
 			if (session == null && create) {
 				String sessionkey = sessionIdGenerator.generateSessionId();
 				setCookie(cookieName, sessionkey);
-				sessionOperator.createLocalSession(sessionkey);
+				this.session = sessionOperator.createLocalSession(sessionkey, maxInactiveInterval, true);
 			}
 			return session;
 		}
@@ -188,14 +217,6 @@ public class DawdlerSessionFilter implements Filter {
 			return this.getSession(true);
 		}
 
-		private Cookie getCookie(String name) {
-			Cookie[] cookies = ((HttpServletRequest) getRequest()).getCookies();
-			if (cookies != null)
-				for (Cookie cookie : cookies)
-					if (cookie.getName().equalsIgnoreCase(name))
-						return cookie;
-			return null;
-		}
 
 		private void setCookie(String name, String value) {
 			Cookie cookie = new Cookie(name, value);
@@ -212,6 +233,9 @@ public class DawdlerSessionFilter implements Filter {
 
 	@Override
 	public void destroy() {
+		if(jedisPoolAbstract != null) {
+			jedisPoolAbstract.close();
+		}
 
 	}
 }

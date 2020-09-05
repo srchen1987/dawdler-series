@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.session;
 import java.util.concurrent.TimeUnit;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
@@ -31,11 +32,10 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 public class DistributedCaffeineSessionManager extends AbstractDistributedSessionManager {
 	LoadingCache<String,DawdlerHttpSession> sessions = null;
 	private int maxInactiveInterval = 3600;
-	public DistributedCaffeineSessionManager() {
-		sessions = Caffeine.newBuilder().maximumSize(100000)
+	public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize) {
+		sessions = Caffeine.newBuilder().maximumSize(maxSize)
 					.expireAfterAccess(maxInactiveInterval,TimeUnit.SECONDS)
 						    .build(key -> createExpensiveGraph(key));		
-		
 	}
 	
 	public DawdlerHttpSession getSession(String sessionkey){
@@ -46,7 +46,7 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 		return maxInactiveInterval;
 	}
 
-	private DawdlerHttpSession createExpensiveGraph(String key) {
+	private DawdlerHttpSession createExpensiveGraph(@NonNull String key) {
 		return null;
 	}
 
@@ -58,7 +58,11 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 
 	@Override
 	public void removeSession(String sessionkey) {
-		sessions.invalidate(sessionkey);
+		DawdlerHttpSession session = sessions.get(sessionkey);
+		if(session!=null) {
+			session.clear();
+			sessions.invalidate(sessionkey);
+		}
 	}
 
 	@Override
@@ -66,6 +70,11 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 		sessions.put(sessionkey,dawdlerHttpSession);
 	}
 
-	
-
+	@Override
+	public void removeSession(DawdlerHttpSession dawdlerHttpSession) {
+		if(dawdlerHttpSession!=null) {
+			dawdlerHttpSession.clear();
+			sessions.invalidate(dawdlerHttpSession.getId());
+		}		
+	}
 }
