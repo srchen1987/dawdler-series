@@ -24,7 +24,8 @@
 		<jackson-core-lgpl.version>1.9.13</jackson-core-lgpl.version>
 		<commons-fileupload.version>1.3.3</commons-fileupload.version>
 		<velocity.version>2.2</velocity.version>
-
+		<jedis.version>3.3.0</jedis.version>
+		<caffeine.version>2.8.4</caffeine.version>
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
@@ -155,6 +156,17 @@
 				<artifactId>velocity-engine-core</artifactId>
 				<version>${velocity.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>redis.clients</groupId>
+				<artifactId>jedis</artifactId>
+				<version>${jedis.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.ben-manes.caffeine</groupId>
+				<artifactId>caffeine</artifactId>
+				<version>${caffeine.version}</version>
+			</dependency>
+		
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client</artifactId>
