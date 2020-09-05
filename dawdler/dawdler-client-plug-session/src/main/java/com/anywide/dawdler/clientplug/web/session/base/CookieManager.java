@@ -24,6 +24,15 @@ import java.util.TimeZone;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 
+ * @Title:  CookieManager.java
+ * @Description:   cookie操作  直接copy tomcat中的代码
+ * @author: jackson.song    
+ * @date:   2016年6月16日  
+ * @version V1.0 
+ * @email: suxuan696@gmail.com
+ */
 public class CookieManager {
 	public static void  setCookie(HttpServletRequest request,HttpServletResponse response,String cookieName,String value,String domain,String path,int maxAge,String comment,int version,boolean isSecure,boolean isHttpOnly){
 		/*Cookie cookie = new Cookie(cookiename, value);
