@@ -30,7 +30,6 @@ import redis.clients.jedis.JedisPoolAbstract;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisSentinelPool;
 import redis.clients.jedis.Protocol;
-
 /**
  * 
  * @Title:  DistributedSessionRedisUtil.java
@@ -96,7 +95,6 @@ public final class DistributedSessionRedisUtil {
 			}
 		}
 	}
-	
 	public static int getIfNullReturnDefaultValueInt(String key,int defaultValue) {
 		Object value = ps.get(key);
 		if(value != null) {
@@ -122,7 +120,6 @@ public final class DistributedSessionRedisUtil {
 		return defaultValue;
 	}
     
- 
 	public static JedisPoolAbstract getJedisPool() {
 		return jedisPool;
 	}

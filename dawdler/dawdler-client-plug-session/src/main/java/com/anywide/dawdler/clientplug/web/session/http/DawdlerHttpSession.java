@@ -25,6 +25,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
+import com.anywide.dawdler.clientplug.web.session.SessionOperator;
+import com.anywide.dawdler.clientplug.web.session.message.MessageOperator;
 /**
  * 
  * @Title:  DawdlerHttpSession.java
@@ -37,25 +39,34 @@ import javax.servlet.http.HttpSessionContext;
 public class DawdlerHttpSession implements HttpSession {
 	private long creationTime;
 	private long lastAccessedTime;
+	private int maxInactiveInterval = 1800;
 	public final static String CREATIONTIMEKEY = "creationTime";
 	public final static String LASTACCESSEDTIMEKEY = "lastAccessedTime";
-	/**
-	 * Flag indicating whether this session is new or not.
-	 */
+  private ConcurrentHashMap<String, Object> attributes = new ConcurrentHashMap<>();
+	private Map<String, Object> attributesAddNew = new HashMap<>();
 	protected volatile boolean isNew;
-
-	/**
-	 * Flag indicating whether this session is valid or not.
-	 */
 	private volatile boolean isValid = false;
-
+	private SessionOperator sessionOperator;
+	private MessageOperator messageOperator;
+	private List<String> attributesRemoveNewKeys = new CopyOnWriteArrayList<>();
+	private String sessionkey;
+	private ServletContext servletContext;
+	public static ThreadLocal<Boolean> flushImmediately = new ThreadLocal<Boolean>();
+	
+	public static boolean isFlushImmediately() {
+		return flushImmediately.get()!=null;
+	}
+	
+	public static void setFlushImmediately() {
+		flushImmediately.set(true);
+	}
+	
+	public static void clearFlushImmediately() {
+		flushImmediately.remove();
+	}
 	public boolean isValid() {
 		return isValid;
 	}
-
-	private ConcurrentHashMap<String, Object> attributes = new ConcurrentHashMap<>();
-	
-	private Map<String, Object> attributesAddNew = new HashMap<>();
 	
 	public Map<String, Object> getAttributesAddNew() {
 		return attributesAddNew;
@@ -64,14 +75,6 @@ public class DawdlerHttpSession implements HttpSession {
 	public List<String> getAttributesRemoveNewKeys() {
 		return attributesRemoveNewKeys;
 	}
-
-	private List<String> attributesRemoveNewKeys = new CopyOnWriteArrayList<>();
-	
-	private String sessionKey;
-	
-	 
-
-	private ServletContext servletContext;
 
 	public void setNew(boolean isNew) {
 		this.isNew = isNew;
@@ -85,12 +88,18 @@ public class DawdlerHttpSession implements HttpSession {
 		this.lastAccessedTime = lastAccessedTime;
 	}
 
-	public DawdlerHttpSession(String sessionKey,ServletContext servletContext) {
+	public DawdlerHttpSession(String sessionkey,SessionOperator sessionOperator, MessageOperator messageOperator, ServletContext servletContext, boolean newSession) {
 		this.servletContext = servletContext;
-		creationTime = System.currentTimeMillis();
-		lastAccessedTime = System.currentTimeMillis();
-		isNew = true;
-		this.sessionKey = sessionKey;
+		this.sessionOperator = sessionOperator;
+		this.messageOperator = messageOperator;
+		if(newSession) {
+			creationTime = System.currentTimeMillis();
+			lastAccessedTime = creationTime;
+			attributesAddNew.put(CREATIONTIMEKEY,creationTime);
+			attributesAddNew.put(LASTACCESSEDTIMEKEY,lastAccessedTime);
+			isNew = true;
+		}
+		this.sessionkey = sessionkey;
 	}
 
 	public void setAttributes(ConcurrentHashMap<String, Object> attributes) {
@@ -104,7 +113,7 @@ public class DawdlerHttpSession implements HttpSession {
 
 	@Override
 	public String getId() {
-		return sessionKey;
+		return sessionkey;
 	}
 
 	@Override
@@ -119,12 +128,12 @@ public class DawdlerHttpSession implements HttpSession {
 
 	@Override
 	public void setMaxInactiveInterval(int interval) {
-
+		this.maxInactiveInterval= interval;
 	}
 
 	@Override
 	public int getMaxInactiveInterval() {
-		return 0;
+		return maxInactiveInterval;
 	}
 
 	@Override
@@ -160,10 +169,23 @@ public class DawdlerHttpSession implements HttpSession {
 		}
 		Object preObj = attributes.get(name);
 		if(!(preObj != null&&(preObj == value || preObj.equals(value)))) {
-			attributes.put(name, value);
-			attributesAddNew.put(name, value);
 			attributesRemoveNewKeys.remove(name);
+			attributes.put(name, value);
+			if(isFlushImmediately()) {
+				messageOperator.sendMessageToSet(sessionkey, name, value);
+			}else {
+				attributesAddNew.put(name, value);
+			}
 		} 
+	}
+	
+	
+	public void setAttributeFromNotify(String name, Object value) {
+		Object preObj = attributes.get(name);
+		if(!(preObj != null&&(preObj == value || preObj.equals(value)))) {
+			attributesRemoveNewKeys.remove(name);
+			attributes.put(name, value);
+		}
 	}
 
 	@Override
@@ -175,9 +197,19 @@ public class DawdlerHttpSession implements HttpSession {
 	public void removeAttribute(String name) {
 		attributes.remove(name);
 		attributesAddNew.remove(name);
-		attributesRemoveNewKeys.add(name);
+		if(isFlushImmediately()) {
+			messageOperator.sendMessageToDel(sessionkey, name);
+		}else {
+			attributesRemoveNewKeys.add(name);
+		}
+		
 	}
 
+	
+	public void removeAttributeFromNotify(String name) {
+		attributes.remove(name);
+		attributesAddNew.remove(name);
+	}
 	
 	@Override
 	public void removeValue(String name) {
@@ -187,6 +219,8 @@ public class DawdlerHttpSession implements HttpSession {
 	@Override
 	public void invalidate() {
 		this.isValid = true;
+		clear();
+		sessionOperator.removeSession(sessionkey);
 	}
 
 	@Override
@@ -197,6 +231,14 @@ public class DawdlerHttpSession implements HttpSession {
 	public void finish() {
 		attributesAddNew.clear();
 		attributesRemoveNewKeys.clear();
+		clearFlushImmediately();
+		lastAccessedTime = System.currentTimeMillis();
+	}
+	
+	public void clear() {
+		attributesAddNew.clear();
+		attributesRemoveNewKeys.clear();
+		attributes.clear();
 	}
 	
 }
