@@ -14,29 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.session;
-
-import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
+package com.anywide.dawdler.clientplug.web.session.message;
 /**
  * 
- * @Title:  AbstractDistributedSessionManager.java
- * @Description:    抽象分布式session管理器
+ * @Title:  MessageOperator.java
+ * @Description:  消息操作者
  * @author: jackson.song    
  * @date:   2016年6月16日  
  * @version V1.0 
  * @email: suxuan696@gmail.com
  */
-public abstract class AbstractDistributedSessionManager {
+public interface MessageOperator {
 	
-	public abstract DawdlerHttpSession getSession(String sessionkey);
+	public void sendMessageToSet(String sessionkey, String attributeName, Object attributeValue);
 	
-	public abstract void close();
- 
-	public abstract void removeSession(String sessionkey);
-
-	public abstract void removeSession(DawdlerHttpSession dawdlerHttpSession);
+	public void sendMessageToDel(String sessionkey, String attributeName);
 	
-	public abstract void addSession(String sessionkey,DawdlerHttpSession dawdlerHttpSession);
-
-
+	public void listenExpireAndDelAndChange();
+	
 }

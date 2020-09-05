@@ -23,6 +23,7 @@ import javax.servlet.ServletContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
+import com.anywide.dawdler.clientplug.web.session.message.MessageOperator;
 import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.Serializer;
 /**
@@ -41,13 +42,15 @@ public class SessionOperator {
 	private final Map<String, Object> sessionKey_lock = new ConcurrentHashMap<>();
 	private SessionStore sessionStore;
 	private Serializer serializer;
-	public SessionOperator(AbstractDistributedSessionManager abstractDistributedSessionManager, SessionStore sessionStore, Serializer serializer, ServletContext servletContext) {
+	private MessageOperator messageOperator;
+	public SessionOperator(AbstractDistributedSessionManager abstractDistributedSessionManager, SessionStore sessionStore, MessageOperator messageOperator,Serializer serializer, ServletContext servletContext) {
 		this.abstractDistributedSessionManager = abstractDistributedSessionManager;
 		this.sessionStore = sessionStore;
 		this.serializer = serializer;
 		this.servletContext = servletContext;
+		this.messageOperator = messageOperator;
 	}
-	public DawdlerHttpSession operationSession(String sessionkey) throws Exception  {
+	public DawdlerHttpSession operationSession(String sessionkey,int maxInactiveInterval) throws Exception  {
 		DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionkey);
 		if (session == null) {
 			Object sessionLock = sessionKey_lock.computeIfAbsent(sessionkey, lock -> new Object());
@@ -55,28 +58,10 @@ public class SessionOperator {
 				synchronized (sessionLock) {
 					session = abstractDistributedSessionManager.getSession(sessionkey);
 					if (session == null) {
-						byte[] sessionkeyBytes = sessionkey.getBytes();
-						Map<byte[], byte[]> data = sessionStore.getAttributes(sessionkeyBytes);
+						Map<byte[], byte[]> data = sessionStore.getAttributes(sessionkey);
 						if (data != null) {  
-							session = createLocalSession(sessionkey);
-							ConcurrentHashMap<String, Object> attribute = new ConcurrentHashMap<String, Object>();
-							for(Entry<byte[],byte[]> entry : data.entrySet()) {
-								String key = new String(entry.getKey());
-								try {
-									Object obj = serializer.deserialize(entry.getValue());
-									if (key.equals(DawdlerHttpSession.CREATIONTIMEKEY)) {
-										session.setCreationTime((Long) obj);
-									} else if (key.equals(DawdlerHttpSession.LASTACCESSEDTIMEKEY)) {
-										session.setLastAccessedTime((Long) obj);
-									} else
-										attribute.put(key, obj);
-								} catch (Exception e) {
-									logger.error("", e);
-									session.getAttributesRemoveNewKeys().add(key);
-								}
-							}
-							session.setNew(false);
-							session.setAttributes(attribute);
+							session = createLocalSession(sessionkey, maxInactiveInterval, false);
+							reloadAttributes(data, session, serializer);
 						}
 					}
 				}
@@ -84,13 +69,53 @@ public class SessionOperator {
 				sessionKey_lock.remove(sessionkey);
 			}
 		}
-		
 		return session;
 	}
 	
-	public DawdlerHttpSession createLocalSession(String sessionkey){
-		DawdlerHttpSession session = new DawdlerHttpSession(sessionkey, servletContext);
+	
+	public static void reloadAttributes(Map<byte[], byte[]> data, DawdlerHttpSession session, Serializer serializer) {
+			ConcurrentHashMap<String, Object> attribute = new ConcurrentHashMap<String, Object>();
+			for(Entry<byte[],byte[]> entry : data.entrySet()) {
+				String key = new String(entry.getKey());
+				try {
+					Object obj = serializer.deserialize(entry.getValue());
+					if (key.equals(DawdlerHttpSession.CREATIONTIMEKEY)) {
+						session.setCreationTime((Long) obj);
+					} else if (key.equals(DawdlerHttpSession.LASTACCESSEDTIMEKEY)) {
+						session.setLastAccessedTime((Long) obj);
+					} else
+						attribute.put(key, obj);
+				} catch (Exception e) {
+					logger.error("", e);
+					session.getAttributesRemoveNewKeys().add(key);
+				}
+			}
+			session.setNew(false);
+			session.setAttributes(attribute);
+	}
+	
+	public DawdlerHttpSession createLocalSession(String sessionkey, int maxInactiveInterval, boolean newSession){
+		DawdlerHttpSession session = new DawdlerHttpSession(sessionkey, this, messageOperator,servletContext, newSession);
 		abstractDistributedSessionManager.addSession(sessionkey, session);
 		return session;
+	}
+	
+	
+	
+	public void getAttribute(String sessionkey,String attribute){
+		try {
+			sessionStore.getAttribute(sessionkey, attribute);
+		} catch (Exception e) {
+			logger.error("",e);
+		}
+	}
+	
+	public void removeSession(String sessionkey){
+		abstractDistributedSessionManager.removeSession(sessionkey);
+		try {
+			sessionStore.removeSession(sessionkey);
+		} catch (Exception e) {
+			logger.error("",e);
+		}
 	}
 }
