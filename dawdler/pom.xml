@@ -235,12 +235,6 @@
 		<module>dawdler-client-plug-velocity</module>
 	</modules>
 
-	<distributionManagement>
-		<repository>
-			<id>releases</id>
-			<url>http://192.168.220.23:8081/repository/maven-pttl/</url>
-		</repository>
 
-	</distributionManagement>
 
 </project>
