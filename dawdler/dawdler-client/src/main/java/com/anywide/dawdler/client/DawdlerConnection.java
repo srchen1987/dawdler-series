@@ -253,7 +253,7 @@ public class DawdlerConnection {
 		
 		int index = address.lastIndexOf(":");
 		if(index<=0) {
-			throw new IllegalArgumentException("address is not a compliant rule!");
+			throw new IllegalArgumentException("address["+address+"] is not a compliant rule!");
 		}
 		String ip  = address.substring(0,index);
 		String port = address.substring(index+1,address.length());
