@@ -62,7 +62,7 @@ public class ConnectionPool {
 					String gid = sg.getGroupId();
 					serverChannelGroup.put(gid, sg);
 					List<String> addresses = null;
-					try {
+					try { 
 						addresses = discoveryCenter.getServiceList(gid);
 					} catch (Exception e) {
 						logger.error("", e);

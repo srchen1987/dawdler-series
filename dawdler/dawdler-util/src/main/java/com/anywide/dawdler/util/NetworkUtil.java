@@ -42,7 +42,7 @@ public class NetworkUtil {
     }
 
 	public static String getInetAddress(String address) throws IOException {
-		if(address!=null&&(!address.equals(IPV4)||!address.equals(IPV6)))return address;
+		if(address!=null&&(!address.equals(IPV4)&&!address.equals(IPV6)))return address;
 		List<NetworkInterface> interfacesList = selectActiveNetworkInterfaces();
 		 for (NetworkInterface networkInterface : interfacesList) {
 			 Enumeration<InetAddress>  inetAddress = networkInterface.getInetAddresses();

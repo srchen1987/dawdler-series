@@ -46,7 +46,7 @@ import com.anywide.dawdler.util.DawdlerTool;
 public class ServiceRoot {
 	private static Logger logger = LoggerFactory.getLogger(ServiceRoot.class);
 	private static Map<String, Service> services = new ConcurrentHashMap<>();
-	private DawdlerServerContext dawdlerServerContext;
+//	private DawdlerServerContext dawdlerServerContext;
 	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
 	private static final String DAWDLER_LIB_PATH = "lib";
 	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
@@ -82,7 +82,7 @@ public class ServiceRoot {
 	}
 
 	public void initApplication(DawdlerServerContext dawdlerServerContext) {
-		this.dawdlerServerContext = dawdlerServerContext;
+//		this.dawdlerServerContext = dawdlerServerContext;
 		File file = getDeploys();
 		File[] files = file.listFiles();
 		long start = System.currentTimeMillis();
