@@ -16,11 +16,13 @@
  */
 package com.anywide.dawdler.clientplug.web.session;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLDecoder;
 import java.util.Properties;
+
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -28,13 +30,16 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSessionEvent;
+import javax.servlet.http.HttpSessionListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.clientplug.web.session.base.SessionIdGeneratorBase;
 import com.anywide.dawdler.clientplug.web.session.base.StandardSessionIdGenerator;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
@@ -46,7 +51,9 @@ import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.util.DawdlerTool;
-import redis.clients.jedis.JedisPoolAbstract;
+
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.util.Pool;
 /**
  * 
  * @Title:  DawdlerSessionFilter.java
@@ -56,84 +63,113 @@ import redis.clients.jedis.JedisPoolAbstract;
  * @version V1.0 
  * @email: suxuan696@gmail.com
  */
-@WebFilter("/*")
 public class DawdlerSessionFilter implements Filter {
 	private static Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);
 	public static String cookieName;
 	public static String domain;
-	public static String path;
+	public static String path = "/";
 	public static boolean secure;
 	private static int maxInactiveInterval = 1800;
 	private static int maxSize = 65525;
+	private static int synchFlushInterval = 0;
 	private SessionIdGeneratorBase sessionIdGenerator = new StandardSessionIdGenerator();
 	AbstractDistributedSessionManager abstractDistributedSessionManager;
 	private ServletContext servletContext;
 	private Serializer serializer;
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
-	private JedisPoolAbstract jedisPoolAbstract;
+	private Pool<Jedis> jedisPoolAbstract;
 	private MessageOperator messageOperator;
 	
-	static {
+	static { 
 		String filePath = DawdlerTool.getcurrentPath() + "identityConfig.properties";
-		Properties ps = new Properties();
+		File file = new File(filePath);
 		InputStream inStream = null;
-		try {
-			inStream = new FileInputStream(filePath);
-			ps.load(inStream);
-			String obj = ps.getProperty("domain");
-			if (obj != null && !obj.trim().equals("")) {
-				domain = obj;
+		if(!file.isFile()) {
+			logger.warn("use  default identityConfig in dawdler-session jar!");
+			inStream = DawdlerSessionFilter.class.getResourceAsStream("/identityConfig.properties");
+		}else {
+			try {
+				inStream = new FileInputStream(filePath);
+			} catch (FileNotFoundException e) {
 			}
-			path = ps.getProperty("path");
-			cookieName = ps.getProperty("cookieName");
-			String secureString = ps.getProperty("secure");
-			if (secureString != null) {
-				secure = Boolean.parseBoolean(secureString);
-			}
+		} 
+		
+			Properties ps = new Properties();
 			
-			String maxInactiveIntervalString = ps.getProperty("maxInactiveInterval");
-			if (maxInactiveIntervalString != null) {
-				try {
-					maxInactiveInterval = Integer.parseInt(maxInactiveIntervalString);
-				} catch (Exception e) {
+			try {
+			
+				ps.load(inStream);
+				String domainString = ps.getProperty("domain");
+				if (domainString != null && !domainString.trim().equals("")) {
+					domain = domainString;
+				}
+				
+				String pathString = ps.getProperty("path");
+				if (pathString != null && !pathString.trim().equals("")) {
+					path = pathString;
+				}
+				cookieName = ps.getProperty("cookieName");
+				String secureString = ps.getProperty("secure");
+				if (secureString != null) {
+					secure = Boolean.parseBoolean(secureString);
+				}
+				
+				String maxInactiveIntervalString = ps.getProperty("maxInactiveInterval");
+				if (maxInactiveIntervalString != null) {
+					try {
+						int temp = Integer.parseInt(maxInactiveIntervalString);
+						if(temp>0)maxInactiveInterval = temp;
+					} catch (Exception e) {
+					}
+				}
+				
+				String maxSizeString = ps.getProperty("maxSize");
+				if (maxSizeString != null) {
+					try {
+						int temp = Integer.parseInt(maxSizeString);
+						if(temp>0)maxSize = temp;
+					} catch (Exception e) {
+					}
+				}
+				
+				String synchFlushIntervalString = ps.getProperty("synchFlushInterval");
+				if (synchFlushIntervalString != null) {
+					try {
+						int temp = Integer.parseInt(synchFlushIntervalString);
+						if(temp>0)synchFlushInterval = temp;
+					} catch (Exception e) {
+					}
+				}
+			} catch (Exception e) {
+				logger.error("", e);
+			} finally {
+				if (inStream != null) {
+					try {
+						inStream.close();
+					} catch (IOException e) {
+						logger.error("", e);
+					}
 				}
 			}
-			
-			String maxSizeString = ps.getProperty("maxSize");
-			if (maxSizeString != null) {
-				try {
-					maxSize = Integer.parseInt(maxSizeString);
-				} catch (Exception e) {
-				}
-			}
-			
-			
-			
-		} catch (Exception e) {
-			logger.error("", e);
-		} finally {
-			if (inStream != null) {
-				try {
-					inStream.close();
-				} catch (IOException e) {
-					logger.error("", e);
-				}
-			}
-		}
-
 	}
 	
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		jedisPoolAbstract = DistributedSessionRedisUtil.getJedisPool();
+		if(jedisPoolAbstract == null)
+				jedisPoolAbstract = DistributedSessionRedisUtil.getJedisPool();
 		servletContext = filterConfig.getServletContext();
 		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize);
+		Object listener = servletContext.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTPSESSIONLISTENER);
+		if(listener instanceof HttpSessionListener) {
+			abstractDistributedSessionManager.setHttpSessionListener((HttpSessionListener)listener);
+		}
+		
 		serializer = SerializeDecider.decide((byte) 2);//默认为kroy 需要其他的可以自行扩展
 		sessionStore = new RedisSessionStore(jedisPoolAbstract, serializer); 
 		messageOperator = new RedisMessageOperator(serializer, sessionStore, abstractDistributedSessionManager, jedisPoolAbstract);
-		sessionOperator = new SessionOperator(abstractDistributedSessionManager, sessionStore, messageOperator, serializer, servletContext);
+		sessionOperator = new SessionOperator(abstractDistributedSessionManager, sessionIdGenerator, sessionStore, messageOperator, serializer, servletContext);
 		messageOperator.listenExpireAndDelAndChange(); 
 	}
 
@@ -154,6 +190,12 @@ public class DawdlerSessionFilter implements Filter {
 					logger.error("",e);
 				}
 				session.finish();
+				if(session.isValid()) {
+					Cookie cookie=new Cookie(cookieName,null);
+					cookie.setMaxAge(0); 
+					cookie.setPath("/");  
+					httpReponse.addCookie(cookie);
+				}
 			}
 		}
 
@@ -165,7 +207,8 @@ public class DawdlerSessionFilter implements Filter {
 		try {
 			for (int i = 0; i < cookies.length; i++) {
 				if (cookies[i].getName().equals(cookiename)) {
-					return URLDecoder.decode(cookies[i].getValue().trim(), "utf-8");
+					return cookies[i].getValue();
+//					return URLDecoder.decode(cookies[i].getValue().trim(), "utf-8");
 				}
 			}
 		} catch (Exception e) {
@@ -188,11 +231,11 @@ public class DawdlerSessionFilter implements Filter {
 		@Override
 		public HttpSession getSession(boolean create) {
 			if (session == null) {
-				String sessionkey = getCookieValue(request.getCookies(), cookieName);
-				if (sessionkey != null) { 
+				String sessionKey = getCookieValue(request.getCookies(), cookieName);
+				if (sessionKey != null) { 
 					try {
-						session = sessionOperator.operationSession(sessionkey, maxInactiveInterval);
-					} catch (Exception e) {
+						session = sessionOperator.operationSession(sessionKey, maxInactiveInterval);
+					} catch (Exception e) { 
 						logger.error("",e);
 					}
 				}
@@ -204,9 +247,14 @@ public class DawdlerSessionFilter implements Filter {
 				session = null;
 			}
 			if (session == null && create) {
-				String sessionkey = sessionIdGenerator.generateSessionId();
-				setCookie(cookieName, sessionkey);
-				this.session = sessionOperator.createLocalSession(sessionkey, maxInactiveInterval, true);
+				String sessionKey = sessionIdGenerator.generateSessionId();
+				setCookie(cookieName, sessionKey);
+				this.session = sessionOperator.createLocalSession(sessionKey, maxInactiveInterval, true);
+				HttpSessionListener httpSessionListener = abstractDistributedSessionManager.getHttpSessionListener();
+				if(httpSessionListener != null) {
+					HttpSessionEvent httpSessionEvent = new HttpSessionEvent(session);
+					httpSessionListener.sessionCreated(httpSessionEvent);
+				}
 			}
 			return session;
 		}

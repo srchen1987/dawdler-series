@@ -23,11 +23,11 @@ public interface SessionStore {
 	
 	public void saveSession(DawdlerHttpSession session) throws Exception;
 
-	public Map<byte[],byte[]> getAttributes(String sessionkey) throws Exception;
+	public Map<byte[],byte[]> getAttributes(String sessionKey) throws Exception;
 	
-	public byte[] getAttribute(String sessionkey, String attribute) throws Exception;
+	public byte[] getAttribute(String sessionKey, String attribute) throws Exception;
 	
-	public void removeSession(String sessionkey) throws Exception;
+	public void removeSession(String sessionKey) throws Exception;
 	
 	static Map<String,SessionStore> sessionStores = new HashMap<>();
  

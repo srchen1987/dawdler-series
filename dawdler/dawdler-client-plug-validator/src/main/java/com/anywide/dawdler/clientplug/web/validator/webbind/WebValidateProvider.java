@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.web.validator.webbind;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
 /**
  * 

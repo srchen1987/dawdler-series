@@ -22,9 +22,12 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.util.DawdlerTool;
+
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolAbstract;
 import redis.clients.jedis.JedisPoolConfig;
@@ -40,8 +43,10 @@ import redis.clients.jedis.Protocol;
  * @email: suxuan696@gmail.com
  */
 public final class DistributedSessionRedisUtil {
-		private static Logger logger = LoggerFactory.getLogger(DistributedSessionRedisUtil.class);
-    private static JedisPoolAbstract jedisPool = null;
+	private static Logger logger = LoggerFactory.getLogger(DistributedSessionRedisUtil.class);
+  private static JedisPoolAbstract jedisPool = null;
+    
+    
     /**
      * 初始化Redis连接池
      */
@@ -82,7 +87,7 @@ public final class DistributedSessionRedisUtil {
 						 timeout, auth,
 							   database);
 			}else {
-				jedisPool = new JedisPool(poolConfig, addr, port, timeout, auth);
+				jedisPool = new JedisPool(poolConfig, addr, port, timeout, auth, database);
 			}
 		} catch (Exception e) {
 			logger.error("",e);
@@ -123,4 +128,8 @@ public final class DistributedSessionRedisUtil {
 	public static JedisPoolAbstract getJedisPool() {
 		return jedisPool;
 	}
+	
+	
+	
+	
 }

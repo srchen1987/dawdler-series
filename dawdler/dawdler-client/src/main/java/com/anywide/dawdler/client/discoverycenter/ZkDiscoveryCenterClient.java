@@ -22,6 +22,7 @@ import org.apache.curator.framework.recipes.cache.TreeCacheEvent;
 import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.client.ConnectionPool;
 import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
 
@@ -65,10 +66,10 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 					
 					switch (event.getType()) {
 					case NODE_ADDED: {
-						logger.info("add " + provider);
+						logger.info(gid+" add " + provider); 
 							ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-//							ConnectionPool.initConnection(gid,provider);
-							cp.doChange(gid,"add",provider);
+							if(cp != null)
+								cp.doChange(gid,"add",provider);
 						break;
 					}
 					case NODE_REMOVED:{

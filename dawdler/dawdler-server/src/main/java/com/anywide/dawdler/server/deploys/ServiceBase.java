@@ -23,9 +23,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Semaphore;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.core.annotation.ListenerConfig;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.annotation.RemoteService;
@@ -105,7 +106,7 @@ public class ServiceBase implements Service {
 		Object obj = dawdlerContext.getAttribute(SERVICEEXECUTOR_PREFIX);
 		if (obj != null)
 			serviceExecutor = (ServiceExecutor) obj; 
-		Set<Class<?>> classes = DeployClassesScanner.getClassesInPath(deploy);
+			Set<Class<?>> classes = DeployClassesScanner.getClassesInPath(deploy);
 		Set<Class<?>> serviceClasses = new HashSet<>();
 		for (Class<?> c : classes) {
 			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)

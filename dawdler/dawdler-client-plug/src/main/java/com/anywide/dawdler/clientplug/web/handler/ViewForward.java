@@ -18,8 +18,10 @@ package com.anywide.dawdler.clientplug.web.handler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.upload.UploadFile;
@@ -39,7 +41,7 @@ public class ViewForward{
 	}
 
 	public enum ResponseType {
-		SUCCESS, ERROR, REDIRECT, FORWARD, STOP,FORWARDLAST;
+		SUCCESS, ERROR, REDIRECT, FORWARD, STOP;
 	}
 	private String errorPage = "error.html";// 错误地址
 	private String templatePath;// 模板路径

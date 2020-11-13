@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 import com.anywide.dawdler.util.DawdlerTool;
 /**
  * 
@@ -37,7 +38,7 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @email: suxuan696@gmail.com
  */
 public class DataAutomaticNewV2 {
-	private static final Map<String, Class[]> dataTypes = new HashMap<String, Class[]>();
+	private static final Map<String, Class[]> dataTypes = new HashMap<String, Class[]>(64);
 	private static final ConcurrentHashMap<Class, Map<String, Method>> cacheMethod = new java.util.concurrent.ConcurrentHashMap<Class, Map<String, Method>>();
 	static {
 		init();
@@ -100,7 +101,7 @@ public class DataAutomaticNewV2 {
 
 	private final static void init() {
 		Class[] byteclass = new Class[] { byte[].class };
-		dataTypes.put("TINYINT", new Class[] { boolean.class, Boolean.class });
+		dataTypes.put("TINYINT", new Class[] { boolean.class, Boolean.class,short.class,Short.class});
 		dataTypes.put("MEDIUMINT", new Class[] { int.class, Integer.class });
 		dataTypes.put("INTEGER", new Class[] { int.class, Integer.class });
 		dataTypes.put("INT", new Class[] { int.class, Integer.class });
@@ -108,7 +109,8 @@ public class DataAutomaticNewV2 {
 		dataTypes.put("FLOAT", new Class[] { float.class, Float.class });
 		dataTypes.put("DOUBLE", new Class[] { double.class, Double.class });
 		dataTypes.put("DECIMAL", new Class[] { java.math.BigDecimal.class ,double.class, Double.class});
-
+		dataTypes.put("BIT", new Class[] { boolean.class, Boolean.class, byte.class, Byte.class });
+		
 		dataTypes.put("DATE", new Class[] { java.sql.Date.class, String.class });
 		dataTypes.put("DATETIME", new Class[] { java.sql.Timestamp.class, String.class });
 		dataTypes.put("TIMESTAMP", new Class[] { java.sql.Timestamp.class, String.class });
