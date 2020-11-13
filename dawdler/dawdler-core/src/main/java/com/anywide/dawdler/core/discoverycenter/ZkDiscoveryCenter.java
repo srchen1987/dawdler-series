@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.core.discoverycenter;
 import java.util.List;
+
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -45,9 +46,6 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 		this.password = password;
 		init();
 	}
-
-	
-
 
 	@Override
 	public void init(){

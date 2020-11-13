@@ -18,6 +18,7 @@ package org.apache.naming.factory;
 
 import javax.naming.Reference;
 import javax.naming.spi.ObjectFactory;
+
 import org.apache.naming.ResourceEnvRef;
 
 /**

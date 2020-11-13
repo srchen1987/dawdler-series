@@ -24,7 +24,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
 import javax.naming.NamingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +35,7 @@ import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
 import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.JVMTimeProvider;
 
 /**
  * 
@@ -46,7 +49,7 @@ import com.anywide.dawdler.util.DawdlerTool;
 public class ServiceRoot {
 	private static Logger logger = LoggerFactory.getLogger(ServiceRoot.class);
 	private static Map<String, Service> services = new ConcurrentHashMap<>();
-	private DawdlerServerContext dawdlerServerContext;
+//	private DawdlerServerContext dawdlerServerContext;
 	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
 	private static final String DAWDLER_LIB_PATH = "lib";
 	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
@@ -82,10 +85,10 @@ public class ServiceRoot {
 	}
 
 	public void initApplication(DawdlerServerContext dawdlerServerContext) {
-		this.dawdlerServerContext = dawdlerServerContext;
+//		this.dawdlerServerContext = dawdlerServerContext;
 		File file = getDeploys();
 		File[] files = file.listFiles();
-		long start = System.currentTimeMillis();
+		long start = JVMTimeProvider.currentTimeMillis();
 		if (files.length > 0) {
 			ExecutorService es = Executors.newCachedThreadPool();
 			ClassLoader classLoader = createServerClassLoader();
@@ -102,11 +105,11 @@ public class ServiceRoot {
 					es.execute(() -> {
 						String deployName = f.getName();
 						try {
-							long serviceStart = System.currentTimeMillis(); 
+							long serviceStart = JVMTimeProvider.currentTimeMillis(); 
 							Service service = new ServiceBase(f,server.getHost(),server.getTcpPort(),classLoader);
 							services.put(deployName, service);
 							service.start(); 
-							long serviceEnd = System.currentTimeMillis();
+							long serviceEnd = JVMTimeProvider.currentTimeMillis();
 							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
 						} catch (Exception e) {
 							Service service = services.remove(deployName);
@@ -124,7 +127,7 @@ public class ServiceRoot {
 				System.out.println("Server startup time out 3 minutes!");
 				return;
 			}
-			long end = System.currentTimeMillis();
+			long end = JVMTimeProvider.currentTimeMillis();
 			System.out.println("Server startup in " + (end - start) + " ms,Listening port: "+dawdlerServerContext.getServerConfig().getServer().getTcpPort()+"!");
 		}
 	}

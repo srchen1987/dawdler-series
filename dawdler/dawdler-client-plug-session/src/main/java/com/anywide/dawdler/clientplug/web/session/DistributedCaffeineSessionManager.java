@@ -16,7 +16,9 @@
  */
 package com.anywide.dawdler.clientplug.web.session;
 import java.util.concurrent.TimeUnit;
+
 import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
@@ -31,15 +33,16 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
  */
 public class DistributedCaffeineSessionManager extends AbstractDistributedSessionManager {
 	LoadingCache<String,DawdlerHttpSession> sessions = null;
-	private int maxInactiveInterval = 3600;
+	private int maxInactiveInterval;
 	public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize) {
+		this.maxInactiveInterval = maxInactiveInterval;
 		sessions = Caffeine.newBuilder().maximumSize(maxSize)
 					.expireAfterAccess(maxInactiveInterval,TimeUnit.SECONDS)
 						    .build(key -> createExpensiveGraph(key));		
 	}
 	
-	public DawdlerHttpSession getSession(String sessionkey){
-		return sessions.getIfPresent(sessionkey);
+	public DawdlerHttpSession getSession(String sessionKey){
+		return sessions.getIfPresent(sessionKey);
 	}
 	
 	public int getMaxInactiveInterval() {
@@ -57,17 +60,17 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
  
 
 	@Override
-	public void removeSession(String sessionkey) {
-		DawdlerHttpSession session = sessions.get(sessionkey);
+	public void removeSession(String sessionKey) {
+		DawdlerHttpSession session = sessions.get(sessionKey);
 		if(session!=null) {
 			session.clear();
-			sessions.invalidate(sessionkey);
+			sessions.invalidate(sessionKey);
 		}
 	}
 
 	@Override
-	public void addSession(String sessionkey,DawdlerHttpSession dawdlerHttpSession) {
-		sessions.put(sessionkey,dawdlerHttpSession);
+	public void addSession(String sessionKey,DawdlerHttpSession dawdlerHttpSession) {
+		sessions.put(sessionKey,dawdlerHttpSession);
 	}
 
 	@Override

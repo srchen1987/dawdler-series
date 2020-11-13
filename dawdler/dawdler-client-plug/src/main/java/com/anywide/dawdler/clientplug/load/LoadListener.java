@@ -22,13 +22,16 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.servlet.DispatcherType;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFireHolder;
 import com.anywide.dawdler.clientplug.web.WebControllerClassLoaderFire;
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
@@ -97,8 +100,15 @@ public class LoadListener implements ServletContextListener {
 			}
 		}
 		WebContextListenerProvider.listenerRun(true,arg0.getServletContext());
-		arg0.getServletContext().addFilter("ViewController",ViewFilter.class).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.FORWARD,DispatcherType.ERROR,DispatcherType.INCLUDE),true,"/*");
-		
+		EnumSet<DispatcherType> es = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR, DispatcherType.INCLUDE);
+		Class sessionClass;
+		try {
+			sessionClass = Class.forName("com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter");
+			arg0.getServletContext().addFilter(sessionClass.getSimpleName(), sessionClass).addMappingForUrlPatterns(es, true, "/*");
+		} catch (ClassNotFoundException e) {
+		}
+		arg0.getServletContext().addFilter("ViewController", ViewFilter.class).addMappingForUrlPatterns(es, true, "/*");
+
 //		arg0.getServletContext().addFilter("ViewController",ViewController.class).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.FORWARD,DispatcherType.ERROR),true,"/*");
 //		arg0.getServletContext().addFilter("ViewController",ViewControllerForLinuxsir.class).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.FORWARD,DispatcherType.ERROR),true,"/*");
 	}

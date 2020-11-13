@@ -16,6 +16,8 @@
  */
 package com.anywide.dawdler.clientplug.web.util;
 import java.io.IOException;
+import java.io.InputStream;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -56,5 +58,21 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
+	
+	
+	public static <T> T jsonToBean(InputStream jsonStream, Class<T> valueType) {
+		T obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		mapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+//		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
+		try {
+			obj = (T) mapper.readValue(jsonStream, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+	
 
 }

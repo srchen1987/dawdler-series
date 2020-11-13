@@ -17,6 +17,7 @@
 package org.apache.naming;
 
 import java.util.Enumeration;
+
 import javax.naming.Context;
 import javax.naming.RefAddr;
 import javax.naming.Reference;
