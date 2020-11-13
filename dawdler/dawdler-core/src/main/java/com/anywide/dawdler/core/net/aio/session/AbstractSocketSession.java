@@ -26,15 +26,19 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.BufferFactory;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.core.thread.InvokeFuture;
 import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
+import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
+
 import sun.nio.ch.DirectBuffer;
 /**
  * 
@@ -243,7 +247,7 @@ public abstract class AbstractSocketSession {
 	}
 	@Override
 	public String toString() {
-		return describe+"\tlastRead:"+(System.currentTimeMillis()-lastReadTime)+"\tLastWrite"+(System.currentTimeMillis()-lastWriteTime);
+		return describe+"\tlastRead:"+(JVMTimeProvider.currentTimeMillis()-lastReadTime)+"\tLastWrite"+(System.currentTimeMillis()-lastWriteTime);
 	}
 	public void markClose(){
 		markClose.set(true);
@@ -259,7 +263,7 @@ public abstract class AbstractSocketSession {
 	}
 
 	public void write(ByteBuffer obj) {
-		setLastWriteTime(System.currentTimeMillis());
+		setLastWriteTime(JVMTimeProvider.currentTimeMillis());
 		synchronized (channel) {
 			try {
 				while (obj.hasRemaining()) {
@@ -297,7 +301,7 @@ public abstract class AbstractSocketSession {
 		public void run(Timeout timeout) throws Exception {
 			 if (timeout.isCancelled() || isClose())
 	                return;
-	            long currentTime = System.currentTimeMillis();
+	            long currentTime = JVMTimeProvider.currentTimeMillis();
 	            long lastWriteTime = AbstractSocketSession.this.lastWriteTime;
 	            long nextDelay = writerIdleTimeMillis - (currentTime - lastWriteTime);
 	            if (nextDelay <= 0) {
@@ -316,7 +320,7 @@ public abstract class AbstractSocketSession {
 		public void run(Timeout timeout) throws Exception {
 			 if (timeout.isCancelled() || isClose())
 	                return;
-	            long currentTime = System.currentTimeMillis();
+	            long currentTime = JVMTimeProvider.currentTimeMillis();
 	            long lastReadTime = AbstractSocketSession.this.lastReadTime;
 	            long nextDelay = readerIdleTimeMillis - (currentTime - lastReadTime);
 	            if (nextDelay <= 0) {

@@ -19,9 +19,13 @@ package com.anywide.dawdler.clientplug.web.session;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
 import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.clientplug.web.session.base.SessionIdGeneratorBase;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.anywide.dawdler.clientplug.web.session.message.MessageOperator;
 import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
@@ -43,30 +47,33 @@ public class SessionOperator {
 	private SessionStore sessionStore;
 	private Serializer serializer;
 	private MessageOperator messageOperator;
-	public SessionOperator(AbstractDistributedSessionManager abstractDistributedSessionManager, SessionStore sessionStore, MessageOperator messageOperator,Serializer serializer, ServletContext servletContext) {
+	private SessionIdGeneratorBase sessionIdGenerator;
+	public SessionOperator(AbstractDistributedSessionManager abstractDistributedSessionManager, SessionIdGeneratorBase sessionIdGenerator, SessionStore sessionStore, MessageOperator messageOperator,Serializer serializer, ServletContext servletContext) {
 		this.abstractDistributedSessionManager = abstractDistributedSessionManager;
+		this.sessionIdGenerator = sessionIdGenerator;
 		this.sessionStore = sessionStore;
 		this.serializer = serializer;
 		this.servletContext = servletContext;
 		this.messageOperator = messageOperator;
+		
 	}
-	public DawdlerHttpSession operationSession(String sessionkey,int maxInactiveInterval) throws Exception  {
-		DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionkey);
+	public DawdlerHttpSession operationSession(String sessionKey, int maxInactiveInterval) throws Exception  {
+		DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionKey);
 		if (session == null) {
-			Object sessionLock = sessionKey_lock.computeIfAbsent(sessionkey, lock -> new Object());
+			Object sessionLock = sessionKey_lock.computeIfAbsent(sessionKey, lock -> new Object());
 			try {
 				synchronized (sessionLock) {
-					session = abstractDistributedSessionManager.getSession(sessionkey);
+					session = abstractDistributedSessionManager.getSession(sessionKey);
 					if (session == null) {
-						Map<byte[], byte[]> data = sessionStore.getAttributes(sessionkey);
-						if (data != null) {  
-							session = createLocalSession(sessionkey, maxInactiveInterval, false);
+						Map<byte[], byte[]> data = sessionStore.getAttributes(sessionKey);
+						if (data != null && !data.isEmpty()) {  
+							session = createLocalSession(sessionKey, maxInactiveInterval, false);
 							reloadAttributes(data, session, serializer);
 						}
 					}
 				}
 			} finally {
-				sessionKey_lock.remove(sessionkey);
+				sessionKey_lock.remove(sessionKey);
 			}
 		}
 		return session;
@@ -94,26 +101,28 @@ public class SessionOperator {
 			session.setAttributes(attribute);
 	}
 	
-	public DawdlerHttpSession createLocalSession(String sessionkey, int maxInactiveInterval, boolean newSession){
-		DawdlerHttpSession session = new DawdlerHttpSession(sessionkey, this, messageOperator,servletContext, newSession);
-		abstractDistributedSessionManager.addSession(sessionkey, session);
+	public DawdlerHttpSession createLocalSession(String sessionKey, int maxInactiveInterval, boolean newSession){
+		String sessionSign = sessionIdGenerator.generateSessionId();
+		DawdlerHttpSession session = new DawdlerHttpSession(sessionKey, sessionSign, this, messageOperator,servletContext, newSession);
+		session.setMaxInactiveInterval(maxInactiveInterval);
+		abstractDistributedSessionManager.addSession(sessionKey, session);
 		return session;
 	}
 	
 	
 	
-	public void getAttribute(String sessionkey,String attribute){
+	public void getAttribute(String sessionKey,String attribute){
 		try {
-			sessionStore.getAttribute(sessionkey, attribute);
+			sessionStore.getAttribute(sessionKey, attribute);
 		} catch (Exception e) {
 			logger.error("",e);
 		}
 	}
 	
-	public void removeSession(String sessionkey){
-		abstractDistributedSessionManager.removeSession(sessionkey);
+	public void removeSession(String sessionKey){
+		abstractDistributedSessionManager.removeSession(sessionKey);
 		try {
-			sessionStore.removeSession(sessionkey);
+			sessionStore.removeSession(sessionKey);
 		} catch (Exception e) {
 			logger.error("",e);
 		}

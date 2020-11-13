@@ -26,9 +26,9 @@ package com.anywide.dawdler.clientplug.web.session.message;
  */
 public interface MessageOperator {
 	
-	public void sendMessageToSet(String sessionkey, String attributeName, Object attributeValue);
+	public void sendMessageToSet(String sessionKey, String attributeName, Object attributeValue);
 	
-	public void sendMessageToDel(String sessionkey, String attributeName);
+	public void sendMessageToDel(String sessionKey, String attributeName);
 	
 	public void listenExpireAndDelAndChange();
 	

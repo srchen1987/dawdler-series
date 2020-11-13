@@ -202,6 +202,11 @@
 				<artifactId>dawdler-client-plug-velocity</artifactId>
 				<version>0.0.1-RELEASES</version>
 			</dependency>
+				<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-serialization</artifactId>
+				<version>0.0.1-RELEASES</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -222,19 +227,25 @@
 	</build>
 	<modules>
 		<module>dawdler-util</module>
+		<module>dawdler-serialization</module>
 		<module>dawdler-core</module>
 		<module>dawdler-client</module>
 		<module>dawdler-server</module>
 		<module>dawdler-client-plug-validator</module>
 		<module>dawdler-client-plug</module>
-		<!-- <module>dawdler-client-plug-session</module> -->
+		<module>dawdler-client-plug-session</module>
 		<module>dawdler-server-plug</module>
 		<module>dawdler-circuit-breaker</module>
-		<!-- <module>springboot-validator</module> -->
 		<module>dawdler-load-bean</module>
 		<module>dawdler-client-plug-velocity</module>
 	</modules>
 
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<url>http://192.168.220.23:8081/repository/maven-pttl/</url>
+		</repository>
 
+	</distributionManagement>
 
 </project>

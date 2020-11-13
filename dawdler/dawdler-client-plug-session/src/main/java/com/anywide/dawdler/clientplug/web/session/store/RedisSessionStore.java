@@ -21,14 +21,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.anywide.dawdler.clientplug.web.session.message.RedisMessageOperator;
 import com.anywide.dawdler.core.serializer.Serializer;
+
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPoolAbstract;
 import redis.clients.jedis.Pipeline;
+import redis.clients.jedis.Response;
+import redis.clients.jedis.util.Pool;
 /**
  * 
  * @Title:  RedisSessionStore.java
@@ -40,12 +44,12 @@ import redis.clients.jedis.Pipeline;
  */
 public class RedisSessionStore implements SessionStore {
 	private static Logger logger = LoggerFactory.getLogger(RedisSessionStore.class);
-	private JedisPoolAbstract jedisPool;
+	private Pool<Jedis> jedisPool;
 	private Serializer serializer;
 //	private MessageOperator messageOperator;
 	public final static String SESSIONKEY_PREFIX = "session:";
 
-	public RedisSessionStore(JedisPoolAbstract jedisPool, Serializer serializer) {
+	public RedisSessionStore(Pool<Jedis> jedisPool, Serializer serializer) {
 		this.jedisPool = jedisPool;
 		this.serializer = serializer;
 	}
@@ -53,7 +57,7 @@ public class RedisSessionStore implements SessionStore {
 	
 
 
-	private <T> T execute(JedisPoolAbstract jedisPool, JedisExecutor<T> executor, Object attr) throws Exception {
+	private <T> T execute(Pool<Jedis> jedisPool, JedisExecutor<T> executor, Object attr) throws Exception {
 		Jedis jedis = null;
 		try {
 			jedis = jedisPool.getResource();
@@ -87,8 +91,8 @@ public class RedisSessionStore implements SessionStore {
 	}
 
 	@Override
-	public Map<byte[], byte[]> getAttributes(String sessionkey) throws Exception {
-		return execute(jedisPool, getAttributesJedisExecutor, SESSIONKEY_PREFIX + sessionkey);
+	public Map<byte[], byte[]> getAttributes(String sessionKey) throws Exception {
+		return execute(jedisPool, getAttributesJedisExecutor, SESSIONKEY_PREFIX + sessionKey);
 	}
 
 	GetAttributesJedisExecutor getAttributesJedisExecutor = new GetAttributesJedisExecutor();
@@ -101,9 +105,9 @@ public class RedisSessionStore implements SessionStore {
 	}
 
 	@Override
-	public byte[] getAttribute(String sessionkey, String attribute) throws Exception {
+	public byte[] getAttribute(String sessionKey, String attribute) throws Exception {
 		return execute(jedisPool, getAttributeJedisExecutor,
-				new byte[][] { sessionkey.getBytes(), sessionkey.getBytes() });
+				new byte[][] { sessionKey.getBytes(), sessionKey.getBytes() });
 	}
 
 	GetAttributeJedisExecutor getAttributeJedisExecutor = new GetAttributeJedisExecutor();
@@ -125,9 +129,9 @@ public class RedisSessionStore implements SessionStore {
 			String id = SESSIONKEY_PREFIX + session.getId();
 			Pipeline pipeline = jedis.pipelined();
 			Map<String, Object> attributesAddNew = session.getAttributesAddNew();
-			Map<byte[], byte[]> addData = new HashMap<byte[], byte[]>();
 			boolean add = !attributesAddNew.isEmpty();
 			if(add) {
+				Map<byte[], byte[]> addData = new HashMap<byte[], byte[]>();
 				attributesAddNew.forEach((k, v) -> {
 					try {
 						addData.put(k.getBytes(), serializer.serialize(v));
@@ -144,11 +148,11 @@ public class RedisSessionStore implements SessionStore {
 				pipeline.hdel(id, removeKeys.toArray(new String[0]));
 			}
 			if(add || del) {
-				pipeline.publish(RedisMessageOperator.CHANNEL_ATTRIBUTECHANGE_RELOAD, id);
+				pipeline.publish(RedisMessageOperator.CHANNEL_ATTRIBUTECHANGE_RELOAD, id+"$"+session.getSessionSign());
 			}
-		
-			pipeline.expire(id, session.getMaxInactiveInterval());
-			pipeline.sync();
+			Response<Long> exist = pipeline.expire(id, session.getMaxInactiveInterval()-5);
+			pipeline.close();
+			if(exist.get() == 0)session.invalidate();
 			return null;
 		}
 	}
@@ -164,8 +168,8 @@ public class RedisSessionStore implements SessionStore {
 	}
 
 	@Override
-	public void removeSession(String sessionkey) throws Exception {
-		execute(jedisPool, removeSessionJedisExecutor, sessionkey);
+	public void removeSession(String sessionKey) throws Exception {
+		execute(jedisPool, removeSessionJedisExecutor, sessionKey);
 	}
 
 	public void reloadAttributes(Map<byte[], byte[]> data, DawdlerHttpSession session) {
@@ -189,7 +193,7 @@ public class RedisSessionStore implements SessionStore {
 		session.setAttributes(attribute);
 	}
 
-	public JedisPoolAbstract getJedisPool() {
+	public Pool<Jedis> getJedisPool() {
 		return jedisPool;
 	}
 

@@ -28,8 +28,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfigParser;
 
@@ -87,9 +89,9 @@ public class DeployClassesScanner {
 				} else {
 					String className = file.getName().substring(0, file.getName().length() - 6);
 					try {
-						classes.add(Thread.currentThread().getContextClassLoader()
+											classes.add(Thread.currentThread().getContextClassLoader()
 								.loadClass(packageName.equals("") ? className : (packageName + '.' + className)));
-					} catch (ClassNotFoundException e) {
+					} catch (Throwable e) {
 						logger.error("", e);
 					}
 				}
