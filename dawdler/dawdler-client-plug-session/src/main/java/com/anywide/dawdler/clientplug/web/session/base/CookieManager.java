@@ -21,8 +21,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.anywide.dawdler.util.JVMTimeProvider;
 
 /**
  * 
@@ -149,7 +152,7 @@ public class CookieManager {
                     buf.append( ancientDate );
                 else
                     OLD_COOKIE_FORMAT.get().format(
-                            new Date(System.currentTimeMillis() +
+                            new Date(JVMTimeProvider.currentTimeMillis() +
                                     maxAge*1000L),
                             buf, new FieldPosition(0));
             }

@@ -17,6 +17,7 @@
 package org.apache.naming;
 
 import java.util.Vector;
+
 import javax.naming.StringRefAddr;
 
 /**

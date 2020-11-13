@@ -18,6 +18,7 @@
 package org.apache.naming;
 
 import java.util.Iterator;
+
 import javax.naming.Binding;
 import javax.naming.CompositeName;
 import javax.naming.Context;

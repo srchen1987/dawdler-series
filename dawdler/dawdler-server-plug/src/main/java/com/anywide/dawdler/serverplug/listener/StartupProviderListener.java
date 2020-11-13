@@ -17,6 +17,7 @@ public class StartupProviderListener implements DawdlerServiceListener {
 
 	@Override
 	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
+		if(zkDiscoveryCenter != null)
 			zkDiscoveryCenter.destroy();
 	}
 
