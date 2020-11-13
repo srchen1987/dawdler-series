@@ -95,7 +95,6 @@ public class DawdlerTool {
 	            idPassword.getBytes());
 	    return parts[0] + ":" + new String(Base64.getEncoder().encode(digest));
 	}
-	
 //	public static String memoryStatistic() {
 //      Runtime runtime = Runtime.getRuntime();
 //

@@ -16,10 +16,13 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs;
 import java.io.PrintWriter;
+
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.util.JsonProcessUtil;
 /**
@@ -70,13 +73,15 @@ public class JsonDisplayPlug extends AbstractDisplayPlug{
 //		Map map = fw.getData();
 	}
 	private void print(HttpServletResponse response,String message){
+		PrintWriter out = null;
 		try {
-			PrintWriter out =  response.getWriter();
+			out =  response.getWriter();
 			out.write(message);
 			out.flush();
-			out.close();
 		} catch (Exception e) {
 			logger.error("",e);
+		}finally {
+			if(out != null)out.close();
 		}
 	}
 

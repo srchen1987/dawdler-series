@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.serverplug.bean;
 import java.io.Serializable;
+
 import org.dom4j.Document;
 /**
  * 

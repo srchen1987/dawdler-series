@@ -16,6 +16,8 @@
  */
 package com.anywide.dawdler.clientplug.web.session;
 
+import javax.servlet.http.HttpSessionListener;
+
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 /**
  * 
@@ -27,16 +29,26 @@ import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
  * @email: suxuan696@gmail.com
  */
 public abstract class AbstractDistributedSessionManager {
+	public static final String DISTRIBUTED_SESSION_HTTPSESSIONLISTENER = "distributed_session_httpsessionlistener";
+	protected HttpSessionListener httpSessionListener;//session监听器 目前只监听 创建session 销毁session
 	
-	public abstract DawdlerHttpSession getSession(String sessionkey);
+	public HttpSessionListener getHttpSessionListener() {
+		return httpSessionListener;
+	}
+
+	public void setHttpSessionListener(HttpSessionListener httpSessionListener) {
+		this.httpSessionListener = httpSessionListener;
+	}
+
+	public abstract DawdlerHttpSession getSession(String sessionKey);
 	
 	public abstract void close();
  
-	public abstract void removeSession(String sessionkey);
+	public abstract void removeSession(String sessionKey);
 
 	public abstract void removeSession(DawdlerHttpSession dawdlerHttpSession);
 	
-	public abstract void addSession(String sessionkey,DawdlerHttpSession dawdlerHttpSession);
+	public abstract void addSession(String sessionKey,DawdlerHttpSession dawdlerHttpSession);
 
 
 }
