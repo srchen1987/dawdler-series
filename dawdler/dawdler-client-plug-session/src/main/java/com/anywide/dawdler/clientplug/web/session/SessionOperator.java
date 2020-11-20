@@ -66,7 +66,7 @@ public class SessionOperator {
 					session = abstractDistributedSessionManager.getSession(sessionKey);
 					if (session == null) {
 						Map<byte[], byte[]> data = sessionStore.getAttributes(sessionKey);
-						if (data != null && !data.isEmpty()) {  
+						if (!data.isEmpty()) {  
 							session = createLocalSession(sessionKey, maxInactiveInterval, false);
 							reloadAttributes(data, session, serializer);
 						}
