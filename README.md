@@ -2,19 +2,20 @@
 #### 项目介绍
 dawdler-series 是rpc的一个解决方案，其特点简单、高效、安全。包含了容器，客户端，mvc,前后端一致的校验框架，数据库事务传播方式（同spring一致）等等常用研发组件等.
 
-为什么要重复的发明轮子？dawdler早期应用在linuxsir开源社区上（如今的www.linuxsir.org 由于公司原因已不再是java语言开发的了），2008年之前采用ejb3.0通过jboss4.x版本进行，2010年采用nio写了一个版本，但容器部分功能未做完整，直到2014年之后开始基于aio重新编写了容器dawdler.
+为什么要重复的发明轮子？请看下面的dawdler之美，dawdler早期应用在linuxsir开源社区上（如今的www.linuxsir.org 由于公司原因已不再是java语言开发的了），2008年之前采用ejb3.0通过jboss4.x版本进行，2010年采用nio写了一个版本，但容器部分功能未做完整，直到2014年之后开始基于aio重新编写了容器dawdler.
 
 dawdler成熟么？基于dawdler早先版本开发的linuxsir稳定运行在服务器上4年没有出现过任何性能问题（这块不足以证明，必定基于jboss）。dawdler还运行在了某一元购商城，某移动社区，某支付平台上，tps高峰时期可以达到上千，订单量每天在800-1000万条数据左右，稳定性方面表现的非常出色，没出现过问题。可放心使用.通过本地测试单机下的dawdler每秒可以处理60000多次调用。
 
 dawdler之美
 架构上支持容器数据源，数据库读写分离，心跳探测，断网重连，优雅关机，rpc请求负载均衡，过滤器，监听器，web端验证器（根据后端验证配置自动生成前端js表达式）等功能。
 以上是小功能，不够美吧？真正的独到之处在下面.
-1. 无需在客户端（消费者）定义服务端（服务器提供者）提供相同的接口定义，比如操作用户的service，UserService 这个接口客户端与服务器端需要存放两份，一般rpc框架或ejb3都用打jar包的方式来解决，在dawdler中完美的解决了此问题，dawdler的客户端（web端，消费者）没有代码，做到天下无码才是最爽的.
+1. 支持模块化部署公用一个jvm，理解成多个服务可以部署在一个容器中，启动一个jvm即可.
 
-2. controller 调试模式，不需要重启tomcat，dawdler容器，随时调试各种数据(重写了类加载器，千万别把这种实现方式与tomcat热加载搞混淆了，tomcat的相当于重新启动了，而dawdler不是). 
+2. 无需在客户端（消费者）定义服务端（服务器提供者）提供相同的接口定义，比如操作用户的service，UserService 这个接口客户端与服务器端需要存放两份，一般rpc框架或ejb3都用打jar包的方式来解决，在dawdler中完美的解决了此问题，dawdler的客户端（web端，消费者）没有代码，做到天下无码才是最爽的.
 
-3. dawdler非常简单，启动神速，无需学习spring一样可以做研发。至于多简单？全民it总动员的年代你懂得.
+3. controller 调试模式，不需要重启tomcat，dawdler容器，随时调试各种数据(重写了类加载器，千万别把这种实现方式与tomcat热加载搞混淆了，tomcat的相当于重新启动了，而dawdler不是). 
 
+4. dawdler非常简单，启动神速，无需学习spring一样可以做研发。至于多简单？全民it总动员的年代你懂得.
 
 #### 软件架构
 基于java语言研发 采用aio研发的容器与客户端
@@ -47,8 +48,7 @@ dawdler文件结构说明
 3. 启动zookeeper。执行 `sh zkServer.sh start`  启动zookeeper。
 4. 配置zookeeper，进入zooinspector-master的bin下执行 `sh zooinspector.sh run`可以看到dawdler注册的节点。
 
-如图下：
-![zooinspector的界面]![截图](https://images.gitee.com/uploads/images/2018/1115/112012_0f541a2f_2248173.jpeg "1542251928310.jpg")
+
 
 #### 快速入门
 1. 下载demos/simple/demo-server（服务提供者，需要部署在dawdler的deploys下），demos/simple/demo-web（部署到tomcat端）
