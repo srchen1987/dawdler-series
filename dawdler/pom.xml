@@ -8,20 +8,20 @@
 		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 		<org.slf4j.version>1.7.25</org.slf4j.version>
 		<org.ow2.asm.version>5.2</org.ow2.asm.version>
-		<jaxen.version>1.1.6</jaxen.version>
+		<jaxen.version>1.2.0</jaxen.version>
 		<dom4j.version>1.6.1</dom4j.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool2.version>2.8.0</commons-pool2.version>
 		<kryo.version>4.0.2</kryo.version>
 		<xstream.version>1.4.12</xstream.version>
 		<xpp3_min.version>1.1.4c</xpp3_min.version>
-		<org.apache.curator.version>3.3.0</org.apache.curator.version>
+		<org.apache.curator.version>5.1.0</org.apache.curator.version>
 		<guava.version>22.0</guava.version>
-		<zookeeper.version>3.5.5</zookeeper.version>
+		<zookeeper.version>3.6.2</zookeeper.version>
 		<cglib-nodep.version>3.2.8</cglib-nodep.version>
 		<javassist.version>3.23.1-GA</javassist.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-		<jackson-core-lgpl.version>1.9.13</jackson-core-lgpl.version>
+		<jackson-core.version>2.12.0-rc2</jackson-core.version>
 		<commons-fileupload.version>1.3.3</commons-fileupload.version>
 		<velocity.version>2.2</velocity.version>
 		<jedis.version>3.3.0</jedis.version>
@@ -119,6 +119,11 @@
 				<version>${zookeeper.version}</version>
 			</dependency>
 			<dependency>
+   				 <groupId>org.apache.zookeeper</groupId>
+   				 <artifactId>zookeeper-jute</artifactId>
+    		     <version>${zookeeper.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>
 				<version>${cglib-nodep.version}</version>
@@ -135,15 +140,20 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-core-lgpl</artifactId>
-				<version>${jackson-core-lgpl.version}</version>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>${jackson-core.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.codehaus.jackson</groupId>
-				<artifactId>jackson-mapper-lgpl</artifactId>
-				<version>${jackson-core-lgpl.version}</version>
-			</dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-annotations</artifactId>
+        <version>${jackson-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>${jackson-core.version}</version>
+      </dependency>
 			<dependency>
 				<groupId>commons-fileupload</groupId>
 				<artifactId>commons-fileupload</artifactId>
@@ -166,7 +176,7 @@
 				<artifactId>caffeine</artifactId>
 				<version>${caffeine.version}</version>
 			</dependency>
-		
+
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client</artifactId>
@@ -202,7 +212,7 @@
 				<artifactId>dawdler-client-plug-velocity</artifactId>
 				<version>0.0.1-RELEASES</version>
 			</dependency>
-				<dependency>
+			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-serialization</artifactId>
 				<version>0.0.1-RELEASES</version>

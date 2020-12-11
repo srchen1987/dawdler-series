@@ -26,10 +26,8 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.BufferFactory;
 import com.anywide.dawdler.core.serializer.Serializer;
@@ -60,10 +58,10 @@ public abstract class AbstractSocketSession {
 	protected volatile long lastWriteTime;
 	protected Timeout readerIdleTimeout;
 	protected Timeout writerIdleTimeout;
-  protected ByteBuffer readBuffer;
-  protected ByteBuffer writeBuffer;
-  protected int dataLength;
-  protected int packageSize;
+    protected ByteBuffer readBuffer;
+    protected ByteBuffer writeBuffer;
+    protected int dataLength;
+    protected int packageSize;
 	protected int alreadyRead;
 	protected byte[] appendData;
 	private CountDownLatch sessionInitLatch = new CountDownLatch(1);
