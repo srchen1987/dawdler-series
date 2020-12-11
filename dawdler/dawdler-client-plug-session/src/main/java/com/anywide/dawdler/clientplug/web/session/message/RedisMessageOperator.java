@@ -142,8 +142,7 @@ public class RedisMessageOperator implements MessageOperator {
 						if(session.getSessionSign().equals(datas[1])) return;
 						session.clear(); 
 						try {
-							SessionOperator.reloadAttributes(sessionStore.getAttributes(session.getId()), session,
-									serializer);
+							SessionOperator.reloadAttributes(sessionStore.getAttributes(session.getId()), session, serializer);
 						} catch (Exception e) {
 							logger.error("", e);
 						}

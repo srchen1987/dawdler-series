@@ -60,6 +60,10 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+		     <groupId>org.apache.zookeeper</groupId>
+		     <artifactId>zookeeper-jute</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
