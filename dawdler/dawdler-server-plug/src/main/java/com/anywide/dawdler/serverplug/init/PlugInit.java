@@ -50,7 +50,6 @@ public class PlugInit{
 				for(Object o:xml.getNode("/config/loads-on/item")){
 					Element ele = (Element) o;
 					String host = ele.getText();
-//					if(LoadListener.DEBUG)System.out.println("starting load.....\t"+host+"\tmodule!");
 					String channelGroupId = ele.attributeValue("channel-group-id");
 					String time = ele.attributeValue("time");
 					int checkTime = 0;

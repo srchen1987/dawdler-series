@@ -28,10 +28,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfigParser;
 
@@ -88,11 +86,12 @@ public class DeployClassesScanner {
 					}
 				} else {
 					String className = file.getName().substring(0, file.getName().length() - 6);
+					String loadClassName = packageName.equals("") ? className : (packageName + '.' + className);
+					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader();
 					try {
-											classes.add(Thread.currentThread().getContextClassLoader()
-								.loadClass(packageName.equals("") ? className : (packageName + '.' + className)));
+						classes.add(classLoader.findClassForDawdler(loadClassName));
 					} catch (Throwable e) {
-						logger.error("", e);
+						logger.error("{}", loadClassName,e);
 					}
 				}
 			}
@@ -152,11 +151,12 @@ public class DeployClassesScanner {
 						else {
 							className = name.substring(0, name.length() - 6);
 						}
+						String loadClassName = idx == -1 ? className : (packageName + '.' + className);
+						DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader();
 						try {
-							Class clazz = Thread.currentThread().getContextClassLoader()
-									.loadClass(idx == -1 ? className : (packageName + '.' + className));
-							classes.add(clazz);
+							classes.add(classLoader.findClassForDawdler(loadClassName));
 						} catch (Throwable e) {
+							logger.error("", e);
 						}
 					}
 				}
@@ -209,8 +209,8 @@ public class DeployClassesScanner {
 			} else {
 				String className = file.getName().substring(0, file.getName().length() - 6);
 				try {
-					classes.add(Thread.currentThread().getContextClassLoader()
-							.loadClass(packageName.equals("") ? className : (packageName + '.' + className)));
+					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader();
+					classes.add(classLoader.findClassForDawdler(packageName.equals("") ? className : (packageName + '.' + className)));
 				} catch (ClassNotFoundException e) {
 					logger.error("", e);
 				}

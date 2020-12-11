@@ -17,10 +17,8 @@
 package com.anywide.dawdler.client.net.aio.handler;
 import java.io.IOException;
 import java.nio.channels.CompletionHandler;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.AuthRequestBean;

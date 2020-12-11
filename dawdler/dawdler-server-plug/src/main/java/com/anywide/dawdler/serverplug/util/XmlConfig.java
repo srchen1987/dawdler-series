@@ -76,7 +76,7 @@ public class XmlConfig {
 	private static boolean isUpdate() {
 		File file = new File(DawdlerTool.getcurrentPath() + File.separator + CONFIGPATH);
 		if (!file.exists()) {
-			System.out.println("not found " + CONFIGPATH);
+			logger.error("not found :"+CONFIGPATH);
 		}
 		if (updatetime != file.lastModified()) {
 			updatetime = file.lastModified();
