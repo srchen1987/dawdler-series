@@ -70,7 +70,6 @@ public class NetworkUtil {
 				    }
 				  else if(address.equals(IPV6)&&!(add instanceof Inet6Address))continue;
 				  else if(address.equals(IPV4)&&!(add instanceof Inet4Address))continue;
-				    
 				  if(add.isReachable(200))return add.getHostAddress();
 			 }
 		}
