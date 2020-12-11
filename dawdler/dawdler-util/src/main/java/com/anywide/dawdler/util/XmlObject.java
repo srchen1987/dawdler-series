@@ -30,6 +30,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.dom4j.Document;
@@ -182,6 +183,30 @@ public final class XmlObject {
 //		transformer = factory.newTransformer();
 		return transformer();
 	}
+	
+	public String transformerToString(String xslcode) throws TransformerException, IOException, DocumentException{
+		transformer = factory.newTransformer( new StreamSource(new StringReader(xslcode)));
+		Source source = new DocumentSource(document);
+		StreamResult streamResult = new StreamResult();
+		StringWriter sw = new StringWriter();
+		streamResult.setWriter(sw);
+		transformer.transform(source, streamResult);
+		return sw.toString();
+	}
+	
+	public String transformerToString(File xslFile) throws TransformerException, IOException, DocumentException{
+		transformer = factory.newTransformer(new StreamSource(xslFile));
+		Source source = new DocumentSource(document);
+		StreamResult streamResult = new StreamResult();
+		StringWriter sw = new StringWriter();
+		streamResult.setWriter(sw);
+		transformer.transform(source, streamResult);
+		return sw.toString();
+	}
+	
+	
+	 
+	
 	private XmlObject transformer() throws TransformerException, IOException, DocumentException{
 		Source source = new DocumentSource(document);
 		DocumentResult result = new DocumentResult();
@@ -219,5 +244,4 @@ public final class XmlObject {
 	public void setFilepath(String filepath) {
 		this.filepath = filepath;
 	}
-	
 }

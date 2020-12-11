@@ -17,11 +17,10 @@
 package com.anywide.dawdler.clientplug.web.util;
 import java.io.IOException;
 import java.io.InputStream;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.DeserializationConfig;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * 
  * @Title:  JsonProcessUtil.java   
@@ -48,7 +47,7 @@ public class JsonProcessUtil {
 	public static <T> T jsonToBean(String json, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-		mapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
 		try {
 			obj = (T) mapper.readValue(json, valueType);
@@ -63,7 +62,7 @@ public class JsonProcessUtil {
 	public static <T> T jsonToBean(InputStream jsonStream, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-		mapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
 		try {
 			obj = (T) mapper.readValue(jsonStream, valueType);
@@ -73,6 +72,5 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
-	
 
 }

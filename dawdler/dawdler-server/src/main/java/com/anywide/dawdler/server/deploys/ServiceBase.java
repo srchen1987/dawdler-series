@@ -21,12 +21,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.ProtectionDomain;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.core.annotation.ListenerConfig;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.annotation.RemoteService;
@@ -58,6 +57,8 @@ public class ServiceBase implements Service {
 	private static final String CLASSESPATH = "classes";
 	private static final String LIBPATH = "lib";
 	public static final String SERVICEEXECUTOR_PREFIX = "serviceExecutor_prefix";
+	public static final String ASPECTSUPPORTOBJ = "aspectSupportObj";//aspect 支持
+	public static final String ASPECTSUPPORTMETHOD = "aspectSupportMethod";
 	private DawdlerDeployClassLoader classLoader;
 	private File deploy;
 	private DawdlerContext dawdlerContext;
@@ -68,9 +69,19 @@ public class ServiceBase implements Service {
 	private FilterProvider filterProvider = new FilterProvider();
 	public ServiceBase(File deploy,String host,int port,ClassLoader parent) throws MalformedURLException {
 		this.deploy = deploy;
-		classLoader = DawdlerDeployClassLoader.createLoader(parent, getLibURL());
-		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
-				host,port,servicesManager);
+		classLoader = DawdlerDeployClassLoader.createLoader(parent, getClassLoaderURL());
+		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(), host, port, servicesManager);
+		try {
+			Class clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
+			Object obj = clazz.newInstance();
+			Method initializeMethod = clazz.getMethod("initialize");
+			initializeMethod.invoke(obj);
+			Method preProcessMethod = clazz.getMethod("preProcess",String.class, byte[].class, ClassLoader.class, ProtectionDomain.class);
+			dawdlerContext.setAttribute(ASPECTSUPPORTMETHOD, preProcessMethod);
+			dawdlerContext.setAttribute(ASPECTSUPPORTOBJ, obj);
+		} catch (Exception e) {
+			
+		}
 		classLoader.setDawdlerContext(dawdlerContext);
 		Thread.currentThread().setContextClassLoader(classLoader);
 	}
@@ -87,7 +98,7 @@ public class ServiceBase implements Service {
 		return new File(deploy, CLASSESPATH);
 	}
 
-	private URL[] getLibURL() throws MalformedURLException {
+	private URL[] getClassLoaderURL() throws MalformedURLException {
 		File file = new File(deploy, LIBPATH);
 		return PathUtils.getLibURL(file, getClassesDir().toURI().toURL());
 	}
@@ -103,10 +114,12 @@ public class ServiceBase implements Service {
 			clazz.getConstructor(DawdlerContext.class).newInstance(dawdlerContext);
 		} catch (Exception e) {
 		}
-		Object obj = dawdlerContext.getAttribute(SERVICEEXECUTOR_PREFIX);
-		if (obj != null)
-			serviceExecutor = (ServiceExecutor) obj; 
-			Set<Class<?>> classes = DeployClassesScanner.getClassesInPath(deploy);
+		
+		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICEEXECUTOR_PREFIX);
+		Set<Class<?>> classes = null;
+		if (definedServiceExecutor != null)
+			serviceExecutor = (ServiceExecutor) definedServiceExecutor; 
+		classes = DeployClassesScanner.getClassesInPath(deploy);
 		Set<Class<?>> serviceClasses = new HashSet<>();
 		for (Class<?> c : classes) {
 			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)

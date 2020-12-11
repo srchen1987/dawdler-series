@@ -39,7 +39,7 @@ import com.anywide.dawdler.util.TLS;
  * @email: suxuan696@gmail.com
  */
 public class DawdlerContext {
-	private ClassLoader classLoader;
+	private ClassLoader classLoader;//类加载器
 	private String deployPath;
 	private String deployName;
 	private String deployClassPath;
