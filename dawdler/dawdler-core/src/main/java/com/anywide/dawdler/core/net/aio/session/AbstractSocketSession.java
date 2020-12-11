@@ -58,10 +58,10 @@ public abstract class AbstractSocketSession {
 	protected volatile long lastWriteTime;
 	protected Timeout readerIdleTimeout;
 	protected Timeout writerIdleTimeout;
-    protected ByteBuffer readBuffer;
-    protected ByteBuffer writeBuffer;
-    protected int dataLength;
-    protected int packageSize;
+	protected ByteBuffer readBuffer;
+	protected ByteBuffer writeBuffer;
+	protected int dataLength;
+	protected int packageSize;
 	protected int alreadyRead;
 	protected byte[] appendData;
 	private CountDownLatch sessionInitLatch = new CountDownLatch(1);
