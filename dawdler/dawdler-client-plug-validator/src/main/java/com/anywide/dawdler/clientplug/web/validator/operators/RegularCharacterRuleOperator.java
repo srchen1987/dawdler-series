@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
+
 /**
  * 
- * @Title:  RegularCharacterRuleOperator.java   
- * @Description:    汉字字母或数字验证   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: RegularCharacterRuleOperator.java
+ * @Description: 汉字字母或数字验证
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class RegularCharacterRuleOperator extends StringRuleOperator {
@@ -41,8 +42,7 @@ public class RegularCharacterRuleOperator extends StringRuleOperator {
 
 	@Override
 	public String validate(Object value) {
-		return super.validate(value,"请输入汉字字母或数字!");
+		return super.validate(value, "请输入汉字字母或数字!");
 	}
 
 }
-

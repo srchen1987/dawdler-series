@@ -58,7 +58,6 @@ public class JDKDefaultSerializer implements Serializer {
 		ObjectInputStream ois = null;
 		try {
 			ois = new DawdlerObjectInputStream(new ByteArrayInputStream(bytes),Thread.currentThread().getContextClassLoader());
-//			ois = new ObjectInputStream(new ByteArrayInputStream(bytes));
 			Object obj=ois.readObject();
 			return obj;
 		} finally {

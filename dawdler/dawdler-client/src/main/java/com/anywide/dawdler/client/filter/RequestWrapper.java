@@ -15,28 +15,31 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.filter;
+
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.bean.RequestBean;
+
 /**
  * 
- * @Title:  RequestWrapper.java
- * @Description:    一个request的包装类   
- * @author: jackson.song    
- * @date:   2015年04月06日     
- * @version V1.0 
+ * @Title: RequestWrapper.java
+ * @Description: 一个request的包装类
+ * @author: jackson.song
+ * @date: 2015年04月06日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class RequestWrapper extends RequestBean{
+public class RequestWrapper extends RequestBean {
 	private static final long serialVersionUID = 2807385594696214109L;
 	private SocketSession session;
 	private RequestBean request;
 	private int timeout;
-	
+
 	private CircuitBreaker circuitBreaker;
 	private Class proxyInterface;
-	
-	public RequestWrapper(RequestBean request,SocketSession session,CircuitBreaker circuitBreaker,Class proxyInterface,int timeout) {
+
+	public RequestWrapper(RequestBean request, SocketSession session, CircuitBreaker circuitBreaker,
+			Class proxyInterface, int timeout) {
 		super.setSeq(request.getSeq());
 		super.setServiceName(request.getServiceName());
 		super.setMethodName(request.getMethodName());
@@ -50,7 +53,7 @@ public class RequestWrapper extends RequestBean{
 		this.circuitBreaker = circuitBreaker;
 		this.proxyInterface = proxyInterface;
 	}
-	
+
 	public Class getProxyInterface() {
 		return proxyInterface;
 	}
@@ -62,12 +65,15 @@ public class RequestWrapper extends RequestBean{
 	RequestBean getRequest() {
 		return request;
 	}
+
 	SocketSession getSession() {
 		return session;
 	}
+
 	public int getTimeout() {
 		return timeout;
 	}
+
 	@Override
 	public void setFuzzy(boolean fuzzy) {
 	}

@@ -39,8 +39,8 @@ import com.anywide.dawdler.core.order.OrderData;
  * @email: suxuan696@gmail.com
  */
 public class FilterProvider {
-	public FilterChain lastChain;
 	private static Logger logger = LoggerFactory.getLogger(FilterProvider.class);
+	public FilterChain lastChain;
 	private List<OrderData<DawdlerFilter>> filters = new ArrayList<OrderData<DawdlerFilter>>();
 
 //	private AtomicBoolean order = new AtomicBoolean(false);

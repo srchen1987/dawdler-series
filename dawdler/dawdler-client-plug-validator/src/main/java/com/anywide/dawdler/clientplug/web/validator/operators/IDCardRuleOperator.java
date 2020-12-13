@@ -15,16 +15,18 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
+
 import java.util.List;
 
 import com.anywide.dawdler.clientplug.web.validator.ext.IDCard;
+
 /**
  * 
- * @Title:  IDCardRuleOperator.java   
- * @Description:    身份证验证   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: IDCardRuleOperator.java
+ * @Description: 身份证验证
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class IDCardRuleOperator extends StringRuleOperator {
@@ -43,40 +45,42 @@ public class IDCardRuleOperator extends StringRuleOperator {
 
 	@Override
 	public String validate(Object value) {
-		if(value==null)return null;
-		boolean flag=true;
-		if(value instanceof String){
+		if (value == null)
+			return null;
+		boolean flag = true;
+		if (value instanceof String) {
 			flag = isIDCard(value.toString());
-		}else if (value instanceof String[]){
+		} else if (value instanceof String[]) {
 			String[] values = (String[]) value;
-			for(String v :values){
-				if(v==null){
-					flag= false;
+			for (String v : values) {
+				if (v == null) {
+					flag = false;
 					break;
 				}
-				if(!isIDCard(v)){
-					flag=false;
-					break;	
+				if (!isIDCard(v)) {
+					flag = false;
+					break;
 				}
 			}
-		}else if(value instanceof List){
+		} else if (value instanceof List) {
 			List values = (List) value;
-			for(Object o : values){
-				if(o==null){
-					flag= false;
+			for (Object o : values) {
+				if (o == null) {
+					flag = false;
 					break;
 				}
-				if(!isIDCard(o.toString())){
-					flag=false;
-					break;	
+				if (!isIDCard(o.toString())) {
+					flag = false;
+					break;
 				}
 			}
 		}
-		if(!flag)return "请输入正确的身份证号码!";
+		if (!flag)
+			return "请输入正确的身份证号码!";
 		return null;
 	}
-	
-	private boolean isIDCard(String value){
+
+	private boolean isIDCard(String value) {
 		try {
 			return IDCard.IDCardValidate(value.toString());
 		} catch (Exception e) {
@@ -85,4 +89,3 @@ public class IDCardRuleOperator extends StringRuleOperator {
 	}
 
 }
-

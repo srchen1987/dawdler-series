@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.plugs;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,19 +30,16 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.zip.GZIPOutputStream;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.clientplug.velocity.VelocityToolBox;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
@@ -49,24 +47,24 @@ import com.anywide.dawdler.util.DawdlerTool;
 
 /**
  * 
- * @Title:  VelocityDisplayPlug.java   
- * @Description:    velocity的实现   
- * @author: jackson.song    
- * @date:   2009年06月22日   
- * @version V1.0 
+ * @Title: VelocityDisplayPlug.java
+ * @Description: velocity的实现
+ * @author: jackson.song
+ * @date: 2009年06月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class VelocityDisplayPlug extends AbstractDisplayPlug{
+public class VelocityDisplayPlug extends AbstractDisplayPlug {
 	private static Logger logger = LoggerFactory.getLogger(VelocityDisplayPlug.class);
+
 	public VelocityDisplayPlug(ServletContext servletContext) {
 		super(servletContext);
 		InputStream fin = null;
 		Properties pstool = new Properties();
 		try {
-			fin = new FileInputStream(DawdlerTool.getcurrentPath()
-					+ "toolboxs.properties");
+			fin = new FileInputStream(DawdlerTool.getcurrentPath() + "toolboxs.properties");
 		} catch (FileNotFoundException e) {
-			logger.error("",e);
+			logger.error("", e);
 			fin = null;
 		}
 		try {
@@ -74,13 +72,13 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 				pstool.load(fin);
 			}
 		} catch (Exception e) {
-			logger.error("",e);
+			logger.error("", e);
 		} finally {
 			if (fin != null)
 				try {
 					fin.close();
 				} catch (IOException e) {
-					logger.error("",e);
+					logger.error("", e);
 				}
 		}
 		Set<Object> set = pstool.keySet();
@@ -88,18 +86,17 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 			String name = o.toString();
 			String className = pstool.get(name).toString();
 			try {
-				Class c = Class.forName(className);
+				Class<?> c = Class.forName(className);
 				if (!VelocityToolBox.class.isAssignableFrom(c)) {
-					System.err.println("warn\t" + className
-							+ "\tmust extends VelocityToolBox!");
+					System.err.println("warn\t" + className + "\tmust extends VelocityToolBox!");
 					continue;
 				}
 				try {
-					Constructor<VelocityToolBox> cs = c.getConstructor(String.class);
-					VelocityToolBox obj = cs.newInstance(name);
+					Constructor<?> cs = c.getConstructor(String.class);
+					VelocityToolBox obj = (VelocityToolBox) cs.newInstance(name);
 					toolboxs.put(name, obj);
 				} catch (Exception e) {
-					logger.error("",e);
+					logger.error("", e);
 				}
 			} catch (ClassNotFoundException e) {
 				System.err.println("warn can't find " + className);
@@ -111,25 +108,25 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 		VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
 		Properties ps = new Properties();
 		try {
-			fin = new FileInputStream(DawdlerTool.getcurrentPath()+"velocity.properties");
+			fin = new FileInputStream(DawdlerTool.getcurrentPath() + "velocity.properties");
 		} catch (FileNotFoundException e1) {
-			fin=null;
+			fin = null;
 		}
 		try {
-			if(fin!=null){
+			if (fin != null) {
 				ps.load(fin);
 			}
-			String path ;
-			if(templatepath!=null&&!templatepath.trim().equals(""))
-				path = servletContext.getRealPath("WEB-INF/"+templatepath);
+			String path;
+			if (templatepath != null && !templatepath.trim().equals(""))
+				path = servletContext.getRealPath("WEB-INF/" + templatepath);
 			else
 				path = servletContext.getRealPath("WEB-INF/template");
-			ps.put("file.resource.loader.path",path);
+			ps.put("file.resource.loader.path", path);
 			ps.put("file.resource.loader.cache", "true");
 		} catch (Exception e) {
-			logger.error("",e);
-		}finally{
-			if(fin!=null)
+			logger.error("", e);
+		} finally {
+			if (fin != null)
 				try {
 					fin.close();
 				} catch (IOException e) {
@@ -154,12 +151,11 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 		HttpServletResponse response = wf.getResponse();
 		response.setContentType(MIME_TYPE_TEXT);
 		if (wf.getInvokeException() != null) {
-			logger.error("",wf.getInvokeException());
+			logger.error("", wf.getInvokeException());
 			try {
-				response.sendError(
-						HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Internal Server Error.");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error.");
 			} catch (IOException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 			return;
 		}
@@ -176,15 +172,15 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 			try {
 				response.sendRedirect(tpath);
 			} catch (IOException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 			return;
 		case FORWARD:
 			tpath = wf.getForwardAndRedirectPath();
 			try {
 				request.getRequestDispatcher(tpath).forward(request, response);
-			} catch (ServletException|IOException e) {
-				logger.error("",e);
+			} catch (ServletException | IOException e) {
+				logger.error("", e);
 			}
 			return;
 		case STOP:
@@ -195,13 +191,12 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 		try {
 			mergeTemplate(request, response, tpath, wf);
 		} catch (Exception e) {
-			logger.error("",e);
+			logger.error("", e);
 			return;
 		}
 	}
 
-	private void mergeTemplate(HttpServletRequest request,
-			HttpServletResponse response, String tpath, ViewForward wf)
+	private void mergeTemplate(HttpServletRequest request, HttpServletResponse response, String tpath, ViewForward wf)
 			throws IOException, ServletException {
 		if (tpath == null)
 			throw new ServletException("not set template!");
@@ -209,12 +204,11 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 		try {
 			Template template = null;
 			try {
-				template = VelocityTemplateManager.getInstance().getTemplate(
-						tpath);
+				template = VelocityTemplateManager.getInstance().getTemplate(tpath);
 			} catch (ResourceNotFoundException e) {
 				throw new ServletException(e);
 			}
-			Map datas = wf.getData(); 
+			Map datas = wf.getData();
 			Context context = new VelocityContext(datas);
 			if (wf.isAddRequestAttribute()) {
 				Enumeration<String> attrs = request.getAttributeNames();
@@ -232,9 +226,9 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug{
 			}
 			String ae = request.getHeader("accept-encoding");
 			if (ae != null && ae.indexOf("gzip") != -1) {
-				
-				OutputStreamWriter ow = new OutputStreamWriter(new GZIPOutputStream(
-						response.getOutputStream()),"UTF-8");
+
+				OutputStreamWriter ow = new OutputStreamWriter(new GZIPOutputStream(response.getOutputStream()),
+						"UTF-8");
 				out = new PrintWriter(ow);
 				response.setHeader("Content-Encoding", "gzip");
 			} else {

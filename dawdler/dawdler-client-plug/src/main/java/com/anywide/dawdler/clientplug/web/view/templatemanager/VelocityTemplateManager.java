@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.view.templatemanager;
+
 import java.util.Properties;
 
 import org.apache.velocity.Template;
@@ -22,27 +23,33 @@ import org.apache.velocity.app.VelocityEngine;
 
 /**
  * 
- * @Title:  VelocityTemplateManager.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2009年04月19日     
- * @version V1.0 
+ * @Title: VelocityTemplateManager.java
+ * @Description: TODO
+ * @author: jackson.song
+ * @date: 2009年04月19日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class VelocityTemplateManager implements TemplateManager{
+public class VelocityTemplateManager implements TemplateManager {
 	private static VelocityTemplateManager templateManager;
-	public static synchronized VelocityTemplateManager getInstance(){
-		if(templateManager==null)templateManager = new VelocityTemplateManager();
+
+	public static synchronized VelocityTemplateManager getInstance() {
+		if (templateManager == null)
+			templateManager = new VelocityTemplateManager();
 		return templateManager;
 	}
+
 	private VelocityTemplateManager() {
 	}
+
 	private VelocityEngine engine = new VelocityEngine();
-	public Template getTemplate(String vmname){
+
+	public Template getTemplate(String vmname) {
 		return engine.getTemplate(vmname, "UTF-8");
 	}
-	public void init(Properties ps){
+
+	public void init(Properties ps) {
 		engine.init(ps);
-	} 
+	}
 
 }

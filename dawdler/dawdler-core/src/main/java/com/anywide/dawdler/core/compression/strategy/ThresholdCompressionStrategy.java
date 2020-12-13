@@ -15,20 +15,33 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.compression.strategy;
-import java.io.IOException;
 
+import java.io.IOException;
 import com.anywide.dawdler.core.compression.CompressionAlgorithm;
 import com.anywide.dawdler.core.compression.ZLibCompression;
+
+/**
+ * 
+ * @Title: ThresholdCompressionStrategy.java
+ * @Description: 基于数据包大小的压缩策略，返回压缩包装类
+ * @author: jackson.song
+ * @date: 2015年06月12日
+ * @version V1.0
+ * @email: suxuan696@gmail.com
+ */
 public class ThresholdCompressionStrategy implements CompressionStrategy {
+
 	private static ThresholdCompressionStrategy thresholdCompressionStrategy = new ThresholdCompressionStrategy();
-	public static ThresholdCompressionStrategy staticSingle(){
+	private int threshold;
+
+	public static ThresholdCompressionStrategy staticSingle() {
 		return thresholdCompressionStrategy;
 	}
-	int threshold;
+
 	CompressionAlgorithm compressionAlgorithm;
 
 	public ThresholdCompressionStrategy() {
-		this(10240*4);
+		this(10240 * 4);
 	}
 
 	public ThresholdCompressionStrategy(int threshold) {

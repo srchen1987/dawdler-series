@@ -15,23 +15,25 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.dynamicform.control;
+
 import com.anywide.dawdler.clientplug.velocity.ControlTag;
+
 /**
  * 
- * @Title:  ControlFactory.java   
- * @Description:    控件工厂   
- * @author: jackson.song    
- * @date:   2006年08月10日     
- * @version V1.0 
+ * @Title: ControlFactory.java
+ * @Description: 控件工厂
+ * @author: jackson.song
+ * @date: 2006年08月10日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ControlFactory {
-	public static final Control getControl(ControlTag tag){
+	public static final Control getControl(ControlTag tag) {
 		String controltype = tag.getControltype();
-		if(controltype==null){
+		if (controltype == null) {
 			throw new NullPointerException("controltype can't null !");
 		}
-		if (controltype.equals("text")||controltype.equals("password")||controltype.equals("hidden")) {
+		if (controltype.equals("text") || controltype.equals("password") || controltype.equals("hidden")) {
 			return new TextControl(tag);
 		} else if (controltype.equals("select")) {
 			return new SelectControl(tag);
@@ -39,11 +41,11 @@ public class ControlFactory {
 			return new RadioControl(tag);
 		} else if (controltype.equals("textarea")) {
 			return new TextareaControl(tag);
-		}else if (controltype.equals("checkbox")) {
+		} else if (controltype.equals("checkbox")) {
 			return new CheckboxControl(tag);
-		}else {
-				throw new NullPointerException("unknown "+controltype+" tag!");
+		} else {
+			throw new NullPointerException("unknown " + controltype + " tag!");
 		}
-		
+
 	}
 }

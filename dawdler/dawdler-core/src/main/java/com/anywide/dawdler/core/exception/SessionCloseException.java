@@ -18,21 +18,21 @@ package com.anywide.dawdler.core.exception;
 
 /**
  * 
- * @Title:  SessionCloseException.java
- * @Description:    session关闭异常   
- * @author: jackson.song    
- * @date:   2015年06月06日    
- * @version V1.0 
+ * @Title: SessionCloseException.java
+ * @Description: session关闭异常
+ * @author: jackson.song
+ * @date: 2015年06月06日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class SessionCloseException extends Exception {
 	public SessionCloseException(String msg) {
 		super(msg);
 	}
-	/** 
-	* @Fields serialVersionUID : TODO 
-	*/ 
-	private static final long serialVersionUID = -2787083552593649797L;
 
+	/**
+	 * @Fields serialVersionUID : TODO
+	 */
+	private static final long serialVersionUID = -2787083552593649797L;
 
 }

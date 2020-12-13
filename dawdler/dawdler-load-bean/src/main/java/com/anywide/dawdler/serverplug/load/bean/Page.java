@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.load.bean;
+
 import java.io.Serializable;
+
 /**
  * 
- * @Title:  Page.java   
- * @Description:    可序列化的page类    
- * @author: jackson.song    
- * @date:   2007年04月05日     
- * @version V1.0 
+ * @Title: Page.java
+ * @Description: 可序列化的page类
+ * @author: jackson.song
+ * @date: 2007年04月05日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class Page implements Serializable{
+public class Page implements Serializable {
 	private static final long serialVersionUID = 7024911260241474159L;
 	private int pageon;
 	private int rowcount;
@@ -33,71 +35,95 @@ public class Page implements Serializable{
 	private int row;
 	private int start;
 	private int end;
-	private int pageNumber=11;
+	private int pageNumber = 11;
+
 	public int getPageon() {
 		return pageon;
 	}
+
 	public void setPageon(int pageon) {
 		this.pageon = pageon;
 	}
+
 	public int getRowcount() {
 		return rowcount;
 	}
+
 	public void setRowcount(int rowcount) {
 		this.rowcount = rowcount;
 	}
+
 	public int getPagecount() {
 		return pagecount;
 	}
+
 	public void setPagecount(int pagecount) {
 		this.pagecount = pagecount;
 	}
+
 	public int getRow() {
 		return row;
 	}
+
 	public void setRow(int row) {
 		this.row = row;
 	}
-	public Page(int pageon,int row,int rowcount) {
-		this.pageon=pageon;
-		this.row=row;
-		this.rowcount=rowcount;
+
+	public Page(int pageon, int row, int rowcount) {
+		this.pageon = pageon;
+		this.row = row;
+		this.rowcount = rowcount;
 		compute();
 	}
-	public Page(int pageon,int row) {
-		this.pageon=pageon;
-		this.row=row;
+
+	public Page(int pageon, int row) {
+		this.pageon = pageon;
+		this.row = row;
 	}
+
 	public Page() {
 	}
+
 	public int getPageNumber() {
 		return pageNumber;
 	}
+
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber;
 	}
-	public void compute(){
-		if(rowcount<=0)return;
-		if(row<=0)row=10;
-		pagecount = rowcount%row==0?rowcount/row:rowcount/row+1;
-		if(pageon>pagecount)pageon=pagecount;
-		if(pageon<1)pageon=1;
-		start = (pageon-1)*row;
-		end= pageon*row;
-		if(end>rowcount)end=rowcount;
+
+	public void compute() {
+		if (rowcount <= 0)
+			return;
+		if (row <= 0)
+			row = 10;
+		pagecount = rowcount % row == 0 ? rowcount / row : rowcount / row + 1;
+		if (pageon > pagecount)
+			pageon = pagecount;
+		if (pageon < 1)
+			pageon = 1;
+		start = (pageon - 1) * row;
+		end = pageon * row;
+		if (end > rowcount)
+			end = rowcount;
 	}
+
 	public int getStart() {
 		return start;
 	}
+
 	public void setStart(int start) {
 		this.start = start;
 	}
+
 	public int getEnd() {
 		return end;
 	}
+
 	public void setEnd(int end) {
 		this.end = end;
 	}
+
 	public void setRowcountAndCompute(int rowcount) {
 		this.rowcount = rowcount;
 		compute();

@@ -15,61 +15,67 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
+
 import java.util.List;
+
 /**
  * 
- * @Title:  NotEmptyRuleOperator.java   
- * @Description:    不能为空验证   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: NotEmptyRuleOperator.java
+ * @Description: 不能为空验证
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class NotEmptyRuleOperator extends StringRuleOperator{
-	public static final String RULEKEY="notEmpty";
-	public static final String EXPLAIN="不能为空验证";
+public class NotEmptyRuleOperator extends StringRuleOperator {
+	public static final String RULEKEY = "notEmpty";
+	public static final String EXPLAIN = "不能为空验证";
+
 	public NotEmptyRuleOperator() {
-		super(RULEKEY,null,EXPLAIN);
-		
+		super(RULEKEY, null, EXPLAIN);
+
 	}
+
 	@Override
 	public String validate(Object value) {
-		if(value==null)return "不能为空!";
-		boolean flag=true;
-		if(value instanceof String){
+		if (value == null)
+			return "不能为空!";
+		boolean flag = true;
+		if (value instanceof String) {
 			flag = !((String) value).trim().equals("");
-		}else if (value instanceof String[]){
+		} else if (value instanceof String[]) {
 			String[] values = (String[]) value;
-			for(String v :values){
-				if(v==null){
-					flag= false;
+			for (String v : values) {
+				if (v == null) {
+					flag = false;
 					break;
 				}
-				if(v.trim().equals("")){
-					flag=false;
-					break;	
+				if (v.trim().equals("")) {
+					flag = false;
+					break;
 				}
 			}
-		}else if(value instanceof List){
+		} else if (value instanceof List) {
 			List values = (List) value;
-			for(Object o : values){
-				if(o==null){
-					flag= false;
+			for (Object o : values) {
+				if (o == null) {
+					flag = false;
 					break;
 				}
-				if(o.toString().trim().equals("")){
-					flag=false;
-					break;	
+				if (o.toString().trim().equals("")) {
+					flag = false;
+					break;
 				}
 			}
 		}
-		if(!flag)return "不能为空!";
+		if (!flag)
+			return "不能为空!";
 		return null;
 	}
+
 	@Override
 	public String toString() {
 		return EXPLAIN;
 	}
 
 }
-

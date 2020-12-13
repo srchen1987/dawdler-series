@@ -15,23 +15,23 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.thread;
+
 import java.nio.channels.Channel;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.core.exception.DawdlerOperateException;
+
 /**
  * 
- * @Title:  InvokeFuture.java
- * @Description:    执行结果   
- * @author: jackson.song    
- * @date:   2015年04月03日    
- * @version V1.0 
+ * @Title: InvokeFuture.java
+ * @Description: 执行结果
+ * @author: jackson.song
+ * @date: 2015年04月03日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class InvokeFuture<V> {
@@ -42,8 +42,9 @@ public class InvokeFuture<V> {
 	protected Semaphore semaphore = new Semaphore(0);
 	protected Throwable cause;
 	protected Channel channel;
+
 	public InvokeFuture() {
-	} 
+	}
 
 	public boolean isDone() {
 		return done.get();
@@ -55,8 +56,8 @@ public class InvokeFuture<V> {
 				semaphore.acquire();
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
-			} 
-		 
+			}
+
 		}
 		if (cause != null) {
 			if (cause instanceof DawdlerOperateException) {
@@ -78,7 +79,7 @@ public class InvokeFuture<V> {
 		if (!isDone()) {
 			try {
 				if (!semaphore.tryAcquire(timeout, unit)) {
-					setCause(new TimeoutException("get result time out,"+timeout+"\t"+unit+"!"));
+					setCause(new TimeoutException("get result time out," + timeout + "\t" + unit + "!"));
 				}
 			} catch (InterruptedException e) {
 				throw new DawdlerOperateException(e);
@@ -115,8 +116,5 @@ public class InvokeFuture<V> {
 	public void setChannel(Channel channel) {
 		this.channel = channel;
 	}
-	
-	
-	
-	
+
 }

@@ -41,7 +41,7 @@ import com.anywide.dawdler.server.net.aio.session.SocketSession;
  * @email: suxuan696@gmail.com
  */
 public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChannel, DawdlerServerContext> {
-	static Logger logger = LoggerFactory.getLogger(AcceptorHandler.class);
+	private static Logger logger = LoggerFactory.getLogger(AcceptorHandler.class);
 	private static ReaderHandler readerHandler = new ReaderHandler();
 	private DawdlerServerContext dawdlerServerContext;
 
@@ -52,7 +52,7 @@ public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChan
 		config(channel);
 		SocketSession socketSession = null;
 		try {
-			socketSession = new SocketSession(channel); 
+			socketSession = new SocketSession(channel);
 			socketSession.setDawdlerServerContext(dawdlerServerContext);
 			readerHandler.new ReadProcessor(socketSession).run();
 		} catch (Exception e) {

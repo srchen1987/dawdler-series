@@ -15,36 +15,44 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.bean;
+
 import java.io.Serializable;
+
 /**
  * 
- * @Title:  ResponseBean.java
- * @Description:    远程响应信息类   
- * @author: jackson.song    
- * @date:   2007年11月15日    
- * @version V1.0 
+ * @Title: ResponseBean.java
+ * @Description: 远程响应信息类
+ * @author: jackson.song
+ * @date: 2007年11月15日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class ResponseBean implements Serializable{
+public class ResponseBean implements Serializable {
 	private static final long serialVersionUID = -7692626494747302648L;
 	private long seq;
 	private Object target;
-	private Throwable cause; 
+	private Throwable cause;
+
 	public long getSeq() {
 		return seq;
 	}
+
 	public void setSeq(long seq) {
 		this.seq = seq;
 	}
+
 	public Object getTarget() {
 		return target;
 	}
+
 	public void setTarget(Object target) {
 		this.target = target;
 	}
+
 	public Throwable getCause() {
 		return cause;
 	}
+
 	public void setCause(Throwable cause) {
 		this.cause = cause;
 	}

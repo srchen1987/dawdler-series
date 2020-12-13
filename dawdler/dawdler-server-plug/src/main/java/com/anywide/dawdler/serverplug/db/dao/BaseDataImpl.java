@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.db.dao;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,13 +26,14 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import com.anywide.dawdler.serverplug.transaction.LocalConnectionFacotry;
+
 /**
  * 
- * @Title:  BaseDataImpl.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月15日       
- * @version V1.0 
+ * @Title: BaseDataImpl.java
+ * @Description: TODO
+ * @author: jackson.song
+ * @date: 2007年04月15日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class BaseDataImpl implements BaseData {
@@ -354,41 +356,41 @@ public class BaseDataImpl implements BaseData {
 		}
 		return 0;
 	}
-	
-	private String builderInsertSql(String tableName, Map<String, Object> datas,Object [] values) {
-			int length = values.length;
-			AtomicInteger index = new AtomicInteger(0);
-			StringBuilder sb = new StringBuilder(32);
-			StringBuilder vsql = new StringBuilder(32);
-			vsql.append(" values(");
-			sb.append("insert into ");
-			sb.append(tableName);
-			sb.append("(");
-			datas.forEach((k, v) -> {
-				sb.append(k);
-				int tempIndex = index.getAndIncrement();
-				values[tempIndex] = v;
-				if(tempIndex==length-1) {
-					sb.append(")");
-					vsql.append("?);");
-				}else {
-					sb.append(",");
-					vsql.append("?,");
-				}
-			});
-			sb.append(vsql);
-			return sb.toString();
+
+	private String builderInsertSql(String tableName, Map<String, Object> datas, Object[] values) {
+		int length = values.length;
+		AtomicInteger index = new AtomicInteger(0);
+		StringBuilder sb = new StringBuilder(32);
+		StringBuilder vsql = new StringBuilder(32);
+		vsql.append(" values(");
+		sb.append("insert into ");
+		sb.append(tableName);
+		sb.append("(");
+		datas.forEach((k, v) -> {
+			sb.append(k);
+			int tempIndex = index.getAndIncrement();
+			values[tempIndex] = v;
+			if (tempIndex == length - 1) {
+				sb.append(")");
+				vsql.append("?);");
+			} else {
+				sb.append(",");
+				vsql.append("?,");
+			}
+		});
+		sb.append(vsql);
+		return sb.toString();
 	}
 
 	@Override
 	public <T> T queryObject(String sql, Class<T> c) throws SQLException {
 		List<T> list = queryList(sql, c);
-		return list.isEmpty()?null:list.get(0);
+		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override
 	public <T> T queryObjectPrepare(String sql, Class<T> c, Object... values) throws SQLException {
 		List<T> list = queryListPrepare(sql, c, values);
-		return list.isEmpty()?null:list.get(0);
+		return list.isEmpty() ? null : list.get(0);
 	}
 }

@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -48,20 +49,23 @@ import com.anywide.dawdler.client.net.aio.handler.ConnectorHandler;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.compression.strategy.CompressionWrapper;
 import com.anywide.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
+import com.anywide.dawdler.core.handler.IoHandler;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
+
 /**
  * 
- * @Title:  DawdlerConnection.java
- * @Description:    dawdler连接    
- * @author: jackson.song    
- * @date:  	2015年03月16日     
- * @version V1.0 
+ * @Title: DawdlerConnection.java
+ * @Description: dawdler连接
+ * @author: jackson.song
+ * @date: 2015年03月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DawdlerConnection {
+	private static Logger logger = LoggerFactory.getLogger(DawdlerConnection.class);
 	private final AtomicInteger TNUMBER = new AtomicInteger(0);
 	private final AtomicLong INDEX = new AtomicLong(0);
 	private String groupName;
@@ -77,17 +81,19 @@ public class DawdlerConnection {
 	private ScheduledExecutorService reconnectScheduled;
 	private static ConnectorHandler connectorHandler = new ConnectorHandler();
 //	private AtomicBoolean connected= new AtomicBoolean();
-	private AtomicBoolean complete= new AtomicBoolean();
+	private AtomicBoolean complete = new AtomicBoolean();
 	protected Semaphore semaphore = new Semaphore(0);
 	private ReadWriteLock rwlock = new ReentrantReadWriteLock();
-	private static Logger logger = LoggerFactory.getLogger(DawdlerConnection.class);
+	private IoHandler ioHandler = IoHandlerFactory.getHandler();
+
 	public Semaphore getSemaphore() {
 		return semaphore;
 	}
+
 	public AtomicBoolean getComplete() {
 		return complete;
 	}
-	
+
 	public ConnectManager getConnectManager() {
 		return connectManager;
 	}
@@ -103,7 +109,7 @@ public class DawdlerConnection {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
+
 	public int getSerializer() {
 		return serializer;
 	}
@@ -123,15 +129,15 @@ public class DawdlerConnection {
 		} catch (UnknownHostException e) {
 			host = "UnknowHost";
 		}
-		
+
 		return host + "#ID:" + UUID.randomUUID().toString();
 	}
 
-	public DawdlerConnection(
-			String gid/* ,String [] addresses */,String path,int serializer, int sessionNum,String user,String password) throws IOException {
+	public DawdlerConnection(String gid/* ,String [] addresses */, String path, int serializer, int sessionNum,
+			String user, String password) throws IOException {
 		this.gid = gid;
 //		this.addresses = addresses;
-		this.path = path; 
+		this.path = path;
 		this.groupName = getDefaultGroupName();
 		this.sessionNum = sessionNum;
 		this.serializer = serializer;
@@ -139,14 +145,16 @@ public class DawdlerConnection {
 		this.password = password;
 		asynchronousChannelGroup = AsynchronousChannelGroup
 				.withThreadPool(Executors.newFixedThreadPool((Runtime.getRuntime().availableProcessors() * 2),
-						(r) -> new Thread(r, "dawdler-Client-connector#" +gid+"#"+ (TNUMBER.incrementAndGet()))));
+						(r) -> new Thread(r, "dawdler-Client-connector#" + gid + "#" + (TNUMBER.incrementAndGet()))));
 		reconnectScheduled = Executors.newScheduledThreadPool(1);
-		startReconnect(); 
+		startReconnect();
 	}
-	public void startReconnect() { 
+
+	public void startReconnect() {
 		reconnectScheduled.scheduleWithFixedDelay(() -> {
 			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
-			if(disconnAddressList.isEmpty())return;
+			if (disconnAddressList.isEmpty())
+				return;
 			Lock lock = rwlock.writeLock();
 			try {
 				lock.lock();
@@ -188,15 +196,15 @@ public class DawdlerConnection {
 				socketSession.setPath(path);
 			} catch (Exception e) {
 				logger.error("", e);
-				if (socketSession != null) 
+				if (socketSession != null)
 					socketSession.close(false);
 			}
-			if (client != null) { 
-				client.connect(address, socketSession,connectorHandler);
+			if (client != null) {
+				client.connect(address, socketSession, connectorHandler);
 				try {
 					socketSession.getInitLatch().await();
 				} catch (InterruptedException e) {
-					logger.error("",e);
+					logger.error("", e);
 				}
 			}
 		}
@@ -216,20 +224,19 @@ public class DawdlerConnection {
 		Set<SocketAddress> disconnectedAddressSet = connectManager.getDisconnectAddress();
 		addressSet.removeAll(disconnectedAddressSet);
 		for (SocketAddress address : addressSet) {
-			connect(address); 
+			connect(address);
 		}
 //		rebuildSessionGroup();
 	}
 
-
 	public void refreshConnection(String... addresses) {
-			refreshConnection(toSocketAddresses(addresses));
+		refreshConnection(toSocketAddresses(addresses));
 	}
-	
+
 	public void addConnection(String address) {
 		connect(toSocketAddress(address));
 	}
-	
+
 	public void disConnection(String address) {
 		shutdown(toSocketAddress(address));
 	}
@@ -244,24 +251,23 @@ public class DawdlerConnection {
 		}
 		return socketAddresses;
 	}
-	
+
 	public SocketAddress toSocketAddress(String address) {
 		if (address == null || address.trim().equals("")) {
 			throw new IllegalArgumentException("address can not be null or empty!");
 		}
 		String[] s = address.split(":");
-		
+
 		int index = address.lastIndexOf(":");
-		if(index<=0) {
-			throw new IllegalArgumentException("address["+address+"] is not a compliant rule!");
+		if (index <= 0) {
+			throw new IllegalArgumentException("address[" + address + "] is not a compliant rule!");
 		}
-		String ip  = address.substring(0,index);
-		String port = address.substring(index+1,address.length());
-		SocketAddress socketAddress  = new InetSocketAddress(ip, Integer.parseInt(port));
+		String ip = address.substring(0, index);
+		String port = address.substring(index + 1, address.length());
+		SocketAddress socketAddress = new InetSocketAddress(ip, Integer.parseInt(port));
 		return socketAddress;
 	}
-	
-	
+
 	public void refreshConnection(SocketAddress... addressArray) {
 		if ((addressArray == null || addressArray.length == 0)) {
 			return;
@@ -291,7 +297,7 @@ public class DawdlerConnection {
 		if (addList.size() > 0) {
 			SocketAddress[] addresses = new SocketAddress[addList.size()];
 			addList.toArray(addresses);
-			connect(addresses); 
+			connect(addresses);
 		}
 
 		for (SocketAddress socketAddress : removeList) {
@@ -305,13 +311,13 @@ public class DawdlerConnection {
 		List<SocketSession> list = sessionGroup.remove(socketAddress);
 		boolean shutdownNow = true;
 		if (list != null) {
-			 connectManager.removeDisconnect(socketAddress);
-			 rebuildSessionGroup(); 
+			connectManager.removeDisconnect(socketAddress);
+			rebuildSessionGroup();
 			for (SocketSession session : list) {
 				if (!session.getFutures().isEmpty()) {
-					session.markClose(); 
+					session.markClose();
 					shutdownNow = false;
-				} else {   
+				} else {
 					session.close(false);
 				}
 			}
@@ -322,7 +328,7 @@ public class DawdlerConnection {
 					try {
 						asynchronousChannelGroup.shutdownNow();
 					} catch (IOException e) {
-						logger.error("",e);
+						logger.error("", e);
 					}
 				else {
 					asynchronousChannelGroup.shutdown();
@@ -344,7 +350,6 @@ public class DawdlerConnection {
 	public void rebuildSessionGroup() {
 		socketSessionList = sessionGroup.values().toArray(new ArrayList[0]);
 	}
-	
 
 	public SocketSession getSession() {
 		Lock lock = rwlock.readLock();
@@ -378,9 +383,10 @@ public class DawdlerConnection {
 			lock.unlock();
 		}
 	}
-	
-	public void writeFirst(String path,Object obj, SocketSession socketSession) throws Exception {
-		IoHandlerFactory.getInstance().messageSent(socketSession, obj);
+
+	public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
+		if (ioHandler != null)
+			ioHandler.messageSent(socketSession, obj);
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] datas = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(datas);
@@ -388,37 +394,39 @@ public class DawdlerConnection {
 		synchronized (socketSession) {
 			ByteBuffer bf = socketSession.getWriteBuffer();
 			PoolBuffer pb = null;
-			byte [] pathBytes = path.getBytes();
+			byte[] pathBytes = path.getBytes();
 			byte pathLength = (byte) pathBytes.length;
-			int size = datas.length+2+pathLength;
-			int capacity = size+4;
-			try { 
-			if(capacity > SocketSession.CAPACITY) {
-				pb = PoolBuffer.selectPool(capacity);
-				if(pb==null) {
-					bf = ByteBuffer.allocate(capacity);
-					logger.warn("The serialized object("+obj.getClass().getName()+") is too large.\t size :"+capacity);
-				}else
-					bf = pb.getByteBuffer();
-			}
-			bf.putInt(size);
-			int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
-			bf.put((byte) head);
-			bf.put(pathLength);
-			bf.put(pathBytes);
-			bf.put(datas);
-			bf.flip();
-			socketSession.write(bf);
-			}finally {
+			int size = datas.length + 2 + pathLength;
+			int capacity = size + 4;
+			try {
+				if (capacity > SocketSession.CAPACITY) {
+					pb = PoolBuffer.selectPool(capacity);
+					if (pb == null) {
+						bf = ByteBuffer.allocate(capacity);
+						logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
+								+ capacity);
+					} else
+						bf = pb.getByteBuffer();
+				}
+				bf.putInt(size);
+				int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
+				bf.put((byte) head);
+				bf.put(pathLength);
+				bf.put(pathBytes);
+				bf.put(datas);
+				bf.flip();
+				socketSession.write(bf);
+			} finally {
 				bf.clear();
-				if(pb != null)
+				if (pb != null)
 					pb.release(bf);
 			}
 		}
 	}
 
 	public void write(Object obj, SocketSession socketSession) throws Exception {
-		IoHandlerFactory.getInstance().messageSent(socketSession, obj);
+		if (ioHandler != null)
+			ioHandler.messageSent(socketSession, obj);
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] datas = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(datas);
@@ -426,33 +434,32 @@ public class DawdlerConnection {
 		synchronized (socketSession) {
 			ByteBuffer bf = socketSession.getWriteBuffer();
 			PoolBuffer pb = null;
-			int size = datas.length+1;
-			int capacity = size+4;
-			try { 
-			if(capacity > SocketSession.CAPACITY) {
-				pb = PoolBuffer.selectPool(capacity);
-				if(pb==null) {
-					bf = ByteBuffer.allocate(capacity);
-					logger.warn("The serialized object("+obj.getClass().getName()+") is too large.\t size :"+capacity);
-				}else
-					bf = pb.getByteBuffer();
-			}
-			bf.putInt(size);
-			int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
-			bf.put((byte) head);
-			bf.put(datas);
-			bf.flip();
-			socketSession.write(bf);
-			}finally {
+			int size = datas.length + 1;
+			int capacity = size + 4;
+			try {
+				if (capacity > SocketSession.CAPACITY) {
+					pb = PoolBuffer.selectPool(capacity);
+					if (pb == null) {
+						bf = ByteBuffer.allocate(capacity);
+						logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
+								+ capacity);
+					} else
+						bf = pb.getByteBuffer();
+				}
+				bf.putInt(size);
+				int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
+				bf.put((byte) head);
+				bf.put(datas);
+				bf.flip();
+				socketSession.write(bf);
+			} finally {
 				bf.clear();
-				if(pb != null)
+				if (pb != null)
 					pb.release(bf);
 			}
 		}
 	}
 
-	
-	
 	public void config(AsynchronousSocketChannel channel) {
 		// NOOP
 		try {

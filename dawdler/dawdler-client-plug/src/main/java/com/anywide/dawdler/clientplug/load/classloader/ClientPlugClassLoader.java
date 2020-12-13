@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.load.classloader;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,18 +23,17 @@ import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.clientplug.load.LoadListener;
+
 /**
  * 
- * @Title:  ClientPlugClassLoader.java   
- * @Description:    提供加载方法来加载远端模版类到jvm中   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: ClientPlugClassLoader.java
+ * @Description: 提供加载方法来加载远端模版类到jvm中
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ClientPlugClassLoader {
@@ -42,20 +42,22 @@ public class ClientPlugClassLoader {
 	private URLClassLoader urlCL = null;
 	private static Map<String, Class> remoteClass = new ConcurrentHashMap<String, Class>();
 	private List<RemoteClassLoderFire> fireList = RemoteClassLoaderFireHolder.getInstance().getRemoteClassLoaderFire();
+
 	private ClientPlugClassLoader(String path) {
 		updateLoad(path);
 	}
 
 	public void load(String host, String name, String path) {
-		if(LoadListener.DEBUG)System.out.println("loading %%%" + host + "%%%module  \t" + path + ".class");
+		if (LoadListener.DEBUG)
+			System.out.println("loading %%%" + host + "%%%module  \t" + path + ".class");
 		try {
 			Class c = urlCL.loadClass(path);
-			remoteClass.put(host.trim()+"-"+name.trim(),c);
-			for(RemoteClassLoderFire rf : fireList) {
+			remoteClass.put(host.trim() + "-" + name.trim(), c);
+			for (RemoteClassLoderFire rf : fireList) {
 				rf.onLoadFire(c);
 			}
 		} catch (ClassNotFoundException e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
 	}
 
@@ -66,9 +68,10 @@ public class ClientPlugClassLoader {
 	}
 
 	public void remove(String name) {
-		if(LoadListener.DEBUG)System.out.println("remove class " + name + ".class");
+		if (LoadListener.DEBUG)
+			System.out.println("remove class " + name + ".class");
 		Class c = remoteClass.remove(name);
-		for(RemoteClassLoderFire rf : fireList) {
+		for (RemoteClassLoderFire rf : fireList) {
 			rf.onRemoveFire(c);
 		}
 	}
@@ -76,17 +79,18 @@ public class ClientPlugClassLoader {
 	public static Class getRemoteClass(String key) {
 		return remoteClass.get(key);
 	}
-	public void updateLoad(String path){
+
+	public void updateLoad(String path) {
 		URLClassLoader oldUrlCL = urlCL;
 		try {
-			URL url = new URL("file:"+path+"/");
-			this.urlCL = ClientClassLoader.newInstance(new URL[] {url},getClass().getClassLoader());
+			URL url = new URL("file:" + path + "/");
+			this.urlCL = ClientClassLoader.newInstance(new URL[] { url }, getClass().getClassLoader());
 		} catch (MalformedURLException e) {
-			logger.error("",e);
-		}finally {
+			logger.error("", e);
+		} finally {
 			try {
-				if(oldUrlCL!=null)
-						oldUrlCL.close();
+				if (oldUrlCL != null)
+					oldUrlCL.close();
 			} catch (IOException e) {
 			}
 		}

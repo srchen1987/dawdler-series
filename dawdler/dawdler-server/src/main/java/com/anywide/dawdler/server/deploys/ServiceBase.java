@@ -57,7 +57,7 @@ public class ServiceBase implements Service {
 	private static final String CLASSESPATH = "classes";
 	private static final String LIBPATH = "lib";
 	public static final String SERVICEEXECUTOR_PREFIX = "serviceExecutor_prefix";
-	public static final String ASPECTSUPPORTOBJ = "aspectSupportObj";//aspect 支持
+	public static final String ASPECTSUPPORTOBJ = "aspectSupportObj";// aspect 支持
 	public static final String ASPECTSUPPORTMETHOD = "aspectSupportMethod";
 	private DawdlerDeployClassLoader classLoader;
 	private File deploy;
@@ -67,20 +67,23 @@ public class ServiceBase implements Service {
 	private DawdlerListenerProvider dawdlerListenerProvider = new DawdlerListenerProvider();
 	private ServicesManager servicesManager = new ServicesManager();
 	private FilterProvider filterProvider = new FilterProvider();
-	public ServiceBase(File deploy,String host,int port,ClassLoader parent) throws MalformedURLException {
+
+	public ServiceBase(File deploy, String host, int port, ClassLoader parent) throws MalformedURLException {
 		this.deploy = deploy;
 		classLoader = DawdlerDeployClassLoader.createLoader(parent, getClassLoaderURL());
-		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(), host, port, servicesManager);
+		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
+				host, port, servicesManager);
 		try {
 			Class clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
 			Object obj = clazz.newInstance();
 			Method initializeMethod = clazz.getMethod("initialize");
 			initializeMethod.invoke(obj);
-			Method preProcessMethod = clazz.getMethod("preProcess",String.class, byte[].class, ClassLoader.class, ProtectionDomain.class);
+			Method preProcessMethod = clazz.getMethod("preProcess", String.class, byte[].class, ClassLoader.class,
+					ProtectionDomain.class);
 			dawdlerContext.setAttribute(ASPECTSUPPORTMETHOD, preProcessMethod);
 			dawdlerContext.setAttribute(ASPECTSUPPORTOBJ, obj);
 		} catch (Exception e) {
-			
+
 		}
 		classLoader.setDawdlerContext(dawdlerContext);
 		Thread.currentThread().setContextClassLoader(classLoader);
@@ -114,11 +117,11 @@ public class ServiceBase implements Service {
 			clazz.getConstructor(DawdlerContext.class).newInstance(dawdlerContext);
 		} catch (Exception e) {
 		}
-		
+
 		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICEEXECUTOR_PREFIX);
 		Set<Class<?>> classes = null;
 		if (definedServiceExecutor != null)
-			serviceExecutor = (ServiceExecutor) definedServiceExecutor; 
+			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
 		classes = DeployClassesScanner.getClassesInPath(deploy);
 		Set<Class<?>> serviceClasses = new HashSet<>();
 		for (Class<?> c : classes) {
@@ -126,7 +129,8 @@ public class ServiceBase implements Service {
 					&& ((c.getModifiers() & 16384) != 16384) && ((c.getModifiers() & 8192) != 8192)
 					&& ((c.getModifiers() & 512) != 512)) {
 				if (DawdlerServiceListener.class.isAssignableFrom(c)) {
-					DawdlerServiceListener dl = (DawdlerServiceListener) SunReflectionFactoryInstantiator.newInstance(c);
+					DawdlerServiceListener dl = (DawdlerServiceListener) SunReflectionFactoryInstantiator
+							.newInstance(c);
 					dawdlerListenerProvider.addHandlerInterceptors(dl);
 				}
 				if (DawdlerServiceCreateListener.class.isAssignableFrom(c)) {
@@ -143,15 +147,15 @@ public class ServiceBase implements Service {
 						orderData.setOrder(order.value());
 					filterProvider.addFilter(filter);
 				}
-				
+
 				if (servicesManager.isService(c)) {
 					serviceClasses.add(c);
 				}
 			}
 		}
 		for (Class<?> c : serviceClasses) {
-			servicesManager.smartRegister(c); 
-		} 
+			servicesManager.smartRegister(c);
+		}
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		servicesManager.fireCreate(dawdlerContext);
 		dawdlerListenerProvider.order();
@@ -160,11 +164,11 @@ public class ServiceBase implements Service {
 		for (OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
 			injectService(data.getData());
 		}
-		
+
 		for (OrderData<DawdlerFilter> data : filterProvider.getFilters()) {
 			injectService(data.getData());
 		}
-		
+
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
 			ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
 			if (listenerConfig != null && listenerConfig.asyn()) {
@@ -174,11 +178,11 @@ public class ServiceBase implements Service {
 							Thread.sleep(listenerConfig.delayMsec());
 						} catch (InterruptedException e) {
 						}
-							try {
-								orderData.getData().contextInitialized(dawdlerContext);
-							} catch (Exception e) {
-								logger.error("",e);
-							}
+						try {
+							orderData.getData().contextInitialized(dawdlerContext);
+						} catch (Exception e) {
+							logger.error("", e);
+						}
 					}
 				}).start();
 			} else {
@@ -204,9 +208,6 @@ public class ServiceBase implements Service {
 		}
 		servicesManager.clear();
 	}
-	
-		
-	
 
 	public DawdlerContext getDawdlerContext() {
 		return dawdlerContext;
@@ -245,5 +246,4 @@ public class ServiceBase implements Service {
 		}
 	}
 
-	
 }

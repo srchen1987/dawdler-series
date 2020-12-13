@@ -39,7 +39,7 @@ import com.anywide.dawdler.util.TLS;
  * @email: suxuan696@gmail.com
  */
 public class DawdlerContext {
-	private ClassLoader classLoader;//类加载器
+	private ClassLoader classLoader;// 类加载器
 	private String deployPath;
 	private String deployName;
 	private String deployClassPath;
@@ -50,7 +50,7 @@ public class DawdlerContext {
 	private static final String DAWDLERCONTEXT_PREFIX = "dawdler_context_prefix";
 
 	public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
-			String host,int port,ServicesManager servicesManager) {
+			String host, int port, ServicesManager servicesManager) {
 		this.classLoader = classLoader;
 		this.deployPath = deployPath + File.separator;
 		this.deployName = deployName;
@@ -75,7 +75,7 @@ public class DawdlerContext {
 	public String getDeployName() {
 		return deployName;
 	}
-	
+
 	public String getHost() {
 		return host;
 	}

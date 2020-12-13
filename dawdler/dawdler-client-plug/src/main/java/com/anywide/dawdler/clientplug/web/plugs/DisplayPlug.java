@@ -15,21 +15,20 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.plugs;
+
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
  * 
- * @Title:  DisplayPlug.java   
- * @Description:    显示插件接口   
- * @author: jackson.song    
- * @date:   2007年04月21日   
- * @version V1.0 
+ * @Title: DisplayPlug.java
+ * @Description: 显示插件接口
+ * @author: jackson.song
+ * @date: 2007年04月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public interface DisplayPlug{
+public interface DisplayPlug {
 
 	public void display(ViewForward wf);
-	
-	
-}
 
+}

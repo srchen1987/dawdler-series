@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.compression;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
 /**
  * 
- * @Title:  ZLibCompression.java
- * @Description:    Copy过来的Zlib实现   
- * @author: jackson.song    
- * @date:   2015年07月16日   
- * @version V1.0 
+ * @Title: ZLibCompression.java
+ * @Description: Copy过来的Zlib实现
+ * @author: jackson.song
+ * @date: 2015年07月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ZLibCompression implements CompressionAlgorithm {

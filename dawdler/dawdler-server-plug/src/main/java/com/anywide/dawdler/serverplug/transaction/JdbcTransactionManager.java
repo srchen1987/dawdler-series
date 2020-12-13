@@ -15,60 +15,60 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.SQLException;
-
 import javax.sql.DataSource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.serverplug.annotation.DBTransaction;
 import com.anywide.dawdler.serverplug.annotation.Isolation;
 import com.anywide.dawdler.serverplug.annotation.Propagation;
+
 /**
  * 
- * @Title:  JdbcTransactionManager.java   
- * @Description:    事务管理器 参考spring的实现   
- * @author: jackson.song    
- * @date:   2015年09月28日      
- * @version V1.0 
+ * @Title: JdbcTransactionManager.java
+ * @Description: 事务管理器 参考spring的实现
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class JdbcTransactionManager implements TransactionManager {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
 	private DataSource dataSource = null;
+
 	protected JdbcTransactionManager(final DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+
 	public DataSource getDataSource() {
 		return this.dataSource;
 	}
 
 	@Override
-	public final TransactionStatus getTransaction(DBTransaction dBTransaction)
-			throws SQLException {
+	public final TransactionStatus getTransaction(DBTransaction dBTransaction) throws SQLException {
 		JdbcTransactionStatus defStatus = new JdbcTransactionStatus(dBTransaction);
 		defStatus.setTranConn(this.doGetConnection(defStatus));
 		Propagation behavior = defStatus.getPropagationBehavior();
-		if (this.isExistingTransaction(defStatus)) { 
+		if (this.isExistingTransaction(defStatus)) {
 			switch (behavior) {
-				case REQUIRES_NEW: {
-					suspend(defStatus); 
-					doBegin(defStatus);
-					break;
-				}
-				case NESTED: {
-					defStatus.markHeldSavepoint();
-					break;
-				}
-				case NOT_SUPPORTED: {
-					suspend(defStatus);
-					break;
-				}
-				case NEVER: {
-					cleanupAfterCompletion(defStatus);
-					throw new SQLException("Existing transaction found for transaction marked with propagation 'never'.");
-				}
+			case REQUIRES_NEW: {
+				suspend(defStatus);
+				doBegin(defStatus);
+				break;
+			}
+			case NESTED: {
+				defStatus.markHeldSavepoint();
+				break;
+			}
+			case NOT_SUPPORTED: {
+				suspend(defStatus);
+				break;
+			}
+			case NEVER: {
+				cleanupAfterCompletion(defStatus);
+				throw new SQLException("Existing transaction found for transaction marked with propagation 'never'.");
+			}
 			default:
 				break;
 			}
@@ -83,12 +83,13 @@ public class JdbcTransactionManager implements TransactionManager {
 						"No existing transaction found for transaction marked with propagation 'mandatory'.");
 			}
 		}
-		return defStatus; 
+		return defStatus;
 	}
 
 	private boolean isExistingTransaction(final JdbcTransactionStatus defStatus) throws SQLException {
 		return defStatus.getTranConn().hasTransaction();
 	}
+
 	protected void doBegin(final JdbcTransactionStatus defStatus) throws SQLException {
 		TransactionObject tranConn = defStatus.getTranConn();
 		tranConn.beginTransaction();
@@ -118,7 +119,6 @@ public class JdbcTransactionManager implements TransactionManager {
 			this.cleanupAfterCompletion(defStatus);
 		}
 	}
-
 
 	protected void doCommit(final JdbcTransactionStatus defStatus) throws SQLException {
 		TransactionObject tranObject = defStatus.getTranConn();
@@ -177,7 +177,6 @@ public class JdbcTransactionManager implements TransactionManager {
 		}
 	}
 
-
 	private void cleanupAfterCompletion(final JdbcTransactionStatus defStatus) throws SQLException {
 		defStatus.setCompleted();
 		TransactionObject tranObj = defStatus.getTranConn();
@@ -192,11 +191,12 @@ public class JdbcTransactionManager implements TransactionManager {
 		defStatus.setTranConn(null);
 		defStatus.setSuspendConn(null);
 	}
+
 	protected TransactionObject doGetConnection(final JdbcTransactionStatus defStatus) throws SQLException {
-		WriteConnectionHolder holder = LocalConnectionFacotry.currentConnectionHolder(dataSource); 
+		WriteConnectionHolder holder = LocalConnectionFacotry.currentConnectionHolder(dataSource);
 		if (!holder.isOpen() || !holder.hasTransaction())
-			defStatus.markNewConnection(); 
-		holder.requested(); 
+			defStatus.markNewConnection();
+		holder.requested();
 		int isolationLevel = holder.getConnection().getTransactionIsolation();
 		Isolation originalIsolationLevel = null;
 		if (defStatus.getIsolationLevel() != Isolation.DEFAULT) {

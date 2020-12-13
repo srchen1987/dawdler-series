@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
+
 /**
  * 
- * @Title:  NegativeNumberOperator.java   
- * @Description:    负整数验证   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: NegativeNumberOperator.java
+ * @Description: 负整数验证
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class NegativeNumberOperator extends StringRuleOperator{
-	public static final String EXPLAIN ="负整数验证";
+public class NegativeNumberOperator extends StringRuleOperator {
+	public static final String EXPLAIN = "负整数验证";
 	public static final String REGEX = "^-[1-9]{1}\\d*$";
 	public static final String RULEKEY = "negativeNumber";
 
@@ -35,11 +36,11 @@ public class NegativeNumberOperator extends StringRuleOperator{
 
 	@Override
 	public String validate(Object value) {
-		return super.validate(value,"请输入负整数!");
+		return super.validate(value, "请输入负整数!");
 	}
+
 	@Override
 	public String toString() {
 		return EXPLAIN;
 	}
 }
-
