@@ -15,9 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.load;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -298,21 +296,21 @@ public class LoadCore implements Runnable {
 				FileOutputStream fo = null;
 				try {
 					fo = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
+					fo.write(isbean ? rf.getData() : rf.getRemoteClassData());
+					fo.flush();
+				} catch (Exception e) {
 					logger.error("", e);
 					return;
+				}finally {
+					try {
+						if(fo != null)
+							fo.close();
+					} catch (IOException e) {
+						logger.error("", e);
+					}
 				}
-				try {
-					fo.write(isbean ? rf.getData() : rf.getRemoteClassData());
-				} catch (IOException e) {
-					logger.error("", e);
-				}
-				try {
-					fo.flush();
-					fo.close();
-				} catch (IOException e) {
-					logger.error("", e);
-				}
+				 
+				
 				if (!isbean)
 					cl.load(host, classpath.substring(classpath.lastIndexOf(".") + 1, classpath.length()).toLowerCase(),
 							classpath);
