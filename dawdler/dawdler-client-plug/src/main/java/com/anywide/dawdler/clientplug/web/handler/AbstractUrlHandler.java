@@ -15,13 +15,12 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.handler;
+
 import java.lang.reflect.Method;
 import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.ViewControllerContext;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
@@ -31,41 +30,46 @@ import com.anywide.dawdler.core.order.OrderData;
 
 /**
  * 
- * @Title:  AbstractUrlHandler.java   
- * @Description:    urlHendler父类   
- * @author: jackson.song    
- * @date:   2007年04月18日   
- * @version V1.0 
+ * @Title: AbstractUrlHandler.java
+ * @Description: urlHendler父类
+ * @author: jackson.song
+ * @date: 2007年04月18日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public abstract class AbstractUrlHandler{
-	private List<OrderData<HandlerInterceptor>> handlerInterceptors=InterceptorProvider.getHandlerInterceptors();
+public abstract class AbstractUrlHandler {
+	private List<OrderData<HandlerInterceptor>> handlerInterceptors = InterceptorProvider.getHandlerInterceptors();
+
 //	protected TransactionControllerProxy transactionControllerProxy = new TransactionControllerProxy();
 	public boolean preHandle(TransactionController tc) throws Exception {
-		if(handlerInterceptors!=null)
-		for(OrderData<HandlerInterceptor> handlerInterceptor:handlerInterceptors){
-			if(!handlerInterceptor.getData().preHandle(tc))return false;
-		}
+		if (handlerInterceptors != null)
+			for (OrderData<HandlerInterceptor> handlerInterceptor : handlerInterceptors) {
+				if (!handlerInterceptor.getData().preHandle(tc))
+					return false;
+			}
 		return true;
 	}
-	public void postHandle(TransactionController tc, Throwable ex) throws Exception {
-		if(handlerInterceptors!=null){
-			for(int i = handlerInterceptors.size();i>0;i--){
-				handlerInterceptors.get(i-1).getData().postHandle(tc,ex);
-			}
-		}
-	}
-	public void afterCompletion(TransactionController tc,Throwable ex){
-		if(handlerInterceptors!=null){
-			for(int i = handlerInterceptors.size();i>0;i--){
-				handlerInterceptors.get(i-1).getData().afterCompletion(tc,ex);
-			}
-		}
-	}
-	public abstract boolean handleUrl(String urishort,String method,HttpServletRequest request,HttpServletResponse response)throws ServletException;
 
-	protected boolean invokeMethod(TransactionController targetobj,
-			Method method, ViewForward wf) {
+	public void postHandle(TransactionController tc, Throwable ex) throws Exception {
+		if (handlerInterceptors != null) {
+			for (int i = handlerInterceptors.size(); i > 0; i--) {
+				handlerInterceptors.get(i - 1).getData().postHandle(tc, ex);
+			}
+		}
+	}
+
+	public void afterCompletion(TransactionController tc, Throwable ex) {
+		if (handlerInterceptors != null) {
+			for (int i = handlerInterceptors.size(); i > 0; i--) {
+				handlerInterceptors.get(i - 1).getData().afterCompletion(tc, ex);
+			}
+		}
+	}
+
+	public abstract boolean handleUrl(String urishort, String method, HttpServletRequest request,
+			HttpServletResponse response) throws ServletException;
+
+	protected boolean invokeMethod(TransactionController targetobj, Method method, ViewForward wf) {
 		try {
 			if (!preHandle(targetobj))
 				return true;
@@ -74,7 +78,7 @@ public abstract class AbstractUrlHandler{
 			wf.setInvokeException(e);
 		}
 		try {
-			postHandle(targetobj,wf.getInvokeException());
+			postHandle(targetobj, wf.getInvokeException());
 		} catch (Exception e) {
 			wf.setInvokeException(e);
 		}
@@ -82,11 +86,10 @@ public abstract class AbstractUrlHandler{
 		afterCompletion(targetobj, wf.getInvokeException());
 		return true;
 	}
+
 	protected ViewForward createViewForward() {
 		ViewForward wf = ViewControllerContext.getViewForward();
 		return wf;
-		
 	}
-	
-}
 
+}

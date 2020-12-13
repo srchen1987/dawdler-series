@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.velocity;
+
 import com.anywide.dawdler.serverplug.load.bean.Page;
+
 /**
  * 
  * @Title: PageFactory.java
@@ -27,14 +29,18 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
  */
 public class PageFactory {
 //	private static PageFactory pageFactory = new PageFactory();
-	private PageFactory(){};
-	public static Page getPage(){
+	private PageFactory() {
+	};
+
+	public static Page getPage() {
 		return new Page();
 	}
-	public static Page getPage(int pageon,int row,int rowcount){
-		return new Page(pageon,row,rowcount);
+
+	public static Page getPage(int pageon, int row, int rowcount) {
+		return new Page(pageon, row, rowcount);
 	}
-	public static Page getPage(int pageon,int row){
-		return new Page(pageon,row);
+
+	public static Page getPage(int pageon, int row) {
+		return new Page(pageon, row);
 	}
 }

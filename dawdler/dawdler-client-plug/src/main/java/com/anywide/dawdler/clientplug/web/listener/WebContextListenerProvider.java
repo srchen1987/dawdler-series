@@ -15,31 +15,33 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.listener;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import javax.servlet.ServletContext;
-
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
+
 /**
  * 
- * @Title:  WebContextListenerProvider.java   
- * @Description:    监听器提供者   
- * @author: jackson.song    
- * @date:   2007年04月19日   
- * @version V1.0 
+ * @Title: WebContextListenerProvider.java
+ * @Description: 监听器提供者
+ * @author: jackson.song
+ * @date: 2007年04月19日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class WebContextListenerProvider {
 	private static AtomicBoolean order = new AtomicBoolean(false);
+
 	public static List<OrderData<WebContextListener>> getwebContextListeners() {
 		return webContextListeners;
 	}
+
 	public static void order() {
-		if(order.compareAndSet(false, true))
+		if (order.compareAndSet(false, true))
 			OrderComparator.sort(webContextListeners);
 	}
 
@@ -47,28 +49,28 @@ public class WebContextListenerProvider {
 		Order co = webContextListener.getClass().getAnnotation(Order.class);
 		OrderData<WebContextListener> od = new OrderData<WebContextListener>();
 		od.setData(webContextListener);
-		if(co!=null){
+		if (co != null) {
 			od.setOrder(co.value());
 		}
 		webContextListeners.add(od);
 	}
 
-	private static List<OrderData<WebContextListener>>  webContextListeners = new ArrayList<OrderData<WebContextListener>>();
-	public static void listenerRun(boolean init,ServletContext servletContext){
+	private static List<OrderData<WebContextListener>> webContextListeners = new ArrayList<OrderData<WebContextListener>>();
+
+	public static void listenerRun(boolean init, ServletContext servletContext) {
 		List<OrderData<WebContextListener>> listeners = WebContextListenerProvider.getwebContextListeners();
-		if(listeners!=null){
-			if(init){
-				for(OrderData<WebContextListener> listener : listeners){
+		if (listeners != null) {
+			if (init) {
+				for (OrderData<WebContextListener> listener : listeners) {
 					listener.getData().contextInitialized(servletContext);
 				}
-			}else{
-				for(int i=listeners.size()-1;i>=0;i--){
+			} else {
+				for (int i = listeners.size() - 1; i >= 0; i--) {
 					listeners.get(i).getData().contextDestroyed(servletContext);
 				}
 			}
-			
+
 		}
-		
+
 	}
 }
-

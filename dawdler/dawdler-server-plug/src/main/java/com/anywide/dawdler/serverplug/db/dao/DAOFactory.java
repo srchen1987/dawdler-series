@@ -15,22 +15,24 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.db.dao;
+
 import java.util.Map;
+
 /**
  * 
- * @Title:  DAOFactory.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月15日       
- * @version V1.0 
+ * @Title: DAOFactory.java
+ * @Description: TODO
+ * @author: jackson.song
+ * @date: 2007年04月15日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DAOFactory {
-	private Map<Class<?>,SuperDAO> daos = null;
+	private Map<Class<?>, SuperDAO> daos = null;
 	private static DAOFactory daofactory = null;
 
 	private DAOFactory() {
-		daos = new java.util.concurrent.ConcurrentHashMap<Class<?>,SuperDAO>();
+		daos = new java.util.concurrent.ConcurrentHashMap<Class<?>, SuperDAO>();
 	}
 
 	public static synchronized DAOFactory getInstance() {

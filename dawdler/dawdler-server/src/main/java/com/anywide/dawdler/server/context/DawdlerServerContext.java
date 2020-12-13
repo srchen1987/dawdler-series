@@ -56,9 +56,9 @@ public class DawdlerServerContext {
 	public void initApplication() {
 		serviceRoot.initApplication(this);
 	}
-	
-	public void destroyedApplication() { 
+
+	public void destroyedApplication() {
 		serviceRoot.destroyedApplication();
 	}
-	
+
 }

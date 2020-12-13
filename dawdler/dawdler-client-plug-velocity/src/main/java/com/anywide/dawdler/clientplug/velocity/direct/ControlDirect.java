@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.velocity.direct;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -26,6 +27,7 @@ import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
 import com.anywide.dawdler.clientplug.dynamicform.control.ControlFactory;
 import com.anywide.dawdler.clientplug.velocity.ControlTag;
+
 /**
  * 
  * @Title: ControlDirect.java
@@ -41,6 +43,7 @@ public class ControlDirect extends Directive {
 	public String getName() {
 		return "control";
 	}
+
 	@Override
 	public int getType() {
 		return LINE;
@@ -48,30 +51,26 @@ public class ControlDirect extends Directive {
 
 	@Override
 	public boolean render(InternalContextAdapter arg0, Writer arg1, Node arg2)
-			throws IOException, ResourceNotFoundException, ParseErrorException,
-			MethodInvocationException {
+			throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
 		Node node = arg2.jjtGetChild(0);
-		/*if(node==null){
-			Object action = arg0.get("action");
-			ControlTag page = (ControlTag)ToolEL.getBeanValue(action,"controlTag");
-			try {
-				arg1.write(ControlFactory.getControl(page).showView());
-			} catch (JspTagException e) {
-			}
-			return true;
-		}*/
+		/*
+		 * if(node==null){ Object action = arg0.get("action"); ControlTag page =
+		 * (ControlTag)ToolEL.getBeanValue(action,"controlTag"); try {
+		 * arg1.write(ControlFactory.getControl(page).showView()); } catch
+		 * (JspTagException e) { } return true; }
+		 */
 		Object object = node.value(arg0);
-		if(object instanceof ControlTag){
-				arg1.write(ControlFactory.getControl((ControlTag)object).showView());
+		if (object instanceof ControlTag) {
+			arg1.write(ControlFactory.getControl((ControlTag) object).showView());
 			return true;
 		}
 		int count = arg2.jjtGetNumChildren();
 		ControlTag ct = new ControlTag();
-		Field [] fs = ControlTag.class.getDeclaredFields();
-		for(int i=0;i<count;i++){
+		Field[] fs = ControlTag.class.getDeclaredFields();
+		for (int i = 0; i < count; i++) {
 			Node nodetemp = arg2.jjtGetChild(i);
 			Object obj = nodetemp.value(arg0);
-			if(!obj.toString().equals("")){
+			if (!obj.toString().equals("")) {
 				try {
 					fs[i].setAccessible(true);
 					fs[i].set(ct, obj.toString());
@@ -80,9 +79,8 @@ public class ControlDirect extends Directive {
 				}
 			}
 		}
-			arg1.write(ControlFactory.getControl(ct).showView());
+		arg1.write(ControlFactory.getControl(ct).showView());
 		return true;
 	}
-	
 
 }

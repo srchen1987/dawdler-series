@@ -15,9 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.handler;
+
 import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
 import com.anywide.dawdler.core.net.aio.session.SessionIdleType;
 
+/**
+ * 
+ * @Title: IoHandler.java
+ * @Description: 网络IO事件 客户端，服务器端接收，发送，开关连接，空闲，异常事件的接口
+ * @author: jackson.song
+ * @date: 2015年03月12日
+ * @version V1.0
+ * @email: suxuan696@gmail.com
+ */
 public interface IoHandler {
 	public void messageReceived(AbstractSocketSession socketSession, Object msg);
 
@@ -28,6 +38,6 @@ public interface IoHandler {
 	public void exceptionCaught(AbstractSocketSession socketSession, Throwable caught);
 
 	public void channelIdle(AbstractSocketSession socketSession, SessionIdleType idleType);
-	
+
 	public void messageSent(AbstractSocketSession socketSession, Object response);
 }

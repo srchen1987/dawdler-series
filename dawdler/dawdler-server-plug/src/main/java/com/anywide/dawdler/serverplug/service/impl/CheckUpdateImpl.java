@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.service.impl;
+
 import com.anywide.dawdler.serverplug.bean.XmlBean;
 import com.anywide.dawdler.serverplug.load.ReadClass;
 import com.anywide.dawdler.serverplug.service.CheckUpdate;
 import com.anywide.dawdler.util.XmlObject;
+
 /**
  * 
- * @Title:  CheckUpdateImpl.java   
- * @Description:    用于获取更新服务器端模版类列表的服务实现   
- * @author: jackson.song    
- * @date:   2007年09月18日    
- * @version V1.0 
+ * @Title: CheckUpdateImpl.java
+ * @Description: 用于获取更新服务器端模版类列表的服务实现
+ * @author: jackson.song
+ * @date: 2007年09月18日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class CheckUpdateImpl implements CheckUpdate {

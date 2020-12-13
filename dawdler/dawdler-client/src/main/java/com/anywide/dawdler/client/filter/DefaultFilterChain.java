@@ -15,18 +15,20 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.filter;
+
 import java.util.concurrent.TimeUnit;
 
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.thread.InvokeFuture;
+
 /**
  * 
- * @Title:  DefaultFilterChain.java
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2015年04月06日     
- * @version V1.0 
+ * @Title: DefaultFilterChain.java
+ * @Description: 默认的过滤器链
+ * @author: jackson.song
+ * @date: 2015年04月06日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DefaultFilterChain implements FilterChain {
@@ -34,8 +36,8 @@ public class DefaultFilterChain implements FilterChain {
 	public Object doFilter(RequestBean request) throws Exception {
 		RequestWrapper rq = (RequestWrapper) request;
 		SocketSession socketSession = rq.getSession();
-		InvokeFuture<?> future = new InvokeFuture<>();
-		socketSession.getFutures().put(request.getSeq(),future);
+		InvokeFuture<Object> future = new InvokeFuture<>();
+		socketSession.getFutures().put(request.getSeq(), future);
 		socketSession.getDawdlerConnection().write(rq.getRequest(), socketSession);
 		return future.getResult(rq.getTimeout(), TimeUnit.SECONDS);
 	}

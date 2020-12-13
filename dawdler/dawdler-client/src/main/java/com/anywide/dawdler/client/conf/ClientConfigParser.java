@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.conf;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -27,19 +28,20 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.NullPermission;
 import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+
 /**
  * 
- * @Title:  ClientConfigParser.java
- * @Description:    xtream映射类   
- * @author: jackson.song    
- * @date:   2015年03月16日    
- * @version V1.0 
+ * @Title: ClientConfigParser.java
+ * @Description: xtream映射类
+ * @author: jackson.song
+ * @date: 2015年03月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ClientConfigParser {
 	private static Logger logger = LoggerFactory.getLogger(ClientConfigParser.class);
 	private static ClientConfig config = null;
-	static{
+	static {
 		InputStream input = null;
 		try {
 //			XStream schema = new XStream();
@@ -53,33 +55,31 @@ public class ClientConfigParser {
 //			schema.allowTypesByWildcard(new String[] {
 //			    "com.anywide.dawdler.client.conf.*"
 //			});
-			
-			
-			input = new FileInputStream(DawdlerTool.getcurrentPath()+"client/client-conf.xml");
+
+			input = new FileInputStream(DawdlerTool.getcurrentPath() + "client/client-conf.xml");
 			XStream xstream = new XStream();
 			xstream.ignoreUnknownElements();
-			xstream.alias("config", ClientConfig.class); 
+			xstream.alias("config", ClientConfig.class);
 			xstream.autodetectAnnotations(true);
 			xstream.addPermission(NoTypePermission.NONE);
 			xstream.addPermission(NullPermission.NULL);
 			xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
 			xstream.allowTypeHierarchy(Collection.class);
-			xstream.allowTypesByWildcard(new String[] {
-			    "com.anywide.dawdler.client.conf.*"
-			});
+			xstream.allowTypesByWildcard(new String[] { "com.anywide.dawdler.client.conf.*" });
 			config = (ClientConfig) xstream.fromXML(input);
 		} catch (FileNotFoundException e) {
-			logger.error("",e);
-		}finally{
-			if(input!=null)
+			logger.error("", e);
+		} finally {
+			if (input != null)
 				try {
 					input.close();
 				} catch (IOException e) {
-					logger.error("",e);
+					logger.error("", e);
 				}
 		}
 	}
-	public static ClientConfig getClientConfig(){
+
+	public static ClientConfig getClientConfig() {
 		return config;
 	}
 }

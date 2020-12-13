@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client;
+
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.lang.StringUtils;
@@ -23,17 +24,19 @@ import com.anywide.dawdler.core.annotation.RemoteService;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
+
 /**
  * 
- * @Title:  ServiceFactory.java   
- * @Description:    代理工厂，用于创建客户端代理对象，采用cglib   
- * @author: jackson.song    
- * @date:   2008年03月22日    
- * @version V1.0 
+ * @Title: ServiceFactory.java
+ * @Description: 代理工厂，用于创建客户端代理对象，采用cglib
+ * @author: jackson.song
+ * @date: 2008年03月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ServiceFactory {
 	private static ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> proxyObjects = new ConcurrentHashMap<>();
+
 	public static <T> T getService(final Class<T> delegate, String groupName) {
 		ConcurrentHashMap<Class<?>, Object> proxy = proxyObjects.get(groupName);
 		if (proxy == null) {
@@ -51,39 +54,43 @@ public class ServiceFactory {
 		}
 		return (T) obj;
 	}
-	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName)  {
+
+	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName) {
 		Enhancer enhancer = new Enhancer();
-		enhancer.setCallback(new CglibInterceptor(delegate,groupName));
+		enhancer.setCallback(new CglibInterceptor(delegate, groupName));
 		enhancer.setInterfaces(new Class[] { delegate });
 		T cglibProxy = (T) enhancer.create();
 		return cglibProxy;
 	}
-	
+
 	private static class CglibInterceptor implements MethodInterceptor {
 		private String groupName;
 		private String serviceName;
 		private Class delegate;
 		private boolean fuzzy;
 		private int timeout;
-		CglibInterceptor(Class<?> delegate,String groupName) {
+
+		CglibInterceptor(Class<?> delegate, String groupName) {
 			this.groupName = groupName;
 			getServiceName(delegate);
 			this.delegate = delegate;
 		}
+
 		private void getServiceName(Class<?> delegate) {
 			String serviceName = null;
 			RemoteService rs = delegate.getAnnotation(RemoteService.class);
-			if(rs!=null) {
-				serviceName =rs.value();
+			if (rs != null) {
+				serviceName = rs.value();
 				timeout = rs.timeout();
-				fuzzy=rs.fuzzy();
-			} 
-			if(StringUtils.isBlank(serviceName)) {
+				fuzzy = rs.fuzzy();
+			}
+			if (StringUtils.isBlank(serviceName)) {
 				serviceName = delegate.getName();
 			}
-			this.serviceName =  serviceName;
+			this.serviceName = serviceName;
 		}
-	public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy)
+
+		public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy)
 				throws Throwable {
 			Transaction tr = TransactionProvider.getTransaction(groupName);
 			tr.setMethod(method.getName());

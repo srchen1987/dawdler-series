@@ -15,43 +15,44 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator;
+
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * 
- * @Title:  ValidateParser.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年07月21日     
+ * @Title: ValidateParser.java
+ * @Description: 验证解析器
+ * @author: jackson.song
+ * @date: 2007年07月21日
  * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ValidateParser {
 	private static Logger logger = LoggerFactory.getLogger(ValidateParser.class);
+
 	private static void uniqueArrRules(String validaterule, Set<String> existrule) {
 		String rules[] = validaterule.split("&");
 		for (String rule : rules) {
 			existrule.add(rule);
 		}
 	}
+
 	public static String validate(String viewname, Object value, String validaterule) {
-		if(validaterule==null){
-			logger.warn(viewname+"\t rule is null!");
-			return null;	
+		if (validaterule == null) {
+			logger.warn(viewname + "\t rule is null!");
+			return null;
 		}
 		Set<String> set = new LinkedHashSet<String>();
 		uniqueArrRules(validaterule, set);
-		for(String regex:set){
+		for (String regex : set) {
 			String error = RuleOperatorExecuter.autoOperator(regex, value);
-			if(error!=null)return (viewname+error);
+			if (error != null)
+				return (viewname + error);
 		}
 		return null;
 	}
-	
-	
-	
-	
+
 }

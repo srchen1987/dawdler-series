@@ -15,17 +15,20 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.compression.strategy;
+
 import java.io.IOException;
+
 /**
  * 
- * @Title:  CompressionStrategy.java
- * @Description:    压缩决策，返回压缩包装类   
- * @author: jackson.song    
- * @date:   2015年06月12日    
- * @version V1.0 
+ * @Title: CompressionStrategy.java
+ * @Description: 压缩策略，返回压缩包装类
+ * @author: jackson.song
+ * @date: 2015年06月12日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface CompressionStrategy {
 	CompressionWrapper compress(byte[] buffer) throws IOException;
+
 	byte[] decompress(byte[] buffer) throws IOException;
 }

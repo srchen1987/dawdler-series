@@ -17,7 +17,6 @@
 package com.anywide.dawdler.breaker;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
-
 import com.anywide.dawdler.breaker.metric.Metric;
 import com.anywide.dawdler.breaker.state.CircuitBreakerState;
 import com.anywide.dawdler.breaker.state.CircuitBreakerState.State;

@@ -15,36 +15,42 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.Connection;
 import java.sql.SQLException;
-
 import javax.sql.DataSource;
+
 /**
  * 
- * @Title:  ReadConnectionHolder.java   
- * @Description:    读连接持有者   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: ReadConnectionHolder.java
+ * @Description: 读连接持有者
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class ReadConnectionHolder{
+public class ReadConnectionHolder {
 	private int referenceCount;
 	private DataSource dataSource;
 	private Connection connection;
 	private boolean useWriteConnection;
+
 	public boolean isUseWriteConnection() {
 		return useWriteConnection;
 	}
+
 	public void setUseWriteConnection(boolean useWriteConnection) {
 		this.useWriteConnection = useWriteConnection;
 	}
+
 	ReadConnectionHolder(final DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+
 	public void requested() {
 		this.referenceCount++;
 	}
+
 	public void released() throws SQLException {
 		this.referenceCount--;
 		if (!this.isOpen() && this.connection != null)
@@ -56,6 +62,7 @@ public class ReadConnectionHolder{
 				this.connection = null;
 			}
 	}
+
 	public Connection getConnection() throws SQLException {
 		if (!this.isOpen()) {
 			return null;
@@ -72,9 +79,8 @@ public class ReadConnectionHolder{
 		return true;
 	}
 
- 	public DataSource getDataSource() {
+	public DataSource getDataSource() {
 		return dataSource;
 	}
-
 
 }

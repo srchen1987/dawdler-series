@@ -15,30 +15,35 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Savepoint;
 
 import javax.sql.DataSource;
+
 /**
  * 
- * @Title:  WriteConnectionHolder.java   
- * @Description:    写连接持有者   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: WriteConnectionHolder.java
+ * @Description: 写连接持有者
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class WriteConnectionHolder implements SavepointManager {
 	private int referenceCount;
 	private DataSource dataSource;
 	private Connection connection;
+
 	WriteConnectionHolder(final DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+
 	public void requested() {
 		this.referenceCount++;
 	}
+
 	public void released() throws SQLException {
 		this.referenceCount--;
 		if (!this.isOpen() && this.connection != null)
@@ -53,6 +58,7 @@ public class WriteConnectionHolder implements SavepointManager {
 				this.connection = null;
 			}
 	}
+
 	public Connection getConnection() throws SQLException {
 		if (!this.isOpen()) {
 			return null;
@@ -70,7 +76,7 @@ public class WriteConnectionHolder implements SavepointManager {
 		return true;
 	}
 
- 	public DataSource getDataSource() {
+	public DataSource getDataSource() {
 		return dataSource;
 	}
 

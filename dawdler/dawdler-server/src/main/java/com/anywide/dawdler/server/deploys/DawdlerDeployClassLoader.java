@@ -50,11 +50,10 @@ import sun.misc.URLClassPath;
  * @email: suxuan696@gmail.com
  */
 public class DawdlerDeployClassLoader extends DawdlerClassLoader {
+	private static Logger logger = LoggerFactory.getLogger(DawdlerDeployClassLoader.class);
 	private DawdlerContext dawdlerContext;
 	private WeakHashMap<String, URL> urlcache = new WeakHashMap<>();
 	private final URLClassPath ucp;
-	private static Logger logger = LoggerFactory.getLogger(DawdlerDeployClassLoader.class);
-
 	private final AccessControlContext acc;
 
 	public DawdlerDeployClassLoader(URL[] urls, ClassLoader parent) {
@@ -113,24 +112,25 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			Manifest man = res.getManifest();
 			definePackageInternal(pkgname, man, url);
 		}
-		
-		DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader();
+
+		DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
+				.getContextClassLoader();
 		java.nio.ByteBuffer bb = res.getByteBuffer();
 		Object obj = dawdlerContext.getAttribute(ServiceBase.ASPECTSUPPORTOBJ);
 		CodeSigner[] signers = res.getCodeSigners();
 		CodeSource cs = new CodeSource(url, signers);
 		sun.misc.PerfCounter.getReadClassBytesTime().addElapsedTimeFrom(t0);
 		if (bb != null) {
-			if(obj != null) {
+			if (obj != null) {
 				bb.flip();
 				byte[] classData = bb.array();
 				return loadClassFromBytes(name, classData, obj, classLoader);
-			}else {
+			} else {
 				return defineClass(name, bb, cs);
 			}
 		} else {
 			byte[] b = res.getBytes();
-			if(obj != null) { 
+			if (obj != null) {
 				return loadClassFromBytes(name, b, obj, classLoader);
 			}
 			return defineClass(name, b, 0, b.length, cs);
@@ -215,8 +215,9 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 		return result;
 	}
 
-	public Class<?> loadClassFromBytes(String name, byte[] classData,Object obj,ClassLoader classLoader) throws ClassNotFoundException {
-		Method method = (Method)dawdlerContext.getAttribute(ServiceBase.ASPECTSUPPORTMETHOD);
+	public Class<?> loadClassFromBytes(String name, byte[] classData, Object obj, ClassLoader classLoader)
+			throws ClassNotFoundException {
+		Method method = (Method) dawdlerContext.getAttribute(ServiceBase.ASPECTSUPPORTMETHOD);
 		try {
 			classData = (byte[]) method.invoke(obj, name, classData, classLoader, null);
 		} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {

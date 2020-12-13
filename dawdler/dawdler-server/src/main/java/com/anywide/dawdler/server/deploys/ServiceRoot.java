@@ -68,7 +68,7 @@ public class ServiceRoot {
 		return new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
 	}
 
-	private URL[] getLibURL() throws MalformedURLException { 
+	private URL[] getLibURL() throws MalformedURLException {
 		return PathUtils.getLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH), null);
 	}
 
@@ -89,23 +89,23 @@ public class ServiceRoot {
 		if (files.length > 0) {
 			ExecutorService es = Executors.newCachedThreadPool();
 			ClassLoader classLoader = createServerClassLoader();
-			if (classLoader != null) { 
+			if (classLoader != null) {
 				try {
 					DataSourceNamingInit.init(classLoader);
 				} catch (ClassNotFoundException | NamingException | InstantiationException | IllegalAccessException e) {
 					logger.error("", e);
 				}
 			}
-			Server server =  dawdlerServerContext.getServerConfig().getServer();
+			Server server = dawdlerServerContext.getServerConfig().getServer();
 			for (File f : files) {
 				if (f.isDirectory()) {
 					es.execute(() -> {
 						String deployName = f.getName();
 						try {
-							long serviceStart = JVMTimeProvider.currentTimeMillis(); 
-							Service service = new ServiceBase(f,server.getHost(),server.getTcpPort(),classLoader);
+							long serviceStart = JVMTimeProvider.currentTimeMillis();
+							Service service = new ServiceBase(f, server.getHost(), server.getTcpPort(), classLoader);
 							services.put(deployName, service);
-							service.start(); 
+							service.start();
 							long serviceEnd = JVMTimeProvider.currentTimeMillis();
 							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
 						} catch (Exception e) {
@@ -125,15 +125,15 @@ public class ServiceRoot {
 				return;
 			}
 			long end = JVMTimeProvider.currentTimeMillis();
-			System.out.println("Server startup in " + (end - start) + " ms,Listening port: "+dawdlerServerContext.getServerConfig().getServer().getTcpPort()+"!");
+			System.out.println("Server startup in " + (end - start) + " ms,Listening port: "
+					+ dawdlerServerContext.getServerConfig().getServer().getTcpPort() + "!");
 		}
 	}
-	
-	
+
 	public void destroyedApplication() {
-		services.values().forEach(v->{
+		services.values().forEach(v -> {
 			v.stop();
 		});
 	}
-	
+
 }

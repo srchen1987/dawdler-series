@@ -15,48 +15,48 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * 
- * @Title:  RegexRules.java   
- * @Description:    正则实现验证规则的存储类   
- * @author: jackson.song    
- * @date:   2007年07月21日     
- * @version V1.0 
+ * @Title: RegexRules.java
+ * @Description: 正则实现验证规则的存储类
+ * @author: jackson.song
+ * @date: 2007年07月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class RegexRules {
-//	private static Map<String,Pattern> regexRules = Collections.synchronizedMap(new HashMap<String,Pattern>());
-//	private static Map<String,String> explains = Collections.synchronizedMap(new HashMap<String,String>());
-	private static Map<String,Pattern> regexRules =new ConcurrentHashMap<String, Pattern>();
-	private static Map<String,String> explains = new ConcurrentHashMap<String, String>();
+	private static Map<String, Pattern> regexRules = new ConcurrentHashMap<String, Pattern>();
+	private static Map<String, String> explains = new ConcurrentHashMap<String, String>();
 	private static Logger logger = LoggerFactory.getLogger(RegexRules.class);
-	public static Pattern getPatternRule(String key){
+
+	public static Pattern getPatternRule(String key) {
 		return regexRules.get(key);
 	}
-	
-	public static void  registerRule(String key,String regex,String explain){
-		if(regexRules.containsKey(key)){
-			logger.warn(key+" already exists!");
-			return;
-		}
-		Pattern pattern= Pattern.compile(regex);
-		regexRules.put(key,pattern);
-		explains.put(key,explain+"  状态码：[ "+key+" ] \t pattern is "+regexRules.toString());
-	}
-	public static void registerRule(String key,Pattern pattern,String explain){
-		if(regexRules.containsKey(key)){
-			logger.warn(key+" already exists!");
-			return;
-		}
-		regexRules.put(key,pattern);
-		explains.put(key,explain+"  状态码：[ "+key+" ] \t pattern is "+regexRules.toString());
-	}
-	
-}
 
+	public static void registerRule(String key, String regex, String explain) {
+		if (regexRules.containsKey(key)) {
+			logger.warn(key + " already exists!");
+			return;
+		}
+		Pattern pattern = Pattern.compile(regex);
+		regexRules.put(key, pattern);
+		explains.put(key, explain + "  状态码：[ " + key + " ] \t pattern is " + regexRules.toString());
+	}
+
+	public static void registerRule(String key, Pattern pattern, String explain) {
+		if (regexRules.containsKey(key)) {
+			logger.warn(key + " already exists!");
+			return;
+		}
+		regexRules.put(key, pattern);
+		explains.put(key, explain + "  状态码：[ " + key + " ] \t pattern is " + regexRules.toString());
+	}
+
+}

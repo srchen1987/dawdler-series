@@ -21,25 +21,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.anywide.dawdler.clientplug.web.session.message.RedisMessageOperator;
 import com.anywide.dawdler.core.serializer.Serializer;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.Pipeline;
 import redis.clients.jedis.Response;
 import redis.clients.jedis.util.Pool;
+
 /**
  * 
- * @Title:  RedisSessionStore.java
- * @Description:  session存储 基于redis的实现
- * @author: jackson.song    
- * @date:   2016年6月16日  
- * @version V1.0 
+ * @Title: RedisSessionStore.java
+ * @Description: session存储 基于redis的实现
+ * @author: jackson.song
+ * @date: 2016年6月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class RedisSessionStore implements SessionStore {
@@ -53,9 +51,6 @@ public class RedisSessionStore implements SessionStore {
 		this.jedisPool = jedisPool;
 		this.serializer = serializer;
 	}
-
-	
-
 
 	private <T> T execute(Pool<Jedis> jedisPool, JedisExecutor<T> executor, Object attr) throws Exception {
 		Jedis jedis = null;
@@ -83,7 +78,7 @@ public class RedisSessionStore implements SessionStore {
 	 * @throws Exception
 	 * @return void
 	 * @author: jackson.song
-	 * @date: 2016年6月16日  
+	 * @date: 2016年6月16日
 	 */
 	@Override
 	public void saveSession(DawdlerHttpSession session) throws Exception {
@@ -130,7 +125,7 @@ public class RedisSessionStore implements SessionStore {
 			Pipeline pipeline = jedis.pipelined();
 			Map<String, Object> attributesAddNew = session.getAttributesAddNew();
 			boolean add = !attributesAddNew.isEmpty();
-			if(add) {
+			if (add) {
 				Map<byte[], byte[]> addData = new HashMap<byte[], byte[]>();
 				attributesAddNew.forEach((k, v) -> {
 					try {
@@ -139,7 +134,7 @@ public class RedisSessionStore implements SessionStore {
 						logger.error("", e);
 					}
 				});
-					pipeline.hmset(id.getBytes(), addData);
+				pipeline.hmset(id.getBytes(), addData);
 			}
 
 			List<String> removeKeys = session.getAttributesRemoveNewKeys();
@@ -147,12 +142,14 @@ public class RedisSessionStore implements SessionStore {
 			if (del) {
 				pipeline.hdel(id, removeKeys.toArray(new String[0]));
 			}
-			if(add || del) {
-				pipeline.publish(RedisMessageOperator.CHANNEL_ATTRIBUTECHANGE_RELOAD, id+"$"+session.getSessionSign());
+			if (add || del) {
+				pipeline.publish(RedisMessageOperator.CHANNEL_ATTRIBUTECHANGE_RELOAD,
+						id + "$" + session.getSessionSign());
 			}
-			Response<Long> exist = pipeline.expire(id, session.getMaxInactiveInterval()-5);
+			Response<Long> exist = pipeline.expire(id, session.getMaxInactiveInterval() - 5);
 			pipeline.close();
-			if(exist.get() == 0)session.invalidate();
+			if (exist.get() == 0)
+				session.invalidate();
 			return null;
 		}
 	}
@@ -196,7 +193,5 @@ public class RedisSessionStore implements SessionStore {
 	public Pool<Jedis> getJedisPool() {
 		return jedisPool;
 	}
-
-
 
 }

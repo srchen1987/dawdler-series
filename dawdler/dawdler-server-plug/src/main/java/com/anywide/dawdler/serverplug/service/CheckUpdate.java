@@ -15,15 +15,17 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.service;
+
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.serverplug.bean.XmlBean;
+
 /**
  * 
- * @Title:  CheckUpdate.java   
- * @Description:    用于获取更新服务器端模版类列表的服务   
- * @author: jackson.song    
- * @date:   2007年09月18日     
- * @version V1.0 
+ * @Title: CheckUpdate.java
+ * @Description: 用于获取更新服务器端模版类列表的服务
+ * @author: jackson.song
+ * @date: 2007年09月18日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 @RemoteService

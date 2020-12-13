@@ -15,40 +15,46 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.annotation;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 /**
  * 
- * @Title:  RequestMapping.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月17日  
- * @version V1.0 
+ * @Title: RequestMapping.java
+ * @Description: http请求注解
+ * @author: jackson.song
+ * @date: 2007年04月17日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestMapping {
 	String[] value() default {};
+
 	RequestMethod[] method() default {};
+
 //	ParamType paramType() default ParamType.httpType;
 	ViewType viewType() default ViewType.velocity;
+
 	boolean generateValidator() default false;
+
 	String input() default "";
-	long uploadSizeMax()default 0l;
+
+	long uploadSizeMax() default 0l;
+
 	long uploadPerSizeMax() default 0l;
+
 	short uploadHandler() default 1;
+
 //	public enum ParamType{
 //		jsonType,
 //		httpType;
 //	}
-	public enum ViewType{
-		json,
-		jsp,
-		velocity;
+	public enum ViewType {
+		json, jsp, velocity;
 	}
 }
-
-

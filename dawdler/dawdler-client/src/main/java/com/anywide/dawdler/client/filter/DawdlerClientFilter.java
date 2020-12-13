@@ -15,16 +15,18 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.filter;
+
 import com.anywide.dawdler.core.bean.RequestBean;
+
 /**
  * 
- * @Title:  DawdlerClientFilter.java
- * @Description:    dawdler客户端过滤器接口   
- * @author: jackson.song    
- * @date:   2015年04月06日     
- * @version V1.0 
+ * @Title: DawdlerClientFilter.java
+ * @Description: dawdler客户端过滤器接口
+ * @author: jackson.song
+ * @date: 2015年04月06日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface DawdlerClientFilter {
-	public Object doFilter(RequestBean request,FilterChain chain) throws Exception;
+	public Object doFilter(RequestBean request, FilterChain chain) throws Exception;
 }
