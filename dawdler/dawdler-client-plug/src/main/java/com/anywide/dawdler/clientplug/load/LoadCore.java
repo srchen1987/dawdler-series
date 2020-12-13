@@ -27,12 +27,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.client.Transaction;
 import com.anywide.dawdler.client.TransactionProvider;
 import com.anywide.dawdler.clientplug.load.classloader.ClientPlugClassLoader;
@@ -66,10 +64,9 @@ public class LoadCore implements Runnable {
 		XmlObject xmlo = ClientConfig.getInstance().getXml();
 		Element ele = xmlo.selectSingleNode("/config/load-url");
 		currentpath = DawdlerTool.getcurrentPath();
-
 		String tmpPath = System.getProperty("user.home");
 		if (tmpPath != null) {
-			tmpPath = tmpPath + File.separator + ".load"+File.separator+UUID.randomUUID().toString();
+			tmpPath = tmpPath + File.separator + ".load" + File.separator + UUID.randomUUID().toString();
 			File file = new File(tmpPath);
 			if (!file.exists()) {
 				if (!file.mkdirs())
@@ -92,7 +89,6 @@ public class LoadCore implements Runnable {
 		}
 	}
 
-
 	public LoadCore(String host, long time, String channelGroupId) {
 		cl = ClientPlugClassLoader.newInstance(path);
 		this.host = host;
@@ -100,9 +96,9 @@ public class LoadCore implements Runnable {
 			this.time = time;
 		this.channelGroupId = channelGroupId;
 	}
-	
+
 	public String getLogFilePath() {
-		return path + File.separator +channelGroupId+host + PREFIX;
+		return path + File.separator + channelGroupId + host + PREFIX;
 	}
 
 	public void toCheck() throws IOException {
@@ -152,7 +148,7 @@ public class LoadCore implements Runnable {
 		try {
 			String filepath = getLogFilePath();
 			XmlObject xmlo = new XmlObject(filepath, false);
-			for (Object o : xmlo.getNode("/hosts/host[@type='controller']/item")) {
+			for (Object o : xmlo.selectNodes("/hosts/host[@type='controller']/item")) {
 				Element ele = (Element) o;
 				if (cl.getRemoteClass((host + "-" + ele.attributeValue("name"))) == null) {
 					String tempname = classNameToFilePath(ele.getText());
@@ -171,7 +167,7 @@ public class LoadCore implements Runnable {
 	}
 
 	private void willLoad(XmlObject xmlo, String type) throws IOException {
-		List beanlist = xmlo.getNode("/hosts/host[@type='" + type + "']/item");
+		List beanlist = xmlo.selectNodes("/hosts/host[@type='" + type + "']/item");
 		String[] tem = new String[beanlist.size()];
 		int i = 0;
 		for (Object o : beanlist) {
@@ -187,11 +183,11 @@ public class LoadCore implements Runnable {
 		List<String> list = new ArrayList<String>();
 		Set<String> set = new HashSet<String>();
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
-		for (Object item : local.getNode("/hosts/host[@type='" + type + "']/item")) {
+		for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item")) {
 			Element ele = (Element) item;
 			String checkname = ele.attributeValue("checkname");
 			for (Object item2 : remote
-					.getNode("/hosts/host[@type='" + type + "']/item[@checkname='" + checkname + "']")) {
+					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + checkname + "']")) {
 				Element ele2 = (Element) item2;
 				String ele2checkname = ele2.attributeValue("checkname");
 				list.add(ele2checkname);
@@ -206,7 +202,7 @@ public class LoadCore implements Runnable {
 		String classFilePath = (isbean ? currentpath : (path + File.separator));
 		Set<String> temset = new HashSet<String>();
 		for (String names : list) {// 循环客户端和服务器端都有的类
-			for (Object item : local.getNode("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
+			for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
 				Element ele = (Element) item;
 				if (!list.contains(ele.attributeValue("checkname"))
 						&& !temset.contains(ele.attributeValue("checkname"))) {// 如果list里面不包含并且set中也不包含
@@ -219,7 +215,7 @@ public class LoadCore implements Runnable {
 						cl.remove(host + "-" + ele.attributeValue("name"));
 				}
 			}
-			List items = remote.getNode("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']");
+			List items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']");
 			for (Object item : items) {
 				Element ele = (Element) item;
 				if (!list.contains(ele.attributeValue("checkname"))

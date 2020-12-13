@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.bean;
+
 import java.io.Serializable;
-/**  
- * @Title:  AuthResponseBean.java
- * @Description:    身份验证响应信息   
- * @author: jackson.song    
- * @date:   2015年05月23日   
- * @version V1.0 
+
+/**
+ * @Title: AuthResponseBean.java
+ * @Description: 身份验证响应信息
+ * @author: jackson.song
+ * @date: 2015年05月23日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class AuthResponseBean implements Serializable{
-	
+public class AuthResponseBean implements Serializable {
+
 	private static final long serialVersionUID = 3918382953150072128L;
 	private boolean success;
 

@@ -15,42 +15,42 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.plugs;
+
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
  * 
- * @Title:  JspDisplayPlug.java   
- * @Description:    jsp的实现   
- * @author: jackson.song    
- * @date:   2007年04月21日   
- * @version V1.0 
+ * @Title: JspDisplayPlug.java
+ * @Description: jsp的实现
+ * @author: jackson.song
+ * @date: 2007年04月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class JspDisplayPlug extends AbstractDisplayPlug {
 	private static Logger logger = LoggerFactory.getLogger(JspDisplayPlug.class);
 
 	private String path;
+
 	public JspDisplayPlug(ServletContext servletContext) {
 		super(servletContext);
 		String templatepath = servletContext.getInitParameter("template-path");
-		if(templatepath!=null&&!templatepath.trim().equals(""))
-			path = "/WEB-INF/"+templatepath+"/";
+		if (templatepath != null && !templatepath.trim().equals(""))
+			path = "/WEB-INF/" + templatepath + "/";
 		else
 			path = "/WEB-INF/template/";
 	}
+
 	@Override
 	public void display(ViewForward wf) {
 		logException(wf);
@@ -58,12 +58,11 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 		HttpServletResponse response = wf.getResponse();
 		response.setContentType(MIME_TYPE_TEXT);
 		if (wf.getInvokeException() != null) {
-			logger.error("",wf.getInvokeException());
+			logger.error("", wf.getInvokeException());
 			try {
-				response.sendError(
-						HttpServletResponse.SC_INTERNAL_SERVER_ERROR,"Internal Server Error.");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error.");
 			} catch (IOException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 			return;
 		}
@@ -80,33 +79,32 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 			try {
 				response.sendRedirect(tpath);
 			} catch (IOException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 			return;
 		case FORWARD:
 			tpath = wf.getForwardAndRedirectPath();
 			try {
 				request.getRequestDispatcher(tpath).forward(request, response);
-			} catch (ServletException|IOException e) {
-				logger.error("",e);
+			} catch (ServletException | IOException e) {
+				logger.error("", e);
 			}
 			return;
 		case STOP:
 			return;
 		}
-			try {
-				Map map = wf.getData();
-				if(map!=null){
-					Set<Entry<String,Object>> entrys = map.entrySet();
-					for(Entry<String,Object> entry:entrys){
-						request.setAttribute(entry.getKey(),entry.getValue());
-					}
+		try {
+			Map<String, Object> map = wf.getData();
+			if (map != null) {
+				Set<Entry<String, Object>> entrys = map.entrySet();
+				for (Entry<String, Object> entry : entrys) {
+					request.setAttribute(entry.getKey(), entry.getValue());
 				}
-				request.getRequestDispatcher(path+tpath).forward(request,response);
-			} catch (ServletException|IOException e) {
-				logger.error("",e);
 			}
-			return;
+			request.getRequestDispatcher(path + tpath).forward(request, response);
+		} catch (ServletException | IOException e) {
+			logger.error("", e);
+		}
+		return;
 	}
 }
-

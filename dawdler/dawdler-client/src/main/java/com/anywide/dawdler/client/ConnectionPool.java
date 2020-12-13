@@ -46,21 +46,21 @@ import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 public class ConnectionPool {
 	private static Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 	private static ConcurrentHashMap<String, ConnectionPool> groups = new ConcurrentHashMap<>();
-	private static	Map<String,ServerChannelGroup> serverChannelGroup = new HashMap<String,ServerChannelGroup>();
+	private static Map<String, ServerChannelGroup> serverChannelGroup = new HashMap<String, ServerChannelGroup>();
 	private ReadWriteLock rwlock = new ReentrantReadWriteLock();
 	private static DiscoveryCenter discoveryCenter = null;
 	static {
 		try {
 			ClientConfig clientConfig = ClientConfigParser.getClientConfig();
 			String connectString = clientConfig.getZkHost();
-			discoveryCenter = new ZkDiscoveryCenterClient(connectString,null,null);
+			discoveryCenter = new ZkDiscoveryCenterClient(connectString, null, null);
 			List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
 			if (sgs != null) {
 				for (ServerChannelGroup sg : sgs) {
 					String gid = sg.getGroupId();
 					serverChannelGroup.put(gid, sg);
 					List<String> addresses = null;
-					try { 
+					try {
 						addresses = discoveryCenter.getServiceList(gid);
 					} catch (Exception e) {
 						logger.error("", e);
@@ -73,42 +73,43 @@ public class ConnectionPool {
 					if (cp == null) {
 						cp = new ConnectionPool();
 						ConnectionPool pre = addGroup(gid, cp);
-						if(pre!=null)cp = pre;
+						if (pre != null)
+							cp = pre;
 					}
 					initConnection(gid);
 				}
-				
+
 			}
 		} catch (Exception e) {
 			logger.error("", e);
 		}
 
 	}
-	
+
 	public static void initConnection(String gid) {
-			ConnectionPool cp = getConnectionPool(gid);
-			ServerChannelGroup sg = serverChannelGroup.get(gid);
-			if(sg==null)throw new NullPointerException("not configure "+gid+"!");
-			String path = sg.getPath();
-			String user = sg.getUser();
-			String password = sg.getPassword();
-			int connectionNum = sg.getConnectionNum();
-			int serializer = sg.getSerializer();
-			int sessionNum = sg.getSessionNum();
-			if (connectionNum <= 0)
-				connectionNum = 1;
-			if (sessionNum <= 0)
-				sessionNum = 1;
-			for (int j = 0; j < connectionNum; j++) {
-				DawdlerConnection dc;
-				try {
-					dc = new DawdlerConnection(gid, path, serializer,
-							sessionNum, user, password);
-					cp.add(dc);
-				} catch (IOException e) {
-					logger.error("", e);
-				}
+		ConnectionPool cp = getConnectionPool(gid);
+		ServerChannelGroup sg = serverChannelGroup.get(gid);
+		if (sg == null)
+			throw new NullPointerException("not configure " + gid + "!");
+		String path = sg.getPath();
+		String user = sg.getUser();
+		String password = sg.getPassword();
+		int connectionNum = sg.getConnectionNum();
+		int serializer = sg.getSerializer();
+		int sessionNum = sg.getSessionNum();
+		if (connectionNum <= 0)
+			connectionNum = 1;
+		if (sessionNum <= 0)
+			sessionNum = 1;
+		for (int j = 0; j < connectionNum; j++) {
+			DawdlerConnection dc;
+			try {
+				dc = new DawdlerConnection(gid, path, serializer, sessionNum, user, password);
+				cp.add(dc);
+			} catch (IOException e) {
+				logger.error("", e);
 			}
+		}
 	}
 
 	public static ConnectionPool getConnectionPool(String groupName) {
@@ -116,9 +117,10 @@ public class ConnectionPool {
 	}
 
 	public static ConnectionPool addGroup(String groupName, ConnectionPool cp) {
-		return groups.putIfAbsent(groupName,cp);
+		return groups.putIfAbsent(groupName, cp);
 	}
-	//provider for web container call
+
+	// provider for web container call
 	public static void shutdown() throws Exception {
 		for (ConnectionPool c : groups.values()) {
 			c.close();
@@ -140,10 +142,10 @@ public class ConnectionPool {
 
 	public DawdlerConnection getConnection() {
 		DawdlerConnection con = cq.get();
-		if(!con.getComplete().get()) {
+		if (!con.getComplete().get()) {
 			try {
 				con.semaphore.acquire();
-			}catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 			}
 		}
 		return con;
@@ -159,45 +161,42 @@ public class ConnectionPool {
 
 	/**
 	 * 
-	 * @Title: updateConnection   
-	 * @Description: 废弃了 不需要之前的存储结构进行刷新连接了 之前结构/dawdler/gid/[provider,provider1] 
-	 * 如今换成这种格式，直接用add和del即可 
-	 * /dawdler/gid/provider
-	 * 						  +provider1
-	 * 						  +provider2
+	 * @Title: updateConnection
+	 * @Description: 废弃了 不需要之前的存储结构进行刷新连接了 之前结构/dawdler/gid/[provider,provider1]
+	 *               如今换成这种格式，直接用add和del即可 /dawdler/gid/provider +provider1
+	 *               +provider2
 	 * @param ipaddresses
-	 * @return: void     
-	 * @throws 
-	 * @author: jackson.song     
-	 * @date:   2018年8月13日 
+	 * @return: void
+	 * @throws @author: jackson.song
+	 * @date: 2018年8月13日
 	 */
 	@Deprecated
 	public void updateConnection(String ipaddresses) {
 		cq.refreshConnection(ipaddresses);
 	}
-	
-	public void addConnection(String gid,String ipaddress) {
-		if(cq.first==null) {
+
+	public void addConnection(String gid, String ipaddress) {
+		if (cq.first == null) {
 			initConnection(gid);
 		}
 		cq.addConnection(ipaddress);
 	}
-	
+
 	public void delConnection(String ipaddress) {
 		cq.delConnection(ipaddress);
 	}
 
-	public void doChange(String gid,String action, String address) {
+	public void doChange(String gid, String action, String address) {
 		switch (action) {
 		case "del": {
 			delConnection(address);
 			break;
 		}
 		case "add": {
-			addConnection(gid,address);
+			addConnection(gid, address);
 			break;
 		}
-			
+
 //    以下是之前上个版本的 之后不需要通过删除一个gid的方式来关闭
 //		case "del": {
 //			ConnectionPool pool = groups.remove(groupid);
@@ -295,7 +294,6 @@ public class ConnectionPool {
 			}
 		}
 
-		
 		public void addConnection(String address) {
 			Lock lock = rwlock.writeLock();
 			try {
@@ -310,7 +308,7 @@ public class ConnectionPool {
 				lock.unlock();
 			}
 		}
-		
+
 		public void delConnection(String address) {
 			Lock lock = rwlock.writeLock();
 			try {
@@ -325,7 +323,7 @@ public class ConnectionPool {
 				lock.unlock();
 			}
 		}
-		
+
 		public T get() {
 			Lock lock = rwlock.readLock();
 			try {

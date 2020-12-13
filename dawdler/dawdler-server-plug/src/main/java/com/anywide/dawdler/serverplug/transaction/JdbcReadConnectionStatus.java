@@ -15,14 +15,16 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import com.anywide.dawdler.serverplug.annotation.DBTransaction;
+
 /**
  * 
- * @Title:  JdbcReadConnectionStatus.java   
- * @Description:   数据库读连接的状态存储类   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: JdbcReadConnectionStatus.java
+ * @Description: 数据库读连接的状态存储类
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class JdbcReadConnectionStatus {

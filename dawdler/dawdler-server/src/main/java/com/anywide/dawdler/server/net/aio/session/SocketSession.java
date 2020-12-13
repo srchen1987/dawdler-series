@@ -19,11 +19,8 @@ package com.anywide.dawdler.server.net.aio.session;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
@@ -43,7 +40,6 @@ import com.anywide.dawdler.server.thread.processor.DataProcessor;
 public class SocketSession extends AbstractSocketSession {
 	private static Logger logger = LoggerFactory.getLogger(SocketSession.class);
 	private DawdlerServerContext dawdlerServerContext;
-//	private boolean completed;
 	private String path;
 	private byte pathLength;
 
@@ -69,7 +65,8 @@ public class SocketSession extends AbstractSocketSession {
 
 	public void close(boolean reconnect) {
 		if (close.compareAndSet(false, true)) {
-			IoHandlerFactory.getInstance().channelClose(this);
+			if (ioHandler != null)
+				ioHandler.channelClose(this);
 			ServerConnectionManager.getInstance().removeSession(this);
 			if (writeBuffer != null) {
 				clean(writeBuffer);
@@ -95,39 +92,39 @@ public class SocketSession extends AbstractSocketSession {
 	}
 
 	public void appendData(byte[] data) {
-			if (path==null) {
-				if (pathLength > 0) {
-					if (position == 0) {
-						dataLength = dataLength - pathLength - 2;
-						appendData = new byte[dataLength];
-					} 
-					super.appendData(data);  
-					if (position > pathLength)
-						swapPathByte(); 
-					return;
-				} else {
-					pathLength = data[0];
+		if (path == null) {
+			if (pathLength > 0) {
+				if (position == 0) {
 					dataLength = dataLength - pathLength - 2;
 					appendData = new byte[dataLength];
-					if (data.length >= pathLength + 1) {
-						int i = 0;
-						byte[] pathByte = new byte[pathLength];
-						for (int j = 1; j < pathLength + 1; j++) {
-							pathByte[i] = data[j];
-							i++;
-						}
-						path = new String(pathByte);
-						if (data.length >= pathLength + 2) {
-							byte[] temp = data;
-							data = new byte[data.length - pathLength - 1];
-							System.arraycopy(temp, pathLength + 1, data, 0, data.length);
-						} else {
-							return;
-						}
+				}
+				super.appendData(data);
+				if (position > pathLength)
+					swapPathByte();
+				return;
+			} else {
+				pathLength = data[0];
+				dataLength = dataLength - pathLength - 2;
+				appendData = new byte[dataLength];
+				if (data.length >= pathLength + 1) {
+					int i = 0;
+					byte[] pathByte = new byte[pathLength];
+					for (int j = 1; j < pathLength + 1; j++) {
+						pathByte[i] = data[j];
+						i++;
+					}
+					path = new String(pathByte);
+					if (data.length >= pathLength + 2) {
+						byte[] temp = data;
+						data = new byte[data.length - pathLength - 1];
+						System.arraycopy(temp, pathLength + 1, data, 0, data.length);
+					} else {
+						return;
 					}
 				}
 			}
-			super.appendData(data);
+		}
+		super.appendData(data);
 	}
 
 	private void swapPathByte() {
@@ -158,7 +155,7 @@ public class SocketSession extends AbstractSocketSession {
 		data = (byte) (data >> 1);
 		serializer = SerializeDecider.decide(data);
 		if (buffer.remaining() > 0) {
-			if(path==null) {
+			if (path == null) {
 				pathLength = buffer.get();
 				if (buffer.remaining() > pathLength) {
 					byte[] pathByte = new byte[pathLength];
@@ -166,7 +163,7 @@ public class SocketSession extends AbstractSocketSession {
 					path = new String(pathByte);
 					dataLength = dataLength - pathLength - 2;
 				}
-			}else {
+			} else {
 				dataLength = dataLength - 1;
 			}
 			appendData = new byte[dataLength];

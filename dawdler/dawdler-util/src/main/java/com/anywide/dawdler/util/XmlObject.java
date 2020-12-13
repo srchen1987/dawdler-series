@@ -22,17 +22,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.Iterator;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -140,10 +139,10 @@ public final class XmlObject {
 		if(this.root==null)throw new NullPointerException("not found root!");
 		return this.root;
 	}
-	public List getNode(String xpath){
+	public List selectNodes(String xpath){
 		return root.selectNodes(xpath);
 	}
-	public List getNode(String xpath , String cxe){
+	public List selectNodes(String xpath , String cxe){
 		return root.selectNodes(xpath,cxe);
 	}
 	public Element selectSingleNode(String xpath){
@@ -154,7 +153,7 @@ public final class XmlObject {
 	}
 	public void removeNode(String xpath) throws Exception{
 		if(xpath.equals("/"))throw new Exception("Can't remove Root!");
-		List list = getNode(xpath);
+		List list = selectNodes(xpath);
 		if(list!=null)
 		for(Object o: list){
 			Element el = (Element) o;
@@ -203,9 +202,6 @@ public final class XmlObject {
 		transformer.transform(source, streamResult);
 		return sw.toString();
 	}
-	
-	
-	 
 	
 	private XmlObject transformer() throws TransformerException, IOException, DocumentException{
 		Source source = new DocumentSource(document);

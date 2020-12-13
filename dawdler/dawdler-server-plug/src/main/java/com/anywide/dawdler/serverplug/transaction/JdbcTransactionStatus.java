@@ -15,19 +15,20 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.SQLException;
 import java.sql.Savepoint;
-
 import com.anywide.dawdler.serverplug.annotation.DBTransaction;
 import com.anywide.dawdler.serverplug.annotation.Isolation;
 import com.anywide.dawdler.serverplug.annotation.Propagation;
+
 /**
  * 
- * @Title:  JdbcTransactionStatus.java   
- * @Description:    事务具体实现类 参考spring实现   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: JdbcTransactionStatus.java
+ * @Description: 事务具体实现类 参考spring实现
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class JdbcTransactionStatus implements TransactionStatus {
@@ -40,14 +41,15 @@ public class JdbcTransactionStatus implements TransactionStatus {
 	private boolean rollbackOnly = false; // 要求回滚（true表示回滚）
 	private boolean newConnection = false; // 是否使用了一个全新的数据库连接开启事务（true表示新连接）
 	private boolean readOnly = false; // 只读模式（true表示只读）
-	private int timeOut ;
+	private int timeOut;
+
 	public JdbcTransactionStatus(DBTransaction dBTransaction) {
 		behavior = dBTransaction.propagation();
 		isolation = dBTransaction.isolation();
 		readOnly = dBTransaction.readOnly();
 		timeOut = dBTransaction.timeOut();
 	}
-	
+
 	private SavepointManager getSavepointManager() {
 		return this.tranConn.getSavepointManager();
 	}
@@ -106,7 +108,6 @@ public class JdbcTransactionStatus implements TransactionStatus {
 	void setSuspendConn(final TransactionObject suspendConn) {
 		this.suspendConn = suspendConn;
 	}
-
 
 	@Override
 	public Isolation getIsolationLevel() {

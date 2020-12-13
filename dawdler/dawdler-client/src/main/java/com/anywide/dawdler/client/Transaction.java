@@ -36,13 +36,12 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
  * @email: suxuan696@gmail.com modify 2015年03月22日 脱离jboss 采用自有容器
  */
 public class Transaction {
-//	private SocketSession socketSession;
 	private String serviceName;
 	private String method;
 	private int serializer;
 	private boolean fuzzy;
 	private boolean single = true;
-	private int timeout=15;
+	private int timeout = 15;
 	private List<Class> types = new ArrayList();
 	private List values = new ArrayList();
 	private DawdlerConnection con;
@@ -186,12 +185,13 @@ public class Transaction {
 		request.setSingle(single);
 		Object obj = null;
 		if (pure) {
-			InvokeFuture<?> future = new InvokeFuture<>();
+			InvokeFuture<Object> future = new InvokeFuture<>();
 			socketSession.getFutures().put(request.getSeq(), future);
 			socketSession.getDawdlerConnection().write(request, socketSession);
 			obj = future.getResult(timeout, TimeUnit.SECONDS);
 		} else {
-			obj = FilterProvider.doFilter(new RequestWrapper(request, socketSession, circuitBreaker,proxyInterface,timeout));
+			obj = FilterProvider
+					.doFilter(new RequestWrapper(request, socketSession, circuitBreaker, proxyInterface, timeout));
 		}
 		return obj;
 	}

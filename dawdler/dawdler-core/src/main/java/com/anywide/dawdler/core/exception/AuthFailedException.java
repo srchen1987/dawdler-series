@@ -18,15 +18,16 @@ package com.anywide.dawdler.core.exception;
 
 /**
  * 
- * @Title:  AuthFailedException.java
- * @Description:    身份验证异常   
- * @author: jackson.song    
- * @date:   2015年06月12日    
- * @version V1.0 
+ * @Title: AuthFailedException.java
+ * @Description: 身份验证异常
+ * @author: jackson.song
+ * @date: 2015年06月12日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class AuthFailedException extends Exception {
 	private static final long serialVersionUID = 3289645316917497913L;
+
 	public AuthFailedException(String message) {
 		super(message);
 	}

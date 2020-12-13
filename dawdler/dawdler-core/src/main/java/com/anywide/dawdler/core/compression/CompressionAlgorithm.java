@@ -15,14 +15,16 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.compression;
+
 import java.io.IOException;
+
 /**
  * 
- * @Title:  CompressionAlgorithm.java
- * @Description:    压缩接口   
- * @author: jackson.song    
- * @date:   2015年07月16日    
- * @version V1.0 
+ * @Title: CompressionAlgorithm.java
+ * @Description: 压缩接口
+ * @author: jackson.song
+ * @date: 2015年07月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface CompressionAlgorithm {

@@ -9,7 +9,8 @@
 		<org.slf4j.version>1.7.25</org.slf4j.version>
 		<org.ow2.asm.version>5.2</org.ow2.asm.version>
 		<jaxen.version>1.2.0</jaxen.version>
-		<dom4j.version>1.6.1</dom4j.version>
+		<!-- 	<dom4j.version>1.6.1</dom4j.version> -->		
+ 		<org.dom4j.version>2.1.3</org.dom4j.version>
 		<commons-lang.version>2.6</commons-lang.version>
 		<commons-pool2.version>2.8.0</commons-pool2.version>
 		<kryo.version>4.0.2</kryo.version>
@@ -26,6 +27,7 @@
 		<velocity.version>2.2</velocity.version>
 		<jedis.version>3.3.0</jedis.version>
 		<caffeine.version>2.8.4</caffeine.version>
+		<mysql.version>8.0.21</mysql.version>
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
@@ -57,10 +59,15 @@
 				<artifactId>jaxen</artifactId>
 				<version>${jaxen.version}</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>dom4j</groupId>
 				<artifactId>dom4j</artifactId>
 				<version>${dom4j.version}</version>
+			</dependency> -->
+			<dependency>
+   			 <groupId>org.dom4j</groupId>
+   			 <artifactId>dom4j</artifactId>
+   			 <version>${org.dom4j.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-lang</groupId>
@@ -119,9 +126,9 @@
 				<version>${zookeeper.version}</version>
 			</dependency>
 			<dependency>
-   				 <groupId>org.apache.zookeeper</groupId>
-   				 <artifactId>zookeeper-jute</artifactId>
-    		     <version>${zookeeper.version}</version>
+				<groupId>org.apache.zookeeper</groupId>
+				<artifactId>zookeeper-jute</artifactId>
+				<version>${zookeeper.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>cglib</groupId>
@@ -145,15 +152,15 @@
 				<version>${jackson-core.version}</version>
 			</dependency>
 			<dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${jackson-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-databind</artifactId>
-        <version>${jackson-core.version}</version>
-      </dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-annotations</artifactId>
+				<version>${jackson-core.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson-core.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>commons-fileupload</groupId>
 				<artifactId>commons-fileupload</artifactId>
@@ -165,6 +172,11 @@
 				<groupId>org.apache.velocity</groupId>
 				<artifactId>velocity-engine-core</artifactId>
 				<version>${velocity.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>redis.clients</groupId>

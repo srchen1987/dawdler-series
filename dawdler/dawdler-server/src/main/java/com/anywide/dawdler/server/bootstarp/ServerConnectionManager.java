@@ -76,7 +76,7 @@ public class ServerConnectionManager {
 		Collection<ServerConnection> collection = connections.values();
 		for (ServerConnection serverConnection : collection) {
 			if (serverConnection.isRunning())
-				return true; 
+				return true;
 		}
 		return false;
 	}
@@ -84,7 +84,7 @@ public class ServerConnectionManager {
 	public void closeNow() {
 		Collection<ServerConnection> collection = connections.values();
 		for (ServerConnection serverConnection : collection) {
-				serverConnection.closeNow(); 
+			serverConnection.closeNow();
 		}
 	}
 

@@ -15,27 +15,31 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web;
+
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+
 /**
  * 
- * @Title:  ViewControllerContext.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月17日   
- * @version V1.0 
+ * @Title: ViewControllerContext.java
+ * @Description: view层的上下层
+ * @author: jackson.song
+ * @date: 2007年04月17日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ViewControllerContext {
 	private static ThreadLocal<ViewForward> viewForward = new ThreadLocal<ViewForward>();
-	
-	public static ViewForward getViewForward(){
+
+	public static ViewForward getViewForward() {
 		return viewForward.get();
 	}
-	public static void setViewForward(ViewForward vd){
+
+	public static void setViewForward(ViewForward vd) {
 		viewForward.set(vd);
 	}
-	public static void removeViewForward(){
+
+	public static void removeViewForward() {
 		viewForward.remove();
 	}
-	
+
 }

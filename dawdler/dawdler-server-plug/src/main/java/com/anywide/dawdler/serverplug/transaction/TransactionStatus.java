@@ -15,23 +15,32 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.SQLException;
+
 /**
  * 
- * @Title:  TransactionStatus.java   
- * @Description:    事务状态定义的接口   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: TransactionStatus.java
+ * @Description: 事务状态定义的接口
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public interface TransactionStatus extends TransactionDefinition{
-    public boolean isCompleted();
-    public boolean isRollbackOnly();
-    public boolean isReadOnly();
-    public boolean isNewConnection();
-    public boolean isSuspend();
-    public boolean hasSavepoint();
-    public void setRollbackOnly() throws SQLException;
-    public void setReadOnly() throws SQLException;
+public interface TransactionStatus extends TransactionDefinition {
+	public boolean isCompleted();
+
+	public boolean isRollbackOnly();
+
+	public boolean isReadOnly();
+
+	public boolean isNewConnection();
+
+	public boolean isSuspend();
+
+	public boolean hasSavepoint();
+
+	public void setRollbackOnly() throws SQLException;
+
+	public void setReadOnly() throws SQLException;
 }

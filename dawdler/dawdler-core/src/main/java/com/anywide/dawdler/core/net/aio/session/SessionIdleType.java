@@ -15,15 +15,16 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.net.aio.session;
+
 /**
  * 
- * @Title:  SessionIdleType.java
- * @Description:    session读写操作过期标识   
- * @author: jackson.song    
- * @date:   2015年03月11日  
- * @version V1.0 
+ * @Title: SessionIdleType.java
+ * @Description: session读写操作过期标识
+ * @author: jackson.song
+ * @date: 2015年03月11日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public enum SessionIdleType {
-	READ,WRITE
+	READ, WRITE
 }

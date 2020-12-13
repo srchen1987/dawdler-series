@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.util;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -22,22 +23,21 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.dom4j.Attribute;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
+
 /**
  * 
- * @Title:  XmlConfig.java   
- * @Description:    简单的xml操作类   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: XmlConfig.java
+ * @Description: 简单的xml操作类
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class XmlConfig {
@@ -53,7 +53,6 @@ public class XmlConfig {
 
 	private XmlConfig() {
 	}
-
 
 	public static XmlObject getConfig() {
 		if (isUpdate()) {
@@ -76,7 +75,7 @@ public class XmlConfig {
 	private static boolean isUpdate() {
 		File file = new File(DawdlerTool.getcurrentPath() + File.separator + CONFIGPATH);
 		if (!file.exists()) {
-			logger.error("not found :"+CONFIGPATH);
+			logger.error("not found :" + CONFIGPATH);
 		}
 		if (updatetime != file.lastModified()) {
 			updatetime = file.lastModified();
@@ -92,7 +91,6 @@ public class XmlConfig {
 		return datas;
 	}
 
-
 	private static void loadXML() {
 		try {
 			xmlobject = XmlObject.loadClassPathXML(File.separator + CONFIGPATH);
@@ -101,10 +99,9 @@ public class XmlConfig {
 		}
 		loadDataSource();
 	}
-	
 
 	private static void loadDataSource() {
-		List<Element> list = xmlobject.getRoot().selectNodes("/config/server-datas/server-data");
+		List<Element> list = xmlobject.selectNodes("/config/server-datas/server-data");
 		for (Iterator<Element> it = list.iterator(); it.hasNext();) {
 			Element ele = it.next();
 			Map items = new HashMap();

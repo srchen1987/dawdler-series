@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.listener;
+
 import java.lang.reflect.Field;
 
 import javax.annotation.Resource;
@@ -28,50 +29,51 @@ import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.serverplug.db.dao.DAOFactory;
 import com.anywide.dawdler.serverplug.db.dao.SuperDAO;
+
 /**
  * 
- * @Title:  InjectServiceCreateListener.java   
- * @Description:    监听器实现service和dao的注入
- * @author: jackson.song    
- * @date:   2015年07月08日     
- * @version V1.0 
+ * @Title: InjectServiceCreateListener.java
+ * @Description: 监听器实现service和dao的注入
+ * @author: jackson.song
+ * @date: 2015年07月08日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class InjectServiceCreateListener implements DawdlerServiceCreateListener{
+public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 	private static Logger logger = LoggerFactory.getLogger(InjectServiceCreateListener.class);
+
 	@Override
-	public void create(Object service,DawdlerContext dawdlerContext) {
-		inject(service,dawdlerContext);
+	public void create(Object service, DawdlerContext dawdlerContext) {
+		inject(service, dawdlerContext);
 	}
-	private void inject(Object service,DawdlerContext dawdlerContext) {
-		Field[] fields =  service.getClass().getDeclaredFields();
-		for(Field filed : fields) {
+
+	private void inject(Object service, DawdlerContext dawdlerContext) {
+		Field[] fields = service.getClass().getDeclaredFields();
+		for (Field filed : fields) {
 			Resource resource = filed.getAnnotation(Resource.class);
 			RemoteService remoteService = filed.getAnnotation(RemoteService.class);
-			if(!filed.getType().isPrimitive()) {
+			if (!filed.getType().isPrimitive()) {
 				Class serviceClass = filed.getType();
 				filed.setAccessible(true);
 				try {
-					if(resource!=null&&SuperDAO.class.isAssignableFrom(serviceClass)) {
+					if (resource != null && SuperDAO.class.isAssignableFrom(serviceClass)) {
 						filed.set(service, DAOFactory.getInstance().getDAO(serviceClass));
-						}
-					else if(remoteService!=null) {
-						if(remoteService.remote()) {
+					} else if (remoteService != null) {
+						if (remoteService.remote()) {
 							String groupName = remoteService.group();
 							try {
 								filed.set(service, ServiceFactory.getService(serviceClass, groupName));
-							} catch (Exception e) { 
-								logger.error("",e);
+							} catch (Exception e) {
+								logger.error("", e);
 							}
-						}
-						else
-							filed.set(service,dawdlerContext.getServiceProxy(serviceClass));
+						} else
+							filed.set(service, dawdlerContext.getServiceProxy(serviceClass));
 					}
 				} catch (Exception e) {
-					logger.error("",e);
+					logger.error("", e);
 				}
 			}
+		}
 	}
-}
 
 }

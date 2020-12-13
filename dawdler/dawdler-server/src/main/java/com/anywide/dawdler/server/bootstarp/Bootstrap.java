@@ -40,8 +40,8 @@ import com.anywide.dawdler.server.conf.ServerConfigParser;
  * @email: suxuan696@gmail.com
  */
 public class Bootstrap {
-	private static ServerConfig serverConfig = ServerConfigParser.getServerConfig();
 	public final static Logger logger = LoggerFactory.getLogger("system.out");
+	private static ServerConfig serverConfig = ServerConfigParser.getServerConfig();
 
 	public static void main(String[] args) throws IOException {
 		if (args != null && args.length > 0) {
@@ -61,7 +61,7 @@ public class Bootstrap {
 				return;
 			}
 		}
- 
+
 		new DawdlerServer(serverConfig).start();
 	}
 

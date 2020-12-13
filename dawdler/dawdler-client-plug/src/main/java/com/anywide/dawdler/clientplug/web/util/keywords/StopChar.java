@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.util.keywords;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-
 
 /**
  * 过滤词及一些简单处理
@@ -44,19 +44,19 @@ public class StopChar {
 			"√", "$", "@", "*", "&", "#", "卐", "㎎", "㎏", "㎜", "㎝", "㎞", "㎡", "㏄", "㏎", "㏑", "㏒", "㏕" }));
 
 	/**
-	 * 判断指定的词是否是不处理的词。
-	 * 如果参数为空，则返回true，因为空也属于不处理的字符。
+	 * 判断指定的词是否是不处理的词。 如果参数为空，则返回true，因为空也属于不处理的字符。
+	 * 
 	 * @param ch 指定的词
 	 * @return 是否是不处理的词
 	 */
 	public static boolean isStopChar(String ch) {
-		if (LangUtil.isEmpty(ch)) return true;
+		if (LangUtil.isEmpty(ch))
+			return true;
 		return STOP_WORD.contains(ch);
 	}
-	
+
 	/**
-	 * 判断指定的词是否是不处理的词。
-	 * 如果参数为空，则返回true，因为空也属于不处理的字符。
+	 * 判断指定的词是否是不处理的词。 如果参数为空，则返回true，因为空也属于不处理的字符。
 	 * 
 	 * @param ch 指定的词
 	 * @return 是否是不处理的词
@@ -64,7 +64,7 @@ public class StopChar {
 	public static boolean isStopChar(char ch) {
 		return STOP_WORD.contains(String.valueOf(ch));
 	}
-	
+
 	@Override
 	public String toString() {
 		return super.toString();

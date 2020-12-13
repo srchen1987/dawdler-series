@@ -22,8 +22,6 @@ import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 /**
  * 
  * @Title:  DawdlerTool.java
@@ -34,7 +32,6 @@ import java.util.Map;
  * @email: suxuan696@gmail.com
  */
 public class DawdlerTool {
-	private static Map<Class,String> servicesName = new HashMap<>();
 	
 	public static String getcurrentPath(){
 		try {

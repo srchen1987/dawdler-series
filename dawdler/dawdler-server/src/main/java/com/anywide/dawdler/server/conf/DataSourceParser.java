@@ -24,6 +24,7 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import org.dom4j.Element;
+import org.dom4j.Node;
 
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.ReflectionUtil;
@@ -57,7 +58,7 @@ public class DataSourceParser {
 		if (xmlo == null)
 			return null;
 		Map<String, DataSource> datasources = new HashMap<>();
-		List<Element> list = xmlo.getNode("/config/datasources/datasource");
+		List<Element> list = xmlo.selectNodes("/config/datasources/datasource");
 		for (Element ele : list) {
 			String id = ele.attributeValue("id");
 			String code = ele.attributeValue("code");
@@ -67,8 +68,9 @@ public class DataSourceParser {
 			else
 				c = Class.forName(code);
 			Object obj = c.newInstance();
-			List<Element> attrs = ele.selectNodes("attribute");
-			for (Element e : attrs) {
+			List<Node> attrs = ele.selectNodes("attribute");
+			for (Node node : attrs) {
+				Element e = (Element) node;
 				String attributeName = e.attributeValue("name");
 				String value = e.getText().trim();
 				try {

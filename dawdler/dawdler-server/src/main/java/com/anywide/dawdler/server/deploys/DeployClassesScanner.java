@@ -87,11 +87,12 @@ public class DeployClassesScanner {
 				} else {
 					String className = file.getName().substring(0, file.getName().length() - 6);
 					String loadClassName = packageName.equals("") ? className : (packageName + '.' + className);
-					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader();
+					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
+							.getContextClassLoader();
 					try {
 						classes.add(classLoader.findClassForDawdler(loadClassName));
 					} catch (Throwable e) {
-						logger.error("{}", loadClassName,e);
+						logger.error("{}", loadClassName, e);
 					}
 				}
 			}
@@ -152,7 +153,8 @@ public class DeployClassesScanner {
 							className = name.substring(0, name.length() - 6);
 						}
 						String loadClassName = idx == -1 ? className : (packageName + '.' + className);
-						DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader();
+						DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
+								.getContextClassLoader();
 						try {
 							classes.add(classLoader.findClassForDawdler(loadClassName));
 						} catch (Throwable e) {
@@ -209,8 +211,10 @@ public class DeployClassesScanner {
 			} else {
 				String className = file.getName().substring(0, file.getName().length() - 6);
 				try {
-					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader();
-					classes.add(classLoader.findClassForDawdler(packageName.equals("") ? className : (packageName + '.' + className)));
+					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
+							.getContextClassLoader();
+					classes.add(classLoader
+							.findClassForDawdler(packageName.equals("") ? className : (packageName + '.' + className)));
 				} catch (ClassNotFoundException e) {
 					logger.error("", e);
 				}

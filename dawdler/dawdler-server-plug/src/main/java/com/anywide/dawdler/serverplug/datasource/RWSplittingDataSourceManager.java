@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.datasource;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -28,18 +29,20 @@ import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import org.dom4j.Element;
+import org.dom4j.Node;
 
 import com.anywide.dawdler.serverplug.transaction.LocalConnectionFacotry;
 import com.anywide.dawdler.serverplug.util.XmlConfig;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.XmlObject;
+
 /**
  * 
- * @Title:  RWSplittingDataSourceManager.java   
- * @Description:    读写分离的数据管理器 
- * @author: jackson.song    
- * @date:   2007年08月06日    
- * @version V1.0 
+ * @Title: RWSplittingDataSourceManager.java
+ * @Description: 读写分离的数据管理器
+ * @author: jackson.song
+ * @date: 2007年08月06日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class RWSplittingDataSourceManager {
@@ -58,14 +61,15 @@ public class RWSplittingDataSourceManager {
 
 	public void init() throws Exception {
 		XmlObject xmlo = XmlConfig.getConfig();
-		List<Element> list = xmlo.getNode("/config/datasources/datasource");
+		List<Element> list = xmlo.selectNodes("/config/datasources/datasource");
 		for (Element ele : list) {
 			String id = ele.attributeValue("id");
 			String code = ele.attributeValue("code");
 			Class c = Class.forName(code);
 			Object obj = c.newInstance();
-			List<Element> attrs = ele.selectNodes("attribute");
-			for (Element e : attrs) {
+			List<Node> attrs = ele.selectNodes("attribute");
+			for (Node node : attrs) {
+				Element e = (Element) node;
 				String attributeName = e.attributeValue("name");
 				String value = e.getText().trim();
 				try {
@@ -79,14 +83,14 @@ public class RWSplittingDataSourceManager {
 			datasources.put(id, ds);
 		}
 
-		List<Element> datasourceExpressionList = xmlo.getNode("/config/datasource_expression");
+		List<Element> datasourceExpressionList = xmlo.selectNodes("/config/datasource_expression");
 		for (Element ele : datasourceExpressionList) {
 			String id = ele.attributeValue("id");
 			String latentExpression = ele.attributeValue("latent_expression");
 			datasourceExpression.put(id, latentExpression);
 		}
 
-		List<Element> decisionList = xmlo.getNode("/config/decision");
+		List<Element> decisionList = xmlo.selectNodes("/config/decision");
 		for (Element ele : decisionList) {
 			String mapping = ele.attributeValue("mapping");
 			String latentExpression = ele.attributeValue("latent_expression");

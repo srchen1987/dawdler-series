@@ -15,39 +15,39 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.thread;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
 /**
  * 
- * @Title:  DataProcessWorkerPool.java
- * @Description:   数据处理的线程池   
- * @author: jackson.song    
- * @date:   2015年04月21日    
- * @version V1.0 
+ * @Title: DataProcessWorkerPool.java
+ * @Description: 数据处理的线程池
+ * @author: jackson.song
+ * @date: 2015年04月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DataProcessWorkerPool {
 	private static final DataProcessWorkerPool processWorkerPool = new DataProcessWorkerPool();
 	private ExecutorService executor;
+
 	private DataProcessWorkerPool() {
-//		executor=Executors.newCachedThreadPool((r)->new Thread(r,"processWorker#"));
-//		executor=Executors.newCachedThreadPool();
-		/*executor=new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                2L, TimeUnit.SECONDS,
-                new SynchronousQueue<Runnable>());*/
-//		executor=Executors.newCachedThreadPool(new DefaultThreadFactory(DataProcessWorkerPool.class));
-//		executor=Executors.newWorkStealingPool();
-		executor=Executors.newFixedThreadPool(200,new DefaultThreadFactory(DataProcessWorkerPool.class));//FIXME 动态配置 池大小
+		executor = Executors.newFixedThreadPool(200, new DefaultThreadFactory(DataProcessWorkerPool.class));// FIXME 动态配置 池大小
 	}
-	public static DataProcessWorkerPool getInstance(){
+
+	public static DataProcessWorkerPool getInstance() {
 		return processWorkerPool;
 	}
-	public void execute(Runnable command){
+
+	public void execute(Runnable command) {
 		executor.execute(command);
 	}
+
 	public void shutdown() {
 		executor.shutdown();
 	}
+
 	public void shutdownNow() {
 		executor.shutdownNow();
 	}

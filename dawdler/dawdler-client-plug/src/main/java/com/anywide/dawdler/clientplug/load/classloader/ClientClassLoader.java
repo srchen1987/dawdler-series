@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.load.classloader;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -28,18 +29,17 @@ import java.security.PrivilegedExceptionAction;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
-
 import com.anywide.dawdler.util.SecurityPlus;
-
 import sun.misc.Resource;
 import sun.misc.URLClassPath;
+
 /**
  * 
- * @Title:  ClientClassLoader.java   
- * @Description:    客户端的类加载器，主要用来加载远端模版类   
- * @author: jackson.song    
- * @date:   2007年09月13日     
- * @version V1.0 
+ * @Title: ClientClassLoader.java
+ * @Description: 客户端的类加载器，主要用来加载远端模版类
+ * @author: jackson.song
+ * @date: 2007年09月13日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 

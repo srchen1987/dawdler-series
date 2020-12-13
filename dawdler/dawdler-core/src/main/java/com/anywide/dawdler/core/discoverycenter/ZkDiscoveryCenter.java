@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.discoverycenter;
-import java.util.List;
 
+import java.util.List;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.framework.recipes.cache.TreeCache;
+import org.apache.curator.framework.recipes.cache.CuratorCache;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 
 /**
  * 
- * @Title:ZkDiscoveryCenter.java 
+ * @Title:ZkDiscoveryCenter.java
  * @Description: 配置中心zk的实现 代替 PropertiesCenter.java
  * @author: jackson.song
  * @date: 2018年08月13日
@@ -35,12 +35,14 @@ import org.apache.zookeeper.CreateMode;
  */
 public class ZkDiscoveryCenter implements DiscoveryCenter {
 	protected static final String ROOTPATH = "/dawdler";
-	protected TreeCache treeCache = null;
+//	protected TreeCache treeCache = null;用CuratorCache替代了
+	protected CuratorCache curatorCache = null;
 	protected CuratorFramework client;
 	protected String connectString;
 	protected String user;
 	protected String password;
-	public ZkDiscoveryCenter(String connectString,String user,String password) {
+
+	public ZkDiscoveryCenter(String connectString, String user, String password) {
 		this.connectString = connectString;
 		this.user = user;
 		this.password = password;
@@ -48,38 +50,32 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	}
 
 	@Override
-	public void init(){
+	public void init() {
 		// 连接时间 和重试次数
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 0);
 		client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
 		client.start();
-		
+
 	}
 
 	@Override
-	public void destroy(){
-		if(treeCache!=null)
-				treeCache.close();
+	public void destroy() {
+		if (curatorCache != null)
+			curatorCache.close();
 		client.close();
 	}
 
 	@Override
 	public List<String> getServiceList(String path) throws Exception {
-		return client.getChildren().forPath(ROOTPATH + "/"+path);
+		return client.getChildren().forPath(ROOTPATH + "/" + path);
 	}
-
-
-
 
 	@Override
-	public boolean addProvider(String path,String value) throws Exception {
-		client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).
-		forPath(ROOTPATH + "/"+path,value.getBytes());
+	public boolean addProvider(String path, String value) throws Exception {
+		client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ROOTPATH + "/" + path,
+				value.getBytes());
 		return true;
 	}
-
-
-
 
 	@Override
 	public boolean updateProvider(String path, String value) throws Exception {

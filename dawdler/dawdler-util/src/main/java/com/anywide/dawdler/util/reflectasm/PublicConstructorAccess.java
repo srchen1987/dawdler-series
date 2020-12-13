@@ -16,6 +16,6 @@
  */
 package com.anywide.dawdler.util.reflectasm;
 
-public abstract class PublicConstructorAccess extends ConstructorAccess {
+public abstract class PublicConstructorAccess extends ConstructorAccess{
 
 }

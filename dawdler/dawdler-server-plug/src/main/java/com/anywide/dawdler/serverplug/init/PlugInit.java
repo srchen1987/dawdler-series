@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.init;
+
 import java.io.IOException;
 
 import org.dom4j.Element;
@@ -28,49 +29,49 @@ import com.anywide.dawdler.serverplug.load.ClientConfig;
 import com.anywide.dawdler.serverplug.load.LoadCore;
 import com.anywide.dawdler.serverplug.transaction.TransactionServiceExecutor;
 import com.anywide.dawdler.util.XmlObject;
+
 /**
  * 
- * @Title:  PlugInit.java   
- * @Description:    服务器端插件，主要是做调用远端的注入service与模版类   
- * @author: jackson.song    
- * @date:   2015年07月12日     
- * @version V1.0 
+ * @Title: PlugInit.java
+ * @Description: 服务器端插件，主要是做调用远端的注入service与模版类
+ * @author: jackson.song
+ * @date: 2015年07月12日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class PlugInit{
+public class PlugInit {
 	private static Logger logger = LoggerFactory.getLogger(PlugInit.class);
+
 	public PlugInit(DawdlerContext dawdlerContext) {
 		RWSplittingDataSourceManager dm;
 		try {
 			dm = new RWSplittingDataSourceManager();
-			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCEMANAGER_PREFIX,dm);
-			dawdlerContext.setAttribute(ServiceBase.SERVICEEXECUTOR_PREFIX,new TransactionServiceExecutor());
+			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCEMANAGER_PREFIX, dm);
+			dawdlerContext.setAttribute(ServiceBase.SERVICEEXECUTOR_PREFIX, new TransactionServiceExecutor());
 			XmlObject xml = ClientConfig.getInstance().getXml();
-			if(xml!=null) {
-				for(Object o:xml.getNode("/config/loads-on/item")){
+			if (xml != null) {
+				for (Object o : xml.selectNodes("/config/loads-on/item")) {
 					Element ele = (Element) o;
 					String host = ele.getText();
 					String channelGroupId = ele.attributeValue("channel-group-id");
 					String time = ele.attributeValue("time");
 					int checkTime = 0;
 					try {
-						checkTime=Integer.parseInt(time);
+						checkTime = Integer.parseInt(time);
 					} catch (Exception e) {
 					}
-					LoadCore loadCore = new LoadCore(host,checkTime,channelGroupId);
+					LoadCore loadCore = new LoadCore(host, checkTime, channelGroupId);
 					try {
 						loadCore.toCheck();
 					} catch (IOException e) {
-						logger.error("",e);
+						logger.error("", e);
 					}
 				}
 			}
 		} catch (Exception e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
-		
-		
+
 	}
-	
 
 }

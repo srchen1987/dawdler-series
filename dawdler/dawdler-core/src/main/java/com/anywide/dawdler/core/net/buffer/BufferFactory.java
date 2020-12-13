@@ -15,25 +15,28 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.net.buffer;
+
 import java.nio.ByteBuffer;
+
 /**
  * 
- * @Title:  BufferFactory.java
- * @Description:    Buffer工厂   
- * @author: jackson.song    
- * @date:   2015年03月14日    
- * @version V1.0 
+ * @Title: BufferFactory.java
+ * @Description: Buffer工厂
+ * @author: jackson.song
+ * @date: 2015年03月14日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class BufferFactory {
 	private static BufferCreator directBufferCreator = new DirectBufferCreator();
 	private static BufferCreator heapBufferCreator = new HeapBufferCreator();
+
 	public static ByteBuffer createDirectBuffer(int capacity) {
 		return directBufferCreator.createByteBuffer(capacity);
 	}
+
 	public static ByteBuffer createdHeadBuffer(int capacity) {
 		return heapBufferCreator.createByteBuffer(capacity);
 	}
-
 
 }
