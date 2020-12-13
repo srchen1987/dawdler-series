@@ -15,34 +15,38 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.dynamicform.control;
+
 /**
  * 
- * @Title:  ControlContent.java   
- * @Description:    常量类   
- * @author: jackson.song    
- * @date:   2006年08月10日       
- * @version V1.0 
+ * @Title: ControlContent.java
+ * @Description: 常量类
+ * @author: jackson.song
+ * @date: 2006年08月10日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface ControlContent {
-	  public static final String CONTROLNAMEREPLACE="controlnamereplace";
-	  public static final String CONTROLTYPEREPLACE="controltypereplace";
-	  public static final String CSSREPLACE="cssreplace";
-	  public static final String VALIDATERULEREPLACE="validaterulereplace";
-	  public static final String VALUEREPLACE="valuereplace";
-	  public static final String VIEWNAMEREPLACE="viewnamereplace";
-	  public static final String TAGVALUE=" value=\""+VALUEREPLACE+"\""; 
-	  public static final String TAGVALIDATE=" validaterule=\""+VALIDATERULEREPLACE+"\""; 
-	  public static final String TAGCSS=" style=\""+CSSREPLACE+"\""; 
-	  public static final String CHECKED=" checked=\"checked\""; 
-	  public static final String SELECTED = " selected";
-	  public static final String CHECKEDREPLACE="checkedreplace";
-	  public static final String INPUTSTART="<input type=\""+CONTROLTYPEREPLACE+"\""+" name=\""+CONTROLNAMEREPLACE+"\""+" id=\""+CONTROLNAMEREPLACE+"\" viewname=\""+VIEWNAMEREPLACE+"\"";
-	  public static final String INPUTEND="/>";
-	  public static final String SELECTSTART="<select name=\""+CONTROLNAMEREPLACE+"\" id=\""+CONTROLNAMEREPLACE+"\" viewname=\""+VIEWNAMEREPLACE+"\"";
-	  public static final String SELECTOVER="</select>";
-	  public static final String OPTIONSTART="<option value=\""+VALUEREPLACE+"\""+CHECKEDREPLACE+">";
-	  public static final String OPTIONOVER="</option>";
-	  public static final String TEXTAREASTART="<textarea name=\""+CONTROLNAMEREPLACE+"\""+" id=\""+CONTROLNAMEREPLACE+"\" viewname=\""+VIEWNAMEREPLACE+"\"";
-	  public static final String TEXTAREAOVER="</textarea>";
+	public static final String CONTROLNAMEREPLACE = "controlnamereplace";
+	public static final String CONTROLTYPEREPLACE = "controltypereplace";
+	public static final String CSSREPLACE = "cssreplace";
+	public static final String VALIDATERULEREPLACE = "validaterulereplace";
+	public static final String VALUEREPLACE = "valuereplace";
+	public static final String VIEWNAMEREPLACE = "viewnamereplace";
+	public static final String TAGVALUE = " value=\"" + VALUEREPLACE + "\"";
+	public static final String TAGVALIDATE = " validaterule=\"" + VALIDATERULEREPLACE + "\"";
+	public static final String TAGCSS = " style=\"" + CSSREPLACE + "\"";
+	public static final String CHECKED = " checked=\"checked\"";
+	public static final String SELECTED = " selected";
+	public static final String CHECKEDREPLACE = "checkedreplace";
+	public static final String INPUTSTART = "<input type=\"" + CONTROLTYPEREPLACE + "\"" + " name=\""
+			+ CONTROLNAMEREPLACE + "\"" + " id=\"" + CONTROLNAMEREPLACE + "\" viewname=\"" + VIEWNAMEREPLACE + "\"";
+	public static final String INPUTEND = "/>";
+	public static final String SELECTSTART = "<select name=\"" + CONTROLNAMEREPLACE + "\" id=\"" + CONTROLNAMEREPLACE
+			+ "\" viewname=\"" + VIEWNAMEREPLACE + "\"";
+	public static final String SELECTOVER = "</select>";
+	public static final String OPTIONSTART = "<option value=\"" + VALUEREPLACE + "\"" + CHECKEDREPLACE + ">";
+	public static final String OPTIONOVER = "</option>";
+	public static final String TEXTAREASTART = "<textarea name=\"" + CONTROLNAMEREPLACE + "\"" + " id=\""
+			+ CONTROLNAMEREPLACE + "\" viewname=\"" + VIEWNAMEREPLACE + "\"";
+	public static final String TEXTAREAOVER = "</textarea>";
 }

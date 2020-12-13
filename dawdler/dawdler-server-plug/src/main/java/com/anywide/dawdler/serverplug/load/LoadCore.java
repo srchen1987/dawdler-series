@@ -67,7 +67,7 @@ public class LoadCore implements Runnable {
 
 		String tmpPath = System.getProperty("user.home");
 		if (tmpPath != null) {
-			tmpPath = tmpPath + File.separator + ".load"+File.separator+UUID.randomUUID().toString();
+			tmpPath = tmpPath + File.separator + ".load" + File.separator + UUID.randomUUID().toString();
 			File file = new File(tmpPath);
 			if (!file.exists()) {
 				if (!file.mkdirs())
@@ -90,16 +90,15 @@ public class LoadCore implements Runnable {
 		}
 	}
 
-
 	public LoadCore(String host, long time, String channelGroupId) {
 		this.host = host;
 		if (time > 1000)
 			this.time = time;
 		this.channelGroupId = channelGroupId;
 	}
-	
+
 	public String getLogFilePath() {
-		return path + File.separator +channelGroupId+"-"+host + PREFIX;
+		return path + File.separator + channelGroupId + "-" + host + PREFIX;
 	}
 
 	public void toCheck() throws IOException {
@@ -144,13 +143,12 @@ public class LoadCore implements Runnable {
 		}
 	}
 
-
 	private void initClassMap(XmlObject xmlo) throws IOException {
 		willLoad(xmlo, "bean");
 	}
 
 	private void willLoad(XmlObject xmlo, String type) throws IOException {
-		List beanlist = xmlo.getNode("/hosts/host[@type='" + type + "']/item");
+		List beanlist = xmlo.selectNodes("/hosts/host[@type='" + type + "']/item");
 		String[] tem = new String[beanlist.size()];
 		int i = 0;
 		for (Object o : beanlist) {
@@ -166,11 +164,11 @@ public class LoadCore implements Runnable {
 		List<String> list = new ArrayList<String>();
 		Set<String> set = new HashSet<String>();
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
-		for (Object item : local.getNode("/hosts/host[@type='" + type + "']/item")) {
+		for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item")) {
 			Element ele = (Element) item;
 			String checkname = ele.attributeValue("checkname");
 			for (Object item2 : remote
-					.getNode("/hosts/host[@type='" + type + "']/item[@checkname='" + checkname + "']")) {
+					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + checkname + "']")) {
 				Element ele2 = (Element) item2;
 				String ele2checkname = ele2.attributeValue("checkname");
 				list.add(ele2checkname);
@@ -183,7 +181,7 @@ public class LoadCore implements Runnable {
 		String classFilePath = (isbean ? currentpath : (path + File.separator));
 		Set<String> temset = new HashSet<String>();
 		for (String names : list) {// 循环客户端和服务器端都有的类
-			for (Object item : local.getNode("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
+			for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
 				Element ele = (Element) item;
 				if (!list.contains(ele.attributeValue("checkname"))
 						&& !temset.contains(ele.attributeValue("checkname"))) {// 如果list里面不包含并且set中也不包含
@@ -194,7 +192,7 @@ public class LoadCore implements Runnable {
 						file.delete();
 				}
 			}
-			List items = remote.getNode("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']");
+			List items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']");
 			for (Object item : items) {
 				Element ele = (Element) item;
 				if (!list.contains(ele.attributeValue("checkname"))
@@ -205,7 +203,7 @@ public class LoadCore implements Runnable {
 					File file = new File(classFilePath + classNameToFilePath(ele.getText()));
 					if (file.exists())
 						file.delete();
-					 
+
 				}
 			}
 		}

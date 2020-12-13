@@ -15,28 +15,33 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.compression;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
 /**
  * 
- * @Title:  GZipCompression.java
- * @Description:    copy过来的GZIP实现   
- * @author: jackson.song    
- * @date:   2015年07月16日       
- * @version V1.0 
+ * @Title: GZipCompression.java
+ * @Description: copy过来的GZIP实现
+ * @author: jackson.song
+ * @date: 2015年07月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class GZipCompression implements CompressionAlgorithm {
 	int size = 2048;
+
 	public int getSize() {
 		return size;
 	}
+
 	public void setSize(int size) {
 		this.size = size;
 	}
+
 	public byte[] compress(byte[] buffer) throws IOException {
 		ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
 		GZIPOutputStream gzip = new GZIPOutputStream(arrayOutputStream);
@@ -49,7 +54,7 @@ public class GZipCompression implements CompressionAlgorithm {
 				gzip.write(buf, 0, len);
 			}
 			gzip.finish();
-			return  arrayOutputStream.toByteArray();
+			return arrayOutputStream.toByteArray();
 		} catch (IOException e) {
 			throw e;
 		} finally {

@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.bean;
+
 import java.io.Serializable;
+
 /**
  * 
- * @Title:  RequestBean.java
- * @Description:    远程请求信息类   
- * @author: jackson.song    
- * @date:   2007年11月15日  
- * @version V1.0 
+ * @Title: RequestBean.java
+ * @Description: 远程请求信息类
+ * @author: jackson.song
+ * @date: 2007年11月15日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class RequestBean implements Serializable{
+public class RequestBean implements Serializable {
 	private static final long serialVersionUID = 2432958149343667660L;
 	private long seq;
 	private String serviceName;
@@ -35,56 +37,73 @@ public class RequestBean implements Serializable{
 	private boolean single;
 	private String path;
 	private boolean fuzzy;
+
 	public boolean isFuzzy() {
 		return fuzzy;
 	}
+
 	public void setFuzzy(boolean fuzzy) {
 		this.fuzzy = fuzzy;
 	}
+
 	public String getPath() {
 		return path;
 	}
+
 	public void setPath(String path) {
 		this.path = path;
 	}
+
 	public boolean isSingle() {
 		return single;
 	}
+
 	public void setSingle(boolean single) {
 		this.single = single;
 	}
+
 	public long getSeq() {
 		return seq;
 	}
+
 	public void setSeq(long seq) {
 		this.seq = seq;
 	}
+
 	public String getServiceName() {
 		return serviceName;
 	}
+
 	public void setServiceName(String serviceName) {
 		this.serviceName = serviceName;
 	}
+
 	public String getMethodName() {
 		return methodName;
 	}
+
 	public void setMethodName(String methodName) {
 		this.methodName = methodName;
 	}
+
 	public Class<?>[] getTypes() {
 		return types;
 	}
+
 	public void setTypes(Class<?>[] types) {
 		this.types = types;
 	}
+
 	public Object[] getArgs() {
 		return args;
 	}
+
 	public void setArgs(Object... args) {
 		this.args = args;
 	}
+
 	@Override
 	public String toString() {
-		return serviceName+"\t"+methodName+"\t"+seq;
+		return serviceName + "\t" + methodName + "\t" + seq;
 	}
 }

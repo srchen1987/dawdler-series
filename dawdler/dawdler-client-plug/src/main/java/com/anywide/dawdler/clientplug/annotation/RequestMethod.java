@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.annotation;
+
 /**
  * 
- * @Title:  RequestMethod.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月17日   
- * @version V1.0 
+ * @Title: RequestMethod.java
+ * @Description: http请求方法
+ * @author: jackson.song
+ * @date: 2007年04月17日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public enum RequestMethod {
 	GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE
 }
-

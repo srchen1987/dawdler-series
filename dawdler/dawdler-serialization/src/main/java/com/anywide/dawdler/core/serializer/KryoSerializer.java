@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.core.serializer;
 import org.objenesis.strategy.StdInstantiatorStrategy;
-
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -46,7 +45,6 @@ public class KryoSerializer implements Serializer {
 			kryo = new Kryo();
 			kryo.setReferences(true);
 			kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
-			
 //			  ((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
 //              .setFallbackInstantiatorStrategy(new StdInstantiatorStrategy());
 			input = new UnsafeInput();
@@ -65,9 +63,8 @@ public class KryoSerializer implements Serializer {
 		KryoLocal kryoLocal = kryos.get();
 		Kryo kryo = kryoLocal.getKryo();
 		Input input = kryoLocal.input;
-//		Input input = new UnsafeInput();
 		input.setBuffer(bytes);
-	Object obj = kryo.readClassAndObject(input);
+		Object obj = kryo.readClassAndObject(input);
 		return obj;
 	}
 
@@ -76,7 +73,6 @@ public class KryoSerializer implements Serializer {
 		KryoLocal kryoLocal = kryos.get();
 		Kryo kryo = kryoLocal.kryo;
 		Output out = kryoLocal.out;
-//		Output out = new UnsafeOutput(2048,-1);
 		byte []datas = null;
 		try {
 			kryo.writeClassAndObject(out, object);

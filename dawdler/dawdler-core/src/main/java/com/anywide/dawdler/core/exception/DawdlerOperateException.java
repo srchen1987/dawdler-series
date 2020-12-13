@@ -18,24 +18,28 @@ package com.anywide.dawdler.core.exception;
 
 /**
  * 
- * @Title:  DawdlerOperateException.java
- * @Description:    操作异常   
- * @author: jackson.song    
- * @date:   2015年06月12日    
- * @version V1.0 
+ * @Title: DawdlerOperateException.java
+ * @Description: 操作异常
+ * @author: jackson.song
+ * @date: 2015年06月12日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class DawdlerOperateException extends RuntimeException{
+public class DawdlerOperateException extends RuntimeException {
 	private static final long serialVersionUID = -3550553336288122682L;
+
 	public DawdlerOperateException(String msg) {
 		super(msg);
 	}
+
 	public DawdlerOperateException(Exception e) {
 		super(e);
 	}
+
 	public DawdlerOperateException(Throwable e) {
 		super(e);
 	}
+
 	@Override
 	public void printStackTrace() {
 		System.err.println(getMessage());

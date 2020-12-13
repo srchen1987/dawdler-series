@@ -22,7 +22,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -36,10 +35,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.clientplug.web.session.base.SessionIdGeneratorBase;
 import com.anywide.dawdler.clientplug.web.session.base.StandardSessionIdGenerator;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
@@ -51,7 +48,6 @@ import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.util.DawdlerTool;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
 /**

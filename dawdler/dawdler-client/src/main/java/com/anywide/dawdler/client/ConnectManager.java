@@ -15,30 +15,35 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client;
+
 import java.net.SocketAddress;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+
 /**
  * 
- * @Title:  ConnectManager.java
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2015年03月16日      
- * @version V1.0 
+ * @Title: ConnectManager.java
+ * @Description: 连接管理器
+ * @author: jackson.song
+ * @date: 2015年03月16日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ConnectManager {
 	private ConcurrentHashMap<SocketAddress, AtomicInteger> disconnAddress = new ConcurrentHashMap<SocketAddress, AtomicInteger>();
+
 	public Set<SocketAddress> getDisconnectAddress() {
 		return disconnAddress.keySet();
 	}
+
 	public void addDisconnectAddress(SocketAddress address) {
 		AtomicInteger num = disconnAddress.putIfAbsent(address, new AtomicInteger(1));
 		if (num != null) {
 			num.getAndIncrement();
 		}
 	}
+
 	public AtomicInteger removeDisconnect(SocketAddress address) {
 		return disconnAddress.remove(address);
 	}

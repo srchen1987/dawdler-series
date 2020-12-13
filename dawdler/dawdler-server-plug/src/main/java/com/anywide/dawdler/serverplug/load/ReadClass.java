@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.load;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,12 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles.RemoteFile;
 import com.anywide.dawdler.serverplug.util.XmlConfig;
@@ -48,13 +47,13 @@ import com.anywide.dawdler.util.XmlObject;
  */
 public class ReadClass {
 	private static Logger logger = LoggerFactory.getLogger(ReadClass.class);
-	private static Pattern p = Pattern.compile("(.*)\\.class$");
+	private static Pattern classPattern = Pattern.compile("(.*)\\.class$");
 
 	public static XmlObject read(String host) {
 		String path = DawdlerTool.getcurrentPath();
 		try {
 			XmlObject xml = new XmlObject(XmlConfig.getRemoteLoad());
-			List<Element> hostlist = (List<Element>) xml.getNode("/hosts/host[@name='" + host + "']/package");
+			List<Element> hostlist = (List<Element>) xml.selectNodes("/hosts/host[@name='" + host + "']/package");
 			if (hostlist == null || hostlist.isEmpty())
 				return null;
 			XmlObject xmlo = new XmlObject();
@@ -86,7 +85,7 @@ public class ReadClass {
 		hostele.addAttribute("type", isbean ? "bean" : "controller");
 		for (File fs : file.listFiles()) {
 			String s = fs.getName();
-			Matcher match = p.matcher(s);
+			Matcher match = classPattern.matcher(s);
 			if (match.find()) {
 				File f = new File(file.getPath() + File.separator + s);
 				Element item = hostele.addElement("item");
@@ -102,10 +101,10 @@ public class ReadClass {
 
 	public static RemoteFiles operation(String[] filenames) throws FileNotFoundException {
 		RemoteFiles rfs = new RemoteFiles();
-		List files = new ArrayList();
+		List<RemoteFile> files = new ArrayList<>();
 		String path = DawdlerTool.getcurrentPath();
 		for (String name : filenames) {
-			Matcher match = p.matcher(name);
+			Matcher match = classPattern.matcher(name);
 			if (match.find()) {
 				String temname = match.group(1).replace(".", File.separator);
 				File file = new File(path + File.separator + temname + ".class");
@@ -126,8 +125,7 @@ public class ReadClass {
 						files.add(rf);
 					} catch (Exception e) {
 						logger.error("", e);
-					}
-					finally {
+					} finally {
 						try {
 							in.close();
 							baos.close();
@@ -135,7 +133,7 @@ public class ReadClass {
 							logger.error("", e);
 						}
 					}
-					
+
 				}
 			}
 		}

@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.db.dao;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
@@ -28,13 +29,14 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.anywide.dawdler.util.DawdlerTool;
+
 /**
  * 
- * @Title:  DataAutomaticNewV2.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月15日       
- * @version V1.0 
+ * @Title: DataAutomaticNewV2.java
+ * @Description: TODO
+ * @author: jackson.song
+ * @date: 2007年04月15日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DataAutomaticNewV2 {
@@ -101,16 +103,16 @@ public class DataAutomaticNewV2 {
 
 	private final static void init() {
 		Class[] byteclass = new Class[] { byte[].class };
-		dataTypes.put("TINYINT", new Class[] { boolean.class, Boolean.class,short.class,Short.class});
+		dataTypes.put("TINYINT", new Class[] { boolean.class, Boolean.class, short.class, Short.class });
 		dataTypes.put("MEDIUMINT", new Class[] { int.class, Integer.class });
 		dataTypes.put("INTEGER", new Class[] { int.class, Integer.class });
 		dataTypes.put("INT", new Class[] { int.class, Integer.class });
 		dataTypes.put("BIGINT", new Class[] { long.class, Long.class });
 		dataTypes.put("FLOAT", new Class[] { float.class, Float.class });
 		dataTypes.put("DOUBLE", new Class[] { double.class, Double.class });
-		dataTypes.put("DECIMAL", new Class[] { java.math.BigDecimal.class ,double.class, Double.class});
+		dataTypes.put("DECIMAL", new Class[] { java.math.BigDecimal.class, double.class, Double.class });
 		dataTypes.put("BIT", new Class[] { boolean.class, Boolean.class, byte.class, Byte.class });
-		
+
 		dataTypes.put("DATE", new Class[] { java.sql.Date.class, String.class });
 		dataTypes.put("DATETIME", new Class[] { java.sql.Timestamp.class, String.class });
 		dataTypes.put("TIMESTAMP", new Class[] { java.sql.Timestamp.class, String.class });
@@ -127,14 +129,16 @@ public class DataAutomaticNewV2 {
 		dataTypes.put("CHAR", new Class[] { String.class });
 		dataTypes.put("SMALLINT", new Class[] { short.class, Short.class, int.class, Integer.class });
 	}
-	//FIXME method will be for many times
+
+	// FIXME method will be for many times
 	private final static void invoke(String columntypename, Class classbean, String setMethodName, Object obj,
 			Object object) {
 		Map<String, Method> methods = cacheMethod.get(classbean);
 		if (methods == null) {
 			methods = new ConcurrentHashMap<String, Method>();
 			Map<String, Method> pre = cacheMethod.putIfAbsent(classbean, methods);
-			if(pre!=null)methods=pre;
+			if (pre != null)
+				methods = pre;
 		}
 		Method method = methods.get(setMethodName);
 		if (method == null) {

@@ -15,24 +15,27 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
 import com.anywide.dawdler.serverplug.annotation.Isolation;
+
 /**
  * 
- * @Title:  TransactionObject.java   
- * @Description:    事务类相关信息的存储类   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: TransactionObject.java
+ * @Description: 事务类相关信息的存储类
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class TransactionObject {
 	private WriteConnectionHolder holder = null;
 	private DataSource dataSource = null;
-	private Isolation originalIsolationLevel; 
+	private Isolation originalIsolationLevel;
+
 	public TransactionObject(final WriteConnectionHolder holder, final Isolation originalIsolationLevel,
 			final DataSource dataSource) throws SQLException {
 		this.holder = holder;

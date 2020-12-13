@@ -30,19 +30,20 @@ import javax.crypto.Cipher;
 /**
  * 
  * @Title:  CertificateOperator.java
- * @Description:    证书验证的类 ，直接下面注释中的命令生成证书配置即可   
+ * @Description:    证书验证的类 ，直接下面注释中的命令生成证书配置即可 
+ * 
+ *	keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=songrouchen,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song
+ *	keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
  * @author: jackson.song    
  * @date:   2015年05月23日    
  * @version V1.0 
  * @email: suxuan696@gmail.com
  */
 public class CertificateOperator {
-/**
- * 
- 	keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=songrouchen,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song
-	keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
- */
-	
+	private String alias;
+	private char[] password;
+	private String keyStorePath;
+	private String certificatePath;
 	public CertificateOperator(String keyStorePath,String alias,String password) {
 		this.alias = alias;
 		this.password=password.toCharArray();
@@ -51,10 +52,7 @@ public class CertificateOperator {
 	public CertificateOperator(String certificatePath) {
 		this.certificatePath = certificatePath;
 	}
-	private String alias;
-	private char[] password;
-	private String keyStorePath;
-	private String certificatePath;
+	
 	public static enum KeyStoreConfig {
 
 		JCEKS("jceks"), JKS("jks"), DKS("dks"), PKCS11("pkcs11"), PKCS12("pkcs12");
@@ -237,8 +235,7 @@ public class CertificateOperator {
 		return signature.verify(sign);
 	}
 
-	public boolean verifyCertificate(Date date,
-			KeyStoreConfig keyStore) {
+	public boolean verifyCertificate(Date date, KeyStoreConfig keyStore) {
 		boolean status = true;
 		try {
 			Certificate certificate = getCertificate(keyStore);

@@ -15,28 +15,33 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.load.classloader;
+
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * 
- * @Title:  RemoteClassLoaderFireHolder.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年09月13日     
- * @version V1.0 
+ * @Title: RemoteClassLoaderFireHolder.java
+ * @Description: 远程类加载时触发持有者
+ * @author: jackson.song
+ * @date: 2007年09月13日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class RemoteClassLoaderFireHolder {
 	private List<RemoteClassLoderFire> fires = new ArrayList<>();
 	private static RemoteClassLoaderFireHolder remoteClassLoaderFireHolder = new RemoteClassLoaderFireHolder();
-	
+
 	public static RemoteClassLoaderFireHolder getInstance() {
 		return remoteClassLoaderFireHolder;
 	}
+
 	public void addRemoteClassLoaderFire(RemoteClassLoderFire remoteClassLoderFire) {
-		if(remoteClassLoderFire!=null)fires.add(remoteClassLoderFire);
+		if (remoteClassLoderFire != null)
+			fires.add(remoteClassLoderFire);
 	}
-	List<RemoteClassLoderFire> getRemoteClassLoaderFire(){
+
+	List<RemoteClassLoderFire> getRemoteClassLoaderFire() {
 		return fires;
 	}
 }

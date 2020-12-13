@@ -15,14 +15,16 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.annotation;
+
 import com.anywide.dawdler.serverplug.transaction.TransactionDefinition;
+
 /**
  * 
- * @Title:  Isolation.java   
- * @Description:    隔离级别的定义   
- * @author: jackson.song    
- * @date:   2012年09月27日     
- * @version V1.0 
+ * @Title: Isolation.java
+ * @Description: 隔离级别的定义
+ * @author: jackson.song
+ * @date: 2012年09月27日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public enum Isolation {
@@ -31,22 +33,30 @@ public enum Isolation {
 	READ_COMMITTED(TransactionDefinition.TRANSACTION_READ_COMMITTED),
 	REPEATABLE_READ(TransactionDefinition.TRANSACTION_REPEATABLE_READ),
 	SERIALIZABLE(TransactionDefinition.TRANSACTION_SERIALIZABLE);
+
 	private final int value;
-	Isolation(int value) { this.value = value; }
-	public int value() { return this.value; }
+
+	Isolation(int value) {
+		this.value = value;
+	}
+
+	public int value() {
+		return this.value;
+	}
+
 	public static Isolation valueOf(final int value) {
-        switch (value) {
-        case -1:
-            return Isolation.DEFAULT;
-        case TransactionDefinition.TRANSACTION_READ_UNCOMMITTED:
-            return Isolation.READ_UNCOMMITTED;
-        case TransactionDefinition.TRANSACTION_READ_COMMITTED:
-            return Isolation.READ_COMMITTED;
-        case TransactionDefinition.TRANSACTION_REPEATABLE_READ:
-            return Isolation.REPEATABLE_READ;
-        case TransactionDefinition.TRANSACTION_SERIALIZABLE:
-            return Isolation.SERIALIZABLE;
-        }
-        throw new IllegalStateException(String.format("Connection ISOLATION error level %s.", value));
-    }
+		switch (value) {
+		case -1:
+			return Isolation.DEFAULT;
+		case TransactionDefinition.TRANSACTION_READ_UNCOMMITTED:
+			return Isolation.READ_UNCOMMITTED;
+		case TransactionDefinition.TRANSACTION_READ_COMMITTED:
+			return Isolation.READ_COMMITTED;
+		case TransactionDefinition.TRANSACTION_REPEATABLE_READ:
+			return Isolation.REPEATABLE_READ;
+		case TransactionDefinition.TRANSACTION_SERIALIZABLE:
+			return Isolation.SERIALIZABLE;
+		}
+		throw new IllegalStateException(String.format("Connection ISOLATION error level %s.", value));
+	}
 }

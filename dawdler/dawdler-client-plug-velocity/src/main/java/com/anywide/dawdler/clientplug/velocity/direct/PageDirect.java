@@ -15,19 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.velocity.direct;
+
 import java.io.IOException;
 import java.io.Writer;
-
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
-
 import com.anywide.dawdler.clientplug.velocity.PageStyle;
 import com.anywide.dawdler.serverplug.load.bean.Page;
 import com.anywide.dawdler.util.ToolEL;
+
 /**
  * 
  * @Title: ControlDirect.java
@@ -37,34 +37,36 @@ import com.anywide.dawdler.util.ToolEL;
  * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class PageDirect extends Directive{
+public class PageDirect extends Directive {
 	@Override
 	public String getName() {
 		return "pages";
 	}
+
 	@Override
 	public int getType() {
 		return LINE;
 	}
+
 	@Override
 	public boolean render(InternalContextAdapter arg0, Writer arg1, Node arg2)
-			throws IOException, ResourceNotFoundException, ParseErrorException,
-			MethodInvocationException {
-		String stylename =null;
-		String linkcontent =  arg2.jjtGetChild(0).value(arg0)+"";
-		if(arg2.jjtGetNumChildren()>1){
-			stylename =  arg2.jjtGetChild(1).value(arg0)+"";
+			throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
+		String stylename = null;
+		String linkcontent = arg2.jjtGetChild(0).value(arg0) + "";
+		if (arg2.jjtGetNumChildren() > 1) {
+			stylename = arg2.jjtGetChild(1).value(arg0) + "";
 		}
 		Object pageobj = arg0.get("page");
-		Page page=null;
-		if(pageobj==null){
+		Page page = null;
+		if (pageobj == null) {
 			Object action = arg0.get("action");
-			page = (Page)ToolEL.getBeanValue(action,"page");	
-		}else{
+			page = (Page) ToolEL.getBeanValue(action, "page");
+		} else {
 			page = (Page) pageobj;
 		}
-		if(page==null)throw new ParseErrorException("not set page in action !");
-		PageStyle.printPage(page.getPageon(),page.getPagecount(),page.getPageNumber(),linkcontent,stylename, arg1);
+		if (page == null)
+			throw new ParseErrorException("not set page in action !");
+		PageStyle.printPage(page.getPageon(), page.getPagecount(), page.getPageNumber(), linkcontent, stylename, arg1);
 		return true;
 	}
 

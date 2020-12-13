@@ -15,28 +15,30 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.order;
+
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 /**
  * 
- * @Title:  OrderComparator.java
- * @Description:    排序   
- * @author: jackson.song    
- * @date:   2007年12月03日  
- * @version V1.0 
+ * @Title: OrderComparator.java
+ * @Description: 排序
+ * @author: jackson.song
+ * @date: 2007年12月03日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class OrderComparator<T> implements Comparator<OrderData<T>> {
-	public static final OrderComparator INSTANCE = new OrderComparator();
+	public static final OrderComparator INSTANCE = new OrderComparator<>();
 
 	@Override
 	public int compare(OrderData<T> o1, OrderData<T> o2) {
-		return o1.getOrder()-o2.getOrder();
+		return o1.getOrder() - o2.getOrder();
 	}
 
 	public static <T> void sort(List<OrderData<T>> list) {
-		if (list!=null&&list.size() > 1) {
+		if (list != null && list.size() > 1) {
 			Collections.sort(list, INSTANCE);
 		}
 	}

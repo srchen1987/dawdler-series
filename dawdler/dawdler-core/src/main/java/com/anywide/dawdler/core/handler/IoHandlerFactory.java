@@ -16,9 +16,22 @@
  */
 package com.anywide.dawdler.core.handler;
 
+/**
+ * 
+ * @Title:  IoHandlerFactory.java
+ * @Description:   客户端，服务器端接收，发送，开关连接，空闲，异常事件的默认实现类
+ * @author: jackson.song    
+ * @date:   2015年03月12日    
+ * @version V1.0 
+ * @email: suxuan696@gmail.com
+ */
 public class IoHandlerFactory {
 	private static IoHandler handler=new IoHandlerAdapter();
-	public static IoHandler getInstance() {
+	
+	public static IoHandler getHandler() {
 		return handler;
+	}
+	public static void setHandler(IoHandler handler) {
+		IoHandlerFactory.handler = handler;
 	}
 }
