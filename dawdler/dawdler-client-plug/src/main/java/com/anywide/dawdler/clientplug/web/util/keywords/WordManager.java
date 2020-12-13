@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.util.keywords;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,27 +30,29 @@ import com.anywide.dawdler.util.DawdlerTool;
 
 /**
  * 
- * @Title:  WordManager.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2008年05月17日   
- * @version V1.0 
+ * @Title: WordManager.java
+ * @Description: TODO
+ * @author: jackson.song
+ * @date: 2008年05月17日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class WordManager {
 //	private volatile long lastModified;
 	private AtomicLong lastModified = new AtomicLong();
 	private AtomicBoolean remark = new AtomicBoolean(false);
-	private static WordManager wordManager=new WordManager();
+	private static WordManager wordManager = new WordManager();
 	private Lock lock = new ReentrantLock();
 	private Words words = new Words();
-	private File kwfile = new File(DawdlerTool.getcurrentPath()+"keywords.txt");
-	private WordManager(){
+	private File kwfile = new File(DawdlerTool.getcurrentPath() + "keywords.txt");
+
+	private WordManager() {
 	}
-	public static WordManager getInstance(){
-		if(wordManager.isUpdate()){
+
+	public static WordManager getInstance() {
+		if (wordManager.isUpdate()) {
 			wordManager.lock.lock();
-			if(wordManager.isUpdate()){
+			if (wordManager.isUpdate()) {
 				try {
 					wordManager.loadFile();
 				} catch (IOException e) {
@@ -59,23 +62,26 @@ public class WordManager {
 		}
 		return wordManager;
 	}
-	public String getKeyWord(String context){
+
+	public String getKeyWord(String context) {
 		return words.getFindedFirstWord(context);
 	}
-	private boolean isUpdate(){
-		return kwfile.lastModified()!=lastModified.get();
+
+	private boolean isUpdate() {
+		return kwfile.lastModified() != lastModified.get();
 	}
-	private void loadFile() throws IOException{
-		this.lastModified.compareAndSet(lastModified.get(),kwfile.lastModified());
+
+	private void loadFile() throws IOException {
+		this.lastModified.compareAndSet(lastModified.get(), kwfile.lastModified());
 		FileInputStream fin = new FileInputStream(kwfile);
 		InputStreamReader in = new InputStreamReader(fin);
 		BufferedReader br = new BufferedReader(in);
-		String keyword=null;
+		String keyword = null;
 		words.clear();
-		while((keyword=br.readLine())!=null){
+		while ((keyword = br.readLine()) != null) {
 			words.addWord(keyword);
 		}
 		br.close();
-		remark.compareAndSet(false,true);
+		remark.compareAndSet(false, true);
 	}
 }

@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
+
 /**
  * 
- * @Title:  LowercaseLettersRuleOperator.java   
- * @Description:    小写字母验证   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: LowercaseLettersRuleOperator.java
+ * @Description: 小写字母验证
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class LowercaseLettersRuleOperator extends StringRuleOperator {
@@ -40,8 +41,7 @@ public class LowercaseLettersRuleOperator extends StringRuleOperator {
 
 	@Override
 	public String validate(Object value) {
-		return super.validate(value,"请输入小写英文字母!");
+		return super.validate(value, "请输入小写英文字母!");
 	}
 
 }
-

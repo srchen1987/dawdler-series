@@ -15,17 +15,19 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.order;
+
 /**
  * 
- * @Title:  Order.java
- * @Description:    排序的接口   
- * @author: jackson.song    
- * @date:   2007年12月03日    
- * @version V1.0 
+ * @Title: Order.java
+ * @Description: 排序的接口
+ * @author: jackson.song
+ * @date: 2007年12月03日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface Order {
 	int HIGHEST_PRECEDENCE = Integer.MIN_VALUE;
 	int LOWEST_PRECEDENCE = Integer.MAX_VALUE;
+
 	int getOrder();
 }

@@ -15,24 +15,26 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.interceptor;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
+
 /**
  * 
- * @Title:  InterceptorProvider.java   
- * @Description:    拦截器提供者   
- * @author: jackson.song    
- * @date:   2007年04月19日   
- * @version V1.0 
+ * @Title: InterceptorProvider.java
+ * @Description: 拦截器提供者
+ * @author: jackson.song
+ * @date: 2007年04月19日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class InterceptorProvider {
 	private static AtomicBoolean order = new AtomicBoolean(false);
+
 	public static List<OrderData<HandlerInterceptor>> getHandlerInterceptors() {
 		return handlerInterceptors;
 	}
@@ -41,15 +43,16 @@ public class InterceptorProvider {
 		Order co = handlerInterceptor.getClass().getAnnotation(Order.class);
 		OrderData<HandlerInterceptor> od = new OrderData<HandlerInterceptor>();
 		od.setData(handlerInterceptor);
-		if(co!=null){
+		if (co != null) {
 			od.setOrder(co.value());
 		}
 		handlerInterceptors.add(od);
 	}
+
 	public static void order() {
-		if(order.compareAndSet(false, true))
+		if (order.compareAndSet(false, true))
 			OrderComparator.sort(handlerInterceptors);
 	}
-	private static List<OrderData<HandlerInterceptor>>  handlerInterceptors = new ArrayList<OrderData<HandlerInterceptor>>(); 
-}
 
+	private static List<OrderData<HandlerInterceptor>> handlerInterceptors = new ArrayList<OrderData<HandlerInterceptor>>();
+}

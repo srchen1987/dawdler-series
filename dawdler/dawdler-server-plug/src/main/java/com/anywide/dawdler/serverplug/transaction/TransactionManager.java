@@ -15,20 +15,24 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.SQLException;
 
 import com.anywide.dawdler.serverplug.annotation.DBTransaction;
+
 /**
  * 
- * @Title:  TransactionManager.java   
- * @Description:    事务管理器   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: TransactionManager.java
+ * @Description: 事务管理器
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface TransactionManager {
-    public TransactionStatus getTransaction(DBTransaction dBTransaction) throws SQLException;
-    public void commit(TransactionStatus status) throws SQLException;
-    public void rollBack(TransactionStatus status) throws SQLException;
+	public TransactionStatus getTransaction(DBTransaction dBTransaction) throws SQLException;
+
+	public void commit(TransactionStatus status) throws SQLException;
+
+	public void rollBack(TransactionStatus status) throws SQLException;
 }

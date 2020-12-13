@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.util;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -31,15 +29,6 @@ public class LogUtil {
 	public static String getLineInfo() {
 		StackTraceElement ste = new Throwable().getStackTrace()[1];
 		return ste.getFileName() + ": Line " + ste.getLineNumber()+"\t"+Thread.currentThread().getName()+ "\t";
-	}
-	public static void main(String[] args) {
-		Logger logger = LoggerFactory.getLogger(LogUtil.class);
-		Exception exception = new NullPointerException("null");
-		logger.trace("======trace");  
-		logger.debug("======debug");  
-		logger.info("======info");  
-		logger.warn("======warn");  
-		logger.error("======error",exception);  
 	}
 
 }

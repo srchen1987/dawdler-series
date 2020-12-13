@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.load;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -24,59 +25,64 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
+
 /**
  * 
- * @Title:  ClientConfig.java   
- * @Description:    客户端配置文件解析器   
- * @author: jackson.song    
- * @date:   2007年05月22日     
- * @version V1.0 
+ * @Title: ClientConfig.java
+ * @Description: 客户端配置文件解析器
+ * @author: jackson.song
+ * @date: 2007年05月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class ClientConfig {
 	private static Logger logger = LoggerFactory.getLogger(ClientConfig.class);
-	private static final String SRCCONFIG="client/client-conf.xml";
-	private static long updatetime=0;
-	private static XmlObject xml=null;
-	private static ClientConfig remotefactory= new ClientConfig();
-	private static File file =null;
-	static{
+	private static final String SRCCONFIG = "client/client-conf.xml";
+	private static long updatetime = 0;
+	private static XmlObject xml = null;
+	private static ClientConfig remotefactory = new ClientConfig();
+	private static File file = null;
+	static {
 		try {
-			file =  new File(DawdlerTool.getcurrentPath()+SRCCONFIG);
+			file = new File(DawdlerTool.getcurrentPath() + SRCCONFIG);
 			isupdate();
 			try {
 				xml = XmlObject.loadClassPathXML(SRCCONFIG);
 			} catch (IOException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 		} catch (DocumentException e) {
-				logger.error("",e);
+			logger.error("", e);
 		}
 	}
-	public static ClientConfig getInstance(){
+
+	public static ClientConfig getInstance() {
 		return remotefactory;
 	}
+
 	private ClientConfig() {
 	}
-	public  XmlObject getXml() {
-		if(isupdate()){
+
+	public XmlObject getXml() {
+		if (isupdate()) {
 			try {
 				xml = XmlObject.loadClassPathXML(SRCCONFIG);
 			} catch (DocumentException e) {
-				logger.error("",e);
+				logger.error("", e);
 			} catch (IOException e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 		}
 		return xml;
 	}
-	private static boolean isupdate(){
-		if(!file.exists()){
-			System.err.println("not found "+SRCCONFIG);
+
+	private static boolean isupdate() {
+		if (!file.exists()) {
+			System.err.println("not found " + SRCCONFIG);
 			return false;
 		}
-		if(updatetime!=file.lastModified()){
-			updatetime=file.lastModified();
+		if (updatetime != file.lastModified()) {
+			updatetime = file.lastModified();
 			return true;
 		}
 		return false;

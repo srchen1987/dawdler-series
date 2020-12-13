@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
+
 /**
  * 
- * @Title:  WebsiteRuleOperator.java   
- * @Description:    网址验证   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: WebsiteRuleOperator.java
+ * @Description: 网址验证
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class WebsiteRuleOperator extends StringRuleOperator {
@@ -45,4 +46,3 @@ public class WebsiteRuleOperator extends StringRuleOperator {
 	}
 
 }
-

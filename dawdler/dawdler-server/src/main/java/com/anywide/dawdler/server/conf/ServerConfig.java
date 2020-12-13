@@ -188,7 +188,7 @@ public class ServerConfig {
 		public void setHost(String host) {
 			this.host = host;
 		}
-		
+
 		public int getTcpShutdownPort() {
 			return tcpShutdownPort;
 		}

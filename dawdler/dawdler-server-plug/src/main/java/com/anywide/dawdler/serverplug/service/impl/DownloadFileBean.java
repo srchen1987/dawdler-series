@@ -15,31 +15,31 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.service.impl;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.serverplug.load.ReadClass;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
 import com.anywide.dawdler.serverplug.service.DownloadFile;
+
 /**
  * 
- * @Title:  DownloadFileBean.java   
- * @Description:    下载模版类文件的接口的具体实现类   
- * @author: jackson.song    
- * @date:   2007年09月18日      
- * @version V1.0 
+ * @Title: DownloadFileBean.java
+ * @Description: 下载模版类文件的接口的具体实现类
+ * @author: jackson.song
+ * @date: 2007年09月18日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class DownloadFileBean implements DownloadFile{
+public class DownloadFileBean implements DownloadFile {
 	private static Logger logger = LoggerFactory.getLogger(DownloadFileBean.class);
 
-//	@RolesAllowed({"DepartmentUser"}) 
 	public RemoteFiles download(String[] names) {
 		try {
 			RemoteFiles rfs = ReadClass.operation(names);
 			return rfs;
 		} catch (Exception e) {
-			logger.error("",e);
+			logger.error("", e);
 		}
 		return null;
 	}

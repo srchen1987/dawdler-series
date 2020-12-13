@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
-import java.sql.Connection;
 
+import java.sql.Connection;
 import com.anywide.dawdler.serverplug.annotation.Isolation;
 import com.anywide.dawdler.serverplug.annotation.Propagation;
+
 /**
  * 
- * @Title:  TransactionDefinition.java   
- * @Description:    传播性，隔离级别定义接口   
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: TransactionDefinition.java
+ * @Description: 传播性，隔离级别定义接口
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface TransactionDefinition {
@@ -43,10 +44,13 @@ public interface TransactionDefinition {
 	int TRANSACTION_REPEATABLE_READ = Connection.TRANSACTION_REPEATABLE_READ;
 	int TRANSACTION_SERIALIZABLE = Connection.TRANSACTION_SERIALIZABLE;
 	int TIMEOUT_DEFAULT = -1;
-	
+
 	public Propagation getPropagationBehavior();
+
 	public Isolation getIsolationLevel();
+
 	int getTimeout();
+
 	boolean isReadOnly();
 
 }

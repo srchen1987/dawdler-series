@@ -15,32 +15,38 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.order;
+
 /**
  * 
- * @Title:  OrderData.java
- * @Description:    存储Order具体类   
- * @author: jackson.song    
- * @date:   2007年12月03日  
- * @version V1.0 
+ * @Title: OrderData.java
+ * @Description: 存储Order具体类
+ * @author: jackson.song
+ * @date: 2007年12月03日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class OrderData<T> implements Order {
 	private int order;
 	private T data;
+
 	public int getOrder() {
 		return order;
 	}
+
 	public void setOrder(int order) {
 		this.order = order;
 	}
+
 	public T getData() {
 		return data;
 	}
+
 	public void setData(T data) {
 		this.data = data;
 	}
+
 	@Override
 	public String toString() {
-		return data+"\t"+order;
+		return data + "\t" + order;
 	}
 }

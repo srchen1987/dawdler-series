@@ -51,8 +51,8 @@ import com.anywide.dawdler.util.NetworkUtil;
  * @email: suxuan696@gmail.com
  */
 public class DawdlerServer {
-	private static AcceptorHandler acceptorInstance = new AcceptorHandler();
 	private static Logger logger = LoggerFactory.getLogger(DawdlerServer.class);
+	private static AcceptorHandler acceptorInstance = new AcceptorHandler();
 	private final AtomicInteger TNUMBER = new AtomicInteger(0);
 	private AsynchronousServerSocketChannel serverChannel;
 	private AsynchronousChannelGroup asynchronousChannelGroup;
@@ -73,12 +73,12 @@ public class DawdlerServer {
 		String host = server.getHost();
 		serverChannel = AsynchronousServerSocketChannel.open(asynchronousChannelGroup);
 		String addressString = NetworkUtil.getInetAddress(host);
-		if(addressString==null) {
-			throw new UnknownHostException("server-conf.xml server host :  "+server.getHost());
-		} 
+		if (addressString == null) {
+			throw new UnknownHostException("server-conf.xml server host :  " + server.getHost());
+		}
 		server.setHost(addressString);
-		dawdlerServerContext.initApplication(); 
-		InetSocketAddress address = new InetSocketAddress(addressString,port);
+		dawdlerServerContext.initApplication();
+		InetSocketAddress address = new InetSocketAddress(addressString, port);
 		serverChannel.bind(address, backlog);
 		dawdlerServerContext.setAsynchronousServerSocketChannel(serverChannel);
 	}
@@ -125,7 +125,7 @@ public class DawdlerServer {
 					String command = br.readLine();
 					if (command != null) {
 						if ("stop".equals(command.trim())) {
-							shutdown();  
+							shutdown();
 							closed = true;
 							return;
 						} else if ("stopnow".equals(command.trim())) {
@@ -138,7 +138,8 @@ public class DawdlerServer {
 					logger.error("", e);
 				} finally {
 					try {
-						if(br!=null)br.close();
+						if (br != null)
+							br.close();
 						socket.close();
 					} catch (IOException e) {
 					}
@@ -170,7 +171,7 @@ public class DawdlerServer {
 				}
 			});
 			new Thread(new Waiter(this)).start();
-			new Thread(new Closer()).start(); 
+			new Thread(new Closer()).start();
 		}
 
 	}
@@ -201,20 +202,20 @@ public class DawdlerServer {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
 				}
-			} 
-			
+			}
+
 			dawdlerServerContext.destroyedApplication();
 			sm.closeNow();
 			DataProcessWorkerPool.getInstance().shutdown();
 			if (serverChannel.isOpen())
 				serverChannel.close();
-			
+
 			if (!asynchronousChannelGroup.isShutdown()) {
 				asynchronousChannelGroup.shutdown();
-			} 
-		
+			}
+
 			dawdlerServerContext.destroyedApplication();
-			
+
 		}
 	}
 

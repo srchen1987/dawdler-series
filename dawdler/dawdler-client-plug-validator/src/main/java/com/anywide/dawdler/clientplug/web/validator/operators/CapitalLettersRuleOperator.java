@@ -15,13 +15,14 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
+
 /**
  * 
- * @Title:  CapitalLettersRuleOperator.java   
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年07月21日     
- * @version V1.0 
+ * @Title: CapitalLettersRuleOperator.java
+ * @Description: TODO
+ * @author: jackson.song
+ * @date: 2007年07月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class CapitalLettersRuleOperator extends StringRuleOperator {
@@ -44,4 +45,3 @@ public class CapitalLettersRuleOperator extends StringRuleOperator {
 	}
 
 }
-

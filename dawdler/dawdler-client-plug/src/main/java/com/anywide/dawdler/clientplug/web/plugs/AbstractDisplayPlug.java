@@ -15,35 +15,35 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.plugs;
-import javax.servlet.ServletContext;
 
+import javax.servlet.ServletContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
  * 
- * @Title:  AbstractDisplayPlug.java   
- * @Description:    抽象显示插件   
- * @author: jackson.song    
- * @date:   2007年04月21日   
- * @version V1.0 
+ * @Title: AbstractDisplayPlug.java
+ * @Description: 抽象显示插件
+ * @author: jackson.song
+ * @date: 2007年04月21日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public abstract class AbstractDisplayPlug implements DisplayPlug {
 	private static Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);
-	protected final String MIME_TYPE_TEXT="text/html;charset=UTF-8";
-	protected final String MIME_TYPE_JSON="application/json;charset=UTF-8";
+	protected final String MIME_TYPE_TEXT = "text/html;charset=UTF-8";
+	protected final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
 	protected ServletContext servletContext;
+
 	public AbstractDisplayPlug(ServletContext servletContext) {
-		this.servletContext=servletContext;
+		this.servletContext = servletContext;
 	}
-	protected void logException(ViewForward wf){
+
+	protected void logException(ViewForward wf) {
 		if (wf.getInvokeException() != null) {
-			logger.error("",wf.getInvokeException());
+			logger.error("", wf.getInvokeException());
 		}
 	}
 
 }
-

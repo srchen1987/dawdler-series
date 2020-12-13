@@ -15,28 +15,35 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.bean;
+
 import java.io.Serializable;
 
 import org.dom4j.Document;
+
 /**
  * 
- * @Title:  XmlBean.java   
- * @Description:    序列化传输的bean   
- * @author: jackson.song    
- * @date:   2007年03月05日     
- * @version V1.0 
+ * @Title: XmlBean.java
+ * @Description: 序列化传输的bean
+ * @author: jackson.song
+ * @date: 2007年03月05日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class XmlBean implements Serializable{
+public class XmlBean implements Serializable {
 	private static final long serialVersionUID = -4472800116121363695L;
 	private Document document;
-	public XmlBean() {}
-	public XmlBean(Document document) {
-		this.document=document;
+
+	public XmlBean() {
 	}
+
+	public XmlBean(Document document) {
+		this.document = document;
+	}
+
 	public Document getDocument() {
 		return document;
 	}
+
 	public void setDocument(Document document) {
 		this.document = document;
 	}

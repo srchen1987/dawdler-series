@@ -15,49 +15,55 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.upload;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-
 import org.apache.commons.fileupload.FileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 /**
  * 
- * @Title:  UploadFile.java   
- * @Description:    上传文件时包装的类   
- * @author: jackson.song    
- * @date:   2007年04月17日   
- * @version V1.0 
+ * @Title: UploadFile.java
+ * @Description: 上传文件时包装的类
+ * @author: jackson.song
+ * @date: 2007年04月17日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class UploadFile {
 	private static Logger logger = LoggerFactory.getLogger(UploadFile.class);
 	private FileItem file;
+
 	public UploadFile(FileItem file) {
-		this.file=file;
+		this.file = file;
 	}
-	public InputStream getInputStream() throws IOException{
+
+	public InputStream getInputStream() throws IOException {
 		return file.getInputStream();
 	}
-	public byte[] getBytes(){
+
+	public byte[] getBytes() {
 		return file.get();
 	}
-	public String getFileName(){
+
+	public String getFileName() {
 		try {
-			return URLDecoder.decode(file.getName(),"utf-8");
+			return URLDecoder.decode(file.getName(), "utf-8");
 		} catch (UnsupportedEncodingException e) {
-			logger.error("",e);
+			logger.error("", e);
 			return file.getName();
 		}
 	}
-	public long getSize(){
+
+	public long getSize() {
 		return file.getSize();
 	}
-	public void delete(){
-		if(file!=null)
+
+	public void delete() {
+		if (file != null)
 			file.delete();
 	}
 }
-

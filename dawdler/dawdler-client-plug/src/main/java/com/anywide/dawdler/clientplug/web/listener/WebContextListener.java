@@ -15,17 +15,18 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.listener;
+
 /**
  * 
- * @Title:  WebContextListener.java   
- * @Description:    监听器接口   
- * @author: jackson.song    
- * @date:   2007年04月19日   
- * @version V1.0 
+ * @Title: WebContextListener.java
+ * @Description: 监听器接口
+ * @author: jackson.song
+ * @date: 2007年04月19日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public interface WebContextListener{
+public interface WebContextListener {
 	public void contextInitialized(javax.servlet.ServletContext servletContext);
+
 	public void contextDestroyed(javax.servlet.ServletContext servletContext);
 }
-

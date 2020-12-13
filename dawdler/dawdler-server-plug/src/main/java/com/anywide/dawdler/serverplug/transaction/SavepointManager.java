@@ -15,20 +15,25 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.serverplug.transaction;
+
 import java.sql.SQLException;
 import java.sql.Savepoint;
+
 /**
  * 
- * @Title:  SavepointManager.java   
- * @Description:	当前连接保存点管理者 
- * @author: jackson.song    
- * @date:   2015年09月28日     
- * @version V1.0 
+ * @Title: SavepointManager.java
+ * @Description: 当前连接保存点管理者
+ * @author: jackson.song
+ * @date: 2015年09月28日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public interface SavepointManager {
 	Savepoint createSavepoint() throws SQLException;
+
 	void rollbackToSavepoint(Savepoint savepoint) throws SQLException;
+
 	void releaseSavepoint(Savepoint savepoint) throws SQLException;
-    public boolean supportSavepoint() throws SQLException;
+
+	public boolean supportSavepoint() throws SQLException;
 }

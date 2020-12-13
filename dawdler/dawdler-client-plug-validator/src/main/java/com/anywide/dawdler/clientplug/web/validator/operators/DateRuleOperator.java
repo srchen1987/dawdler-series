@@ -18,11 +18,11 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
  * 
- * @Title:  DateRuleOperator.java   
- * @Description:    日期验证   
- * @author: jackson.song    
- * @date:   2007年07月22日     
- * @version V1.0 
+ * @Title: DateRuleOperator.java
+ * @Description: 日期验证
+ * @author: jackson.song
+ * @date: 2007年07月22日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class DateRuleOperator extends StringRuleOperator {
@@ -44,7 +44,5 @@ public class DateRuleOperator extends StringRuleOperator {
 	public String validate(Object value) {
 		return super.validate(value, "请输入日期格式!");
 	}
-	
 
 }
-

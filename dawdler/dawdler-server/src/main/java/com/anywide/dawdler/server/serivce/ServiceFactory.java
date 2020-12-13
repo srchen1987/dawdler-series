@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.serivce;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,19 +95,22 @@ public class ServiceFactory {
 			return responseBean.getTarget();
 		}
 	}
-	private static Map<Class,String> servicesName = new HashMap<>();
+
+	private static Map<Class, String> servicesName = new HashMap<>();
+
 	public static String getServiceName(Class<?> service) {
 		String name = servicesName.get(service);
-		if(name!=null)return name;
+		if (name != null)
+			return name;
 		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
-		if(remoteServiceContract!=null){
-			 name = remoteServiceContract.value();
+		if (remoteServiceContract != null) {
+			name = remoteServiceContract.value();
 			if (StringUtils.isBlank(name)) {
 				name = service.getName();
-			} 
+			}
 			servicesName.put(service, name);
 			return name;
-		}else{
+		} else {
 			Class<?>[] interfaceList = service.getInterfaces();
 			if (interfaceList != null) {
 				for (Class<?> clazz : interfaceList) {
@@ -116,7 +120,7 @@ public class ServiceFactory {
 					}
 					name = remoteServiceContract.value();
 					if (StringUtils.isBlank(name)) {
-						name =  service.getName();
+						name = service.getName();
 					}
 					servicesName.put(service, name);
 					return name;

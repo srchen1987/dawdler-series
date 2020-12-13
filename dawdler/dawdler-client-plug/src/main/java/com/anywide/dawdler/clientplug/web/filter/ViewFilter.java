@@ -15,8 +15,8 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.filter;
-import java.io.IOException;
 
+import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -26,43 +26,46 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
+
 /**
  * 
- * @Title:  ViewFilter.java   
- * @Description:    请求处理过滤器   
- * @author: jackson.song    
- * @date:   2007年04月18日   
- * @version V1.0 
+ * @Title: ViewFilter.java
+ * @Description: 请求处理过滤器
+ * @author: jackson.song
+ * @date: 2007年04月18日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class ViewFilter implements Filter{
+public class ViewFilter implements Filter {
 	private AnnotationUrlHandler annotationUrlHander;
+
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) res;
 		String method = request.getMethod();
-		if(method==null){
+		if (method == null) {
 			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			return;
 		}
-		method=method.toUpperCase();
+		method = method.toUpperCase();
 		response.setCharacterEncoding("utf-8");
 		request.setCharacterEncoding("utf-8");
 		String uri = request.getRequestURI().toString();
-		String contextpath  = request.getContextPath()+"/"; 
-		String urishort = uri.substring(uri.indexOf(contextpath)+contextpath.length()-1);
+		String contextpath = request.getContextPath() + "/";
+		String urishort = uri.substring(uri.indexOf(contextpath) + contextpath.length() - 1);
 		try {
-				boolean status = annotationUrlHander.handleUrl(urishort,method, request, response);
-				if(!status)chain.doFilter(request, response);
-		} catch (Exception e) { 
+			boolean status = annotationUrlHander.handleUrl(urishort, method, request, response);
+			if (!status)
+				chain.doFilter(request, response);
+		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 	}
+
 	public void init(FilterConfig fConfig) throws ServletException {
 		ServletContext servletContext = fConfig.getServletContext();
 //		String [] interceptorNames = context.getBeanNamesForType(HandlerInterceptor.class);
@@ -72,11 +75,12 @@ public class ViewFilter implements Filter{
 //			}
 //		}
 //		xmlHander = new XmlUrlHander(servletContext, context);
-		annotationUrlHander=new AnnotationUrlHandler();
+		annotationUrlHander = new AnnotationUrlHandler();
 		PlugFactory.initFactory(servletContext);
 	}
+
 	@Override
 	public void destroy() {
-		
+
 	}
 }

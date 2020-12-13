@@ -15,40 +15,46 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.handler;
-import java.lang.reflect.Method;
 
+import java.lang.reflect.Method;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.TransactionController;
+
 /**
  * 
- * @Title:  RequestUrlData.java   
- * @Description:    一个包装的实体类   
- * @author: jackson.song    
- * @date:   2007年04月17日   
- * @version V1.0 
+ * @Title: RequestUrlData.java
+ * @Description: 一个包装的实体类
+ * @author: jackson.song
+ * @date: 2007年04月17日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
 public class RequestUrlData {
 	private RequestMapping requestMapping;
 	private TransactionController target;
 	private Method method;
+
 	public RequestMapping getRequestMapping() {
 		return requestMapping;
 	}
+
 	public void setRequestMapping(RequestMapping requestMapping) {
 		this.requestMapping = requestMapping;
 	}
+
 	public TransactionController getTarget() {
 		return target;
 	}
+
 	public void setTarget(TransactionController target) {
 		this.target = target;
 	}
+
 	public Method getMethod() {
 		return method;
 	}
+
 	public void setMethod(Method method) {
 		this.method = method;
 	}
 }
-

@@ -17,10 +17,8 @@
 package com.anywide.dawdler.server.thread.processor;
 
 import java.nio.ByteBuffer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.core.bean.AuthRequestBean;
 import com.anywide.dawdler.core.bean.AuthResponseBean;
 import com.anywide.dawdler.core.bean.RequestBean;
@@ -28,6 +26,7 @@ import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.core.compression.strategy.CompressionWrapper;
 import com.anywide.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
 import com.anywide.dawdler.core.exception.AuthFailedException;
+import com.anywide.dawdler.core.handler.IoHandler;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.Serializer;
@@ -51,12 +50,13 @@ import com.anywide.dawdler.server.net.aio.session.SocketSession;
  * @email: suxuan696@gmail.com
  */
 public class DataProcessor implements Runnable {
+	private static Logger logger = LoggerFactory.getLogger(DataProcessor.class);
 	private SocketSession socketSession;
 	private boolean compress;
 	private Serializer serializer;
 	private byte[] datas;
 	private byte headData;
-	private static Logger logger = LoggerFactory.getLogger(DataProcessor.class);
+	protected IoHandler ioHandler = IoHandlerFactory.getHandler();
 
 	public DataProcessor(SocketSession socketSession, byte headData, boolean compress, Serializer serializer,
 			byte[] datas) {
@@ -88,7 +88,8 @@ public class DataProcessor implements Runnable {
 		if (compress)
 			datas = ThresholdCompressionStrategy.staticSingle().decompress(datas);
 		Object obj = serializer.deserialize(datas);
-		IoHandlerFactory.getInstance().messageReceived(socketSession, obj);
+		if (ioHandler != null)
+			ioHandler.messageReceived(socketSession, obj);
 		if (obj instanceof RequestBean) {
 			if (!socketSession.isAuthored())
 				throw new IllegalAccessException("unauthorized access ！");
@@ -100,7 +101,7 @@ public class DataProcessor implements Runnable {
 			}
 			ResponseBean responseBean = new ResponseBean();
 			responseBean.setSeq(requestBean.getSeq());
-			InvokeFuture<?> invoke = new InvokeFuture<>();
+			InvokeFuture<Object> invoke = new InvokeFuture<>();
 			socketSession.getFutures().put(requestBean.getSeq(), invoke);
 			try {
 				if (servicesBean != null) {
@@ -122,15 +123,15 @@ public class DataProcessor implements Runnable {
 			ServerConfig serverConfig = socketSession.getDawdlerServerContext().getServerConfig();
 			boolean success = false;
 			try {
-				success	= serverConfig.auth(authRequest.getPath(), authRequest.getUser(),
-						authRequest.getPassword());
+				success = serverConfig.auth(authRequest.getPath(), authRequest.getUser(), authRequest.getPassword());
 			} catch (Exception e) {
-				logger.error("",e);
+				logger.error("", e);
 			}
 			if (success) {
 				authResponse.setSuccess(true);
 				socketSession.setAuthored(true);
-				IoHandlerFactory.getInstance().channelOpen(socketSession);
+				if (ioHandler != null)
+					ioHandler.channelOpen(socketSession);
 				ServerConnectionManager.getInstance().addSession(socketSession);
 			} else
 				throw new AuthFailedException(socketSession.getRemoteAddress() + " auth failed!");

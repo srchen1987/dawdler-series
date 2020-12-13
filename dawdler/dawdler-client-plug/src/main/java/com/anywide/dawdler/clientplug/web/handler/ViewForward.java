@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.handler;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.upload.UploadFile;
+
 /**
  * 
- * @Title:  ViewForward.java   
- * @Description:    viewForward定义父类   
- * @author: jackson.song    
- * @date:   2007年04月18日   
- * @version V1.0 
+ * @Title: ViewForward.java
+ * @Description: viewForward定义父类
+ * @author: jackson.song
+ * @date: 2007年04月18日
+ * @version V1.0
  * @email: suxuan696@gmail.com
  */
-public class ViewForward{
-	public ViewForward(HttpServletRequest request,HttpServletResponse response) {
+public class ViewForward {
+	public ViewForward(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
 		this.response = response;
 	}
@@ -43,6 +43,7 @@ public class ViewForward{
 	public enum ResponseType {
 		SUCCESS, ERROR, REDIRECT, FORWARD, STOP;
 	}
+
 	private String errorPage = "error.html";// 错误地址
 	private String templatePath;// 模板路径
 	private boolean addRequestAttribute = true;// 自动添加request请求范围
@@ -50,21 +51,25 @@ public class ViewForward{
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private ResponseType status = ResponseType.SUCCESS;// 状态默认为成功
-	private Map<String, Object> data=null;
-	private Map<String,String> paramsVariable;
+	private Map<String, Object> data = null;
+	private Map<String, String> paramsVariable;
 	private boolean createContext;
 	private Throwable invokeException;
 	private RequestUrlData requestUrlData;
 	private String uriShort;
+
 	public String getUriShort() {
 		return uriShort;
 	}
+
 	void setUriShort(String uriShort) {
 		this.uriShort = uriShort;
 	}
+
 	void setRequestUrlData(RequestUrlData requestUrlData) {
 		this.requestUrlData = requestUrlData;
 	}
+
 	public boolean isCreateontext() {
 		return createContext;
 	}
@@ -149,15 +154,18 @@ public class ViewForward{
 	public void setErrorPage(String errorPage) {
 		this.errorPage = errorPage;
 	}
-	public void putData(String key,Object value){
+
+	public void putData(String key, Object value) {
 		if (!createContext)
 			createData();
-		if(!data.containsKey(key))
+		if (!data.containsKey(key))
 			data.put(key, value);
 	}
-	public Object removeData(String key){
+
+	public Object removeData(String key) {
 		return data.remove(key);
 	}
+
 	public Map<String, Object> getData() {
 		return data;
 	}
@@ -165,12 +173,15 @@ public class ViewForward{
 	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
-	public String getHeader(String headerName){
+
+	public String getHeader(String headerName) {
 		return getRequest().getHeader(headerName);
 	}
-	public String getServiceType(){
+
+	public String getServiceType() {
 		return getRequestMapping().viewType().name();
 	}
+
 	public int paramInt(String paramname) {
 		try {
 			return Integer.parseInt(getRequest().getParameter(paramname));
@@ -285,7 +296,7 @@ public class ViewForward{
 			return defaultvalue;
 		return value;
 	}
-	
+
 	public Integer paramObjectInt(String paramname) {
 		try {
 			return Integer.parseInt(getRequest().getParameter(paramname));
@@ -293,6 +304,7 @@ public class ViewForward{
 			return null;
 		}
 	}
+
 	public Long paramObjectLong(String paramname) {
 		try {
 			return Long.parseLong(getRequest().getParameter(paramname));
@@ -300,7 +312,7 @@ public class ViewForward{
 			return null;
 		}
 	}
-	
+
 	public Short paramObjectShort(String paramname) {
 		try {
 			return Short.parseShort(getRequest().getParameter(paramname));
@@ -308,7 +320,7 @@ public class ViewForward{
 			return null;
 		}
 	}
-	
+
 	public Byte paramObjectByte(String paramname) {
 		try {
 			return Byte.parseByte(getRequest().getParameter(paramname));
@@ -316,6 +328,7 @@ public class ViewForward{
 			return null;
 		}
 	}
+
 	public Float paramObjectFloat(String paramname) {
 		try {
 			return Float.parseFloat(getRequest().getParameter(paramname));
@@ -323,6 +336,7 @@ public class ViewForward{
 			return null;
 		}
 	}
+
 	public Double paramObjectDouble(String paramname) {
 		try {
 			return Double.parseDouble(getRequest().getParameter(paramname));
@@ -330,6 +344,7 @@ public class ViewForward{
 			return null;
 		}
 	}
+
 	public Boolean paramObjectBoolean(String paramname) {
 		try {
 			return Boolean.parseBoolean(getRequest().getParameter(paramname));
@@ -337,29 +352,35 @@ public class ViewForward{
 			return null;
 		}
 	}
+
 	public String[] paramValues(String paramname) {
 		return getRequest().getParameterValues(paramname);
 	}
-	
+
 	public Map<String, String[]> paramMaps() {
 		return getRequest().getParameterMap();
 	}
+
 	public List<UploadFile> paramFiles(String paramname) {
 		return null;
 	}
+
 	public UploadFile paramFile(String paramname) {
 		return null;
 	}
+
 	public String getParamsVariable(String key) {
-		return paramsVariable!=null?paramsVariable.get(key):null;
+		return paramsVariable != null ? paramsVariable.get(key) : null;
 	}
-	
+
 	public void setParamsVariable(Map<String, String> paramsVariable) {
 		this.paramsVariable = paramsVariable;
 	}
-	
+
 	public void release() {
-		if(data!=null)data.clear();
-		if(paramsVariable!=null)paramsVariable.clear();
+		if (data != null)
+			data.clear();
+		if (paramsVariable != null)
+			paramsVariable.clear();
 	}
 }
