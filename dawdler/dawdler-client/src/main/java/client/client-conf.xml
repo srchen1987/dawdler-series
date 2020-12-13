@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-<load-url>D:\load</load-url><!-- 加载类目录，可以不配置 默认在temp下 -->
 <zk_host>localhost:2181</zk_host><!-- zookeeeper的地址 目前只支持zk-->
 <certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath><!-- 身份验证 公钥路径 -->
 

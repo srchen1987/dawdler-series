@@ -226,7 +226,6 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 			}
 			String ae = request.getHeader("accept-encoding");
 			if (ae != null && ae.indexOf("gzip") != -1) {
-
 				OutputStreamWriter ow = new OutputStreamWriter(new GZIPOutputStream(response.getOutputStream()),
 						"UTF-8");
 				out = new PrintWriter(ow);
@@ -235,11 +234,11 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 				out = response.getWriter();
 			}
 			template.merge(context, out);
+			out.flush();
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
 			if (out != null) {
-				out.flush();
 				out.close();
 			}
 		}
