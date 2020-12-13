@@ -208,7 +208,6 @@ function IDCard(IDCard) {
 			valnum = arrCh[nTemp % 11];
 			if (valnum != num.substr(17, 1)) {
 				return '18位身份证的校验码不正确！应该为：' + valnum;
-				return false;
 			}
 			return true;
 		}

@@ -140,6 +140,7 @@ public class DawdlerServer {
 					try {
 						if (br != null)
 							br.close();
+						if(socket != null)
 						socket.close();
 					} catch (IOException e) {
 					}
@@ -147,12 +148,10 @@ public class DawdlerServer {
 			}
 		} catch (IOException e) {
 			logger.error("", e);
-		} finally {
-			if (closed) {
-				try {
-					sk.close();
-				} catch (IOException e) {
-				}
+		}finally {
+			try {
+				sk.close();
+			} catch (IOException e) {
 			}
 		}
 	}
