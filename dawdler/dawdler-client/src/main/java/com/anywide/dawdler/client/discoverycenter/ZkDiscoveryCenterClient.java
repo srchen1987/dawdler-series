@@ -86,7 +86,7 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 				}
 			}
 		});
-
+		curatorCache.start();
 //		treeCache.getListenable().addListener(new TreeCacheListener() {//老版本 被CuratorCacheListener 替代
 //			@Override
 //			public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception {
