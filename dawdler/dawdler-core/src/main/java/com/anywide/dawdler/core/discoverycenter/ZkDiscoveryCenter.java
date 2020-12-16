@@ -16,7 +16,12 @@
  */
 package com.anywide.dawdler.core.discoverycenter;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -41,7 +46,7 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	protected String connectString;
 	protected String user;
 	protected String password;
-
+	private AtomicBoolean destroyed = new AtomicBoolean();
 	public ZkDiscoveryCenter(String connectString, String user, String password) {
 		this.connectString = connectString;
 		this.user = user;
@@ -60,10 +65,13 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public void destroy() {
-		if (curatorCache != null)
-			curatorCache.close();
-		client.close();
+		if(destroyed.compareAndSet(false, true)) {
+			if (curatorCache != null)
+				curatorCache.close();
+			client.close();
+		}
 	}
+	
 
 	@Override
 	public List<String> getServiceList(String path) throws Exception {

@@ -36,6 +36,7 @@ import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
  */
 public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 	private static Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);
+
 	public ZkDiscoveryCenterClient(String connectString, String user, String password) {
 		super(connectString, user, password);
 		try {
@@ -45,17 +46,32 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 		}
 	}
 
-
 	private void initListener() throws Exception {
 		curatorCache = CuratorCache.builder(client, ROOTPATH).build();
 
 		curatorCache.listenable().addListener(new CuratorCacheListener() {
 			@Override
 			public void event(Type type, ChildData oldData, ChildData data) {
-				if (data != null) {
-					String[] gidAndProvider = data.getPath().split("/");
-					String gid = null;
-					String provider = null;
+				String gid = null;
+				String provider = null;
+				String action = null;
+				ChildData handleData = null;
+				switch (type) {
+				case NODE_CREATED: {
+					action = "add";
+					handleData = data;
+					break;
+				}
+				case NODE_DELETED: {
+					action = "del";
+					handleData = oldData;
+					break;
+				}
+				default:
+					break;
+				}
+				if (handleData != null) {
+					String[] gidAndProvider = handleData.getPath().split("/");
 					if (gidAndProvider.length == 4) {
 						gid = gidAndProvider[2];
 						provider = gidAndProvider[3];
@@ -63,25 +79,10 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 					if (gid == null)
 						return;
 
-					switch (type) {
-					case NODE_CREATED: {
-						logger.info(gid + " add " + provider);
-						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-						if (cp != null)
-							cp.doChange(gid, "add", provider);
-						break;
-					}
-					case NODE_DELETED: {
-						logger.info("remove " + provider);
-						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-						if (cp != null) {
-							cp.doChange(gid, "del", provider);
-						}
-						break;
-					}
-					default:
-						break;
-					}
+					logger.info(gid + " " + action + " " + provider);
+					ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
+					if (cp != null)
+						cp.doChange(gid, action, provider);
 //			}
 				}
 			}

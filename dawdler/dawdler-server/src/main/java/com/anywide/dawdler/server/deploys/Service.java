@@ -35,6 +35,8 @@ public interface Service {
 
 	public void stop();
 
+	public void prepareStop();
+	
 	public ServicesBean getServiesBean(String name);
 
 	public ServicesBean getServiesBeanNoSafe(String name);

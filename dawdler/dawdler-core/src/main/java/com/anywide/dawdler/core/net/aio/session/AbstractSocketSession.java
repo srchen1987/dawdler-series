@@ -147,7 +147,7 @@ public abstract class AbstractSocketSession {
 		this(channel, true);
 	}
 
-	public final static int CAPACITY = 1024 * 16;
+	public final static int CAPACITY = 1024 * 64;
 
 	public void init() throws IOException {
 		remoteAddress = channel.getRemoteAddress();

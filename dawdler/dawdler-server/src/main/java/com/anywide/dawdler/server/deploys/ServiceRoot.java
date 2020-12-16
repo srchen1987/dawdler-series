@@ -109,10 +109,12 @@ public class ServiceRoot {
 							long serviceEnd = JVMTimeProvider.currentTimeMillis();
 							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
 						} catch (Exception e) {
-							Service service = services.remove(deployName);
-							service.stop();
 							logger.error("", e);
 							System.out.println(deployName + " startup failed!");
+							Service service = services.remove(deployName);
+							service.prepareStop();
+							service.stop();
+							
 						}
 					});
 				}
@@ -129,7 +131,14 @@ public class ServiceRoot {
 					+ dawdlerServerContext.getServerConfig().getServer().getTcpPort() + "!");
 		}
 	}
+	
+	public void prepareDestroyedApplication() {
+		services.values().forEach(v -> {
+			v.prepareStop();
+		});
+	}
 
+	
 	public void destroyedApplication() {
 		services.values().forEach(v -> {
 			v.stop();
