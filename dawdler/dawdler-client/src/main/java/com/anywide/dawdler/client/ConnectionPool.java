@@ -216,8 +216,8 @@ public class ConnectionPool {
 	}
 
 	public class CircularQueue<T> {
-		private Node<T> first;
-		private Node<T> currentNode;
+		private volatile Node<T> first;
+		private volatile Node<T> currentNode;
 
 		public void add(T value) {
 			Lock lock = rwlock.writeLock();
@@ -330,7 +330,12 @@ public class ConnectionPool {
 				lock.lock();
 				boolean exist = currentNode != null;
 				if (exist) {
-					Node<T> temp = currentNode.next;
+					Node<T> temp = null;
+					try {
+						temp = currentNode.next;
+					} catch (Exception e) {
+						return get();
+					}
 					currentNode = temp;
 					if (temp != null) {
 						return temp.value;

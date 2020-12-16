@@ -33,7 +33,7 @@ public class RequestWrapper extends RequestBean {
 	private static final long serialVersionUID = 2807385594696214109L;
 	private SocketSession session;
 	private RequestBean request;
-	private int timeout;
+	private int timeout=-1;
 
 	private CircuitBreaker circuitBreaker;
 	private Class proxyInterface;

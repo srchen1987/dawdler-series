@@ -26,14 +26,14 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
@@ -58,20 +58,19 @@ public class DawdlerServer {
 	private AsynchronousChannelGroup asynchronousChannelGroup;
 	private DawdlerServerContext dawdlerServerContext;
 	private static AtomicBoolean started = new AtomicBoolean();
-
+	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
+	
 	public DawdlerServer(ServerConfig serverConfig) throws IOException {
 		dawdlerServerContext = new DawdlerServerContext(serverConfig);
-		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(
-				Executors.newFixedThreadPool((Runtime.getRuntime().availableProcessors() * 2 + 1), (r) -> {
-					Thread thread = new Thread(r, "dawdler-Server-acceptor#" + (TNUMBER.incrementAndGet()));
-					thread.setDaemon(true);
-					return thread;
-				}));
+		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool
+		        (Runtime.getRuntime().availableProcessors() * 2,
+		        		dawdlerForkJoinWorkerThreadFactory ,
+		         null, true));
 		Server server = serverConfig.getServer();
 		int port = server.getTcpPort();
 		int backlog = server.getTcpBacklog();
 		String host = server.getHost();
-		serverChannel = AsynchronousServerSocketChannel.open(asynchronousChannelGroup);
+		serverChannel = AsynchronousServerSocketChannel.open();
 		String addressString = NetworkUtil.getInetAddress(host);
 		if (addressString == null) {
 			throw new UnknownHostException("server-conf.xml server host :  " + server.getHost());
@@ -81,6 +80,20 @@ public class DawdlerServer {
 		InetSocketAddress address = new InetSocketAddress(addressString, port);
 		serverChannel.bind(address, backlog);
 		dawdlerServerContext.setAsynchronousServerSocketChannel(serverChannel);
+	}
+	
+	final class DawdlerForkJoinWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
+		public final ForkJoinWorkerThread newThread(ForkJoinPool pool) {
+			ForkJoinWorkerThread thread = new DawdlerForkJoinWorkerThread(pool);
+			thread.setName("dawdler-Server-acceptor#" + (TNUMBER.incrementAndGet()));
+			return thread;
+		}
+	}
+	
+	final class DawdlerForkJoinWorkerThread extends ForkJoinWorkerThread{
+		protected DawdlerForkJoinWorkerThread(ForkJoinPool pool) {
+			super(pool);
+		}
 	}
 
 	public void await() {
@@ -194,6 +207,7 @@ public class DawdlerServer {
 
 	public void shutdown() throws IOException {
 		if (started.compareAndSet(true, false)) {
+			dawdlerServerContext.prepareDestroyedApplication();
 			ServerConnectionManager sm = ServerConnectionManager.getInstance();
 			while (sm.hasTask()) {
 //				sm.close();  
@@ -202,7 +216,6 @@ public class DawdlerServer {
 				} catch (InterruptedException e) {
 				}
 			}
-
 			dawdlerServerContext.destroyedApplication();
 			sm.closeNow();
 			DataProcessWorkerPool.getInstance().shutdown();

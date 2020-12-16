@@ -133,13 +133,13 @@ public class SocketSession extends AbstractSocketSession {
 		}
 
 	}
-
 	public void messageCmpleted() {
 		byte[] datas = getAppendData();
 		new DataProcessor(this, headData, compress, serializer, datas).run();
 		if (markClose.get() && futures.isEmpty()) {
 			close(false);
 		}
+		datas = null;
 		toPrepare();
 	}
 

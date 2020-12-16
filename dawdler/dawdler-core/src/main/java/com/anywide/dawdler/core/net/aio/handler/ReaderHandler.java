@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
+import com.anywide.dawdler.util.JVMTimeProvider;
 
 /**
  * 
@@ -47,7 +48,7 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 			session.close();
 			return;
 		}
-		session.setLastReadTime(System.currentTimeMillis());
+		session.setLastReadTime(JVMTimeProvider.currentTimeMillis());
 		if (result > 0) {
 			ByteBuffer buffer = session.getReadBuffer();
 			if (session.isReceived()) {

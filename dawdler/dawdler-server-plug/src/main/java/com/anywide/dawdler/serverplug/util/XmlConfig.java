@@ -67,7 +67,7 @@ public class XmlConfig {
 		}
 		Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote_load");
 		if (ele == null)
-			System.err.println(CONFIGPATH + "config\remote_load not found！");
+			throw new NullPointerException(CONFIGPATH + "config\remote_load not found！");
 		String path = ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
 		return path;
 	}
@@ -76,6 +76,7 @@ public class XmlConfig {
 		File file = new File(DawdlerTool.getcurrentPath() + File.separator + CONFIGPATH);
 		if (!file.exists()) {
 			logger.error("not found :" + CONFIGPATH);
+			return false;
 		}
 		if (updatetime != file.lastModified()) {
 			updatetime = file.lastModified();
