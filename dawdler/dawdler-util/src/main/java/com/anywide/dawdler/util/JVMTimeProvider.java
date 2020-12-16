@@ -40,7 +40,7 @@ public final class JVMTimeProvider {
 				}
 			}
 		});
-		daemon.setDaemon(false);
+		daemon.setDaemon(true);
 		daemon.setName("dawdler-time-tick-thread");
 		daemon.start();
 	}

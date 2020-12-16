@@ -137,7 +137,6 @@ public class DataProcessor implements Runnable {
 				throw new AuthFailedException(socketSession.getRemoteAddress() + " auth failed!");
 			datas = serializer.serialize(authResponse);
 			write();
-
 		} else
 			throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
 		datas = null;
