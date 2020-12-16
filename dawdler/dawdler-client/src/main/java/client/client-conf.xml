@@ -4,7 +4,7 @@
 <certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath><!-- 身份验证 公钥路径 -->
 
 <server-channel-group channel-group-id="defaultgroup"
- service-path="mydemo" connection-num="1"
+ service-path="services" connection-num="2"
  session-num="4" serializer="2"
  user="jackson.song" password="srchen"><!--
  channel-group-id 标识id 一般用于@RemoteService(标识id)  zookeeper里面也配置相同的结构即可

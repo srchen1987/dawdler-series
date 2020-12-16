@@ -130,17 +130,9 @@ public class SuperDAO implements BaseData {
 
 	public <T> List<T> queryListPage(String countsql, String sql, int pageon, int row, Page page, Class<T> c)
 			throws SQLException {
-//		page.rowcount = queryCount(countsql);
 		page.setRow(row);
 		page.setPageon(pageon);
 		page.setRowcountAndCompute(queryCount(countsql));
-//		if(pageon<=0)pageon=1;
-//		if(row<=0)row=1;
-		/*
-		 * page.pagecount=page.rowcount%row==0?page.rowcount/row:page.rowcount/row+1;
-		 * page.pageon=pageon<page.pagecount?pageon:page.pagecount;
-		 * if(page.pageon==0)page.pageon=1; page.row=row;
-		 */
 		if (page.getRowcount() == 0)
 			return new ArrayList<T>();
 		return basedata.queryList(sql + " limit " + ((page.getPageon() - 1) * page.getRow()) + "," + page.getRow(), c);
@@ -151,14 +143,6 @@ public class SuperDAO implements BaseData {
 		page.setRow(row);
 		page.setPageon(pageon);
 		page.setRowcountAndCompute(queryCountPrepare(countsql, values));
-
-		/*
-		 * page.rowcount = queryCountPrepare(countsql,values); if(pageon<=0)pageon=1;
-		 * if(row<=0)row=1;
-		 * page.pagecount=page.rowcount%row==0?page.rowcount/row:page.rowcount/row+1;
-		 * page.pageon=pageon<page.pagecount?pageon:page.pagecount;
-		 * if(page.pageon==0)page.pageon=1; page.row=row;
-		 */
 		if (page.getRowcount() == 0)
 			return new ArrayList<T>();
 		return basedata.queryListPrepare(sql + " limit ?,? ", c,
@@ -230,5 +214,10 @@ public class SuperDAO implements BaseData {
 	@Override
 	public <T> T queryObjectPrepare(String sql, Class<T> c, Object... values) throws SQLException {
 		return basedata.queryObjectPrepare(sql, c, values);
+	}
+	
+	public Map<String,Object> queryMapPrepare(String sql, Object... values) throws SQLException {
+		List<Map<String,Object>> list = queryListMapsPrepare(sql, values);
+		return list.isEmpty() ? null : list.get(0);
 	}
 }

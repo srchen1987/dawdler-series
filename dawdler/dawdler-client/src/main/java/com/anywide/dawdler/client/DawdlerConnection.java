@@ -34,9 +34,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -80,12 +83,11 @@ public class DawdlerConnection {
 	AsynchronousChannelGroup asynchronousChannelGroup;
 	private ScheduledExecutorService reconnectScheduled;
 	private static ConnectorHandler connectorHandler = new ConnectorHandler();
-//	private AtomicBoolean connected= new AtomicBoolean();
 	private AtomicBoolean complete = new AtomicBoolean();
 	protected Semaphore semaphore = new Semaphore(0);
 	private ReadWriteLock rwlock = new ReentrantReadWriteLock();
 	private IoHandler ioHandler = IoHandlerFactory.getHandler();
-
+	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
 	public Semaphore getSemaphore() {
 		return semaphore;
 	}
@@ -133,23 +135,36 @@ public class DawdlerConnection {
 		return host + "#ID:" + UUID.randomUUID().toString();
 	}
 
-	public DawdlerConnection(String gid/* ,String [] addresses */, String path, int serializer, int sessionNum,
+	public DawdlerConnection(String gid, String path, int serializer, int sessionNum,
 			String user, String password) throws IOException {
 		this.gid = gid;
-//		this.addresses = addresses;
 		this.path = path;
 		this.groupName = getDefaultGroupName();
 		this.sessionNum = sessionNum;
 		this.serializer = serializer;
 		this.user = user;
 		this.password = password;
-		asynchronousChannelGroup = AsynchronousChannelGroup
-				.withThreadPool(Executors.newFixedThreadPool((Runtime.getRuntime().availableProcessors() * 2),
-						(r) -> new Thread(r, "dawdler-Client-connector#" + gid + "#" + (TNUMBER.incrementAndGet()))));
+		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool
+        (Runtime.getRuntime().availableProcessors() * 2,
+        		dawdlerForkJoinWorkerThreadFactory ,
+         null, true));
 		reconnectScheduled = Executors.newScheduledThreadPool(1);
 		startReconnect();
 	}
-
+	
+	final class DawdlerForkJoinWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
+		public final ForkJoinWorkerThread newThread(ForkJoinPool pool) {
+			ForkJoinWorkerThread thread = new DawdlerForkJoinWorkerThread(pool);
+			thread.setName( "dawdler-Client-connector#" + gid + "#" + (TNUMBER.incrementAndGet()));
+			return thread;
+		}
+	}
+	
+	final class DawdlerForkJoinWorkerThread extends ForkJoinWorkerThread{
+		protected DawdlerForkJoinWorkerThread(ForkJoinPool pool) {
+			super(pool);
+		}
+	}
 	public void startReconnect() {
 		reconnectScheduled.scheduleWithFixedDelay(() -> {
 			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
@@ -256,8 +271,6 @@ public class DawdlerConnection {
 		if (address == null || address.trim().equals("")) {
 			throw new IllegalArgumentException("address can not be null or empty!");
 		}
-		String[] s = address.split(":");
-
 		int index = address.lastIndexOf(":");
 		if (index <= 0) {
 			throw new IllegalArgumentException("address[" + address + "] is not a compliant rule!");

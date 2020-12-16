@@ -15,12 +15,12 @@ import com.anywide.dawdler.serverplug.util.XmlConfig;
 @Order(Integer.MAX_VALUE)
 public class StartupProviderListener implements DawdlerServiceListener {
 	private static Logger logger = LoggerFactory.getLogger(StartupProviderListener.class);
-	private DiscoveryCenter zkDiscoveryCenter;
+	private DiscoveryCenter discoveryCenter;
 
 	@Override
 	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
-		if (zkDiscoveryCenter != null)
-			zkDiscoveryCenter.destroy();
+		if(discoveryCenter != null)
+			discoveryCenter.destroy();
 	}
 
 	@Override
@@ -34,10 +34,11 @@ public class StartupProviderListener implements DawdlerServiceListener {
 					channelGroup = "defaultgroup";
 				if (url == null)
 					throw new NullPointerException("zk url can't be null!");
-				zkDiscoveryCenter = new ZkDiscoveryCenter(url, null, null);
-				zkDiscoveryCenter.init();
+				discoveryCenter = new ZkDiscoveryCenter(url, null, null);
+				discoveryCenter.init();
 				String path = channelGroup + "/" + dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-				zkDiscoveryCenter.addProvider(path, dawdlerContext.getHost() + ":" + dawdlerContext.getPort());
+				discoveryCenter.addProvider(path, dawdlerContext.getHost() + ":" + dawdlerContext.getPort());
+				dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
 			}
 		} else {
 			logger.error("not find discoveryServer config!");

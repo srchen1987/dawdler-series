@@ -20,13 +20,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,10 +68,7 @@ public class ReadClass {
 				createXmlObjectByFile(root, file, pack, host, isbean);
 			}
 			return xmlo;
-		} catch (DocumentException e) {
-			logger.error("", e);
-			return null;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("", e);
 			return null;
 		}
@@ -89,7 +84,6 @@ public class ReadClass {
 			if (match.find()) {
 				File f = new File(file.getPath() + File.separator + s);
 				Element item = hostele.addElement("item");
-				// item.addAttribute("name",fs.getAbsolutePath());
 				item.addAttribute("name", match.group(1).toLowerCase());
 				item.addAttribute("checkname", fs.getAbsolutePath().replace(DawdlerTool.getcurrentPath(), ""));
 				item.addAttribute("package", pack);
@@ -111,7 +105,13 @@ public class ReadClass {
 				if (file.exists()) {
 					RemoteFile rf = new RemoteFiles().new RemoteFile();
 					rf.setFilename(name);
-					InputStream in = new FileInputStream(file);
+					InputStream in = null;
+					try {
+						in = new FileInputStream(file);
+					} catch (FileNotFoundException e) {
+						logger.error("", e);
+						throw e;
+					}
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					byte[] tempbytes = new byte[1024];
 					int tempsize;
@@ -128,7 +128,6 @@ public class ReadClass {
 					} finally {
 						try {
 							in.close();
-							baos.close();
 						} catch (Exception e) {
 							logger.error("", e);
 						}

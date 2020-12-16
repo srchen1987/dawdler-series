@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.core.annotation.ListenerConfig;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.annotation.RemoteService;
+import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
@@ -83,7 +84,7 @@ public class ServiceBase implements Service {
 			dawdlerContext.setAttribute(ASPECTSUPPORTMETHOD, preProcessMethod);
 			dawdlerContext.setAttribute(ASPECTSUPPORTOBJ, obj);
 		} catch (Exception e) {
-
+			
 		}
 		classLoader.setDawdlerContext(dawdlerContext);
 		Thread.currentThread().setContextClassLoader(classLoader);
@@ -193,6 +194,18 @@ public class ServiceBase implements Service {
 
 	public FilterProvider getFilterProvider() {
 		return filterProvider;
+	}
+	
+	@Override
+	public void prepareStop() {
+		DiscoveryCenter discoveryCenter = (DiscoveryCenter) dawdlerContext.getAttribute(DiscoveryCenter.class);
+		if(discoveryCenter != null) {
+			try {
+				discoveryCenter.destroy();
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+		}
 	}
 
 	@Override
