@@ -25,12 +25,13 @@ import java.util.concurrent.TimeUnit;
  */
 public final class JVMTimeProvider {
 	private static volatile long currentTimeMillis;
+	private static volatile boolean stop = false;
 	static {
 		currentTimeMillis = System.currentTimeMillis();
 		Thread daemon = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (true) {
+				while (!stop) {
 					currentTimeMillis = System.currentTimeMillis();
 					try {
 						TimeUnit.MILLISECONDS.sleep(1);
@@ -44,12 +45,16 @@ public final class JVMTimeProvider {
 		daemon.setName("dawdler-time-tick-thread");
 		daemon.start();
 	}
+	
+	public static void stop() {
+		stop = true;
+	}
 
 	public static long currentTimeMillis() {
 		return currentTimeMillis;
 	}
 
-	public static long currentTimeSeconds() {
-		return (currentTimeMillis / 1000);
+	public static int currentTimeSeconds() {
+		return (int) (currentTimeMillis / 1000);
 	}
 }
