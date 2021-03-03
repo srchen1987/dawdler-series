@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.util;
-import java.lang.reflect.Constructor;
+//import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
-import sun.reflect.ReflectionFactory;
+import java.util.HashMap;
+//import sun.reflect.ReflectionFactory;
 /**
  * 
  * @Title:  SunReflectionFactoryInstantiator.java
@@ -30,18 +30,21 @@ import sun.reflect.ReflectionFactory;
  */
 public class SunReflectionFactoryInstantiator {
 
-	private static final ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
+//	private static final ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
 
-	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Constructor javaLangObjectConstructor;
-		try {
-			javaLangObjectConstructor = Object.class.getConstructor((Class[]) null);
-		} catch (NoSuchMethodException e) {
-			throw new Error("Cannot find constructor for java.lang.Object!");
-		}
-		Constructor  mungedConstructor = reflectionFactory.newConstructorForSerialization(
-				type, javaLangObjectConstructor);
-		mungedConstructor.setAccessible(true);
-		return (T) mungedConstructor.newInstance(null);
+//	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+//		Constructor javaLangObjectConstructor;
+//		try {
+//			javaLangObjectConstructor = Object.class.getConstructor((Class[]) null);
+//		} catch (NoSuchMethodException e) {
+//			throw new Error("Cannot find constructor for java.lang.Object!");
+//		}
+//		Constructor  mungedConstructor = reflectionFactory.newConstructorForSerialization(
+//				type, javaLangObjectConstructor);
+//		mungedConstructor.setAccessible(true);
+//		return (T) mungedConstructor.newInstance(null);
+//	}
+	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException  {
+		return (T)type.getConstructor(null).newInstance(null);
 	}
 }

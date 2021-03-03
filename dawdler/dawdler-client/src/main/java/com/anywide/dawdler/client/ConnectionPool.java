@@ -78,7 +78,6 @@ public class ConnectionPool {
 					}
 					initConnection(gid);
 				}
-
 			}
 		} catch (Exception e) {
 			logger.error("", e);
@@ -87,10 +86,10 @@ public class ConnectionPool {
 	}
 
 	public static void initConnection(String gid) {
-		ConnectionPool cp = getConnectionPool(gid);
 		ServerChannelGroup sg = serverChannelGroup.get(gid);
 		if (sg == null)
 			throw new NullPointerException("not configure " + gid + "!");
+		ConnectionPool cp = getConnectionPool(gid);
 		String path = sg.getPath();
 		String user = sg.getUser();
 		String password = sg.getPassword();
@@ -178,7 +177,7 @@ public class ConnectionPool {
 	public void addConnection(String gid, String ipaddress) {
 		if (cq.first == null) {
 			initConnection(gid);
-		}
+		}  
 		cq.addConnection(ipaddress);
 	}
 

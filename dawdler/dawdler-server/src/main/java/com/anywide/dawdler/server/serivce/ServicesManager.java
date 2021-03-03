@@ -18,11 +18,9 @@ package com.anywide.dawdler.server.serivce;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
@@ -92,7 +90,7 @@ public class ServicesManager {
 	}
 
 	public void smartRegister(Class<?> service)
-			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		if (service == null) {
 			throw new IllegalAccessException("service can't null!");
 		}

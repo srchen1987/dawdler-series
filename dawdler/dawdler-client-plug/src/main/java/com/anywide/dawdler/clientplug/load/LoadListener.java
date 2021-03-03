@@ -30,11 +30,14 @@ import javax.servlet.annotation.WebListener;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.client.ConnectionPool;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFireHolder;
 import com.anywide.dawdler.clientplug.web.WebControllerClassLoaderFire;
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
 import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.XmlObject;
 
 /**
@@ -67,6 +70,12 @@ public class LoadListener implements ServletContextListener {
 			if (file.exists())
 				file.delete();
 		}
+		try {
+			ConnectionPool.shutdown();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		JVMTimeProvider.stop();
 		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
 	}
 
