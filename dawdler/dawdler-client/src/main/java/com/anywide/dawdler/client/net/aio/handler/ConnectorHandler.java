@@ -26,7 +26,6 @@ import com.anywide.dawdler.core.bean.AuthRequestBean;
 import com.anywide.dawdler.core.handler.IoHandler;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.aio.handler.ReaderHandler;
-import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
 import com.anywide.dawdler.util.CertificateOperator;
 
 /**
@@ -79,5 +78,6 @@ public class ConnectorHandler implements CompletionHandler<Void, SocketSession> 
 		} catch (Exception e) {
 			logger.error("", e);
 		}
+		logger.error("", exc);
 	}
 }
