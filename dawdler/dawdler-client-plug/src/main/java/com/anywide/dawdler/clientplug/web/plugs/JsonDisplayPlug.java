@@ -49,8 +49,8 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 		if (wf.getInvokeException() != null) {
 			logger.error("", wf.getInvokeException());
 			response.setStatus(500);
-			wf.putData("status", 500);
-			wf.putData("message", "Internal Server Error.");
+			wf.putData("success", true);
+			wf.putData("msg", "Internal Server Error.");
 			print(response, JsonProcessUtil.beanToJson(wf.getData()));
 			return;
 		}
@@ -59,7 +59,7 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 			json = JsonProcessUtil.beanToJson(wf.getData());
 			break;
 		case ERROR:
-			wf.putData("message", "Internal Server Error!");
+			wf.putData("msg", "Internal Server Error!");
 			json = JsonProcessUtil.beanToJson(wf.getData());
 			break;
 		case REDIRECT:
@@ -71,7 +71,6 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 		}
 		if (json != null)
 			print(response, json);
-//		Map map = fw.getData();
 	}
 
 	private void print(HttpServletResponse response, String message) {

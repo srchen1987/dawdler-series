@@ -82,7 +82,7 @@ public class ServicesBean {
 				notify(obj, DawdlerContext.getDawdlerContext());
 				return obj;
 			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException | SecurityException e) {
+					| InvocationTargetException | SecurityException | NoSuchMethodException e) {
 				logger.error("", e);
 			}
 

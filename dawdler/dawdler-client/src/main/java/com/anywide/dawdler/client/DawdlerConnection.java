@@ -217,7 +217,7 @@ public class DawdlerConnection {
 			if (client != null) {
 				client.connect(address, socketSession, connectorHandler);
 				try {
-					socketSession.getInitLatch().await();
+					socketSession.getInitLatch().await(5, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
 					logger.error("", e);
 				}

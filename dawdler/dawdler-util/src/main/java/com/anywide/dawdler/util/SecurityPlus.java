@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.util;
 import java.security.Key;
-import java.security.Security;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.crypto.Cipher;
 
@@ -81,7 +80,6 @@ public class SecurityPlus {
 	}
 
 	private SecurityPlus(String strKey) throws Exception {
-		Security.addProvider(new com.sun.crypto.provider.SunJCE());
 		Key key = getKey(strKey.getBytes());
 		encryptCipher = Cipher.getInstance("DES");
 		encryptCipher.init(Cipher.ENCRYPT_MODE, key);
@@ -106,15 +104,10 @@ public class SecurityPlus {
 	}
 
 	private Key getKey(byte[] arrBTmp) throws Exception {
-		// 创建一个空的8位字节数组（默认值为0）
 		byte[] arrB = new byte[8];
-
-		// 将原始字节数组转换为8位
 		for (int i = 0; i < arrBTmp.length && i < arrB.length; i++) {
 			arrB[i] = arrBTmp[i];
 		}
-
-		// 生成密钥
 		Key key = new javax.crypto.spec.SecretKeySpec(arrB, "DES");
 		return key;
 	}
