@@ -17,32 +17,31 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: DateRuleOperator.java
- * @Description: 日期验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DateRuleOperator.java
+ * @Description 日期验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class DateRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "date";
-	public static final String REGEX = "^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
-	public static final String EXPLAIN = "日期验证";
+    public static final String RULEKEY = "date";
+    public static final String REGEX = "^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
+    public static final String EXPLAIN = "日期验证";
 
-	public DateRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
-	}
+    public DateRuleOperator() {
+        super(RULEKEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
-	@Override
-	public String validate(Object value) {
-		return super.validate(value, "请输入日期格式!");
-	}
+    @Override
+    public String validate(Object value) {
+        return super.validate(value, "请输入日期格式!");
+    }
 
 }

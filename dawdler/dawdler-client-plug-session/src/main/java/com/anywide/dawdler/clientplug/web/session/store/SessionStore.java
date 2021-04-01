@@ -16,28 +16,25 @@
  */
 package com.anywide.dawdler.clientplug.web.session.store;
 
-import java.util.HashMap;
-import java.util.Map;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 
+import java.util.Map;
+
 /**
- * 
- * @ClassName: SessionStore
- * @Description: session存储抽象接口（补充注释）
  * @author jackson.song
+ * @Title SessionStore.java
+ * @Description session存储抽象接口（补充注释）
  * @date 2020年12月12日 下午2:58:30
- *
  */
 public interface SessionStore {
 
-	public void saveSession(DawdlerHttpSession session) throws Exception;
+    void saveSession(DawdlerHttpSession session) throws Exception;
 
-	public Map<byte[], byte[]> getAttributes(String sessionKey) throws Exception;
+    Map<byte[], byte[]> getAttributes(String sessionKey) throws Exception;
 
-	public byte[] getAttribute(String sessionKey, String attribute) throws Exception;
+    byte[] getAttribute(String sessionKey, String attribute) throws Exception;
 
-	public void removeSession(String sessionKey) throws Exception;
+    void removeSession(String sessionKey) throws Exception;
 
-	static Map<String, SessionStore> sessionStores = new HashMap<>();
 
 }

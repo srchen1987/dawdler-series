@@ -19,43 +19,42 @@ package com.anywide.dawdler.clientplug.dynamicform.control;
 import com.anywide.dawdler.clientplug.velocity.ControlTag;
 
 /**
- * 
- * @Title: TextareaControl.java
- * @Description: 文本域的实现
- * @author: jackson.song
- * @date: 2006年08月10日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title TextareaControl.java
+ * @Description 文本域的实现
+ * @date 2006年08月10日
+ * @email suxuan696@gmail.com
  */
 public class TextareaControl extends Control {
-	protected TextareaControl(ControlTag tag) {
-		super(tag);
-	}
+    protected TextareaControl(ControlTag tag) {
+        super(tag);
+    }
 
-	@Override
-	protected String replaceContent() {
-		String controlname = tag.getControlname();
-		String controltype = tag.getControltype();
-		String css = tag.getCss();
-		String viewname = tag.getViewname();
-		String validaterule = tag.getValidaterule();
-		String value = tag.getValue();
-		String additional = tag.getAdditional();
-		StringBuffer sb = new StringBuffer(128);
-		sb.append(ControlContent.TEXTAREASTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
-				.replace(ControlContent.CONTROLTYPEREPLACE, controltype)
-				.replace(ControlContent.VIEWNAMEREPLACE, viewname));
-		if (css != null && !css.trim().equals(""))
-			sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
-		if (validaterule != null && !validaterule.trim().equals(""))
-			sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validaterule));
-		if (additional != null)
-			sb.append(" " + additional);
-		sb.append(">");
-		if (value != null && !value.trim().equals(""))
-			sb.append(value);
-		sb.append(ControlContent.TEXTAREAOVER);
-		return sb.toString();
-	}
+    @Override
+    protected String replaceContent() {
+        String controlname = tag.getControlname();
+        String controltype = tag.getControltype();
+        String css = tag.getCss();
+        String viewname = tag.getViewname();
+        String validaterule = tag.getValidaterule();
+        String value = tag.getValue();
+        String additional = tag.getAdditional();
+        StringBuffer sb = new StringBuffer(128);
+        sb.append(ControlContent.TEXTAREASTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
+                .replace(ControlContent.CONTROLTYPEREPLACE, controltype)
+                .replace(ControlContent.VIEWNAMEREPLACE, viewname));
+        if (css != null && !css.trim().equals(""))
+            sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
+        if (validaterule != null && !validaterule.trim().equals(""))
+            sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validaterule));
+        if (additional != null)
+            sb.append(" " + additional);
+        sb.append(">");
+        if (value != null && !value.trim().equals(""))
+            sb.append(value);
+        sb.append(ControlContent.TEXTAREAOVER);
+        return sb.toString();
+    }
 
 }

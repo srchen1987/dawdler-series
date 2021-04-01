@@ -21,20 +21,19 @@ import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 
 /**
- * 
- * @Title: DefaultFilterChain.java
- * @Description: 服务器链的具体实现类
- * @author: jackson.song
- * @date: 2015年04月08日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DefaultFilterChain.java
+ * @Description 服务器链的具体实现类
+ * @date 2015年04月08日
+ * @email suxuan696@gmail.com
  */
 public class DefaultFilterChain implements FilterChain {
-	@Override
-	public void doFilter(RequestBean request, ResponseBean response) {
-		RequestWrapper rw = (RequestWrapper) request;
-		ServiceExecutor serviceExecutor = rw.getServiceExecutor();
-		serviceExecutor.execute(request, response, rw.getServices());
-	}
+    @Override
+    public void doFilter(RequestBean request, ResponseBean response) {
+        RequestWrapper rw = (RequestWrapper) request;
+        ServiceExecutor serviceExecutor = rw.getServiceExecutor();
+        serviceExecutor.execute(request, response, rw.getServices());
+    }
 
 }

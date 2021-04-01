@@ -17,32 +17,31 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: RealNumberRuleOperator.java
- * @Description: 实数验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RealNumberRuleOperator.java
+ * @Description 实数验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class RealNumberRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "realNumber";
-	public static final String REGEX = "^[-+]?\\d+(\\.\\d+)?$";
-	public static final String EXPLAIN = "实数验证";
+    public static final String RULEKEY = "realNumber";
+    public static final String REGEX = "^[-+]?\\d+(\\.\\d+)?$";
+    public static final String EXPLAIN = "实数验证";
 
-	public RealNumberRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
-	}
+    public RealNumberRuleOperator() {
+        super(RULEKEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
-	@Override
-	public String validate(Object value) {
-		return super.validate(value, "请输入实数!");
-	}
+    @Override
+    public String validate(Object value) {
+        return super.validate(value, "请输入实数!");
+    }
 
 }

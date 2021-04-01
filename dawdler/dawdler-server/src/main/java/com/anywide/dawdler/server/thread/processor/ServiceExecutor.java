@@ -21,14 +21,13 @@ import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.server.bean.ServicesBean;
 
 /**
- * 
- * @Title: ServiceExecutor.java
- * @Description: 服务处理器接口
- * @author: jackson.song
- * @date: 2015年03月12日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ServiceExecutor.java
+ * @Description 服务处理器接口
+ * @date 2015年03月12日
+ * @email suxuan696@gmail.com
  */
 public interface ServiceExecutor {
-	public void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean);
+    void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean);
 }

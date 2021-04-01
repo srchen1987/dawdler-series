@@ -19,18 +19,17 @@ package com.anywide.dawdler.core.net.buffer;
 import java.nio.ByteBuffer;
 
 /**
- * 
- * @Title: HeapBufferCreator.java
- * @Description: jvm堆内分配buffer
- * @author: jackson.song
- * @date: 2015年03月14日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title HeapBufferCreator.java
+ * @Description jvm堆内分配buffer
+ * @date 2015年03月14日
+ * @email suxuan696@gmail.com
  */
 public class HeapBufferCreator implements BufferCreator {
-	@Override
-	public ByteBuffer createByteBuffer(int capacity) {
-		return ByteBuffer.allocate(capacity);
-	}
+    @Override
+    public ByteBuffer createByteBuffer(int capacity) {
+        return ByteBuffer.allocate(capacity);
+    }
 
 }

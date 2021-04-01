@@ -19,41 +19,40 @@ package com.anywide.dawdler.serverplug.transaction;
 import com.anywide.dawdler.serverplug.annotation.DBTransaction;
 
 /**
- * 
- * @Title: JdbcReadConnectionStatus.java
- * @Description: 数据库读连接的状态存储类
- * @author: jackson.song
- * @date: 2015年09月28日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title JdbcReadConnectionStatus.java
+ * @Description 数据库读连接的状态存储类
+ * @date 2015年09月28日
+ * @email suxuan696@gmail.com
  */
 public class JdbcReadConnectionStatus {
-	private int timeOut;
-	private ReadConnectionHolder currentConn;
-	private ReadConnectionHolder oldConn;
+    private final int timeOut;
+    private ReadConnectionHolder currentConn;
+    private ReadConnectionHolder oldConn;
 
-	public JdbcReadConnectionStatus(DBTransaction dBTransaction) {
-		timeOut = dBTransaction.timeOut();
-	}
+    public JdbcReadConnectionStatus(DBTransaction dBTransaction) {
+        timeOut = dBTransaction.timeOut();
+    }
 
-	public int getTimeOut() {
-		return timeOut;
-	}
+    public int getTimeOut() {
+        return timeOut;
+    }
 
-	public ReadConnectionHolder getCurrentConn() {
-		return currentConn;
-	}
+    public ReadConnectionHolder getCurrentConn() {
+        return currentConn;
+    }
 
-	public void setCurrentConn(ReadConnectionHolder currentConn) {
-		this.currentConn = currentConn;
-	}
+    public void setCurrentConn(ReadConnectionHolder currentConn) {
+        this.currentConn = currentConn;
+    }
 
-	public ReadConnectionHolder getOldConn() {
-		return oldConn;
-	}
+    public ReadConnectionHolder getOldConn() {
+        return oldConn;
+    }
 
-	public void setOldConn(ReadConnectionHolder oldConn) {
-		this.oldConn = oldConn;
-	}
+    public void setOldConn(ReadConnectionHolder oldConn) {
+        this.oldConn = oldConn;
+    }
 
 }

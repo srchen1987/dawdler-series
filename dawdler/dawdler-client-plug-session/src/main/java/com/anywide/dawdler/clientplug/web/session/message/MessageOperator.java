@@ -15,21 +15,21 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.session.message;
+
 /**
- * 
- * @Title:  MessageOperator.java
- * @Description:  消息操作者
- * @author: jackson.song    
- * @date:   2016年6月16日  
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title MessageOperator.java
+ * @Description 消息操作者
+ * @date 2016年6月16日
+ * @email suxuan696@gmail.com
  */
 public interface MessageOperator {
-	
-	public void sendMessageToSet(String sessionKey, String attributeName, Object attributeValue);
-	
-	public void sendMessageToDel(String sessionKey, String attributeName);
-	
-	public void listenExpireAndDelAndChange();
-	
+
+    void sendMessageToSet(String sessionKey, String attributeName, Object attributeValue);
+
+    void sendMessageToDel(String sessionKey, String attributeName);
+
+    void listenExpireAndDelAndChange();
+
 }

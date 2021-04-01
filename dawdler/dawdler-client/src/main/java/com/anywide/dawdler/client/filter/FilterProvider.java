@@ -16,72 +16,66 @@
  */
 package com.anywide.dawdler.client.filter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ServiceLoader;
-import java.util.concurrent.atomic.AtomicBoolean;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
- * 
- * @Title: FilterProvider.java
- * @Description: 过滤器提供者
- * @author: jackson.song
- * @date: 2015年04月06日
+ * @author jackson.song
  * @version V2.0
- * @email: suxuan696@gmail.com modify 2016年05月22日
+ * @Title FilterProvider.java
+ * @Description 过滤器提供者
+ * @date 2015年04月06日
+ * @email suxuan696@gmail.com modify 2016年05月22日
  */
 public class FilterProvider {
-	public static FilterChain lastChain;
-	private static List<OrderData<DawdlerClientFilter>> filters = new ArrayList<OrderData<DawdlerClientFilter>>();
-	private static AtomicBoolean order = new AtomicBoolean(false);
-	static {
-		ServiceLoader<DawdlerClientFilter> loader = ServiceLoader.load(DawdlerClientFilter.class);
-		loader.forEach((filter) -> {
-			addFilters(filter);
-		});
-		order();
-		FilterChain chain = new DefaultFilterChain();
-		lastChain = buildChain(chain);
-	}
+    private static final List<OrderData<DawdlerClientFilter>> filters = new ArrayList<>();
+    private static final AtomicBoolean order = new AtomicBoolean(false);
+    public static FilterChain lastChain;
 
-	static void addFilters(DawdlerClientFilter filter) {
-		Order co = filter.getClass().getAnnotation(Order.class);
-		OrderData<DawdlerClientFilter> od = new OrderData<DawdlerClientFilter>();
-		od.setData(filter);
-		if (co != null) {
-			od.setOrder(co.value());
-		}
-		filters.add(od);
-	}
+    static {
+        ServiceLoader<DawdlerClientFilter> loader = ServiceLoader.load(DawdlerClientFilter.class);
+        loader.forEach(FilterProvider::addFilters);
+        order();
+        FilterChain chain = new DefaultFilterChain();
+        lastChain = buildChain(chain);
+    }
 
-	static void order() {
-		if (order.compareAndSet(false, true))
-			OrderComparator.sort(filters);
-	}
+    static void addFilters(DawdlerClientFilter filter) {
+        Order co = filter.getClass().getAnnotation(Order.class);
+        OrderData<DawdlerClientFilter> od = new OrderData<>();
+        od.setData(filter);
+        if (co != null) {
+            od.setOrder(co.value());
+        }
+        filters.add(od);
+    }
 
-	static FilterChain buildChain(final FilterChain chain) {
-		FilterChain last = chain;
-		if (filters.size() > 0) {
-			for (int i = filters.size() - 1; i >= 0; i--) {
-				final DawdlerClientFilter filter = filters.get(i).getData();
-				final FilterChain next = last;
-				last = new FilterChain() {
-					@Override
-					public Object doFilter(RequestBean request) throws Exception {
-						return filter.doFilter(request, next);
-					}
-				};
-			}
-		}
-		return last;
-	}
+    static void order() {
+        if (order.compareAndSet(false, true))
+            OrderComparator.sort(filters);
+    }
 
-	public static Object doFilter(RequestBean request) throws Exception {
-		return lastChain.doFilter(request);
-	}
+    static FilterChain buildChain(final FilterChain chain) {
+        FilterChain last = chain;
+        if (filters.size() > 0) {
+            for (int i = filters.size() - 1; i >= 0; i--) {
+                final DawdlerClientFilter filter = filters.get(i).getData();
+                final FilterChain next = last;
+                last = request -> filter.doFilter(request, next);
+            }
+        }
+        return last;
+    }
+
+    public static Object doFilter(RequestBean request) throws Exception {
+        return lastChain.doFilter(request);
+    }
 
 }

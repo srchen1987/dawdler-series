@@ -16,9 +16,6 @@
  */
 package com.anywide.dawdler.client;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 import com.anywide.dawdler.client.filter.FilterProvider;
 import com.anywide.dawdler.client.filter.RequestWrapper;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
@@ -26,178 +23,184 @@ import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.thread.InvokeFuture;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 /**
- * 
- * @Title: Transaction.java
- * @Description: 客户端调用服务器端的行为，不考虑异步
- * @author: jackson.song
- * @date: 2008年03月13日
+ * @author jackson.song
  * @version V2.0
- * @email: suxuan696@gmail.com modify 2015年03月22日 脱离jboss 采用自有容器
+ * @Title Transaction.java
+ * @Description 客户端调用服务器端的行为，不考虑异步
+ * @date 2008年03月13日
+ * @email suxuan696@gmail.com modify 2015年03月22日 脱离jboss 采用自有容器
  */
 public class Transaction {
-	private String serviceName;
-	private String method;
-	private int serializer;
-	private boolean fuzzy;
-	private boolean single = true;
-	private int timeout = 15;
-	private List<Class> types = new ArrayList();
-	private List values = new ArrayList();
-	private DawdlerConnection con;
-	private CircuitBreaker circuitBreaker;
-	private Class proxyInterface;
+    private final List<Class> types = new ArrayList<>();
+    private final List values = new ArrayList<>();
+    private final DawdlerConnection con;
+    private String serviceName;
+    private String method;
+    private int serializer;
+    private boolean fuzzy;
+    private boolean single = true;
+    private int timeout = 15;
+    private CircuitBreaker circuitBreaker;
+    private Class proxyInterface;
 
-	public Class getProxyInterface() {
-		return proxyInterface;
-	}
+    public Transaction(DawdlerConnection con) {
+        this.serializer = con.getSerializer();
+        this.con = con;
+    }
 
-	public void setProxyInterface(Class proxyInterface) {
-		this.proxyInterface = proxyInterface;
-	}
+    public Class getProxyInterface() {
+        return proxyInterface;
+    }
 
-	public void setCircuitBreaker(CircuitBreaker circuitBreaker) {
-		this.circuitBreaker = circuitBreaker;
-	}
+    public void setProxyInterface(Class proxyInterface) {
+        this.proxyInterface = proxyInterface;
+    }
 
-	public Transaction(DawdlerConnection con) {
-		this.serializer = con.getSerializer();
-		this.con = con;
-	}
+    public void setCircuitBreaker(CircuitBreaker circuitBreaker) {
+        this.circuitBreaker = circuitBreaker;
+    }
 
-	public int getSerializer() {
-		return serializer;
-	}
+    public int getSerializer() {
+        return serializer;
+    }
 
-	public void setSerializer(int serializer) {
-		this.serializer = serializer;
-	}
+    public void setSerializer(int serializer) {
+        this.serializer = serializer;
+    }
 
-	public String getServiceName() {
-		return serviceName;
-	}
+    public void setSingle(boolean single) {
+        this.single = single;
+    }
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
-	}
+    public String getServiceName() {
+        return serviceName;
+    }
 
-	public String getMethod() {
-		return method;
-	}
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
 
-	public void setMethod(String method) {
-		this.method = method;
-	}
+    public String getMethod() {
+        return method;
+    }
 
-	public <T extends Object> void addParam(Class<T> type, T value) {
-		types.add(type);
-		values.add(value);
-	}
+    public void setMethod(String method) {
+        this.method = method;
+    }
 
-	void addObjectParam(Class type, Object value) {
-		types.add(type);
-		values.add(value);
-	}
+    public <T extends Object> void addParam(Class<T> type, T value) {
+        types.add(type);
+        values.add(value);
+    }
 
-	public void addString(String value) {
-		types.add(String.class);
-		values.add(value);
-	}
+    void addObjectParam(Class type, Object value) {
+        types.add(type);
+        values.add(value);
+    }
 
-	public void addLong(long value) {
-		types.add(long.class);
-		values.add(value);
-	}
+    public void addString(String value) {
+        types.add(String.class);
+        values.add(value);
+    }
 
-	public void addInt(int value) {
-		types.add(int.class);
-		values.add(value);
-	}
+    public void addLong(long value) {
+        types.add(long.class);
+        values.add(value);
+    }
 
-	public void addShort(short value) {
-		types.add(short.class);
-		values.add(value);
-	}
+    public void addInt(int value) {
+        types.add(int.class);
+        values.add(value);
+    }
 
-	public void addByte(byte value) {
-		types.add(byte.class);
-		values.add(value);
-	}
+    public void addShort(short value) {
+        types.add(short.class);
+        values.add(value);
+    }
 
-	public void addChar(char value) {
-		types.add(char.class);
-		values.add(value);
-	}
+    public void addByte(byte value) {
+        types.add(byte.class);
+        values.add(value);
+    }
 
-	public void addBoolean(boolean value) {
-		types.add(boolean.class);
-		values.add(value);
-	}
+    public void addChar(char value) {
+        types.add(char.class);
+        values.add(value);
+    }
 
-	public void addDouble(double value) {
-		types.add(double.class);
-		values.add(value);
-	}
+    public void addBoolean(boolean value) {
+        types.add(boolean.class);
+        values.add(value);
+    }
 
-	public void addFloat(float value) {
-		types.add(float.class);
-		values.add(value);
-	}
+    public void addDouble(double value) {
+        types.add(double.class);
+        values.add(value);
+    }
 
-	public void addObject(Object value) {
-		types.add(value.getClass());
-		values.add(value);
-	}
+    public void addFloat(float value) {
+        types.add(float.class);
+        values.add(value);
+    }
 
-	public void setFuzzy(boolean fuzzy) {
-		this.fuzzy = fuzzy;
-	}
+    public void addObject(Object value) {
+        types.add(value.getClass());
+        values.add(value);
+    }
 
-	public void setTimeout(int timeout) {
-		this.timeout = timeout;
-	}
+    public void setFuzzy(boolean fuzzy) {
+        this.fuzzy = fuzzy;
+    }
 
-	public boolean execute() throws Exception {
-		Object obj = innerExecute(false);
-		if (obj instanceof Boolean)
-			return (Boolean) obj;
-		return true;
-	}
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
+    }
 
-	public Object executeResult() throws Exception {
-		return innerExecute(false);
-	}
+    public boolean execute() throws Exception {
+        Object obj = innerExecute(false);
+        if (obj instanceof Boolean)
+            return (Boolean) obj;
+        return true;
+    }
 
-	public Object pureExecuteResult() throws Exception {
-		return innerExecute(true);
-	}
+    public Object executeResult() throws Exception {
+        return innerExecute(false);
+    }
 
-	private Object innerExecute(boolean pure) throws Exception {
-		validate();
-		SocketSession socketSession = con.getSession();
-		RequestBean request = new RequestBean();
-		request.setSeq(socketSession.getSequence());
-		request.setServiceName(serviceName);
-		request.setMethodName(method);
-		request.setTypes(types.toArray(new Class[] {}));
-		request.setArgs(values.toArray());
-		request.setFuzzy(fuzzy);
-		request.setSingle(single);
-		Object obj = null;
-		if (pure) {
-			InvokeFuture<Object> future = new InvokeFuture<>();
-			socketSession.getFutures().put(request.getSeq(), future);
-			socketSession.getDawdlerConnection().write(request, socketSession);
-			obj = future.getResult(timeout, TimeUnit.SECONDS);
-		} else {
-			obj = FilterProvider
-					.doFilter(new RequestWrapper(request, socketSession, circuitBreaker, proxyInterface, timeout));
-		}
-		return obj;
-	}
+    public Object pureExecuteResult() throws Exception {
+        return innerExecute(true);
+    }
 
-	private void validate() {
-		if (serviceName == null || method == null)
-			throw new IllegalArgumentException("serviceName,method can't be null!");
-	}
+    private Object innerExecute(boolean pure) throws Exception {
+        validate();
+        SocketSession socketSession = con.getSession();
+        RequestBean request = new RequestBean();
+        request.setSeq(socketSession.getSequence());
+        request.setServiceName(serviceName);
+        request.setMethodName(method);
+        request.setTypes(types.toArray(new Class[]{}));
+        request.setArgs(values.toArray());
+        request.setFuzzy(fuzzy);
+        request.setSingle(single);
+        Object obj = null;
+        if (pure) {
+            InvokeFuture<Object> future = new InvokeFuture<>();
+            socketSession.getFutures().put(request.getSeq(), future);
+            socketSession.getDawdlerConnection().write(request, socketSession);
+            obj = future.getResult(timeout, TimeUnit.SECONDS);
+        } else {
+            obj = FilterProvider.doFilter(new RequestWrapper(request, socketSession, circuitBreaker, proxyInterface, timeout));
+        }
+        return obj;
+    }
+
+    private void validate() {
+        if (serviceName == null || method == null)
+            throw new IllegalArgumentException("serviceName,method can't be null!");
+    }
 }

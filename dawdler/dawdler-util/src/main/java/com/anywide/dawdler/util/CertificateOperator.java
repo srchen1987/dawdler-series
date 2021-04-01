@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.util;
+
+import javax.crypto.Cipher;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -26,227 +28,228 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
-import javax.crypto.Cipher;
 /**
- * 
- * @Title:  CertificateOperator.java
- * @Description:    证书验证的类 ，直接下面注释中的命令生成证书配置即可 
- * 
- *	keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=songrouchen,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song
- *	keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
- * @author: jackson.song    
- * @date:   2015年05月23日    
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title CertificateOperator.java
+ * @Description 证书验证的类 ，直接下面注释中的命令生成证书配置即可
+ * <p>
+ * keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=songrouchen,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song
+ * keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
+ * @date 2015年05月23日
+ * @email suxuan696@gmail.com
  */
 public class CertificateOperator {
-	private String alias;
-	private char[] password;
-	private String keyStorePath;
-	private String certificatePath;
-	public CertificateOperator(String keyStorePath,String alias,String password) {
-		this.alias = alias;
-		this.password=password.toCharArray();
-		this.keyStorePath = keyStorePath;
-	}
-	public CertificateOperator(String certificatePath) {
-		this.certificatePath = certificatePath;
-	}
-	
-	public static enum KeyStoreConfig {
+    public final String X509 = "X.509";
+    private String alias;
+    private char[] password;
+    private String keyStorePath;
+    private String certificatePath;
+    private Cipher privateEncryptCipher = null;
+    private Cipher publicEncryptCipher = null;
+    private Cipher privateDecryptCipher = null;
+    private Cipher publicDecryptCipher = null;
 
-		JCEKS("jceks"), JKS("jks"), DKS("dks"), PKCS11("pkcs11"), PKCS12("pkcs12");
-		private String name;
+    public CertificateOperator(String keyStorePath, String alias, String password) {
+        this.alias = alias;
+        this.password = password.toCharArray();
+        this.keyStorePath = keyStorePath;
+    }
 
-		private KeyStoreConfig(String name) {
-			this.name = name;
-		}
+    public CertificateOperator(String certificatePath) {
+        this.certificatePath = certificatePath;
+    }
 
-		public String getName() {
-			return this.name;
-		}
-	}
+    private PrivateKey getPrivateKey(KeyStoreConfig keyStore)
+            throws Exception {
+        KeyStore ks = getKeyStore(keyStore);
+        PrivateKey key = (PrivateKey) ks.getKey(alias, password);
+        return key;
+    }
 
-	public final String X509 = "X.509";
+    private PublicKey getPublicKey() throws Exception {
+        Certificate certificate = getCertificate();
+        PublicKey key = certificate.getPublicKey();
+        return key;
+    }
 
-	private PrivateKey getPrivateKey(KeyStoreConfig keyStore)
-			throws Exception {
-		KeyStore ks = getKeyStore(keyStore);
-		PrivateKey key = (PrivateKey) ks.getKey(alias, password);
-		return key;
-	}
+    private Certificate getCertificate() throws Exception {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance(X509);
+        FileInputStream in = new FileInputStream(certificatePath);
+        Certificate certificate = certificateFactory.generateCertificate(in);
+        in.close();
+        return certificate;
+    }
 
-	private PublicKey getPublicKey() throws Exception {
-		Certificate certificate = getCertificate();
-		PublicKey key = certificate.getPublicKey();
-		return key;
-	}
+    private Certificate getCertificate(KeyStoreConfig keyStore)
+            throws Exception {
+        KeyStore ks = getKeyStore(keyStore);
+        return getCertificate(ks);
+    }
 
-	private Certificate getCertificate() throws Exception {
-		CertificateFactory certificateFactory = CertificateFactory.getInstance(X509);
-		FileInputStream in = new FileInputStream(certificatePath);
-		Certificate certificate = certificateFactory.generateCertificate(in);
-		in.close();
-		return certificate;
-	}
+    private Certificate getCertificate(KeyStore keyStore) throws Exception {
+        Certificate certificate = keyStore.getCertificate(alias);
+        return certificate;
+    }
 
-	private Certificate getCertificate(KeyStoreConfig keyStore)
-			throws Exception {
-		KeyStore ks = getKeyStore(keyStore);
-		return getCertificate(ks);
-	}
+    public synchronized KeyStore getKeyStore(KeyStoreConfig keyStore) throws Exception {
+        KeyStore store = null;
+        FileInputStream is = new FileInputStream(keyStorePath);
+        store = getKeyStore(is, keyStore);
+        is.close();
+        return store;
+    }
 
-	private Certificate getCertificate(KeyStore keyStore) throws Exception {
-		Certificate certificate = keyStore.getCertificate(alias);
-		return certificate;
-	}
+    public synchronized KeyStore getKeyStore(InputStream in, KeyStoreConfig keyStore) throws Exception {
+        KeyStore ks = KeyStore.getInstance(keyStore.getName());
+        ks.load(in, password);
+        return ks;
+    }
 
-	public synchronized KeyStore getKeyStore(KeyStoreConfig keyStore) throws Exception {
-		KeyStore store = null;
-		FileInputStream is = new FileInputStream(keyStorePath);
-		store = getKeyStore(is, keyStore);
-		is.close();
-		return store;
-	}
+    public synchronized byte[] encrypt(byte[] data, KeyStoreConfig keyStore)
+            throws Exception {
+        if (privateEncryptCipher != null)
+            return privateEncryptCipher.doFinal(data);
+        PrivateKey privateKey = getPrivateKey(keyStore);
+        return encrypt(data, privateKey);
 
-	public synchronized KeyStore getKeyStore(InputStream in, KeyStoreConfig keyStore) throws Exception {
-		KeyStore ks = KeyStore.getInstance(keyStore.getName());
-		ks.load(in, password);
-		return ks;
-	}
+    }
 
-	public synchronized byte[] encrypt(byte[] data, KeyStoreConfig keyStore)
-			throws Exception {
-		if(privateEncryptCipher != null) 
-			return privateEncryptCipher.doFinal(data);
-		PrivateKey privateKey = getPrivateKey(keyStore);
-		return encrypt(data, privateKey);
+    private byte[] encrypt(byte[] data, PrivateKey privateKey) throws Exception {
+        Cipher cipher = Cipher.getInstance(privateKey.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
+        privateEncryptCipher = cipher;
+        return cipher.doFinal(data);
+    }
 
-	}
-	private Cipher privateEncryptCipher = null;
-	private byte[] encrypt(byte[] data, PrivateKey privateKey) throws Exception {
-		Cipher cipher = Cipher.getInstance(privateKey.getAlgorithm());
-		cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-		privateEncryptCipher = cipher;
-		return cipher.doFinal(data);
-	}
+    public synchronized byte[] encrypt(byte[] data) throws Exception {
+        if (publicEncryptCipher != null)
+            return publicEncryptCipher.doFinal(data);
+        PublicKey publicKey = getPublicKey();
+        return encrypt(data, publicKey);
 
-	private Cipher publicEncryptCipher = null; 
-	public synchronized byte[] encrypt(byte[] data) throws Exception {
-		if(publicEncryptCipher != null)
-			return publicEncryptCipher.doFinal(data);
-		PublicKey publicKey = getPublicKey();
-		return encrypt(data, publicKey);
+    }
 
-	}
+    private byte[] encrypt(byte[] data, PublicKey publicKey) throws Exception {
+        Cipher cipher = Cipher.getInstance(publicKey.getAlgorithm());
+        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+        publicEncryptCipher = cipher;
+        return cipher.doFinal(data);
 
-	private byte[] encrypt(byte[] data, PublicKey publicKey) throws Exception {
-		Cipher cipher = Cipher.getInstance(publicKey.getAlgorithm());
-		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-		publicEncryptCipher = cipher;
-		return cipher.doFinal(data);
+    }
 
-	}
+    public synchronized byte[] decrypt(byte[] data, KeyStoreConfig keyStore)
+            throws Exception {
+        if (privateDecryptCipher != null)
+            return privateDecryptCipher.doFinal(data);
+        PrivateKey privateKey = getPrivateKey(keyStore);
+        return decrypt(data, privateKey);
+    }
 
-	private  Cipher privateDecryptCipher = null;
-	public synchronized byte[] decrypt(byte[] data,KeyStoreConfig keyStore)
-			throws Exception {
-		if(privateDecryptCipher!=null)
-			return privateDecryptCipher.doFinal(data);
-		PrivateKey privateKey = getPrivateKey(keyStore);
-		return decrypt(data, privateKey);
-	}
+    private byte[] decrypt(byte[] data, PrivateKey privateKey) throws Exception {
+        Cipher cipher = Cipher.getInstance(privateKey.getAlgorithm());
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        privateDecryptCipher = cipher;
+        return cipher.doFinal(data);
+    }
 
-	private byte[] decrypt(byte[] data, PrivateKey privateKey) throws Exception {
-		Cipher cipher = Cipher.getInstance(privateKey.getAlgorithm());
-		cipher.init(Cipher.DECRYPT_MODE, privateKey);
-		privateDecryptCipher = cipher;
-		return cipher.doFinal(data);
-	}
+    public synchronized byte[] decrypt(byte[] data) throws Exception {
+        if (publicDecryptCipher != null)
+            return publicDecryptCipher.doFinal(data);
+        PublicKey publicKey = getPublicKey();
+        return decrypt(data, publicKey);
+    }
 
-	public synchronized byte[] decrypt(byte[] data) throws Exception {
-		if(publicDecryptCipher != null)
-			return publicDecryptCipher.doFinal(data);
-		PublicKey publicKey = getPublicKey();
-		return decrypt(data, publicKey);  
-	}
-	private Cipher publicDecryptCipher = null;
-	private byte[] decrypt(byte[] data, PublicKey publicKey) throws Exception {
-		Cipher cipher = Cipher.getInstance(publicKey.getAlgorithm());
-		cipher.init(Cipher.DECRYPT_MODE, publicKey);
-		publicDecryptCipher = cipher;
-		return cipher.doFinal(data);
+    private byte[] decrypt(byte[] data, PublicKey publicKey) throws Exception {
+        Cipher cipher = Cipher.getInstance(publicKey.getAlgorithm());
+        cipher.init(Cipher.DECRYPT_MODE, publicKey);
+        publicDecryptCipher = cipher;
+        return cipher.doFinal(data);
 
-	}
+    }
 
-	public synchronized boolean verifyCertificate() {
-		return verifyCertificate(new Date());
-	}
+    public synchronized boolean verifyCertificate() {
+        return verifyCertificate(new Date());
+    }
 
-	public synchronized boolean verifyCertificate(Date date) {
-		boolean status = true;
-		try {
-			Certificate certificate = getCertificate();
-			status = verifyCertificate(date, certificate);
-		} catch (Exception e) {
-			status = false;
-		}
-		return status;
-	}
+    public synchronized boolean verifyCertificate(Date date) {
+        boolean status = true;
+        try {
+            Certificate certificate = getCertificate();
+            status = verifyCertificate(date, certificate);
+        } catch (Exception e) {
+            status = false;
+        }
+        return status;
+    }
 
-	private boolean verifyCertificate(Date date, Certificate certificate) {
-		boolean status = true;
-		try {
-			X509Certificate x509Certificate = (X509Certificate) certificate;
-			x509Certificate.checkValidity(date);
-		} catch (Exception e) {
-			status = false;
-		}
-		return status;
-	}
+    private boolean verifyCertificate(Date date, Certificate certificate) {
+        boolean status = true;
+        try {
+            X509Certificate x509Certificate = (X509Certificate) certificate;
+            x509Certificate.checkValidity(date);
+        } catch (Exception e) {
+            status = false;
+        }
+        return status;
+    }
 
-	public byte[] sign(byte[] data, KeyStoreConfig keyStore)
-			throws Exception {
-		Certificate certificate = getCertificate(keyStore);
-		PrivateKey privateKey = getPrivateKey(keyStore);
-		return sign(data, certificate, privateKey);
-	}
+    public byte[] sign(byte[] data, KeyStoreConfig keyStore)
+            throws Exception {
+        Certificate certificate = getCertificate(keyStore);
+        PrivateKey privateKey = getPrivateKey(keyStore);
+        return sign(data, certificate, privateKey);
+    }
 
-	public byte[] sign(byte[] data, Certificate certificate, PrivateKey privateKey) throws Exception {
-		X509Certificate x509Certificate = (X509Certificate) certificate;
-		Signature signature = Signature.getInstance(x509Certificate.getSigAlgName());
-		signature.initSign(privateKey);
-		signature.update(data);
-		return signature.sign();
-	}
+    public byte[] sign(byte[] data, Certificate certificate, PrivateKey privateKey) throws Exception {
+        X509Certificate x509Certificate = (X509Certificate) certificate;
+        Signature signature = Signature.getInstance(x509Certificate.getSigAlgName());
+        signature.initSign(privateKey);
+        signature.update(data);
+        return signature.sign();
+    }
 
-	public boolean verify(byte[] data, byte[] sign) throws Exception {
-		Certificate certificate = getCertificate();
-		return verify(data, sign, certificate);
-	}
+    public boolean verify(byte[] data, byte[] sign) throws Exception {
+        Certificate certificate = getCertificate();
+        return verify(data, sign, certificate);
+    }
 
-	public boolean verify(byte[] data, byte[] sign, Certificate certificate) throws Exception {
-		X509Certificate x509Certificate = (X509Certificate) certificate;
-		PublicKey publicKey = x509Certificate.getPublicKey();
-		Signature signature = Signature.getInstance(x509Certificate.getSigAlgName());
-		signature.initVerify(publicKey);
-		signature.update(data);
+    public boolean verify(byte[] data, byte[] sign, Certificate certificate) throws Exception {
+        X509Certificate x509Certificate = (X509Certificate) certificate;
+        PublicKey publicKey = x509Certificate.getPublicKey();
+        Signature signature = Signature.getInstance(x509Certificate.getSigAlgName());
+        signature.initVerify(publicKey);
+        signature.update(data);
 
-		return signature.verify(sign);
-	}
+        return signature.verify(sign);
+    }
 
-	public boolean verifyCertificate(Date date, KeyStoreConfig keyStore) {
-		boolean status = true;
-		try {
-			Certificate certificate = getCertificate(keyStore);
-			status = verifyCertificate(date, certificate);
-		} catch (Exception e) {
-			status = false;
-		}
-		return status;
-	}
+    public boolean verifyCertificate(Date date, KeyStoreConfig keyStore) {
+        boolean status = true;
+        try {
+            Certificate certificate = getCertificate(keyStore);
+            status = verifyCertificate(date, certificate);
+        } catch (Exception e) {
+            status = false;
+        }
+        return status;
+    }
 
-	public boolean verifyCertificate(KeyStoreConfig keyStore) {
-		return verifyCertificate(new Date(), keyStore);
-	}
+    public boolean verifyCertificate(KeyStoreConfig keyStore) {
+        return verifyCertificate(new Date(), keyStore);
+    }
+
+    public static enum KeyStoreConfig {
+
+        JCEKS("jceks"), JKS("jks"), DKS("dks"), PKCS11("pkcs11"), PKCS12("pkcs12");
+        private String name;
+
+        private KeyStoreConfig(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+    }
 }

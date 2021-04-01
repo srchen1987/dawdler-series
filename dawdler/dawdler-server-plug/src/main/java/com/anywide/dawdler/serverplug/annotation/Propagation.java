@@ -19,28 +19,27 @@ package com.anywide.dawdler.serverplug.annotation;
 import com.anywide.dawdler.serverplug.transaction.TransactionDefinition;
 
 /**
- * 
- * @Title: Propagation.java
- * @Description: 事务传播方式
- * @author: jackson.song
- * @date: 2012年09月27日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title Propagation.java
+ * @Description 事务传播方式
+ * @date 2012年09月27日
+ * @email suxuan696@gmail.com
  */
 public enum Propagation {
-	REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED), SUPPORTS(TransactionDefinition.PROPAGATION_SUPPORTS),
-	MANDATORY(TransactionDefinition.PROPAGATION_MANDATORY),
-	REQUIRES_NEW(TransactionDefinition.PROPAGATION_REQUIRES_NEW),
-	NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED), NEVER(TransactionDefinition.PROPAGATION_NEVER),
-	NESTED(TransactionDefinition.PROPAGATION_NESTED);
+    REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED), SUPPORTS(TransactionDefinition.PROPAGATION_SUPPORTS),
+    MANDATORY(TransactionDefinition.PROPAGATION_MANDATORY),
+    REQUIRES_NEW(TransactionDefinition.PROPAGATION_REQUIRES_NEW),
+    NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED), NEVER(TransactionDefinition.PROPAGATION_NEVER),
+    NESTED(TransactionDefinition.PROPAGATION_NESTED);
 
-	private final int value;
+    private final int value;
 
-	Propagation(int value) {
-		this.value = value;
-	}
+    Propagation(int value) {
+        this.value = value;
+    }
 
-	public int value() {
-		return this.value;
-	}
+    public int value() {
+        return this.value;
+    }
 }

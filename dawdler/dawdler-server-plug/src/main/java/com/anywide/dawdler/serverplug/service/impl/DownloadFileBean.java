@@ -16,31 +16,30 @@
  */
 package com.anywide.dawdler.serverplug.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.serverplug.load.ReadClass;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
 import com.anywide.dawdler.serverplug.service.DownloadFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * 
- * @Title: DownloadFileBean.java
- * @Description: 下载模版类文件的接口的具体实现类
- * @author: jackson.song
- * @date: 2007年09月18日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DownloadFileBean.java
+ * @Description 下载模版类文件的接口的具体实现类
+ * @date 2007年09月18日
+ * @email suxuan696@gmail.com
  */
 public class DownloadFileBean implements DownloadFile {
-	private static Logger logger = LoggerFactory.getLogger(DownloadFileBean.class);
+    private static final Logger logger = LoggerFactory.getLogger(DownloadFileBean.class);
 
-	public RemoteFiles download(String[] names) {
-		try {
-			RemoteFiles rfs = ReadClass.operation(names);
-			return rfs;
-		} catch (Exception e) {
-			logger.error("", e);
-		}
-		return null;
-	}
+    public RemoteFiles download(String[] names) {
+        try {
+            RemoteFiles rfs = ReadClass.operation(names);
+            return rfs;
+        } catch (Exception e) {
+            logger.error("", e);
+        }
+        return null;
+    }
 }

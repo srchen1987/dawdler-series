@@ -19,14 +19,13 @@ package com.anywide.dawdler.server.service.listener;
 import com.anywide.dawdler.server.context.DawdlerContext;
 
 /**
- * 
- * @Title: DawdlerServiceCreateListener.java
- * @Description: 服务创建监听器
- * @author: jackson.song
- * @date: 2008年03月12日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DawdlerServiceCreateListener.java
+ * @Description 服务创建监听器
+ * @date 2008年03月12日
+ * @email suxuan696@gmail.com
  */
 public interface DawdlerServiceCreateListener {
-	public void create(Object service, DawdlerContext context);
+    void create(Object service, DawdlerContext context);
 }

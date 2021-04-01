@@ -20,22 +20,21 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 /**
- * 
- * @Title: DawdlerClassLoader.java
- * @Description: Dawdler类加载器
- * @author: jackson.song
- * @date: 2015年03月09日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DawdlerClassLoader.java
+ * @Description Dawdler类加载器
+ * @date 2015年03月09日
+ * @email suxuan696@gmail.com
  */
 public class DawdlerClassLoader extends URLClassLoader {
-	public DawdlerClassLoader(URL[] urls, ClassLoader parent) {
-		super(urls, parent);
-	}
+    public DawdlerClassLoader(URL[] urls, ClassLoader parent) {
+        super(urls, parent);
+    }
 
-	public static DawdlerClassLoader createLoader(ClassLoader parent, URL... urls) {
-		DawdlerClassLoader dl = new DawdlerClassLoader(urls, parent);
-		Thread.currentThread().setContextClassLoader(dl);
-		return dl;
-	}
+    public static DawdlerClassLoader createLoader(ClassLoader parent, URL... urls) {
+        DawdlerClassLoader dl = new DawdlerClassLoader(urls, parent);
+        Thread.currentThread().setContextClassLoader(dl);
+        return dl;
+    }
 }

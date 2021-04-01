@@ -15,100 +15,99 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.util;
+
+import javax.crypto.Cipher;
 import java.security.Key;
 import java.util.concurrent.ConcurrentHashMap;
-import javax.crypto.Cipher;
 
 /**
- * 
- * @Title: SecurityPlus.java
- * @Package com.anywide.dawdler.util
- * @Description: DES加密解密工具类
- * @author: jackson.song
- * @date: 2009年04月21日 
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title SecurityPlus.java
+ * @Package com.anywide.dawdler.util
+ * @Description DES加密解密工具类
+ * @date 2009年04月21日
+ * @email suxuan696@gmail.com
  */
 public class SecurityPlus {
-	public static final String DEFAULTKEY = "dawdler_mylove";
-	private static ConcurrentHashMap<String, SecurityPlus> cachePlug = new ConcurrentHashMap<>();
+    public static final String DEFAULTKEY = "dawdler_mylove";
+    private static ConcurrentHashMap<String, SecurityPlus> cachePlug = new ConcurrentHashMap<>();
+    private Cipher encryptCipher = null;
+    private Cipher decryptCipher = null;
 
-	public static SecurityPlus getInstance() throws Exception {
-		return getInstance(DEFAULTKEY);
-	}
+    private SecurityPlus(String strKey) throws Exception {
+        Key key = getKey(strKey.getBytes());
+        encryptCipher = Cipher.getInstance("DES");
+        encryptCipher.init(Cipher.ENCRYPT_MODE, key);
+        decryptCipher = Cipher.getInstance("DES");
+        decryptCipher.init(Cipher.DECRYPT_MODE, key);
+    }
 
-	public static SecurityPlus getInstance(String key) throws Exception {
-		SecurityPlus sp = cachePlug.get(key);
-		if (sp == null) {
-			sp = new SecurityPlus(key);
-			cachePlug.put(key, sp);
-			SecurityPlus temp = cachePlug.putIfAbsent(key, sp);
-			if (temp != null)
-				return temp;
-		}
-		return sp;
-	}
+    public static SecurityPlus getInstance() throws Exception {
+        return getInstance(DEFAULTKEY);
+    }
 
-	private Cipher encryptCipher = null;
-	private Cipher decryptCipher = null;
+    public static SecurityPlus getInstance(String key) throws Exception {
+        SecurityPlus sp = cachePlug.get(key);
+        if (sp == null) {
+            sp = new SecurityPlus(key);
+            cachePlug.put(key, sp);
+            SecurityPlus temp = cachePlug.putIfAbsent(key, sp);
+            if (temp != null)
+                return temp;
+        }
+        return sp;
+    }
 
-	public static String byteArr2HexStr(byte[] arrB) throws Exception {
-		int iLen = arrB.length;
-		StringBuffer sb = new StringBuffer(iLen * 2);
-		for (int i = 0; i < iLen; i++) {
-			int intTmp = arrB[i];
-			while (intTmp < 0) {
-				intTmp = intTmp + 256;
-			}
-			if (intTmp < 16) {
-				sb.append("0");
-			}
-			sb.append(Integer.toString(intTmp, 16));
-		}
-		return sb.toString();
-	}
+    public static String byteArr2HexStr(byte[] arrB) throws Exception {
+        int iLen = arrB.length;
+        StringBuffer sb = new StringBuffer(iLen * 2);
+        for (int i = 0; i < iLen; i++) {
+            int intTmp = arrB[i];
+            while (intTmp < 0) {
+                intTmp = intTmp + 256;
+            }
+            if (intTmp < 16) {
+                sb.append("0");
+            }
+            sb.append(Integer.toString(intTmp, 16));
+        }
+        return sb.toString();
+    }
 
-	public static byte[] hexStr2ByteArr(String strIn) throws Exception {
-		byte[] arrB = strIn.getBytes();
-		int iLen = arrB.length;
-		byte[] arrOut = new byte[iLen / 2];
-		for (int i = 0; i < iLen; i = i + 2) {
-			String strTmp = new String(arrB, i, 2);
-			arrOut[i / 2] = (byte) Integer.parseInt(strTmp, 16);
-		}
-		return arrOut;
-	}
+    public static byte[] hexStr2ByteArr(String strIn) throws Exception {
+        byte[] arrB = strIn.getBytes();
+        int iLen = arrB.length;
+        byte[] arrOut = new byte[iLen / 2];
+        for (int i = 0; i < iLen; i = i + 2) {
+            String strTmp = new String(arrB, i, 2);
+            arrOut[i / 2] = (byte) Integer.parseInt(strTmp, 16);
+        }
+        return arrOut;
+    }
 
-	private SecurityPlus(String strKey) throws Exception {
-		Key key = getKey(strKey.getBytes());
-		encryptCipher = Cipher.getInstance("DES");
-		encryptCipher.init(Cipher.ENCRYPT_MODE, key);
-		decryptCipher = Cipher.getInstance("DES");
-		decryptCipher.init(Cipher.DECRYPT_MODE, key);
-	}
+    public byte[] encrypt(byte[] arrB) throws Exception {
+        return encryptCipher.doFinal(arrB);
+    }
 
-	public byte[] encrypt(byte[] arrB) throws Exception {
-		return encryptCipher.doFinal(arrB);
-	}
+    public String encrypt(String strIn) throws Exception {
+        return byteArr2HexStr(encrypt(strIn.getBytes()));
+    }
 
-	public String encrypt(String strIn) throws Exception {
-		return byteArr2HexStr(encrypt(strIn.getBytes()));
-	}
+    public byte[] decrypt(byte[] arrB) throws Exception {
+        return decryptCipher.doFinal(arrB);
+    }
 
-	public byte[] decrypt(byte[] arrB) throws Exception {
-		return decryptCipher.doFinal(arrB);
-	}
+    public String decrypt(String strIn) throws Exception {
+        return new String(decrypt(hexStr2ByteArr(strIn)));
+    }
 
-	public String decrypt(String strIn) throws Exception {
-		return new String(decrypt(hexStr2ByteArr(strIn)));
-	}
-
-	private Key getKey(byte[] arrBTmp) throws Exception {
-		byte[] arrB = new byte[8];
-		for (int i = 0; i < arrBTmp.length && i < arrB.length; i++) {
-			arrB[i] = arrBTmp[i];
-		}
-		Key key = new javax.crypto.spec.SecretKeySpec(arrB, "DES");
-		return key;
-	}
+    private Key getKey(byte[] arrBTmp) throws Exception {
+        byte[] arrB = new byte[8];
+        for (int i = 0; i < arrBTmp.length && i < arrB.length; i++) {
+            arrB[i] = arrBTmp[i];
+        }
+        Key key = new javax.crypto.spec.SecretKeySpec(arrB, "DES");
+        return key;
+    }
 }

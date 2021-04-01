@@ -19,23 +19,24 @@ package com.anywide.dawdler.core.bean;
 import java.io.Serializable;
 
 /**
- * @Title: AuthResponseBean.java
- * @Description: 身份验证响应信息
- * @author: jackson.song
- * @date: 2015年05月23日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title AuthResponseBean.java
+ * @Description 身份验证响应信息
+ * @date 2015年05月23日
+ * @email suxuan696@gmail.com
  */
 public class AuthResponseBean implements Serializable {
 
-	private static final long serialVersionUID = 3918382953150072128L;
-	private boolean success;
+    private static final long serialVersionUID = 3918382953150072128L;
 
-	public boolean isSuccess() {
-		return success;
-	}
+    private boolean success;
 
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public void setSuccess(boolean success) {
+        this.success = success;
+    }
 }

@@ -17,31 +17,28 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: RegexRuleOperator.java
- * @Description: 表达式定义的抽象类
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RegexRuleOperator.java
+ * @Description 表达式定义的抽象类
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public abstract class RegexRuleOperator extends RuleOperator {
-	public RegexRuleOperator(String regex) {
-		super(regex, true);
-	}
+    public RegexRuleOperator(String regex) {
+        super(regex, true);
+    }
 
-	@Override
-	public String validate(Object value) {
-		return null;
-	}
+    @Override
+    public String validate(Object value) {
+        return null;
+    }
 
-	public boolean isEmpty(String value) {
-		if (value == null || value.trim().equals(""))
-			return true;
-		return false;
-	}
+    public boolean isEmpty(String value) {
+        return value == null || value.trim().equals("");
+    }
 
-	@Override
-	public abstract String toString();
+    @Override
+    public abstract String toString();
 
 }

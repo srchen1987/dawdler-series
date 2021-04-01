@@ -19,14 +19,13 @@ package com.anywide.dawdler.clientplug.web.view.templatemanager;
 import java.util.Properties;
 
 /**
- * 
- * @Title: TemplateManager.java
- * @Description: 模版管理器接口定义
- * @author: jackson.song
- * @date: 2009年04月19日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title TemplateManager.java
+ * @Description 模版管理器接口定义
+ * @date 2009年04月19日
+ * @email suxuan696@gmail.com
  */
 public interface TemplateManager {
-	public void init(Properties ps);
+    void init(Properties ps);
 }

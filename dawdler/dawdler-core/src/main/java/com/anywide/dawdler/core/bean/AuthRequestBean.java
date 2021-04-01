@@ -19,42 +19,41 @@ package com.anywide.dawdler.core.bean;
 import java.io.Serializable;
 
 /**
- * 
- * @Title: AuthRequestBean.java
- * @Description: 验证身份请求信息
- * @author: jackson.song
- * @date: 2015年05月23日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title AuthRequestBean.java
+ * @Description 验证身份请求信息
+ * @date 2015年05月23日
+ * @email suxuan696@gmail.com
  */
 public class AuthRequestBean implements Serializable {
-	private static final long serialVersionUID = -5433605973913222653L;
-	private String user;
-	private byte[] password;
-	private String path;
+    private static final long serialVersionUID = -5433605973913222653L;
+    private String user;
+    private byte[] password;
+    private String path;
 
-	public String getPath() {
-		return path;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	public String getUser() {
-		return user;
-	}
+    public String getUser() {
+        return user;
+    }
 
-	public void setUser(String user) {
-		this.user = user;
-	}
+    public void setUser(String user) {
+        this.user = user;
+    }
 
-	public byte[] getPassword() {
-		return password;
-	}
+    public byte[] getPassword() {
+        return password;
+    }
 
-	public void setPassword(byte[] password) {
-		this.password = password;
-	}
+    public void setPassword(byte[] password) {
+        this.password = password;
+    }
 
 }

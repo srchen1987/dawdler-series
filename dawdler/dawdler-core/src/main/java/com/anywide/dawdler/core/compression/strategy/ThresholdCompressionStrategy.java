@@ -16,72 +16,71 @@
  */
 package com.anywide.dawdler.core.compression.strategy;
 
-import java.io.IOException;
 import com.anywide.dawdler.core.compression.CompressionAlgorithm;
 import com.anywide.dawdler.core.compression.ZLibCompression;
 
+import java.io.IOException;
+
 /**
- * 
- * @Title: ThresholdCompressionStrategy.java
- * @Description: 基于数据包大小的压缩策略，返回压缩包装类
- * @author: jackson.song
- * @date: 2015年06月12日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ThresholdCompressionStrategy.java
+ * @Description 基于数据包大小的压缩策略，返回压缩包装类
+ * @date 2015年06月12日
+ * @email suxuan696@gmail.com
  */
 public class ThresholdCompressionStrategy implements CompressionStrategy {
 
-	private static ThresholdCompressionStrategy thresholdCompressionStrategy = new ThresholdCompressionStrategy();
-	private int threshold;
+    private static final ThresholdCompressionStrategy thresholdCompressionStrategy = new ThresholdCompressionStrategy();
+    CompressionAlgorithm compressionAlgorithm;
+    private int threshold;
 
-	public static ThresholdCompressionStrategy staticSingle() {
-		return thresholdCompressionStrategy;
-	}
+    public ThresholdCompressionStrategy() {
+        this(10240 * 4);
+    }
 
-	CompressionAlgorithm compressionAlgorithm;
+    public ThresholdCompressionStrategy(int threshold) {
+        this(threshold, new ZLibCompression());
+    }
 
-	public ThresholdCompressionStrategy() {
-		this(10240 * 4);
-	}
+    public ThresholdCompressionStrategy(int threshold, CompressionAlgorithm compressionAlgorithm) {
+        this.threshold = threshold;
+        this.compressionAlgorithm = compressionAlgorithm;
+    }
 
-	public ThresholdCompressionStrategy(int threshold) {
-		this(threshold, new ZLibCompression());
-	}
+    public static ThresholdCompressionStrategy staticSingle() {
+        return thresholdCompressionStrategy;
+    }
 
-	public ThresholdCompressionStrategy(int threshold, CompressionAlgorithm compressionAlgorithm) {
-		this.threshold = threshold;
-		this.compressionAlgorithm = compressionAlgorithm;
-	}
+    public CompressionWrapper compress(byte[] buffer) throws IOException {
+        CompressionWrapper result = new CompressionWrapper(false, buffer);
+        if (buffer.length > threshold) {
+            byte[] bytes = compressionAlgorithm.compress(buffer);
+            if (bytes.length < buffer.length) {
+                result.setBuffer(bytes);
+                result.setCompressed(true);
+            }
+        }
+        return result;
+    }
 
-	public CompressionWrapper compress(byte[] buffer) throws IOException {
-		CompressionWrapper result = new CompressionWrapper(false, buffer);
-		if (buffer.length > threshold) {
-			byte[] bytes = compressionAlgorithm.compress(buffer);
-			if (bytes.length < buffer.length) {
-				result.setBuffer(bytes);
-				result.setCompressed(true);
-			}
-		}
-		return result;
-	}
+    public byte[] decompress(byte[] buffer) throws IOException {
+        return compressionAlgorithm.decompress(buffer);
+    }
 
-	public byte[] decompress(byte[] buffer) throws IOException {
-		return compressionAlgorithm.decompress(buffer);
-	}
+    public CompressionAlgorithm getCompressionAlgorithm() {
+        return compressionAlgorithm;
+    }
 
-	public void setCompressionAlgorithm(CompressionAlgorithm compressionAlgorithm) {
-		this.compressionAlgorithm = compressionAlgorithm;
-	}
+    public void setCompressionAlgorithm(CompressionAlgorithm compressionAlgorithm) {
+        this.compressionAlgorithm = compressionAlgorithm;
+    }
 
-	public CompressionAlgorithm getCompressionAlgorithm() {
-		return compressionAlgorithm;
-	}
+    public int getThreshold() {
+        return threshold;
+    }
 
-	public int getThreshold() {
-		return threshold;
-	}
-
-	public void setThreshold(int threshold) {
-		this.threshold = threshold;
-	}
+    public void setThreshold(int threshold) {
+        this.threshold = threshold;
+    }
 }

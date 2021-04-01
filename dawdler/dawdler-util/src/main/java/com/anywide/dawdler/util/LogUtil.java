@@ -17,18 +17,17 @@
 package com.anywide.dawdler.util;
 
 /**
- * 
- * @Title:  LogUtil.java
- * @Description:    TODO   
- * @author: jackson.song    
- * @date:   2007年04月16日    
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title LogUtil.java
+ * @Description TODO
+ * @date 2007年04月16日
+ * @email suxuan696@gmail.com
  */
 public class LogUtil {
-	public static String getLineInfo() {
-		StackTraceElement ste = new Throwable().getStackTrace()[1];
-		return ste.getFileName() + ": Line " + ste.getLineNumber()+"\t"+Thread.currentThread().getName()+ "\t";
-	}
+    public static String getLineInfo() {
+        StackTraceElement ste = new Throwable().getStackTrace()[1];
+        return ste.getFileName() + ": Line " + ste.getLineNumber() + "\t" + Thread.currentThread().getName() + "\t";
+    }
 
 }

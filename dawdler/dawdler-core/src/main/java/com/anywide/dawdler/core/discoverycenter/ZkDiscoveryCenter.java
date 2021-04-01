@@ -16,12 +16,6 @@
  */
 package com.anywide.dawdler.core.discoverycenter;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
@@ -29,65 +23,68 @@ import org.apache.curator.framework.recipes.cache.CuratorCache;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
- * 
- * @Title:ZkDiscoveryCenter.java
- * @Description: 配置中心zk的实现 代替 PropertiesCenter.java
- * @author: jackson.song
- * @date: 2018年08月13日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ZkDiscoveryCenter.java
+ * @Description 配置中心zk的实现 代替 PropertiesCenter.java
+ * @date 2018年08月13日
+ * @email suxuan696@gmail.com
  */
 public class ZkDiscoveryCenter implements DiscoveryCenter {
-	protected static final String ROOTPATH = "/dawdler";
-//	protected TreeCache treeCache = null;用CuratorCache替代了
-	protected CuratorCache curatorCache = null;
-	protected CuratorFramework client;
-	protected String connectString;
-	protected String user;
-	protected String password;
-	private AtomicBoolean destroyed = new AtomicBoolean();
-	public ZkDiscoveryCenter(String connectString, String user, String password) {
-		this.connectString = connectString;
-		this.user = user;
-		this.password = password;
-		init();
-	}
+    protected static final String ROOT_PATH = "/dawdler";
+    //	protected TreeCache treeCache = null;用CuratorCache替代了
+    protected CuratorCache curatorCache = null;
+    protected CuratorFramework client;
+    protected String connectString;
+    protected String user;
+    protected String password;
+    private AtomicBoolean destroyed = new AtomicBoolean();
 
-	@Override
-	public void init() {
-		// 连接时间 和重试次数
-		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 0);
-		client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
-		client.start();
+    public ZkDiscoveryCenter(String connectString, String user, String password) {
+        this.connectString = connectString;
+        this.user = user;
+        this.password = password;
+        init();
+    }
 
-	}
+    @Override
+    public void init() {
+        // 连接时间 和重试次数
+        RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 0);
+        client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
+        client.start();
 
-	@Override
-	public void destroy() {
-		if(destroyed.compareAndSet(false, true)) {
-			if (curatorCache != null)
-				curatorCache.close();
-			client.close();
-		}
-	}
-	
+    }
 
-	@Override
-	public List<String> getServiceList(String path) throws Exception {
-		return client.getChildren().forPath(ROOTPATH + "/" + path);
-	}
+    @Override
+    public void destroy() {
+        if (destroyed.compareAndSet(false, true)) {
+            if (curatorCache != null)
+                curatorCache.close();
+            client.close();
+        }
+    }
 
-	@Override
-	public boolean addProvider(String path, String value) throws Exception {
-		client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ROOTPATH + "/" + path,
-				value.getBytes());
-		return true;
-	}
 
-	@Override
-	public boolean updateProvider(String path, String value) throws Exception {
-		client.setData().forPath(path, value.getBytes());
-		return true;
-	}
+    @Override
+    public List<String> getServiceList(String path) throws Exception {
+        return client.getChildren().forPath(ROOT_PATH + "/" + path);
+    }
+
+    @Override
+    public boolean addProvider(String path, String value) throws Exception {
+        client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(ROOT_PATH + "/" + path,
+                value.getBytes());
+        return true;
+    }
+
+    @Override
+    public boolean updateProvider(String path, String value) throws Exception {
+        client.setData().forPath(path, value.getBytes());
+        return true;
+    }
 }

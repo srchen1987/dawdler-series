@@ -17,22 +17,21 @@
 package com.anywide.dawdler.core.handler;
 
 /**
- * 
- * @Title: IoHandlerFactory.java
- * @Description: Io事
- * @author: jackson.song
- * @date: 2015年03月12日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title IoHandlerFactory.java
+ * @Description Io事
+ * @date 2015年03月12日
+ * @email suxuan696@gmail.com
  */
 public class IoHandlerFactory {
-	private static IoHandler handler = new IoHandlerAdapter();
+    private static IoHandler handler = new IoHandlerAdapter();
 
-	public static IoHandler getHandler() {
-		return handler;
-	}
+    public static IoHandler getHandler() {
+        return handler;
+    }
 
-	public static void setHandler(IoHandler handler) {
-		IoHandlerFactory.handler = handler;
-	}
+    public static void setHandler(IoHandler handler) {
+        IoHandlerFactory.handler = handler;
+    }
 }
