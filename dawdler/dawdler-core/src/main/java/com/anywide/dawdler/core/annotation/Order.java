@@ -24,15 +24,16 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 /**
- * 
- * @Title: Order.java
- * @Description: 排序注解
- * @author: jackson.song
- * @date: 2015年06月03日
+ *
+ * @Title Order.java
+ * @Description 排序注解
+ * @author jackson.song
+ * @date 2015年06月03日
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @email suxuan696@gmail.com
  */
 public @interface Order {
-	public int value() default Integer.MAX_VALUE;
+
+    int value() default Integer.MAX_VALUE;
 
 }

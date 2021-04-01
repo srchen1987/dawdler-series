@@ -16,6 +16,16 @@
  */
 package com.anywide.dawdler.server.deploys;
 
+import com.anywide.dawdler.server.conf.ServerConfig.Server;
+import com.anywide.dawdler.server.context.DawdlerContext;
+import com.anywide.dawdler.server.context.DawdlerServerContext;
+import com.anywide.dawdler.server.loader.DawdlerClassLoader;
+import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.JVMTimeProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.naming.NamingException;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -24,125 +34,115 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import javax.naming.NamingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.anywide.dawdler.server.conf.ServerConfig.Server;
-import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.context.DawdlerServerContext;
-import com.anywide.dawdler.server.loader.DawdlerClassLoader;
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.JVMTimeProvider;
 
 /**
- * 
- * @Title: ServiceRoot.java
- * @Description: deploy下服务模块的根实现
- * @author: jackson.song
- * @date: 2015年03月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ServiceRoot.java
+ * @Description deploy下服务模块的根实现
+ * @date 2015年03月22日
+ * @email suxuan696@gmail.com
  */
 public class ServiceRoot {
-	private static Logger logger = LoggerFactory.getLogger(ServiceRoot.class);
-	private static Map<String, Service> services = new ConcurrentHashMap<>();
-//	private DawdlerServerContext dawdlerServerContext;
-	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
-	private static final String DAWDLER_LIB_PATH = "lib";
-	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
+    public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
+    private static final Logger logger = LoggerFactory.getLogger(ServiceRoot.class);
+    private static final Map<String, Service> services = new ConcurrentHashMap<>();
+    //	private DawdlerServerContext dawdlerServerContext;
+    private static final String DAWDLER_DEPLOYS_PATH = "deploys";
+    private static final String DAWDLER_LIB_PATH = "lib";
 
-	public ClassLoader createServerClassLoader() {
-		try {
-			return DawdlerClassLoader.createLoader(Thread.currentThread().getContextClassLoader(), getLibURL());
-		} catch (MalformedURLException e) {
-			logger.error("", e);
-			return null;
-		}
-	}
+    public static Service getService(String path) {
+        Service sb = services.get(path);
+        if (sb == null)
+            return null;
+        Thread.currentThread().setContextClassLoader(sb.getDawdlerContext().getClassLoader());
+        DawdlerContext.setDawdlerContext(sb.getDawdlerContext());
+        return sb;
+    }
 
-	private String getEnv(String key) {
-		return DawdlerTool.getEnv(key);
-	}
+    public ClassLoader createServerClassLoader() {
+        try {
+            return DawdlerClassLoader.createLoader(Thread.currentThread().getContextClassLoader(), getLibURL());
+        } catch (MalformedURLException e) {
+            logger.error("", e);
+            return null;
+        }
+    }
 
-	private File getDeploys() {
-		return new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
-	}
+    private String getEnv(String key) {
+        return DawdlerTool.getEnv(key);
+    }
 
-	private URL[] getLibURL() throws MalformedURLException {
-		return PathUtils.getLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH), null);
-	}
+    private File getDeploys() {
+        return new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
+    }
 
-	public static Service getService(String path) {
-		Service sb = services.get(path);
-		if (sb == null)
-			return null;
-		Thread.currentThread().setContextClassLoader(sb.getDawdlerContext().getClassLoader());
-		DawdlerContext.setDawdlerContext(sb.getDawdlerContext());
-		return sb;
-	}
+    private URL[] getLibURL() throws MalformedURLException {
+        return PathUtils.getLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH), null);
+    }
 
-	public void initApplication(DawdlerServerContext dawdlerServerContext) {
+    public void initApplication(DawdlerServerContext dawdlerServerContext) {
 //		this.dawdlerServerContext = dawdlerServerContext;
-		File file = getDeploys();
-		File[] files = file.listFiles();
-		long start = JVMTimeProvider.currentTimeMillis();
-		if (files.length > 0) {
-			ExecutorService es = Executors.newCachedThreadPool();
-			ClassLoader classLoader = createServerClassLoader();
-			if (classLoader != null) {
-				try {
-					DataSourceNamingInit.init(classLoader);
-				} catch (ClassNotFoundException | NamingException | InstantiationException | IllegalAccessException e) {
-					logger.error("", e);
-				}
-			}
-			Server server = dawdlerServerContext.getServerConfig().getServer();
-			for (File f : files) {
-				if (f.isDirectory()) {
-					es.execute(() -> {
-						String deployName = f.getName();
-						try {
-							long serviceStart = JVMTimeProvider.currentTimeMillis();
-							Service service = new ServiceBase(f, server.getHost(), server.getTcpPort(), classLoader);
-							services.put(deployName, service);
-							service.start();
-							long serviceEnd = JVMTimeProvider.currentTimeMillis();
-							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
-						} catch (Exception e) {
-							logger.error("", e);
-							System.out.println(deployName + " startup failed!");
-							Service service = services.remove(deployName);
-							service.prepareStop();
-							service.stop();
-							
-						}
-					});
-				}
-			}
-			es.shutdown();
-			try {
-				es.awaitTermination(3, TimeUnit.MINUTES);
-			} catch (InterruptedException e) {
-				System.out.println("Server startup time out 3 minutes!");
-				return;
-			}
-			long end = JVMTimeProvider.currentTimeMillis();
-			System.out.println("Server startup in " + (end - start) + " ms,Listening port: "
-					+ dawdlerServerContext.getServerConfig().getServer().getTcpPort() + "!");
-		}
-	}
-	
-	public void prepareDestroyedApplication() {
-		services.values().forEach(v -> {
-			v.prepareStop();
-		});
-	}
+        File file = getDeploys();
+        File[] files = file.listFiles();
+        long start = JVMTimeProvider.currentTimeMillis();
+        if (files.length > 0) {
+            ExecutorService es = Executors.newCachedThreadPool();
+            ClassLoader classLoader = createServerClassLoader();
+            if (classLoader != null) {
+                try {
+                    DataSourceNamingInit.init(classLoader);
+                } catch (ClassNotFoundException | NamingException | InstantiationException | IllegalAccessException e) {
+                    logger.error("", e);
+                }
+            }
+            Server server = dawdlerServerContext.getServerConfig().getServer();
+            for (File f : files) {
+                if (f.isDirectory()) {
+                    es.execute(() -> {
+                        String deployName = f.getName();
+                        try {
+                            long serviceStart = JVMTimeProvider.currentTimeMillis();
+                            Service service = new ServiceBase(f, server.getHost(), server.getTcpPort(), classLoader);
+                            services.put(deployName, service);
+                            service.start();
+                            long serviceEnd = JVMTimeProvider.currentTimeMillis();
+                            System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
+                        } catch (Exception e) {
+                            logger.error("", e);
+                            System.out.println(deployName + " startup failed!");
+                            Service service = services.remove(deployName);
+                            service.prepareStop();
+                            service.stop();
 
-	
-	public void destroyedApplication() {
-		services.values().forEach(v -> {
-			v.stop();
-		});
-	}
+                        }
+                    });
+                }
+            }
+            es.shutdown();
+            try {
+                es.awaitTermination(3, TimeUnit.MINUTES);
+            } catch (InterruptedException e) {
+                System.out.println("Server startup time out 3 minutes!");
+                return;
+            }
+            long end = JVMTimeProvider.currentTimeMillis();
+            System.out.println("Server startup in " + (end - start) + " ms,Listening port: "
+                    + dawdlerServerContext.getServerConfig().getServer().getTcpPort() + "!");
+        }
+    }
+
+    public void prepareDestroyedApplication() {
+        services.values().forEach(v -> {
+            v.prepareStop();
+        });
+    }
+
+
+    public void destroyedApplication() {
+        services.values().forEach(v -> {
+            v.stop();
+        });
+    }
 
 }

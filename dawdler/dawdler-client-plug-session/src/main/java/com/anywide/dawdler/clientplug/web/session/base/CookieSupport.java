@@ -17,13 +17,12 @@
 package com.anywide.dawdler.clientplug.web.session.base;
 
 /**
- * 
- * @Title:  CookieSupport.java
- * @Description:   cookie相关操作 直接copy tomcat中的代码
- * @author: jackson.song    
- * @date:   2016年6月16日  
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title CookieSupport.java
+ * @Description cookie相关操作 直接copy tomcat中的代码
+ * @date 2016年6月16日
+ * @email suxuan696@gmail.com
  */
 public final class CookieSupport {
 
@@ -47,7 +46,7 @@ public final class CookieSupport {
      * inclusion of / depends on the value of {@link #FWD_SLASH_IS_SEPARATOR}.
      */
     public static final boolean ALLOW_HTTP_SEPARATORS_IN_V0;
-    
+
     /**
      * If set to false, we don't use the IE6/7 Max-Age/Expires work around.
      * Default is usually true. If STRICT_SERVLET_COMPLIANCE==true then default
@@ -69,7 +68,7 @@ public final class CookieSupport {
      */
     private static final char[] V0_SEPARATORS = {',', ';', ' ', '\t'};
     private static final boolean[] V0_SEPARATOR_FLAGS = new boolean[128];
-    
+
     /**
      * The list of separators that apply to version 1 cookies. This may or may
      * not include '/' depending on the setting of
@@ -77,36 +76,36 @@ public final class CookieSupport {
      */
     private static final char[] HTTP_SEPARATORS;
     private static final boolean[] HTTP_SEPARATOR_FLAGS = new boolean[128];
-    
+
     static {
         STRICT_SERVLET_COMPLIANCE = Boolean.valueOf(System.getProperty(
                 "org.apache.catalina.STRICT_SERVLET_COMPLIANCE",
                 "false")).booleanValue();
-        
+
         ALLOW_EQUALS_IN_VALUE = Boolean.valueOf(System.getProperty(
                 "org.apache.tomcat.util.http.ServerCookie.ALLOW_EQUALS_IN_VALUE",
                 "false")).booleanValue();
-        
+
         ALLOW_HTTP_SEPARATORS_IN_V0 = Boolean.valueOf(System.getProperty(
                 "org.apache.tomcat.util.http.ServerCookie.ALLOW_HTTP_SEPARATORS_IN_V0",
                 "false")).booleanValue();
-        
+
         String alwaysAddExpires = System.getProperty(
-        "org.apache.tomcat.util.http.ServerCookie.ALWAYS_ADD_EXPIRES");
+                "org.apache.tomcat.util.http.ServerCookie.ALWAYS_ADD_EXPIRES");
         if (alwaysAddExpires == null) {
             ALWAYS_ADD_EXPIRES = !STRICT_SERVLET_COMPLIANCE;
         } else {
             ALWAYS_ADD_EXPIRES =
-                Boolean.valueOf(alwaysAddExpires).booleanValue();
+                    Boolean.valueOf(alwaysAddExpires).booleanValue();
         }
-        
-        String  fwdSlashIsSeparator = System.getProperty(
+
+        String fwdSlashIsSeparator = System.getProperty(
                 "org.apache.tomcat.util.http.ServerCookie.FWD_SLASH_IS_SEPARATOR");
         if (fwdSlashIsSeparator == null) {
             FWD_SLASH_IS_SEPARATOR = STRICT_SERVLET_COMPLIANCE;
         } else {
             FWD_SLASH_IS_SEPARATOR =
-                Boolean.valueOf(fwdSlashIsSeparator).booleanValue();
+                    Boolean.valueOf(fwdSlashIsSeparator).booleanValue();
         }
         
         /*
@@ -117,11 +116,11 @@ public final class CookieSupport {
         '=':61 '>':62 '?':63 '@':64 '[':91 '\\':92 ']':93 '{':123 '}':125
         */
         if (CookieSupport.FWD_SLASH_IS_SEPARATOR) {
-            HTTP_SEPARATORS = new char[] { '\t', ' ', '\"', '(', ')', ',', '/', 
-                    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{', '}' };
+            HTTP_SEPARATORS = new char[]{'\t', ' ', '\"', '(', ')', ',', '/',
+                    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{', '}'};
         } else {
-            HTTP_SEPARATORS = new char[] { '\t', ' ', '\"', '(', ')', ',', 
-                    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{', '}' };
+            HTTP_SEPARATORS = new char[]{'\t', ' ', '\"', '(', ')', ',',
+                    ':', ';', '<', '=', '>', '?', '@', '[', '\\', ']', '{', '}'};
         }
         for (int i = 0; i < 128; i++) {
             V0_SEPARATOR_FLAGS[i] = false;
@@ -135,8 +134,13 @@ public final class CookieSupport {
         }
 
     }
-    
+
     // ----------------------------------------------------------------- Methods
+
+    // ------------------------------------------------------------- Constructor
+    private CookieSupport() {
+        // Utility class. Don't allow instances to be created.
+    }
 
     /**
      * Returns true if the byte is a separator as defined by V0 of the cookie
@@ -152,10 +156,10 @@ public final class CookieSupport {
 
         return V0_SEPARATOR_FLAGS[c];
     }
-    
+
     public static boolean isV0Token(String value) {
-        if( value==null) return false;
-        
+        if (value == null) return false;
+
         int i = 0;
         int len = value.length();
 
@@ -163,7 +167,7 @@ public final class CookieSupport {
             i++;
             len--;
         }
-        
+
         for (; i < len; i++) {
             char c = value.charAt(i);
 
@@ -176,8 +180,9 @@ public final class CookieSupport {
     /**
      * Returns true if the byte is a separator as defined by V1 of the cookie
      * spec, RFC2109.
+     *
      * @throws IllegalArgumentException if a control character was supplied as
-     *         input
+     *                                  input
      */
     public static final boolean isHttpSeparator(final char c) {
         if (c < 0x20 || c >= 0x7f) {
@@ -191,8 +196,8 @@ public final class CookieSupport {
     }
 
     public static boolean isHttpToken(String value) {
-        if( value==null) return false;
-        
+        if (value == null) return false;
+
         int i = 0;
         int len = value.length();
 
@@ -200,7 +205,7 @@ public final class CookieSupport {
             i++;
             len--;
         }
-        
+
         for (; i < len; i++) {
             char c = value.charAt(i);
 
@@ -210,15 +215,8 @@ public final class CookieSupport {
         return false;
     }
 
-    public static boolean alreadyQuoted (String value) {
-        if (value==null || value.length() < 2) return false;
-        return (value.charAt(0)=='\"' && value.charAt(value.length()-1)=='\"');
-    }
-    
-
-    
-    // ------------------------------------------------------------- Constructor
-    private CookieSupport() {
-        // Utility class. Don't allow instances to be created.
+    public static boolean alreadyQuoted(String value) {
+        if (value == null || value.length() < 2) return false;
+        return (value.charAt(0) == '\"' && value.charAt(value.length() - 1) == '\"');
     }
 }

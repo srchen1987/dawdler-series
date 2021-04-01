@@ -19,27 +19,26 @@ package com.anywide.dawdler.clientplug.web;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
- * 
- * @Title: ViewControllerContext.java
- * @Description: view层的上下层
- * @author: jackson.song
- * @date: 2007年04月17日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ViewControllerContext.java
+ * @Description view层的上下层
+ * @date 2007年04月17日
+ * @email suxuan696@gmail.com
  */
 public class ViewControllerContext {
-	private static ThreadLocal<ViewForward> viewForward = new ThreadLocal<ViewForward>();
+    private static final ThreadLocal<ViewForward> viewForward = new ThreadLocal<ViewForward>();
 
-	public static ViewForward getViewForward() {
-		return viewForward.get();
-	}
+    public static ViewForward getViewForward() {
+        return viewForward.get();
+    }
 
-	public static void setViewForward(ViewForward vd) {
-		viewForward.set(vd);
-	}
+    public static void setViewForward(ViewForward vd) {
+        viewForward.set(vd);
+    }
 
-	public static void removeViewForward() {
-		viewForward.remove();
-	}
+    public static void removeViewForward() {
+        viewForward.remove();
+    }
 
 }

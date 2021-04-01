@@ -16,75 +16,74 @@
  */
 package com.anywide.dawdler.serverplug.load;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.XmlObject;
 import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.XmlObject;
+import java.io.File;
+import java.io.IOException;
 
 /**
- * 
- * @Title: ClientConfig.java
- * @Description: 客户端配置文件解析器
- * @author: jackson.song
- * @date: 2007年05月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ClientConfig.java
+ * @Description 客户端配置文件解析器
+ * @date 2007年05月22日
+ * @email suxuan696@gmail.com
  */
 public class ClientConfig {
-	private static Logger logger = LoggerFactory.getLogger(ClientConfig.class);
-	private static final String SRCCONFIG = "client/client-conf.xml";
-	private static long updatetime = 0;
-	private static XmlObject xml = null;
-	private static ClientConfig remotefactory = new ClientConfig();
-	private static File file = null;
-	static {
-		try {
-			file = new File(DawdlerTool.getcurrentPath() + SRCCONFIG);
-			isupdate();
-			try {
-				xml = XmlObject.loadClassPathXML(SRCCONFIG);
-			} catch (IOException e) {
-				logger.error("", e);
-			}
-		} catch (DocumentException e) {
-			logger.error("", e);
-		}
-	}
+    private static final String SRC_CONFIG = "client/client-conf.xml";
+    private static final ClientConfig remoteFactory = new ClientConfig();
+    private static final Logger logger = LoggerFactory.getLogger(ClientConfig.class);
+    private static long updateTime = 0;
+    private static XmlObject xml = null;
+    private static File file = null;
 
-	public static ClientConfig getInstance() {
-		return remotefactory;
-	}
+    static {
+        try {
+            file = new File(DawdlerTool.getcurrentPath() + SRC_CONFIG);
+//			isUpdate();
+            try {
+                xml = XmlObject.loadClassPathXML(SRC_CONFIG);
+            } catch (IOException e) {
+                logger.error("", e);
+            }
+        } catch (DocumentException e) {
+            logger.error("", e);
+        }
+    }
 
-	private ClientConfig() {
-	}
+    private ClientConfig() {
+    }
 
-	public XmlObject getXml() {
-		if (isupdate()) {
-			try {
-				xml = XmlObject.loadClassPathXML(SRCCONFIG);
-			} catch (DocumentException e) {
-				logger.error("", e);
-			} catch (IOException e) {
-				logger.error("", e);
-			}
-		}
-		return xml;
-	}
+    public static ClientConfig getInstance() {
+        return remoteFactory;
+    }
 
-	private static boolean isupdate() {
-		if (!file.exists()) {
-			System.err.println("not found " + SRCCONFIG);
-			return false;
-		}
-		if (updatetime != file.lastModified()) {
-			updatetime = file.lastModified();
-			return true;
-		}
-		return false;
-	}
+    private static boolean isUpdate() {
+        if (!file.exists()) {
+            System.err.println("not found " + SRC_CONFIG);
+            return false;
+        }
+        if (updateTime != file.lastModified()) {
+            updateTime = file.lastModified();
+            return true;
+        }
+        return false;
+    }
+
+    public XmlObject getXml() {
+        if (isUpdate()) {
+            try {
+                xml = XmlObject.loadClassPathXML(SRC_CONFIG);
+            } catch (DocumentException e) {
+                logger.error("", e);
+            } catch (IOException e) {
+                logger.error("", e);
+            }
+        }
+        return xml;
+    }
 }

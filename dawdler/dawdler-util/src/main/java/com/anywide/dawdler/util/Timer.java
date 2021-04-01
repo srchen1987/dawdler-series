@@ -30,6 +30,7 @@
  * under the License.
  */
 package com.anywide.dawdler.util;
+
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -45,7 +46,6 @@ public interface Timer {
      * the specified delay.
      *
      * @return a handle which is associated with the specified task
-     *
      * @throws IllegalStateException if this timer has been
      *                               {@linkplain #stop() stopped} already
      */
@@ -56,7 +56,7 @@ public interface Timer {
      * tasks which were scheduled but not executed yet.
      *
      * @return the handles associated with the tasks which were canceled by
-     *         this method
+     * this method
      */
     Set<Timeout> stop();
 }

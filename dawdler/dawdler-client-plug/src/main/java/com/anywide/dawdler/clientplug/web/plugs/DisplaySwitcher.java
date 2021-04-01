@@ -19,23 +19,22 @@ package com.anywide.dawdler.clientplug.web.plugs;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
- * 
- * @Title: DisplaySwitcher.java
- * @Description: 显示器选择者
- * @author: jackson.song
- * @date: 2007年04月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DisplaySwitcher.java
+ * @Description 显示器选择者
+ * @date 2007年04月21日
+ * @email suxuan696@gmail.com
  */
 public class DisplaySwitcher {
-	public static void switchDisplay(ViewForward wf) {
-		String servicetype = wf.getServiceType();
-		DisplayPlug displayPlug = null;
-		if (servicetype != null) {
-			displayPlug = PlugFactory.getDisplayPlug(servicetype);
-		}
-		if (displayPlug == null)
-			displayPlug = PlugFactory.getDisplayPlug("default");
-		displayPlug.display(wf);
-	}
+    public static void switchDisplay(ViewForward wf) {
+        String serviceType = wf.getServiceType();
+        DisplayPlug displayPlug = null;
+        if (serviceType != null) {
+            displayPlug = PlugFactory.getDisplayPlug(serviceType);
+        }
+        if (displayPlug == null)
+            displayPlug = PlugFactory.getDisplayPlug("default");
+        displayPlug.display(wf);
+    }
 }

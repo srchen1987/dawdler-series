@@ -16,38 +16,37 @@
  */
 package com.anywide.dawdler.clientplug.web.validator;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * 
- * @Title: ValidatorFactory.java
- * @Description: 验证器工厂
- * @author: jackson.song
- * @date: 2007年07月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ValidatorFactory.java
+ * @Description 验证器工厂
+ * @date 2007年07月21日
+ * @email suxuan696@gmail.com
  */
 public class ValidatorFactory {
-	private static Logger logger = LoggerFactory.getLogger(ValidatorFactory.class);
-	private static ConcurrentHashMap<String, AbstractValidator> validators = new ConcurrentHashMap<String, AbstractValidator>();
+    private static final Logger logger = LoggerFactory.getLogger(ValidatorFactory.class);
+    private static final ConcurrentHashMap<String, AbstractValidator> validators = new ConcurrentHashMap<>();
 
-	public static AbstractValidator getValidator(String key) {
-		try {
-			AbstractValidator avalidator = validators.get(key);
-			if (avalidator != null)
-				return avalidator;
-			avalidator = new AbstractValidator(key) {
-			};
-			AbstractValidator pre = validators.putIfAbsent(key, avalidator);
-			if (pre != null)
-				avalidator = pre;
-			return avalidator;
-		} catch (Exception e) {
-			logger.error("", e);
-			return null;
-		}
-	}
+    public static AbstractValidator getValidator(String key) {
+        try {
+            AbstractValidator avalidator = validators.get(key);
+            if (avalidator != null)
+                return avalidator;
+            avalidator = new AbstractValidator(key) {
+            };
+            AbstractValidator pre = validators.putIfAbsent(key, avalidator);
+            if (pre != null)
+                avalidator = pre;
+            return avalidator;
+        } catch (Exception e) {
+            logger.error("", e);
+            return null;
+        }
+    }
 }

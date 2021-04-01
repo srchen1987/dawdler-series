@@ -16,71 +16,68 @@
  */
 package com.anywide.dawdler.serverplug.transaction;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
-import javax.sql.DataSource;
 
 /**
- * 
- * @Title: ReadConnectionHolder.java
- * @Description: 读连接持有者
- * @author: jackson.song
- * @date: 2015年09月28日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ReadConnectionHolder.java
+ * @Description 读连接持有者
+ * @date 2015年09月28日
+ * @email suxuan696@gmail.com
  */
 public class ReadConnectionHolder {
-	private int referenceCount;
-	private DataSource dataSource;
-	private Connection connection;
-	private boolean useWriteConnection;
+    private int referenceCount;
+    private final DataSource dataSource;
+    private Connection connection;
+    private boolean useWriteConnection;
 
-	public boolean isUseWriteConnection() {
-		return useWriteConnection;
-	}
+    ReadConnectionHolder(final DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
-	public void setUseWriteConnection(boolean useWriteConnection) {
-		this.useWriteConnection = useWriteConnection;
-	}
+    public boolean isUseWriteConnection() {
+        return useWriteConnection;
+    }
 
-	ReadConnectionHolder(final DataSource dataSource) {
-		this.dataSource = dataSource;
-	}
+    public void setUseWriteConnection(boolean useWriteConnection) {
+        this.useWriteConnection = useWriteConnection;
+    }
 
-	public void requested() {
-		this.referenceCount++;
-	}
+    public void requested() {
+        this.referenceCount++;
+    }
 
-	public void released() throws SQLException {
-		this.referenceCount--;
-		if (!this.isOpen() && this.connection != null)
-			try {
-				this.connection.close();
-			} catch (SQLException e) {
-				throw e;
-			} finally {
-				this.connection = null;
-			}
-	}
+    public void released() throws SQLException {
+        this.referenceCount--;
+        if (!this.isOpen() && this.connection != null)
+            try {
+                this.connection.close();
+            } catch (SQLException e) {
+                throw e;
+            } finally {
+                this.connection = null;
+            }
+    }
 
-	public Connection getConnection() throws SQLException {
-		if (!this.isOpen()) {
-			return null;
-		}
-		if (this.connection == null) {
-			this.connection = this.dataSource.getConnection();
-		}
-		return this.connection;
-	}
+    public Connection getConnection() throws SQLException {
+        if (!this.isOpen()) {
+            return null;
+        }
+        if (this.connection == null) {
+            this.connection = this.dataSource.getConnection();
+        }
+        return this.connection;
+    }
 
-	public boolean isOpen() {
-		if (this.referenceCount == 0)
-			return false;
-		return true;
-	}
+    public boolean isOpen() {
+        return this.referenceCount != 0;
+    }
 
-	public DataSource getDataSource() {
-		return dataSource;
-	}
+    public DataSource getDataSource() {
+        return dataSource;
+    }
 
 }

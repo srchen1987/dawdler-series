@@ -18,7 +18,6 @@ package com.anywide.dawdler.util;
 
 /**
  * twitter的snowflake算法
- * 
  */
 public class SnowFlake {
 
@@ -107,5 +106,5 @@ public class SnowFlake {
         return JVMTimeProvider.currentTimeMillis();
     }
 
- 
+
 }

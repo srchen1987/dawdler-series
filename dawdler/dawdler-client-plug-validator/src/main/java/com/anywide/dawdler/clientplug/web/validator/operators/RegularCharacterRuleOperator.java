@@ -17,32 +17,31 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: RegularCharacterRuleOperator.java
- * @Description: 汉字字母或数字验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RegularCharacterRuleOperator.java
+ * @Description 汉字字母或数字验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class RegularCharacterRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "regularCharacter";
-	public static final String REGEX = "^[0-9a-zA-Z\u4e00-\u9fa5]+$";
-	public static final String EXPLAIN = "汉字字母或数字验证";
+    public static final String RULEKEY = "regularCharacter";
+    public static final String REGEX = "^[0-9a-zA-Z\u4e00-\u9fa5]+$";
+    public static final String EXPLAIN = "汉字字母或数字验证";
 
-	public RegularCharacterRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
-	}
+    public RegularCharacterRuleOperator() {
+        super(RULEKEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
-	@Override
-	public String validate(Object value) {
-		return super.validate(value, "请输入汉字字母或数字!");
-	}
+    @Override
+    public String validate(Object value) {
+        return super.validate(value, "请输入汉字字母或数字!");
+    }
 
 }

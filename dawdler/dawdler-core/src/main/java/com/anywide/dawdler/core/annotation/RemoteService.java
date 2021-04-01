@@ -22,26 +22,26 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.FIELD })
+@Target({ElementType.TYPE, ElementType.FIELD})
 /**
- * 
- * @Title: RemoteService.java
- * @Description: 标注一个类是远程提供服务的注解
- * @author: jackson.song
- * @date: 2015年04月26日
+ *
+ * @Title RemoteService.java
+ * @Description 标注一个类是远程提供服务的注解
+ * @author jackson.song
+ * @date 2015年04月26日
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @email suxuan696@gmail.com
  */
 public @interface RemoteService {
-	String value() default "";
+    String value() default "";
 
-	String group() default "defaultgroup";
+    String group() default "defaultgroup";
 
-	boolean single() default true;
+    boolean single() default true;
 
-	boolean remote() default false;
+    boolean remote() default false;
 
-	int timeout() default 120;
+    int timeout() default 120;
 
-	public boolean fuzzy() default true;
+    boolean fuzzy() default true;
 }

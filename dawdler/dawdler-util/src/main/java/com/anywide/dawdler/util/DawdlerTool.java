@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.util;
+
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,76 +23,81 @@ import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+
 /**
- * 
- * @Title:  DawdlerTool.java
- * @Description:    常用工具类   
- * @author: jackson.song    
- * @date:   2007年07月03日    
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title DawdlerTool.java
+ * @Description 常用工具类
+ * @date 2007年07月03日
+ * @email suxuan696@gmail.com
  */
 public class DawdlerTool {
-	
-	public static String getcurrentPath(){
-		try {
-			return URLDecoder.decode(Thread.currentThread().getContextClassLoader().getResource("").getPath(),"utf-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		return Thread.currentThread().getContextClassLoader().getResource("").getPath().replace("%20"," ");
-	}
-	public static URL getcurrentURL(){
-		try {
-			return new URL("file:/"+getcurrentPath());
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	public static String getEnv(String key){
-		return System.getenv(key);
-	}
-	public static String fnameToUpper(String filedname){
-		char c =filedname.charAt(0);
-		c= (char) (c-32);
-		filedname  = c+filedname.substring(1,filedname.length());
-		return filedname;
-	}
-	public static String getSha1(String str){
-	    if (null == str || 0 == str.length()){
-	        return null;
-	    }
-	    char[] hexDigits = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 
-	            'a', 'b', 'c', 'd', 'e', 'f'};
-	    try {
-	        MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
-	        mdTemp.update(str.getBytes("UTF-8"));
-	         
-	        byte[] md = mdTemp.digest();
-	        int j = md.length;
-	        char[] buf = new char[j * 2];
-	        int k = 0;
-	        for (int i = 0; i < j; i++) {
-	            byte byte0 = md[i];
-	            buf[k++] = hexDigits[byte0 >>> 4 & 0xf];
-	            buf[k++] = hexDigits[byte0 & 0xf];
-	        }
-	        return new String(buf);
-	    } catch (NoSuchAlgorithmException e) {
-	        e.printStackTrace();
-	    } catch (UnsupportedEncodingException e) {
-	        e.printStackTrace();
-	    }
-		return str;
-	}
-	static public String generateDigest(String idPassword)
-	        throws NoSuchAlgorithmException {
-	    String parts[] = idPassword.split(":", 2);
-	    byte digest[] = MessageDigest.getInstance("SHA1").digest(
-	            idPassword.getBytes());
-	    return parts[0] + ":" + new String(Base64.getEncoder().encode(digest));
-	}
+
+    public static String getcurrentPath() {
+        try {
+            return URLDecoder.decode(Thread.currentThread().getContextClassLoader().getResource("").getPath(), "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return Thread.currentThread().getContextClassLoader().getResource("").getPath().replace("%20", " ");
+    }
+
+    public static URL getcurrentURL() {
+        try {
+            return new URL("file:/" + getcurrentPath());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String getEnv(String key) {
+        return System.getenv(key);
+    }
+
+    public static String fnameToUpper(String filedname) {
+        char c = filedname.charAt(0);
+        c = (char) (c - 32);
+        filedname = c + filedname.substring(1, filedname.length());
+        return filedname;
+    }
+
+    public static String getSha1(String str) {
+        if (null == str || 0 == str.length()) {
+            return null;
+        }
+        char[] hexDigits = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                'a', 'b', 'c', 'd', 'e', 'f'};
+        try {
+            MessageDigest mdTemp = MessageDigest.getInstance("SHA1");
+            mdTemp.update(str.getBytes("UTF-8"));
+
+            byte[] md = mdTemp.digest();
+            int j = md.length;
+            char[] buf = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                buf[k++] = hexDigits[byte0 >>> 4 & 0xf];
+                buf[k++] = hexDigits[byte0 & 0xf];
+            }
+            return new String(buf);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    static public String generateDigest(String idPassword)
+            throws NoSuchAlgorithmException {
+        String parts[] = idPassword.split(":", 2);
+        byte digest[] = MessageDigest.getInstance("SHA1").digest(
+                idPassword.getBytes());
+        return parts[0] + ":" + new String(Base64.getEncoder().encode(digest));
+    }
 //	public static String memoryStatistic() {
 //      Runtime runtime = Runtime.getRuntime();
 //

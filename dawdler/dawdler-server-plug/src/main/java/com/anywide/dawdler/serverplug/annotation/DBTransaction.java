@@ -25,39 +25,39 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @java.lang.annotation.Inherited
 /**
- * 
- * @Title: DBTransaction.java
- * @Description: 事务注解，应用于service方法中
- * @author: jackson.song
- * @date: 2012年09月27日
+ *
+ * @Title DBTransaction.java
+ * @Description 事务注解，应用于service方法中
+ * @author jackson.song
+ * @date 2012年09月27日
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @email suxuan696@gmail.com
  */
 public @interface DBTransaction {
-	boolean useConnection() default true;
+    boolean useConnection() default true;
 
-	MODE mode() default MODE.deferToConfig;
+    MODE mode() default MODE.deferToConfig;
 
-	READCONFIG readConfig() default READCONFIG.idem;
+    READ_CONFIG readConfig() default READ_CONFIG.idem;
 
-	enum MODE {
-		forceReadOnWrite, // 强制读从写连接上，在做读写分离时需要根据插入数据做业务不能保证从库数据的实时性所以采用这种方式
-		deferToConfig;// 跟从配置
-	}
+    Class<? extends Throwable>[] noRollbackFor() default {};
 
-	enum READCONFIG {
-		idem, // 同上层定义
-		deferToConfig;// 根据本方法的注解定义
-	}
+    Propagation propagation() default Propagation.REQUIRED;
 
-	Class<? extends Throwable>[] noRollbackFor() default {};
+    Isolation isolation() default Isolation.DEFAULT;
 
-	Propagation propagation() default Propagation.REQUIRED;
+    boolean readOnly() default false;
 
-	Isolation isolation() default Isolation.DEFAULT;
+    int timeOut() default -1;// unimplemented
 
-	boolean readOnly() default false;
+    enum MODE {
+        forceReadOnWrite, // 强制读从写连接上，在做读写分离时需要根据插入数据做业务不能保证从库数据的实时性所以采用这种方式
+        deferToConfig// 跟从配置
+    }
 
-	int timeOut() default -1;// unimplemented
+    enum READ_CONFIG {
+        idem, // 同上层定义
+        deferToConfig// 根据本方法的注解定义
+    }
 
 }

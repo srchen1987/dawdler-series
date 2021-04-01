@@ -17,31 +17,30 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: EnglishWordsRuleOperator.java
- * @Description: 英文字母验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title EnglishWordsRuleOperator.java
+ * @Description 英文字母验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class EnglishWordsRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "englishWords";
-	public static final String REGEX = "^[A-Z|a-z]+$";
-	public static final String EXPLAIN = "英文字母验证";
+    public static final String RULEKEY = "englishWords";
+    public static final String REGEX = "^[A-Z|a-z]+$";
+    public static final String EXPLAIN = "英文字母验证";
 
-	public EnglishWordsRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
-	}
+    public EnglishWordsRuleOperator() {
+        super(RULEKEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
-	@Override
-	public String validate(Object value) {
-		return super.validate(value, "请输入英文字母或者单词!");
-	}
+    @Override
+    public String validate(Object value) {
+        return super.validate(value, "请输入英文字母或者单词!");
+    }
 
 }

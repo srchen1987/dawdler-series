@@ -20,54 +20,53 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 
- * @Title: ControlValidator.java
- * @Description: 控制验证器
- * @author: jackson.song
- * @date: 2007年07月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ControlValidator.java
+ * @Description 控制验证器
+ * @date 2007年07月21日
+ * @email suxuan696@gmail.com
  */
 public class ControlValidator {
-	private boolean validate;
-	private Map<String, ControlField> controlFields;
-	private Map<String, Map<String, ControlField>> fieldGroups;
-	private Map<String, ControlField> globalControlFields;
-	private Map<String, Map<String, ControlField>> mappings = new HashMap<String, Map<String, ControlField>>();
+    private boolean validate;
+    private Map<String, ControlField> controlFields;
+    private Map<String, Map<String, ControlField>> fieldGroups;
+    private Map<String, ControlField> globalControlFields;
+    private final Map<String, Map<String, ControlField>> mappings = new HashMap<String, Map<String, ControlField>>();
 
-	public Map<String, Map<String, ControlField>> getMappings() {
-		return mappings;
-	}
+    public Map<String, Map<String, ControlField>> getMappings() {
+        return mappings;
+    }
 
-	public Map<String, Map<String, ControlField>> getFieldGroups() {
-		return fieldGroups;
-	}
+    public Map<String, Map<String, ControlField>> getFieldGroups() {
+        return fieldGroups;
+    }
 
-	public Map<String, ControlField> getGlobalControlFields() {
-		return globalControlFields;
-	}
+    public void setFieldGroups(Map<String, Map<String, ControlField>> fieldGroups) {
+        this.fieldGroups = fieldGroups;
+    }
 
-	public void setGlobalControlFields(Map<String, ControlField> globalControlFields) {
-		this.globalControlFields = globalControlFields;
-	}
+    public Map<String, ControlField> getGlobalControlFields() {
+        return globalControlFields;
+    }
 
-	public void setFieldGroups(Map<String, Map<String, ControlField>> fieldGroups) {
-		this.fieldGroups = fieldGroups;
-	}
+    public void setGlobalControlFields(Map<String, ControlField> globalControlFields) {
+        this.globalControlFields = globalControlFields;
+    }
 
-	public Map<String, ControlField> getControlFields() {
-		return controlFields;
-	}
+    public Map<String, ControlField> getControlFields() {
+        return controlFields;
+    }
 
-	public void setControlFields(Map<String, ControlField> controlFields) {
-		this.controlFields = controlFields;
-	}
+    public void setControlFields(Map<String, ControlField> controlFields) {
+        this.controlFields = controlFields;
+    }
 
-	public void setValidate(boolean validate) {
-		this.validate = validate;
-	}
+    public boolean isValidate() {
+        return validate;
+    }
 
-	public boolean isValidate() {
-		return validate;
-	}
+    public void setValidate(boolean validate) {
+        this.validate = validate;
+    }
 }
