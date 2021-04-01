@@ -20,14 +20,13 @@ import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
 
 /**
- * 
- * @Title: DawdlerFilter.java
- * @Description: dawdler服务过滤器接口
- * @author: jackson.song
- * @date: 2015年04月08日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DawdlerFilter.java
+ * @Description dawdler服务过滤器接口
+ * @date 2015年04月08日
+ * @email suxuan696@gmail.com
  */
 public interface DawdlerFilter {
-	public void doFilter(RequestBean request, ResponseBean response, FilterChain chain) throws Exception;
+    void doFilter(RequestBean request, ResponseBean response, FilterChain chain) throws Exception;
 }

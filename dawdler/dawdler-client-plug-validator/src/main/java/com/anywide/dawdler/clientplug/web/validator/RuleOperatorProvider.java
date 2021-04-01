@@ -16,103 +16,103 @@
  */
 package com.anywide.dawdler.clientplug.web.validator;
 
+import com.anywide.dawdler.clientplug.web.validator.operators.RegexRuleOperator;
+import com.anywide.dawdler.clientplug.web.validator.operators.RuleOperator;
+import com.anywide.dawdler.clientplug.web.validator.operators.StringRuleOperator;
+import com.anywide.dawdler.clientplug.web.validator.scanner.RuleOperatorScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.anywide.dawdler.clientplug.web.validator.operators.RegexRuleOperator;
-import com.anywide.dawdler.clientplug.web.validator.operators.RuleOperator;
-import com.anywide.dawdler.clientplug.web.validator.operators.StringRuleOperator;
-import com.anywide.dawdler.clientplug.web.validator.scanner.RuleOperatorScanner;
 
 /**
- * 
- * @Title: RuleOperatorProvider.java
- * @Description: 验证规则提供则
- * @author: jackson.song
- * @date: 2007年07月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RuleOperatorProvider.java
+ * @Description 验证规则提供则
+ * @date 2007年07月21日
+ * @email suxuan696@gmail.com
  */
 public class RuleOperatorProvider {
-	private static Logger logger = LoggerFactory.getLogger(RuleOperatorProvider.class);
-	private static Map<String, StringRuleOperator> stringRules = new HashMap<String, StringRuleOperator>();
-	private static Map<Pattern, RegexRuleOperator> regexRules = new HashMap<Pattern, RegexRuleOperator>();
-	private static Map<String, RegexRuleOperator> stringRegexRules = new HashMap<String, RegexRuleOperator>();
+    private static final Logger logger = LoggerFactory.getLogger(RuleOperatorProvider.class);
+    private static final Map<String, StringRuleOperator> stringRules = new HashMap<>();
+    private static final Map<Pattern, RegexRuleOperator> regexRules = new HashMap<>();
+    private static final Map<String, RegexRuleOperator> stringRegexRules = new HashMap<>();
 
-	public static Map<String, StringRuleOperator> getStringRules() {
-		return stringRules;
-	}
+    static {
+        registerRuleOperatorScanPackage(RuleOperator.class);
+    }
 
-	public static Map<Pattern, RegexRuleOperator> getRegexRules() {
-		return regexRules;
-	}
+    public static Map<String, StringRuleOperator> getStringRules() {
+        return stringRules;
+    }
 
-	public static RegexRuleOperator getRegexRule(String regex) {
-		return stringRegexRules.get(regex);
-	}
+    public static Map<Pattern, RegexRuleOperator> getRegexRules() {
+        return regexRules;
+    }
 
-	public static StringRuleOperator getStringRule(String rulekey) {
-		return stringRules.get(rulekey);
-	}
+    public static RegexRuleOperator getRegexRule(String regex) {
+        return stringRegexRules.get(regex);
+    }
 
-	static {
-		registerRuleOperatorScanPackage(RuleOperator.class);
-	}
+    public static StringRuleOperator getStringRule(String rulekey) {
+        return stringRules.get(rulekey);
+    }
 
-	public static void registerRuleOperator(RuleOperator ro) {
-		if (ro == null)
-			return;
-		if (ro.getRuleKey() != null) {
-			if (stringRules.containsKey(ro.getRuleKey())) {
-				logger.warn(ro.getRuleKey() + "\talready exists in "
-						+ stringRules.get(ro.getRuleKey()).getClass().getName() + "!");
-			} else {
-				stringRules.put(ro.getRuleKey(), (StringRuleOperator) ro);
-			}
-		} else if (ro.getPattern() != null) {
-			if (stringRegexRules.containsKey(ro.getPattern().pattern())) {
-				logger.warn(ro.getPattern().pattern() + "\talready exists in "
-						+ stringRegexRules.get(ro.getPattern().pattern()).getClass().getName() + "!");
-			} else {
-				regexRules.put(ro.getPattern(), (RegexRuleOperator) ro);
-				stringRegexRules.put(ro.getPattern().pattern(), (RegexRuleOperator) ro);
-			}
-		}
-	}
+    public static void registerRuleOperator(RuleOperator ro) {
+        if (ro == null)
+            return;
+        if (ro.getRuleKey() != null) {
+            if (stringRules.containsKey(ro.getRuleKey())) {
+                logger.warn(ro.getRuleKey() + "\talready exists in "
+                        + stringRules.get(ro.getRuleKey()).getClass().getName() + "!");
+            } else {
+                stringRules.put(ro.getRuleKey(), (StringRuleOperator) ro);
+            }
+        } else if (ro.getPattern() != null) {
+            if (stringRegexRules.containsKey(ro.getPattern().pattern())) {
+                logger.warn(ro.getPattern().pattern() + "\talready exists in "
+                        + stringRegexRules.get(ro.getPattern().pattern()).getClass().getName() + "!");
+            } else {
+                regexRules.put(ro.getPattern(), (RegexRuleOperator) ro);
+                stringRegexRules.put(ro.getPattern().pattern(), (RegexRuleOperator) ro);
+            }
+        }
+    }
 
-	public static void registerRuleOperatorScanPackage(Class target) {
-		Set<Class<?>> classes = RuleOperatorScanner.getAppClasses(target.getPackage().getName());
-		for (Class c : classes) {
-			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
-					&& ((c.getModifiers() & 512) != 512) && RuleOperator.class.isAssignableFrom(c)) {
-				try {
-					RuleOperator ro = (RuleOperator) c.newInstance();
-					registerRuleOperator(ro);
-				} catch (InstantiationException e) {
-					logger.warn("", e);
-				} catch (IllegalAccessException e) {
-					logger.warn("", e);
-				}
-			}
-		}
-	}
+    public static void registerRuleOperatorScanPackage(Class target) {
+        Set<Class<?>> classes = RuleOperatorScanner.getAppClasses(target.getPackage().getName());
+        for (Class c : classes) {
+            if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
+                    && ((c.getModifiers() & 512) != 512) && RuleOperator.class.isAssignableFrom(c)) {
+                try {
+                    RuleOperator ro = (RuleOperator) c.newInstance();
+                    registerRuleOperator(ro);
+                } catch (InstantiationException e) {
+                    logger.warn("", e);
+                } catch (IllegalAccessException e) {
+                    logger.warn("", e);
+                }
+            }
+        }
+    }
 
-	public static void help() {
-		System.out.println("stringRule list\t");
-		Set<Entry<String, StringRuleOperator>> entrys = stringRules.entrySet();
-		for (Entry<String, StringRuleOperator> en : entrys) {
-			String key = en.getKey();
-			System.out.println("状态码:[ " + key + " ]\t" + stringRules.get(key));
-		}
-		System.out.println("regexRule list\t");
-		Set<Entry<String, RegexRuleOperator>> regexEntrys = stringRegexRules.entrySet();
-		for (Entry<String, RegexRuleOperator> en : regexEntrys) {
-			String key = en.getKey();
-			System.out.println("状态码:[ " + key + " ]\t" + stringRegexRules.get(key));
-		}
-	}
+    public static void help() {
+        System.out.println("stringRule list\t");
+        Set<Entry<String, StringRuleOperator>> entrys = stringRules.entrySet();
+        for (Entry<String, StringRuleOperator> en : entrys) {
+            String key = en.getKey();
+            System.out.println("状态码:[ " + key + " ]\t" + stringRules.get(key));
+        }
+        System.out.println("regexRule list\t");
+        Set<Entry<String, RegexRuleOperator>> regexEntrys = stringRegexRules.entrySet();
+        for (Entry<String, RegexRuleOperator> en : regexEntrys) {
+            String key = en.getKey();
+            System.out.println("状态码:[ " + key + " ]\t" + stringRegexRules.get(key));
+        }
+    }
 }

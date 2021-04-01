@@ -21,89 +21,88 @@ import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.bean.RequestBean;
 
 /**
- * 
- * @Title: RequestWrapper.java
- * @Description: 一个request的包装类
- * @author: jackson.song
- * @date: 2015年04月06日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RequestWrapper.java
+ * @Description 一个request的包装类
+ * @date 2015年04月06日
+ * @email suxuan696@gmail.com
  */
 public class RequestWrapper extends RequestBean {
-	private static final long serialVersionUID = 2807385594696214109L;
-	private SocketSession session;
-	private RequestBean request;
-	private int timeout=-1;
+    private static final long serialVersionUID = 2807385594696214109L;
+    private final SocketSession session;
+    private final RequestBean request;
+    private final int timeout;
 
-	private CircuitBreaker circuitBreaker;
-	private Class proxyInterface;
+    private final CircuitBreaker circuitBreaker;
+    private final Class proxyInterface;
 
-	public RequestWrapper(RequestBean request, SocketSession session, CircuitBreaker circuitBreaker,
-			Class proxyInterface, int timeout) {
-		super.setSeq(request.getSeq());
-		super.setServiceName(request.getServiceName());
-		super.setMethodName(request.getMethodName());
-		super.setTypes(request.getTypes());
-		super.setArgs(request.getArgs());
-		super.setFuzzy(request.isFuzzy());
-		super.setPath(request.getPath());
-		this.timeout = timeout;
-		this.request = request;
-		this.session = session;
-		this.circuitBreaker = circuitBreaker;
-		this.proxyInterface = proxyInterface;
-	}
+    public RequestWrapper(RequestBean request, SocketSession session, CircuitBreaker circuitBreaker,
+                          Class proxyInterface, int timeout) {
+        super.setSeq(request.getSeq());
+        super.setServiceName(request.getServiceName());
+        super.setMethodName(request.getMethodName());
+        super.setTypes(request.getTypes());
+        super.setArgs(request.getArgs());
+        super.setFuzzy(request.isFuzzy());
+        super.setPath(request.getPath());
+        this.timeout = timeout;
+        this.request = request;
+        this.session = session;
+        this.circuitBreaker = circuitBreaker;
+        this.proxyInterface = proxyInterface;
+    }
 
-	public Class getProxyInterface() {
-		return proxyInterface;
-	}
+    public Class getProxyInterface() {
+        return proxyInterface;
+    }
 
-	public CircuitBreaker getCircuitBreaker() {
-		return circuitBreaker;
-	}
+    public CircuitBreaker getCircuitBreaker() {
+        return circuitBreaker;
+    }
 
-	RequestBean getRequest() {
-		return request;
-	}
+    RequestBean getRequest() {
+        return request;
+    }
 
-	SocketSession getSession() {
-		return session;
-	}
+    SocketSession getSession() {
+        return session;
+    }
 
-	public int getTimeout() {
-		return timeout;
-	}
+    public int getTimeout() {
+        return timeout;
+    }
 
-	@Override
-	public void setFuzzy(boolean fuzzy) {
-	}
+    @Override
+    public void setFuzzy(boolean fuzzy) {
+    }
 
-	@Override
-	public void setPath(String path) {
-	}
+    @Override
+    public void setPath(String path) {
+    }
 
-	@Override
-	public void setSingle(boolean single) {
-	}
+    @Override
+    public void setSingle(boolean single) {
+    }
 
-	@Override
-	public void setSeq(long seq) {
-	}
+    @Override
+    public void setSeq(long seq) {
+    }
 
-	@Override
-	public void setServiceName(String serviceName) {
-	}
+    @Override
+    public void setServiceName(String serviceName) {
+    }
 
-	@Override
-	public void setMethodName(String methodName) {
-	}
+    @Override
+    public void setMethodName(String methodName) {
+    }
 
-	@Override
-	public void setTypes(Class[] types) {
-	}
+    @Override
+    public void setTypes(Class[] types) {
+    }
 
-	@Override
-	public void setArgs(Object... args) {
-	}
+    @Override
+    public void setArgs(Object... args) {
+    }
 
 }

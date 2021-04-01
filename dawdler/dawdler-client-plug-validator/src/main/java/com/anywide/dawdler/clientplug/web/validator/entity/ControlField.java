@@ -17,51 +17,50 @@
 package com.anywide.dawdler.clientplug.web.validator.entity;
 
 /**
- * 
- * @Title: ControlField.java
- * @Description: 控制基础对应属性
- * @author: jackson.song
- * @date: 2007年07月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ControlField.java
+ * @Description 控制基础对应属性
+ * @date 2007年07月21日
+ * @email suxuan696@gmail.com
  */
 public class ControlField {
-	private String fieldName;
-	private String rules;
-	private String fieldExplain;
+    private String fieldName;
+    private String rules;
+    private String fieldExplain;
 
-	public ControlField(String fieldName, String rules, String fieldExplain) {
-		this.fieldName = fieldName;
-		this.rules = rules;
-		this.fieldExplain = fieldExplain;
-	}
+    public ControlField(String fieldName, String rules, String fieldExplain) {
+        this.fieldName = fieldName;
+        this.rules = rules;
+        this.fieldExplain = fieldExplain;
+    }
 
-	public String getFieldName() {
-		return fieldName;
-	}
+    public String getFieldName() {
+        return fieldName;
+    }
 
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
+    public void setFieldName(String fieldName) {
+        this.fieldName = fieldName;
+    }
 
-	public String getRules() {
-		return rules;
-	}
+    public String getRules() {
+        return rules;
+    }
 
-	public void setRules(String rules) {
-		this.rules = rules;
-	}
+    public void setRules(String rules) {
+        this.rules = rules;
+    }
 
-	public String getFieldExplain() {
-		return fieldExplain;
-	}
+    public String getFieldExplain() {
+        return fieldExplain;
+    }
 
-	public void setFieldExplain(String fieldExplain) {
-		this.fieldExplain = fieldExplain;
-	}
+    public void setFieldExplain(String fieldExplain) {
+        this.fieldExplain = fieldExplain;
+    }
 
-	@Override
-	public String toString() {
-		return fieldName + "\t" + rules + "\t" + fieldExplain;
-	}
+    @Override
+    public String toString() {
+        return fieldName + "\t" + rules + "\t" + fieldExplain;
+    }
 }

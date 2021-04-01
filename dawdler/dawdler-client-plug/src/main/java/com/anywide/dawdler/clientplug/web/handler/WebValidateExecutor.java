@@ -16,23 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.ViewControllerContext;
@@ -42,93 +25,103 @@ import com.anywide.dawdler.clientplug.web.validator.ValidateParser;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
 import com.anywide.dawdler.clientplug.web.validator.webbind.ValidateResourceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 
- * @Title: WebValidateExecutor.java
- * @Description: 对web请求进行校验
- * @author: jackson.song
- * @date: 2007年07月23日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title WebValidateExecutor.java
+ * @Description 对web请求进行校验
+ * @date 2007年07月23日
+ * @email suxuan696@gmail.com
  */
 public class WebValidateExecutor {
-	public static final String VALIDATEERROR = "validate_error";// 验证错误
-	private static Logger logger = LoggerFactory.getLogger(WebValidateExecutor.class);
-	private static Map<Class, ControlValidator> validators = new ConcurrentHashMap<Class, ControlValidator>();
+    public static final String VALIDATE_ERROR = "validate_error";// 验证错误
+    private static final Logger logger = LoggerFactory.getLogger(WebValidateExecutor.class);
+    private static final Map<Class, ControlValidator> validators = new ConcurrentHashMap<>();
 
-	public static boolean validate(HttpServletRequest request, HttpServletResponse response, Object arg2) {
-		if (!(arg2 instanceof TransactionController)) {
-			return true;
-		}
-		ViewForward viewForward = ViewControllerContext.getViewForward();
-		RequestMapping ra = viewForward.getRequestMapping();
-		Map<String, Serializable> errors = new HashMap<>();
-		Class clazz = arg2.getClass();
-		ControlValidator cv = validators.get(clazz);
-		if (cv == null) {
-			cv = ValidateResourceLoader.getControlValidator(clazz);
-			if (cv == null)
-				cv = new ControlValidator();
-			ControlValidator preCv = validators.putIfAbsent(clazz, cv);
-			if (preCv != null)
-				cv = preCv;
-		}
-		String uri = viewForward.getUriShort();
-		if (!cv.isValidate() || uri == null)
-			return true;
-		Map<String, ControlField> rules = cv.getMappings().get(uri);
-		if (rules == null)
-			rules = cv.getGlobalControlFields();
-		if (rules != null) {
-			if (ra != null && ra.generateValidator() && !rules.isEmpty()) {
-				StringBuffer sb = new StringBuffer("sir_validate.addRule(");
-				Collection<ControlField> cc = rules.values();
-				List list = new ArrayList();
-				for (Iterator<ControlField> it = cc.iterator(); it.hasNext();) {
-					Map map = new LinkedHashMap();
-					ControlField cf = it.next();
-					map.put("id", cf.getFieldName());
-					map.put("viewname", cf.getFieldExplain());
-					map.put("validaterule", cf.getRules());
-					list.add(map);
-				}
-				sb.append(JsonProcessUtil.beanToJson(list));
-				sb.append(");\n");
-				sb.append("sir_validate.buildFormValidate($formid);");
-				System.out.println("######################################");
-				System.out.println(sb.toString());
-				System.out.println("######################################");
-			}
-			Set<Entry<String, ControlField>> set = rules.entrySet();
-			for (Entry<String, ControlField> entry : set) {
-				String key = entry.getKey();
-				ControlField cf = entry.getValue();
-				Map params = viewForward.paramMaps();
-				if (params == null)
-					params = new HashMap();
-				String error = ValidateParser.validate(cf.getFieldExplain(), params.get(cf.getFieldName()),
-						cf.getRules());
-				if (error != null)
-					errors.put(key, error);
-			}
-		}
-		if (!errors.isEmpty()) {
-			if (ra != null && ra.input() != null && !ra.input().trim().equals("")) {
+    public static boolean validate(HttpServletRequest request, HttpServletResponse response, Object arg2) {
+        if (!(arg2 instanceof TransactionController)) {
+            return true;
+        }
+        ViewForward viewForward = ViewControllerContext.getViewForward();
+        RequestMapping ra = viewForward.getRequestMapping();
+        Map<String, Serializable> errors = new HashMap<>();
+        Class clazz = arg2.getClass();
+        ControlValidator cv = validators.get(clazz);
+        if (cv == null) {
+            cv = ValidateResourceLoader.getControlValidator(clazz);
+            if (cv == null)
+                cv = new ControlValidator();
+            ControlValidator preCv = validators.putIfAbsent(clazz, cv);
+            if (preCv != null)
+                cv = preCv;
+        }
+        String uri = viewForward.getUriShort();
+        if (!cv.isValidate() || uri == null)
+            return true;
+        Map<String, ControlField> rules = cv.getMappings().get(uri);
+        if (rules == null)
+            rules = cv.getGlobalControlFields();
+        if (rules != null) {
+            if (ra != null && ra.generateValidator() && !rules.isEmpty()) {
+                StringBuffer sb = new StringBuffer("sir_validate.addRule(");
+                Collection<ControlField> cc = rules.values();
+                List list = new ArrayList();
+                for (Iterator<ControlField> it = cc.iterator(); it.hasNext(); ) {
+                    Map map = new LinkedHashMap();
+                    ControlField cf = it.next();
+                    map.put("id", cf.getFieldName());
+                    map.put("viewname", cf.getFieldExplain());
+                    map.put("validaterule", cf.getRules());
+                    list.add(map);
+                }
+                sb.append(JsonProcessUtil.beanToJson(list));
+                sb.append(");\n");
+                sb.append("sir_validate.buildFormValidate($formid);");
+                System.out.println("######################################");
+                System.out.println(sb.toString());
+                System.out.println("######################################");
+            }
+            Set<Entry<String, ControlField>> set = rules.entrySet();
+            for (Entry<String, ControlField> entry : set) {
+                String key = entry.getKey();
+                ControlField cf = entry.getValue();
+                Map params = viewForward.paramMaps();
+                if (params == null)
+                    params = new HashMap();
+                String error = ValidateParser.validate(cf.getFieldExplain(), params.get(cf.getFieldName()),
+                        cf.getRules());
+                if (error != null)
+                    errors.put(key, error);
+            }
+        }
+        if (!errors.isEmpty()) {
+            if (ra != null && ra.input() != null && !ra.input().trim().equals("")) {
 //				ViewControllerContext.removeViewForward();
-				request.setAttribute(VALIDATEERROR, errors);
-				try {
-					request.getRequestDispatcher(ra.input()).forward(request, response);
-				} catch (ServletException | IOException e) {
-					logger.error("", e);
-				}
-			} else {
-				viewForward.putData(VALIDATEERROR, errors);
-				PlugFactory.getDisplayPlug("json").display(viewForward);
-			}
-			return false;
-		}
-		return true;
-	}
+                request.setAttribute(VALIDATE_ERROR, errors);
+                try {
+                    request.getRequestDispatcher(ra.input()).forward(request, response);
+                } catch (ServletException | IOException e) {
+                    logger.error("", e);
+                }
+            } else {
+                viewForward.putData(VALIDATE_ERROR, errors);
+                PlugFactory.getDisplayPlug("json").display(viewForward);
+            }
+            return false;
+        }
+        return true;
+    }
 
 }

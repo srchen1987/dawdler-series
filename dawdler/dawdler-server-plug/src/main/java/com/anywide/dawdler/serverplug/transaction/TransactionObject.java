@@ -16,79 +16,76 @@
  */
 package com.anywide.dawdler.serverplug.transaction;
 
-import java.sql.SQLException;
-
-import javax.sql.DataSource;
-
 import com.anywide.dawdler.serverplug.annotation.Isolation;
 
+import javax.sql.DataSource;
+import java.sql.SQLException;
+
 /**
- * 
- * @Title: TransactionObject.java
- * @Description: 事务类相关信息的存储类
- * @author: jackson.song
- * @date: 2015年09月28日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title TransactionObject.java
+ * @Description 事务类相关信息的存储类
+ * @date 2015年09月28日
+ * @email suxuan696@gmail.com
  */
 public class TransactionObject {
-	private WriteConnectionHolder holder = null;
-	private DataSource dataSource = null;
-	private Isolation originalIsolationLevel;
+    private WriteConnectionHolder holder = null;
+    private DataSource dataSource = null;
+    private final Isolation originalIsolationLevel;
+    private boolean recoverMark = false;
 
-	public TransactionObject(final WriteConnectionHolder holder, final Isolation originalIsolationLevel,
-			final DataSource dataSource) throws SQLException {
-		this.holder = holder;
-		this.dataSource = dataSource;
-		this.originalIsolationLevel = originalIsolationLevel;
-	}
+    public TransactionObject(final WriteConnectionHolder holder, final Isolation originalIsolationLevel,
+                             final DataSource dataSource) throws SQLException {
+        this.holder = holder;
+        this.dataSource = dataSource;
+        this.originalIsolationLevel = originalIsolationLevel;
+    }
 
-	public Isolation getOriIsolationLevel() {
-		return this.originalIsolationLevel;
-	}
+    public Isolation getOriIsolationLevel() {
+        return this.originalIsolationLevel;
+    }
 
-	public WriteConnectionHolder getHolder() {
-		return this.holder;
-	}
+    public WriteConnectionHolder getHolder() {
+        return this.holder;
+    }
 
-	public DataSource getDataSource() {
-		return this.dataSource;
-	}
+    public DataSource getDataSource() {
+        return this.dataSource;
+    }
 
-	public SavepointManager getSavepointManager() {
-		return this.getHolder();
-	}
+    public SavepointManager getSavepointManager() {
+        return this.getHolder();
+    }
 
-	public void rollback() throws SQLException {
-		if (this.holder.hasTransaction()) {
-			this.holder.getConnection().rollback();
-		}
-	}
+    public void rollback() throws SQLException {
+        if (this.holder.hasTransaction()) {
+            this.holder.getConnection().rollback();
+        }
+    }
 
-	public void commit() throws SQLException {
-		if (this.holder.hasTransaction()) {
-			this.holder.getConnection().commit();
-		}
-	}
+    public void commit() throws SQLException {
+        if (this.holder.hasTransaction()) {
+            this.holder.getConnection().commit();
+        }
+    }
 
-	public boolean hasTransaction() throws SQLException {
-		return this.holder.hasTransaction();
-	}
+    public boolean hasTransaction() throws SQLException {
+        return this.holder.hasTransaction();
+    }
 
-	private boolean recoverMark = false;
+    public void beginTransaction() throws SQLException {
+        if (!this.holder.hasTransaction()) {
+            this.recoverMark = true;
+        }
+        this.holder.setTransaction();
+    }
 
-	public void beginTransaction() throws SQLException {
-		if (!this.holder.hasTransaction()) {
-			this.recoverMark = true;
-		}
-		this.holder.setTransaction();
-	}
-
-	public void stopTransaction() throws SQLException {
-		if (!this.recoverMark) {
-			return;
-		}
-		this.recoverMark = false;
-		this.holder.cancelTransaction();
-	}
+    public void stopTransaction() throws SQLException {
+        if (!this.recoverMark) {
+            return;
+        }
+        this.recoverMark = false;
+        this.holder.cancelTransaction();
+    }
 }

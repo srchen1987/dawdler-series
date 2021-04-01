@@ -19,49 +19,47 @@ package com.anywide.dawdler.clientplug.dynamicform.control;
 import com.anywide.dawdler.clientplug.velocity.ControlTag;
 
 /**
- * 
- * @Title: Control.java
- * @Description: 抽象控件
- * @author: jackson.song
- * @date: 2006年08月10日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title Control.java
+ * @Description 抽象控件
+ * @date 2006年08月10日
+ * @email suxuan696@gmail.com
  */
 public abstract class Control {
-	protected ControlTag tag;
+    private static boolean showcolon;
+    protected ControlTag tag;
 
-	public static void setShowcolon(boolean showcolon) {
-		Control.showcolon = showcolon;
-	}
+    protected Control(ControlTag tag) {
+        this.tag = tag;
+    }
 
-	private static boolean showcolon;
+    public static void setShowcolon(boolean showcolon) {
+        Control.showcolon = showcolon;
+    }
 
-	protected Control(ControlTag tag) {
-		this.tag = tag;
-	}
+    public String showView() {
+        ControlTag ntag = tag;
+        if (ntag.getControlname() == null) {
+            throw new NullPointerException("controlname can't null !");
+        }
+        if (ntag.getViewname() == null) {
+            throw new NullPointerException("viewname can't null !");
+        }
+        return translation();
+    }
 
-	public String showView() {
-		ControlTag ntag = (ControlTag) tag;
-		if (ntag.getControlname() == null) {
-			throw new NullPointerException("controlname can't null !");
-		}
-		if (ntag.getViewname() == null) {
-			throw new NullPointerException("viewname can't null !");
-		}
-		return translation();
-	}
+    protected abstract String replaceContent();
 
-	protected abstract String replaceContent();
-
-	protected String translation() {
-		String notEmpty = "";
-		if (tag.getValidaterule() != null) {
-			if (tag.getValidaterule().contains("notEmpty"))
-				notEmpty = "<font color=\"red\">*</font>";
-		}
-		return notEmpty + (tag.isAutoaddviewname() ? tag.getViewname() + (showcolon ? " : " : "  ") : "")
-				+ replaceContent()
-				+ ((tag.getViewdescription() != null && tag.isAutoaddviewdescription()) ? tag.getViewdescription()
-						: "");
-	}
+    protected String translation() {
+        String notEmpty = "";
+        if (tag.getValidaterule() != null) {
+            if (tag.getValidaterule().contains("notEmpty"))
+                notEmpty = "<font color=\"red\">*</font>";
+        }
+        return notEmpty + (tag.isAutoaddviewname() ? tag.getViewname() + (showcolon ? " : " : "  ") : "")
+                + replaceContent()
+                + ((tag.getViewdescription() != null && tag.isAutoaddviewdescription()) ? tag.getViewdescription()
+                : "");
+    }
 }

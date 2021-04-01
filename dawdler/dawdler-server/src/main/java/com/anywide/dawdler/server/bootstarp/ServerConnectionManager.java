@@ -16,66 +16,64 @@
  */
 package com.anywide.dawdler.server.bootstarp;
 
+import com.anywide.dawdler.server.net.aio.session.SocketSession;
+
 import java.net.SocketAddress;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.anywide.dawdler.server.net.aio.session.SocketSession;
 
 /**
- * 
- * @Title: ServerConnectionManager.java
- * @Description: 服务器连接管理器
- * @author: jackson.song
- * @date: 2015年03月12日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ServerConnectionManager.java
+ * @Description 服务器连接管理器
+ * @date 2015年03月12日
+ * @email suxuan696@gmail.com
  */
 public class ServerConnectionManager {
-	private static ServerConnectionManager serverConnectionManager = new ServerConnectionManager();
+    private static final ServerConnectionManager serverConnectionManager = new ServerConnectionManager();
+    public Map<SocketAddress, SocketSession> connections = new ConcurrentHashMap<>();
 
-	private ServerConnectionManager() {
+    private ServerConnectionManager() {
 
-	}
+    }
 
-	public static ServerConnectionManager getInstance() {
-		return serverConnectionManager;
-	}
+    public static ServerConnectionManager getInstance() {
+        return serverConnectionManager;
+    }
 
-	public Map<SocketAddress, SocketSession> connections = new ConcurrentHashMap<>();
+    public void addSession(SocketSession session) {
+        connections.put(session.getRemoteAddress(), session);
+    }
 
+    public boolean removeSession(SocketSession session) {
+        return connections.remove(session.getRemoteAddress()) != null;
+    }
 
-	public void addSession(SocketSession session) { 
-		connections.put(session.getRemoteAddress(), session);
-	}
+    public boolean hasTask() {
+        Collection<SocketSession> collection = connections.values();
+        for (SocketSession session : collection) {
+            if (!session.getFutures().isEmpty())
+                return true;
+        }
+        return false;
+    }
 
-	public boolean removeSession(SocketSession session) {
-		return connections.remove(session.getRemoteAddress()) != null;
-	}
+    public void closeNow() {
+        Collection<SocketSession> collection = connections.values();
+        for (SocketSession session : collection) {
+            session.close();
+        }
+    }
 
-	public boolean hasTask() {
-		Collection<SocketSession> collection = connections.values();
-		for (SocketSession session : collection) {
-			if (!session.getFutures().isEmpty())
-				return true;
-		}
-		return false;
-	}
-
-	public void closeNow() {
-		Collection<SocketSession> collection = connections.values();
-		for (SocketSession session : collection) {
-			session.close();
-		}
-	}
-
-	public void close() {
-		Collection<SocketSession> collection = connections.values();
-		for (SocketSession session : collection) {
-			if (session.getFutures().isEmpty()) {
-				session.close();
-			}
-		}
-	}
+    public void close() {
+        Collection<SocketSession> collection = connections.values();
+        for (SocketSession session : collection) {
+            if (session.getFutures().isEmpty()) {
+                session.close();
+            }
+        }
+    }
 
 }

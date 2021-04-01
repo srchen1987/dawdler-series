@@ -20,86 +20,85 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * 
- * @Title: MaxNumberRuleOperator.java
- * @Description: 数字类型大于判断
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title MaxNumberRuleOperator.java
+ * @Description 数字类型大于判断
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class MaxNumberRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^maxnumber:([-+]?\\d+(\\.\\d+)?$)";
+    public static final String RULEKEY = "^maxnumber:([-+]?\\d+(\\.\\d+)?$)";
 
-	public MaxNumberRuleOperator() {
-		super(RULEKEY);
-	}
+    public MaxNumberRuleOperator() {
+        super(RULEKEY);
+    }
 
-	@Override
-	public String validate(Object value, Matcher matcher) {
-		boolean flag = true;
-		double i = Double.parseDouble(matcher.group(1));
-		String error = "不能大于数字" + i + "!";
-		if (value == null)
-			return null;
-		if (value instanceof String) {
-			if (isEmpty(value.toString()))
-				return null;
-			Double v = null;
-			try {
-				v = Double.parseDouble((String) value);
-			} catch (Exception e) {
-			}
-			if (v == null)
-				return null;
-			if (v > i)
-				return error;
-		}
-		if (value instanceof String[]) {
-			String[] values = (String[]) value;
-			for (String v : values) {
-				if (isEmpty(v)) {
-					continue;
-				}
-				Double dv = null;
-				try {
-					dv = Double.parseDouble(v);
-				} catch (Exception e) {
-				}
-				if (dv == null)
-					continue;
-				if (dv > i) {
-					flag = false;
-					break;
-				}
+    @Override
+    public String validate(Object value, Matcher matcher) {
+        boolean flag = true;
+        double i = Double.parseDouble(matcher.group(1));
+        String error = "不能大于数字" + i + "!";
+        if (value == null)
+            return null;
+        if (value instanceof String) {
+            if (isEmpty(value.toString()))
+                return null;
+            Double v = null;
+            try {
+                v = Double.parseDouble((String) value);
+            } catch (Exception e) {
+            }
+            if (v == null)
+                return null;
+            if (v > i)
+                return error;
+        }
+        if (value instanceof String[]) {
+            String[] values = (String[]) value;
+            for (String v : values) {
+                if (isEmpty(v)) {
+                    continue;
+                }
+                Double dv = null;
+                try {
+                    dv = Double.parseDouble(v);
+                } catch (Exception e) {
+                }
+                if (dv == null)
+                    continue;
+                if (dv > i) {
+                    flag = false;
+                    break;
+                }
 
-			}
-		} else if (value instanceof List) {
-			List values = (List) value;
-			for (Object o : values) {
-				if (isEmpty(o.toString())) {
-					continue;
-				}
-				Double dv = null;
-				try {
-					dv = Double.parseDouble(o.toString());
-				} catch (Exception e) {
-				}
-				if (dv == null)
-					continue;
-				if (dv > i) {
-					flag = false;
-					break;
-				}
-			}
-		}
-		if (!flag)
-			return error;
-		return null;
-	}
+            }
+        } else if (value instanceof List) {
+            List values = (List) value;
+            for (Object o : values) {
+                if (isEmpty(o.toString())) {
+                    continue;
+                }
+                Double dv = null;
+                try {
+                    dv = Double.parseDouble(o.toString());
+                } catch (Exception e) {
+                }
+                if (dv == null)
+                    continue;
+                if (dv > i) {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        if (!flag)
+            return error;
+        return null;
+    }
 
-	@Override
-	public String toString() {
-		return "最大数值不能大于指定数字如:maxnumber:25或maxnumber:25.32!";
-	}
+    @Override
+    public String toString() {
+        return "最大数值不能大于指定数字如:maxnumber:25或maxnumber:25.32!";
+    }
 }

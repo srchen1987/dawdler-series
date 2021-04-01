@@ -20,35 +20,34 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 
- * @Title: DataProcessWorkerPool.java
- * @Description: 数据处理的线程池
- * @author: jackson.song
- * @date: 2015年04月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DataProcessWorkerPool.java
+ * @Description 数据处理的线程池
+ * @date 2015年04月21日
+ * @email suxuan696@gmail.com
  */
 public class DataProcessWorkerPool {
-	private static final DataProcessWorkerPool processWorkerPool = new DataProcessWorkerPool();
-	private ExecutorService executor;
+    private static final DataProcessWorkerPool processWorkerPool = new DataProcessWorkerPool();
+    private final ExecutorService executor;
 
-	private DataProcessWorkerPool() {
-		executor = Executors.newFixedThreadPool(200, new DefaultThreadFactory(DataProcessWorkerPool.class));// FIXME 动态配置 池大小
-	}
+    private DataProcessWorkerPool() {
+        executor = Executors.newFixedThreadPool(200, new DefaultThreadFactory(DataProcessWorkerPool.class));// FIXME 动态配置 池大小
+    }
 
-	public static DataProcessWorkerPool getInstance() {
-		return processWorkerPool;
-	}
+    public static DataProcessWorkerPool getInstance() {
+        return processWorkerPool;
+    }
 
-	public void execute(Runnable command) {
-		executor.execute(command);
-	}
+    public void execute(Runnable command) {
+        executor.execute(command);
+    }
 
-	public void shutdown() {
-		executor.shutdown();
-	}
+    public void shutdown() {
+        executor.shutdown();
+    }
 
-	public void shutdownNow() {
-		executor.shutdownNow();
-	}
+    public void shutdownNow() {
+        executor.shutdownNow();
+    }
 }

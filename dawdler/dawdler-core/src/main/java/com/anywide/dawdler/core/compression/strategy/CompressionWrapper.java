@@ -17,39 +17,35 @@
 package com.anywide.dawdler.core.compression.strategy;
 
 /**
- * 
- * @Title: CompressionWrapper.java
- * @Description: 压缩包装类
- * @author: jackson.song
- * @date: 2015年06月12日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title CompressionWrapper.java
+ * @Description 压缩包装类
+ * @date 2015年06月12日
+ * @email suxuan696@gmail.com
  */
 public class CompressionWrapper {
-	boolean isCompressed;
-	byte[] buffer;
+    boolean isCompressed;
+    byte[] buffer;
 
-	public boolean isCompressed() {
-		return isCompressed;
-	}
+    public CompressionWrapper(boolean isCompressed, byte[] buffer) {
+        this.isCompressed = isCompressed;
+        this.buffer = buffer;
+    }
 
-	public void setCompressed(boolean isCompressed) {
-		this.isCompressed = isCompressed;
-	}
+    public boolean isCompressed() {
+        return isCompressed;
+    }
 
-	public byte[] getBuffer() {
-		return buffer;
-	}
+    public void setCompressed(boolean isCompressed) {
+        this.isCompressed = isCompressed;
+    }
 
-	public void setBuffer(byte[] buffer) {
-		this.buffer = buffer;
-	}
+    public byte[] getBuffer() {
+        return buffer;
+    }
 
-	public CompressionWrapper() {
-	}
-
-	public CompressionWrapper(boolean isCompressed, byte[] buffer) {
-		this.isCompressed = isCompressed;
-		this.buffer = buffer;
-	}
+    public void setBuffer(byte[] buffer) {
+        this.buffer = buffer;
+    }
 }

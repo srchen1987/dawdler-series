@@ -15,67 +15,70 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.session;
-import java.util.concurrent.TimeUnit;
-import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import org.checkerframework.checker.nullness.qual.NonNull;
+
+import java.util.concurrent.TimeUnit;
+
 /**
- * 
- * @Title:  DistributedCaffeineSessionManager.java
- * @Description:   caffeine session管理器的一个实现
- * @author: jackson.song    
- * @date:   2016年6月16日  
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title DistributedCaffeineSessionManager.java
+ * @Description caffeine session管理器的一个实现
+ * @date 2016年6月16日
+ * @email suxuan696@gmail.com
  */
 public class DistributedCaffeineSessionManager extends AbstractDistributedSessionManager {
-	LoadingCache<String,DawdlerHttpSession> sessions = null;
-	private int maxInactiveInterval;
-	public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize) {
-		this.maxInactiveInterval = maxInactiveInterval;
-		sessions = Caffeine.newBuilder().maximumSize(maxSize)
-					.expireAfterAccess(maxInactiveInterval,TimeUnit.SECONDS)
-						    .build(key -> createExpensiveGraph(key));		
-	}
-	
-	public DawdlerHttpSession getSession(String sessionKey){
-		return sessions.getIfPresent(sessionKey);
-	}
-	
-	public int getMaxInactiveInterval() {
-		return maxInactiveInterval;
-	}
+    private final int maxInactiveInterval;
+    LoadingCache<String, DawdlerHttpSession> sessions;
 
-	private DawdlerHttpSession createExpensiveGraph(@NonNull String key) {
-		return null;
-	}
+    public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize) {
+        this.maxInactiveInterval = maxInactiveInterval;
+        sessions = Caffeine.newBuilder().maximumSize(maxSize)
+                .expireAfterAccess(maxInactiveInterval, TimeUnit.SECONDS)
+                .build(this::createExpensiveGraph);
+    }
 
-	@Override
-	public void close() {
-		sessions.cleanUp();
-	}
- 
+    public DawdlerHttpSession getSession(String sessionKey) {
+        return sessions.getIfPresent(sessionKey);
+    }
 
-	@Override
-	public void removeSession(String sessionKey) {
-		DawdlerHttpSession session = sessions.get(sessionKey);
-		if(session!=null) {
-			session.clear();
-			sessions.invalidate(sessionKey);
-		}
-	}
+    public int getMaxInactiveInterval() {
+        return maxInactiveInterval;
+    }
 
-	@Override
-	public void addSession(String sessionKey,DawdlerHttpSession dawdlerHttpSession) {
-		sessions.put(sessionKey,dawdlerHttpSession);
-	}
+    private DawdlerHttpSession createExpensiveGraph(@NonNull String key) {
+        return null;
+    }
 
-	@Override
-	public void removeSession(DawdlerHttpSession dawdlerHttpSession) {
-		if(dawdlerHttpSession!=null) {
-			dawdlerHttpSession.clear();
-			sessions.invalidate(dawdlerHttpSession.getId());
-		}		
-	}
+    @Override
+    public void close() {
+        sessions.cleanUp();
+    }
+
+
+    @Override
+    public void removeSession(String sessionKey) {
+        DawdlerHttpSession session = sessions.get(sessionKey);
+        if (session != null) {
+            session.clear();
+            sessions.invalidate(sessionKey);
+        }
+    }
+
+    @Override
+    public void addSession(String sessionKey, DawdlerHttpSession dawdlerHttpSession) {
+        sessions.put(sessionKey, dawdlerHttpSession);
+    }
+
+    @Override
+    public void removeSession(DawdlerHttpSession dawdlerHttpSession) {
+        if (dawdlerHttpSession != null) {
+            dawdlerHttpSession.clear();
+            sessions.invalidate(dawdlerHttpSession.getId());
+        }
+    }
 }

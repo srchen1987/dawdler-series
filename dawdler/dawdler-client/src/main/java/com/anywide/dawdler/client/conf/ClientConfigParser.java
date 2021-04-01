@@ -16,34 +16,35 @@
  */
 package com.anywide.dawdler.client.conf;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.NullPermission;
 import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
 
 /**
- * 
- * @Title: ClientConfigParser.java
- * @Description: xtream映射类
- * @author: jackson.song
- * @date: 2015年03月16日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ClientConfigParser.java
+ * @Description xtream映射类
+ * @date 2015年03月16日
+ * @email suxuan696@gmail.com
  */
 public class ClientConfigParser {
-	private static Logger logger = LoggerFactory.getLogger(ClientConfigParser.class);
-	private static ClientConfig config = null;
-	static {
-		InputStream input = null;
-		try {
+    private static final Logger logger = LoggerFactory.getLogger(ClientConfigParser.class);
+    private static ClientConfig config = null;
+
+    static {
+        InputStream input = null;
+        try {
 //			XStream schema = new XStream();
 //			// clear out existing permissions and set own ones
 //			schema.addPermission(NoTypePermission.NONE);
@@ -56,30 +57,30 @@ public class ClientConfigParser {
 //			    "com.anywide.dawdler.client.conf.*"
 //			});
 
-			input = new FileInputStream(DawdlerTool.getcurrentPath() + "client/client-conf.xml");
-			XStream xstream = new XStream();
-			xstream.ignoreUnknownElements();
-			xstream.alias("config", ClientConfig.class);
-			xstream.autodetectAnnotations(true);
-			xstream.addPermission(NoTypePermission.NONE);
-			xstream.addPermission(NullPermission.NULL);
-			xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
-			xstream.allowTypeHierarchy(Collection.class);
-			xstream.allowTypesByWildcard(new String[] { "com.anywide.dawdler.client.conf.*" });
-			config = (ClientConfig) xstream.fromXML(input);
-		} catch (FileNotFoundException e) {
-			logger.error("", e);
-		} finally {
-			if (input != null)
-				try {
-					input.close();
-				} catch (IOException e) {
-					logger.error("", e);
-				}
-		}
-	}
+            input = new FileInputStream(DawdlerTool.getcurrentPath() + "client/client-conf.xml");
+            XStream xstream = new XStream();
+            xstream.ignoreUnknownElements();
+            xstream.alias("config", ClientConfig.class);
+            xstream.autodetectAnnotations(true);
+            xstream.addPermission(NoTypePermission.NONE);
+            xstream.addPermission(NullPermission.NULL);
+            xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
+            xstream.allowTypeHierarchy(Collection.class);
+            xstream.allowTypesByWildcard(new String[]{"com.anywide.dawdler.client.conf.*"});
+            config = (ClientConfig) xstream.fromXML(input);
+        } catch (FileNotFoundException e) {
+            logger.error("", e);
+        } finally {
+            if (input != null)
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    logger.error("", e);
+                }
+        }
+    }
 
-	public static ClientConfig getClientConfig() {
-		return config;
-	}
+    public static ClientConfig getClientConfig() {
+        return config;
+    }
 }

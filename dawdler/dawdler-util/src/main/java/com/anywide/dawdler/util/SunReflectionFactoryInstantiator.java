@@ -16,23 +16,23 @@
  */
 package com.anywide.dawdler.util;
 //import java.lang.reflect.Constructor;
+
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 //import sun.reflect.ReflectionFactory;
+
 /**
- * 
- * @Title:  SunReflectionFactoryInstantiator.java
- * @Description:    ReflectionFactory来构建对象 针对私有构造函数的类
- * @author: jackson.song    
- * @date:   2012年08月22日    
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title SunReflectionFactoryInstantiator.java
+ * @Description ReflectionFactory来构建对象 针对私有构造函数的类
+ * @date 2012年08月22日
+ * @email suxuan696@gmail.com
  */
 public class SunReflectionFactoryInstantiator {
 
 //	private static final ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
 
-//	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    //	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 //		Constructor javaLangObjectConstructor;
 //		try {
 //			javaLangObjectConstructor = Object.class.getConstructor((Class[]) null);
@@ -44,7 +44,7 @@ public class SunReflectionFactoryInstantiator {
 //		mungedConstructor.setAccessible(true);
 //		return (T) mungedConstructor.newInstance(null);
 //	}
-	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException  {
-		return (T)type.getConstructor(null).newInstance(null);
-	}
+    public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+        return (T) type.getConstructor(null).newInstance(null);
+    }
 }

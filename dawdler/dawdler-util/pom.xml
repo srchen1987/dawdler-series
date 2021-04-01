@@ -1,34 +1,34 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>dawdler</groupId>
-		<artifactId>dawdler</artifactId>
-		<version>0.0.1-RELEASES</version>
-	</parent> 
-	<artifactId>dawdler-util</artifactId>
-	<name>dawdler-util</name>
-	<packaging>jar</packaging>
-	<dependencies>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>jaxen</groupId> 
-			<artifactId>jaxen</artifactId>
-		</dependency>
-		<!-- 2006年之后再也没更新过，直到2020年才直到 换了org.dom4j -->
-	   <!--  <dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-		</dependency> -->
-		 <dependency>
-			<groupId>org.dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-		</dependency>
-	</dependencies>
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>dawdler</groupId>
+        <artifactId>dawdler</artifactId>
+        <version>0.0.1-RELEASES</version>
+    </parent>
+    <artifactId>dawdler-util</artifactId>
+    <name>dawdler-util</name>
+    <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jaxen</groupId>
+            <artifactId>jaxen</artifactId>
+        </dependency>
+        <!-- 2006年之后再也没更新过，直到2020年才直到 换了org.dom4j -->
+        <!--  <dependency>
+             <groupId>dom4j</groupId>
+             <artifactId>dom4j</artifactId>
+         </dependency> -->
+        <dependency>
+            <groupId>org.dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+    </dependencies>
 </project>

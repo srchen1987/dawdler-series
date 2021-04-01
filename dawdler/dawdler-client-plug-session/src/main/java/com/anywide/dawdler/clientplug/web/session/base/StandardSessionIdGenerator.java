@@ -17,20 +17,19 @@
 package com.anywide.dawdler.clientplug.web.session.base;
 
 /**
- * 
- * @Title:  StandardSessionIdGenerator.java
- * @Description:  SessionId生成者 直接copy tomcat代码
- * @author: jackson.song    
- * @date:   2016年6月16日  
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title StandardSessionIdGenerator.java
+ * @Description SessionId生成者 直接copy tomcat代码
+ * @date 2016年6月16日
+ * @email suxuan696@gmail.com
  */
 public class StandardSessionIdGenerator extends SessionIdGeneratorBase {
 
     @Override
     public String generateSessionId(String route) {
 
-        byte random[] = new byte[16];
+        byte[] random = new byte[16];
         int sessionIdLength = getSessionIdLength();
 
         // Render the result as a String of hexadecimal digits
@@ -42,8 +41,8 @@ public class StandardSessionIdGenerator extends SessionIdGeneratorBase {
         while (resultLenBytes < sessionIdLength) {
             getRandomBytes(random);
             for (int j = 0;
-            j < random.length && resultLenBytes < sessionIdLength;
-            j++) {
+                 j < random.length && resultLenBytes < sessionIdLength;
+                 j++) {
                 byte b1 = (byte) ((random[j] & 0xf0) >> 4);
                 byte b2 = (byte) (random[j] & 0x0f);
                 if (b1 < 10)

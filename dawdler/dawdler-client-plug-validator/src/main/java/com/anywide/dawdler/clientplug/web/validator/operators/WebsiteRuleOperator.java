@@ -17,32 +17,31 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: WebsiteRuleOperator.java
- * @Description: 网址验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title WebsiteRuleOperator.java
+ * @Description 网址验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class WebsiteRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "webSite";
-	public static final String REGEX = "^(http(s)?://)?([\\w-]+\\.)+[\\w-]+(\\/[\\w- .\\/?%&=]*)?";
-	public static final String EXPLAIN = "网址验证";
+    public static final String RULEKEY = "webSite";
+    public static final String REGEX = "^(http(s)?://)?([\\w-]+\\.)+[\\w-]+(\\/[\\w- .\\/?%&=]*)?";
+    public static final String EXPLAIN = "网址验证";
 
-	public WebsiteRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
-	}
+    public WebsiteRuleOperator() {
+        super(RULEKEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
-	@Override
-	public String validate(Object value) {
-		return super.validate(value, "请输入正确的网址!");
-	}
+    @Override
+    public String validate(Object value) {
+        return super.validate(value, "请输入正确的网址!");
+    }
 
 }

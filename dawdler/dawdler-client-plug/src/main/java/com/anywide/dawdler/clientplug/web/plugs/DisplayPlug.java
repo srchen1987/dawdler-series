@@ -19,16 +19,15 @@ package com.anywide.dawdler.clientplug.web.plugs;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
- * 
- * @Title: DisplayPlug.java
- * @Description: 显示插件接口
- * @author: jackson.song
- * @date: 2007年04月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DisplayPlug.java
+ * @Description 显示插件接口
+ * @date 2007年04月21日
+ * @email suxuan696@gmail.com
  */
 public interface DisplayPlug {
 
-	public void display(ViewForward wf);
+    void display(ViewForward wf);
 
 }

@@ -19,15 +19,14 @@ package com.anywide.dawdler.serverplug.service;
 import com.anywide.dawdler.core.annotation.RemoteService;
 
 /**
- * 
- * @Title: DownloadFile.java
- * @Description: 下载模版类文件的接口
- * @author: jackson.song
- * @date: 2007年09月18日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DownloadFile.java
+ * @Description 下载模版类文件的接口
+ * @date 2007年09月18日
+ * @email suxuan696@gmail.com
  */
 @RemoteService
 public interface DownloadFile {
-	public Object download(String[] names);
+    Object download(String[] names);
 }

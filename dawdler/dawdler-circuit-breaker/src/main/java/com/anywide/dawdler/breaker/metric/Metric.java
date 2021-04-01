@@ -15,27 +15,27 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.breaker.metric;
+
 /**
- * 
- * @Title:  Metric.java
- * @Description:    度量接口
- * @author: jackson.song    
- * @date:   2018年3月16日  
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title Metric.java
+ * @Description 度量接口
+ * @date 2018年3月16日
+ * @email suxuan696@gmail.com
  */
 public interface Metric {
-	public void totalIncrt();
+    void totalIncrt();
 
-	public void failIncrt();
+    void failIncrt();
 
-	public long totalCount();
+    long totalCount();
 
-	public long failCount();
-	
-	public long getStartTime();
-	
-	public void reset(long startTime);
-	
-	public long restStartTime();
+    long failCount();
+
+    long getStartTime();
+
+    void reset(long startTime);
+
+    long restStartTime();
 }
