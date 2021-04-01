@@ -16,58 +16,52 @@
  */
 package com.anywide.dawdler.clientplug.web.filter;
 
-import java.io.IOException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
- * 
- * @Title: ViewFilter.java
- * @Description: 请求处理过滤器
- * @author: jackson.song
- * @date: 2007年04月18日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ViewFilter.java
+ * @Description 请求处理过滤器
+ * @date 2007年04月18日
+ * @email suxuan696@gmail.com
  */
 public class ViewFilter implements Filter {
-	private AnnotationUrlHandler annotationUrlHander;
+    private AnnotationUrlHandler annotationUrlHander;
 
-	@Override
-	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
-			throws IOException, ServletException {
-		HttpServletRequest request = (HttpServletRequest) req;
-		HttpServletResponse response = (HttpServletResponse) res;
-		String method = request.getMethod();
-		if (method == null) {
-			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return;
-		}
-		method = method.toUpperCase();
-		response.setCharacterEncoding("utf-8");
-		request.setCharacterEncoding("utf-8");
-		String uri = request.getRequestURI().toString();
-		String contextpath = request.getContextPath() + "/";
-		String urishort = uri.substring(uri.indexOf(contextpath) + contextpath.length() - 1);
-		try {
-			boolean status = annotationUrlHander.handleUrl(urishort, method, request, response);
-			if (!status)
-				chain.doFilter(request, response);
-		} catch (Exception e) {
-			throw new ServletException(e);
-		}
-	}
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
+            throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) res;
+        String method = request.getMethod();
+        if (method == null) {
+            response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+        }
+        method = method.toUpperCase();
+        response.setCharacterEncoding("utf-8");
+        request.setCharacterEncoding("utf-8");
+        String uri = request.getRequestURI();
+        String contextPath = request.getContextPath() + "/";
+        String uriShort = uri.substring(uri.indexOf(contextPath) + contextPath.length() - 1);
+        try {
+            boolean status = annotationUrlHander.handleUrl(uriShort, method, request, response);
+            if (!status)
+                chain.doFilter(request, response);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
 
-	public void init(FilterConfig fConfig) throws ServletException {
-		ServletContext servletContext = fConfig.getServletContext();
+    public void init(FilterConfig fConfig) throws ServletException {
+        ServletContext servletContext = fConfig.getServletContext();
 //		String [] interceptorNames = context.getBeanNamesForType(HandlerInterceptor.class);
 //		if(interceptorNames!=null){
 //			for(String name:interceptorNames){
@@ -75,12 +69,12 @@ public class ViewFilter implements Filter {
 //			}
 //		}
 //		xmlHander = new XmlUrlHander(servletContext, context);
-		annotationUrlHander = new AnnotationUrlHandler();
-		PlugFactory.initFactory(servletContext);
-	}
+        annotationUrlHander = new AnnotationUrlHandler();
+        PlugFactory.initFactory(servletContext);
+    }
 
-	@Override
-	public void destroy() {
+    @Override
+    public void destroy() {
 
-	}
+    }
 }

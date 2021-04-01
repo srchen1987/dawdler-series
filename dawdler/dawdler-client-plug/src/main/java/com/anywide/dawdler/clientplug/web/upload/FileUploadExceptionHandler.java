@@ -16,19 +16,19 @@
  */
 package com.anywide.dawdler.clientplug.web.upload;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
- * 
- * @Title: FileUploadExceptionHandler.java
- * @Description: 附件上传异常处理类
- * @author: jackson.song
- * @date: 2007年04月16日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title FileUploadExceptionHandler.java
+ * @Description 附件上传异常处理类
+ * @date 2007年04月16日
+ * @email suxuan696@gmail.com
  */
 public interface FileUploadExceptionHandler {
-	public void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward, Exception ex);
+    void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward, Exception ex);
 }

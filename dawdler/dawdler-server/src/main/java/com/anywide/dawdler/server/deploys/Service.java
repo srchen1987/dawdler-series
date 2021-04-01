@@ -22,28 +22,27 @@ import com.anywide.dawdler.server.filter.FilterProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 
 /**
- * 
- * @Title: Service.java
- * @Description: deploy下服务模块定义的接口
- * @author: jackson.song
- * @date: 2015年03月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title Service.java
+ * @Description deploy下服务模块定义的接口
+ * @date 2015年03月22日
+ * @email suxuan696@gmail.com
  */
 public interface Service {
-	public void start() throws Exception;
+    void start() throws Exception;
 
-	public void stop();
+    void stop();
 
-	public void prepareStop();
-	
-	public ServicesBean getServiesBean(String name);
+    void prepareStop();
 
-	public ServicesBean getServiesBeanNoSafe(String name);
+    ServicesBean getServicesBean(String name);
 
-	public DawdlerContext getDawdlerContext();
+    ServicesBean getServicesBeanNoSafe(String name);
 
-	public ServiceExecutor getServiceExecutor();
+    DawdlerContext getDawdlerContext();
 
-	public FilterProvider getFilterProvider();
+    ServiceExecutor getServiceExecutor();
+
+    FilterProvider getFilterProvider();
 }

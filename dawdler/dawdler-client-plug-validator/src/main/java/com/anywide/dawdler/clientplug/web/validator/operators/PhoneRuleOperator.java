@@ -17,31 +17,30 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: PhoneRuleOperator.java
- * @Description: 座机验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title PhoneRuleOperator.java
+ * @Description 座机验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class PhoneRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "phone";
-	public static final String REGEX = "(^([0][1-9]{2,3}[-])?\\d{3,8}(-\\d{1,6})?$)|(^\\([0][1-9]{2,3}\\)\\d{3,8}(\\(\\d{1,6}\\))?$)|(^\\d{3,8}$)";
-	public static final String EXPLAIN = "座机验证";
+    public static final String RULEKEY = "phone";
+    public static final String REGEX = "(^([0][1-9]{2,3}[-])?\\d{3,8}(-\\d{1,6})?$)|(^\\([0][1-9]{2,3}\\)\\d{3,8}(\\(\\d{1,6}\\))?$)|(^\\d{3,8}$)";
+    public static final String EXPLAIN = "座机验证";
 
-	public PhoneRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
-	}
+    public PhoneRuleOperator() {
+        super(RULEKEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String validate(Object value) {
-		return validate(value, "请输入合法的电话号码！");
-	}
+    @Override
+    public String validate(Object value) {
+        return validate(value, "请输入合法的电话号码！");
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
 }

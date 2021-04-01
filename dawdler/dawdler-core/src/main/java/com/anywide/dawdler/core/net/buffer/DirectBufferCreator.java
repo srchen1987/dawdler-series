@@ -19,17 +19,16 @@ package com.anywide.dawdler.core.net.buffer;
 import java.nio.ByteBuffer;
 
 /**
- * 
- * @Title: DirectBufferCreator.java
- * @Description: jvm堆外分配buffer
- * @author: jackson.song
- * @date: 2015年03月14日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DirectBufferCreator.java
+ * @Description jvm堆外分配buffer
+ * @date 2015年03月14日
+ * @email suxuan696@gmail.com
  */
 public class DirectBufferCreator implements BufferCreator {
-	@Override
-	public ByteBuffer createByteBuffer(int capacity) {
-		return ByteBuffer.allocateDirect(capacity);
-	}
+    @Override
+    public ByteBuffer createByteBuffer(int capacity) {
+        return ByteBuffer.allocateDirect(capacity);
+    }
 }

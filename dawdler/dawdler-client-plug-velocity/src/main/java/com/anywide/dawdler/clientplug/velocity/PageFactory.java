@@ -19,28 +19,27 @@ package com.anywide.dawdler.clientplug.velocity;
 import com.anywide.dawdler.serverplug.load.bean.Page;
 
 /**
- * 
- * @Title: PageFactory.java
- * @Description: 分页工厂类 （注释后补的）
- * @author: jackson.song
- * @date: 2006年08月10日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title PageFactory.java
+ * @Description 分页工厂类 （注释后补的）
+ * @date 2006年08月10日
+ * @email suxuan696@gmail.com
  */
 public class PageFactory {
-//	private static PageFactory pageFactory = new PageFactory();
-	private PageFactory() {
-	};
+    //	private static PageFactory pageFactory = new PageFactory();
+    private PageFactory() {
+    }
 
-	public static Page getPage() {
-		return new Page();
-	}
+    public static Page getPage() {
+        return new Page();
+    }
 
-	public static Page getPage(int pageon, int row, int rowcount) {
-		return new Page(pageon, row, rowcount);
-	}
+    public static Page getPage(int pageon, int row, int rowcount) {
+        return new Page(pageon, row, rowcount);
+    }
 
-	public static Page getPage(int pageon, int row) {
-		return new Page(pageon, row);
-	}
+    public static Page getPage(int pageon, int row) {
+        return new Page(pageon, row);
+    }
 }

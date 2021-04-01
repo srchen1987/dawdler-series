@@ -21,74 +21,73 @@ import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 
 /**
- * 
- * @Title: RequestWrapper.java
- * @Description: request的包装类
- * @author: jackson.song
- * @date: 2015年04月08日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RequestWrapper.java
+ * @Description request的包装类
+ * @date 2015年04月08日
+ * @email suxuan696@gmail.com
  */
 public class RequestWrapper extends RequestBean {
-	private static final long serialVersionUID = 2807385594696214109L;
-	private RequestBean request;
-	private ServicesBean services;
-	private ServiceExecutor serviceExecutor;
+    private static final long serialVersionUID = 2807385594696214109L;
+    private final RequestBean request;
+    private final ServicesBean services;
+    private final ServiceExecutor serviceExecutor;
 
-	public RequestWrapper(RequestBean request, ServicesBean services, ServiceExecutor serviceExecutor) {
-		super.setSeq(request.getSeq());
-		super.setServiceName(request.getServiceName());
-		super.setMethodName(request.getMethodName());
-		super.setTypes(request.getTypes());
-		super.setArgs(request.getArgs());
-		super.setFuzzy(request.isFuzzy());
-		this.request = request;
-		this.services = services;
-		this.serviceExecutor = serviceExecutor;
-	}
+    public RequestWrapper(RequestBean request, ServicesBean services, ServiceExecutor serviceExecutor) {
+        super.setSeq(request.getSeq());
+        super.setServiceName(request.getServiceName());
+        super.setMethodName(request.getMethodName());
+        super.setTypes(request.getTypes());
+        super.setArgs(request.getArgs());
+        super.setFuzzy(request.isFuzzy());
+        this.request = request;
+        this.services = services;
+        this.serviceExecutor = serviceExecutor;
+    }
 
-	public ServiceExecutor getServiceExecutor() {
-		return serviceExecutor;
-	}
+    public ServiceExecutor getServiceExecutor() {
+        return serviceExecutor;
+    }
 
-	public ServicesBean getServices() {
-		return services;
-	}
+    public ServicesBean getServices() {
+        return services;
+    }
 
-	RequestBean getRequest() {
-		return request;
-	}
+    RequestBean getRequest() {
+        return request;
+    }
 
-	@Override
-	public void setFuzzy(boolean fuzzy) {
-	}
+    @Override
+    public void setFuzzy(boolean fuzzy) {
+    }
 
-	@Override
-	public void setPath(String path) {
-	}
+    @Override
+    public void setPath(String path) {
+    }
 
-	@Override
-	public void setSingle(boolean single) {
-	}
+    @Override
+    public void setSingle(boolean single) {
+    }
 
-	@Override
-	public void setSeq(long seq) {
-	}
+    @Override
+    public void setSeq(long seq) {
+    }
 
-	@Override
-	public void setServiceName(String serviceName) {
-	}
+    @Override
+    public void setServiceName(String serviceName) {
+    }
 
-	@Override
-	public void setMethodName(String methodName) {
-	}
+    @Override
+    public void setMethodName(String methodName) {
+    }
 
-	@Override
-	public void setTypes(Class[] types) {
-	}
+    @Override
+    public void setTypes(Class[] types) {
+    }
 
-	@Override
-	public void setArgs(Object... args) {
-	}
+    @Override
+    public void setArgs(Object... args) {
+    }
 
 }

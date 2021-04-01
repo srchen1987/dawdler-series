@@ -16,43 +16,44 @@
  */
 package com.anywide.dawdler.clientplug.web.interceptor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 /**
- * 
- * @Title: InterceptorProvider.java
- * @Description: 拦截器提供者
- * @author: jackson.song
- * @date: 2007年04月19日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title InterceptorProvider.java
+ * @Description 拦截器提供者
+ * @date 2007年04月19日
+ * @email suxuan696@gmail.com
  */
 public class InterceptorProvider {
-	private static AtomicBoolean order = new AtomicBoolean(false);
+    private static final AtomicBoolean order = new AtomicBoolean(false);
+    private static final List<OrderData<HandlerInterceptor>> handlerInterceptors = new ArrayList<>();
 
-	public static List<OrderData<HandlerInterceptor>> getHandlerInterceptors() {
-		return handlerInterceptors;
-	}
+    public static List<OrderData<HandlerInterceptor>> getHandlerInterceptors() {
+        return handlerInterceptors;
+    }
 
-	public static synchronized void addHandlerInterceptors(HandlerInterceptor handlerInterceptor) {
-		Order co = handlerInterceptor.getClass().getAnnotation(Order.class);
-		OrderData<HandlerInterceptor> od = new OrderData<HandlerInterceptor>();
-		od.setData(handlerInterceptor);
-		if (co != null) {
-			od.setOrder(co.value());
-		}
-		handlerInterceptors.add(od);
-	}
+    public static synchronized void addHandlerInterceptors(HandlerInterceptor handlerInterceptor) {
+        Order co = handlerInterceptor.getClass().getAnnotation(Order.class);
+        OrderData<HandlerInterceptor> od = new OrderData<>();
+        od.setData(handlerInterceptor);
+        if (co != null) {
+            od.setOrder(co.value());
+        }
+        handlerInterceptors.add(od);
+    }
 
-	public static void order() {
-		if (order.compareAndSet(false, true))
-			OrderComparator.sort(handlerInterceptors);
-	}
+    public static void order() {
+        if (order.compareAndSet(false, true))
+            OrderComparator.sort(handlerInterceptors);
+    }
 
-	private static List<OrderData<HandlerInterceptor>> handlerInterceptors = new ArrayList<OrderData<HandlerInterceptor>>();
+
 }

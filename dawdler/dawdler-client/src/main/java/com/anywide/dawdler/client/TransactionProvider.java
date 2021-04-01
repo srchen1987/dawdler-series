@@ -17,23 +17,22 @@
 package com.anywide.dawdler.client;
 
 /**
- * 
- * @Title: TransactionProvider.java
- * @Description: Transaction提供者，传入groupName获取Transaction
- * @author: jackson.song
- * @date: 2015年03月26日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title TransactionProvider.java
+ * @Description Transaction提供者，传入groupName获取Transaction
+ * @date 2015年03月26日
+ * @email suxuan696@gmail.com
  */
 public class TransactionProvider {
 
-	public static Transaction getTransaction(String groupName) {
-		ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
-		if (cp == null)
-			throw new IllegalArgumentException("not find " + groupName + " provider!");
-		DawdlerConnection con = cp.getConnection();
-		Transaction tr = new Transaction(con);
-		return tr;
-	}
-	 
+    public static Transaction getTransaction(String groupName) {
+        ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
+        if (cp == null)
+            throw new IllegalArgumentException("not find " + groupName + " provider!");
+        DawdlerConnection con = cp.getConnection();
+        Transaction tr = new Transaction(con);
+        return tr;
+    }
+
 }

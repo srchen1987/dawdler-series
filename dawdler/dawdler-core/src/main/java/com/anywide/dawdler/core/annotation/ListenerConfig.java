@@ -22,18 +22,19 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.FIELD })
+@Target({ElementType.TYPE, ElementType.FIELD})
 /**
- * 
- * @Title: ListenerConfig.java
- * @Description: 监听器注解
- * @author: jackson.song
- * @date: 2015年06月19日
+ *
+ * @Title ListenerConfig.java
+ * @Description 监听器注解
+ * @author jackson.song
+ * @date 2015年06月19日
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @email suxuan696@gmail.com
  */
-public @interface ListenerConfig {
-	long delayMsec() default 0L;// delayTime 毫秒级
 
-	public boolean asyn() default false;
+public @interface ListenerConfig {
+    long delayMsec() default 0L;// delayTime 毫秒级
+
+    boolean asyn() default false;
 }

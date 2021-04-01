@@ -20,28 +20,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 
- * @Title: RemoteClassLoaderFireHolder.java
- * @Description: 远程类加载时触发持有者
- * @author: jackson.song
- * @date: 2007年09月13日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RemoteClassLoaderFireHolder.java
+ * @Description 远程类加载时触发持有者
+ * @date 2007年09月13日
+ * @email suxuan696@gmail.com
  */
 public class RemoteClassLoaderFireHolder {
-	private List<RemoteClassLoderFire> fires = new ArrayList<>();
-	private static RemoteClassLoaderFireHolder remoteClassLoaderFireHolder = new RemoteClassLoaderFireHolder();
+    private static final RemoteClassLoaderFireHolder remoteClassLoaderFireHolder = new RemoteClassLoaderFireHolder();
+    private final List<RemoteClassLoderFire> fires = new ArrayList<>();
 
-	public static RemoteClassLoaderFireHolder getInstance() {
-		return remoteClassLoaderFireHolder;
-	}
+    public static RemoteClassLoaderFireHolder getInstance() {
+        return remoteClassLoaderFireHolder;
+    }
 
-	public void addRemoteClassLoaderFire(RemoteClassLoderFire remoteClassLoderFire) {
-		if (remoteClassLoderFire != null)
-			fires.add(remoteClassLoderFire);
-	}
+    public void addRemoteClassLoaderFire(RemoteClassLoderFire remoteClassLoderFire) {
+        if (remoteClassLoderFire != null)
+            fires.add(remoteClassLoderFire);
+    }
 
-	List<RemoteClassLoderFire> getRemoteClassLoaderFire() {
-		return fires;
-	}
+    List<RemoteClassLoderFire> getRemoteClassLoaderFire() {
+        return fires;
+    }
 }

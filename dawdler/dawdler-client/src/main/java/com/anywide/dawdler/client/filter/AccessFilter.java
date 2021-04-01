@@ -19,18 +19,17 @@ package com.anywide.dawdler.client.filter;
 import com.anywide.dawdler.core.bean.RequestBean;
 
 /**
- * 
- * @Title: AccessFilter.java
- * @Description: 一个前端Filter的演示类 //需要通过SPI配置 此类只是空实现 无用
- * @author: jackson.song
- * @date: 2015年04月06日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title AccessFilter.java
+ * @Description 一个前端Filter的演示类 //需要通过SPI配置 此类只是空实现 无用
+ * @date 2015年04月06日
+ * @email suxuan696@gmail.com
  */
 public class AccessFilter implements DawdlerClientFilter {
-	@Override
-	public Object doFilter(RequestBean request, FilterChain chain) throws Exception {
-		return chain.doFilter(request);
-	}
+    @Override
+    public Object doFilter(RequestBean request, FilterChain chain) throws Exception {
+        return chain.doFilter(request);
+    }
 
 }

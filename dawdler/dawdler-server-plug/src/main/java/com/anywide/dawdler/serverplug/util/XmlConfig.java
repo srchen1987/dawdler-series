@@ -16,102 +16,99 @@
  */
 package com.anywide.dawdler.serverplug.util;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.XmlObject;
 import org.dom4j.Attribute;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.XmlObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 /**
- * 
- * @Title: XmlConfig.java
- * @Description: 简单的xml操作类
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title XmlConfig.java
+ * @Description 简单的xml操作类
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class XmlConfig {
-	private static Logger logger = LoggerFactory.getLogger(XmlConfig.class);
-	private static long updatetime = 0;
-	private static final String CONFIGPATH = "src_config.xml";
-	private static XmlObject xmlobject = null;
-	private static Map<String, Map<String, String>> datas = Collections.synchronizedMap(new HashMap<>());
-	static {
-		isUpdate();
-		loadXML();
-	}
+    private static final String CONFIGPATH = "src_config.xml";
+    private static final Logger logger = LoggerFactory.getLogger(XmlConfig.class);
+    private static long updatetime = 0;
+    private static XmlObject xmlobject = null;
+    private static final Map<String, Map<String, String>> datas = Collections.synchronizedMap(new HashMap<>());
 
-	private XmlConfig() {
-	}
+    static {
+        isUpdate();
+        loadXML();
+    }
 
-	public static XmlObject getConfig() {
-		if (isUpdate()) {
-			loadXML();
-		}
-		return xmlobject;
-	}
+    private XmlConfig() {
+    }
 
-	public static String getRemoteLoad() {
-		if (isUpdate()) {
-			loadXML();
-		}
-		Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote_load");
-		if (ele == null)
-			throw new NullPointerException(CONFIGPATH + "config\remote_load not found！");
-		String path = ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
-		return path;
-	}
+    public static XmlObject getConfig() {
+        if (isUpdate()) {
+            loadXML();
+        }
+        return xmlobject;
+    }
 
-	private static boolean isUpdate() {
-		File file = new File(DawdlerTool.getcurrentPath() + File.separator + CONFIGPATH);
-		if (!file.exists()) {
-			logger.error("not found :" + CONFIGPATH);
-			return false;
-		}
-		if (updatetime != file.lastModified()) {
-			updatetime = file.lastModified();
-			return true;
-		}
-		return false;
-	}
+    public static String getRemoteLoad() {
+        if (isUpdate()) {
+            loadXML();
+        }
+        Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote_load");
+        if (ele == null)
+            throw new NullPointerException(CONFIGPATH + "config\remote_load not found！");
+        String path = ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
+        return path;
+    }
 
-	public static Map<String, Map<String, String>> getDatas() {
-		if (isUpdate()) {
-			loadXML();
-		}
-		return datas;
-	}
+    private static boolean isUpdate() {
+        File file = new File(DawdlerTool.getcurrentPath() + File.separator + CONFIGPATH);
+        if (!file.exists()) {
+            logger.error("not found :" + CONFIGPATH);
+            return false;
+        }
+        if (updatetime != file.lastModified()) {
+            updatetime = file.lastModified();
+            return true;
+        }
+        return false;
+    }
 
-	private static void loadXML() {
-		try {
-			xmlobject = XmlObject.loadClassPathXML(File.separator + CONFIGPATH);
-		} catch (DocumentException | IOException e) {
-			logger.error("", e);
-		}
-		loadDataSource();
-	}
+    public static Map<String, Map<String, String>> getDatas() {
+        if (isUpdate()) {
+            loadXML();
+        }
+        return datas;
+    }
 
-	private static void loadDataSource() {
-		List<Element> list = xmlobject.selectNodes("/config/server-datas/server-data");
-		for (Iterator<Element> it = list.iterator(); it.hasNext();) {
-			Element ele = it.next();
-			Map items = new HashMap();
-			for (Iterator its = ele.attributes().iterator(); its.hasNext();) {
-				Attribute ab = (Attribute) its.next();
-				items.put(ab.getName(), ab.getValue());
-			}
-			datas.put(ele.attributeValue("id"), items);
-		}
-	}
+    private static void loadXML() {
+        try {
+            xmlobject = XmlObject.loadClassPathXML(File.separator + CONFIGPATH);
+        } catch (DocumentException | IOException e) {
+            logger.error("", e);
+        }
+        loadDataSource();
+    }
+
+    private static void loadDataSource() {
+        List<Element> list = xmlobject.selectNodes("/config/server-datas/server-data");
+        for (Iterator<Element> it = list.iterator(); it.hasNext(); ) {
+            Element ele = it.next();
+            Map items = new HashMap();
+            for (Iterator its = ele.attributes().iterator(); its.hasNext(); ) {
+                Attribute ab = (Attribute) its.next();
+                items.put(ab.getName(), ab.getValue());
+            }
+            datas.put(ele.attributeValue("id"), items);
+        }
+    }
 
 }

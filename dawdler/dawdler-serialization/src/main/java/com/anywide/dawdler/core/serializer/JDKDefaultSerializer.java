@@ -15,74 +15,69 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.serializer;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.ObjectStreamClass;
+
+import java.io.*;
+
 /**
- * 
- * @Title:  JDKDefaultSerializer.java
- * @Description:    jdk序列化实现   
- * @author: jackson.song    
- * @date:   2014年12月22日      
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title JDKDefaultSerializer.java
+ * @Description jdk序列化实现
+ * @date 2014年12月22日
+ * @email suxuan696@gmail.com
  */
 public class JDKDefaultSerializer implements Serializer {
 
-	@Override
-	public byte[] serialize(Object object) throws Exception {
-		ByteArrayOutputStream outputStream = null;
-		ObjectOutputStream oos = null;
-		try {
-			outputStream = new ByteArrayOutputStream();
-			oos = new ObjectOutputStream(outputStream);
-			oos.writeObject(object);
-			byte[] bs = outputStream.toByteArray();
-			return bs;
-		} finally {
-			if (oos != null) {
-				oos.close();
-			}
-			if (outputStream != null) {
-				outputStream.close();
-			}
-		}
-	}
+    @Override
+    public byte[] serialize(Object object) throws Exception {
+        ByteArrayOutputStream outputStream = null;
+        ObjectOutputStream oos = null;
+        try {
+            outputStream = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(outputStream);
+            oos.writeObject(object);
+            return outputStream.toByteArray();
+        } finally {
+            if (oos != null) {
+                oos.close();
+            }
+            if (outputStream != null) {
+                outputStream.close();
+            }
+        }
+    }
 
-	@Override
-	public Object deserialize(byte[] bytes) throws Exception {
-		ObjectInputStream ois = null;
-		try {
-			ois = new DawdlerObjectInputStream(new ByteArrayInputStream(bytes),Thread.currentThread().getContextClassLoader());
-			Object obj=ois.readObject();
-			return obj;
-		} finally {
-			if (ois != null) {
-				ois.close();
-			}
-		}
-	}
-	private class DawdlerObjectInputStream extends ObjectInputStream {
-		private ClassLoader classLoader;
-		protected DawdlerObjectInputStream(InputStream input,ClassLoader classLoader) throws IOException, SecurityException {
-			super(input);
-			this.classLoader=classLoader;
-		}
+    @Override
+    public Object deserialize(byte[] bytes) throws Exception {
+        ObjectInputStream ois = null;
+        try {
+            ois = new DawdlerObjectInputStream(new ByteArrayInputStream(bytes), Thread.currentThread().getContextClassLoader());
+            return ois.readObject();
+        } finally {
+            if (ois != null) {
+                ois.close();
+            }
+        }
+    }
 
-		@Override
-		protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
-			String name = desc.getName();
-			try {
-				return super.resolveClass(desc);
-			} catch (ClassNotFoundException ex) {
-				return classLoader.loadClass(name);
-			}
-		}
+    private class DawdlerObjectInputStream extends ObjectInputStream {
+        private final ClassLoader classLoader;
 
-	}
-	
+        protected DawdlerObjectInputStream(InputStream input, ClassLoader classLoader) throws IOException, SecurityException {
+            super(input);
+            this.classLoader = classLoader;
+        }
+
+        @Override
+        protected Class<?> resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+            String name = desc.getName();
+            try {
+                return super.resolveClass(desc);
+            } catch (ClassNotFoundException ex) {
+                return classLoader.loadClass(name);
+            }
+        }
+
+    }
+
 }

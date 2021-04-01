@@ -16,40 +16,38 @@
  */
 package com.anywide.dawdler.clientplug.web.view.templatemanager;
 
-import java.util.Properties;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
 
+import java.util.Properties;
+
 /**
- * 
- * @Title: VelocityTemplateManager.java
- * @Description: TODO
- * @author: jackson.song
- * @date: 2009年04月19日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title VelocityTemplateManager.java
+ * @Description TODO
+ * @date 2009年04月19日
+ * @email suxuan696@gmail.com
  */
 public class VelocityTemplateManager implements TemplateManager {
-	private static VelocityTemplateManager templateManager;
+    private static VelocityTemplateManager templateManager;
+    private final VelocityEngine engine = new VelocityEngine();
 
-	public static synchronized VelocityTemplateManager getInstance() {
-		if (templateManager == null)
-			templateManager = new VelocityTemplateManager();
-		return templateManager;
-	}
+    private VelocityTemplateManager() {
+    }
 
-	private VelocityTemplateManager() {
-	}
+    public static synchronized VelocityTemplateManager getInstance() {
+        if (templateManager == null)
+            templateManager = new VelocityTemplateManager();
+        return templateManager;
+    }
 
-	private VelocityEngine engine = new VelocityEngine();
+    public Template getTemplate(String vmName) {
+        return engine.getTemplate(vmName, "UTF-8");
+    }
 
-	public Template getTemplate(String vmname) {
-		return engine.getTemplate(vmname, "UTF-8");
-	}
-
-	public void init(Properties ps) {
-		engine.init(ps);
-	}
+    public void init(Properties ps) {
+        engine.init(ps);
+    }
 
 }

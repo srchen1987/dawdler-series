@@ -15,46 +15,48 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.util;
+
 import java.util.concurrent.TimeUnit;
+
 /**
- * 
- * @ClassName:  JVMTimeProvider   
- * @Description:   
- * @author: srchen    
- * @date:   2015年11月7日 上午10:35:12
+ * @ClassName: JVMTimeProvider
+ * @Description
+ * @authorsrchen
+ * @date 2015年11月7日 上午10:35:12
  */
 public final class JVMTimeProvider {
-	private static volatile long currentTimeMillis;
-	private static volatile boolean stop = false;
-	static {
-		currentTimeMillis = System.currentTimeMillis();
-		Thread daemon = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (!stop) {
-					currentTimeMillis = System.currentTimeMillis();
-					try {
-						TimeUnit.MILLISECONDS.sleep(1);
-					} catch (Throwable e) {
+    private static volatile long currentTimeMillis;
+    private static volatile boolean stop = false;
 
-					}
-				}
-			}
-		});
-		daemon.setDaemon(true);
-		daemon.setName("dawdler-time-tick-thread");
-		daemon.start();
-	}
-	
-	public static void stop() {
-		stop = true;
-	}
+    static {
+        currentTimeMillis = System.currentTimeMillis();
+        Thread daemon = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (!stop) {
+                    currentTimeMillis = System.currentTimeMillis();
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(1);
+                    } catch (Throwable e) {
 
-	public static long currentTimeMillis() {
-		return currentTimeMillis;
-	}
+                    }
+                }
+            }
+        });
+        daemon.setDaemon(true);
+        daemon.setName("dawdler-time-tick-thread");
+        daemon.start();
+    }
 
-	public static int currentTimeSeconds() {
-		return (int) (currentTimeMillis / 1000);
-	}
+    public static void stop() {
+        stop = true;
+    }
+
+    public static long currentTimeMillis() {
+        return currentTimeMillis;
+    }
+
+    public static int currentTimeSeconds() {
+        return (int) (currentTimeMillis / 1000);
+    }
 }

@@ -17,32 +17,31 @@
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
 /**
- * 
- * @Title: PositiveNumberRuleOperator.java
- * @Description: 正整数验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title PositiveNumberRuleOperator.java
+ * @Description 正整数验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 
 public class PositiveNumberRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "positiveNumber";
-	public static final String REGEX = "(^[1-9]{1}\\d*$)";
-	public static final String EXPLAIN = "正整数验证";
+    public static final String RULEKEY = "positiveNumber";
+    public static final String REGEX = "(^[1-9]{1}\\d*$)";
+    public static final String EXPLAIN = "正整数验证";
 
-	public PositiveNumberRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
-	}
+    public PositiveNumberRuleOperator() {
+        super(RULEKEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
-	@Override
-	public String validate(Object value) {
-		return super.validate(value, "请输入正整数!");
-	}
+    @Override
+    public String validate(Object value) {
+        return super.validate(value, "请输入正整数!");
+    }
 
 }

@@ -16,10 +16,10 @@
  */
 package org.apache.naming.factory;
 
+import org.apache.naming.ResourceEnvRef;
+
 import javax.naming.Reference;
 import javax.naming.spi.ObjectFactory;
-
-import org.apache.naming.ResourceEnvRef;
 
 /**
  * Object factory for Resources env.
@@ -28,20 +28,20 @@ import org.apache.naming.ResourceEnvRef;
  */
 public class ResourceEnvFactory extends FactoryBase {
 
-	@Override
-	protected boolean isReferenceTypeSupported(Object obj) {
-		return obj instanceof ResourceEnvRef;
-	}
+    @Override
+    protected boolean isReferenceTypeSupported(Object obj) {
+        return obj instanceof ResourceEnvRef;
+    }
 
-	@Override
-	protected ObjectFactory getDefaultFactory(Reference ref) {
-		// No default factory supported.
-		return null;
-	}
+    @Override
+    protected ObjectFactory getDefaultFactory(Reference ref) {
+        // No default factory supported.
+        return null;
+    }
 
-	@Override
-	protected Object getLinked(Reference ref) {
-		// Not supported
-		return null;
-	}
+    @Override
+    protected Object getLinked(Reference ref) {
+        // Not supported
+        return null;
+    }
 }

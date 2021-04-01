@@ -20,57 +20,56 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 /**
- * 
- * @Title: ContainRuleOperator.java
- * @Description: 包含项验证
- * @author: jackson.song
- * @date: 2007年07月22日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title ContainRuleOperator.java
+ * @Description 包含项验证
+ * @date 2007年07月22日
+ * @email suxuan696@gmail.com
  */
 public class ContainRuleOperator extends RegexRuleOperator {
-	public ContainRuleOperator() {
-		super("^contain:\\[(.+)\\]$");
-	}
+    public ContainRuleOperator() {
+        super("^contain:\\[(.+)\\]$");
+    }
 
-	@Override
-	public String validate(Object value, Matcher matcher) {
-		String values = matcher.group(1);
-		String[] valueArray = values.split(",");
-		String error = "必须包含[" + values + "]其中一项!";
-		if (value == null) {
-			return error;
-		}
-		if (value instanceof String) {
-			if (!validate(valueArray, value.toString()))
-				return error;
-		} else if (value instanceof String[]) {
-			String[] valuesArrayTemp = (String[]) value;
-			for (String v : valuesArrayTemp) {
-				if (!validate(valueArray, v))
-					return error;
-			}
-		} else if (value instanceof List) {
-			List valuesArrayTemp = (List) value;
-			for (Object v : valuesArrayTemp) {
-				if (!validate(valueArray, v.toString()))
-					return error;
-			}
-		}
-		return null;
-	}
+    @Override
+    public String validate(Object value, Matcher matcher) {
+        String values = matcher.group(1);
+        String[] valueArray = values.split(",");
+        String error = "必须包含[" + values + "]其中一项!";
+        if (value == null) {
+            return error;
+        }
+        if (value instanceof String) {
+            if (!validate(valueArray, value.toString()))
+                return error;
+        } else if (value instanceof String[]) {
+            String[] valuesArrayTemp = (String[]) value;
+            for (String v : valuesArrayTemp) {
+                if (!validate(valueArray, v))
+                    return error;
+            }
+        } else if (value instanceof List) {
+            List valuesArrayTemp = (List) value;
+            for (Object v : valuesArrayTemp) {
+                if (!validate(valueArray, v.toString()))
+                    return error;
+            }
+        }
+        return null;
+    }
 
-	@Override
-	public String toString() {
-		return "规定性范围内包含验证,如：contain:[China,1] ,表单中必须出现China或1 !";
-	}
+    @Override
+    public String toString() {
+        return "规定性范围内包含验证,如：contain:[China,1] ,表单中必须出现China或1 !";
+    }
 
-	private boolean validate(String[] values, String value) {
-		for (String v : values) {
-			if (v.trim().equals(value.trim())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    private boolean validate(String[] values, String value) {
+        for (String v : values) {
+            if (v.trim().equals(value.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

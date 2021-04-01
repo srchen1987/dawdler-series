@@ -17,14 +17,13 @@
 package com.anywide.dawdler.serverplug.db;
 
 /**
- * 
- * @Title: DBAction.java
- * @Description: 读写动作
- * @author: jackson.song
- * @date: 2007年08月06日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DBAction.java
+ * @Description 读写动作
+ * @date 2007年08月06日
+ * @email suxuan696@gmail.com
  */
 public enum DBAction {
-	READ, WRITE;
+    READ, WRITE
 }
