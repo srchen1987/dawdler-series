@@ -15,21 +15,22 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.clientplug.web.session.base;
+
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
 /**
- * 
- * @Title:  SessionIdGeneratorBase.java
- * @Description:  SessionId生成者 抽象出一些通用方法 直接copy tomcat代码
- * @author: jackson.song    
- * @date:   2016年6月16日  
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title SessionIdGeneratorBase.java
+ * @Description SessionId生成者 抽象出一些通用方法 直接copy tomcat代码
+ * @date 2016年6月16日
+ * @email suxuan696@gmail.com
  */
-public abstract class SessionIdGeneratorBase 
+public abstract class SessionIdGeneratorBase
         implements SessionIdGenerator {
     private final Queue<SecureRandom> randoms = new ConcurrentLinkedQueue();
     private String secureRandomClass = null;
@@ -37,12 +38,15 @@ public abstract class SessionIdGeneratorBase
     private String secureRandomProvider = null;
     private String jvmRoute = "";
     private int sessionIdLength = 16;
+
     public String getSecureRandomClass() {
         return secureRandomClass;
     }
+
     public void setSecureRandomClass(String secureRandomClass) {
         this.secureRandomClass = secureRandomClass;
     }
+
     public String getSecureRandomAlgorithm() {
         return secureRandomAlgorithm;
     }
@@ -72,6 +76,7 @@ public abstract class SessionIdGeneratorBase
     public void setJvmRoute(String jvmRoute) {
         this.jvmRoute = jvmRoute;
     }
+
     @Override
     public int getSessionIdLength() {
         return sessionIdLength;
@@ -89,7 +94,7 @@ public abstract class SessionIdGeneratorBase
     }
 
 
-    protected void getRandomBytes(byte bytes[]) {
+    protected void getRandomBytes(byte[] bytes) {
 
         SecureRandom random = randoms.poll();
         if (random == null) {

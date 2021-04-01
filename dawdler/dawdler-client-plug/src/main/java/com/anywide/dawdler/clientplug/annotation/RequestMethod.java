@@ -17,14 +17,13 @@
 package com.anywide.dawdler.clientplug.annotation;
 
 /**
- * 
- * @Title: RequestMethod.java
- * @Description: http请求方法
- * @author: jackson.song
- * @date: 2007年04月17日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title RequestMethod.java
+ * @Description http请求方法
+ * @date 2007年04月17日
+ * @email suxuan696@gmail.com
  */
 public enum RequestMethod {
-	GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE
+    GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE
 }

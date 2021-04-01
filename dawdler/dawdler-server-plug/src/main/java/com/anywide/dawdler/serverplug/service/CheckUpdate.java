@@ -20,15 +20,14 @@ import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.serverplug.bean.XmlBean;
 
 /**
- * 
- * @Title: CheckUpdate.java
- * @Description: 用于获取更新服务器端模版类列表的服务
- * @author: jackson.song
- * @date: 2007年09月18日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title CheckUpdate.java
+ * @Description 用于获取更新服务器端模版类列表的服务
+ * @date 2007年09月18日
+ * @email suxuan696@gmail.com
  */
 @RemoteService
 public interface CheckUpdate {
-	public XmlBean check(String host);
+    XmlBean check(String host);
 }

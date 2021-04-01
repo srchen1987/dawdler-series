@@ -15,30 +15,33 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.core.serializer;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * 
- * @Title:  SerializeDecider.java
- * @Description:    序列化决策者，可扩充，目前没采用SPI方式   
- * @author: jackson.song    
- * @date:   2014年12月22日     
- * @version V1.0 
- * @email: suxuan696@gmail.com
+ * @author jackson.song
+ * @version V1.0
+ * @Title SerializeDecider.java
+ * @Description 序列化决策者，可扩充，目前没采用SPI方式
+ * @date 2014年12月22日
+ * @email suxuan696@gmail.com
  */
 public class SerializeDecider {
-	private static Map<Byte,Serializer> serializers = new ConcurrentHashMap<Byte, Serializer>(){
-		{
-			put((byte)1,new JDKDefaultSerializer());
-			put((byte)2,new KryoSerializer());
-		};
-	};
-	public static void register(byte key,Serializer serializer){
-		serializers.put(key, serializer);
-	}
-	
-	public static Serializer decide(byte key){
-		return serializers.get(key);
-	}
-	
+    private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<Byte, Serializer>() {
+        {
+            put((byte) 1, new JDKDefaultSerializer());
+            put((byte) 2, new KryoSerializer());
+        }
+
+    };
+
+    public static void register(byte key, Serializer serializer) {
+        serializers.put(key, serializer);
+    }
+
+    public static Serializer decide(byte key) {
+        return serializers.get(key);
+    }
+
 }

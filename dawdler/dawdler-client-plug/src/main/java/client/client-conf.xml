@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-<!-- <load-url>load_path</load-url> -->
-<zk_host>localhost:2181</zk_host>
-<certificatePath>/Users/jackson.song/Desktop/key/dawdler.cer</certificatePath>
-<server-channel-group channel-group-id="defaultgroup"
- service-path="mydemo" connection-num="1"
- sessionNum="4" serializer="2"
-  user="global_user" password="song">
-</server-channel-group> 
-<!--  
-<server-channel-group channel-group-id="server-id-2" connection-num="4" serializer="1">
+    <!-- <load-url>load_path</load-url> -->
+    <zk_host>localhost:2181</zk_host>
+    <certificatePath>/Users/jackson.song/Desktop/key/dawdler.cer</certificatePath>
+    <server-channel-group channel-group-id="defaultgroup"
+                          service-path="mydemo" connection-num="1"
+                          sessionNum="4" serializer="2"
+                          user="global_user" password="song">
+    </server-channel-group>
+    <!--
+    <server-channel-group channel-group-id="server-id-2" connection-num="4" serializer="1">
 
 
 
 
-</server-channel-group>
--->
+    </server-channel-group>
+    -->
 
-<loads-on>
-<item sleep="15000" channel-group-id="defaultgroup" mode="run">core</item>
-<item sleep="15000" channel-group-id="defaultgroup" mode="run">user</item>
-</loads-on>
+    <loads-on>
+        <item sleep="15000" channel-group-id="defaultgroup" mode="run">core</item>
+        <item sleep="15000" channel-group-id="defaultgroup" mode="run">user</item>
+    </loads-on>
 
 </config>

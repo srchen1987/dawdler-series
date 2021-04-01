@@ -17,16 +17,15 @@
 package com.anywide.dawdler.clientplug.web.listener;
 
 /**
- * 
- * @Title: WebContextListener.java
- * @Description: 监听器接口
- * @author: jackson.song
- * @date: 2007年04月19日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title WebContextListener.java
+ * @Description 监听器接口
+ * @date 2007年04月19日
+ * @email suxuan696@gmail.com
  */
 public interface WebContextListener {
-	public void contextInitialized(javax.servlet.ServletContext servletContext);
+    void contextInitialized(javax.servlet.ServletContext servletContext);
 
-	public void contextDestroyed(javax.servlet.ServletContext servletContext);
+    void contextDestroyed(javax.servlet.ServletContext servletContext);
 }

@@ -19,14 +19,13 @@ package com.anywide.dawdler.client.filter;
 import com.anywide.dawdler.core.bean.RequestBean;
 
 /**
- * 
- * @Title: FilterChain.java
- * @Description: 过滤器链
- * @author: jackson.song
- * @date: 2015年04月06日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title FilterChain.java
+ * @Description 过滤器链
+ * @date 2015年04月06日
+ * @email suxuan696@gmail.com
  */
 public interface FilterChain {
-	public abstract Object doFilter(RequestBean request) throws Exception;
+    Object doFilter(RequestBean request) throws Exception;
 }

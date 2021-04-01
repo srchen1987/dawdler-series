@@ -16,34 +16,34 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs;
 
-import javax.servlet.ServletContext;
+import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+
+import javax.servlet.ServletContext;
 
 /**
- * 
- * @Title: AbstractDisplayPlug.java
- * @Description: 抽象显示插件
- * @author: jackson.song
- * @date: 2007年04月21日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title AbstractDisplayPlug.java
+ * @Description 抽象显示插件
+ * @date 2007年04月21日
+ * @email suxuan696@gmail.com
  */
 public abstract class AbstractDisplayPlug implements DisplayPlug {
-	private static Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);
-	protected final String MIME_TYPE_TEXT = "text/html;charset=UTF-8";
-	protected final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
-	protected ServletContext servletContext;
+    private static final Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);
+    protected final String MIME_TYPE_TEXT = "text/html;charset=UTF-8";
+    protected final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
+    protected ServletContext servletContext;
 
-	public AbstractDisplayPlug(ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}
+    public AbstractDisplayPlug(ServletContext servletContext) {
+        this.servletContext = servletContext;
+    }
 
-	protected void logException(ViewForward wf) {
-		if (wf.getInvokeException() != null) {
-			logger.error("", wf.getInvokeException());
-		}
-	}
+    protected void logException(ViewForward wf) {
+        if (wf.getInvokeException() != null) {
+            logger.error("", wf.getInvokeException());
+        }
+    }
 
 }

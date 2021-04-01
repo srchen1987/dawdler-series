@@ -19,14 +19,13 @@ package com.anywide.dawdler.core.net.buffer;
 import java.nio.ByteBuffer;
 
 /**
- * 
- * @Title: BufferCreator.java
- * @Description: buffer创建者
- * @author: jackson.song
- * @date: 2015年03月14日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title BufferCreator.java
+ * @Description buffer创建者
+ * @date 2015年03月14日
+ * @email suxuan696@gmail.com
  */
 public interface BufferCreator {
-	public ByteBuffer createByteBuffer(int capacity);
+    ByteBuffer createByteBuffer(int capacity);
 }

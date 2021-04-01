@@ -17,22 +17,21 @@
 package com.anywide.dawdler.clientplug.velocity;
 
 /**
- * 
- * @Title: VelocityToolBox.java
- * @Description: velocity工具包
- * @author: jackson.song
- * @date: 2007年04月18日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title VelocityToolBox.java
+ * @Description velocity工具包
+ * @date 2007年04月18日
+ * @email suxuan696@gmail.com
  */
 public abstract class VelocityToolBox {
-	private String name;
+    private final String name;
 
-	public VelocityToolBox(String name) {
-		this.name = name;
-	}
+    public VelocityToolBox(String name) {
+        this.name = name;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 }

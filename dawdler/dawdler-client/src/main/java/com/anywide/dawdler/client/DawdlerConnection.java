@@ -16,38 +16,6 @@
  */
 package com.anywide.dawdler.client;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.SocketAddress;
-import java.net.StandardSocketOptions;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousChannelGroup;
-import java.nio.channels.AsynchronousSocketChannel;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.ForkJoinWorkerThread;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.client.net.aio.handler.ConnectorHandler;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.compression.strategy.CompressionWrapper;
@@ -57,446 +25,457 @@ import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.net.*;
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousChannelGroup;
+import java.nio.channels.AsynchronousSocketChannel;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * 
- * @Title: DawdlerConnection.java
- * @Description: dawdler连接
- * @author: jackson.song
- * @date: 2015年03月16日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title DawdlerConnection.java
+ * @Description dawdler连接
+ * @date 2015年03月16日
+ * @email suxuan696@gmail.com
  */
 public class DawdlerConnection {
-	private static Logger logger = LoggerFactory.getLogger(DawdlerConnection.class);
-	private final AtomicInteger TNUMBER = new AtomicInteger(0);
-	private final AtomicLong INDEX = new AtomicLong(0);
-	private String groupName;
-	private int serializer;
-	private int sessionNum;
-	private String path;
-	private String gid;
-	private String user;
-	private String password;
-	private ConnectManager connectManager = new ConnectManager();
-	private ConcurrentHashMap<SocketAddress, List<SocketSession>> sessionGroup = new ConcurrentHashMap<>();
-	AsynchronousChannelGroup asynchronousChannelGroup;
-	private ScheduledExecutorService reconnectScheduled;
-	private static ConnectorHandler connectorHandler = new ConnectorHandler();
-	private AtomicBoolean complete = new AtomicBoolean();
-	protected Semaphore semaphore = new Semaphore(0);
-	private ReadWriteLock rwlock = new ReentrantReadWriteLock();
-	private IoHandler ioHandler = IoHandlerFactory.getHandler();
-	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
-	public Semaphore getSemaphore() {
-		return semaphore;
-	}
+    private static final ConnectorHandler connectorHandler = new ConnectorHandler();
+    private static final Logger logger = LoggerFactory.getLogger(DawdlerConnection.class);
+    private final AtomicInteger TNUMBER = new AtomicInteger(0);
+    private final AtomicLong INDEX = new AtomicLong(0);
+    private final int sessionNum;
+    private final String gid;
+    private final String user;
+    private final String password;
+    private final ConnectManager connectManager = new ConnectManager();
+    private final ConcurrentHashMap<SocketAddress, List<SocketSession>> sessionGroup = new ConcurrentHashMap<>();
+    private final ScheduledExecutorService reconnectScheduled;
+    private final AtomicBoolean complete = new AtomicBoolean();
+    private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
+    private final IoHandler ioHandler = IoHandlerFactory.getHandler();
+    public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
+    protected Semaphore semaphore = new Semaphore(0);
+    AsynchronousChannelGroup asynchronousChannelGroup;
+    private final String groupName;
+    private int serializer;
+    private String path;
+    private List<SocketSession>[] socketSessionList = new ArrayList[0];
 
-	public AtomicBoolean getComplete() {
-		return complete;
-	}
+    public DawdlerConnection(String gid, String path, int serializer, int sessionNum,
+                             String user, String password) throws IOException {
+        this.gid = gid;
+        this.path = path;
+        this.groupName = getDefaultGroupName();
+        this.sessionNum = sessionNum;
+        this.serializer = serializer;
+        this.user = user;
+        this.password = password;
+        asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool
+                (Runtime.getRuntime().availableProcessors() * 2,
+                        dawdlerForkJoinWorkerThreadFactory,
+                        null, true));
+        reconnectScheduled = Executors.newScheduledThreadPool(1);
+        startReconnect();
+    }
 
-	public ConnectManager getConnectManager() {
-		return connectManager;
-	}
+    public Semaphore getSemaphore() {
+        return semaphore;
+    }
 
-	public ConcurrentHashMap<SocketAddress, List<SocketSession>> getSessionGroup() {
-		return sessionGroup;
-	}
+    public AtomicBoolean getComplete() {
+        return complete;
+    }
 
-	public String getPath() {
-		return path;
-	}
+    public ConnectManager getConnectManager() {
+        return connectManager;
+    }
 
-	public void setPath(String path) {
-		this.path = path;
-	}
+    public ConcurrentHashMap<SocketAddress, List<SocketSession>> getSessionGroup() {
+        return sessionGroup;
+    }
 
-	public int getSerializer() {
-		return serializer;
-	}
+    public String getPath() {
+        return path;
+    }
 
-	public void setSerializer(int serializer) {
-		this.serializer = serializer;
-	}
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-	public String getGroupName() {
-		return groupName;
-	}
+    public int getSerializer() {
+        return serializer;
+    }
 
-	private String getDefaultGroupName() {
-		String host = "localhost";
-		try {
-			host = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			host = "UnknowHost";
-		}
+    public void setSerializer(int serializer) {
+        this.serializer = serializer;
+    }
 
-		return host + "#ID:" + UUID.randomUUID().toString();
-	}
+    public String getGroupName() {
+        return groupName;
+    }
 
-	public DawdlerConnection(String gid, String path, int serializer, int sessionNum,
-			String user, String password) throws IOException {
-		this.gid = gid;
-		this.path = path;
-		this.groupName = getDefaultGroupName();
-		this.sessionNum = sessionNum;
-		this.serializer = serializer;
-		this.user = user;
-		this.password = password;
-		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool
-        (Runtime.getRuntime().availableProcessors() * 2,
-        		dawdlerForkJoinWorkerThreadFactory ,
-         null, true));
-		reconnectScheduled = Executors.newScheduledThreadPool(1);
-		startReconnect();
-	}
-	
-	final class DawdlerForkJoinWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
-		public final ForkJoinWorkerThread newThread(ForkJoinPool pool) {
-			ForkJoinWorkerThread thread = new DawdlerForkJoinWorkerThread(pool);
-			thread.setName( "dawdler-Client-connector#" + gid + "#" + (TNUMBER.incrementAndGet()));
-			return thread;
-		}
-	}
-	
-	final class DawdlerForkJoinWorkerThread extends ForkJoinWorkerThread{
-		protected DawdlerForkJoinWorkerThread(ForkJoinPool pool) {
-			super(pool);
-		}
-	}
-	public void startReconnect() {
-		reconnectScheduled.scheduleWithFixedDelay(() -> {
-			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
-			if (disconnAddressList.isEmpty())
-				return;
-			Lock lock = rwlock.writeLock();
-			try {
-				lock.lock();
-				boolean activate = false;
-				for (final SocketAddress socketAddress : disconnAddressList) {
-					Integer num = connectManager.removeDisconnect(socketAddress).get();
-					if (num == 0) {
-						continue;
-					}
-					logger.info("reconnect:" + socketAddress + ":" + num);
-					DawdlerConnection.this.connect(socketAddress, num);
-					activate = true;
-				}
-				if (activate)
-					DawdlerConnection.this.rebuildSessionGroup();
-			} finally {
-				lock.unlock();
-			}
-		}, 5000, 3000, TimeUnit.MILLISECONDS);
-	}
+    private String getDefaultGroupName() {
+        String host = "localhost";
+        try {
+            host = InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            host = "UnknownHost";
+        }
 
-	public void connect(SocketAddress address) {
-		connect(address, sessionNum);
-	}
+        return host + "#ID:" + UUID.randomUUID().toString();
+    }
 
-	public void connect(SocketAddress address, int sessionNum) {
-		for (int i = 0; i < sessionNum; i++) {
-			AsynchronousSocketChannel client = null;
-			SocketSession socketSession = null;
-			try {
-				client = AsynchronousSocketChannel.open(asynchronousChannelGroup);
-				// config(client);
-				socketSession = new SocketSession(client, false);
-				socketSession.setGroupName(getGroupName());
-				socketSession.setDawdlerConnection(this);
-				socketSession.setRemoteAddress(address);
-				socketSession.setUser(user);
-				socketSession.setPassword(password);
-				socketSession.setPath(path);
-			} catch (Exception e) {
-				logger.error("", e);
-				if (socketSession != null)
-					socketSession.close(false);
-			}
-			if (client != null) {
-				client.connect(address, socketSession, connectorHandler);
-				try {
-					socketSession.getInitLatch().await(5, TimeUnit.SECONDS);
-				} catch (InterruptedException e) {
-					logger.error("", e);
-				}
-			}
-		}
-	}
+    public void startReconnect() {
+        reconnectScheduled.scheduleWithFixedDelay(() -> {
+            Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
+            if (disconnAddressList.isEmpty())
+                return;
+            Lock lock = rwLock.writeLock();
+            try {
+                lock.lock();
+                boolean activate = false;
+                for (final SocketAddress socketAddress : disconnAddressList) {
+                    int num = connectManager.removeDisconnect(socketAddress).get();
+                    if (num == 0) {
+                        continue;
+                    }
+                    logger.info("reconnect:" + socketAddress + ":" + num);
+                    DawdlerConnection.this.connect(socketAddress, num);
+                    activate = true;
+                }
+                if (activate)
+                    DawdlerConnection.this.rebuildSessionGroup();
+            } finally {
+                lock.unlock();
+            }
+        }, 5000, 3000, TimeUnit.MILLISECONDS);
+    }
 
-	public void connect(SocketAddress... addresses) {
-		if (addresses == null || addresses.length == 0) {
-			throw new IllegalArgumentException("addresses can not be null or empty!");
-		}
-		Set<SocketAddress> addressSet = new HashSet<SocketAddress>();
-		for (SocketAddress socketAddress : addresses) {
-			addressSet.add(socketAddress);
-		}
+    public void connect(SocketAddress address) {
+        connect(address, sessionNum);
+    }
 
-		Set<SocketAddress> connectedAddressSet = sessionGroup.keySet();
-		addressSet.removeAll(connectedAddressSet);
-		Set<SocketAddress> disconnectedAddressSet = connectManager.getDisconnectAddress();
-		addressSet.removeAll(disconnectedAddressSet);
-		for (SocketAddress address : addressSet) {
-			connect(address);
-		}
-//		rebuildSessionGroup();
-	}
+    public void connect(SocketAddress address, int sessionNum) {
+        for (int i = 0; i < sessionNum; i++) {
+            AsynchronousSocketChannel client = null;
+            SocketSession socketSession = null;
+            try {
+                client = AsynchronousSocketChannel.open(asynchronousChannelGroup);
+                // config(client);
+                socketSession = new SocketSession(client, false);
+                socketSession.setGroupName(getGroupName());
+                socketSession.setDawdlerConnection(this);
+                socketSession.setRemoteAddress(address);
+                socketSession.setUser(user);
+                socketSession.setPassword(password);
+                socketSession.setPath(path);
+            } catch (Exception e) {
+                logger.error("", e);
+                if (socketSession != null)
+                    socketSession.close(false);
+            }
+            if (client != null && socketSession != null) {
+                client.connect(address, socketSession, connectorHandler);
+                try {
+                    socketSession.getInitLatch().await(5, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    logger.error("", e);
+                }
+            }
+        }
+    }
 
-	public void refreshConnection(String... addresses) {
-		refreshConnection(toSocketAddresses(addresses));
-	}
+    public void connect(SocketAddress... addresses) {
+        if (addresses == null || addresses.length == 0) {
+            throw new IllegalArgumentException("addresses can not be null or empty!");
+        }
+        Set<SocketAddress> addressSet = new HashSet<>(Arrays.asList(addresses));
+        Set<SocketAddress> connectedAddressSet = sessionGroup.keySet();
+        addressSet.removeAll(connectedAddressSet);
+        Set<SocketAddress> disconnectedAddressSet = connectManager.getDisconnectAddress();
+        addressSet.removeAll(disconnectedAddressSet);
+        for (SocketAddress address : addressSet) {
+            connect(address);
+        }
+    }
 
-	public void addConnection(String address) {
-		connect(toSocketAddress(address));
-	}
+    public void refreshConnection(String... addresses) {
+        refreshConnection(toSocketAddresses(addresses));
+    }
 
-	public void disConnection(String address) {
-		shutdown(toSocketAddress(address));
-	}
+    public void addConnection(String address) {
+        connect(toSocketAddress(address));
+    }
 
-	public SocketAddress[] toSocketAddresses(String... addresses) {
-		if (addresses == null || addresses.length == 0) {
-			throw new IllegalArgumentException("addresses can not be null or empty!");
-		}
-		SocketAddress[] socketAddresses = new SocketAddress[addresses.length];
-		for (int i = 0; i < addresses.length; i++) {
-			socketAddresses[i] = toSocketAddress(addresses[i]);
-		}
-		return socketAddresses;
-	}
+    public void disConnection(String address) {
+        shutdown(toSocketAddress(address));
+    }
 
-	public SocketAddress toSocketAddress(String address) {
-		if (address == null || address.trim().equals("")) {
-			throw new IllegalArgumentException("address can not be null or empty!");
-		}
-		int index = address.lastIndexOf(":");
-		if (index <= 0) {
-			throw new IllegalArgumentException("address[" + address + "] is not a compliant rule!");
-		}
-		String ip = address.substring(0, index);
-		String port = address.substring(index + 1, address.length());
-		SocketAddress socketAddress = new InetSocketAddress(ip, Integer.parseInt(port));
-		return socketAddress;
-	}
+    public SocketAddress[] toSocketAddresses(String... addresses) {
+        if (addresses == null || addresses.length == 0) {
+            throw new IllegalArgumentException("addresses can not be null or empty!");
+        }
+        SocketAddress[] socketAddresses = new SocketAddress[addresses.length];
+        for (int i = 0; i < addresses.length; i++) {
+            socketAddresses[i] = toSocketAddress(addresses[i]);
+        }
+        return socketAddresses;
+    }
 
-	public void refreshConnection(SocketAddress... addressArray) {
-		if ((addressArray == null || addressArray.length == 0)) {
-			return;
-		}
-		List<SocketAddress> newAddresses = Arrays.asList(addressArray);
-		List<SocketAddress> addList = new ArrayList<SocketAddress>();
-		List<SocketAddress> removeList = new ArrayList<SocketAddress>();
-		Set<SocketAddress> connectedAddresses = sessionGroup.keySet();
-		Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
+    public SocketAddress toSocketAddress(String address) {
+        if (address == null || address.trim().equals("")) {
+            throw new IllegalArgumentException("address can not be null or empty!");
+        }
+        int index = address.lastIndexOf(":");
+        if (index <= 0) {
+            throw new IllegalArgumentException("address[" + address + "] is not a compliant rule!");
+        }
+        String ip = address.substring(0, index);
+        String port = address.substring(index + 1);
+        return new InetSocketAddress(ip, Integer.parseInt(port));
+    }
 
-		for (SocketAddress socketAddress : addressArray) {
-			if (!connectedAddresses.contains(socketAddress) && !disconnAddressList.contains(socketAddress)) {
-				addList.add(socketAddress);
-			}
-		}
-		for (SocketAddress connectedAddress : connectedAddresses) {
-			if (!newAddresses.contains(connectedAddress)) {
-				removeList.add(connectedAddress);
-			}
-		}
-		for (SocketAddress disconnectedAddress : disconnAddressList) {
-			if (!newAddresses.contains(disconnectedAddress)) {
-				removeList.add(disconnectedAddress);
-			}
-		}
+    public void refreshConnection(SocketAddress... addressArray) {
+        if ((addressArray == null || addressArray.length == 0)) {
+            return;
+        }
+        List<SocketAddress> newAddresses = Arrays.asList(addressArray);
+        List<SocketAddress> addList = new ArrayList<>();
+        List<SocketAddress> removeList = new ArrayList<>();
+        Set<SocketAddress> connectedAddresses = sessionGroup.keySet();
+        Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
 
-		if (addList.size() > 0) {
-			SocketAddress[] addresses = new SocketAddress[addList.size()];
-			addList.toArray(addresses);
-			connect(addresses);
-		}
+        for (SocketAddress socketAddress : addressArray) {
+            if (!connectedAddresses.contains(socketAddress) && !disconnAddressList.contains(socketAddress)) {
+                addList.add(socketAddress);
+            }
+        }
+        for (SocketAddress connectedAddress : connectedAddresses) {
+            if (!newAddresses.contains(connectedAddress)) {
+                removeList.add(connectedAddress);
+            }
+        }
+        for (SocketAddress disconnectedAddress : disconnAddressList) {
+            if (!newAddresses.contains(disconnectedAddress)) {
+                removeList.add(disconnectedAddress);
+            }
+        }
 
-		for (SocketAddress socketAddress : removeList) {
-			logger.info("remove" + socketAddress);
-			shutdown(socketAddress);
-		}
+        if (addList.size() > 0) {
+            SocketAddress[] addresses = new SocketAddress[addList.size()];
+            addList.toArray(addresses);
+            connect(addresses);
+        }
 
-	}
+        for (SocketAddress socketAddress : removeList) {
+            logger.info("remove" + socketAddress);
+            shutdown(socketAddress);
+        }
 
-	public void shutdown(SocketAddress socketAddress) {
-		List<SocketSession> list = sessionGroup.remove(socketAddress);
-		boolean shutdownNow = true;
-		if (list != null) {
-			connectManager.removeDisconnect(socketAddress);
-			rebuildSessionGroup();
-			for (SocketSession session : list) {
-				if (!session.getFutures().isEmpty()) {
-					session.markClose();
-					shutdownNow = false;
-				} else {
-					session.close(false);
-				}
-			}
-			if (sessionGroup.isEmpty()) {
-				ConnectionPool.getConnectionPool(gid).remove(this);
-				reconnectScheduled.shutdown();
-				if (shutdownNow)
-					try {
-						asynchronousChannelGroup.shutdownNow();
-					} catch (IOException e) {
-						logger.error("", e);
-					}
-				else {
-					asynchronousChannelGroup.shutdown();
-				}
-			}
-		}
-	}
+    }
 
-	public void shutdownAll() {
-		Enumeration<SocketAddress> addresses = sessionGroup.keys();
-		while (addresses.hasMoreElements()) {
-			SocketAddress ad = addresses.nextElement();
-			shutdown(ad);
-		}
-	}
+    public void shutdown(SocketAddress socketAddress) {
+        List<SocketSession> list = sessionGroup.remove(socketAddress);
+        boolean shutdownNow = true;
+        if (list != null) {
+            connectManager.removeDisconnect(socketAddress);
+            rebuildSessionGroup();
+            for (SocketSession session : list) {
+                if (!session.getFutures().isEmpty()) {
+                    session.markClose();
+                    shutdownNow = false;
+                } else {
+                    session.close(false);
+                }
+            }
+            if (sessionGroup.isEmpty()) {
+                ConnectionPool.getConnectionPool(gid).remove(this);
+                reconnectScheduled.shutdown();
+                if (shutdownNow)
+                    try {
+                        asynchronousChannelGroup.shutdownNow();
+                    } catch (IOException e) {
+                        logger.error("", e);
+                    }
+                else {
+                    asynchronousChannelGroup.shutdown();
+                }
+            }
+        }
+    }
 
-	private List<SocketSession>[] socketSessionList = new ArrayList[0];
+    public void shutdownAll() {
+        Enumeration<SocketAddress> addresses = sessionGroup.keys();
+        while (addresses.hasMoreElements()) {
+            SocketAddress ad = addresses.nextElement();
+            shutdown(ad);
+        }
+    }
 
-	public void rebuildSessionGroup() {
-		socketSessionList = sessionGroup.values().toArray(new ArrayList[0]);
-	}
+    public void rebuildSessionGroup() {
+        socketSessionList = sessionGroup.values().toArray(new ArrayList[0]);
+    }
 
-	public SocketSession getSession() {
-		Lock lock = rwlock.readLock();
-		try {
-			lock.lock();
-			if (socketSessionList.length == 0)
-				return null;
-			long index = Math.abs(INDEX.getAndIncrement());
-			int position = (int) (index % socketSessionList.length);
-			List<SocketSession> sessionList = socketSessionList[position];
-			while (true) {
-				if (sessionList == null || sessionList.isEmpty()) {
-					if (socketSessionList.length > 0) {
-						sessionList = socketSessionList[(int) (++index % socketSessionList.length)];
-						continue;
-					}
-					return null;
-				}
-				position = (int) (index % sessionList.size());
-				SocketSession socketSession = sessionList.get(position);
-				if (socketSession.isClose()) {
-					// sessionList.remove(socketSession);
-					// FIXME tolog
-					sessionList = null;
-					rebuildSessionGroup();
-					continue;
-				}
-				return socketSession;
-			}
-		} finally {
-			lock.unlock();
-		}
-	}
+    public SocketSession getSession() {
+        Lock lock = rwLock.readLock();
+        try {
+            lock.lock();
+            if (socketSessionList.length == 0)
+                return null;
+            long index = Math.abs(INDEX.getAndIncrement());
+            int position = (int) (index % socketSessionList.length);
+            List<SocketSession> sessionList = socketSessionList[position];
+            while (true) {
+                if (sessionList == null || sessionList.isEmpty()) {
+                    if (socketSessionList.length > 0) {
+                        sessionList = socketSessionList[(int) (++index % socketSessionList.length)];
+                        continue;
+                    }
+                    return null;
+                }
+                position = (int) (index % sessionList.size());
+                SocketSession socketSession = sessionList.get(position);
+                if (socketSession.isClose()) {
+                    // sessionList.remove(socketSession);
+                    // FIXME tolog
+                    sessionList = null;
+                    rebuildSessionGroup();
+                    continue;
+                }
+                return socketSession;
+            }
+        } finally {
+            lock.unlock();
+        }
+    }
 
-	public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
-		if (ioHandler != null)
-			ioHandler.messageSent(socketSession, obj);
-		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
-		byte[] datas = serializer.serialize(obj);
-		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(datas);
-		datas = cr.getBuffer();
-		synchronized (socketSession) {
-			ByteBuffer bf = socketSession.getWriteBuffer();
-			PoolBuffer pb = null;
-			byte[] pathBytes = path.getBytes();
-			byte pathLength = (byte) pathBytes.length;
-			int size = datas.length + 2 + pathLength;
-			int capacity = size + 4;
-			try {
-				if (capacity > SocketSession.CAPACITY) {
-					pb = PoolBuffer.selectPool(capacity);
-					if (pb == null) {
-						bf = ByteBuffer.allocate(capacity);
-						logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
-								+ capacity);
-					} else
-						bf = pb.getByteBuffer();
-				}
-				bf.putInt(size);
-				int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
-				bf.put((byte) head);
-				bf.put(pathLength);
-				bf.put(pathBytes);
-				bf.put(datas);
-				bf.flip();
-				socketSession.write(bf);
-			} finally {
-				bf.clear();
-				if (pb != null)
-					pb.release(bf);
-			}
-		}
-	}
+    public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
+        if (ioHandler != null)
+            ioHandler.messageSent(socketSession, obj);
+        Serializer serializer = SerializeDecider.decide((byte) this.serializer);
+        byte[] data = serializer.serialize(obj);
+        CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
+        data = cr.getBuffer();
+        synchronized (socketSession) {
+            ByteBuffer bf = socketSession.getWriteBuffer();
+            PoolBuffer pb = null;
+            byte[] pathBytes = path.getBytes();
+            byte pathLength = (byte) pathBytes.length;
+            int size = data.length + 2 + pathLength;
+            int capacity = size + 4;
+            try {
+                if (capacity > SocketSession.CAPACITY) {
+                    pb = PoolBuffer.selectPool(capacity);
+                    if (pb == null) {
+                        bf = ByteBuffer.allocate(capacity);
+                        logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
+                                + capacity);
+                    } else
+                        bf = pb.getByteBuffer();
+                }
+                bf.putInt(size);
+                int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
+                bf.put((byte) head);
+                bf.put(pathLength);
+                bf.put(pathBytes);
+                bf.put(data);
+                bf.flip();
+                socketSession.write(bf);
+            } finally {
+                bf.clear();
+                if (pb != null)
+                    pb.release(bf);
+            }
+        }
+    }
 
-	public void write(Object obj, SocketSession socketSession) throws Exception {
-		if (ioHandler != null)
-			ioHandler.messageSent(socketSession, obj);
-		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
-		byte[] datas = serializer.serialize(obj);
-		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(datas);
-		datas = cr.getBuffer();
-		synchronized (socketSession) {
-			ByteBuffer bf = socketSession.getWriteBuffer();
-			PoolBuffer pb = null;
-			int size = datas.length + 1;
-			int capacity = size + 4;
-			try {
-				if (capacity > SocketSession.CAPACITY) {
-					pb = PoolBuffer.selectPool(capacity);
-					if (pb == null) {
-						bf = ByteBuffer.allocate(capacity);
-						logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
-								+ capacity);
-					} else
-						bf = pb.getByteBuffer();
-				}
-				bf.putInt(size);
-				int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
-				bf.put((byte) head);
-				bf.put(datas);
-				bf.flip();
-				socketSession.write(bf);
-			} finally {
-				bf.clear();
-				if (pb != null)
-					pb.release(bf);
-			}
-		}
-	}
+    public void write(Object obj, SocketSession socketSession) throws Exception {
+        if (ioHandler != null)
+            ioHandler.messageSent(socketSession, obj);
+        Serializer serializer = SerializeDecider.decide((byte) this.serializer);
+        byte[] datas = serializer.serialize(obj);
+        CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(datas);
+        datas = cr.getBuffer();
+        synchronized (socketSession) {
+            ByteBuffer bf = socketSession.getWriteBuffer();
+            PoolBuffer pb = null;
+            int size = datas.length + 1;
+            int capacity = size + 4;
+            try {
+                if (capacity > SocketSession.CAPACITY) {
+                    pb = PoolBuffer.selectPool(capacity);
+                    if (pb == null) {
+                        bf = ByteBuffer.allocate(capacity);
+                        logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
+                                + capacity);
+                    } else
+                        bf = pb.getByteBuffer();
+                }
+                bf.putInt(size);
+                int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
+                bf.put((byte) head);
+                bf.put(datas);
+                bf.flip();
+                socketSession.write(bf);
+            } finally {
+                bf.clear();
+                if (pb != null)
+                    pb.release(bf);
+            }
+        }
+    }
 
-	public void config(AsynchronousSocketChannel channel) {
-		// NOOP
-		try {
-			channel.setOption(StandardSocketOptions.TCP_NODELAY, true);
-		} catch (IOException e) {
-			logger.error("", e);
-		}
+    public void config(AsynchronousSocketChannel channel) {
+        // NOOP
+        try {
+            channel.setOption(StandardSocketOptions.TCP_NODELAY, true);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
 
-		try {
-			channel.setOption(StandardSocketOptions.SO_KEEPALIVE, true);
-		} catch (IOException e) {
-			logger.error("", e);
-		}
-		try {
-			channel.setOption(StandardSocketOptions.SO_SNDBUF, 16 * 1024);
-		} catch (IOException e) {
-			logger.error("", e);
-		}
+        try {
+            channel.setOption(StandardSocketOptions.SO_KEEPALIVE, true);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+        try {
+            channel.setOption(StandardSocketOptions.SO_SNDBUF, 16 * 1024);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
 
-		try {
-			channel.setOption(StandardSocketOptions.SO_RCVBUF, 16 * 1024);
-		} catch (IOException e) {
-			logger.error("", e);
-		}
-	}
+        try {
+            channel.setOption(StandardSocketOptions.SO_RCVBUF, 16 * 1024);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+    }
+
+    static final class DawdlerForkJoinWorkerThread extends ForkJoinWorkerThread {
+        protected DawdlerForkJoinWorkerThread(ForkJoinPool pool) {
+            super(pool);
+        }
+    }
+
+    final class DawdlerForkJoinWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
+        public final ForkJoinWorkerThread newThread(ForkJoinPool pool) {
+            ForkJoinWorkerThread thread = new DawdlerForkJoinWorkerThread(pool);
+            thread.setName("dawdler-Client-connector#" + gid + "#" + (TNUMBER.incrementAndGet()));
+            return thread;
+        }
+    }
 
 }

@@ -19,18 +19,17 @@ package com.anywide.dawdler.clientplug.web.interceptor;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 
 /**
- * 
- * @Title: HandlerInterceptor.java
- * @Description: 拦截器接口
- * @author: jackson.song
- * @date: 2007年04月19日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title HandlerInterceptor.java
+ * @Description 拦截器接口
+ * @date 2007年04月19日
+ * @email suxuan696@gmail.com
  */
 public interface HandlerInterceptor {
-	public boolean preHandle(TransactionController controller) throws Exception;
+    boolean preHandle(TransactionController controller) throws Exception;
 
-	public void postHandle(TransactionController controller, Throwable ex) throws Exception;
+    void postHandle(TransactionController controller, Throwable ex) throws Exception;
 
-	public void afterCompletion(TransactionController controller, Throwable ex);
+    void afterCompletion(TransactionController controller, Throwable ex);
 }

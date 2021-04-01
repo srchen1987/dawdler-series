@@ -16,78 +16,73 @@
  */
 package com.anywide.dawdler.client.discoverycenter;
 
-import org.apache.curator.framework.recipes.cache.ChildData;
-import org.apache.curator.framework.recipes.cache.CuratorCache;
-import org.apache.curator.framework.recipes.cache.CuratorCacheListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.client.ConnectionPool;
 import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
+import org.apache.curator.framework.recipes.cache.ChildData;
+import org.apache.curator.framework.recipes.cache.CuratorCache;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
- * 
  * ZkDiscoveryCenterClient
- * 
- * @Description: 配置中心zk的实现 代替 PropertiesCenter.java
- * @author: jackson.song
- * @date: 2018年08月13日
+ *
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Description 配置中心zk的实现 代替 PropertiesCenter.java
+ * @date 2018年08月13日
+ * @email suxuan696@gmail.com
  */
 public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
-	private static Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);
+    private static final Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);
 
-	public ZkDiscoveryCenterClient(String connectString, String user, String password) {
-		super(connectString, user, password);
-		try {
-			initListener();
-		} catch (Exception e) {
-			logger.error("init listener faild", e);
-		}
-	}
+    public ZkDiscoveryCenterClient(String connectString, String user, String password) {
+        super(connectString, user, password);
+        try {
+            initListener();
+        } catch (Exception e) {
+            logger.error("init listener failed", e);
+        }
+    }
 
-	private void initListener() throws Exception {
-		curatorCache = CuratorCache.builder(client, ROOTPATH).build();
+    private void initListener() {
+        curatorCache = CuratorCache.builder(client, ROOT_PATH).build();
 
-		curatorCache.listenable().addListener(new CuratorCacheListener() {
-			@Override
-			public void event(Type type, ChildData oldData, ChildData data) {
-				String gid = null;
-				String provider = null;
-				String action = null;
-				ChildData handleData = null;
-				switch (type) {
-				case NODE_CREATED: {
-					action = "add";
-					handleData = data;
-					break;
-				}
-				case NODE_DELETED: {
-					action = "del";
-					handleData = oldData;
-					break;
-				}
-				default:
-					break;
-				}
-				if (handleData != null) {
-					String[] gidAndProvider = handleData.getPath().split("/");
-					if (gidAndProvider.length == 4) {
-						gid = gidAndProvider[2];
-						provider = gidAndProvider[3];
-					}
-					if (gid == null)
-						return;
+        curatorCache.listenable().addListener((type, oldData, data) -> {
+            String gid = null;
+            String provider = null;
+            String action = null;
+            ChildData handleData = null;
+            switch (type) {
+                case NODE_CREATED: {
+                    action = "add";
+                    handleData = data;
+                    break;
+                }
+                case NODE_DELETED: {
+                    action = "del";
+                    handleData = oldData;
+                    break;
+                }
+                default:
+                    break;
+            }
+            if (handleData != null) {
+                String[] gidAndProvider = handleData.getPath().split("/");
+                if (gidAndProvider.length == 4) {
+                    gid = gidAndProvider[2];
+                    provider = gidAndProvider[3];
+                }
+                if (gid == null)
+                    return;
 
-					logger.info(gid + " " + action + " " + provider);
-					ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-					if (cp != null)
-						cp.doChange(gid, action, provider);
+                logger.info(gid + " " + action + " " + provider);
+                ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
+                if (cp != null)
+                    cp.doChange(gid, action, provider);
 //			}
-				}
-			}
-		});
-		curatorCache.start();
+            }
+        });
+        curatorCache.start();
 //		treeCache.getListenable().addListener(new TreeCacheListener() {//老版本 被CuratorCacheListener 替代
 //			@Override
 //			public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception {
@@ -133,8 +128,8 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 //				}
 //			}
 //		});
-		// 开始监听
+        // 开始监听
 //		treeCache.start();
-	}
+    }
 
 }

@@ -14,47 +14,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.breaker.metric;
+package com.anywide.dawdler.breaker.state;
 
+import com.anywide.dawdler.breaker.SlideTimeWindows;
 import com.anywide.dawdler.util.JVMTimeProvider;
 
-import java.util.concurrent.atomic.LongAdder;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MetricBase.java
- * @Description 基础度量
+ * @Title LocalCircuitBreadkerState.java
+ * @Description 熔断器状态（LOCAL）
  * @date 2018年3月16日
  * @email suxuan696@gmail.com
  */
-public class MetricBase implements Metric {
+public class LocalCircuitBreakerState implements CircuitBreakerState {
+    private final SlideTimeWindows stw;
+    private final AtomicReference<State> state = new AtomicReference<State>(State.CLOSE);
+    private volatile long startTime;
 
-    private final LongAdder total = new LongAdder();
-
-    private final LongAdder fail = new LongAdder();
-
-    private long startTime;
-
-    public MetricBase(long startTime) {
-        this.startTime = startTime;
+    public LocalCircuitBreakerState(int intervalInMs, int windowsCount) {
+        stw = new SlideTimeWindows(intervalInMs, windowsCount);
     }
 
-
-    public void totalIncrt() {
-        total.increment();
+    public SlideTimeWindows getStw() {
+        return stw;
     }
 
-    public void failIncrt() {
-        fail.increment();
-    }
-
-    public long totalCount() {
-        return total.longValue();
-    }
-
-    public long failCount() {
-        return fail.longValue();
+    public AtomicReference<State> getState() {
+        return state;
     }
 
     @Override
@@ -62,16 +51,13 @@ public class MetricBase implements Metric {
         return startTime;
     }
 
-    @Override
-    public long restStartTime() {
-        return JVMTimeProvider.currentTimeMillis();
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
     @Override
-    public void reset(long startTime) {
-        total.reset();
-        fail.reset();
-        this.startTime = startTime;
+    public void resetStartTime() {
+        startTime = JVMTimeProvider.currentTimeMillis();
     }
 
 }

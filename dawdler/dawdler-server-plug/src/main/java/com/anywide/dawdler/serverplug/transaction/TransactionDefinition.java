@@ -16,41 +16,41 @@
  */
 package com.anywide.dawdler.serverplug.transaction;
 
-import java.sql.Connection;
 import com.anywide.dawdler.serverplug.annotation.Isolation;
 import com.anywide.dawdler.serverplug.annotation.Propagation;
 
+import java.sql.Connection;
+
 /**
- * 
- * @Title: TransactionDefinition.java
- * @Description: 传播性，隔离级别定义接口
- * @author: jackson.song
- * @date: 2015年09月28日
+ * @author jackson.song
  * @version V1.0
- * @email: suxuan696@gmail.com
+ * @Title TransactionDefinition.java
+ * @Description 传播性，隔离级别定义接口
+ * @date 2015年09月28日
+ * @email suxuan696@gmail.com
  */
 public interface TransactionDefinition {
-	int PROPAGATION_REQUIRED = 0;
-	int PROPAGATION_SUPPORTS = 1;
-	int PROPAGATION_MANDATORY = 2;
-	int PROPAGATION_REQUIRES_NEW = 3;
-	int PROPAGATION_NOT_SUPPORTED = 4;
-	int PROPAGATION_NEVER = 5;
-	int PROPAGATION_NESTED = 6;
+    int PROPAGATION_REQUIRED = 0;
+    int PROPAGATION_SUPPORTS = 1;
+    int PROPAGATION_MANDATORY = 2;
+    int PROPAGATION_REQUIRES_NEW = 3;
+    int PROPAGATION_NOT_SUPPORTED = 4;
+    int PROPAGATION_NEVER = 5;
+    int PROPAGATION_NESTED = 6;
 
-	int TRANSACTION_DEFAULT = -1;
-	int TRANSACTION_READ_UNCOMMITTED = Connection.TRANSACTION_READ_UNCOMMITTED;
-	int TRANSACTION_READ_COMMITTED = Connection.TRANSACTION_READ_COMMITTED;
-	int TRANSACTION_REPEATABLE_READ = Connection.TRANSACTION_REPEATABLE_READ;
-	int TRANSACTION_SERIALIZABLE = Connection.TRANSACTION_SERIALIZABLE;
-	int TIMEOUT_DEFAULT = -1;
+    int TRANSACTION_DEFAULT = -1;
+    int TRANSACTION_READ_UNCOMMITTED = Connection.TRANSACTION_READ_UNCOMMITTED;
+    int TRANSACTION_READ_COMMITTED = Connection.TRANSACTION_READ_COMMITTED;
+    int TRANSACTION_REPEATABLE_READ = Connection.TRANSACTION_REPEATABLE_READ;
+    int TRANSACTION_SERIALIZABLE = Connection.TRANSACTION_SERIALIZABLE;
+    int TIMEOUT_DEFAULT = -1;
 
-	public Propagation getPropagationBehavior();
+    Propagation getPropagationBehavior();
 
-	public Isolation getIsolationLevel();
+    Isolation getIsolationLevel();
 
-	int getTimeout();
+    int getTimeout();
 
-	boolean isReadOnly();
+    boolean isReadOnly();
 
 }
