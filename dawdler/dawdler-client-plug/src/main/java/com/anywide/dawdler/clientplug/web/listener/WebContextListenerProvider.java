@@ -23,7 +23,6 @@ import com.anywide.dawdler.core.order.OrderData;
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author jackson.song
@@ -34,7 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @email suxuan696@gmail.com
  */
 public class WebContextListenerProvider {
-    private static final AtomicBoolean order = new AtomicBoolean(false);
     private static final List<OrderData<WebContextListener>> webContextListeners = new ArrayList<>();
 
     public static List<OrderData<WebContextListener>> getWebContextListeners() {
@@ -42,7 +40,6 @@ public class WebContextListenerProvider {
     }
 
     public static void order() {
-        if (order.compareAndSet(false, true))
             OrderComparator.sort(webContextListeners);
     }
 

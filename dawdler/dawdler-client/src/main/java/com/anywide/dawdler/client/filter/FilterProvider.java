@@ -36,7 +36,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class FilterProvider {
     private static final List<OrderData<DawdlerClientFilter>> filters = new ArrayList<>();
-    private static final AtomicBoolean order = new AtomicBoolean(false);
     public static FilterChain lastChain;
 
     static {
@@ -58,7 +57,6 @@ public class FilterProvider {
     }
 
     static void order() {
-        if (order.compareAndSet(false, true))
             OrderComparator.sort(filters);
     }
 

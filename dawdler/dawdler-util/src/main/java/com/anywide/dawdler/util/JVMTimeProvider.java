@@ -18,11 +18,14 @@ package com.anywide.dawdler.util;
 
 import java.util.concurrent.TimeUnit;
 
+
 /**
- * @ClassName: JVMTimeProvider
- * @Description
- * @authorsrchen
- * @date 2015年11月7日 上午10:35:12
+ * @author jackson.song
+ * @version V1.0
+ * @Title JVMTimeProvider.java
+ * @Description VMTimeProvider
+ * @date 2015年11月7日
+ * @email suxuan696@gmail.com
  */
 public final class JVMTimeProvider {
     private static volatile long currentTimeMillis;

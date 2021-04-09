@@ -33,7 +33,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @email suxuan696@gmail.com
  */
 public class InterceptorProvider {
-    private static final AtomicBoolean order = new AtomicBoolean(false);
     private static final List<OrderData<HandlerInterceptor>> handlerInterceptors = new ArrayList<>();
 
     public static List<OrderData<HandlerInterceptor>> getHandlerInterceptors() {
@@ -51,7 +50,6 @@ public class InterceptorProvider {
     }
 
     public static void order() {
-        if (order.compareAndSet(false, true))
             OrderComparator.sort(handlerInterceptors);
     }
 
