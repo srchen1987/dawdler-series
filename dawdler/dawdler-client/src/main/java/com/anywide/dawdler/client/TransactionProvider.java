@@ -31,8 +31,7 @@ public class TransactionProvider {
         if (cp == null)
             throw new IllegalArgumentException("not find " + groupName + " provider!");
         DawdlerConnection con = cp.getConnection();
-        Transaction tr = new Transaction(con);
-        return tr;
+        return new Transaction(con);
     }
 
 }
