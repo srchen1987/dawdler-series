@@ -207,13 +207,13 @@ public class ConnectionPool {
             try {
                 lock.lock();
                 if (first == null) {
-                    first = new Node<T>(value, null, null);
+                    first = new Node<>(value, null, null);
                     this.currentNode = first;
                 } else {
-                    Node<T> temp = new Node<>(value, null, null);
-                    currentNode.next = temp;
-                    temp.pre = currentNode;
-                    currentNode = temp;
+                    Node<T> node = new Node<>(value, null, null);
+                    currentNode.next = node;
+                    node.pre = currentNode;
+                    currentNode = node;
                 }
             } finally {
                 lock.unlock();
@@ -221,14 +221,14 @@ public class ConnectionPool {
         }
 
         public boolean exist(T value) {
-            Node<T> temp = first;
+            Node<T> node = first;
             boolean exist = false;
-            while ((temp != null)) {
-                if (temp.value == value) {
+            while ((node != null)) {
+                if (node.value == value) {
                     exist = true;
                     break;
                 }
-                temp = temp.next;
+                node = node.next;
             }
             return exist;
         }
@@ -237,14 +237,14 @@ public class ConnectionPool {
             Lock lock = rwLock.writeLock();
             try {
                 lock.lock();
-                Node<T> temp = first;
+                Node<T> node = first;
                 boolean exist = false;
-                while (temp != null) {
-                    if (temp.value == value) {
+                while (node != null) {
+                    if (node.value == value) {
                         exist = true;
                         break;
                     }
-                    temp = temp.next;
+                    node = node.next;
                 }
                 if (exist) {
                     if (first.value == value) {
@@ -252,10 +252,10 @@ public class ConnectionPool {
                         first = null;
                         return;
                     }
-                    if (temp.pre != null)
-                        temp.pre.next = temp.next;
-                    if (temp.next != null)
-                        temp.next.pre = temp.pre;
+                    if (node.pre != null)
+                        node.pre.next = node.next;
+                    if (node.next != null)
+                        node.next.pre = node.pre;
                 }
             } finally {
                 lock.unlock();
@@ -266,11 +266,11 @@ public class ConnectionPool {
             Lock lock = rwLock.writeLock();
             try {
                 lock.lock();
-                Node<T> temp = first;
-                while (temp != null) {
-                    DawdlerConnection con = (DawdlerConnection) temp.value;
+                Node<T> node = first;
+                while (node != null) {
+                    DawdlerConnection con = (DawdlerConnection) node.value;
                     con.refreshConnection(addresses.split(","));
-                    temp = temp.next;
+                    node = node.next;
                 }
             } finally {
                 lock.unlock();
@@ -281,11 +281,11 @@ public class ConnectionPool {
             Lock lock = rwLock.writeLock();
             try {
                 lock.lock();
-                Node<T> temp = first;
-                while (temp != null) {
-                    DawdlerConnection con = (DawdlerConnection) temp.value;
+                Node<T> node = first;
+                while (node != null) {
+                    DawdlerConnection con = (DawdlerConnection) node.value;
                     con.addConnection(address);
-                    temp = temp.next;
+                    node = node.next;
                 }
             } finally {
                 lock.unlock();
@@ -296,11 +296,11 @@ public class ConnectionPool {
             Lock lock = rwLock.writeLock();
             try {
                 lock.lock();
-                Node<T> temp = first;
-                while (temp != null) {
-                    DawdlerConnection con = (DawdlerConnection) temp.value;
+                Node<T> node = first;
+                while (node != null) {
+                    DawdlerConnection con = (DawdlerConnection) node.value;
                     con.disConnection(address);
-                    temp = temp.next;
+                    node = node.next;
                 }
             } finally {
                 lock.unlock();
@@ -313,19 +313,19 @@ public class ConnectionPool {
                 lock.lock();
                 boolean exist = currentNode != null;
                 if (exist) {
-                    Node<T> temp;
+                    Node<T> node;
                     try {
-                        temp = currentNode.next;
+                        node = currentNode.next;
                     } catch (Exception e) {
                         return get();
                     }
-                    currentNode = temp;
-                    if (temp != null) {
-                        return temp.value;
+                    currentNode = node;
+                    if (node != null) {
+                        return node.value;
                     }
-                    currentNode = temp = first;
-                    if (temp != null) {
-                        return temp.value;
+                    currentNode = node = first;
+                    if (node != null) {
+                        return node.value;
                     }
                 }
                 if (first == null)

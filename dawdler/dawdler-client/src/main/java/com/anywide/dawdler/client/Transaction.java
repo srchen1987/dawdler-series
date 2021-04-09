@@ -187,7 +187,7 @@ public class Transaction {
         request.setArgs(values.toArray());
         request.setFuzzy(fuzzy);
         request.setSingle(single);
-        Object obj = null;
+        Object obj;
         if (pure) {
             InvokeFuture<Object> future = new InvokeFuture<>();
             socketSession.getFutures().put(request.getSeq(), future);
