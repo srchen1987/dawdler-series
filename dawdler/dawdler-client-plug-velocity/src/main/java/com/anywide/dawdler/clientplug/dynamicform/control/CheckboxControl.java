@@ -27,46 +27,46 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
  * @email suxuan696@gmail.com
  */
 public class CheckboxControl extends Control {
-    public CheckboxControl(ControlTag tag) {
-        super(tag);
-    }
+	public CheckboxControl(ControlTag tag) {
+		super(tag);
+	}
 
-    public String replaceContent() {
-        String controlname = tag.getControlname();
-        String controltype = tag.getControltype();
-        String css = tag.getCss();
-        String viewname = tag.getViewname();
-        String validaterule = tag.getValidaterule();
-        String showitems = tag.getShowitems();
-        String value = tag.getValue();
-        String additional = tag.getAdditional();
-        if (showitems == null) {
-            throw new NullPointerException("show item can't null!");
-        }
-        String[] showitem = showitems.split(",");
-        StringBuffer sb = new StringBuffer(150);
-        for (int i = 0; i < showitem.length; i++) {
-            sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
-                    .replace(ControlContent.CONTROLTYPEREPLACE, controltype)
-                    .replace(ControlContent.VIEWNAMEREPLACE, viewname));
-            if (css != null && !css.trim().equals(""))
-                sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
-            if (validaterule != null && !validaterule.trim().equals(""))
-                sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validaterule));
-            sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, i + ""));
-            if (value != null) {
-                for (String v : value.split(",")) {
-                    if (v.equals("" + i)) {
-                        sb.append(ControlContent.CHECKED);
-                    }
-                }
-            }
-            if (additional != null)
-                sb.append(" " + additional);
-            sb.append(ControlContent.INPUTEND);
-            sb.append(showitem[i] + "   ");
-        }
-        return sb.toString();
-    }
+	public String replaceContent() {
+		String controlname = tag.getControlname();
+		String controltype = tag.getControltype();
+		String css = tag.getCss();
+		String viewName = tag.getViewname();
+		String validateRule = tag.getValidaterule();
+		String showitems = tag.getShowitems();
+		String value = tag.getValue();
+		String additional = tag.getAdditional();
+		if (showitems == null) {
+			throw new NullPointerException("show item can't null!");
+		}
+		String[] showitem = showitems.split(",");
+		StringBuffer sb = new StringBuffer(150);
+		for (int i = 0; i < showitem.length; i++) {
+			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
+					.replace(ControlContent.CONTROLTYPEREPLACE, controltype)
+					.replace(ControlContent.VIEWNAMEREPLACE, viewName));
+			if (css != null && !css.trim().equals(""))
+				sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
+			if (validateRule != null && !validateRule.trim().equals(""))
+				sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
+			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, i + ""));
+			if (value != null) {
+				for (String v : value.split(",")) {
+					if (v.equals("" + i)) {
+						sb.append(ControlContent.CHECKED);
+					}
+				}
+			}
+			if (additional != null)
+				sb.append(" " + additional);
+			sb.append(ControlContent.INPUTEND);
+			sb.append(showitem[i] + "   ");
+		}
+		return sb.toString();
+	}
 
 }

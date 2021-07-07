@@ -25,27 +25,27 @@ package com.anywide.dawdler.core.compression.strategy;
  * @email suxuan696@gmail.com
  */
 public class CompressionWrapper {
-    boolean isCompressed;
-    byte[] buffer;
+	boolean isCompressed;
+	byte[] buffer;
 
-    public CompressionWrapper(boolean isCompressed, byte[] buffer) {
-        this.isCompressed = isCompressed;
-        this.buffer = buffer;
-    }
+	public CompressionWrapper(boolean isCompressed, byte[] buffer) {
+		this.isCompressed = isCompressed;
+		this.buffer = buffer;
+	}
 
-    public boolean isCompressed() {
-        return isCompressed;
-    }
+	public boolean isCompressed() {
+		return isCompressed;
+	}
 
-    public void setCompressed(boolean isCompressed) {
-        this.isCompressed = isCompressed;
-    }
+	public void setCompressed(boolean isCompressed) {
+		this.isCompressed = isCompressed;
+	}
 
-    public byte[] getBuffer() {
-        return buffer;
-    }
+	public byte[] getBuffer() {
+		return buffer;
+	}
 
-    public void setBuffer(byte[] buffer) {
-        this.buffer = buffer;
-    }
+	public void setBuffer(byte[] buffer) {
+		this.buffer = buffer;
+	}
 }

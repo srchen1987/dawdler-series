@@ -16,20 +16,8 @@
  */
 package com.anywide.dawdler.core.net.aio.session;
 
-import com.anywide.dawdler.core.handler.IoHandler;
-import com.anywide.dawdler.core.handler.IoHandlerFactory;
-import com.anywide.dawdler.core.net.buffer.BufferFactory;
-import com.anywide.dawdler.core.serializer.Serializer;
-import com.anywide.dawdler.core.thread.InvokeFuture;
-import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
-import com.anywide.dawdler.util.JVMTimeProvider;
-import com.anywide.dawdler.util.Timeout;
-import com.anywide.dawdler.util.TimerTask;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import sun.nio.ch.DirectBuffer;
-
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
@@ -41,6 +29,21 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.core.handler.IoHandler;
+import com.anywide.dawdler.core.handler.IoHandlerFactory;
+import com.anywide.dawdler.core.net.buffer.BufferFactory;
+import com.anywide.dawdler.core.serializer.Serializer;
+import com.anywide.dawdler.core.thread.InvokeFuture;
+import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
+import com.anywide.dawdler.util.JVMTimeProvider;
+import com.anywide.dawdler.util.Timeout;
+import com.anywide.dawdler.util.TimerTask;
+
+import sun.nio.ch.DirectBuffer;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -50,344 +53,350 @@ import java.util.concurrent.atomic.AtomicLong;
  * @email suxuan696@gmail.com
  */
 public abstract class AbstractSocketSession {
-    public final static int CAPACITY = 1024 * 64;
-    private static final Logger logger = LoggerFactory.getLogger(AbstractSocketSession.class);
-    private static final long writerIdleTimeMillis = 8000;
-    private static final long readerIdleTimeMillis = writerIdleTimeMillis * 15;
-    protected final AsynchronousSocketChannel channel;
-    private final Object writeLock = new Object();
-    private final CountDownLatch sessionInitLatch = new CountDownLatch(1);
-    private final AtomicLong sequence = new AtomicLong(0);
-    private final boolean server;
-    protected SocketAddress remoteAddress;
-    protected String describe;
-    protected int remotePort;
-    protected volatile long lastReadTime;
-    protected volatile long lastWriteTime;
-    protected Timeout readerIdleTimeout;
-    protected Timeout writerIdleTimeout;
-    protected ByteBuffer readBuffer;
-    protected ByteBuffer writeBuffer;
-    protected int dataLength;
-    protected int packageSize;
-    protected int alreadyRead;
-    protected byte[] appendData;
-    protected boolean compress;
-    protected Serializer serializer;
-    protected boolean needNext;
-    protected AtomicBoolean close = new AtomicBoolean();
-    protected AtomicBoolean markClose = new AtomicBoolean();
-    protected byte headData;
-    protected int position;
-    protected Map<Long, InvokeFuture<Object>> futures = new ConcurrentHashMap<>();
-    protected IoHandler ioHandler = IoHandlerFactory.getHandler();
-    private String groupName;
-    private boolean authored;
-    private SessionState state = SessionState.RECEIVE;
+	public final static int CAPACITY = 1024 * 64;
+	private static final Logger logger = LoggerFactory.getLogger(AbstractSocketSession.class);
+	private static final long writerIdleTimeMillis = 8000;
+	private static final long readerIdleTimeMillis = writerIdleTimeMillis * 15;
+	protected final AsynchronousSocketChannel channel;
+	private final Object writeLock = new Object();
+	private final CountDownLatch sessionInitLatch = new CountDownLatch(1);
+	private final AtomicLong sequence = new AtomicLong(0);
+	private final boolean server;
+	protected SocketAddress remoteAddress;
+	protected SocketAddress localAddress;
+	protected String describe;
+	protected int remotePort;
+	protected volatile long lastReadTime;
+	protected volatile long lastWriteTime;
+	protected Timeout readerIdleTimeout;
+	protected Timeout writerIdleTimeout;
+	protected ByteBuffer readBuffer;
+	protected ByteBuffer writeBuffer;
+	protected int dataLength;
+	protected int packageSize;
+	protected int alreadyRead;
+	protected byte[] appendData;
+	protected boolean compress;
+	protected Serializer serializer;
+	protected boolean needNext;
+	protected AtomicBoolean close = new AtomicBoolean();
+	protected AtomicBoolean markClose = new AtomicBoolean();
+	protected byte headData;
+	protected int position;
+	protected Map<Long, InvokeFuture<Object>> futures = new ConcurrentHashMap<>();
+	protected IoHandler ioHandler = IoHandlerFactory.getHandler();
+	private String groupName;
+	private boolean authored;
+	private SessionState state = SessionState.RECEIVE;
 
-    public AbstractSocketSession(AsynchronousSocketChannel channel, boolean init) throws IOException {
-        this.channel = channel;
-        if ((server = init))
-            init();
-    }
+	public AbstractSocketSession(AsynchronousSocketChannel channel, boolean init) throws IOException {
+		this.channel = channel;
+		if ((server = init))
+			init();
+	}
 
-    public AbstractSocketSession(AsynchronousSocketChannel channel) throws IOException {
-        this(channel, true);
-    }
+	public AbstractSocketSession(AsynchronousSocketChannel channel) throws IOException {
+		this(channel, true);
+	}
 
-    public boolean isAuthored() {
-        return authored;
-    }
+	public boolean isAuthored() {
+		return authored;
+	}
 
-    public void setAuthored(boolean authored) {
-        this.authored = authored;
-    }
+	public void setAuthored(boolean authored) {
+		this.authored = authored;
+	}
 
-    public Timeout getReaderIdleTimeout() {
-        return readerIdleTimeout;
-    }
+	public Timeout getReaderIdleTimeout() {
+		return readerIdleTimeout;
+	}
 
-    public void setReaderIdleTimeout(Timeout readerIdleTimeout) {
-        this.readerIdleTimeout = readerIdleTimeout;
-    }
+	public void setReaderIdleTimeout(Timeout readerIdleTimeout) {
+		this.readerIdleTimeout = readerIdleTimeout;
+	}
 
-    public Timeout getWriterIdleTimeout() {
-        return writerIdleTimeout;
-    }
+	public Timeout getWriterIdleTimeout() {
+		return writerIdleTimeout;
+	}
 
-    public void setWriterIdleTimeout(Timeout writerIdleTimeout) {
-        this.writerIdleTimeout = writerIdleTimeout;
-    }
+	public void setWriterIdleTimeout(Timeout writerIdleTimeout) {
+		this.writerIdleTimeout = writerIdleTimeout;
+	}
 
-    public String getGroupName() {
-        return groupName;
-    }
+	public String getGroupName() {
+		return groupName;
+	}
 
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 
-    public Map<Long, InvokeFuture<Object>> getFutures() {
-        return futures;
-    }
+	public Map<Long, InvokeFuture<Object>> getFutures() {
+		return futures;
+	}
 
-    public void setFutures(Map<Long, InvokeFuture<Object>> futures) {
-        this.futures = futures;
-    }
+	public void setFutures(Map<Long, InvokeFuture<Object>> futures) {
+		this.futures = futures;
+	}
 
-    public ByteBuffer getWriteBuffer() {
-        return writeBuffer;
-    }
+	public ByteBuffer getWriteBuffer() {
+		return writeBuffer;
+	}
 
-    public abstract void parseHead(ByteBuffer buffer);
+	public abstract void parseHead(ByteBuffer buffer);
 
-    public int getHeadData() {
-        return headData;
-    }
+	public int getHeadData() {
+		return headData;
+	}
 
-    public CountDownLatch getInitLatch() {
-        return sessionInitLatch;
-    }
+	public CountDownLatch getInitLatch() {
+		return sessionInitLatch;
+	}
 
-    public void init() throws IOException {
-        remoteAddress = channel.getRemoteAddress();
-        describe = "local:" + channel.getLocalAddress() + " remote:" + remoteAddress + " hashCode/" + hashCode();
-        remotePort = Integer.parseInt(this.toString().split(" ")[1].split(":")[2]);
-        readBuffer = BufferFactory.createDirectBuffer(CAPACITY);
-        writeBuffer = BufferFactory.createDirectBuffer(CAPACITY);
-        writerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new WriterIdleTimeoutTask(),
-                writerIdleTimeMillis, TimeUnit.MILLISECONDS);
-        readerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new ReaderIdleTimeoutTask(),
-                readerIdleTimeMillis, TimeUnit.MILLISECONDS);
-    }
+	public void init() throws IOException {
+		remoteAddress = channel.getRemoteAddress();
+		localAddress = channel.getLocalAddress();
+		describe = "local:" + localAddress + " remote:" + remoteAddress + " hashCode/" + hashCode();
+		remotePort = ((InetSocketAddress) remoteAddress).getPort();
+		readBuffer = BufferFactory.createDirectBuffer(CAPACITY);
+		writeBuffer = BufferFactory.createDirectBuffer(CAPACITY);
+		writerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new WriterIdleTimeoutTask(),
+				writerIdleTimeMillis, TimeUnit.MILLISECONDS);
+		readerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new ReaderIdleTimeoutTask(),
+				readerIdleTimeMillis, TimeUnit.MILLISECONDS);
+	}
 
-    public void clean(final ByteBuffer byteBuffer) {
-        if (byteBuffer.isDirect()) {
-            ((DirectBuffer) byteBuffer).cleaner().clean();
-        } else
-            byteBuffer.clear();
-    }
+	public SocketAddress getLocalAddress() {
+		return localAddress;
+	}
 
-    public void close() {
-        close(true);
-    }
+	public void clean(final ByteBuffer byteBuffer) {
+		if (byteBuffer.isDirect()) {
+			((DirectBuffer) byteBuffer).cleaner().clean();
+		} else
+			byteBuffer.clear();
+	}
 
-    public abstract void close(boolean reconnect);
+	public void close() {
+		close(true);
+	}
 
-    public boolean isClose() {
-        return close.get();
-    }
+	public abstract void close(boolean reconnect);
 
-    public boolean isReceived() {
-        return state == SessionState.RECEIVE;
-    }
+	public boolean isClose() {
+		return close.get();
+	}
 
-    public boolean isConnected() {
-        return state == SessionState.CONNECTION;
-    }
+	public boolean isReceived() {
+		return state == SessionState.RECEIVE;
+	}
 
-    public void appendData(byte[] data) {
-        if (data.length > 0) {
-            System.arraycopy(data, 0, appendData, position, data.length);
-            position += data.length;
-        }
+	public boolean isConnected() {
+		return state == SessionState.CONNECTION;
+	}
 
-    }
+	public void appendData(byte[] data) {
+		if (data.length > 0) {
+			System.arraycopy(data, 0, appendData, position, data.length);
+			position += data.length;
+		}
 
-    public byte[] getAppendData() {
-        return appendData;
-    }
+	}
 
-    public void appendReadLength(int length) {
-        alreadyRead += length;
-    }
+	public byte[] getAppendData() {
+		return appendData;
+	}
 
-    public int getDataLength() {
-        return dataLength;
-    }
+	public void appendReadLength(int length) {
+		alreadyRead += length;
+	}
 
-    public void setDataLength(int dataLength) {
-        this.dataLength = dataLength;
-    }
+	public int getDataLength() {
+		return dataLength;
+	}
 
-    public int getRemanentDataLength() {
-        return packageSize - alreadyRead;
-    }
+	public void setDataLength(int dataLength) {
+		this.dataLength = dataLength;
+	}
 
-    public int getPackageSize() {
-        return packageSize;
-    }
+	public int getRemanentDataLength() {
+		return packageSize - alreadyRead;
+	}
 
-    public void setPackageSize(int packageSize) {
-        this.packageSize = packageSize;
-    }
+	public int getPackageSize() {
+		return packageSize;
+	}
 
-    public void toConnectionState() {
-        state = SessionState.CONNECTION;
-    }
+	public void setPackageSize(int packageSize) {
+		this.packageSize = packageSize;
+	}
 
-    public void toReceiveState() {
-        state = SessionState.RECEIVE;
-    }
+	public void toConnectionState() {
+		state = SessionState.CONNECTION;
+	}
 
-    public void toPrepare() {
-        toReceiveState();
-        appendData = null;
-        dataLength = 0;
-        packageSize = 0;
-        alreadyRead = 0;
-        position = 0;
-        serializer = null;
-        compress = false;
-        needNext = false;
-    }
+	public void toReceiveState() {
+		state = SessionState.RECEIVE;
+	}
 
-    public void clearBuffer(ByteBuffer buffer) {
-        buffer.clear();
-    }
+	public void toPrepare() {
+		toReceiveState();
+		appendData = null;
+		dataLength = 0;
+		packageSize = 0;
+		alreadyRead = 0;
+		position = 0;
+		serializer = null;
+		compress = false;
+		needNext = false;
+	}
 
-    public ByteBuffer getReadBuffer() {
-        return readBuffer;
-    }
+	public void clearBuffer(ByteBuffer buffer) {
+		buffer.clear();
+	}
 
-    public long getLastReadTime() {
-        return lastReadTime;
-    }
+	public ByteBuffer getReadBuffer() {
+		return readBuffer;
+	}
 
-    public void setLastReadTime(long lastReadTime) {
-        this.lastReadTime = lastReadTime;
-    }
+	public long getLastReadTime() {
+		return lastReadTime;
+	}
 
-    public long getLastWriteTime() {
-        return lastWriteTime;
-    }
+	public void setLastReadTime(long lastReadTime) {
+		this.lastReadTime = lastReadTime;
+	}
 
-    public void setLastWriteTime(long lastWriteTime) {
-        this.lastWriteTime = lastWriteTime;
-    }
+	public long getLastWriteTime() {
+		return lastWriteTime;
+	}
 
-    public AsynchronousSocketChannel getChannel() {
-        return channel;
-    }
+	public void setLastWriteTime(long lastWriteTime) {
+		this.lastWriteTime = lastWriteTime;
+	}
 
-    public SocketAddress getRemoteAddress() {
-        return remoteAddress;
-    }
+	public AsynchronousSocketChannel getChannel() {
+		return channel;
+	}
 
-    public void setRemoteAddress(SocketAddress remoteAddress) {
-        this.remoteAddress = remoteAddress;
-    }
+	public SocketAddress getRemoteAddress() {
+		return remoteAddress;
+	}
 
-    public String getDescribe() {
-        return describe;
-    }
+	public void setRemoteAddress(SocketAddress remoteAddress) {
+		this.remoteAddress = remoteAddress;
+	}
 
-    public int getRemotePort() {
-        return remotePort;
-    }
+	public String getDescribe() {
+		return describe;
+	}
 
-    @Override
-    public String toString() {
-        return describe + "\tlastRead:" + (JVMTimeProvider.currentTimeMillis() - lastReadTime) + "\tLastWrite"
-                + (System.currentTimeMillis() - lastWriteTime);
-    }
+	public int getRemotePort() {
+		return remotePort;
+	}
 
-    public void markClose() {
-        markClose.set(true);
-    }
+	@Override
+	public String toString() {
+		return describe + "\tlastRead:" + (JVMTimeProvider.currentTimeMillis() - lastReadTime) + "\tLastWrite"
+				+ (System.currentTimeMillis() - lastWriteTime);
+	}
 
-    public abstract void messageCompleted();
+	public void markClose() {
+		markClose.set(true);
+	}
 
-    public void sentHeartbeat() {
-        ByteBuffer bf = ByteBuffer.allocate(4);
-        bf.putInt(0);
-        bf.flip();
-        write(bf);
-    }
+	public abstract void messageCompleted();
 
-    public void write(ByteBuffer obj) {
-        setLastWriteTime(JVMTimeProvider.currentTimeMillis());
-        synchronized (channel) {
-            try {
-                while (obj.hasRemaining()) {
-                    Future<Integer> future = channel.write(obj);
-                    future.get(1000, TimeUnit.MILLISECONDS);
-                }
-            } catch (Exception e) {
-                logger.error("", e);
-                close();
-            } finally {
-                obj.clear();
-                obj = null;
-                // release buffer
-            }
-        }
-    }
+	public void sentHeartbeat() {
+		ByteBuffer bf = ByteBuffer.allocate(4);
+		bf.putInt(0);
+		bf.flip();
+		write(bf);
+	}
 
-    public Object getWriteLock() {
-        return writeLock;
-    }
+	public void write(ByteBuffer obj) {
+		setLastWriteTime(JVMTimeProvider.currentTimeMillis());
+		synchronized (channel) {
+			try {
+				while (obj.hasRemaining()) {
+					Future<Integer> future = channel.write(obj);
+					future.get(1000, TimeUnit.MILLISECONDS);
+				}
+			} catch (Exception e) {
+				logger.error("", e);
+				close();
+			} finally {
+				obj.clear();
+				obj = null;
+				// release buffer
+			}
+		}
+	}
 
-    public boolean isNeedNext() {
-        return needNext;
-    }
+	public Object getWriteLock() {
+		return writeLock;
+	}
 
-    public void setNeedNext(boolean needNext) {
-        this.needNext = needNext;
-    }
+	public boolean isNeedNext() {
+		return needNext;
+	}
 
-    public long getSequence() {
-        return sequence.incrementAndGet();
-    }
+	public void setNeedNext(boolean needNext) {
+		this.needNext = needNext;
+	}
 
-    public enum SessionState {
-        RECEIVE, CONNECTION, FAIL
-    }
+	public long getSequence() {
+		return sequence.incrementAndGet();
+	}
 
-    private final class WriterIdleTimeoutTask implements TimerTask {
-        @Override
-        public void run(Timeout timeout) throws Exception {
-            if (timeout.isCancelled() || isClose())
-                return;
-            long currentTime = JVMTimeProvider.currentTimeMillis();
-            long lastWriteTime = AbstractSocketSession.this.lastWriteTime;
-            long nextDelay = writerIdleTimeMillis - (currentTime - lastWriteTime);
-            if (nextDelay <= 0) {
-                if (ioHandler != null)
-                    ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.WRITE);
-                AbstractSocketSession.this.writerIdleTimeout = timeout.timer().newTimeout(this, writerIdleTimeMillis,
-                        TimeUnit.MILLISECONDS);
-                AbstractSocketSession.this.sentHeartbeat();
-            } else {
-                AbstractSocketSession.this.writerIdleTimeout = timeout.timer().newTimeout(this, nextDelay,
-                        TimeUnit.MILLISECONDS);
-            }
-        }
-    }
+	public enum SessionState {
+		RECEIVE, CONNECTION, FAIL
+	}
 
-    private final class ReaderIdleTimeoutTask implements TimerTask {
-        @Override
-        public void run(Timeout timeout) throws Exception {
-            if (timeout.isCancelled() || isClose())
-                return;
-            long currentTime = JVMTimeProvider.currentTimeMillis();
-            long lastReadTime = AbstractSocketSession.this.lastReadTime;
-            long nextDelay = readerIdleTimeMillis - (currentTime - lastReadTime);
-            if (nextDelay <= 0) {
-                if (ioHandler != null)
-                    ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.READ);
-                AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, readerIdleTimeMillis,
-                        TimeUnit.MILLISECONDS);
-                if (server) {
-                    AbstractSocketSession.this.close(false);
-                } else {
-                    AbstractSocketSession.this.close();
-                }
-            } else {
-                AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, nextDelay,
-                        TimeUnit.MILLISECONDS);
-            }
-        }
+	private final class WriterIdleTimeoutTask implements TimerTask {
+		@Override
+		public void run(Timeout timeout) throws Exception {
+			if (timeout.isCancelled() || isClose())
+				return;
+			long currentTime = JVMTimeProvider.currentTimeMillis();
+			long lastWriteTime = AbstractSocketSession.this.lastWriteTime;
+			long nextDelay = writerIdleTimeMillis - (currentTime - lastWriteTime);
+			if (nextDelay <= 0) {
+				if (ioHandler != null)
+					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.WRITE);
+				AbstractSocketSession.this.writerIdleTimeout = timeout.timer().newTimeout(this, writerIdleTimeMillis,
+						TimeUnit.MILLISECONDS);
+				AbstractSocketSession.this.sentHeartbeat();
+			} else {
+				AbstractSocketSession.this.writerIdleTimeout = timeout.timer().newTimeout(this, nextDelay,
+						TimeUnit.MILLISECONDS);
+			}
+		}
+	}
 
-    }
+	private final class ReaderIdleTimeoutTask implements TimerTask {
+		@Override
+		public void run(Timeout timeout) throws Exception {
+			if (timeout.isCancelled() || isClose())
+				return;
+			long currentTime = JVMTimeProvider.currentTimeMillis();
+			long lastReadTime = AbstractSocketSession.this.lastReadTime;
+			long nextDelay = readerIdleTimeMillis - (currentTime - lastReadTime);
+			if (nextDelay <= 0) {
+				if (ioHandler != null)
+					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.READ);
+				AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, readerIdleTimeMillis,
+						TimeUnit.MILLISECONDS);
+				if (server) {
+					AbstractSocketSession.this.close(false);
+				} else {
+					AbstractSocketSession.this.close();
+				}
+			} else {
+				AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, nextDelay,
+						TimeUnit.MILLISECONDS);
+			}
+		}
+
+	}
 }

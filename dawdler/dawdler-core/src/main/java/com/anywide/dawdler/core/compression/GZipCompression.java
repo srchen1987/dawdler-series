@@ -31,51 +31,51 @@ import java.util.zip.GZIPOutputStream;
  * @email suxuan696@gmail.com
  */
 public class GZipCompression implements CompressionAlgorithm {
-    int size = 4096;
+	int size = 4096;
 
-    public int getSize() {
-        return size;
-    }
+	public int getSize() {
+		return size;
+	}
 
-    public void setSize(int size) {
-        this.size = size;
-    }
+	public void setSize(int size) {
+		this.size = size;
+	}
 
-    public byte[] compress(byte[] buffer) throws IOException {
-        ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
-        GZIPOutputStream gzip = new GZIPOutputStream(arrayOutputStream);
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
+	public byte[] compress(byte[] buffer) throws IOException {
+		ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();
+		GZIPOutputStream gzip = new GZIPOutputStream(arrayOutputStream);
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
 
-        try {
-            byte[] buf = new byte[size];
-            int len = 0;
-            while ((len = inputStream.read(buf)) != -1) {
-                gzip.write(buf, 0, len);
-            }
-            gzip.finish();
-            return arrayOutputStream.toByteArray();
-        } finally {
-            gzip.close();
-            arrayOutputStream.close();
-            inputStream.close();
-        }
-    }
+		try {
+			byte[] buf = new byte[size];
+			int len = 0;
+			while ((len = inputStream.read(buf)) != -1) {
+				gzip.write(buf, 0, len);
+			}
+			gzip.finish();
+			return arrayOutputStream.toByteArray();
+		} finally {
+			gzip.close();
+			arrayOutputStream.close();
+			inputStream.close();
+		}
+	}
 
-    public byte[] decompress(byte[] buffer) throws IOException {
-        ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
-        GZIPInputStream gzip = new GZIPInputStream(inputStream);
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        try {
-            byte[] buf = new byte[size];
-            int len;
-            while ((len = gzip.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-            return out.toByteArray();
-        }finally {
-            gzip.close();
-            out.close();
-            inputStream.close();
-        }
-    }
+	public byte[] decompress(byte[] buffer) throws IOException {
+		ByteArrayInputStream inputStream = new ByteArrayInputStream(buffer);
+		GZIPInputStream gzip = new GZIPInputStream(inputStream);
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try {
+			byte[] buf = new byte[size];
+			int len;
+			while ((len = gzip.read(buf)) > 0) {
+				out.write(buf, 0, len);
+			}
+			return out.toByteArray();
+		} finally {
+			gzip.close();
+			out.close();
+			inputStream.close();
+		}
+	}
 }

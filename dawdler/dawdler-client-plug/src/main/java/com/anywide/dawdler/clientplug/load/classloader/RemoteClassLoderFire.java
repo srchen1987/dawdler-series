@@ -25,7 +25,7 @@ package com.anywide.dawdler.clientplug.load.classloader;
  * @email suxuan696@gmail.com
  */
 public interface RemoteClassLoderFire {
-    void onLoadFire(Class<?> clazz);
+	void onLoadFire(Class<?> clazz, byte[] classCodes);
 
-    void onRemoveFire(Class<?> clazz);
+	void onRemoveFire(Class<?> clazz);
 }

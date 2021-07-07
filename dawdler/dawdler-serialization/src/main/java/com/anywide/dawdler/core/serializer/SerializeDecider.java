@@ -28,20 +28,20 @@ import java.util.concurrent.ConcurrentHashMap;
  * @email suxuan696@gmail.com
  */
 public class SerializeDecider {
-    private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<Byte, Serializer>() {
-        {
-            put((byte) 1, new JDKDefaultSerializer());
-            put((byte) 2, new KryoSerializer());
-        }
+	private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<Byte, Serializer>() {
+		{
+			put((byte) 1, new JDKDefaultSerializer());
+			put((byte) 2, new KryoSerializer());
+		}
 
-    };
+	};
 
-    public static void register(byte key, Serializer serializer) {
-        serializers.put(key, serializer);
-    }
+	public static void register(byte key, Serializer serializer) {
+		serializers.put(key, serializer);
+	}
 
-    public static Serializer decide(byte key) {
-        return serializers.get(key);
-    }
+	public static Serializer decide(byte key) {
+		return serializers.get(key);
+	}
 
 }

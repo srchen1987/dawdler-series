@@ -27,7 +27,7 @@ import java.io.IOException;
  * @email suxuan696@gmail.com
  */
 public interface CompressionAlgorithm {
-    byte[] compress(byte[] buffer) throws IOException;
+	byte[] compress(byte[] buffer) throws IOException;
 
-    byte[] decompress(byte[] buffer) throws IOException;
+	byte[] decompress(byte[] buffer) throws IOException;
 }

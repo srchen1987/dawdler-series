@@ -27,39 +27,39 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
  * @email suxuan696@gmail.com
  */
 public abstract class Control {
-    private static boolean showcolon;
-    protected ControlTag tag;
+	private static boolean showcolon;
+	protected ControlTag tag;
 
-    protected Control(ControlTag tag) {
-        this.tag = tag;
-    }
+	protected Control(ControlTag tag) {
+		this.tag = tag;
+	}
 
-    public static void setShowcolon(boolean showcolon) {
-        Control.showcolon = showcolon;
-    }
+	public static void setShowcolon(boolean showcolon) {
+		Control.showcolon = showcolon;
+	}
 
-    public String showView() {
-        ControlTag ntag = tag;
-        if (ntag.getControlname() == null) {
-            throw new NullPointerException("controlname can't null !");
-        }
-        if (ntag.getViewname() == null) {
-            throw new NullPointerException("viewname can't null !");
-        }
-        return translation();
-    }
+	public String showView() {
+		ControlTag ntag = tag;
+		if (ntag.getControlname() == null) {
+			throw new NullPointerException("controlname can't null !");
+		}
+		if (ntag.getViewname() == null) {
+			throw new NullPointerException("viewName can't null !");
+		}
+		return translation();
+	}
 
-    protected abstract String replaceContent();
+	protected abstract String replaceContent();
 
-    protected String translation() {
-        String notEmpty = "";
-        if (tag.getValidaterule() != null) {
-            if (tag.getValidaterule().contains("notEmpty"))
-                notEmpty = "<font color=\"red\">*</font>";
-        }
-        return notEmpty + (tag.isAutoaddviewname() ? tag.getViewname() + (showcolon ? " : " : "  ") : "")
-                + replaceContent()
-                + ((tag.getViewdescription() != null && tag.isAutoaddviewdescription()) ? tag.getViewdescription()
-                : "");
-    }
+	protected String translation() {
+		String notEmpty = "";
+		if (tag.getValidaterule() != null) {
+			if (tag.getValidaterule().contains("notEmpty"))
+				notEmpty = "<font color=\"red\">*</font>";
+		}
+		return notEmpty + (tag.isAutoaddviewname() ? tag.getViewname() + (showcolon ? " : " : "  ") : "")
+				+ replaceContent()
+				+ ((tag.getViewdescription() != null && tag.isAutoaddviewdescription()) ? tag.getViewdescription()
+						: "");
+	}
 }

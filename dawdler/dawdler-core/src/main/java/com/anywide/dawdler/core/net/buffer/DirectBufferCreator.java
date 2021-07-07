@@ -27,8 +27,8 @@ import java.nio.ByteBuffer;
  * @email suxuan696@gmail.com
  */
 public class DirectBufferCreator implements BufferCreator {
-    @Override
-    public ByteBuffer createByteBuffer(int capacity) {
-        return ByteBuffer.allocateDirect(capacity);
-    }
+	@Override
+	public ByteBuffer createByteBuffer(int capacity) {
+		return ByteBuffer.allocateDirect(capacity);
+	}
 }

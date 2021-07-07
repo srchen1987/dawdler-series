@@ -21,41 +21,42 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
 
-@Target({ElementType.METHOD, ElementType.TYPE})
+@Target({ ElementType.METHOD, ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 /**
  *
  * @Title RequestMapping.java
- * @Description http请求注解
+ * @Description http接口请求注解
  * @author jackson.song
  * @date 2007年04月17日
  * @version V1.0
  * @email suxuan696@gmail.com
  */
 public @interface RequestMapping {
-    String[] value() default {};
+	String[] value() default {};
 
-    RequestMethod[] method() default {};
+	RequestMethod[] method() default {};
 
-    //	ParamType paramType() default ParamType.httpType;
-    ViewType viewType() default ViewType.velocity;
+	// ParamType paramType() default ParamType.httpType;
+	ViewType viewType() default ViewType.velocity;
 
-    boolean generateValidator() default false;
+	boolean generateValidator() default false;
 
-    String input() default "";
+	String input() default "";
 
-    long uploadSizeMax() default 0l;
+	long uploadSizeMax() default 0l;
 
-    long uploadPerSizeMax() default 0l;
+	long uploadPerSizeMax() default 0l;
 
-    short uploadHandler() default 1;
+	String exceptionHandler() default HttpExceptionHolder.JSON;
 
-    //	public enum ParamType{
+	// public enum ParamType{
 //		jsonType,
 //		httpType;
 //	}
-    enum ViewType {
-        json, jsp, velocity
-    }
+	enum ViewType {
+		json, jsp, velocity
+	}
 }

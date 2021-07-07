@@ -27,9 +27,9 @@ import com.anywide.dawdler.clientplug.web.TransactionController;
  * @email suxuan696@gmail.com
  */
 public interface HandlerInterceptor {
-    boolean preHandle(TransactionController controller) throws Exception;
+	boolean preHandle(TransactionController controller) throws Exception;
 
-    void postHandle(TransactionController controller, Throwable ex) throws Exception;
+	void postHandle(TransactionController controller, Throwable ex) throws Exception;
 
-    void afterCompletion(TransactionController controller, Throwable ex);
+	void afterCompletion(TransactionController controller, Throwable ex);
 }

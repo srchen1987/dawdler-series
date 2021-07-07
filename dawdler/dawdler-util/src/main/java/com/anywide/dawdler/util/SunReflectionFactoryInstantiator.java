@@ -32,7 +32,8 @@ public class SunReflectionFactoryInstantiator {
 
 //	private static final ReflectionFactory reflectionFactory = ReflectionFactory.getReflectionFactory();
 
-    //	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	// public static <T> T newInstance(Class<T> type) throws InstantiationException,
+	// IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 //		Constructor javaLangObjectConstructor;
 //		try {
 //			javaLangObjectConstructor = Object.class.getConstructor((Class[]) null);
@@ -44,7 +45,8 @@ public class SunReflectionFactoryInstantiator {
 //		mungedConstructor.setAccessible(true);
 //		return (T) mungedConstructor.newInstance(null);
 //	}
-    public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        return (T) type.getConstructor(null).newInstance(null);
-    }
+	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		return (T) type.newInstance();
+	}
 }

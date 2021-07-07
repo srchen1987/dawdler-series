@@ -30,8 +30,8 @@ import com.anywide.dawdler.util.XmlObject;
  * @email suxuan696@gmail.com
  */
 public class CheckUpdateImpl implements CheckUpdate {
-    public XmlBean check(String host) {
-        XmlObject xmlo = ReadClass.read(host);
-        return new XmlBean(xmlo.getDocument());
-    }
+	public XmlBean check(String host) {
+		XmlObject xmlo = ReadClass.read(host);
+		return new XmlBean(xmlo.getDocument());
+	}
 }

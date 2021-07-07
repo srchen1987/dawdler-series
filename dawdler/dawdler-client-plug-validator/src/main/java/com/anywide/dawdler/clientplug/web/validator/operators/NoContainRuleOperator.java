@@ -28,49 +28,49 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class NoContainRuleOperator extends RegexRuleOperator {
-    public static final String RULEKEY = "^noContain:\\[(.+)\\]$";
+	public static final String RULEKEY = "^noContain:\\[(.+)\\]$";
 
-    public NoContainRuleOperator() {
-        super(RULEKEY);
-    }
+	public NoContainRuleOperator() {
+		super(RULEKEY);
+	}
 
-    public String validate(Object value, Matcher matcher) {
-        String values = matcher.group(1);
-        String[] valueArray = values.split(",");
-        String error = "不能包含[" + values + "]其中一项!";
-        if (value == null) {
-            return error;
-        }
-        if (value instanceof String) {
-            if (!validate(valueArray, value.toString()))
-                return error;
-        } else if (value instanceof String[]) {
-            String[] valuesArrayTemp = (String[]) value;
-            for (String v : valuesArrayTemp) {
-                if (!validate(valueArray, v))
-                    return error;
-            }
-        } else if (value instanceof List) {
-            List valuesArrayTemp = (List) value;
-            for (Object v : valuesArrayTemp) {
-                if (!validate(valueArray, v.toString()))
-                    return error;
-            }
-        }
-        return null;
-    }
+	public String validate(Object value, Matcher matcher) {
+		String values = matcher.group(1);
+		String[] valueArray = values.split(",");
+		String error = "不能包含[" + values + "]其中一项!";
+		if (value == null) {
+			return error;
+		}
+		if (value instanceof String) {
+			if (!validate(valueArray, value.toString()))
+				return error;
+		} else if (value instanceof String[]) {
+			String[] valuesArrayTemp = (String[]) value;
+			for (String v : valuesArrayTemp) {
+				if (!validate(valueArray, v))
+					return error;
+			}
+		} else if (value instanceof List) {
+			List valuesArrayTemp = (List) value;
+			for (Object v : valuesArrayTemp) {
+				if (!validate(valueArray, v.toString()))
+					return error;
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public String toString() {
-        return "规定性范围内不包含验证,如：noContain:[China,1] ,表单中不能出现China或1 !";
-    }
+	@Override
+	public String toString() {
+		return "规定性范围内不包含验证,如：noContain:[China,1] ,表单中不能出现China或1 !";
+	}
 
-    private boolean validate(String[] values, String value) {
-        for (String v : values) {
-            if (v.trim().equals(value.trim())) {
-                return false;
-            }
-        }
-        return true;
-    }
+	private boolean validate(String[] values, String value) {
+		for (String v : values) {
+			if (v.trim().equals(value.trim())) {
+				return false;
+			}
+		}
+		return true;
+	}
 }

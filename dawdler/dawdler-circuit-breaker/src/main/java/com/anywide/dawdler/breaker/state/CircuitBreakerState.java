@@ -16,9 +16,9 @@
  */
 package com.anywide.dawdler.breaker.state;
 
-import com.anywide.dawdler.breaker.SlideTimeWindows;
-
 import java.util.concurrent.atomic.AtomicReference;
+
+import com.anywide.dawdler.breaker.SlideTimeWindows;
 
 /**
  * @author jackson.song
@@ -30,16 +30,16 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public interface CircuitBreakerState {
 
-    AtomicReference<State> getState();
+	AtomicReference<State> getState();
 
-    long getStartTime();
+	long getStartTime();
 
-    void resetStartTime();
+	void resetStartTime();
 
-    SlideTimeWindows getStw();
+	SlideTimeWindows getStw();
 
-    enum State {
-        CLOSE, OPEN, HALF_OPEN,
-    }
+	enum State {
+		CLOSE, OPEN, HALF_OPEN,
+	}
 
 }

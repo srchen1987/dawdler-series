@@ -25,22 +25,22 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class LowercaseLettersRuleOperator extends StringRuleOperator {
-    public static final String RULEKEY = "lowercaseLetters";
-    public static final String REGEX = "^[a-z]+$";
-    public static final String EXPLAIN = "小写字母验证";
+	public static final String RULEKEY = "lowercaseLetters";
+	public static final String REGEX = "^[a-z]+$";
+	public static final String EXPLAIN = "小写字母验证";
 
-    public LowercaseLettersRuleOperator() {
-        super(RULEKEY, REGEX, EXPLAIN);
-    }
+	public LowercaseLettersRuleOperator() {
+		super(RULEKEY, REGEX, EXPLAIN);
+	}
 
-    @Override
-    public String toString() {
-        return EXPLAIN;
-    }
+	@Override
+	public String toString() {
+		return EXPLAIN;
+	}
 
-    @Override
-    public String validate(Object value) {
-        return super.validate(value, "请输入小写英文字母!");
-    }
+	@Override
+	public String validate(Object value) {
+		return super.validate(value, "请输入小写英文字母!");
+	}
 
 }

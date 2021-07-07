@@ -16,23 +16,24 @@
  */
 package com.anywide.dawdler.client;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.client.conf.ClientConfig;
 import com.anywide.dawdler.client.conf.ClientConfig.ServerChannelGroup;
 import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.client.discoverycenter.ZkDiscoveryCenterClient;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * @author jackson.song
@@ -44,297 +45,140 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  */
 
 public class ConnectionPool {
-    private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
-    private static final ConcurrentHashMap<String, ConnectionPool> groups = new ConcurrentHashMap<>();
-    private static final Map<String, ServerChannelGroup> serverChannelGroup = new HashMap<>();
-    private static DiscoveryCenter discoveryCenter = null;
+	private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
+	private static final ConcurrentHashMap<String, ConnectionPool> groups = new ConcurrentHashMap<>();
+	private static final Map<String, ServerChannelGroup> serverChannelGroup = new HashMap<>();
+	private static DiscoveryCenter discoveryCenter = null;
+	private volatile List<DawdlerConnection> connections = new CopyOnWriteArrayList<>();
+	private Semaphore semaphore = new Semaphore(0);
+	private String groupName;
+	static {
+		try {
+			ClientConfig clientConfig = ClientConfigParser.getClientConfig();
+			String connectString = clientConfig.getZkHost();
+			List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
+			if (sgs != null) {
+				for (ServerChannelGroup sg : sgs) {
+					String gid = sg.getGroupId();
+					serverChannelGroup.put(gid, sg);
+					ConnectionPool cp = getConnectionPool(gid);
+					if (cp == null) {
+						cp = new ConnectionPool();
+						cp.groupName = gid;
+						addGroup(gid, cp);
+					}
+					discoveryCenter = new ZkDiscoveryCenterClient(connectString, null, null);
+				}
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+		}
 
-    static {
-        try {
-            ClientConfig clientConfig = ClientConfigParser.getClientConfig();
-            String connectString = clientConfig.getZkHost();
-            discoveryCenter = new ZkDiscoveryCenterClient(connectString, null, null);
-            List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
-            if (sgs != null) {
-                for (ServerChannelGroup sg : sgs) {
-                    String gid = sg.getGroupId();
-                    serverChannelGroup.put(gid, sg);
-                    List<String> addresses;
-                    try {
-                        addresses = discoveryCenter.getServiceList(gid);
-                    } catch (Exception e) {
-                        logger.error("", e);
-                        continue;
-                    }
-                    if (addresses == null || addresses.isEmpty())
-                        continue;
-                    // gid get addresses;
-                    ConnectionPool cp = getConnectionPool(gid);
-                    if (cp == null) {
-                        cp = new ConnectionPool();
-                        addGroup(gid, cp);
-                    }
-                    initConnection(gid);
-                }
-            }
-        } catch (Exception e) {
-            logger.error("", e);
-        }
+	}
 
-    }
+	public static void initConnection(String gid) {
+		ServerChannelGroup sg = serverChannelGroup.get(gid);
+		if (sg == null)
+			throw new NullPointerException("not configure " + gid + "!");
+		ConnectionPool cp = getConnectionPool(gid);
+		String path = sg.getPath();
+		String user = sg.getUser();
+		String password = sg.getPassword();
+		int connectionNum = sg.getConnectionNum();
+		int serializer = sg.getSerializer();
+		int sessionNum = sg.getSessionNum();
+		if (connectionNum <= 0)
+			connectionNum = 1;
+		if (sessionNum <= 0)
+			sessionNum = 1;
+		for (int j = 0; j < connectionNum; j++) {
+			DawdlerConnection dc;
+			try {
+				dc = new DawdlerConnection(gid, path, serializer, sessionNum, user, password);
+				cp.add(dc);
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+		}
+	}
 
-    private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
-    public CircularQueue<DawdlerConnection> cq = new CircularQueue<>();
+	public static ConnectionPool getConnectionPool(String groupName) {
+		return groups.get(groupName);
+	}
 
-    public static void initConnection(String gid) {
-        ServerChannelGroup sg = serverChannelGroup.get(gid);
-        if (sg == null)
-            throw new NullPointerException("not configure " + gid + "!");
-        ConnectionPool cp = getConnectionPool(gid);
-        String path = sg.getPath();
-        String user = sg.getUser();
-        String password = sg.getPassword();
-        int connectionNum = sg.getConnectionNum();
-        int serializer = sg.getSerializer();
-        int sessionNum = sg.getSessionNum();
-        if (connectionNum <= 0)
-            connectionNum = 1;
-        if (sessionNum <= 0)
-            sessionNum = 1;
-        for (int j = 0; j < connectionNum; j++) {
-            DawdlerConnection dc;
-            try {
-                dc = new DawdlerConnection(gid, path, serializer, sessionNum, user, password);
-                cp.add(dc);
-            } catch (IOException e) {
-                logger.error("", e);
-            }
-        }
-    }
+	public static ConnectionPool addGroup(String groupName, ConnectionPool cp) {
+		return groups.putIfAbsent(groupName, cp);
+	}
 
-    public static ConnectionPool getConnectionPool(String groupName) {
-        return groups.get(groupName);
-    }
+	// provider for web container call
+	public static void shutdown() throws Exception {
+		for (ConnectionPool c : groups.values()) {
+			c.close();
+		}
+		discoveryCenter.destroy();
+		groups.clear();
+		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
+	}
 
-    public static ConnectionPool addGroup(String groupName, ConnectionPool cp) {
-        return groups.putIfAbsent(groupName, cp);
-    }
+	public void add(DawdlerConnection dawdlerConnection) {
+		connections.add(dawdlerConnection);
+	}
 
-    // provider for web container call
-    public static void shutdown() throws Exception {
-        for (ConnectionPool c : groups.values()) {
-            c.close();
-        }
-        discoveryCenter.destroy();
-        groups.clear();
-        HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
-    }
+	public void remove(DawdlerConnection dawdlerConnection) {
+		connections.remove(dawdlerConnection);
+	}
 
-    public void add(DawdlerConnection dawdlerConnection) {
-        cq.add(dawdlerConnection);
-    }
+	public List<DawdlerConnection> getConnections() {
+		if (connections.isEmpty()) {
+			try {
+				if (semaphore.tryAcquire(2000, TimeUnit.MILLISECONDS))
+					return connections;
+			} catch (InterruptedException e) {
+			}
+			throw new IllegalArgumentException("not find " + groupName + " provider!");
+		}
+		return connections;
+	}
 
-    public void remove(DawdlerConnection dawdlerConnection) {
-        cq.remove(dawdlerConnection);
-    }
+	public void close() {
+		connections.forEach(con -> {
+			con.shutdownAll();
+		});
+		connections.clear();
+	}
 
-    public DawdlerConnection getConnection() {
-        DawdlerConnection con = cq.get();
-        if (!con.getComplete().get()) {
-            try {
-                con.semaphore.acquire();
-            } catch (InterruptedException e) {
-            }
-        }
-        return con;
-    }
+	public void addConnection(String gid, String ipaddress) {
+		synchronized (this) {
+			if (connections.isEmpty()) {
+				initConnection(gid);
+				semaphore.release(Integer.MAX_VALUE);
+			}
+		}
+		connections.forEach(con -> {
+			con.addConnection(ipaddress);
+		});
+	}
 
-    public void close() {
-        DawdlerConnection dc;
-        while ((dc = cq.get()) != null) {
-            cq.remove(dc);
-            dc.shutdownAll();
-        }
-    }
+	public void delConnection(String ipaddress) {
+		connections.forEach(con -> {
+			con.disConnection(ipaddress);
+		});
+	}
 
+	public void doChange(String gid, String action, String address) {
+		switch (action) {
+		case "del": {
+			delConnection(address);
+			break;
+		}
+		case "add": {
+			addConnection(gid, address);
+			break;
+		}
+		default:
+			break;
+		}
 
-    public void addConnection(String gid, String ipaddress) {
-        if (cq.first == null) {
-            initConnection(gid);
-        }
-        cq.addConnection(ipaddress);
-    }
+	}
 
-    public void delConnection(String ipaddress) {
-        cq.delConnection(ipaddress);
-    }
-
-    public void doChange(String gid, String action, String address) {
-        switch (action) {
-            case "del": {
-                delConnection(address);
-                break;
-            }
-            case "add": {
-                addConnection(gid, address);
-                break;
-            }
-            default:
-                break;
-        }
-
-    }
-
-    public static class Node<T> {
-        private final T value;
-        public Node<T> pre;
-        public Node<T> next;
-
-        public Node(T value, Node<T> pre, Node<T> next) {
-            this.value = value;
-            this.pre = pre;
-            this.next = next;
-        }
-
-    }
-
-    public class CircularQueue<T> {
-        private volatile Node<T> first;
-        private volatile Node<T> currentNode;
-
-        public void add(T value) {
-            Lock lock = rwLock.writeLock();
-            try {
-                lock.lock();
-                if (first == null) {
-                    first = new Node<>(value, null, null);
-                    this.currentNode = first;
-                } else {
-                    Node<T> node = new Node<>(value, null, null);
-                    currentNode.next = node;
-                    node.pre = currentNode;
-                    currentNode = node;
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        public boolean exist(T value) {
-            Node<T> node = first;
-            boolean exist = false;
-            while ((node != null)) {
-                if (node.value == value) {
-                    exist = true;
-                    break;
-                }
-                node = node.next;
-            }
-            return exist;
-        }
-
-        public void remove(T value) {
-            Lock lock = rwLock.writeLock();
-            try {
-                lock.lock();
-                Node<T> node = first;
-                boolean exist = false;
-                while (node != null) {
-                    if (node.value == value) {
-                        exist = true;
-                        break;
-                    }
-                    node = node.next;
-                }
-                if (exist) {
-                    if (first.value == value) {
-                        currentNode = null;
-                        first = null;
-                        return;
-                    }
-                    if (node.pre != null)
-                        node.pre.next = node.next;
-                    if (node.next != null)
-                        node.next.pre = node.pre;
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        public void refreshConnection(String addresses) {
-            Lock lock = rwLock.writeLock();
-            try {
-                lock.lock();
-                Node<T> node = first;
-                while (node != null) {
-                    DawdlerConnection con = (DawdlerConnection) node.value;
-                    con.refreshConnection(addresses.split(","));
-                    node = node.next;
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        public void addConnection(String address) {
-            Lock lock = rwLock.writeLock();
-            try {
-                lock.lock();
-                Node<T> node = first;
-                while (node != null) {
-                    DawdlerConnection con = (DawdlerConnection) node.value;
-                    con.addConnection(address);
-                    node = node.next;
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        public void delConnection(String address) {
-            Lock lock = rwLock.writeLock();
-            try {
-                lock.lock();
-                Node<T> node = first;
-                while (node != null) {
-                    DawdlerConnection con = (DawdlerConnection) node.value;
-                    con.disConnection(address);
-                    node = node.next;
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
-
-        public T get() {
-            Lock lock = rwLock.readLock();
-            try {
-                lock.lock();
-                boolean exist = currentNode != null;
-                if (exist) {
-                    Node<T> node;
-                    try {
-                        node = currentNode.next;
-                    } catch (Exception e) {
-                        return get();
-                    }
-                    currentNode = node;
-                    if (node != null) {
-                        return node.value;
-                    }
-                    currentNode = node = first;
-                    if (node != null) {
-                        return node.value;
-                    }
-                }
-                if (first == null)
-                    return null;
-                return get();
-            } finally {
-                lock.unlock();
-            }
-        }
-
-    }
 }

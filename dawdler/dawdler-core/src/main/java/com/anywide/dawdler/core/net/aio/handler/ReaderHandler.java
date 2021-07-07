@@ -16,16 +16,17 @@
  */
 package com.anywide.dawdler.core.net.aio.handler;
 
-import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
-import com.anywide.dawdler.util.JVMTimeProvider;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
+import com.anywide.dawdler.util.JVMTimeProvider;
 
 /**
  * @author jackson.song
@@ -36,158 +37,158 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @email suxuan696@gmail.com
  */
 public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketSession> {
-    private final static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
-    private static final int HEADER_FIELD_LENGTH = Integer.BYTES;
-    private final AtomicInteger INFERIOR_COUNT = new AtomicInteger();
+	private final static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
+	private static final int HEADER_FIELD_LENGTH = Integer.BYTES;
+	private final AtomicInteger INFERIOR_COUNT = new AtomicInteger();
 
-    @Override
-    public void completed(Integer result, AbstractSocketSession session) {
-        if (result == -1) {
-            logger.warn(session + "\tsession close.");
-            session.close();
-            return;
-        }
-        session.setLastReadTime(JVMTimeProvider.currentTimeMillis());
-        if (result > 0) {
-            ByteBuffer buffer = session.getReadBuffer();
-            if (session.isReceived()) {
-                if (session.isNeedNext() ? buffer.remaining() <= HEADER_FIELD_LENGTH
-                        : buffer.position() <= HEADER_FIELD_LENGTH) {
-                    if (session.isNeedNext()) {
-                        byte[] temp = new byte[buffer.remaining()];
-                        buffer.get(temp);
-                        buffer.clear();
-                        buffer.put(temp);
-                        session.setNeedNext(false);
-                    }
-                    process(session);
-                    return;
-                }
-                session.toConnectionState();
-                if (!session.isNeedNext())
-                    buffer.flip();
-                int dataLength = buffer.getInt();
-                if (dataLength == 0) {
-                    if (buffer.remaining() > 0) {
-                        session.toReceiveState();
-                        session.setNeedNext(true);
-                        completed(buffer.remaining(), session);
-                    } else {
-                        try {
-                            session.clearBuffer(buffer);
-                            session.toPrepare();
-                            process(session);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    return;
-                }
-                session.setDataLength(dataLength);
-                session.setPackageSize(dataLength);
-                int readLength = buffer.remaining();
-                if (readLength > dataLength) {
-                    session.parseHead(buffer);
-                    session.appendReadLength(dataLength);
-                    buffer.get(session.getAppendData());
-                    session.messageCompleted();
-                    session.setNeedNext(true);
-                    completed(buffer.remaining(), session);
-                    return;
-                } else if (buffer.remaining() == dataLength) {
-                    session.parseHead(buffer);
-                    session.appendReadLength(dataLength);
-                    buffer.get(session.getAppendData());
-                    session.clearBuffer(buffer);
-                    session.messageCompleted();
-                    process(session);
-                } else {
-                    session.appendReadLength(readLength);
-                    session.parseHead(buffer);
-                    int remain = buffer.remaining();
-                    if (remain > 0) {
-                        byte[] data = new byte[remain];
-                        buffer.get(data);
-                        session.appendData(data);
-                    }
-                    session.clearBuffer(buffer);
-                    session.setNeedNext(false);
-                    process(session);
-                }
-            } else {
-                buffer.flip();
-                int readLength = buffer.remaining();
-                int remanentDataLength = session.getRemanentDataLength();
-                if (readLength > remanentDataLength) {
-                    byte[] data = new byte[remanentDataLength];
-                    buffer.get(data);
-                    session.appendReadLength(remanentDataLength);
-                    session.appendData(data);
-                    session.messageCompleted();
-                    session.setNeedNext(true);
-                    completed(buffer.remaining(), session);
-                    return;
-                } else {
-                    if (readLength == remanentDataLength) {
-                        session.appendReadLength(remanentDataLength);
-                        byte[] data = new byte[remanentDataLength];
-                        buffer.get(data);
-                        session.appendData(data);
-                        session.clearBuffer(buffer);
-                        session.messageCompleted();
-                    } else {
-                        session.appendReadLength(readLength);
-                        byte[] data = new byte[readLength];
-                        buffer.get(data);
-                        session.appendData(data);
-                        session.clearBuffer(buffer);
-                        session.setNeedNext(false);
-                    }
-                    process(session);
-                }
-            }
-        } else {
-            int INFERIOR_COUNT_NUM = 10;
-            if (INFERIOR_COUNT.getAndIncrement() > INFERIOR_COUNT_NUM) {
-                session.close();
-                return;
-            }
-            process(session);
-        }
-    }
+	@Override
+	public void completed(Integer result, AbstractSocketSession session) {
+		if (result == -1) {
+			logger.warn(session + "\tsession close.");
+			session.close();
+			return;
+		}
+		session.setLastReadTime(JVMTimeProvider.currentTimeMillis());
+		if (result > 0) {
+			ByteBuffer buffer = session.getReadBuffer();
+			if (session.isReceived()) {
+				if (session.isNeedNext() ? buffer.remaining() <= HEADER_FIELD_LENGTH
+						: buffer.position() <= HEADER_FIELD_LENGTH) {
+					if (session.isNeedNext()) {
+						byte[] temp = new byte[buffer.remaining()];
+						buffer.get(temp);
+						buffer.clear();
+						buffer.put(temp);
+						session.setNeedNext(false);
+					}
+					process(session);
+					return;
+				}
+				session.toConnectionState();
+				if (!session.isNeedNext())
+					buffer.flip();
+				int dataLength = buffer.getInt();
+				if (dataLength == 0) {
+					if (buffer.remaining() > 0) {
+						session.toReceiveState();
+						session.setNeedNext(true);
+						completed(buffer.remaining(), session);
+					} else {
+						try {
+							session.clearBuffer(buffer);
+							session.toPrepare();
+							process(session);
+						} catch (Exception e) {
+							throw new RuntimeException(e);
+						}
+					}
+					return;
+				}
+				session.setDataLength(dataLength);
+				session.setPackageSize(dataLength);
+				int readLength = buffer.remaining();
+				if (readLength > dataLength) {
+					session.parseHead(buffer);
+					session.appendReadLength(dataLength);
+					buffer.get(session.getAppendData());
+					session.messageCompleted();
+					session.setNeedNext(true);
+					completed(buffer.remaining(), session);
+					return;
+				} else if (buffer.remaining() == dataLength) {
+					session.parseHead(buffer);
+					session.appendReadLength(dataLength);
+					buffer.get(session.getAppendData());
+					session.clearBuffer(buffer);
+					session.messageCompleted();
+					process(session);
+				} else {
+					session.appendReadLength(readLength);
+					session.parseHead(buffer);
+					int remain = buffer.remaining();
+					if (remain > 0) {
+						byte[] data = new byte[remain];
+						buffer.get(data);
+						session.appendData(data);
+					}
+					session.clearBuffer(buffer);
+					session.setNeedNext(false);
+					process(session);
+				}
+			} else {
+				buffer.flip();
+				int readLength = buffer.remaining();
+				int remanentDataLength = session.getRemanentDataLength();
+				if (readLength > remanentDataLength) {
+					byte[] data = new byte[remanentDataLength];
+					buffer.get(data);
+					session.appendReadLength(remanentDataLength);
+					session.appendData(data);
+					session.messageCompleted();
+					session.setNeedNext(true);
+					completed(buffer.remaining(), session);
+					return;
+				} else {
+					if (readLength == remanentDataLength) {
+						session.appendReadLength(remanentDataLength);
+						byte[] data = new byte[remanentDataLength];
+						buffer.get(data);
+						session.appendData(data);
+						session.clearBuffer(buffer);
+						session.messageCompleted();
+					} else {
+						session.appendReadLength(readLength);
+						byte[] data = new byte[readLength];
+						buffer.get(data);
+						session.appendData(data);
+						session.clearBuffer(buffer);
+						session.setNeedNext(false);
+					}
+					process(session);
+				}
+			}
+		} else {
+			int INFERIOR_COUNT_NUM = 10;
+			if (INFERIOR_COUNT.getAndIncrement() > INFERIOR_COUNT_NUM) {
+				session.close();
+				return;
+			}
+			process(session);
+		}
+	}
 
-    @Override
-    public void failed(Throwable exc, AbstractSocketSession session) {
-        logger.warn("failed", exc);
-        session.close();
-    }
+	@Override
+	public void failed(Throwable exc, AbstractSocketSession session) {
+		logger.warn("failed", exc);
+		session.close();
+	}
 
-    public void process(AbstractSocketSession session) {
-        AsynchronousSocketChannel channel = session.getChannel();
-        if (!session.isClose()) {
-            if (session.isReceived())
-                channel.read(session.getReadBuffer(), session, this);
-            else
-                channel.read(session.getReadBuffer(), 5000, TimeUnit.MILLISECONDS, session, this);
-        }
-    }
+	public void process(AbstractSocketSession session) {
+		AsynchronousSocketChannel channel = session.getChannel();
+		if (!session.isClose()) {
+			if (session.isReceived())
+				channel.read(session.getReadBuffer(), session, this);
+			else
+				channel.read(session.getReadBuffer(), 5000, TimeUnit.MILLISECONDS, session, this);
+		}
+	}
 
-    public class ReadProcessor implements Runnable {
-        private final AbstractSocketSession socketSession;
+	public class ReadProcessor implements Runnable {
+		private final AbstractSocketSession socketSession;
 
-        public ReadProcessor(AbstractSocketSession socketSession) {
-            this.socketSession = socketSession;
-        }
+		public ReadProcessor(AbstractSocketSession socketSession) {
+			this.socketSession = socketSession;
+		}
 
-        @Override
-        public void run() {
-            try {
-                process(socketSession);
-            } catch (Exception e) {
-                socketSession.close();
-                logger.error("", e);
-            }
-        }
+		@Override
+		public void run() {
+			try {
+				process(socketSession);
+			} catch (Exception e) {
+				socketSession.close();
+				logger.error("", e);
+			}
+		}
 
-    }
+	}
 }

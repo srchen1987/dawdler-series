@@ -16,11 +16,12 @@
  */
 package com.anywide.dawdler.serverplug.service.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.serverplug.load.ReadClass;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
 import com.anywide.dawdler.serverplug.service.DownloadFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author jackson.song
@@ -31,15 +32,15 @@ import org.slf4j.LoggerFactory;
  * @email suxuan696@gmail.com
  */
 public class DownloadFileBean implements DownloadFile {
-    private static final Logger logger = LoggerFactory.getLogger(DownloadFileBean.class);
+	private static final Logger logger = LoggerFactory.getLogger(DownloadFileBean.class);
 
-    public RemoteFiles download(String[] names) {
-        try {
-            RemoteFiles rfs = ReadClass.operation(names);
-            return rfs;
-        } catch (Exception e) {
-            logger.error("", e);
-        }
-        return null;
-    }
+	public RemoteFiles download(String[] names) {
+		try {
+			RemoteFiles rfs = ReadClass.operation(names);
+			return rfs;
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		return null;
+	}
 }

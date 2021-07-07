@@ -16,10 +16,10 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
+import java.lang.reflect.Method;
+
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.TransactionController;
-
-import java.lang.reflect.Method;
 
 /**
  * @author jackson.song
@@ -30,31 +30,31 @@ import java.lang.reflect.Method;
  * @email suxuan696@gmail.com
  */
 public class RequestUrlData {
-    private RequestMapping requestMapping;
-    private TransactionController target;
-    private Method method;
+	private RequestMapping requestMapping;
+	private TransactionController target;
+	private Method method;
 
-    public RequestMapping getRequestMapping() {
-        return requestMapping;
-    }
+	public RequestMapping getRequestMapping() {
+		return requestMapping;
+	}
 
-    public void setRequestMapping(RequestMapping requestMapping) {
-        this.requestMapping = requestMapping;
-    }
+	public void setRequestMapping(RequestMapping requestMapping) {
+		this.requestMapping = requestMapping;
+	}
 
-    public TransactionController getTarget() {
-        return target;
-    }
+	public TransactionController getTarget() {
+		return target;
+	}
 
-    public void setTarget(TransactionController target) {
-        this.target = target;
-    }
+	public void setTarget(TransactionController target) {
+		this.target = target;
+	}
 
-    public Method getMethod() {
-        return method;
-    }
+	public Method getMethod() {
+		return method;
+	}
 
-    public void setMethod(Method method) {
-        this.method = method;
-    }
+	public void setMethod(Method method) {
+		this.method = method;
+	}
 }

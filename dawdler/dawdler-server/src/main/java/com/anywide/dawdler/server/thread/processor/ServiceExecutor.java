@@ -29,5 +29,5 @@ import com.anywide.dawdler.server.bean.ServicesBean;
  * @email suxuan696@gmail.com
  */
 public interface ServiceExecutor {
-    void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean);
+	void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean);
 }

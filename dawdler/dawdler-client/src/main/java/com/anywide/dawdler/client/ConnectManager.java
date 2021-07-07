@@ -30,20 +30,20 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @email suxuan696@gmail.com
  */
 public class ConnectManager {
-    private final ConcurrentHashMap<SocketAddress, AtomicInteger> disconnAddress = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<SocketAddress, AtomicInteger> disconnAddress = new ConcurrentHashMap<>();
 
-    public Set<SocketAddress> getDisconnectAddress() {
-        return disconnAddress.keySet();
-    }
+	public Set<SocketAddress> getDisconnectAddress() {
+		return disconnAddress.keySet();
+	}
 
-    public void addDisconnectAddress(SocketAddress address) {
-        AtomicInteger num = disconnAddress.putIfAbsent(address, new AtomicInteger(1));
-        if (num != null) {
-            num.getAndIncrement();
-        }
-    }
+	public void addDisconnectAddress(SocketAddress address) {
+		AtomicInteger num = disconnAddress.putIfAbsent(address, new AtomicInteger(1));
+		if (num != null) {
+			num.getAndIncrement();
+		}
+	}
 
-    public AtomicInteger removeDisconnect(SocketAddress address) {
-        return disconnAddress.remove(address);
-    }
+	public AtomicInteger removeDisconnect(SocketAddress address) {
+		return disconnAddress.remove(address);
+	}
 }

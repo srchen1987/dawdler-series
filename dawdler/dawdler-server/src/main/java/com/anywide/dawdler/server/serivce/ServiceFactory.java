@@ -16,21 +16,23 @@
  */
 package com.anywide.dawdler.server.serivce;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import org.apache.commons.lang.StringUtils;
-
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author jackson.song
@@ -41,85 +43,85 @@ import java.util.concurrent.ConcurrentHashMap;
  * @email suxuan696@gmail.com
  */
 public class ServiceFactory {
-    private static final ConcurrentHashMap<Class<?>, Object> proxyObjects = new ConcurrentHashMap<>();
-    private static final Map<Class, String> servicesName = new HashMap<>();
+	private static final ConcurrentHashMap<Class<?>, Object> proxyObjects = new ConcurrentHashMap<>();
+	private static final Map<Class<?>, String> servicesName = new HashMap<>();
 
-    public static <T> T getService(final Class<T> delegate, ServiceExecutor serviceExecutor,
-                                   DawdlerContext dawdlerContext) {
-        String name = getServiceName(delegate);
-        if (name != null) {
-            ServicesBean servicesBean = new ServicesBean(name, dawdlerContext.getService(name),
-                    dawdlerContext.getDawdlerServiceCreateProvider());
-            Object proxy = proxyObjects.get(delegate);
-            if (proxy == null) {
-                proxy = createCglibDynamicProxy(delegate, servicesBean, serviceExecutor);
-                Object preProxy = proxyObjects.putIfAbsent(delegate, proxy);
-                if (preProxy != null)
-                    proxy = preProxy;
-            }
-            return (T) proxy;
-        }
-        return null;
-    }
+	public static <T> T getService(final Class<T> delegate, ServiceExecutor serviceExecutor,
+			DawdlerContext dawdlerContext) {
+		String name = getServiceName(delegate);
+		if (name != null) {
+			ServicesBean servicesBean = new ServicesBean(name, dawdlerContext.getService(name),
+					dawdlerContext.getDawdlerServiceCreateProvider());
+			Object proxy = proxyObjects.get(delegate);
+			if (proxy == null) {
+				proxy = createCglibDynamicProxy(delegate, servicesBean, serviceExecutor);
+				Object preProxy = proxyObjects.putIfAbsent(delegate, proxy);
+				if (preProxy != null)
+					proxy = preProxy;
+			}
+			return (T) proxy;
+		}
+		return null;
+	}
 
-    private static <T> T createCglibDynamicProxy(final Class<T> delegate, ServicesBean servicesBean,
-                                                 ServiceExecutor serviceExecutor) {
-        Enhancer enhancer = new Enhancer();
-        enhancer.setCallback(new CglibInterceptor(servicesBean, serviceExecutor));
-        enhancer.setInterfaces(new Class[]{delegate});
-        return (T) enhancer.create();
-    }
+	private static <T> T createCglibDynamicProxy(final Class<T> delegate, ServicesBean servicesBean,
+			ServiceExecutor serviceExecutor) {
+		Enhancer enhancer = new Enhancer();
+		enhancer.setCallback(new CglibInterceptor(servicesBean, serviceExecutor));
+		enhancer.setInterfaces(new Class[] { delegate });
+		return (T) enhancer.create();
+	}
 
-    public static String getServiceName(Class<?> service) {
-        String name = servicesName.get(service);
-        if (name != null)
-            return name;
-        RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
-        if (remoteServiceContract != null) {
-            name = remoteServiceContract.value();
-            if (StringUtils.isBlank(name)) {
-                name = service.getName();
-            }
-            servicesName.put(service, name);
-            return name;
-        } else {
-            Class<?>[] interfaceList = service.getInterfaces();
-            for (Class<?> clazz : interfaceList) {
-                remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-                if (remoteServiceContract == null) {
-                    continue;
-                }
-                name = remoteServiceContract.value();
-                if (StringUtils.isBlank(name)) {
-                    name = service.getName();
-                }
-                servicesName.put(service, name);
-                return name;
-            }
-            return null;
-        }
-    }
+	public static String getServiceName(Class<?> service) {
+		String name = servicesName.get(service);
+		if (name != null)
+			return name;
+		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
+		if (remoteServiceContract != null) {
+			name = remoteServiceContract.value();
+			if (StringUtils.isBlank(name)) {
+				name = service.getName();
+			}
+			servicesName.put(service, name);
+			return name;
+		} else {
+			Class<?>[] interfaceList = service.getInterfaces();
+			for (Class<?> clazz : interfaceList) {
+				remoteServiceContract = clazz.getAnnotation(RemoteService.class);
+				if (remoteServiceContract == null) {
+					continue;
+				}
+				name = remoteServiceContract.value();
+				if (StringUtils.isBlank(name)) {
+					name = service.getName();
+				}
+				servicesName.put(service, name);
+				return name;
+			}
+			return null;
+		}
+	}
 
-    private static class CglibInterceptor implements MethodInterceptor {
-        private final ServicesBean servicesBean;
-        private final ServiceExecutor serviceExecutor;
+	private static class CglibInterceptor implements MethodInterceptor {
+		private final ServicesBean servicesBean;
+		private final ServiceExecutor serviceExecutor;
 
-        public CglibInterceptor(ServicesBean servicesBean, ServiceExecutor serviceExecutor) {
-            this.servicesBean = servicesBean;
-            this.serviceExecutor = serviceExecutor;
-        }
+		public CglibInterceptor(ServicesBean servicesBean, ServiceExecutor serviceExecutor) {
+			this.servicesBean = servicesBean;
+			this.serviceExecutor = serviceExecutor;
+		}
 
-        public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy)
-                throws Throwable {
-            RequestBean requestBean = new RequestBean();
-            requestBean.setArgs(objects);
-            requestBean.setFuzzy(true);
-            requestBean.setMethodName(method.getName());
-            ResponseBean responseBean = new ResponseBean();
-            serviceExecutor.execute(requestBean, responseBean, servicesBean);
-            if (responseBean.getCause() != null)
-                throw responseBean.getCause();
-            return responseBean.getTarget();
-        }
-    }
+		public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy)
+				throws Throwable {
+			RequestBean requestBean = new RequestBean();
+			requestBean.setArgs(objects);
+			requestBean.setFuzzy(true);
+			requestBean.setMethodName(method.getName());
+			ResponseBean responseBean = new ResponseBean();
+			serviceExecutor.execute(requestBean, responseBean, servicesBean);
+			if (responseBean.getCause() != null)
+				throw responseBean.getCause();
+			return responseBean.getTarget();
+		}
+	}
 }

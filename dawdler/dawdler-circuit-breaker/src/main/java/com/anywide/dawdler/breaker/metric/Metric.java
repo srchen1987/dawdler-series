@@ -25,17 +25,17 @@ package com.anywide.dawdler.breaker.metric;
  * @email suxuan696@gmail.com
  */
 public interface Metric {
-    void totalIncrt();
+	void totalIncrt();
 
-    void failIncrt();
+	void failIncrt();
 
-    long totalCount();
+	long totalCount();
 
-    long failCount();
+	long failCount();
 
-    long getStartTime();
+	long getStartTime();
 
-    void reset(long startTime);
+	void reset(long startTime);
 
-    long restStartTime();
+	long restStartTime();
 }

@@ -16,29 +16,30 @@
  */
 package com.anywide.dawdler.clientplug.load;
 
-import com.anywide.dawdler.client.ConnectionPool;
-import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFireHolder;
-import com.anywide.dawdler.clientplug.web.WebControllerClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
-import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.JVMTimeProvider;
-import com.anywide.dawdler.util.XmlObject;
-import org.dom4j.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
+import javax.servlet.DispatcherType;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
+
+import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.client.ConnectionPool;
+import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
+import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
+import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.JVMTimeProvider;
+import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
@@ -50,81 +51,89 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @WebListener
 public class LoadListener implements ServletContextListener {
-    private static final Logger logger = LoggerFactory.getLogger(LoadListener.class);
-    public static boolean DEBUG = true;
-    private static long sleep = 600000;
-    private final Map<LoadCore, Thread> threads = new ConcurrentHashMap<LoadCore, Thread>();
+	private static final Logger logger = LoggerFactory.getLogger(LoadListener.class);
+	private static long sleep = 600000;
+	private final Map<LoadCore, Thread> threads = new ConcurrentHashMap<LoadCore, Thread>();
 
-    public void contextDestroyed(ServletContextEvent arg0) {
-        for (Iterator<Entry<LoadCore, Thread>> it = threads.entrySet().iterator(); it.hasNext(); ) {
-            Entry<LoadCore, Thread> entry = it.next();
-            entry.getKey().stop();
-            if (entry.getValue().isAlive()) {
-                if (LoadListener.DEBUG)
-                    System.out.println("stop \t" + entry.getValue().getName() + "\tload");
-                entry.getValue().interrupt();
-            }
-            String filepath = DawdlerTool.getcurrentPath() + File.separator + entry.getKey().getHost() + ".xml";
-            File file = new File(filepath);
-            if (file.exists()) {
-                file.delete();
-            }
-        }
-        try {
-            ConnectionPool.shutdown();
-        } catch (Exception e) {
-            logger.error("", e);
-        }
-        JVMTimeProvider.stop();
-        WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
-    }
+	public void contextDestroyed(ServletContextEvent arg0) {
+		for (Iterator<Entry<LoadCore, Thread>> it = threads.entrySet().iterator(); it.hasNext();) {
+			Entry<LoadCore, Thread> entry = it.next();
+			entry.getKey().stop();
+			if (entry.getValue().isAlive()) {
+				if (logger.isDebugEnabled())
+					logger.debug("stop \t" + entry.getValue().getName() + "\tload");
+				entry.getValue().interrupt();
+			}
+			String filepath = DawdlerTool.getcurrentPath() + File.separator + entry.getKey().getHost() + ".xml";
+			File file = new File(filepath);
+			if (file.exists()) {
+				file.delete();
+			}
+		}
+		try {
+			ConnectionPool.shutdown();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		loadConfModuleAndExecuteStaticMethod("destroy");
+		JVMTimeProvider.stop();
+		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
+	}
 
-    public void contextInitialized(ServletContextEvent arg0) {
-        RemoteClassLoaderFireHolder.getInstance().addRemoteClassLoaderFire(new WebControllerClassLoaderFire());
-        String debug = arg0.getServletContext().getInitParameter("debug");
-        if (debug != null && debug.equals("debug"))
-            DEBUG = true;
-        XmlObject xml = ClientConfig.getInstance().getXml();
-        for (Object o : xml.selectNodes("/config/loads-on/item")) {
-            Element ele = (Element) o;
-            String host = ele.getText();
-            if (LoadListener.DEBUG)
-                System.out.println("starting load.....\t" + host + "\tmodule!");
-            if (ele.attribute("sleep") != null) {
-                try {
-                    sleep = Long.parseLong(ele.attributeValue("sleep"));
-                } catch (Exception e) {
-                }
-            }
-            arg0.getServletContext().getContextPath();
-            String channelGroupId = ele.attributeValue("channel-group-id");
-            LoadCore loadCore = new LoadCore(host, sleep, channelGroupId);
-            try {
-                loadCore.toCheck();
-            } catch (IOException e) {
-                logger.error("", e);
-            }
-            String mode = ele.attributeValue("mode");
-            loadCore.initBeans();
-            boolean run = mode != null && (mode.trim().equals("run"));
-            if (!run) {
-                Thread thread = new Thread(loadCore, host + "LoadThread");
-                thread.start();
-                threads.put(loadCore, thread);
-            }
-        }
-        WebContextListenerProvider.listenerRun(true, arg0.getServletContext());
-        EnumSet<DispatcherType> es = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ERROR,
-                DispatcherType.INCLUDE);
-        Class sessionClass;
-        try {
-            sessionClass = Class.forName("com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter");
-            arg0.getServletContext().addFilter(sessionClass.getSimpleName(), sessionClass).addMappingForUrlPatterns(es,
-                    true, "/*");
-        } catch (ClassNotFoundException e) {
-        }
-        arg0.getServletContext().addFilter("ViewController", ViewFilter.class).addMappingForUrlPatterns(es, true, "/*");
+	public void contextInitialized(ServletContextEvent arg0) {
+		XmlObject xml = ClientConfig.getInstance().getXml();
+		for (Object o : xml.selectNodes("/config/loads-on/item")) {
+			Element ele = (Element) o;
+			String host = ele.getText();
+			if (logger.isDebugEnabled())
+				logger.debug("starting load.....\t" + host + "\tmodule!");
+			if (ele.attribute("sleep") != null) {
+				try {
+					sleep = Long.parseLong(ele.attributeValue("sleep"));
+				} catch (Exception e) {
+				}
+			}
+			arg0.getServletContext().getContextPath();
+			String channelGroupId = ele.attributeValue("channel-group-id");
+			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId);
+			try {
+				loadCore.toCheck();
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+			loadCore.initWebComponent();
+			String mode = ele.attributeValue("mode");
+			boolean run = mode != null && (mode.trim().equals("run"));
+			if (!run) {
+				Thread thread = new Thread(loadCore, host + "LoadThread");
+				thread.start();
+				threads.put(loadCore, thread);
+			}
+		}
 
-//		arg0.getServletContext().addFilter("ViewController",ViewControllerForLinuxsir.class).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST,DispatcherType.FORWARD,DispatcherType.ERROR),true,"/*");
-    }
+		loadConfModuleAndExecuteStaticMethod("init");
+
+		WebContextListenerProvider.listenerRun(true, arg0.getServletContext());
+		EnumSet<DispatcherType> dispatcherType = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
+				DispatcherType.ERROR, DispatcherType.INCLUDE);
+		Class sessionClass;
+		try {
+			sessionClass = Class.forName("com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter");
+			arg0.getServletContext().addFilter(sessionClass.getSimpleName(), sessionClass)
+					.addMappingForUrlPatterns(dispatcherType, true, "/*");
+		} catch (ClassNotFoundException e) {
+		}
+		arg0.getServletContext().addFilter("ViewController", ViewFilter.class).addMappingForUrlPatterns(dispatcherType,
+				true, "/*");
+	}
+
+	private void loadConfModuleAndExecuteStaticMethod(String methodName) {
+		try {
+			Class configInitClass = Class.forName("com.anywide.dawdler.conf.client.init.ClientConfigInit");
+			Method method = configInitClass.getMethod(methodName);
+			method.invoke(null);
+		} catch (Exception e) {
+			// ignore
+		}
+	}
 }
