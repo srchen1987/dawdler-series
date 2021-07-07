@@ -16,10 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.load.classloader;
 
-import com.anywide.dawdler.clientplug.load.LoadListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,6 +23,11 @@ import java.net.URLClassLoader;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.core.order.OrderData;
 
 /**
  * @author jackson.song
@@ -37,62 +38,70 @@ import java.util.concurrent.ConcurrentHashMap;
  * @email suxuan696@gmail.com
  */
 public class ClientPlugClassLoader {
-    private static final Logger logger = LoggerFactory.getLogger(ClientPlugClassLoader.class);
-    private static final Map<String, Class> remoteClass = new ConcurrentHashMap<>();
-    private static ClientPlugClassLoader classloader = null;
-    private final List<RemoteClassLoderFire> fireList = RemoteClassLoaderFireHolder.getInstance().getRemoteClassLoaderFire();
-    private URLClassLoader urlCL = null;
+	private static final Logger logger = LoggerFactory.getLogger(ClientPlugClassLoader.class);
+	private static final Map<String, Class<?>> remoteClass = new ConcurrentHashMap<>();
+	private static ClientPlugClassLoader classloader = null;
+	private final List<OrderData<RemoteClassLoderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
+			.getRemoteClassLoaderFire();
+	private ClientClassLoader urlCL = null;
 
-    private ClientPlugClassLoader(String path) {
-        updateLoad(path);
-    }
+	private ClientPlugClassLoader(String path) {
+		updateLoad(path);
+	}
 
-    synchronized public static ClientPlugClassLoader newInstance(String path) {
-        if (classloader == null)
-            classloader = new ClientPlugClassLoader(path);
-        return classloader;
-    }
+	public synchronized static ClientPlugClassLoader newInstance(String path) {
+		if (classloader == null)
+			classloader = new ClientPlugClassLoader(path);
+		return classloader;
+	}
 
-    public static Class getRemoteClass(String key) {
-        return remoteClass.get(key);
-    }
+	public static Class<?> getRemoteClass(String key) {
+		return remoteClass.get(key);
+	}
 
-    public void load(String host, String name, String path) {
-        if (LoadListener.DEBUG)
-            System.out.println("loading %%%" + host + "%%%module  \t" + path + ".class");
-        try {
-            Class c = urlCL.loadClass(path);
-            remoteClass.put(host.trim() + "-" + name.trim(), c);
-            for (RemoteClassLoderFire rf : fireList) {
-                rf.onLoadFire(c);
-            }
-        } catch (ClassNotFoundException e) {
-            logger.error("", e);
-        }
-    }
+	public void load(String host, String className,byte[] classCodes) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
+		}
+		try {
+			Class<?> clazz = defineClass(className, classCodes);
+			remoteClass.put(host.trim() + "-" + className, clazz);
+			for (OrderData<RemoteClassLoderFire> rf : fireList) {
+				rf.getData().onLoadFire(clazz, classCodes);
+			}
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+	}
+	
+	public Class<?> defineClass(String className, byte[] classBytes) {
+			return urlCL.defineClass(className, classBytes);
+	}
 
-    public void remove(String name) {
-        if (LoadListener.DEBUG)
-            System.out.println("remove class " + name + ".class");
-        Class c = remoteClass.remove(name);
-        for (RemoteClassLoderFire rf : fireList) {
-            rf.onRemoveFire(c);
-        }
-    }
+	public void remove(String name) {
+		if (logger.isDebugEnabled()) {
+			logger.debug("remove class " + name + ".class");
+		}
+		Class<?> clazz = remoteClass.remove(name);
+		for (OrderData<RemoteClassLoderFire> rf : fireList) {
+			rf.getData().onRemoveFire(clazz);
+		}
+	}
 
-    public void updateLoad(String path) {
-        URLClassLoader oldUrlCL = urlCL;
-        try {
-            URL url = new URL("file:" + path + "/");
-            this.urlCL = ClientClassLoader.newInstance(new URL[]{url}, getClass().getClassLoader());
-        } catch (MalformedURLException e) {
-            logger.error("", e);
-        } finally {
-            try {
-                if (oldUrlCL != null)
-                    oldUrlCL.close();
-            } catch (IOException e) {
-            }
-        }
-    }
+	public void updateLoad(String path) {
+		URLClassLoader oldUrlCL = urlCL;
+		try {
+			URL url = new URL("file:" + path + "/");
+			this.urlCL = ClientClassLoader.newInstance(new URL[] { url }, getClass().getClassLoader());
+		} catch (MalformedURLException e) {
+			logger.error("", e);
+		} finally {
+			try {
+				if (oldUrlCL != null)
+					oldUrlCL.close();
+			} catch (IOException e) {
+			}
+		}
+	}
+	
 }

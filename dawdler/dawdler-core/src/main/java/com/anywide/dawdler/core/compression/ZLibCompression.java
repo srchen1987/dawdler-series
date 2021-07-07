@@ -31,44 +31,44 @@ import java.util.zip.Inflater;
  */
 public class ZLibCompression implements CompressionAlgorithm {
 
-    public byte[] compress(byte[] buffer) throws IOException {
-        byte[] output;
-        Deflater compressor = new Deflater();
-        compressor.reset();
-        compressor.setInput(buffer);
-        compressor.finish();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
-        try {
-            byte[] buf = new byte[2048];
-            while (!compressor.finished()) {
-                int i = compressor.deflate(buf);
-                bos.write(buf, 0, i);
-            }
-            output = bos.toByteArray();
-        } catch (Exception e) {
-            output = buffer;
-        }
-        compressor.end();
-        return output;
-    }
+	public byte[] compress(byte[] buffer) throws IOException {
+		byte[] output;
+		Deflater compressor = new Deflater();
+		compressor.reset();
+		compressor.setInput(buffer);
+		compressor.finish();
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
+		try {
+			byte[] buf = new byte[2048];
+			while (!compressor.finished()) {
+				int i = compressor.deflate(buf);
+				bos.write(buf, 0, i);
+			}
+			output = bos.toByteArray();
+		} catch (Exception e) {
+			output = buffer;
+		}
+		compressor.end();
+		return output;
+	}
 
-    public byte[] decompress(byte[] buffer) throws IOException {
-        byte[] output;
-        Inflater decompressor = new Inflater();
-        decompressor.reset();
-        decompressor.setInput(buffer);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
-        try {
-            byte[] buf = new byte[1024];
-            while (!decompressor.finished()) {
-                int i = decompressor.inflate(buf);
-                bos.write(buf, 0, i);
-            }
-            output = bos.toByteArray();
-        } catch (Exception e) {
-            output = buffer;
-        }
-        decompressor.end();
-        return output;
-    }
+	public byte[] decompress(byte[] buffer) throws IOException {
+		byte[] output;
+		Inflater decompressor = new Inflater();
+		decompressor.reset();
+		decompressor.setInput(buffer);
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
+		try {
+			byte[] buf = new byte[1024];
+			while (!decompressor.finished()) {
+				int i = decompressor.inflate(buf);
+				bos.write(buf, 0, i);
+			}
+			output = bos.toByteArray();
+		} catch (Exception e) {
+			output = buffer;
+		}
+		decompressor.end();
+		return output;
+	}
 }

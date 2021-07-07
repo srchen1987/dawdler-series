@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.FIELD})
+@Target({ ElementType.TYPE, ElementType.FIELD })
 /**
  *
  * @Title ListenerConfig.java
@@ -34,7 +34,7 @@ import java.lang.annotation.Target;
  */
 
 public @interface ListenerConfig {
-    long delayMsec() default 0L;// delayTime 毫秒级
+	long delayMsec() default 0L;// delayTime 毫秒级
 
-    boolean asyn() default false;
+	boolean asyn() default false;
 }

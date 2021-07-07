@@ -16,12 +16,12 @@
  */
 package com.anywide.dawdler.clientplug.web.validator;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author jackson.song
@@ -32,26 +32,26 @@ import java.util.Set;
  * @email suxuan696@gmail.com
  */
 public class ValidateParser {
-    private static final Logger logger = LoggerFactory.getLogger(ValidateParser.class);
+	private static final Logger logger = LoggerFactory.getLogger(ValidateParser.class);
 
-    private static void uniqueArrRules(String validateRule, Set<String> existrule) {
-        String[] rules = validateRule.split("&");
-        Collections.addAll(existrule, rules);
-    }
+	private static void uniqueArrRules(String validateRule, Set<String> existRule) {
+		String[] rules = validateRule.split("&");
+		Collections.addAll(existRule, rules);
+	}
 
-    public static String validate(String viewname, Object value, String validaterule) {
-        if (validaterule == null) {
-            logger.warn(viewname + "\t rule is null!");
-            return null;
-        }
-        Set<String> set = new LinkedHashSet<>();
-        uniqueArrRules(validaterule, set);
-        for (String regex : set) {
-            String error = RuleOperatorExecuter.autoOperator(regex, value);
-            if (error != null)
-                return (viewname + error);
-        }
-        return null;
-    }
+	public static String validate(String viewName, Object value, String validateRule) {
+		if (validateRule == null) {
+			logger.warn(viewName + "\t rule is null!");
+			return null;
+		}
+		Set<String> set = new LinkedHashSet<>();
+		uniqueArrRules(validateRule, set);
+		for (String regex : set) {
+			String error = RuleOperatorExecuter.autoOperator(regex, value);
+			if (error != null)
+				return (viewName + error);
+		}
+		return null;
+	}
 
 }

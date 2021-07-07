@@ -16,9 +16,9 @@
  */
 package com.anywide.dawdler.breaker.metric;
 
-import com.anywide.dawdler.util.JVMTimeProvider;
-
 import java.util.concurrent.atomic.LongAdder;
+
+import com.anywide.dawdler.util.JVMTimeProvider;
 
 /**
  * @author jackson.song
@@ -30,48 +30,47 @@ import java.util.concurrent.atomic.LongAdder;
  */
 public class MetricBase implements Metric {
 
-    private final LongAdder total = new LongAdder();
+	private final LongAdder total = new LongAdder();
 
-    private final LongAdder fail = new LongAdder();
+	private final LongAdder fail = new LongAdder();
 
-    private long startTime;
+	private long startTime;
 
-    public MetricBase(long startTime) {
-        this.startTime = startTime;
-    }
+	public MetricBase(long startTime) {
+		this.startTime = startTime;
+	}
 
+	public void totalIncrt() {
+		total.increment();
+	}
 
-    public void totalIncrt() {
-        total.increment();
-    }
+	public void failIncrt() {
+		fail.increment();
+	}
 
-    public void failIncrt() {
-        fail.increment();
-    }
+	public long totalCount() {
+		return total.longValue();
+	}
 
-    public long totalCount() {
-        return total.longValue();
-    }
+	public long failCount() {
+		return fail.longValue();
+	}
 
-    public long failCount() {
-        return fail.longValue();
-    }
+	@Override
+	public long getStartTime() {
+		return startTime;
+	}
 
-    @Override
-    public long getStartTime() {
-        return startTime;
-    }
+	@Override
+	public long restStartTime() {
+		return JVMTimeProvider.currentTimeMillis();
+	}
 
-    @Override
-    public long restStartTime() {
-        return JVMTimeProvider.currentTimeMillis();
-    }
-
-    @Override
-    public void reset(long startTime) {
-        total.reset();
-        fail.reset();
-        this.startTime = startTime;
-    }
+	@Override
+	public void reset(long startTime) {
+		total.reset();
+		fail.reset();
+		this.startTime = startTime;
+	}
 
 }

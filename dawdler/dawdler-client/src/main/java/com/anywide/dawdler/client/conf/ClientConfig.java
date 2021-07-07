@@ -16,12 +16,12 @@
  */
 package com.anywide.dawdler.client.conf;
 
+import java.util.List;
+
 import com.anywide.dawdler.util.DawdlerTool;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
-
-import java.util.List;
 
 /**
  * @author jackson.song
@@ -33,130 +33,130 @@ import java.util.List;
  */
 @XStreamAlias("conf")
 public class ClientConfig {
-    @XStreamAlias("certificatePath")
-    public String certificatePath;
-    @XStreamAlias("zk_host")
-    private String zkHost;
-    @XStreamImplicit(itemFieldName = "server-channel-group")
-    private List<ServerChannelGroup> serverChannelGroups;
+	@XStreamAlias("certificatePath")
+	public String certificatePath;
+	@XStreamAlias("zk-host")
+	private String zkHost;
+	@XStreamImplicit(itemFieldName = "server-channel-group")
+	private List<ServerChannelGroup> serverChannelGroups;
 
-    public String getZkHost() {
-        return zkHost;
-    }
+	public String getZkHost() {
+		return zkHost;
+	}
 
-    public void setZkHost(String zkHost) {
-        this.zkHost = zkHost;
-    }
+	public void setZkHost(String zkHost) {
+		this.zkHost = zkHost;
+	}
 
-    public List<ServerChannelGroup> getServerChannelGroups() {
-        return serverChannelGroups;
-    }
+	public List<ServerChannelGroup> getServerChannelGroups() {
+		return serverChannelGroups;
+	}
 
-    public void setServerChannelGroups(List<ServerChannelGroup> serverChannelGroups) {
-        this.serverChannelGroups = serverChannelGroups;
-    }
+	public void setServerChannelGroups(List<ServerChannelGroup> serverChannelGroups) {
+		this.serverChannelGroups = serverChannelGroups;
+	}
 
-    public String getCertificatePath() {
-        if (certificatePath != null)
-            certificatePath = certificatePath.replace("${CLASSPATH}", DawdlerTool.getcurrentPath());
-        return certificatePath;
-    }
+	public String getCertificatePath() {
+		if (certificatePath != null)
+			certificatePath = certificatePath.replace("${CLASSPATH}", DawdlerTool.getcurrentPath());
+		return certificatePath;
+	}
 
-    public void setCertificatePath(String certificatePath) {
-        this.certificatePath = certificatePath;
-    }
+	public void setCertificatePath(String certificatePath) {
+		this.certificatePath = certificatePath;
+	}
 
-    public class ServerChannelGroup {
-        @XStreamAlias("channel-group-id")
-        @XStreamAsAttribute
-        private String groupId;
+	public class ServerChannelGroup {
+		@XStreamAlias("channel-group-id")
+		@XStreamAsAttribute
+		private String groupId;
 
-        @XStreamAlias("service-path")
-        @XStreamAsAttribute
-        private String path;
+		@XStreamAlias("service-path")
+		@XStreamAsAttribute
+		private String path;
 
-        @XStreamAlias("connection-num")
-        @XStreamAsAttribute
-        private int connectionNum;
+		@XStreamAlias("connection-num")
+		@XStreamAsAttribute
+		private int connectionNum;
 
-        @XStreamAlias("session-num")
-        @XStreamAsAttribute
-        private int sessionNum;
+		@XStreamAlias("session-num")
+		@XStreamAsAttribute
+		private int sessionNum;
 
-        @XStreamAlias("serializer")
-        @XStreamAsAttribute
-        private int serializer;
+		@XStreamAlias("serializer")
+		@XStreamAsAttribute
+		private int serializer;
 
-        @XStreamAlias("user")
-        @XStreamAsAttribute
-        private String user;
+		@XStreamAlias("user")
+		@XStreamAsAttribute
+		private String user;
 
-        @XStreamAlias("password")
-        @XStreamAsAttribute
-        private String password;
+		@XStreamAlias("password")
+		@XStreamAsAttribute
+		private String password;
 
-        public String getUser() {
-            return user;
-        }
+		public String getUser() {
+			return user;
+		}
 
-        public void setUser(String user) {
-            this.user = user;
-        }
+		public void setUser(String user) {
+			this.user = user;
+		}
 
-        public String getPassword() {
-            return password;
-        }
+		public String getPassword() {
+			return password;
+		}
 
-        public void setPassword(String password) {
-            this.password = password;
-        }
+		public void setPassword(String password) {
+			this.password = password;
+		}
 
-        public String getGroupId() {
-            return groupId;
-        }
+		public String getGroupId() {
+			return groupId;
+		}
 
-        public void setGroupId(String groupId) {
-            this.groupId = groupId;
-        }
+		public void setGroupId(String groupId) {
+			this.groupId = groupId;
+		}
 
-        public String getPath() {
-            return path;
-        }
+		public String getPath() {
+			return path;
+		}
 
-        public void setPath(String path) {
-            this.path = path;
-        }
+		public void setPath(String path) {
+			this.path = path;
+		}
 
-        public int getConnectionNum() {
-            return connectionNum;
-        }
+		public int getConnectionNum() {
+			return connectionNum;
+		}
 
-        public void setConnectionNum(int connectionNum) {
-            this.connectionNum = connectionNum;
-        }
+		public void setConnectionNum(int connectionNum) {
+			this.connectionNum = connectionNum;
+		}
 
-        public int getSerializer() {
-            return serializer;
-        }
+		public int getSerializer() {
+			return serializer;
+		}
 
-        public void setSerializer(int serializer) {
-            this.serializer = serializer;
-        }
+		public void setSerializer(int serializer) {
+			this.serializer = serializer;
+		}
 
-        public int getSessionNum() {
-            return sessionNum;
-        }
+		public int getSessionNum() {
+			return sessionNum;
+		}
 
-        public void setSessionNum(int sessionNum) {
-            this.sessionNum = sessionNum;
-        }
+		public void setSessionNum(int sessionNum) {
+			this.sessionNum = sessionNum;
+		}
 
-        @Override
-        public String toString() {
-            return "gid:" + groupId + " connectionNum:" + connectionNum + " sessionNum:" + sessionNum + " serializer:"
-                    + serializer;
-        }
+		@Override
+		public String toString() {
+			return "gid:" + groupId + " connectionNum:" + connectionNum + " sessionNum:" + sessionNum + " serializer:"
+					+ serializer;
+		}
 
-    }
+	}
 
 }

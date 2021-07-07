@@ -16,17 +16,19 @@
  */
 package com.anywide.dawdler.server.conf;
 
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.ReflectionUtil;
-import com.anywide.dawdler.util.XmlObject;
-import org.dom4j.Element;
-import org.dom4j.Node;
-
-import javax.sql.DataSource;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
+
+import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.ReflectionUtil;
+import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
@@ -37,50 +39,50 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class DataSourceParser {
-    private static XmlObject datasourceConfig;
+	private static XmlObject datasourceConfig;
 
-    static {
-        File file = new File(DawdlerTool.getcurrentPath() + "../conf/datasources.xml");
-        if (file.isFile()) {
-            try {
-                datasourceConfig = new XmlObject(file);
-            } catch (Exception e) {
-            }
-        }
-    }
+	static {
+		File file = new File(DawdlerTool.getcurrentPath() + "../conf/datasources.xml");
+		if (file.isFile()) {
+			try {
+				datasourceConfig = new XmlObject(file);
+			} catch (Exception e) {
+			}
+		}
+	}
 
-    public static Map<String, DataSource> getDataSource(XmlObject xmlo, ClassLoader classLoader)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        if (xmlo == null)
-            xmlo = datasourceConfig;
-        if (xmlo == null)
-            return null;
-        Map<String, DataSource> dataSources = new HashMap<>();
-        List<Element> list = xmlo.selectNodes("/config/datasources/datasource");
-        for (Element ele : list) {
-            String id = ele.attributeValue("id");
-            String code = ele.attributeValue("code");
-            Class c = null;
-            if (classLoader != null)
-                c = classLoader.loadClass(code);
-            else
-                c = Class.forName(code);
-            Object obj = c.newInstance();
-            List<Node> attrs = ele.selectNodes("attribute");
-            for (Node node : attrs) {
-                Element e = (Element) node;
-                String attributeName = e.attributeValue("name");
-                String value = e.getText().trim();
-                try {
-                    ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
-                } catch (Exception ex) {
-                    ReflectionUtil.invoke(obj, "set" + attributeName, value);
-                }
+	public static Map<String, DataSource> getDataSource(XmlObject xmlo, ClassLoader classLoader)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		if (xmlo == null)
+			xmlo = datasourceConfig;
+		if (xmlo == null)
+			return null;
+		Map<String, DataSource> dataSources = new HashMap<>();
+		List<Element> dataSourceList = xmlo.selectNodes("/config/datasources/datasource");
+		for (Element ele : dataSourceList) {
+			String id = ele.attributeValue("id");
+			String code = ele.attributeValue("code");
+			Class c = null;
+			if (classLoader != null)
+				c = classLoader.loadClass(code);
+			else
+				c = Class.forName(code);
+			Object obj = c.newInstance();
+			List<Node> attrs = ele.selectNodes("attribute");
+			for (Node node : attrs) {
+				Element e = (Element) node;
+				String attributeName = e.attributeValue("name");
+				String value = e.getText().trim();
+				try {
+					ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
+				} catch (Exception ex) {
+					ReflectionUtil.invoke(obj, "set" + attributeName, value);
+				}
 
-            }
-            DataSource ds = (DataSource) obj;
-            dataSources.put(id, ds);
-        }
-        return dataSources;
-    }
+			}
+			DataSource ds = (DataSource) obj;
+			dataSources.put(id, ds);
+		}
+		return dataSources;
+	}
 }

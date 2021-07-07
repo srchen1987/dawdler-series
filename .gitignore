@@ -18,10 +18,6 @@
 #target fil
 target/
 
-# virtual m
-hs_err_pid*
-
-service/.DS
 
 /target/
 .classpath

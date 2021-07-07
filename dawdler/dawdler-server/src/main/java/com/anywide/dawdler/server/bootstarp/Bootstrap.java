@@ -16,13 +16,18 @@
  */
 package com.anywide.dawdler.server.bootstarp;
 
-import com.anywide.dawdler.server.conf.ServerConfig;
-import com.anywide.dawdler.server.conf.ServerConfigParser;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.net.Socket;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.Socket;
+import com.anywide.dawdler.server.conf.ServerConfig;
+import com.anywide.dawdler.server.conf.ServerConfigParser;
 
 /**
  * @author jackson.song
@@ -33,58 +38,58 @@ import java.net.Socket;
  * @email suxuan696@gmail.com
  */
 public class Bootstrap {
-    public final static Logger logger = LoggerFactory.getLogger("system.out");
-    private static final ServerConfig serverConfig = ServerConfigParser.getServerConfig();
+	public final static Logger logger = LoggerFactory.getLogger("system.out");
+	private static final ServerConfig serverConfig = ServerConfigParser.getServerConfig();
 
-    public static void main(String[] args) throws IOException {
-        if (args != null && args.length > 0) {
-            String command = args[0].trim();
-            switch (command) {
-                case "start":
-                    overrideOutPut();
-                    break;
-                case "run":
-                    break;
-                case "stop":
-                case "stopnow":
-                    toClose(command);
-                    return;
-                default:
-                    System.err.println("warn: failed command " + command);
-                    return;
-            }
-        }
+	public static void main(String[] args) throws IOException {
+		if (args != null && args.length > 0) {
+			String command = args[0].trim();
+			switch (command) {
+			case "start":
+				overrideOutPut();
+				break;
+			case "run":
+				break;
+			case "stop":
+			case "stopnow":
+				toClose(command);
+				return;
+			default:
+				System.err.println("warn: failed command " + command);
+				return;
+			}
+		}
 
-        new DawdlerServer(serverConfig).start();
-    }
+		new DawdlerServer(serverConfig).start();
+	}
 
-    private static void toClose(String comment) throws IOException {
-        Socket socket = new Socket("127.0.0.1", serverConfig.getServer().getTcpShutdownPort());
-        OutputStream out = socket.getOutputStream();
-        PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
-        pw.println(comment);
-        pw.close();
-        socket.close();
-    }
+	private static void toClose(String comment) throws IOException {
+		Socket socket = new Socket("127.0.0.1", serverConfig.getServer().getTcpShutdownPort());
+		OutputStream out = socket.getOutputStream();
+		PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
+		pw.println(comment);
+		pw.close();
+		socket.close();
+	}
 
-    public static void overrideOutPut() {
-        OutputStream output = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-                logger.info(String.valueOf(b));
-            }
+	public static void overrideOutPut() {
+		OutputStream output = new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+				logger.info(String.valueOf(b));
+			}
 
-            @Override
-            public void write(byte[] b) throws IOException {
-                logger.info(new String(b));
-            }
+			@Override
+			public void write(byte[] b) throws IOException {
+				logger.info(new String(b));
+			}
 
-            @Override
-            public void write(byte[] b, int off, int len) throws IOException {
-                logger.info(new String(b, off, len));
-            }
-        };
-        System.setOut(new PrintStream(output));
-        System.setErr(new PrintStream(output));
-    }
+			@Override
+			public void write(byte[] b, int off, int len) throws IOException {
+				logger.info(new String(b, off, len));
+			}
+		};
+		System.setOut(new PrintStream(output));
+		System.setErr(new PrintStream(output));
+	}
 }

@@ -28,13 +28,13 @@ import java.net.URLClassLoader;
  * @email suxuan696@gmail.com
  */
 public class DawdlerClassLoader extends URLClassLoader {
-    public DawdlerClassLoader(URL[] urls, ClassLoader parent) {
-        super(urls, parent);
-    }
+	public DawdlerClassLoader(URL[] urls, ClassLoader parent) {
+		super(urls, parent);
+	}
 
-    public static DawdlerClassLoader createLoader(ClassLoader parent, URL... urls) {
-        DawdlerClassLoader dl = new DawdlerClassLoader(urls, parent);
-        Thread.currentThread().setContextClassLoader(dl);
-        return dl;
-    }
+	public static DawdlerClassLoader createLoader(ClassLoader parent, URL... urls) {
+		DawdlerClassLoader dl = new DawdlerClassLoader(urls, parent);
+		Thread.currentThread().setContextClassLoader(dl);
+		return dl;
+	}
 }

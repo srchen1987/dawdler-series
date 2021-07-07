@@ -16,9 +16,9 @@
  */
 package com.anywide.dawdler.clientplug.web.session.store;
 
-import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
-
 import java.util.Map;
+
+import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 
 /**
  * @author jackson.song
@@ -28,13 +28,12 @@ import java.util.Map;
  */
 public interface SessionStore {
 
-    void saveSession(DawdlerHttpSession session) throws Exception;
+	void saveSession(DawdlerHttpSession session) throws Exception;
 
-    Map<byte[], byte[]> getAttributes(String sessionKey) throws Exception;
+	Map<byte[], byte[]> getAttributes(String sessionKey) throws Exception;
 
-    byte[] getAttribute(String sessionKey, String attribute) throws Exception;
+	byte[] getAttribute(String sessionKey, String attribute) throws Exception;
 
-    void removeSession(String sessionKey) throws Exception;
-
+	void removeSession(String sessionKey) throws Exception;
 
 }

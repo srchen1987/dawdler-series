@@ -28,15 +28,15 @@ import java.io.Serializable;
  */
 public class AuthResponseBean implements Serializable {
 
-    private static final long serialVersionUID = 3918382953150072128L;
+	private static final long serialVersionUID = 3918382953150072128L;
 
-    private boolean success;
+	private boolean success;
 
-    public boolean isSuccess() {
-        return success;
-    }
+	public boolean isSuccess() {
+		return success;
+	}
 
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
 }

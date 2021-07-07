@@ -25,20 +25,20 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public abstract class RegexRuleOperator extends RuleOperator {
-    public RegexRuleOperator(String regex) {
-        super(regex, true);
-    }
+	public RegexRuleOperator(String regex) {
+		super(regex, true);
+	}
 
-    @Override
-    public String validate(Object value) {
-        return null;
-    }
+	@Override
+	public String validate(Object value) {
+		return null;
+	}
 
-    public boolean isEmpty(String value) {
-        return value == null || value.trim().equals("");
-    }
+	public boolean isEmpty(String value) {
+		return value == null || value.trim().equals("");
+	}
 
-    @Override
-    public abstract String toString();
+	@Override
+	public abstract String toString();
 
 }

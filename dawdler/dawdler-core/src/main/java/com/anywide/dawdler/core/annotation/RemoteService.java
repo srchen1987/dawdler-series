@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(value = RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.FIELD})
+@Target({ ElementType.TYPE, ElementType.FIELD })
 /**
  *
  * @Title RemoteService.java
@@ -33,15 +33,17 @@ import java.lang.annotation.Target;
  * @email suxuan696@gmail.com
  */
 public @interface RemoteService {
-    String value() default "";
+	String value() default "";
 
-    String group() default "defaultgroup";
+	String group() default "defaultgroup";
 
-    boolean single() default true;
+	boolean single() default true;
 
-    boolean remote() default false;
+	boolean remote() default false;
 
-    int timeout() default 120;
+	int timeout() default 120;
 
-    boolean fuzzy() default true;
+	boolean fuzzy() default true;
+
+	String loadBalance() default "roundRobin";
 }

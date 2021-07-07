@@ -16,11 +16,12 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs;
 
-import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import javax.servlet.ServletContext;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletContext;
+import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
  * @author jackson.song
@@ -31,19 +32,19 @@ import javax.servlet.ServletContext;
  * @email suxuan696@gmail.com
  */
 public abstract class AbstractDisplayPlug implements DisplayPlug {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);
-    protected final String MIME_TYPE_TEXT = "text/html;charset=UTF-8";
-    protected final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
-    protected ServletContext servletContext;
+	private static final Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);
+	protected final String MIME_TYPE_TEXT = "text/html;charset=UTF-8";
+	protected final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
+	protected ServletContext servletContext;
 
-    public AbstractDisplayPlug(ServletContext servletContext) {
-        this.servletContext = servletContext;
-    }
+	public AbstractDisplayPlug(ServletContext servletContext) {
+		this.servletContext = servletContext;
+	}
 
-    protected void logException(ViewForward wf) {
-        if (wf.getInvokeException() != null) {
-            logger.error("", wf.getInvokeException());
-        }
-    }
+	protected void logException(ViewForward wf) {
+		if (wf.getInvokeException() != null) {
+			logger.error("", wf.getInvokeException());
+		}
+	}
 
 }

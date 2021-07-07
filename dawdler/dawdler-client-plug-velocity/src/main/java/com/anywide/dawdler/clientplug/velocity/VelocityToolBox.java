@@ -25,13 +25,13 @@ package com.anywide.dawdler.clientplug.velocity;
  * @email suxuan696@gmail.com
  */
 public abstract class VelocityToolBox {
-    private final String name;
+	private final String name;
 
-    public VelocityToolBox(String name) {
-        this.name = name;
-    }
+	public VelocityToolBox(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 }

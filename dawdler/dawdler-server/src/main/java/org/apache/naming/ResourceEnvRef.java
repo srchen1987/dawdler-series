@@ -23,23 +23,23 @@ package org.apache.naming;
  */
 public class ResourceEnvRef extends AbstractRef {
 
-    /**
-     * Default factory for this reference.
-     */
-    public static final String DEFAULT_FACTORY = org.apache.naming.factory.Constants.DEFAULT_RESOURCE_ENV_FACTORY;
-    private static final long serialVersionUID = 1L;
+	/**
+	 * Default factory for this reference.
+	 */
+	public static final String DEFAULT_FACTORY = org.apache.naming.factory.Constants.DEFAULT_RESOURCE_ENV_FACTORY;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Resource env reference.
-     *
-     * @param resourceType Type
-     */
-    public ResourceEnvRef(String resourceType) {
-        super(resourceType);
-    }
+	/**
+	 * Resource env reference.
+	 *
+	 * @param resourceType Type
+	 */
+	public ResourceEnvRef(String resourceType) {
+		super(resourceType);
+	}
 
-    @Override
-    protected String getDefaultFactoryClassName() {
-        return DEFAULT_FACTORY;
-    }
+	@Override
+	protected String getDefaultFactoryClassName() {
+		return DEFAULT_FACTORY;
+	}
 }

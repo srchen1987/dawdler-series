@@ -25,9 +25,9 @@ package com.anywide.dawdler.util;
  * @email suxuan696@gmail.com
  */
 public class HashedWheelTimerSingleCreator {
-    private static HashedWheelTimer hashedWheelTimer = new HashedWheelTimer();
+	private static HashedWheelTimer hashedWheelTimer = new HashedWheelTimer();
 
-    public static HashedWheelTimer getHashedWheelTimer() {
-        return hashedWheelTimer;
-    }
+	public static HashedWheelTimer getHashedWheelTimer() {
+		return hashedWheelTimer;
+	}
 }

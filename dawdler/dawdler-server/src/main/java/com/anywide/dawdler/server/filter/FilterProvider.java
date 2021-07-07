@@ -16,17 +16,18 @@
  */
 package com.anywide.dawdler.server.filter;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.core.exception.DawdlerOperateException;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author jackson.song
@@ -37,59 +38,59 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class FilterProvider {
-    private static final Logger logger = LoggerFactory.getLogger(FilterProvider.class);
-    private final List<OrderData<DawdlerFilter>> filters = new ArrayList<>();
-    public FilterChain lastChain;
+	private static final Logger logger = LoggerFactory.getLogger(FilterProvider.class);
+	private final List<OrderData<DawdlerFilter>> filters = new ArrayList<>();
+	public FilterChain lastChain;
 
-    public FilterProvider() {
-    }
+	public FilterProvider() {
+	}
 
-    public List<OrderData<DawdlerFilter>> getFilters() {
-        return filters;
-    }
+	public List<OrderData<DawdlerFilter>> getFilters() {
+		return filters;
+	}
 
-    public void addFilter(DawdlerFilter dawdlerFilter) {
-        Order co = dawdlerFilter.getClass().getAnnotation(Order.class);
-        OrderData<DawdlerFilter> od = new OrderData<>();
-        od.setData(dawdlerFilter);
-        if (co != null) {
-            od.setOrder(co.value());
-        }
-        filters.add(od);
-    }
+	public void addFilter(DawdlerFilter dawdlerFilter) {
+		Order co = dawdlerFilter.getClass().getAnnotation(Order.class);
+		OrderData<DawdlerFilter> od = new OrderData<>();
+		od.setData(dawdlerFilter);
+		if (co != null) {
+			od.setOrder(co.value());
+		}
+		filters.add(od);
+	}
 
-    public void orderAndBuildChain() {
-        OrderComparator.sort(filters);
-        FilterChain chain = new DefaultFilterChain();
-        lastChain = buildChain(chain);
-    }
+	public void orderAndBuildChain() {
+		OrderComparator.sort(filters);
+		FilterChain chain = new DefaultFilterChain();
+		lastChain = buildChain(chain);
+	}
 
-    FilterChain buildChain(final FilterChain chain) {
-        FilterChain last = chain;
-        List<OrderData<DawdlerFilter>> filters = this.filters;
-        if (!filters.isEmpty()) {
-            for (int i = filters.size() - 1; i >= 0; i--) {
-                final DawdlerFilter filter = filters.get(i).getData();
-                final FilterChain next = last;
-                last = new FilterChain() {
-                    @Override
-                    public void doFilter(RequestBean request, ResponseBean response) throws Exception {
-                        filter.doFilter(request, response, next);
-                    }
-                };
-            }
-        }
-        return last;
-    }
+	FilterChain buildChain(final FilterChain chain) {
+		FilterChain last = chain;
+		List<OrderData<DawdlerFilter>> filters = this.filters;
+		if (!filters.isEmpty()) {
+			for (int i = filters.size() - 1; i >= 0; i--) {
+				final DawdlerFilter filter = filters.get(i).getData();
+				final FilterChain next = last;
+				last = new FilterChain() {
+					@Override
+					public void doFilter(RequestBean request, ResponseBean response) throws Exception {
+						filter.doFilter(request, response, next);
+					}
+				};
+			}
+		}
+		return last;
+	}
 
-    public void doFilter(RequestBean request, ResponseBean response) {
-        try {
-            lastChain.doFilter(request, response);
-        } catch (Exception e) {
-            response.setCause(new DawdlerOperateException(new RuntimeException(e.toString())));
-            logger.error("", e);
-        }
+	public void doFilter(RequestBean request, ResponseBean response) {
+		try {
+			lastChain.doFilter(request, response);
+		} catch (Exception e) {
+			response.setCause(new DawdlerOperateException(new RuntimeException(e.toString())));
+			logger.error("", e);
+		}
 
-    }
+	}
 
 }

@@ -16,20 +16,25 @@
  */
 package com.anywide.dawdler.serverplug.load;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.dom4j.Element;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles.RemoteFile;
 import com.anywide.dawdler.serverplug.util.XmlConfig;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
-import org.dom4j.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * @author jackson.song
@@ -40,99 +45,98 @@ import java.util.regex.Pattern;
  * @email suxuan696@gmail.com
  */
 public class ReadClass {
-    private static final Logger logger = LoggerFactory.getLogger(ReadClass.class);
-    private static final Pattern classPattern = Pattern.compile("(.*)\\.class$");
+	private static final Logger logger = LoggerFactory.getLogger(ReadClass.class);
+	private static final Pattern classPattern = Pattern.compile("(.*)\\.class$");
 
-    public static XmlObject read(String host) {
-        String path = DawdlerTool.getcurrentPath();
-        try {
-            XmlObject xml = new XmlObject(XmlConfig.getRemoteLoad());
-            List<Element> hostlist = (List<Element>) xml.selectNodes("/hosts/host[@name='" + host + "']/package");
-            if (hostlist == null || hostlist.isEmpty())
-                return null;
-            XmlObject xmlo = new XmlObject();
-            xmlo.CreateRoot("hosts");
-            Element root = xmlo.getRoot();
-            for (Element hostele : hostlist) {
-                String type = hostele.attributeValue("type");
-                boolean isbean = type != null && type.trim().equals("bean");
-                String pack = hostele.getTextTrim().replace(".", File.separator);
-                File file = new File(path + pack);
-                if (!file.isDirectory())
-                    throw new FileNotFoundException(
-                            "not exist\t" + path + pack + "\t or " + path + pack + " is not Directory!");
-                createXmlObjectByFile(root, file, pack, host, isbean);
-            }
-            return xmlo;
-        } catch (Exception e) {
-            logger.error("", e);
-            return null;
-        }
+	public static XmlObject read(String host) {
+		String path = DawdlerTool.getcurrentPath();
+		try {
+			XmlObject xml = new XmlObject(XmlConfig.getRemoteLoad());
+			List<Element> hosts = (List<Element>) xml.selectNodes("/hosts/host[@name='" + host + "']/package");
+			if (hosts == null || hosts.isEmpty())
+				return null;
+			XmlObject xmlo = new XmlObject();
+			xmlo.CreateRoot("hosts");
+			Element root = xmlo.getRoot();
+			for (Element hostele : hosts) {
+				String type = hostele.attributeValue("type");
+				boolean isbean = type != null && type.trim().equals("api");
+				String pack = hostele.getTextTrim().replace(".", File.separator);
+				File file = new File(path + pack);
+				if (!file.isDirectory())
+					throw new FileNotFoundException(
+							"not exist\t" + path + pack + "\t or " + path + pack + " is not Directory!");
+				createXmlObjectByFile(root, file, pack, host, isbean);
+			}
+			return xmlo;
+		} catch (Exception e) {
+			logger.error("", e);
+			return null;
+		}
 
-    }
+	}
 
-    private static void createXmlObjectByFile(Element hosts, File file, String pack, String host, boolean isbean) {
-        Element hostele = hosts.addElement("host");
-        hostele.addAttribute("type", isbean ? "bean" : "controller");
-        for (File fs : file.listFiles()) {
-            String s = fs.getName();
-            Matcher match = classPattern.matcher(s);
-            if (match.find()) {
-                File f = new File(file.getPath() + File.separator + s);
-                Element item = hostele.addElement("item");
-                item.addAttribute("name", match.group(1).toLowerCase());
-                item.addAttribute("checkname", fs.getAbsolutePath().replace(DawdlerTool.getcurrentPath(), ""));
-                item.addAttribute("package", pack);
-                item.addAttribute("update", "" + f.lastModified());
-                item.addText(pack.replace(File.separator, ".") + "." + s);
-            }
-        }
-    }
+	private static void createXmlObjectByFile(Element hosts, File file, String pack, String host, boolean isbean) {
+		Element hostele = hosts.addElement("host");
+		hostele.addAttribute("type", isbean ? "api" : "component");
+		for (File fs : file.listFiles()) {
+			String s = fs.getName();
+			Matcher match = classPattern.matcher(s);
+			if (match.find()) {
+				File f = new File(file.getPath() + File.separator + s);
+				Element item = hostele.addElement("item");
+//				item.addAttribute("name", match.group(1).toLowerCase());
+				item.addAttribute("checkname", fs.getAbsolutePath().replace(DawdlerTool.getcurrentPath(), ""));
+//				item.addAttribute("package", pack);
+				item.addAttribute("update", "" + f.lastModified());
+//				item.addText(pack.replace(File.separator, ".") + "." + s);
+			}
+		}
+	}
 
-    public static RemoteFiles operation(String[] filenames) throws FileNotFoundException {
-        RemoteFiles rfs = new RemoteFiles();
-        List<RemoteFile> files = new ArrayList<>();
-        String path = DawdlerTool.getcurrentPath();
-        for (String name : filenames) {
-            Matcher match = classPattern.matcher(name);
-            if (match.find()) {
-                String temname = match.group(1).replace(".", File.separator);
-                File file = new File(path + File.separator + temname + ".class");
-                if (file.exists()) {
-                    RemoteFile rf = new RemoteFiles().new RemoteFile();
-                    rf.setFilename(name);
-                    InputStream in = null;
-                    try {
-                        in = new FileInputStream(file);
-                    } catch (FileNotFoundException e) {
-                        logger.error("", e);
-                        throw e;
-                    }
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    byte[] tempbytes = new byte[1024];
-                    int tempsize;
-                    try {
-                        while ((tempsize = in.read(tempbytes)) != -1) {
-                            baos.write(tempbytes, 0, tempsize);
-                        }
-                        baos.flush();
-                        byte[] tem = baos.toByteArray();
-                        rf.setData(tem);
-                        files.add(rf);
-                    } catch (Exception e) {
-                        logger.error("", e);
-                    } finally {
-                        try {
-                            in.close();
-                        } catch (Exception e) {
-                            logger.error("", e);
-                        }
-                    }
+	public static RemoteFiles operation(String[] filenames) throws FileNotFoundException {
+		RemoteFiles rfs = new RemoteFiles();
+		List<RemoteFile> files = new ArrayList<>();
+		String path = DawdlerTool.getcurrentPath();
+		for (String name : filenames) {
+			Matcher match = classPattern.matcher(name);
+			if (match.find()) {
+				String fileName = match.group(1).replace(".", File.separator);
+				File file = new File(path + File.separator + fileName + ".class");
+				if (file.exists()) {
+					RemoteFile rf = new RemoteFiles().new RemoteFile();
+					rf.setFilename(name);
+					InputStream in = null;
+					try {
+						in = new FileInputStream(file);
+					} catch (FileNotFoundException e) {
+						logger.error("", e);
+						throw e;
+					}
+					ByteArrayOutputStream out = new ByteArrayOutputStream();
+					byte[] data = new byte[2048];
+					int position;
+					try {
+						while ((position = in.read(data)) != -1) {
+							out.write(data, 0, position);
+						}
+						out.flush();
+						rf.setData(out.toByteArray());
+						files.add(rf);
+					} catch (Exception e) {
+						logger.error("", e);
+					} finally {
+						try {
+							in.close();
+						} catch (Exception e) {
+							logger.error("", e);
+						}
+					}
 
-                }
-            }
-        }
-        rfs.setFiles(files);
-        return rfs;
-    }
+				}
+			}
+		}
+		rfs.setFiles(files);
+		return rfs;
+	}
 }

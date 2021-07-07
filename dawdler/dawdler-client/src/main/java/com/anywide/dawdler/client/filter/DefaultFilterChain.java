@@ -16,11 +16,12 @@
  */
 package com.anywide.dawdler.client.filter;
 
+import java.util.concurrent.TimeUnit;
+
+import com.anywide.dawdler.client.context.RpcClientContext;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.thread.InvokeFuture;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author jackson.song
@@ -31,14 +32,20 @@ import java.util.concurrent.TimeUnit;
  * @email suxuan696@gmail.com
  */
 public class DefaultFilterChain implements FilterChain {
-    @Override
-    public Object doFilter(RequestBean request) throws Exception {
-        RequestWrapper rq = (RequestWrapper) request;
-        SocketSession socketSession = rq.getSession();
-        InvokeFuture<Object> future = new InvokeFuture<>();
-        socketSession.getFutures().put(request.getSeq(), future);
-        socketSession.getDawdlerConnection().write(rq.getRequest(), socketSession);
-        return future.getResult(rq.getTimeout(), TimeUnit.SECONDS);
-    }
+	@Override
+	public Object doFilter(RequestBean request) throws Exception {
+		RequestWrapper rq = (RequestWrapper) request;
+		RpcClientContext.getContext().setRequest(rq);
+		try {
+			SocketSession socketSession = rq.getSession();
+			InvokeFuture<Object> future = new InvokeFuture<>();
+			socketSession.getFutures().put(request.getSeq(), future);
+			socketSession.getDawdlerConnection().write(rq.getRequest(), socketSession);
+			return future.getResult(rq.getTimeout(), TimeUnit.SECONDS);
+		} finally {
+			RpcClientContext.removeContext();
+		}
+
+	}
 
 }

@@ -28,34 +28,34 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MinSelectRuleOperator extends RegexRuleOperator {
-    public static final String RULEKEY = "^minselect:([1-9]{1}\\d*$)";
+	public static final String RULEKEY = "^minselect:([1-9]{1}\\d*$)";
 
-    public MinSelectRuleOperator() {
-        super(RULEKEY);
-    }
+	public MinSelectRuleOperator() {
+		super(RULEKEY);
+	}
 
-    @Override
-    public String validate(Object value, Matcher matcher) {
-        int i = Integer.parseInt(matcher.group(1));
-        String error = "不能小于" + i + "项!";
-        if (value == null) {
-            return error;
-        }
-        if (value instanceof String) {
-            if (i > 1)
-                return error;
-        } else if (value instanceof String[]) {
-            if (((String[]) value).length < i)
-                return error;
-        } else if (value instanceof List) {
-            if (((List) value).size() < i)
-                return error;
-        }
-        return null;
-    }
+	@Override
+	public String validate(Object value, Matcher matcher) {
+		int i = Integer.parseInt(matcher.group(1));
+		String error = "不能小于" + i + "项!";
+		if (value == null) {
+			return error;
+		}
+		if (value instanceof String) {
+			if (i > 1)
+				return error;
+		} else if (value instanceof String[]) {
+			if (((String[]) value).length < i)
+				return error;
+		} else if (value instanceof List) {
+			if (((List) value).size() < i)
+				return error;
+		}
+		return null;
+	}
 
-    @Override
-    public String toString() {
-        return "最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minselect:3!";
-    }
+	@Override
+	public String toString() {
+		return "最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minselect:3!";
+	}
 }

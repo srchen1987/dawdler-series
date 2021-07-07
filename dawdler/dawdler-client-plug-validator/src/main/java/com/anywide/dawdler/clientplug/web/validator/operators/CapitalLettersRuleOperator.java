@@ -25,22 +25,22 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class CapitalLettersRuleOperator extends StringRuleOperator {
-    public static final String RULEKEY = "capitalLetters";
-    public static final String REGEX = "^[A-Z]+$";
-    public static final String EXPLAIN = "大写字母验证";
+	public static final String RULEKEY = "capitalLetters";
+	public static final String REGEX = "^[A-Z]+$";
+	public static final String EXPLAIN = "大写字母验证";
 
-    public CapitalLettersRuleOperator() {
-        super(RULEKEY, REGEX, EXPLAIN);
-    }
+	public CapitalLettersRuleOperator() {
+		super(RULEKEY, REGEX, EXPLAIN);
+	}
 
-    @Override
-    public String toString() {
-        return EXPLAIN;
-    }
+	@Override
+	public String toString() {
+		return EXPLAIN;
+	}
 
-    @Override
-    public String validate(Object value) {
-        return super.validate(value, "请输入大写英文字母!");
-    }
+	@Override
+	public String validate(Object value) {
+		return super.validate(value, "请输入大写英文字母!");
+	}
 
 }

@@ -16,15 +16,15 @@
  */
 package com.anywide.dawdler.clientplug.velocity.direct;
 
+import java.io.IOException;
+import java.io.Writer;
+
 import org.apache.velocity.context.InternalContextAdapter;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 import org.apache.velocity.runtime.directive.Directive;
 import org.apache.velocity.runtime.parser.node.Node;
-
-import java.io.IOException;
-import java.io.Writer;
 
 /**
  * @author jackson.song
@@ -36,25 +36,26 @@ import java.io.Writer;
  */
 public class XSSFilterDirect extends Directive {
 
-    @Override
-    public String getName() {
-        return "XSSFilter";
-    }
+	@Override
+	public String getName() {
+		return "XSSFilter";
+	}
 
-    @Override
-    public int getType() {
-        return LINE;
-    }
+	@Override
+	public int getType() {
+		return LINE;
+	}
 
-    @Override
-    public boolean render(InternalContextAdapter arg0, Writer arg1, Node arg2)
-            throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
-        Node node = arg2.jjtGetChild(0);
-        Object object = node.value(arg0);
-        if (object == null) return true;
-        arg1.write(XssUtil.filterScript(object.toString()));
-        arg1.flush();
-        return true;
-    }
+	@Override
+	public boolean render(InternalContextAdapter arg0, Writer arg1, Node arg2)
+			throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
+		Node node = arg2.jjtGetChild(0);
+		Object object = node.value(arg0);
+		if (object == null)
+			return true;
+		arg1.write(XssUtil.filterScript(object.toString()));
+		arg1.flush();
+		return true;
+	}
 
 }

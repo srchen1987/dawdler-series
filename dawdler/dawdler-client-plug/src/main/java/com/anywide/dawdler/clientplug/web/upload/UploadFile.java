@@ -16,14 +16,12 @@
  */
 package com.anywide.dawdler.clientplug.web.upload;
 
-import org.apache.commons.fileupload.FileItem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+
+import org.apache.commons.fileupload.FileItem;
 
 /**
  * @author jackson.song
@@ -34,36 +32,34 @@ import java.net.URLDecoder;
  * @email suxuan696@gmail.com
  */
 public class UploadFile {
-    private static final Logger logger = LoggerFactory.getLogger(UploadFile.class);
-    private final FileItem file;
+	private final FileItem file;
 
-    public UploadFile(FileItem file) {
-        this.file = file;
-    }
+	public UploadFile(FileItem file) {
+		this.file = file;
+	}
 
-    public InputStream getInputStream() throws IOException {
-        return file.getInputStream();
-    }
+	public InputStream getInputStream() throws IOException {
+		return file.getInputStream();
+	}
 
-    public byte[] getBytes() {
-        return file.get();
-    }
+	public byte[] getBytes() {
+		return file.get();
+	}
 
-    public String getFileName() {
-        try {
-            return URLDecoder.decode(file.getName(), "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            logger.error("", e);
-            return file.getName();
-        }
-    }
+	public String getFileName() {
+		try {
+			return URLDecoder.decode(file.getName(), "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			return file.getName();
+		}
+	}
 
-    public long getSize() {
-        return file.getSize();
-    }
+	public long getSize() {
+		return file.getSize();
+	}
 
-    public void delete() {
-        if (file != null)
-            file.delete();
-    }
+	public void delete() {
+		if (file != null)
+			file.delete();
+	}
 }

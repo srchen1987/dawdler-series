@@ -28,26 +28,27 @@ import java.util.concurrent.Executors;
  * @email suxuan696@gmail.com
  */
 public class DataProcessWorkerPool {
-    private static final DataProcessWorkerPool processWorkerPool = new DataProcessWorkerPool();
-    private final ExecutorService executor;
+	private static final DataProcessWorkerPool processWorkerPool = new DataProcessWorkerPool();
+	private final ExecutorService executor;
 
-    private DataProcessWorkerPool() {
-        executor = Executors.newFixedThreadPool(200, new DefaultThreadFactory(DataProcessWorkerPool.class));// FIXME 动态配置 池大小
-    }
+	private DataProcessWorkerPool() {
+		executor = Executors.newFixedThreadPool(200, new DefaultThreadFactory(DataProcessWorkerPool.class));// FIXME
+																											// 动态配置 池大小
+	}
 
-    public static DataProcessWorkerPool getInstance() {
-        return processWorkerPool;
-    }
+	public static DataProcessWorkerPool getInstance() {
+		return processWorkerPool;
+	}
 
-    public void execute(Runnable command) {
-        executor.execute(command);
-    }
+	public void execute(Runnable command) {
+		executor.execute(command);
+	}
 
-    public void shutdown() {
-        executor.shutdown();
-    }
+	public void shutdown() {
+		executor.shutdown();
+	}
 
-    public void shutdownNow() {
-        executor.shutdownNow();
-    }
+	public void shutdownNow() {
+		executor.shutdownNow();
+	}
 }

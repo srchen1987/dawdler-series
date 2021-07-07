@@ -16,15 +16,16 @@
  */
 package com.anywide.dawdler.clientplug.web.validator;
 
-import com.anywide.dawdler.clientplug.web.validator.operators.RegexRuleOperator;
-import com.anywide.dawdler.clientplug.web.validator.operators.StringRuleOperator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.clientplug.web.validator.operators.RegexRuleOperator;
+import com.anywide.dawdler.clientplug.web.validator.operators.StringRuleOperator;
 
 /**
  * @author jackson.song
@@ -35,34 +36,34 @@ import java.util.regex.Pattern;
  * @email suxuan696@gmail.com
  */
 public class RuleOperatorExecuter {
-    private static final Logger logger = LoggerFactory.getLogger(RuleOperatorExecuter.class);
+	private static final Logger logger = LoggerFactory.getLogger(RuleOperatorExecuter.class);
 
-    public static String invokeStringRuleOperator(String ruleKey, Object value) {
-        StringRuleOperator so = RuleOperatorProvider.getStringRules().get(ruleKey);
-        if (so == null)
-            return null;
-        return so.validate(value);
-    }
+	public static String invokeStringRuleOperator(String ruleKey, Object value) {
+		StringRuleOperator so = RuleOperatorProvider.getStringRules().get(ruleKey);
+		if (so == null)
+			return null;
+		return so.validate(value);
+	}
 
-    public static String invokeRegexRuleOperator(String regex, Object value) {
-        Set<Entry<Pattern, RegexRuleOperator>> entrys = RuleOperatorProvider.getRegexRules().entrySet();
-        for (Entry<Pattern, RegexRuleOperator> en : entrys) {
-            Matcher matcher = en.getKey().matcher(regex);
-            if (matcher.find()) {
-                return en.getValue().validate(value, matcher);
-            }
-        }
-        logger.warn("invalid rule \t" + regex);
-        return null;
-    }
+	public static String invokeRegexRuleOperator(String regex, Object value) {
+		Set<Entry<Pattern, RegexRuleOperator>> entrys = RuleOperatorProvider.getRegexRules().entrySet();
+		for (Entry<Pattern, RegexRuleOperator> en : entrys) {
+			Matcher matcher = en.getKey().matcher(regex);
+			if (matcher.find()) {
+				return en.getValue().validate(value, matcher);
+			}
+		}
+		logger.warn("invalid rule \t" + regex);
+		return null;
+	}
 
-    public static String autoOperator(String regex, Object value) {
-        StringRuleOperator so = RuleOperatorProvider.getStringRules().get(regex);
-        if (so == null) {
-            return invokeRegexRuleOperator(regex, value);
-        } else {
-            return so.validate(value);
-        }
+	public static String autoOperator(String regex, Object value) {
+		StringRuleOperator so = RuleOperatorProvider.getStringRules().get(regex);
+		if (so == null) {
+			return invokeRegexRuleOperator(regex, value);
+		} else {
+			return so.validate(value);
+		}
 
-    }
+	}
 }

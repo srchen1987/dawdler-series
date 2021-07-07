@@ -25,7 +25,7 @@ package com.anywide.dawdler.core.serializer;
  * @email suxuan696@gmail.com
  */
 public interface Serializer {
-    Object deserialize(byte[] bytes) throws Exception;
+	Object deserialize(byte[] bytes) throws Exception;
 
-    byte[] serialize(Object object) throws Exception;
+	byte[] serialize(Object object) throws Exception;
 }

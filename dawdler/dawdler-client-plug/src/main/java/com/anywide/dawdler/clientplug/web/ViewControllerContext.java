@@ -27,18 +27,18 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @email suxuan696@gmail.com
  */
 public class ViewControllerContext {
-    private static final ThreadLocal<ViewForward> viewForward = new ThreadLocal<ViewForward>();
+	private static final ThreadLocal<ViewForward> viewForward = new ThreadLocal<ViewForward>();
 
-    public static ViewForward getViewForward() {
-        return viewForward.get();
-    }
+	public static ViewForward getViewForward() {
+		return viewForward.get();
+	}
 
-    public static void setViewForward(ViewForward vd) {
-        viewForward.set(vd);
-    }
+	public static void setViewForward(ViewForward vd) {
+		viewForward.set(vd);
+	}
 
-    public static void removeViewForward() {
-        viewForward.remove();
-    }
+	public static void removeViewForward() {
+		viewForward.remove();
+	}
 
 }

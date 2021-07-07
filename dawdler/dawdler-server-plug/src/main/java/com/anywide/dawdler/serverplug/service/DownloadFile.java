@@ -28,5 +28,5 @@ import com.anywide.dawdler.core.annotation.RemoteService;
  */
 @RemoteService
 public interface DownloadFile {
-    Object download(String[] names);
+	Object download(String[] names);
 }

@@ -27,15 +27,15 @@ import java.nio.ByteBuffer;
  * @email suxuan696@gmail.com
  */
 public class BufferFactory {
-    private static final BufferCreator directBufferCreator = new DirectBufferCreator();
-    private static final BufferCreator heapBufferCreator = new HeapBufferCreator();
+	private static final BufferCreator directBufferCreator = new DirectBufferCreator();
+	private static final BufferCreator heapBufferCreator = new HeapBufferCreator();
 
-    public static ByteBuffer createDirectBuffer(int capacity) {
-        return directBufferCreator.createByteBuffer(capacity);
-    }
+	public static ByteBuffer createDirectBuffer(int capacity) {
+		return directBufferCreator.createByteBuffer(capacity);
+	}
 
-    public static ByteBuffer createdHeadBuffer(int capacity) {
-        return heapBufferCreator.createByteBuffer(capacity);
-    }
+	public static ByteBuffer createdHeadBuffer(int capacity) {
+		return heapBufferCreator.createByteBuffer(capacity);
+	}
 
 }
