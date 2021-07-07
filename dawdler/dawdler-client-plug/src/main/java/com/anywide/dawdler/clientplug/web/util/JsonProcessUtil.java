@@ -16,13 +16,13 @@
  */
 package com.anywide.dawdler.clientplug.web.util;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @author jackson.song
@@ -33,47 +33,47 @@ import java.io.InputStream;
  * @email suxuan696@gmail.com
  */
 public class JsonProcessUtil {
-    private static final ObjectMapper mapper = new ObjectMapper();
+	private static final ObjectMapper mapper = new ObjectMapper();
 
-    public static ObjectMapper getMapperInstance() {
-        return mapper;
-    }
+	public static ObjectMapper getMapperInstance() {
+		return mapper;
+	}
 
-    public static String beanToJson(Object obj) {
-        ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-        try {
-            return mapper.writeValueAsString(obj);
-        } catch (Exception e) {
-            return null;
-        }
-    }
+	public static String beanToJson(Object obj) {
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		try {
+			return mapper.writeValueAsString(obj);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
-    public static <T> T jsonToBean(String json, Class<T> valueType) {
-        T obj = null;
-        ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+	public static <T> T jsonToBean(String json, Class<T> valueType) {
+		T obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
-        try {
-            obj = mapper.readValue(json, valueType);
-        } catch (JsonMappingException e) {
-        } catch (JsonParseException e) {
-        } catch (IOException e) {
-        }
-        return obj;
-    }
+		try {
+			obj = mapper.readValue(json, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
 
-    public static <T> T jsonToBean(InputStream jsonStream, Class<T> valueType) {
-        T obj = null;
-        ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-        mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+	public static <T> T jsonToBean(InputStream jsonStream, Class<T> valueType) {
+		T obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 //		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
-        try {
-            obj = mapper.readValue(jsonStream, valueType);
-        } catch (JsonMappingException e) {
-        } catch (JsonParseException e) {
-        } catch (IOException e) {
-        }
-        return obj;
-    }
+		try {
+			obj = mapper.readValue(jsonStream, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
 
 }

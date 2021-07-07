@@ -16,6 +16,16 @@
  */
 package com.anywide.dawdler.server.conf;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collection;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.util.DawdlerTool;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
@@ -23,15 +33,6 @@ import com.thoughtworks.xstream.security.AnyTypePermission;
 import com.thoughtworks.xstream.security.NoTypePermission;
 import com.thoughtworks.xstream.security.NullPermission;
 import com.thoughtworks.xstream.security.PrimitiveTypePermission;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.Map;
 
 /**
  * @author jackson.song
@@ -42,40 +43,40 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class ServerConfigParser {
-    private static final Logger logger = LoggerFactory.getLogger(ServerConfigParser.class);
-    private static ServerConfig config = null;
+	private static final Logger logger = LoggerFactory.getLogger(ServerConfigParser.class);
+	private static ServerConfig config = null;
 
-    static {
-        InputStream input = null;
-        try {
-            input = new FileInputStream(DawdlerTool.getcurrentPath() + "../conf/server-conf.xml");
-            XStream xstream = new XStream(new DomDriver());
-            xstream.alias("config", ServerConfig.class);
-            xstream.autodetectAnnotations(true);
-            xstream.ignoreUnknownElements();
-            xstream.addPermission(NoTypePermission.NONE);
-            xstream.addPermission(AnyTypePermission.ANY);
-            xstream.addPermission(NullPermission.NULL);
-            xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
-            xstream.allowTypeHierarchy(Collection.class);
-            xstream.alias("users", Map.class);
-            xstream.alias("list", Map.Entry.class);
-            xstream.allowTypesByWildcard(new String[]{"com.anywide.dawdler.server.conf.*"});
-            config = (ServerConfig) xstream.fromXML(input);
-        } catch (FileNotFoundException e) {
-            logger.error("", e);
-        } finally {
-            if (input != null)
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    logger.error("", e);
-                }
-        }
+	static {
+		InputStream input = null;
+		try {
+			input = new FileInputStream(DawdlerTool.getcurrentPath() + "../conf/server-conf.xml");
+			XStream xstream = new XStream(new DomDriver());
+			xstream.alias("config", ServerConfig.class);
+			xstream.autodetectAnnotations(true);
+			xstream.ignoreUnknownElements();
+			xstream.addPermission(NoTypePermission.NONE);
+			xstream.addPermission(AnyTypePermission.ANY);
+			xstream.addPermission(NullPermission.NULL);
+			xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
+			xstream.allowTypeHierarchy(Collection.class);
+			xstream.alias("users", Map.class);
+			xstream.alias("list", Map.Entry.class);
+			xstream.allowTypesByWildcard(new String[] { "com.anywide.dawdler.server.conf.*" });
+			config = (ServerConfig) xstream.fromXML(input);
+		} catch (FileNotFoundException e) {
+			logger.error("", e);
+		} finally {
+			if (input != null)
+				try {
+					input.close();
+				} catch (IOException e) {
+					logger.error("", e);
+				}
+		}
 
-    }
+	}
 
-    public static ServerConfig getServerConfig() {
-        return config;
-    }
+	public static ServerConfig getServerConfig() {
+		return config;
+	}
 }

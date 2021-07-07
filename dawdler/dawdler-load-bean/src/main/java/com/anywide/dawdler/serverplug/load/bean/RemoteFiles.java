@@ -16,8 +16,6 @@
  */
 package com.anywide.dawdler.serverplug.load.bean;
 
-import com.anywide.dawdler.util.SecurityPlus;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -30,44 +28,37 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class RemoteFiles implements Serializable {
-    private static final long serialVersionUID = 5204063780120035205L;
-    private List<RemoteFile> files;
+	private static final long serialVersionUID = 5204063780120035205L;
+	private List<RemoteFile> files;
 
-    public List<RemoteFile> getFiles() {
-        return files;
-    }
+	public List<RemoteFile> getFiles() {
+		return files;
+	}
 
-    public void setFiles(List<RemoteFile> files) {
-        this.files = files;
-    }
+	public void setFiles(List<RemoteFile> files) {
+		this.files = files;
+	}
 
-    public class RemoteFile implements Serializable {
-        private static final long serialVersionUID = 1090097237519066361L;
-        private String filename;
-        private byte[] data;
+	public class RemoteFile implements Serializable {
+		private static final long serialVersionUID = 1090097237519066361L;
+		private String filename;
+		private byte[] data;
 
-        public String getFilename() {
-            return filename;
-        }
+		public String getFilename() {
+			return filename;
+		}
 
-        public void setFilename(String filename) {
-            this.filename = filename;
-        }
+		public void setFilename(String filename) {
+			this.filename = filename;
+		}
 
-        public byte[] getData() {
-            return data;
-        }
+		public byte[] getData() {
+			return data;
+		}
 
-        public void setData(byte[] data) {
-            this.data = data;
-        }
+		public void setData(byte[] data) {
+			this.data = data;
+		}
 
-        public byte[] getRemoteClassData() {
-            try {
-                return SecurityPlus.getInstance().encrypt(data);
-            } catch (Exception e) {
-            }
-            return null;
-        }
-    }
+	}
 }

@@ -28,6 +28,6 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  */
 public interface DisplayPlug {
 
-    void display(ViewForward wf);
+	void display(ViewForward wf);
 
 }

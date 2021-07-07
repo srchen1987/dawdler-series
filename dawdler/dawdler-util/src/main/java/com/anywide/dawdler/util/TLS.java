@@ -28,43 +28,40 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class TLS {
-    private static ThreadLocal<Map<Object, Object>> threadLocal = new ThreadLocal<Map<Object, Object>>();
+	private final static ThreadLocal<Map<Object, Object>> THREAD_LOCAL = new ThreadLocal<Map<Object, Object>>();
 
-    public static void set(Object key, Object value) {
-        Map<Object, Object> map = createIfNotExist();
-        map.put(key, value);
-    }
+	public static void set(Object key, Object value) {
+		Map<Object, Object> map = createIfNotExist();
+		map.put(key, value);
+	}
 
-    public static Object get(Object key) {
-        Map<Object, Object> map = createIfNotExist();
-        return map.get(key);
-    }
+	public static Object get(Object key) {
+		Map<Object, Object> map = createIfNotExist();
+		return map.get(key);
+	}
 
+	public static Object remove(Object key) {
+		Map<Object, Object> map = THREAD_LOCAL.get();
+		if (map != null) {
+			return map.remove(key);
+		}
+		return null;
+	}
 
-    public static Object remove(Object key) {
-        Map<Object, Object> map = threadLocal.get();
-        if (map != null) {
-            return map.remove(key);
-        }
-        return null;
-    }
+	public static void clear() {
+		Map<Object, Object> map = THREAD_LOCAL.get();
+		if (map != null) {
+			map.clear();
+		}
+		THREAD_LOCAL.remove();
+	}
 
-
-    public static Object clear() {
-        Map<Object, Object> map = threadLocal.get();
-        if (map != null) {
-            map.clear();
-        }
-        threadLocal.remove();
-        return null;
-    }
-
-    private static Map<Object, Object> createIfNotExist() {
-        Map<Object, Object> map = threadLocal.get();
-        if (map == null) {
-            map = new HashMap<Object, Object>();
-            threadLocal.set(map);
-        }
-        return map;
-    }
+	private static Map<Object, Object> createIfNotExist() {
+		Map<Object, Object> map = THREAD_LOCAL.get();
+		if (map == null) {
+			map = new HashMap<Object, Object>();
+			THREAD_LOCAL.set(map);
+		}
+		return map;
+	}
 }

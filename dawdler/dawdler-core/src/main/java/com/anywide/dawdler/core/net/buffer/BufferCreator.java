@@ -27,5 +27,5 @@ import java.nio.ByteBuffer;
  * @email suxuan696@gmail.com
  */
 public interface BufferCreator {
-    ByteBuffer createByteBuffer(int capacity);
+	ByteBuffer createByteBuffer(int capacity);
 }

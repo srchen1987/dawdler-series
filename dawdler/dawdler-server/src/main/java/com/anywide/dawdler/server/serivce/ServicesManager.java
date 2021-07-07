@@ -16,17 +16,18 @@
  */
 package com.anywide.dawdler.server.serivce;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author jackson.song
@@ -37,105 +38,106 @@ import java.util.concurrent.ConcurrentHashMap;
  * @email suxuan696@gmail.com
  */
 public class ServicesManager {
-    private static final Logger logger = LoggerFactory.getLogger(ServicesManager.class);
-    private final DawdlerServiceCreateProvider dawdlerServiceCreateProvider = new DawdlerServiceCreateProvider();
-    private final ConcurrentHashMap<String, ServicesBean> services;
+	private static final Logger logger = LoggerFactory.getLogger(ServicesManager.class);
+	private final DawdlerServiceCreateProvider dawdlerServiceCreateProvider = new DawdlerServiceCreateProvider();
+	private final ConcurrentHashMap<String, ServicesBean> services;
 
-    public ServicesManager() {
-        services = new ConcurrentHashMap<String, ServicesBean>() {
-            @Override
-            public ServicesBean put(String key, ServicesBean value) {
-                ServicesBean sb = super.putIfAbsent(key, value);
-                if (sb != null) {
-                    logger.warn(key + " was registered at\t" + super.get(key));
-                    return sb;
-                }
-                return value;
-            }
-        };
-    }
+	public ServicesManager() {
+		services = new ConcurrentHashMap<String, ServicesBean>() {
+			@Override
+			public ServicesBean put(String key, ServicesBean value) {
+				ServicesBean sb = super.putIfAbsent(key, value);
+				if (sb != null) {
+					logger.warn(key + " was registered at\t" + super.get(key));
+					return sb;
+				}
+				return value;
+			}
+		};
+	}
 
-    public DawdlerServiceCreateProvider getDawdlerServiceCreateProvider() {
-        return dawdlerServiceCreateProvider;
-    }
+	public DawdlerServiceCreateProvider getDawdlerServiceCreateProvider() {
+		return dawdlerServiceCreateProvider;
+	}
 
-    public void fireCreate(DawdlerContext dawdlerContext) {
-        services.forEach((k, v) -> {
-            v.fireCreate(dawdlerContext);
-        });
-    }
+	public void fireCreate(DawdlerContext dawdlerContext) {
+		services.forEach((k, v) -> {
+			if (v.isSingle())
+				v.fireCreate(dawdlerContext);
+		});
+	}
 
-    public ServicesBean getService(String name) {
-        return this.services.get(name);
-    }
+	public ServicesBean getService(String name) {
+		return this.services.get(name);
+	}
 
-    public void register(String name, Object service, boolean single) {
-        ServicesBean serviceBean = createServicesBean(name, service, single);
-        logger.info(name + "\t" + service);
-        this.services.put(name, serviceBean);
-    }
+	public void register(String name, Object service, boolean single) {
+		ServicesBean serviceBean = createServicesBean(name, service, single);
+		logger.info(name + "\t" + service);
+		this.services.put(name, serviceBean);
+	}
 
-    public ServicesBean createServicesBean(String name, Object service, boolean single) {
-        return new ServicesBean(name, service, dawdlerServiceCreateProvider, single);
-    }
+	public ServicesBean createServicesBean(String name, Object service, boolean single) {
+		return new ServicesBean(name, service, dawdlerServiceCreateProvider, single);
+	}
 
-    public void registerService(Class<?> serviceInterface, Object service, boolean single) {
-        logger.info(serviceInterface.getName() + "\t" + service);
-        ServicesBean serviceBean = createServicesBean(serviceInterface.getName(), service, single);
-        this.services.put(serviceBean.getName(), serviceBean);
-    }
+	public void registerService(Class<?> serviceInterface, Object service, boolean single) {
+		logger.info(serviceInterface.getName() + "\t" + service);
+		ServicesBean serviceBean = createServicesBean(serviceInterface.getName(), service, single);
+		this.services.put(serviceBean.getName(), serviceBean);
+	}
 
-    public void clear() {
-        services.clear();
-    }
+	public void clear() {
+		services.clear();
+	}
 
-    public void smartRegister(Class<?> service)
-            throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-        if (service == null) {
-            throw new IllegalAccessException("service can't null!");
-        }
-        RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
-        if (remoteServiceContract != null) {
-            String name = remoteServiceContract.value();
-            if (StringUtils.isBlank(name)) {
-                registerService(service, SunReflectionFactoryInstantiator.newInstance(service),
-                        remoteServiceContract.single());
-            } else {
-                register(name, SunReflectionFactoryInstantiator.newInstance(service), remoteServiceContract.single());
-            }
-        } else {
-            Class<?>[] interfaceList = service.getInterfaces();
-            for (Class<?> clazz : interfaceList) {
-                remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-                if (remoteServiceContract == null) {
-                    continue;
-                }
-                String name = remoteServiceContract.value();
-                if (StringUtils.isBlank(name)) {
-                    registerService(clazz, SunReflectionFactoryInstantiator.newInstance(service),
-                            remoteServiceContract.single());
-                } else {
-                    register(name, SunReflectionFactoryInstantiator.newInstance(service),
-                            remoteServiceContract.single());
-                }
-            }
-        }
-    }
+	public void smartRegister(Class<?> service) throws InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		if (service == null) {
+			throw new IllegalAccessException("service can't null!");
+		}
+		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
+		if (remoteServiceContract != null) {
+			String name = remoteServiceContract.value();
+			if (StringUtils.isBlank(name)) {
+				registerService(service, SunReflectionFactoryInstantiator.newInstance(service),
+						remoteServiceContract.single());
+			} else {
+				register(name, SunReflectionFactoryInstantiator.newInstance(service), remoteServiceContract.single());
+			}
+		} else {
+			Class<?>[] interfaceList = service.getInterfaces();
+			for (Class<?> clazz : interfaceList) {
+				remoteServiceContract = clazz.getAnnotation(RemoteService.class);
+				if (remoteServiceContract == null) {
+					continue;
+				}
+				String name = remoteServiceContract.value();
+				if (StringUtils.isBlank(name)) {
+					registerService(clazz, SunReflectionFactoryInstantiator.newInstance(service),
+							remoteServiceContract.single());
+				} else {
+					register(name, SunReflectionFactoryInstantiator.newInstance(service),
+							remoteServiceContract.single());
+				}
+			}
+		}
+	}
 
-    public boolean isService(Class<?> service) {
-        RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
-        if (remoteServiceContract != null) {
-            return true;
-        } else {
-            Class<?>[] interfaceList = service.getInterfaces();
-            for (Class<?> clazz : interfaceList) {
-                remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-                if (remoteServiceContract == null) {
-                    continue;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
+	public boolean isService(Class<?> service) {
+		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
+		if (remoteServiceContract != null) {
+			return true;
+		} else {
+			Class<?>[] interfaceList = service.getInterfaces();
+			for (Class<?> clazz : interfaceList) {
+				remoteServiceContract = clazz.getAnnotation(RemoteService.class);
+				if (remoteServiceContract == null) {
+					continue;
+				}
+				return true;
+			}
+		}
+		return false;
+	}
 }

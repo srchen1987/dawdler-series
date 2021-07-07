@@ -16,13 +16,14 @@
  */
 package com.anywide.dawdler.clientplug.web.listener;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+import javax.servlet.ServletContext;
+
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
-
-import javax.servlet.ServletContext;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author jackson.song
@@ -33,41 +34,51 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class WebContextListenerProvider {
-    private static final List<OrderData<WebContextListener>> webContextListeners = new ArrayList<>();
+	private static final List<OrderData<WebContextListener>> webContextListeners = new CopyOnWriteArrayList<>();
 
-    public static List<OrderData<WebContextListener>> getWebContextListeners() {
-        return webContextListeners;
-    }
+	public static List<OrderData<WebContextListener>> getWebContextListeners() {
+		return webContextListeners;
+	}
 
-    public static void order() {
-            OrderComparator.sort(webContextListeners);
-    }
+	public static void order() {
+		OrderComparator.sort(webContextListeners);
+	}
 
-    public static void addWebContextListeners(WebContextListener webContextListener) {
-        Order co = webContextListener.getClass().getAnnotation(Order.class);
-        OrderData<WebContextListener> od = new OrderData<>();
-        od.setData(webContextListener);
-        if (co != null) {
-            od.setOrder(co.value());
-        }
-        webContextListeners.add(od);
-    }
+	public static void addWebContextListener(WebContextListener webContextListener) {
+		Order order = webContextListener.getClass().getAnnotation(Order.class);
+		OrderData<WebContextListener> orderData = new OrderData<>();
+		orderData.setData(webContextListener);
+		if (order != null) {
+			orderData.setOrder(order.value());
+		}
+		webContextListeners.add(orderData);
+	}
 
+	public static void removeWebContextListener(Class<?> webContextListenerClass) {
+		if (!WebContextListener.class.isAssignableFrom(webContextListenerClass))
+			return;
+		for (OrderData<WebContextListener> orderData : webContextListeners) {
+			if (orderData.getData().getClass() == webContextListenerClass) {
+				webContextListeners.remove(orderData);
+				return;
+			}
+		}
+	}
 
-    public static void listenerRun(boolean init, ServletContext servletContext) {
-        List<OrderData<WebContextListener>> listeners = WebContextListenerProvider.getWebContextListeners();
-        if (listeners != null) {
-            if (init) {
-                for (OrderData<WebContextListener> listener : listeners) {
-                    listener.getData().contextInitialized(servletContext);
-                }
-            } else {
-                for (int i = listeners.size() - 1; i >= 0; i--) {
-                    listeners.get(i).getData().contextDestroyed(servletContext);
-                }
-            }
+	public static void listenerRun(boolean init, ServletContext servletContext) {
+		List<OrderData<WebContextListener>> listeners = WebContextListenerProvider.getWebContextListeners();
+		if (listeners != null) {
+			if (init) {
+				for (OrderData<WebContextListener> listener : listeners) {
+					listener.getData().contextInitialized(servletContext);
+				}
+			} else {
+				for (int i = listeners.size() - 1; i >= 0; i--) {
+					listeners.get(i).getData().contextDestroyed(servletContext);
+				}
+			}
 
-        }
+		}
 
-    }
+	}
 }

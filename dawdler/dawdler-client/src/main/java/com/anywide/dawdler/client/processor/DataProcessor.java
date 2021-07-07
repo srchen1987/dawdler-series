@@ -16,6 +16,13 @@
  */
 package com.anywide.dawdler.client.processor;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.AuthResponseBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
@@ -26,12 +33,6 @@ import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.core.thread.InvokeFuture;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author jackson.song
@@ -42,107 +43,103 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class DataProcessor implements Runnable {
-    private static final Logger logger = LoggerFactory.getLogger(DataProcessor.class);
-    private final SocketSession socketSession;
-    private final boolean compress;
-    private final Serializer serializer;
-    private final byte headData;
-    private byte[] data;
-    private final IoHandler ioHandler = IoHandlerFactory.getHandler();
+	private static final Logger logger = LoggerFactory.getLogger(DataProcessor.class);
+	private final SocketSession socketSession;
+	private final boolean compress;
+	private final Serializer serializer;
+	private final byte headData;
+	private byte[] data;
+	private final IoHandler ioHandler = IoHandlerFactory.getHandler();
 
-    public DataProcessor(SocketSession socketSession, byte headData, boolean compress, Serializer serializer,
-                         byte[] data) {
-        this.socketSession = socketSession;
-        this.compress = compress;
-        this.serializer = serializer;
-        this.data = data;
-        this.headData = headData;
-    }
+	public DataProcessor(SocketSession socketSession, byte headData, boolean compress, Serializer serializer,
+			byte[] data) {
+		this.socketSession = socketSession;
+		this.compress = compress;
+		this.serializer = serializer;
+		this.data = data;
+		this.headData = headData;
+	}
 
-    @Override
-    public void run() {
-        try {
-            process();
-        } catch (Exception e) {
-            socketSession.close();
-            logger.error("", e);
-        }
+	@Override
+	public void run() {
+		try {
+			process();
+		} catch (Exception e) {
+			socketSession.close();
+			logger.error("", e);
+		}
 
-    }
+	}
 
-    /*
-     * // in the future will dispatch for user operator static AtomicInteger id =
-     * new AtomicInteger();
-     */
-    public void process() throws Exception {
-        if (compress)
-            data = ThresholdCompressionStrategy.staticSingle().decompress(data);
-        Object obj = serializer.deserialize(data);
-        if (ioHandler != null)
-            ioHandler.messageReceived(socketSession, obj);
-        if (obj instanceof ResponseBean) {
-            ResponseBean response = (ResponseBean) obj;
-            long seq = response.getSeq();
-            InvokeFuture<Object> invoke = socketSession.getFutures().remove(seq);
-            if (response.getCause() != null)
-                invoke.setCause(response.getCause());
-            else {
-                invoke.setResult(response.getTarget());
-            }
-        } else if (obj instanceof AuthResponseBean) {
-            AuthResponseBean authResponse = (AuthResponseBean) obj;
-            if (authResponse.isSuccess()) {
-                List<SocketSession> sessions = new ArrayList<>();
-                List<SocketSession> preSessions = socketSession.getDawdlerConnection().getSessionGroup()
-                        .putIfAbsent(socketSession.getRemoteAddress(), sessions);
-                if (preSessions != null) {
-                    sessions = preSessions;
-                }
-                sessions.add(socketSession);
-                if (ioHandler != null)
-                    ioHandler.channelOpen(socketSession);
-                socketSession.getInitLatch().countDown();
-                socketSession.getDawdlerConnection().rebuildSessionGroup();
-                if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
-                    socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
-                }
-            } else {
-                socketSession.getInitLatch().countDown();
-                throw new IllegalAccessException("Invalid auth !");
-            }
-        } else
-            throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
-        data = null;
-    }
+	public void process() throws Exception {
+		if (compress)
+			data = ThresholdCompressionStrategy.staticSingle().decompress(data);
+		Object obj = serializer.deserialize(data);
+		if (ioHandler != null)
+			ioHandler.messageReceived(socketSession, obj);
+		if (obj instanceof ResponseBean) {
+			ResponseBean response = (ResponseBean) obj;
+			long seq = response.getSeq();
+			InvokeFuture<Object> invoke = socketSession.getFutures().remove(seq);
+			if (response.getCause() != null)
+				invoke.setCause(response.getCause());
+			else {
+				invoke.setResult(response.getTarget());
+			}
+		} else if (obj instanceof AuthResponseBean) {
+			AuthResponseBean authResponse = (AuthResponseBean) obj;
+			if (authResponse.isSuccess()) {
+				List<SocketSession> sessions = new ArrayList<>();
+				List<SocketSession> preSessions = socketSession.getDawdlerConnection().getSessionGroup()
+						.putIfAbsent(socketSession.getRemoteAddress(), sessions);
+				if (preSessions != null) {
+					sessions = preSessions;
+				}
+				sessions.add(socketSession);
+				if (ioHandler != null)
+					ioHandler.channelOpen(socketSession);
+				socketSession.getInitLatch().countDown();
+				socketSession.getDawdlerConnection().rebuildSessionGroup();
+				if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
+					socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
+				}
+			} else {
+				socketSession.getInitLatch().countDown();
+				throw new IllegalAccessException("Invalid auth !");
+			}
+		} else
+			throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
+		data = null;
+	}
 
-    public void write() throws Exception {
-        CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
-        data = cr.getBuffer();
-        synchronized (socketSession) {
-            ByteBuffer bf = socketSession.getWriteBuffer();
-            int size = data.length + 1;
-            int capacity = size + 4;
-            PoolBuffer pb = null;
-            try {
-                if (capacity > SocketSession.CAPACITY) {
-                    pb = PoolBuffer.selectPool(capacity);
-                    if (pb == null) {
-                        bf = ByteBuffer.allocate(capacity);
-                        logger.warn("The serialized object is too large.\t size :" + capacity);
-                    } else
-                        bf = pb.getByteBuffer();
-                }
-                bf.putInt(size);
-                bf.put((byte) (cr.isCompressed() ? headData | 1 : headData));
-                bf.put(data);
-                bf.flip();
-                socketSession.write(bf);
-            } finally {
-                bf.clear();
-                if (pb != null) {
-                    pb.release(bf);
-                }
-            }
-        }
-    }
+	public void write() throws Exception {
+		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
+		data = cr.getBuffer();
+		synchronized (socketSession) {
+			ByteBuffer bf = socketSession.getWriteBuffer();
+			int size = data.length + 1;
+			int capacity = size + 4;
+			PoolBuffer pb = null;
+			try {
+				if (capacity > SocketSession.CAPACITY) {
+					pb = PoolBuffer.selectPool(capacity);
+					if (pb == null) {
+						bf = ByteBuffer.allocate(capacity);
+						logger.warn("The serialized object is too large.\t size :" + capacity);
+					} else
+						bf = pb.getByteBuffer();
+				}
+				bf.putInt(size);
+				bf.put((byte) (cr.isCompressed() ? headData | 1 : headData));
+				bf.put(data);
+				bf.flip();
+				socketSession.write(bf);
+			} finally {
+				bf.clear();
+				if (pb != null) {
+					pb.release(bf);
+				}
+			}
+		}
+	}
 }

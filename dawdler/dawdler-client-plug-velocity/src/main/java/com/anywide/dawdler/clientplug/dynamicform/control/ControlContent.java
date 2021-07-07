@@ -25,27 +25,27 @@ package com.anywide.dawdler.clientplug.dynamicform.control;
  * @email suxuan696@gmail.com
  */
 public interface ControlContent {
-    String CONTROLNAMEREPLACE = "controlnamereplace";
-    String CONTROLTYPEREPLACE = "controltypereplace";
-    String CSSREPLACE = "cssreplace";
-    String VALIDATERULEREPLACE = "validaterulereplace";
-    String VALUEREPLACE = "valuereplace";
-    String VIEWNAMEREPLACE = "viewnamereplace";
-    String TAGVALUE = " value=\"" + VALUEREPLACE + "\"";
-    String TAGVALIDATE = " validaterule=\"" + VALIDATERULEREPLACE + "\"";
-    String TAGCSS = " style=\"" + CSSREPLACE + "\"";
-    String CHECKED = " checked=\"checked\"";
-    String SELECTED = " selected";
-    String CHECKEDREPLACE = "checkedreplace";
-    String INPUTSTART = "<input type=\"" + CONTROLTYPEREPLACE + "\"" + " name=\""
-            + CONTROLNAMEREPLACE + "\"" + " id=\"" + CONTROLNAMEREPLACE + "\" viewname=\"" + VIEWNAMEREPLACE + "\"";
-    String INPUTEND = "/>";
-    String SELECTSTART = "<select name=\"" + CONTROLNAMEREPLACE + "\" id=\"" + CONTROLNAMEREPLACE
-            + "\" viewname=\"" + VIEWNAMEREPLACE + "\"";
-    String SELECTOVER = "</select>";
-    String OPTIONSTART = "<option value=\"" + VALUEREPLACE + "\"" + CHECKEDREPLACE + ">";
-    String OPTIONOVER = "</option>";
-    String TEXTAREASTART = "<textarea name=\"" + CONTROLNAMEREPLACE + "\"" + " id=\""
-            + CONTROLNAMEREPLACE + "\" viewname=\"" + VIEWNAMEREPLACE + "\"";
-    String TEXTAREAOVER = "</textarea>";
+	String CONTROLNAMEREPLACE = "controlnamereplace";
+	String CONTROLTYPEREPLACE = "controltypereplace";
+	String CSSREPLACE = "cssreplace";
+	String VALIDATERULEREPLACE = "validaterulereplace";
+	String VALUEREPLACE = "valuereplace";
+	String VIEWNAMEREPLACE = "viewnamereplace";
+	String TAGVALUE = " value=\"" + VALUEREPLACE + "\"";
+	String TAGVALIDATE = " validateRule=\"" + VALIDATERULEREPLACE + "\"";
+	String TAGCSS = " style=\"" + CSSREPLACE + "\"";
+	String CHECKED = " checked=\"checked\"";
+	String SELECTED = " selected";
+	String CHECKEDREPLACE = "checkedreplace";
+	String INPUTSTART = "<input type=\"" + CONTROLTYPEREPLACE + "\"" + " name=\"" + CONTROLNAMEREPLACE + "\"" + " id=\""
+			+ CONTROLNAMEREPLACE + "\" viewName=\"" + VIEWNAMEREPLACE + "\"";
+	String INPUTEND = "/>";
+	String SELECTSTART = "<select name=\"" + CONTROLNAMEREPLACE + "\" id=\"" + CONTROLNAMEREPLACE + "\" viewName=\""
+			+ VIEWNAMEREPLACE + "\"";
+	String SELECTOVER = "</select>";
+	String OPTIONSTART = "<option value=\"" + VALUEREPLACE + "\"" + CHECKEDREPLACE + ">";
+	String OPTIONOVER = "</option>";
+	String TEXTAREASTART = "<textarea name=\"" + CONTROLNAMEREPLACE + "\"" + " id=\"" + CONTROLNAMEREPLACE
+			+ "\" viewName=\"" + VIEWNAMEREPLACE + "\"";
+	String TEXTAREAOVER = "</textarea>";
 }

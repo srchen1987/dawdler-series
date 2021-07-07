@@ -18,6 +18,11 @@ package com.anywide.dawdler.clientplug.load.classloader;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
+
+import com.anywide.dawdler.core.annotation.Order;
+import com.anywide.dawdler.core.order.OrderComparator;
+import com.anywide.dawdler.core.order.OrderData;
 
 /**
  * @author jackson.song
@@ -28,19 +33,27 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class RemoteClassLoaderFireHolder {
-    private static final RemoteClassLoaderFireHolder remoteClassLoaderFireHolder = new RemoteClassLoaderFireHolder();
-    private final List<RemoteClassLoderFire> fires = new ArrayList<>();
+	private static final RemoteClassLoaderFireHolder remoteClassLoaderFireHolder = new RemoteClassLoaderFireHolder();
+	private final List<OrderData<RemoteClassLoderFire>> fires = new ArrayList<>();
 
-    public static RemoteClassLoaderFireHolder getInstance() {
-        return remoteClassLoaderFireHolder;
-    }
+	public static RemoteClassLoaderFireHolder getInstance() {
+		return remoteClassLoaderFireHolder;
+	}
 
-    public void addRemoteClassLoaderFire(RemoteClassLoderFire remoteClassLoderFire) {
-        if (remoteClassLoderFire != null)
-            fires.add(remoteClassLoderFire);
-    }
+	private RemoteClassLoaderFireHolder() {
+		ServiceLoader.load(RemoteClassLoderFire.class).forEach(service -> {
+			OrderData<RemoteClassLoderFire> orderData = new OrderData<>();
+			Order order = service.getClass().getAnnotation(Order.class);
+			if (order != null) {
+				orderData.setOrder(order.value());
+			}
+			orderData.setData(service);
+			fires.add(orderData);
+		});
+		OrderComparator.sort(fires);
+	}
 
-    List<RemoteClassLoderFire> getRemoteClassLoaderFire() {
-        return fires;
-    }
+	List<OrderData<RemoteClassLoderFire>> getRemoteClassLoaderFire() {
+		return fires;
+	}
 }

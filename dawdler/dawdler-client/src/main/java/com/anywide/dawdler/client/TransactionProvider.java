@@ -26,12 +26,11 @@ package com.anywide.dawdler.client;
  */
 public class TransactionProvider {
 
-    public static Transaction getTransaction(String groupName) {
-        ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
-        if (cp == null)
-            throw new IllegalArgumentException("not find " + groupName + " provider!");
-        DawdlerConnection con = cp.getConnection();
-        return new Transaction(con);
-    }
+	public static Transaction getTransaction(String groupName) {
+		ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
+		if (cp == null)
+			throw new IllegalArgumentException("not find " + groupName + " provider!");
+		return new Transaction(cp.getConnections());
+	}
 
 }

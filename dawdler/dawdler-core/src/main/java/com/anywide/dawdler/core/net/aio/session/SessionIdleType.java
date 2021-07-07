@@ -25,5 +25,5 @@ package com.anywide.dawdler.core.net.aio.session;
  * @email suxuan696@gmail.com
  */
 public enum SessionIdleType {
-    READ, WRITE
+	READ, WRITE
 }

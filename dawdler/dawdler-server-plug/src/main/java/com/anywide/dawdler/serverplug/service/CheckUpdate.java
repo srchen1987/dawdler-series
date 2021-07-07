@@ -29,5 +29,5 @@ import com.anywide.dawdler.serverplug.bean.XmlBean;
  */
 @RemoteService
 public interface CheckUpdate {
-    XmlBean check(String host);
+	XmlBean check(String host);
 }

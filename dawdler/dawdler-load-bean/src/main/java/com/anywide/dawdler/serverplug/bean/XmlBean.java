@@ -16,9 +16,9 @@
  */
 package com.anywide.dawdler.serverplug.bean;
 
-import org.dom4j.Document;
-
 import java.io.Serializable;
+
+import org.dom4j.Document;
 
 /**
  * @author jackson.song
@@ -29,21 +29,21 @@ import java.io.Serializable;
  * @email suxuan696@gmail.com
  */
 public class XmlBean implements Serializable {
-    private static final long serialVersionUID = -4472800116121363695L;
-    private Document document;
+	private static final long serialVersionUID = -4472800116121363695L;
+	private Document document;
 
-    public XmlBean() {
-    }
+	public XmlBean() {
+	}
 
-    public XmlBean(Document document) {
-        this.document = document;
-    }
+	public XmlBean(Document document) {
+		this.document = document;
+	}
 
-    public Document getDocument() {
-        return document;
-    }
+	public Document getDocument() {
+		return document;
+	}
 
-    public void setDocument(Document document) {
-        this.document = document;
-    }
+	public void setDocument(Document document) {
+		this.document = document;
+	}
 }

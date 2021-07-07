@@ -27,33 +27,33 @@ import java.io.Serializable;
  * @email suxuan696@gmail.com
  */
 public class ResponseBean implements Serializable {
-    private static final long serialVersionUID = -7692626494747302648L;
-    private long seq;
-    private Object target;
-    private Throwable cause;
+	private static final long serialVersionUID = -7692626494747302648L;
+	private long seq;
+	private Object target;
+	private Throwable cause;
 
-    public long getSeq() {
-        return seq;
-    }
+	public long getSeq() {
+		return seq;
+	}
 
-    public void setSeq(long seq) {
-        this.seq = seq;
-    }
+	public void setSeq(long seq) {
+		this.seq = seq;
+	}
 
-    public Object getTarget() {
-        return target;
-    }
+	public Object getTarget() {
+		return target;
+	}
 
-    public void setTarget(Object target) {
-        this.target = target;
-    }
+	public void setTarget(Object target) {
+		this.target = target;
+	}
 
-    public Throwable getCause() {
-        return cause;
-    }
+	public Throwable getCause() {
+		return cause;
+	}
 
-    public void setCause(Throwable cause) {
-        this.cause = cause;
-    }
+	public void setCause(Throwable cause) {
+		this.cause = cause;
+	}
 
 }

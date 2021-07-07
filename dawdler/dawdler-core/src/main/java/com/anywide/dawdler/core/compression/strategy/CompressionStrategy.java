@@ -27,7 +27,7 @@ import java.io.IOException;
  * @email suxuan696@gmail.com
  */
 public interface CompressionStrategy {
-    CompressionWrapper compress(byte[] buffer) throws IOException;
+	CompressionWrapper compress(byte[] buffer) throws IOException;
 
-    byte[] decompress(byte[] buffer) throws IOException;
+	byte[] decompress(byte[] buffer) throws IOException;
 }

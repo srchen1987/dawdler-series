@@ -27,9 +27,9 @@ import java.nio.ByteBuffer;
  * @email suxuan696@gmail.com
  */
 public class HeapBufferCreator implements BufferCreator {
-    @Override
-    public ByteBuffer createByteBuffer(int capacity) {
-        return ByteBuffer.allocate(capacity);
-    }
+	@Override
+	public ByteBuffer createByteBuffer(int capacity) {
+		return ByteBuffer.allocate(capacity);
+	}
 
 }

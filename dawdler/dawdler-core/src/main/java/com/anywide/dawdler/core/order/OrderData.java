@@ -25,27 +25,27 @@ package com.anywide.dawdler.core.order;
  * @email suxuan696@gmail.com
  */
 public class OrderData<T> implements Order {
-    private int order;
-    private T data;
+	private int order;
+	private T data;
 
-    public int getOrder() {
-        return order;
-    }
+	public int getOrder() {
+		return order;
+	}
 
-    public void setOrder(int order) {
-        this.order = order;
-    }
+	public void setOrder(int order) {
+		this.order = order;
+	}
 
-    public T getData() {
-        return data;
-    }
+	public T getData() {
+		return data;
+	}
 
-    public void setData(T data) {
-        this.data = data;
-    }
+	public void setData(T data) {
+		this.data = data;
+	}
 
-    @Override
-    public String toString() {
-        return data + "\t" + order;
-    }
+	@Override
+	public String toString() {
+		return data + "\t" + order;
+	}
 }

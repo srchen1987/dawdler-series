@@ -28,55 +28,55 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MaxSizeRuleOperator extends RegexRuleOperator {
-    public static final String RULEKEY = "^maxsize:([1-9]{1}\\d*$)";
+	public static final String RULEKEY = "^maxsize:([1-9]{1}\\d*$)";
 
-    public MaxSizeRuleOperator() {
-        super(RULEKEY);
-    }
+	public MaxSizeRuleOperator() {
+		super(RULEKEY);
+	}
 
-    @Override
-    public String validate(Object value, Matcher matcher) {
-        boolean flag = true;
-        int i = Integer.parseInt(matcher.group(1));
-        String error = "不能大于" + i + "个字符!";
-        if (value == null)
-            return null;
-        if (value instanceof String) {
-            if (isEmpty(value.toString()))
-                return null;
-            if (((String) value).trim().length() > i)
-                return error;
-        }
-        if (value instanceof String[]) {
-            String[] values = (String[]) value;
-            for (String v : values) {
-                if (isEmpty(v)) {
-                    continue;
-                }
-                if (v.trim().length() > i) {
-                    flag = false;
-                    break;
-                }
-            }
-        } else if (value instanceof List) {
-            List values = (List) value;
-            for (Object o : values) {
-                if (isEmpty(o.toString())) {
-                    continue;
-                }
-                if (o.toString().trim().length() > i) {
-                    flag = false;
-                    break;
-                }
-            }
-        }
-        if (!flag)
-            return error;
-        return null;
-    }
+	@Override
+	public String validate(Object value, Matcher matcher) {
+		boolean flag = true;
+		int i = Integer.parseInt(matcher.group(1));
+		String error = "不能大于" + i + "个字符!";
+		if (value == null)
+			return null;
+		if (value instanceof String) {
+			if (isEmpty(value.toString()))
+				return null;
+			if (((String) value).trim().length() > i)
+				return error;
+		}
+		if (value instanceof String[]) {
+			String[] values = (String[]) value;
+			for (String v : values) {
+				if (isEmpty(v)) {
+					continue;
+				}
+				if (v.trim().length() > i) {
+					flag = false;
+					break;
+				}
+			}
+		} else if (value instanceof List) {
+			List values = (List) value;
+			for (Object o : values) {
+				if (isEmpty(o.toString())) {
+					continue;
+				}
+				if (o.toString().trim().length() > i) {
+					flag = false;
+					break;
+				}
+			}
+		}
+		if (!flag)
+			return error;
+		return null;
+	}
 
-    @Override
-    public String toString() {
-        return "字符串或数组中的字符串的长度不能大于指定长度,如：maxsize:32!";
-    }
+	@Override
+	public String toString() {
+		return "字符串或数组中的字符串的长度不能大于指定长度,如：maxsize:32!";
+	}
 }

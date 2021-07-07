@@ -16,6 +16,9 @@
  */
 package com.anywide.dawdler.client.filter;
 
+import java.net.SocketAddress;
+import java.util.Map;
+
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.bean.RequestBean;
@@ -29,80 +32,113 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @email suxuan696@gmail.com
  */
 public class RequestWrapper extends RequestBean {
-    private static final long serialVersionUID = 2807385594696214109L;
-    private final SocketSession session;
-    private final RequestBean request;
-    private final int timeout;
+	private static final long serialVersionUID = 2807385594696214109L;
+	private final SocketSession session;
+	private final RequestBean request;
+	private final int timeout;
 
-    private final CircuitBreaker circuitBreaker;
-    private final Class proxyInterface;
+	private final CircuitBreaker circuitBreaker;
+	private final Class proxyInterface;
 
-    public RequestWrapper(RequestBean request, SocketSession session, CircuitBreaker circuitBreaker,
-                          Class proxyInterface, int timeout) {
-        super.setSeq(request.getSeq());
-        super.setServiceName(request.getServiceName());
-        super.setMethodName(request.getMethodName());
-        super.setTypes(request.getTypes());
-        super.setArgs(request.getArgs());
-        super.setFuzzy(request.isFuzzy());
-        super.setPath(request.getPath());
-        this.timeout = timeout;
-        this.request = request;
-        this.session = session;
-        this.circuitBreaker = circuitBreaker;
-        this.proxyInterface = proxyInterface;
-    }
+	public RequestWrapper(RequestBean request, SocketSession session, CircuitBreaker circuitBreaker,
+			Class proxyInterface, int timeout) {
+		this.timeout = timeout;
+		this.request = request;
+		this.session = session;
+		this.circuitBreaker = circuitBreaker;
+		this.proxyInterface = proxyInterface;
+	}
 
-    public Class getProxyInterface() {
-        return proxyInterface;
-    }
+	@Override
+	public boolean isFuzzy() {
+		return request.isFuzzy();
+	}
 
-    public CircuitBreaker getCircuitBreaker() {
-        return circuitBreaker;
-    }
+	@Override
+	public boolean isSingle() {
+		return request.isSingle();
+	}
 
-    RequestBean getRequest() {
-        return request;
-    }
+	@Override
+	public String getPath() {
+		return request.getPath();
+	}
 
-    SocketSession getSession() {
-        return session;
-    }
+	@Override
+	public long getSeq() {
+		return request.getSeq();
+	}
 
-    public int getTimeout() {
-        return timeout;
-    }
+	@Override
+	public String getServiceName() {
+		return request.getServiceName();
+	}
 
-    @Override
-    public void setFuzzy(boolean fuzzy) {
-    }
+	@Override
+	public String getMethodName() {
+		return request.getMethodName();
+	}
 
-    @Override
-    public void setPath(String path) {
-    }
+	@Override
+	public Class<?>[] getTypes() {
+		return request.getTypes();
+	}
 
-    @Override
-    public void setSingle(boolean single) {
-    }
+	@Override
+	public Object[] getArgs() {
+		return request.getArgs();
+	}
 
-    @Override
-    public void setSeq(long seq) {
-    }
+	@Override
+	public String getAttachment(String key) {
+		return request.getAttachment(key);
+	}
 
-    @Override
-    public void setServiceName(String serviceName) {
-    }
+	@Override
+	public Map<String, String> getAttachments() {
+		return request.getAttachments();
+	}
 
-    @Override
-    public void setMethodName(String methodName) {
-    }
+	public Class getProxyInterface() {
+		return proxyInterface;
+	}
 
-    @Override
-    public void setTypes(Class[] types) {
-    }
+	public CircuitBreaker getCircuitBreaker() {
+		return circuitBreaker;
+	}
 
-    @Override
-    public void setArgs(Object... args) {
-    }
+	RequestBean getRequest() {
+		return request;
+	}
 
+	SocketSession getSession() {
+		return session;
+	}
+
+	public int getTimeout() {
+		return timeout;
+	}
+
+	public SocketAddress getRemoteAddress() {
+		return session.getRemoteAddress();
+	}
+
+	public SocketAddress getLocalAddress() {
+		return session.getLocalAddress();
+	}
+
+	@Override
+	public void setAttachment(String key, String value) {
+		request.setAttachment(key, value);
+	}
+
+	@Override
+	public void setAttachmentIfAbsent(String key, String value) {
+		request.setAttachmentIfAbsent(key, value);
+	}
+
+	@Override
+	public void setAttachments(Map<String, String> attachments) {
+		request.setAttachments(attachments);
+	}
 }
