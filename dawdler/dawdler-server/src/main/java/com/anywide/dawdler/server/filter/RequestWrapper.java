@@ -16,8 +16,12 @@
  */
 package com.anywide.dawdler.server.filter;
 
+import java.net.SocketAddress;
+import java.util.Map;
+
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.server.bean.ServicesBean;
+import com.anywide.dawdler.server.net.aio.session.SocketSession;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 
 /**
@@ -29,65 +33,102 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @email suxuan696@gmail.com
  */
 public class RequestWrapper extends RequestBean {
-    private static final long serialVersionUID = 2807385594696214109L;
-    private final RequestBean request;
-    private final ServicesBean services;
-    private final ServiceExecutor serviceExecutor;
+	private static final long serialVersionUID = 2807385594696214109L;
+	private final RequestBean request;
+	private final ServicesBean services;
+	private final ServiceExecutor serviceExecutor;
+	private final SocketSession session;
 
-    public RequestWrapper(RequestBean request, ServicesBean services, ServiceExecutor serviceExecutor) {
-        super.setSeq(request.getSeq());
-        super.setServiceName(request.getServiceName());
-        super.setMethodName(request.getMethodName());
-        super.setTypes(request.getTypes());
-        super.setArgs(request.getArgs());
-        super.setFuzzy(request.isFuzzy());
-        this.request = request;
-        this.services = services;
-        this.serviceExecutor = serviceExecutor;
-    }
+	public RequestWrapper(RequestBean request, ServicesBean services, ServiceExecutor serviceExecutor,
+			SocketSession session) {
+		this.request = request;
+		this.services = services;
+		this.serviceExecutor = serviceExecutor;
+		this.session = session;
+	}
 
-    public ServiceExecutor getServiceExecutor() {
-        return serviceExecutor;
-    }
+	@Override
+	public boolean isFuzzy() {
+		return request.isFuzzy();
+	}
 
-    public ServicesBean getServices() {
-        return services;
-    }
+	@Override
+	public boolean isSingle() {
+		return request.isSingle();
+	}
 
-    RequestBean getRequest() {
-        return request;
-    }
+	@Override
+	public String getPath() {
+		return request.getPath();
+	}
 
-    @Override
-    public void setFuzzy(boolean fuzzy) {
-    }
+	@Override
+	public long getSeq() {
+		return request.getSeq();
+	}
 
-    @Override
-    public void setPath(String path) {
-    }
+	@Override
+	public String getServiceName() {
+		return request.getServiceName();
+	}
 
-    @Override
-    public void setSingle(boolean single) {
-    }
+	@Override
+	public String getMethodName() {
+		return request.getMethodName();
+	}
 
-    @Override
-    public void setSeq(long seq) {
-    }
+	@Override
+	public Class<?>[] getTypes() {
+		return request.getTypes();
+	}
 
-    @Override
-    public void setServiceName(String serviceName) {
-    }
+	@Override
+	public Object[] getArgs() {
+		return request.getArgs();
+	}
 
-    @Override
-    public void setMethodName(String methodName) {
-    }
+	@Override
+	public String getAttachment(String key) {
+		return request.getAttachment(key);
+	}
 
-    @Override
-    public void setTypes(Class[] types) {
-    }
+	@Override
+	public Map<String, String> getAttachments() {
+		return request.getAttachments();
+	}
 
-    @Override
-    public void setArgs(Object... args) {
-    }
+	public ServiceExecutor getServiceExecutor() {
+		return serviceExecutor;
+	}
 
+	public ServicesBean getServices() {
+		return services;
+	}
+
+	RequestBean getRequest() {
+		return request;
+	}
+
+	public SocketAddress getRemoteAddress() {
+		return session.getRemoteAddress();
+	}
+
+	public SocketAddress getLocalAddress() {
+		return session.getLocalAddress();
+	}
+
+	@Override
+	public void setAttachment(String key, String value) {
+		request.setAttachment(key, value);
+	}
+
+	@Override
+	public void setAttachmentIfAbsent(String key, String value) {
+		request.setAttachmentIfAbsent(key, value);
+	}
+
+	@Override
+	public void setAttachments(Map<String, String> attachments) {
+		request.setAttachments(attachments);
+	}
 }

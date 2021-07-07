@@ -1,0 +1,2 @@
+### dawdler对mybatis的支持模块
+此模块通过mybatis3.5.6 进行改造，session为单例模式了，同时去除cache这个功能，完全无意义

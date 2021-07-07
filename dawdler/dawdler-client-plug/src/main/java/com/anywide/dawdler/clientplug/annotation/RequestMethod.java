@@ -25,5 +25,5 @@ package com.anywide.dawdler.clientplug.annotation;
  * @email suxuan696@gmail.com
  */
 public enum RequestMethod {
-    GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE
+	GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE
 }

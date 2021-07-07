@@ -25,22 +25,22 @@ package com.anywide.dawdler.core.exception;
  * @email suxuan696@gmail.com
  */
 public class DawdlerOperateException extends RuntimeException {
-    private static final long serialVersionUID = -3550553336288122682L;
+	private static final long serialVersionUID = -3550553336288122682L;
 
-    public DawdlerOperateException(String msg) {
-        super(msg);
-    }
+	public DawdlerOperateException(String msg) {
+		super(msg);
+	}
 
-    public DawdlerOperateException(Exception e) {
-        super(e);
-    }
+	public DawdlerOperateException(Exception e) {
+		super(e);
+	}
 
-    public DawdlerOperateException(Throwable e) {
-        super(e);
-    }
+	public DawdlerOperateException(Throwable e) {
+		super(e);
+	}
 
-    @Override
-    public void printStackTrace() {
-        System.err.println(getMessage());
-    }
+	@Override
+	public void printStackTrace() {
+		System.err.println(getMessage());
+	}
 }

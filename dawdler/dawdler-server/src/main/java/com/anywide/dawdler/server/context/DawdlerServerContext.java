@@ -16,10 +16,10 @@
  */
 package com.anywide.dawdler.server.context;
 
+import java.nio.channels.AsynchronousServerSocketChannel;
+
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.deploys.ServiceRoot;
-
-import java.nio.channels.AsynchronousServerSocketChannel;
 
 /**
  * @author jackson.song
@@ -30,38 +30,37 @@ import java.nio.channels.AsynchronousServerSocketChannel;
  * @email suxuan696@gmail.com
  */
 public class DawdlerServerContext {
-    private final ServiceRoot serviceRoot;
-    private final ServerConfig serverConfig;
-    private AsynchronousServerSocketChannel asynchronousServerSocketChannel;
+	private final ServiceRoot serviceRoot;
+	private final ServerConfig serverConfig;
+	private AsynchronousServerSocketChannel asynchronousServerSocketChannel;
 
-    public DawdlerServerContext(ServerConfig serverConfig) {
-        serviceRoot = new ServiceRoot();
-        this.serverConfig = serverConfig;
-    }
+	public DawdlerServerContext(ServerConfig serverConfig) {
+		serviceRoot = new ServiceRoot();
+		this.serverConfig = serverConfig;
+	}
 
-    public ServerConfig getServerConfig() {
-        return serverConfig;
-    }
+	public ServerConfig getServerConfig() {
+		return serverConfig;
+	}
 
-    public AsynchronousServerSocketChannel getAsynchronousServerSocketChannel() {
-        return asynchronousServerSocketChannel;
-    }
+	public AsynchronousServerSocketChannel getAsynchronousServerSocketChannel() {
+		return asynchronousServerSocketChannel;
+	}
 
-    public void setAsynchronousServerSocketChannel(AsynchronousServerSocketChannel asynchronousServerSocketChannel) {
-        this.asynchronousServerSocketChannel = asynchronousServerSocketChannel;
-    }
+	public void setAsynchronousServerSocketChannel(AsynchronousServerSocketChannel asynchronousServerSocketChannel) {
+		this.asynchronousServerSocketChannel = asynchronousServerSocketChannel;
+	}
 
-    public void initApplication() {
-        serviceRoot.initApplication(this);
-    }
+	public void initApplication() {
+		serviceRoot.initApplication(this);
+	}
 
-    public void destroyedApplication() {
-        serviceRoot.destroyedApplication();
-    }
+	public void destroyedApplication() {
+		serviceRoot.destroyedApplication();
+	}
 
-    public void prepareDestroyedApplication() {
-        serviceRoot.prepareDestroyedApplication();
-    }
-
+	public void prepareDestroyedApplication() {
+		serviceRoot.prepareDestroyedApplication();
+	}
 
 }

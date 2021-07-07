@@ -16,10 +16,10 @@
  */
 package com.anywide.dawdler.clientplug.web.view.templatemanager;
 
+import java.util.Properties;
+
 import org.apache.velocity.Template;
 import org.apache.velocity.app.VelocityEngine;
-
-import java.util.Properties;
 
 /**
  * @author jackson.song
@@ -30,24 +30,24 @@ import java.util.Properties;
  * @email suxuan696@gmail.com
  */
 public class VelocityTemplateManager implements TemplateManager {
-    private static VelocityTemplateManager templateManager;
-    private final VelocityEngine engine = new VelocityEngine();
+	private static VelocityTemplateManager templateManager;
+	private final VelocityEngine engine = new VelocityEngine();
 
-    private VelocityTemplateManager() {
-    }
+	private VelocityTemplateManager() {
+	}
 
-    public static synchronized VelocityTemplateManager getInstance() {
-        if (templateManager == null)
-            templateManager = new VelocityTemplateManager();
-        return templateManager;
-    }
+	public static synchronized VelocityTemplateManager getInstance() {
+		if (templateManager == null)
+			templateManager = new VelocityTemplateManager();
+		return templateManager;
+	}
 
-    public Template getTemplate(String vmName) {
-        return engine.getTemplate(vmName, "UTF-8");
-    }
+	public Template getTemplate(String vmName) {
+		return engine.getTemplate(vmName, "UTF-8");
+	}
 
-    public void init(Properties ps) {
-        engine.init(ps);
-    }
+	public void init(Properties ps) {
+		engine.init(ps);
+	}
 
 }

@@ -27,5 +27,5 @@ import java.util.Properties;
  * @email suxuan696@gmail.com
  */
 public interface TemplateManager {
-    void init(Properties ps);
+	void init(Properties ps);
 }

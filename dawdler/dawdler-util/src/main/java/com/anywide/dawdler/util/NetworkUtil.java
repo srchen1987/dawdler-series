@@ -17,7 +17,11 @@
 package com.anywide.dawdler.util;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.Inet4Address;
+import java.net.Inet6Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -32,45 +36,49 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class NetworkUtil {
-    public static final String IPV6 = "::";
-    public static final String IPV4 = "0.0.0.0";
+	public static final String IPV6 = "::";
+	public static final String IPV4 = "0.0.0.0";
 
-    /**
-     * @return List<NetworkInterface>
-     * @throws SocketException
-     * @Title selectActiveNetworkInterfaces
-     * @Description 获取可用网络接口
-     * @author jackson.song
-     * @date 2018年08月13日
-     */
-    public static List<NetworkInterface> selectActiveNetworkInterfaces() throws SocketException {
-        List<NetworkInterface> interfacesList = new ArrayList<>();
-        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-        while (interfaces.hasMoreElements()) {
-            NetworkInterface nif = interfaces.nextElement();
-            if (nif == null || nif.isLoopback() || nif.isVirtual() || !nif.isUp())
-                continue;
-            interfacesList.add(nif);
-        }
-        return interfacesList;
-    }
+	/**
+	 * @return List<NetworkInterface>
+	 * @throws SocketException
+	 * @Title selectActiveNetworkInterfaces
+	 * @Description 获取可用网络接口
+	 * @author jackson.song
+	 * @date 2018年08月13日
+	 */
+	public static List<NetworkInterface> selectActiveNetworkInterfaces() throws SocketException {
+		List<NetworkInterface> interfacesList = new ArrayList<>();
+		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+		while (interfaces.hasMoreElements()) {
+			NetworkInterface nif = interfaces.nextElement();
+			if (nif == null || nif.isLoopback() || nif.isVirtual() || !nif.isUp())
+				continue;
+			interfacesList.add(nif);
+		}
+		return interfacesList;
+	}
 
-    public static String getInetAddress(String address) throws IOException {
-        if (address != null && (!address.equals(IPV4) && !address.equals(IPV6))) return address;
-        List<NetworkInterface> interfacesList = selectActiveNetworkInterfaces();
-        for (NetworkInterface networkInterface : interfacesList) {
-            Enumeration<InetAddress> inetAddress = networkInterface.getInetAddresses();
-            while (inetAddress.hasMoreElements()) {
-                InetAddress add = inetAddress.nextElement();
-                if (address == null) {
-                    if (add.isReachable(200))
-                        return add.getHostAddress();
-                } else if (address.equals(IPV6) && !(add instanceof Inet6Address)) continue;
-                else if (address.equals(IPV4) && !(add instanceof Inet4Address)) continue;
-                if (add.isReachable(200)) return add.getHostAddress();
-            }
-        }
-        return null;
-    }
+	public static String getInetAddress(String address) throws IOException {
+		if (address != null && (!address.equals(IPV4) && !address.equals(IPV6)))
+			return address;
+		List<NetworkInterface> interfacesList = selectActiveNetworkInterfaces();
+		for (NetworkInterface networkInterface : interfacesList) {
+			Enumeration<InetAddress> inetAddress = networkInterface.getInetAddresses();
+			while (inetAddress.hasMoreElements()) {
+				InetAddress add = inetAddress.nextElement();
+				if (address == null) {
+					if (add.isReachable(200))
+						return add.getHostAddress();
+				} else if (address.equals(IPV6) && !(add instanceof Inet6Address))
+					continue;
+				else if (address.equals(IPV4) && !(add instanceof Inet4Address))
+					continue;
+				if (add.isReachable(200))
+					return add.getHostAddress();
+			}
+		}
+		return null;
+	}
 
 }

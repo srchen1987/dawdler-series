@@ -34,6 +34,6 @@ import java.lang.annotation.Target;
  */
 public @interface Order {
 
-    int value() default Integer.MAX_VALUE;
+	int value() default Integer.MAX_VALUE;
 
 }

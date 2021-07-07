@@ -16,10 +16,10 @@
  */
 package com.anywide.dawdler.breaker.state;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 import com.anywide.dawdler.breaker.SlideTimeWindows;
 import com.anywide.dawdler.util.JVMTimeProvider;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author jackson.song
@@ -30,34 +30,34 @@ import java.util.concurrent.atomic.AtomicReference;
  * @email suxuan696@gmail.com
  */
 public class LocalCircuitBreakerState implements CircuitBreakerState {
-    private final SlideTimeWindows stw;
-    private final AtomicReference<State> state = new AtomicReference<State>(State.CLOSE);
-    private volatile long startTime;
+	private final SlideTimeWindows stw;
+	private final AtomicReference<State> state = new AtomicReference<State>(State.CLOSE);
+	private volatile long startTime;
 
-    public LocalCircuitBreakerState(int intervalInMs, int windowsCount) {
-        stw = new SlideTimeWindows(intervalInMs, windowsCount);
-    }
+	public LocalCircuitBreakerState(int intervalInMs, int windowsCount) {
+		stw = new SlideTimeWindows(intervalInMs, windowsCount);
+	}
 
-    public SlideTimeWindows getStw() {
-        return stw;
-    }
+	public SlideTimeWindows getStw() {
+		return stw;
+	}
 
-    public AtomicReference<State> getState() {
-        return state;
-    }
+	public AtomicReference<State> getState() {
+		return state;
+	}
 
-    @Override
-    public long getStartTime() {
-        return startTime;
-    }
+	@Override
+	public long getStartTime() {
+		return startTime;
+	}
 
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
 
-    @Override
-    public void resetStartTime() {
-        startTime = JVMTimeProvider.currentTimeMillis();
-    }
+	@Override
+	public void resetStartTime() {
+		startTime = JVMTimeProvider.currentTimeMillis();
+	}
 
 }

@@ -28,37 +28,37 @@ import java.util.regex.Pattern;
  * @email suxuan696@gmail.com
  */
 public abstract class RuleOperator {
-    protected Pattern pattern;
-    protected String ruleKey;
+	protected Pattern pattern;
+	protected String ruleKey;
 
-    public RuleOperator() {
-    }
+	public RuleOperator() {
+	}
 
-    public RuleOperator(String regex, boolean isRegex) {
-        if (isRegex)
-            this.pattern = Pattern.compile(regex);
-        else {
-            this.ruleKey = regex;
-        }
-    }
+	public RuleOperator(String regex, boolean isRegex) {
+		if (isRegex)
+			this.pattern = Pattern.compile(regex);
+		else {
+			this.ruleKey = regex;
+		}
+	}
 
-    public Pattern getPattern() {
-        return pattern;
-    }
+	public Pattern getPattern() {
+		return pattern;
+	}
 
-    public void setPattern(Pattern pattern) {
-        this.pattern = pattern;
-    }
+	public void setPattern(Pattern pattern) {
+		this.pattern = pattern;
+	}
 
-    public String getRuleKey() {
-        return ruleKey;
-    }
+	public String getRuleKey() {
+		return ruleKey;
+	}
 
-    public void setRuleKey(String ruleKey) {
-        this.ruleKey = ruleKey;
-    }
+	public void setRuleKey(String ruleKey) {
+		this.ruleKey = ruleKey;
+	}
 
-    public abstract String validate(Object value);
+	public abstract String validate(Object value);
 
-    public abstract String validate(Object value, Matcher matcher);
+	public abstract String validate(Object value, Matcher matcher);
 }

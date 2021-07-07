@@ -16,17 +16,22 @@
  */
 package com.anywide.dawdler.serverplug.util;
 
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.XmlObject;
+import java.io.File;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.dom4j.Attribute;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.*;
+import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
@@ -37,78 +42,54 @@ import java.util.*;
  * @email suxuan696@gmail.com
  */
 public class XmlConfig {
-    private static final String CONFIGPATH = "src_config.xml";
-    private static final Logger logger = LoggerFactory.getLogger(XmlConfig.class);
-    private static long updatetime = 0;
-    private static XmlObject xmlobject = null;
-    private static final Map<String, Map<String, String>> datas = Collections.synchronizedMap(new HashMap<>());
+	private static final String CONFIG_PATH = "services-config.xml";
+	private static final Logger logger = LoggerFactory.getLogger(XmlConfig.class);
+	private static XmlObject xmlobject = null;
+	private static final Map<String, Map<String, String>> datas = Collections.synchronizedMap(new HashMap<>());
 
-    static {
-        isUpdate();
-        loadXML();
-    }
+	static {
+		loadXML();
+	}
 
-    private XmlConfig() {
-    }
+	private XmlConfig() {
+	}
 
-    public static XmlObject getConfig() {
-        if (isUpdate()) {
-            loadXML();
-        }
-        return xmlobject;
-    }
+	public static XmlObject getConfig() {
+		return xmlobject;
+	}
 
-    public static String getRemoteLoad() {
-        if (isUpdate()) {
-            loadXML();
-        }
-        Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote_load");
-        if (ele == null)
-            throw new NullPointerException(CONFIGPATH + "config\remote_load not found！");
-        String path = ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
-        return path;
-    }
+	public static String getRemoteLoad() {
+		Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote-load");
+		if (ele == null)
+			throw new NullPointerException(CONFIG_PATH + "config/remote-load not found！");
+		String path = ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
+		return path;
+	}
 
-    private static boolean isUpdate() {
-        File file = new File(DawdlerTool.getcurrentPath() + File.separator + CONFIGPATH);
-        if (!file.exists()) {
-            logger.error("not found :" + CONFIGPATH);
-            return false;
-        }
-        if (updatetime != file.lastModified()) {
-            updatetime = file.lastModified();
-            return true;
-        }
-        return false;
-    }
+	public static Map<String, Map<String, String>> getDatas() {
+		return datas;
+	}
 
-    public static Map<String, Map<String, String>> getDatas() {
-        if (isUpdate()) {
-            loadXML();
-        }
-        return datas;
-    }
+	private static void loadXML() {
+		try {
+			xmlobject = XmlObject.loadClassPathXML(File.separator + CONFIG_PATH);
+		} catch (DocumentException | IOException e) {
+			logger.error("", e);
+		}
+		loadDataSource();
+	}
 
-    private static void loadXML() {
-        try {
-            xmlobject = XmlObject.loadClassPathXML(File.separator + CONFIGPATH);
-        } catch (DocumentException | IOException e) {
-            logger.error("", e);
-        }
-        loadDataSource();
-    }
-
-    private static void loadDataSource() {
-        List<Element> list = xmlobject.selectNodes("/config/server-datas/server-data");
-        for (Iterator<Element> it = list.iterator(); it.hasNext(); ) {
-            Element ele = it.next();
-            Map items = new HashMap();
-            for (Iterator its = ele.attributes().iterator(); its.hasNext(); ) {
-                Attribute ab = (Attribute) its.next();
-                items.put(ab.getName(), ab.getValue());
-            }
-            datas.put(ele.attributeValue("id"), items);
-        }
-    }
+	private static void loadDataSource() {
+		List<Element> list = xmlobject.selectNodes("/config/server-datas/server-data");
+		for (Iterator<Element> it = list.iterator(); it.hasNext();) {
+			Element ele = it.next();
+			Map<String, String> items = new HashMap<>();
+			for (Iterator<Attribute> its = ele.attributes().iterator(); its.hasNext();) {
+				Attribute ab = its.next();
+				items.put(ab.getName(), ab.getValue());
+			}
+			datas.put(ele.attributeValue("id"), items);
+		}
+	}
 
 }

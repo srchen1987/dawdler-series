@@ -16,12 +16,13 @@
  */
 package com.anywide.dawdler.clientplug.web.session;
 
+import java.util.concurrent.TimeUnit;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import org.checkerframework.checker.nullness.qual.NonNull;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author jackson.song
@@ -32,53 +33,51 @@ import java.util.concurrent.TimeUnit;
  * @email suxuan696@gmail.com
  */
 public class DistributedCaffeineSessionManager extends AbstractDistributedSessionManager {
-    private final int maxInactiveInterval;
-    LoadingCache<String, DawdlerHttpSession> sessions;
+	private final int maxInactiveInterval;
+	LoadingCache<String, DawdlerHttpSession> sessions;
 
-    public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize) {
-        this.maxInactiveInterval = maxInactiveInterval;
-        sessions = Caffeine.newBuilder().maximumSize(maxSize)
-                .expireAfterAccess(maxInactiveInterval, TimeUnit.SECONDS)
-                .build(this::createExpensiveGraph);
-    }
+	public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize) {
+		this.maxInactiveInterval = maxInactiveInterval;
+		sessions = Caffeine.newBuilder().maximumSize(maxSize).expireAfterAccess(maxInactiveInterval, TimeUnit.SECONDS)
+				.build(this::createExpensiveGraph);
+	}
 
-    public DawdlerHttpSession getSession(String sessionKey) {
-        return sessions.getIfPresent(sessionKey);
-    }
+	public DawdlerHttpSession getSession(String sessionKey) {
+		return sessions.getIfPresent(sessionKey);
+	}
 
-    public int getMaxInactiveInterval() {
-        return maxInactiveInterval;
-    }
+	public int getMaxInactiveInterval() {
+		return maxInactiveInterval;
+	}
 
-    private DawdlerHttpSession createExpensiveGraph(@NonNull String key) {
-        return null;
-    }
+	private DawdlerHttpSession createExpensiveGraph(@NonNull String key) {
+		return null;
+	}
 
-    @Override
-    public void close() {
-        sessions.cleanUp();
-    }
+	@Override
+	public void close() {
+		sessions.cleanUp();
+	}
 
+	@Override
+	public void removeSession(String sessionKey) {
+		DawdlerHttpSession session = sessions.get(sessionKey);
+		if (session != null) {
+			session.clear();
+			sessions.invalidate(sessionKey);
+		}
+	}
 
-    @Override
-    public void removeSession(String sessionKey) {
-        DawdlerHttpSession session = sessions.get(sessionKey);
-        if (session != null) {
-            session.clear();
-            sessions.invalidate(sessionKey);
-        }
-    }
+	@Override
+	public void addSession(String sessionKey, DawdlerHttpSession dawdlerHttpSession) {
+		sessions.put(sessionKey, dawdlerHttpSession);
+	}
 
-    @Override
-    public void addSession(String sessionKey, DawdlerHttpSession dawdlerHttpSession) {
-        sessions.put(sessionKey, dawdlerHttpSession);
-    }
-
-    @Override
-    public void removeSession(DawdlerHttpSession dawdlerHttpSession) {
-        if (dawdlerHttpSession != null) {
-            dawdlerHttpSession.clear();
-            sessions.invalidate(dawdlerHttpSession.getId());
-        }
-    }
+	@Override
+	public void removeSession(DawdlerHttpSession dawdlerHttpSession) {
+		if (dawdlerHttpSession != null) {
+			dawdlerHttpSession.clear();
+			sessions.invalidate(dawdlerHttpSession.getId());
+		}
+	}
 }

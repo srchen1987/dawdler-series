@@ -16,13 +16,12 @@
  */
 package com.anywide.dawdler.clientplug.web.interceptor;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author jackson.song
@@ -33,25 +32,35 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @email suxuan696@gmail.com
  */
 public class InterceptorProvider {
-    private static final List<OrderData<HandlerInterceptor>> handlerInterceptors = new ArrayList<>();
+	private static final List<OrderData<HandlerInterceptor>> handlerInterceptors = new CopyOnWriteArrayList<>();
 
-    public static List<OrderData<HandlerInterceptor>> getHandlerInterceptors() {
-        return handlerInterceptors;
-    }
+	public static List<OrderData<HandlerInterceptor>> getHandlerInterceptors() {
+		return handlerInterceptors;
+	}
 
-    public static synchronized void addHandlerInterceptors(HandlerInterceptor handlerInterceptor) {
-        Order co = handlerInterceptor.getClass().getAnnotation(Order.class);
-        OrderData<HandlerInterceptor> od = new OrderData<>();
-        od.setData(handlerInterceptor);
-        if (co != null) {
-            od.setOrder(co.value());
-        }
-        handlerInterceptors.add(od);
-    }
+	public static void addHandlerInterceptor(HandlerInterceptor handlerInterceptor) {
+		Order order = handlerInterceptor.getClass().getAnnotation(Order.class);
+		OrderData<HandlerInterceptor> orderData = new OrderData<>();
+		orderData.setData(handlerInterceptor);
+		if (order != null) {
+			orderData.setOrder(order.value());
+		}
+		handlerInterceptors.add(orderData);
+	}
 
-    public static void order() {
-            OrderComparator.sort(handlerInterceptors);
-    }
+	public static void removeHandlerInterceptor(Class<?> handlerInterceptorClass) {
+		if (!HandlerInterceptor.class.isAssignableFrom(handlerInterceptorClass))
+			return;
+		for (OrderData<HandlerInterceptor> orderData : handlerInterceptors) {
+			if (orderData.getData().getClass() == handlerInterceptorClass) {
+				handlerInterceptors.remove(orderData);
+				return;
+			}
+		}
+	}
 
+	public static void order() {
+		OrderComparator.sort(handlerInterceptors);
+	}
 
 }

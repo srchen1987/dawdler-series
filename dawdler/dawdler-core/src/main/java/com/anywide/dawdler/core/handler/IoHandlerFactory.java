@@ -25,13 +25,13 @@ package com.anywide.dawdler.core.handler;
  * @email suxuan696@gmail.com
  */
 public class IoHandlerFactory {
-    private static IoHandler handler = new IoHandlerAdapter();
+	private static IoHandler handler = new IoHandlerAdapter();
 
-    public static IoHandler getHandler() {
-        return handler;
-    }
+	public static IoHandler getHandler() {
+		return handler;
+	}
 
-    public static void setHandler(IoHandler handler) {
-        IoHandlerFactory.handler = handler;
-    }
+	public static void setHandler(IoHandler handler) {
+		IoHandlerFactory.handler = handler;
+	}
 }

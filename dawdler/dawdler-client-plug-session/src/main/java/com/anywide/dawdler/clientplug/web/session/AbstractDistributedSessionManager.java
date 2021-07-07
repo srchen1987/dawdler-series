@@ -16,9 +16,9 @@
  */
 package com.anywide.dawdler.clientplug.web.session;
 
-import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
-
 import javax.servlet.http.HttpSessionListener;
+
+import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 
 /**
  * @author jackson.song
@@ -29,26 +29,25 @@ import javax.servlet.http.HttpSessionListener;
  * @email suxuan696@gmail.com
  */
 public abstract class AbstractDistributedSessionManager {
-    public static final String DISTRIBUTED_SESSION_HTTPSESSION_LISTENER = "distributed_session_httpsessionlistener";
-    protected HttpSessionListener httpSessionListener;//session监听器 目前只监听 创建session 销毁session
+	public static final String DISTRIBUTED_SESSION_HTTPSESSION_LISTENER = "distributed_session_httpsession_listener";
+	protected HttpSessionListener httpSessionListener;// session监听器 目前只监听 创建session 销毁session
 
-    public HttpSessionListener getHttpSessionListener() {
-        return httpSessionListener;
-    }
+	public HttpSessionListener getHttpSessionListener() {
+		return httpSessionListener;
+	}
 
-    public void setHttpSessionListener(HttpSessionListener httpSessionListener) {
-        this.httpSessionListener = httpSessionListener;
-    }
+	public void setHttpSessionListener(HttpSessionListener httpSessionListener) {
+		this.httpSessionListener = httpSessionListener;
+	}
 
-    public abstract DawdlerHttpSession getSession(String sessionKey);
+	public abstract DawdlerHttpSession getSession(String sessionKey);
 
-    public abstract void close();
+	public abstract void close();
 
-    public abstract void removeSession(String sessionKey);
+	public abstract void removeSession(String sessionKey);
 
-    public abstract void removeSession(DawdlerHttpSession dawdlerHttpSession);
+	public abstract void removeSession(DawdlerHttpSession dawdlerHttpSession);
 
-    public abstract void addSession(String sessionKey, DawdlerHttpSession dawdlerHttpSession);
-
+	public abstract void addSession(String sessionKey, DawdlerHttpSession dawdlerHttpSession);
 
 }

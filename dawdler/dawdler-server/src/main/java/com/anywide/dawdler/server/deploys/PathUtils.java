@@ -30,36 +30,36 @@ import java.net.URL;
  * @email suxuan696@gmail.com
  */
 public class PathUtils {
-    public static URL[] getLibURL(File file, URL defaultURL) throws MalformedURLException {
-        File[] files = file.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File pathname) {
-                return pathname.getName().endsWith(".jar");
-            }
-        });
-        boolean hasDefault = defaultURL != null;
-        if (files != null) {
-            URL[] urls;
-            if (hasDefault) {
-                urls = new URL[files.length + 1];
-                urls[0] = defaultURL;
-                for (int i = 0; i < files.length; i++) {
-                    urls[i + 1] = files[i].toURI().toURL();
-                }
-            } else {
-                urls = new URL[files.length];
-                for (int i = 0; i < files.length; i++) {
-                    urls[i] = files[i].toURI().toURL();
-                }
-            }
-            return urls;
-        } else {
-            if (hasDefault) {
-                URL[] urls = new URL[1];
-                urls[0] = defaultURL;
-                return urls;
-            }
-            return null;
-        }
-    }
+	public static URL[] getLibURL(File file, URL defaultURL) throws MalformedURLException {
+		File[] files = file.listFiles(new FileFilter() {
+			@Override
+			public boolean accept(File pathname) {
+				return pathname.getName().endsWith(".jar");
+			}
+		});
+		boolean hasDefault = defaultURL != null;
+		if (files != null) {
+			URL[] urls;
+			if (hasDefault) {
+				urls = new URL[files.length + 1];
+				urls[0] = defaultURL;
+				for (int i = 0; i < files.length; i++) {
+					urls[i + 1] = files[i].toURI().toURL();
+				}
+			} else {
+				urls = new URL[files.length];
+				for (int i = 0; i < files.length; i++) {
+					urls[i] = files[i].toURI().toURL();
+				}
+			}
+			return urls;
+		} else {
+			if (hasDefault) {
+				URL[] urls = new URL[1];
+				urls[0] = defaultURL;
+				return urls;
+			}
+			return null;
+		}
+	}
 }

@@ -16,18 +16,12 @@
  */
 package com.anywide.dawdler.serverplug.init;
 
+import org.dom4j.Element;
+
 import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.deploys.ServiceBase;
-import com.anywide.dawdler.serverplug.datasource.RWSplittingDataSourceManager;
 import com.anywide.dawdler.serverplug.load.ClientConfig;
 import com.anywide.dawdler.serverplug.load.LoadCore;
-import com.anywide.dawdler.serverplug.transaction.TransactionServiceExecutor;
 import com.anywide.dawdler.util.XmlObject;
-import org.dom4j.Element;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
 
 /**
  * @author jackson.song
@@ -38,38 +32,25 @@ import java.io.IOException;
  * @email suxuan696@gmail.com
  */
 public class PlugInit {
-    private static final Logger logger = LoggerFactory.getLogger(PlugInit.class);
 
-    public PlugInit(DawdlerContext dawdlerContext) {
-        RWSplittingDataSourceManager dm;
-        try {
-            dm = new RWSplittingDataSourceManager();
-            dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX, dm);
-            dawdlerContext.setAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX, new TransactionServiceExecutor());
-            XmlObject xml = ClientConfig.getInstance().getXml();
-            if (xml != null) {
-                for (Object o : xml.selectNodes("/config/loads-on/item")) {
-                    Element ele = (Element) o;
-                    String host = ele.getText();
-                    String channelGroupId = ele.attributeValue("channel-group-id");
-                    String time = ele.attributeValue("time");
-                    int checkTime = 0;
-                    try {
-                        checkTime = Integer.parseInt(time);
-                    } catch (Exception e) {
-                    }
-                    LoadCore loadCore = new LoadCore(host, checkTime, channelGroupId);
-                    try {
-                        loadCore.toCheck();
-                    } catch (IOException e) {
-                        logger.error("", e);
-                    }
-                }
-            }
-        } catch (Exception e) {
-            logger.error("", e);
-        }
+	public PlugInit(DawdlerContext dawdlerContext) throws Exception {
+		XmlObject xml = ClientConfig.getInstance().getXml();
+		if (xml != null) {
+			for (Object o : xml.selectNodes("/config/loads-on/item")) {
+				Element ele = (Element) o;
+				String host = ele.getText();
+				String channelGroupId = ele.attributeValue("channel-group-id");
+				String time = ele.attributeValue("time");
+				int checkTime = 0;
+				try {
+					checkTime = Integer.parseInt(time);
+				} catch (Exception e) {
+				}
+				LoadCore loadCore = new LoadCore(host, checkTime, channelGroupId);
+				loadCore.toCheck();
+			}
+		}
 
-    }
+	}
 
 }

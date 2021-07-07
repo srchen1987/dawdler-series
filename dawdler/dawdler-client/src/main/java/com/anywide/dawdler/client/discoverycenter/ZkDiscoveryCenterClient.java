@@ -16,120 +16,74 @@
  */
 package com.anywide.dawdler.client.discoverycenter;
 
-import com.anywide.dawdler.client.ConnectionPool;
-import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.CuratorCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.client.ConnectionPool;
+import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
+
+
 /**
- * ZkDiscoveryCenterClient
- *
  * @author jackson.song
  * @version V1.0
+ * @Title ZkDiscoveryCenterClient.java
  * @Description 配置中心zk的实现 代替 PropertiesCenter.java
  * @date 2018年08月13日
  * @email suxuan696@gmail.com
  */
 public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
-    private static final Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);
+	private static final Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);
 
-    public ZkDiscoveryCenterClient(String connectString, String user, String password) {
-        super(connectString, user, password);
-        try {
-            initListener();
-        } catch (Exception e) {
-            logger.error("init listener failed", e);
-        }
-    }
+	public ZkDiscoveryCenterClient(String connectString, String user, String password) {
+		super(connectString, user, password);
+		try {
+			initListener();
+		} catch (Exception e) {
+			logger.error("init listener failed", e);
+		}
+	}
 
-    private void initListener() {
-        curatorCache = CuratorCache.builder(client, ROOT_PATH).build();
+	private void initListener() {
+		curatorCache = CuratorCache.builder(client, ROOT_PATH).build();
 
-        curatorCache.listenable().addListener((type, oldData, data) -> {
-            String gid = null;
-            String provider = null;
-            String action = null;
-            ChildData handleData = null;
-            switch (type) {
-                case NODE_CREATED: {
-                    action = "add";
-                    handleData = data;
-                    break;
-                }
-                case NODE_DELETED: {
-                    action = "del";
-                    handleData = oldData;
-                    break;
-                }
-                default:
-                    break;
-            }
-            if (handleData != null) {
-                String[] gidAndProvider = handleData.getPath().split("/");
-                if (gidAndProvider.length == 4) {
-                    gid = gidAndProvider[2];
-                    provider = gidAndProvider[3];
-                }
-                if (gid == null)
-                    return;
+		curatorCache.listenable().addListener((type, oldData, data) -> {
+			String gid = null;
+			String provider = null;
+			String action = null;
+			ChildData handleData = null;
+			switch (type) {
+			case NODE_CREATED: {
+				action = "add";
+				handleData = data;
+				break;
+			}
+			case NODE_DELETED: {
+				action = "del";
+				handleData = oldData;
+				break;
+			}
+			default:
+				break;
+			}
+			if (handleData != null) {
+				String[] gidAndProvider = handleData.getPath().split("/");
+				if (gidAndProvider.length == 4) {
+					gid = gidAndProvider[2];
+					provider = gidAndProvider[3];
+				}
+				if (gid == null)
+					return;
 
-                logger.info(gid + " " + action + " " + provider);
-                ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-                if (cp != null)
-                    cp.doChange(gid, action, provider);
+				logger.info(gid + " " + action + " " + provider);
+				ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
+				if (cp != null)
+					cp.doChange(gid, action, provider);
 //			}
-            }
-        });
-        curatorCache.start();
-//		treeCache.getListenable().addListener(new TreeCacheListener() {//老版本 被CuratorCacheListener 替代
-//			@Override
-//			public void childEvent(CuratorFramework client, TreeCacheEvent event) throws Exception {
-//				ChildData data = event.getData();
-//				if (data != null) {
-//					String[] gidAndProvider = data.getPath().split("/");
-//					String gid = null;
-//					String provider=null;
-//					if(gidAndProvider.length==4) {
-//						gid = gidAndProvider[2];
-//						provider=gidAndProvider[3];
-//					}
-//					if(gid==null)return;
-//					
-//					switch (event.getType()) {
-//					case NODE_ADDED: {
-//						logger.info(gid+" add " + provider); 
-//							ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-//							if(cp != null)
-//								cp.doChange(gid,"add",provider);
-//						break;
-//					}
-//					case NODE_REMOVED:{
-//						logger.info("remove " + provider);
-//						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-//						if (cp != null) { 
-//							cp.doChange(gid,"del",provider);
-//						}
-//						break;
-//					}
-//						//以下是之前上个版本的 之后不需要 通过update方式来更新节点了 只保留 add del
-////					case NODE_UPDATED: {
-////						String gid = data.getPath().replace(ROOTPATH + "/", "");
-////						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-////						if (cp != null) {
-////							cp.doChange("update", new String(data.getData()), gid);
-////						}
-////						break;
-////					}
-//					default:
-//						break;
-//					}
-//				}
-//			}
-//		});
-        // 开始监听
-//		treeCache.start();
-    }
+			}
+		});
+		curatorCache.start();
+	}
 
 }

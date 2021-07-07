@@ -25,22 +25,22 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class NumberRuleOperator extends StringRuleOperator {
-    public static final String RULEKEY = "number";
-    public static final String REGEX = "(^-\\d+$)|(^\\d+$)";
-    public static final String EXPLAIN = "整数验证";
+	public static final String RULEKEY = "number";
+	public static final String REGEX = "(^-\\d+$)|(^\\d+$)";
+	public static final String EXPLAIN = "整数验证";
 
-    public NumberRuleOperator() {
-        super(RULEKEY, REGEX, EXPLAIN);
-    }
+	public NumberRuleOperator() {
+		super(RULEKEY, REGEX, EXPLAIN);
+	}
 
-    @Override
-    public String validate(Object value) {
-        return validate(value, "请输入整数!");
-    }
+	@Override
+	public String validate(Object value) {
+		return validate(value, "请输入整数!");
+	}
 
-    @Override
-    public String toString() {
-        return EXPLAIN;
-    }
+	@Override
+	public String toString() {
+		return EXPLAIN;
+	}
 
 }

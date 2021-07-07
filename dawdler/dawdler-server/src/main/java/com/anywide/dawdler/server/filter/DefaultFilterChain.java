@@ -29,11 +29,11 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @email suxuan696@gmail.com
  */
 public class DefaultFilterChain implements FilterChain {
-    @Override
-    public void doFilter(RequestBean request, ResponseBean response) {
-        RequestWrapper rw = (RequestWrapper) request;
-        ServiceExecutor serviceExecutor = rw.getServiceExecutor();
-        serviceExecutor.execute(request, response, rw.getServices());
-    }
+	@Override
+	public void doFilter(RequestBean request, ResponseBean response) {
+		RequestWrapper rw = (RequestWrapper) request;
+		ServiceExecutor serviceExecutor = rw.getServiceExecutor();
+		serviceExecutor.execute(request, response, rw.getServices());
+	}
 
 }

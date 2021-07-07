@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <datasources>
+        <datasource id="read1" code="com.mchange.v2.c3p0.ComboPooledDataSource">
+            <attribute name="JdbcUrl">
+                jdbc:mysql://139.129.207.129:3306/yiyuango?characterEncoding=utf8&amp;useSSL=false
+            </attribute>
+            <attribute name="DriverClass">com.mysql.jdbc.Driver</attribute>
+            <attribute name="User">root</attribute>
+            <attribute name="Password">anywide1948@0</attribute>
+
+            <!-- Uncomment and set any of the optional parameters below -->
+            <!-- See c3p0's docs for more info.                         -->
+
+            <!-- <attribute name="AcquireIncrement">3</attribute>                         -->
+            <!-- <attribute name="AcquireRetryAttempts">30</attribute>                    -->
+            <!-- <attribute name="AcquireRetryDelay">1000</attribute>                     -->
+            <!-- <attribute name="AutoCommitOnClose">false</attribute>                    -->
+            <!-- <attribute name="AutomaticTestTable"></attribute>                        -->
+            <!-- <attribute name="BreakAfterAcquireFailure">false</attribute>             -->
+            <!-- <attribute name="CheckoutTimeout">0</attribute>                          -->
+            <!-- <attribute name="ConnectionCustomizerClassName"></attribute>             -->
+            <!-- <attribute name="ConnectionTesterClassName"></attribute>                 -->
+            <!-- <attribute name="Description">A pooled c3p0 DataSource</attribute>       -->
+            <!-- <attribute name="DebugUnreturnedConnectionStackTraces">false</attribute> -->
+            <!-- <attribute name="FactoryClassLocation"></attribute>                      -->
+            <!-- <attribute name="ForceIgnoreUnresolvedTransactions">false</attribute>    -->
+            <!-- <attribute name="IdleConnectionTestPeriod">0</attribute>                 -->
+            <!-- <attribute name="InitialPoolSize">3</attribute>                          -->
+            <!-- <attribute name="MaxAdministrativeTaskTime">0</attribute>                -->
+            <!-- <attribute name="MaxConnectionAge">0</attribute>                         -->
+            <!-- <attribute name="MaxIdleTime">0</attribute>                              -->
+            <!-- <attribute name="MaxIdleTimeExcessConnections">0</attribute>             -->
+            <!-- <attribute name="MaxPoolSize">15</attribute>                             -->
+            <!-- <attribute name="MaxStatements">0</attribute>                            -->
+            <!-- <attribute name="MaxStatementsPerConnection">0</attribute>               -->
+            <!-- <attribute name="MinPoolSize">0</attribute>                              -->
+            <!-- <attribute name="NumHelperThreads">3</attribute>                         -->
+            <!-- <attribute name="PreferredTestQuery"></attribute>                        -->
+            <!-- <attribute name="TestConnectionOnCheckin">false</attribute>              -->
+            <!-- <attribute name="TestConnectionOnCheckout">false</attribute>             -->
+            <!-- <attribute name="UnreturnedConnectionTimeout">0</attribute>              -->
+            <!-- <attribute name="UsesTraditionalReflectiveProxies">false</attribute>     -->
+        </datasource>
+    </datasources>
+   
+    <datasource-expression id="test1" latent-expression="write=[read1],read=[read1|read1]"/>
+    <decision mapping="com.anywide.demo" reference="test1"/>
+    <decision mapping="com.anywide.service.user.impl" latent_expression="test1"/>
+    <remote-load package="${classpath}/com/anywide/load/loadconfig.xml">存放加载文件</remote-load>
+    <server-datas>
+        <server-data id="discoveryServer" type="zk" url="localhost:2181">目前只支持zk</server-data>
+    </server-datas>
+     <mybatis>
+    <mappers>
+    <mapper>classpath*:com/anywide/*/dao/xml/*Mapper.xml</mapper>
+    </mappers>
+    </mybatis>
+</config>

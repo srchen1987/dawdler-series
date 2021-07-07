@@ -16,12 +16,13 @@
  */
 package com.anywide.dawdler.core.serializer;
 
+import org.objenesis.strategy.StdInstantiatorStrategy;
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.UnsafeInput;
 import com.esotericsoftware.kryo.io.UnsafeOutput;
-import org.objenesis.strategy.StdInstantiatorStrategy;
 
 /**
  * @author jackson.song
@@ -32,60 +33,60 @@ import org.objenesis.strategy.StdInstantiatorStrategy;
  * @email suxuan696@gmail.com
  */
 public class KryoSerializer implements Serializer {
-    private static final ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
-        protected KryoLocal initialValue() {
-            KryoLocal kryoLocal = new KryoLocal();
-            return kryoLocal;
-        }
+	private static final ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
+		protected KryoLocal initialValue() {
+			KryoLocal kryoLocal = new KryoLocal();
+			return kryoLocal;
+		}
 
-    };
+	};
 
-    @Override
-    public Object deserialize(byte[] bytes) {
-        KryoLocal kryoLocal = kryos.get();
-        Kryo kryo = kryoLocal.getKryo();
-        Input input = kryoLocal.input;
-        input.setBuffer(bytes);
-        return kryo.readClassAndObject(input);
-    }
+	@Override
+	public Object deserialize(byte[] bytes) {
+		KryoLocal kryoLocal = kryos.get();
+		Kryo kryo = kryoLocal.getKryo();
+		Input input = kryoLocal.input;
+		input.setBuffer(bytes);
+		return kryo.readClassAndObject(input);
+	}
 
-    @Override
-    public byte[] serialize(Object object) throws Exception {
-        KryoLocal kryoLocal = kryos.get();
-        Kryo kryo = kryoLocal.kryo;
-        Output out = kryoLocal.out;
-        byte[] data;
-        try {
-            kryo.writeClassAndObject(out, object);
-            data = out.toBytes();
-        } finally {
-            out.clear();
-        }
-        return data;
-    }
+	@Override
+	public byte[] serialize(Object object) throws Exception {
+		KryoLocal kryoLocal = kryos.get();
+		Kryo kryo = kryoLocal.kryo;
+		Output out = kryoLocal.out;
+		byte[] data;
+		try {
+			kryo.writeClassAndObject(out, object);
+			data = out.toBytes();
+		} finally {
+			out.clear();
+		}
+		return data;
+	}
 
-    public static class KryoLocal {
-        private Kryo kryo;
-        private final Input input;
-        private final Output out;
+	public static class KryoLocal {
+		private Kryo kryo;
+		private final Input input;
+		private final Output out;
 
-        public KryoLocal() {
-            kryo = new Kryo();
-            kryo.setReferences(true);
-            kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+		public KryoLocal() {
+			kryo = new Kryo();
+			kryo.setReferences(true);
+			kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
 //			  ((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
 //              .setFallbackInstantiatorStrategy(new StdInstantiatorStrategy());
-            input = new UnsafeInput();
-            out = new UnsafeOutput(2048, -1);
-        }
+			input = new UnsafeInput();
+			out = new UnsafeOutput(2048, -1);
+		}
 
-        public Kryo getKryo() {
-            kryo.setClassLoader(Thread.currentThread().getContextClassLoader());
-            return kryo;
-        }
+		public Kryo getKryo() {
+			kryo.setClassLoader(Thread.currentThread().getContextClassLoader());
+			return kryo;
+		}
 
-        public void setKryo(Kryo kryo) {
-            this.kryo = kryo;
-        }
-    }
+		public void setKryo(Kryo kryo) {
+			this.kryo = kryo;
+		}
+	}
 }
