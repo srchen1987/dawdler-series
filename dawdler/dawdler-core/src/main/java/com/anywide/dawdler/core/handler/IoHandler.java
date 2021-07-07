@@ -28,15 +28,15 @@ import com.anywide.dawdler.core.net.aio.session.SessionIdleType;
  * @email suxuan696@gmail.com
  */
 public interface IoHandler {
-    void messageReceived(AbstractSocketSession socketSession, Object msg);
+	void messageReceived(AbstractSocketSession socketSession, Object msg);
 
-    void channelOpen(AbstractSocketSession socketSession);
+	void channelOpen(AbstractSocketSession socketSession);
 
-    void channelClose(AbstractSocketSession socketSession);
+	void channelClose(AbstractSocketSession socketSession);
 
-    void exceptionCaught(AbstractSocketSession socketSession, Throwable caught);
+	void exceptionCaught(AbstractSocketSession socketSession, Throwable caught);
 
-    void channelIdle(AbstractSocketSession socketSession, SessionIdleType idleType);
+	void channelIdle(AbstractSocketSession socketSession, SessionIdleType idleType);
 
-    void messageSent(AbstractSocketSession socketSession, Object response);
+	void messageSent(AbstractSocketSession socketSession, Object response);
 }

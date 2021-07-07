@@ -16,12 +16,12 @@
  */
 package com.anywide.dawdler.server.listener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderComparator;
 import com.anywide.dawdler.core.order.OrderData;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author jackson.song
@@ -32,25 +32,24 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class DawdlerListenerProvider {
-    private final List<OrderData<DawdlerServiceListener>> listeners = new ArrayList<>();
+	private final List<OrderData<DawdlerServiceListener>> listeners = new ArrayList<>();
 
-    public List<OrderData<DawdlerServiceListener>> getListeners() {
-        return listeners;
-    }
+	public List<OrderData<DawdlerServiceListener>> getListeners() {
+		return listeners;
+	}
 
-    public void order() {
-        OrderComparator.sort(listeners);
-    }
+	public void order() {
+		OrderComparator.sort(listeners);
+	}
 
-    public void addHandlerInterceptors(DawdlerServiceListener dawdlerServiceListener) {
-        Order co = dawdlerServiceListener.getClass().getAnnotation(Order.class);
-        OrderData<DawdlerServiceListener> od = new OrderData<>();
-        od.setData(dawdlerServiceListener);
-        if (co != null) {
-            od.setOrder(co.value());
-        }
-        listeners.add(od);
-    }
-
+	public void addListener(DawdlerServiceListener dawdlerServiceListener) {
+		Order co = dawdlerServiceListener.getClass().getAnnotation(Order.class);
+		OrderData<DawdlerServiceListener> od = new OrderData<>();
+		od.setData(dawdlerServiceListener);
+		if (co != null) {
+			od.setOrder(co.value());
+		}
+		listeners.add(od);
+	}
 
 }

@@ -27,19 +27,19 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
  * @email suxuan696@gmail.com
  */
 public class PageFactory {
-    //	private static PageFactory pageFactory = new PageFactory();
-    private PageFactory() {
-    }
+	// private static PageFactory pageFactory = new PageFactory();
+	private PageFactory() {
+	}
 
-    public static Page getPage() {
-        return new Page();
-    }
+	public static Page getPage() {
+		return new Page();
+	}
 
-    public static Page getPage(int pageon, int row, int rowcount) {
-        return new Page(pageon, row, rowcount);
-    }
+	public static Page getPage(int pageon, int row, int rowcount) {
+		return new Page(pageon, row, rowcount);
+	}
 
-    public static Page getPage(int pageon, int row) {
-        return new Page(pageon, row);
-    }
+	public static Page getPage(int pageon, int row) {
+		return new Page(pageon, row);
+	}
 }

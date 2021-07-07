@@ -27,9 +27,9 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @email suxuan696@gmail.com
  */
 public class AccessFilter implements DawdlerClientFilter {
-    @Override
-    public Object doFilter(RequestBean request, FilterChain chain) throws Exception {
-        return chain.doFilter(request);
-    }
+	@Override
+	public Object doFilter(RequestBean request, FilterChain chain) throws Exception {
+		return chain.doFilter(request);
+	}
 
 }

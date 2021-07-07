@@ -27,5 +27,5 @@ import com.anywide.dawdler.server.context.DawdlerContext;
  * @email suxuan696@gmail.com
  */
 public interface DawdlerServiceCreateListener {
-    void create(Object service, DawdlerContext context);
+	void create(Object service, boolean single, DawdlerContext context);
 }

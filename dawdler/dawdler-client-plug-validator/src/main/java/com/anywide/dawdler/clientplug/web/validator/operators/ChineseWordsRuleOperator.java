@@ -25,22 +25,22 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class ChineseWordsRuleOperator extends StringRuleOperator {
-    public static final String RULEKEY = "chineseWords";
-    public static final String REGEX = "^[\u4e00-\u9fa5]+$";
-    public static final String EXPLAIN = "中文字母验证";
+	public static final String RULEKEY = "chineseWords";
+	public static final String REGEX = "^[\u4e00-\u9fa5]+$";
+	public static final String EXPLAIN = "中文字母验证";
 
-    public ChineseWordsRuleOperator() {
-        super(RULEKEY, REGEX, EXPLAIN);
-    }
+	public ChineseWordsRuleOperator() {
+		super(RULEKEY, REGEX, EXPLAIN);
+	}
 
-    @Override
-    public String toString() {
-        return EXPLAIN;
-    }
+	@Override
+	public String toString() {
+		return EXPLAIN;
+	}
 
-    @Override
-    public String validate(Object value) {
-        return super.validate(value, "请输入中文!");
-    }
+	@Override
+	public String validate(Object value) {
+		return super.validate(value, "请输入中文!");
+	}
 
 }

@@ -16,9 +16,10 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 /**
  * @author jackson.song
@@ -30,235 +31,235 @@ import java.util.Map;
  */
 @Deprecated
 public class JsonWiewForward extends ViewForward {
-    private Map<String, Object> jsonParams;
+	private Map<String, Object> jsonParams;
 
-    public JsonWiewForward(HttpServletRequest request, HttpServletResponse response) {
-        super(request, response);
-    }
+	public JsonWiewForward(HttpServletRequest request, HttpServletResponse response) {
+		super(request, response);
+	}
 
-    @Override
-    public int paramInt(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Integer.parseInt(o.toString());
-                } catch (Exception e) {
-                    return 0;
-                }
-            }
-        }
-        return super.paramInt(paramname);
-    }
+	@Override
+	public int paramInt(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Integer.parseInt(o.toString());
+				} catch (Exception e) {
+					return 0;
+				}
+			}
+		}
+		return super.paramInt(paramname);
+	}
 
-    @Override
-    public int paramInt(String paramname, int defaultvalue) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Integer.parseInt(o.toString());
-                } catch (Exception e) {
-                    return defaultvalue;
-                }
-            }
-        }
-        return super.paramInt(paramname, defaultvalue);
-    }
+	@Override
+	public int paramInt(String paramname, int defaultvalue) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Integer.parseInt(o.toString());
+				} catch (Exception e) {
+					return defaultvalue;
+				}
+			}
+		}
+		return super.paramInt(paramname, defaultvalue);
+	}
 
-    @Override
-    public long paramLong(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Long.parseLong(o.toString());
-                } catch (Exception e) {
-                    return 0;
-                }
-            }
-        }
-        return super.paramLong(paramname);
-    }
+	@Override
+	public long paramLong(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Long.parseLong(o.toString());
+				} catch (Exception e) {
+					return 0;
+				}
+			}
+		}
+		return super.paramLong(paramname);
+	}
 
-    @Override
-    public long paramLong(String paramname, long value) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Long.parseLong(o.toString());
-                } catch (Exception e) {
-                    return value;
-                }
-            }
-        }
-        return super.paramLong(paramname, value);
-    }
+	@Override
+	public long paramLong(String paramname, long value) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Long.parseLong(o.toString());
+				} catch (Exception e) {
+					return value;
+				}
+			}
+		}
+		return super.paramLong(paramname, value);
+	}
 
-    @Override
-    public short paramShort(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Short.parseShort(o.toString());
-                } catch (Exception e) {
-                    return 0;
-                }
-            }
-        }
-        return super.paramShort(paramname);
-    }
+	@Override
+	public short paramShort(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Short.parseShort(o.toString());
+				} catch (Exception e) {
+					return 0;
+				}
+			}
+		}
+		return super.paramShort(paramname);
+	}
 
-    @Override
-    public short paramShort(String paramname, short value) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Short.parseShort(o.toString());
-                } catch (Exception e) {
-                    return value;
-                }
-            }
-        }
-        return super.paramShort(paramname, value);
-    }
+	@Override
+	public short paramShort(String paramname, short value) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Short.parseShort(o.toString());
+				} catch (Exception e) {
+					return value;
+				}
+			}
+		}
+		return super.paramShort(paramname, value);
+	}
 
-    @Override
-    public byte paramByte(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Byte.parseByte(o.toString());
-                } catch (Exception e) {
-                    return 0;
-                }
-            }
-        }
-        return super.paramByte(paramname);
-    }
+	@Override
+	public byte paramByte(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Byte.parseByte(o.toString());
+				} catch (Exception e) {
+					return 0;
+				}
+			}
+		}
+		return super.paramByte(paramname);
+	}
 
-    @Override
-    public byte paramByte(String paramname, byte value) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Byte.parseByte(o.toString());
-                } catch (Exception e) {
-                    return value;
-                }
-            }
-        }
+	@Override
+	public byte paramByte(String paramname, byte value) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Byte.parseByte(o.toString());
+				} catch (Exception e) {
+					return value;
+				}
+			}
+		}
 
-        return super.paramByte(paramname, value);
-    }
+		return super.paramByte(paramname, value);
+	}
 
-    @Override
-    public float paramFloat(String paramname, float value) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Float.parseFloat(o.toString());
-                } catch (Exception e) {
-                    return value;
-                }
-            }
-        }
-        return super.paramFloat(paramname, value);
-    }
+	@Override
+	public float paramFloat(String paramname, float value) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Float.parseFloat(o.toString());
+				} catch (Exception e) {
+					return value;
+				}
+			}
+		}
+		return super.paramFloat(paramname, value);
+	}
 
-    @Override
-    public float paramFloat(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Float.parseFloat(o.toString());
-                } catch (Exception e) {
-                    return 0.00f;
-                }
-            }
-        }
-        return super.paramFloat(paramname);
-    }
+	@Override
+	public float paramFloat(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Float.parseFloat(o.toString());
+				} catch (Exception e) {
+					return 0.00f;
+				}
+			}
+		}
+		return super.paramFloat(paramname);
+	}
 
-    @Override
-    public double paramDouble(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Double.parseDouble(o.toString());
-                } catch (Exception e) {
-                    return 0.00d;
-                }
-            }
-        }
-        return super.paramDouble(paramname);
-    }
+	@Override
+	public double paramDouble(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Double.parseDouble(o.toString());
+				} catch (Exception e) {
+					return 0.00d;
+				}
+			}
+		}
+		return super.paramDouble(paramname);
+	}
 
-    @Override
-    public double paramDouble(String paramname, double value) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Double.parseDouble(o.toString());
-                } catch (Exception e) {
-                    return value;
-                }
-            }
-        }
-        return super.paramDouble(paramname, value);
-    }
+	@Override
+	public double paramDouble(String paramname, double value) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Double.parseDouble(o.toString());
+				} catch (Exception e) {
+					return value;
+				}
+			}
+		}
+		return super.paramDouble(paramname, value);
+	}
 
-    @Override
-    public boolean paramBoolean(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                try {
-                    return Boolean.parseBoolean(o.toString());
-                } catch (Exception e) {
-                    return false;
-                }
-            }
-        }
-        return super.paramBoolean(paramname);
-    }
+	@Override
+	public boolean paramBoolean(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				try {
+					return Boolean.parseBoolean(o.toString());
+				} catch (Exception e) {
+					return false;
+				}
+			}
+		}
+		return super.paramBoolean(paramname);
+	}
 
-    @Override
-    public String paramString(String paramname) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                return o.toString();
-            }
-        }
-        return super.paramString(paramname);
-    }
+	@Override
+	public String paramString(String paramname) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				return o.toString();
+			}
+		}
+		return super.paramString(paramname);
+	}
 
-    @Override
-    public String paramString(String paramname, String defaultvalue) {
-        if (jsonParams != null) {
-            Object o = jsonParams.get(paramname);
-            if (o != null) {
-                return o.toString();
-            }
-        }
-        return super.paramString(paramname, defaultvalue);
-    }
+	@Override
+	public String paramString(String paramname, String defaultvalue) {
+		if (jsonParams != null) {
+			Object o = jsonParams.get(paramname);
+			if (o != null) {
+				return o.toString();
+			}
+		}
+		return super.paramString(paramname, defaultvalue);
+	}
 
-    public Map<String, Object> getJsonParams() {
-        return jsonParams;
-    }
+	public Map<String, Object> getJsonParams() {
+		return jsonParams;
+	}
 
-    public void setJsonParams(Map<String, Object> jsonParams) {
-        this.jsonParams = jsonParams;
-    }
+	public void setJsonParams(Map<String, Object> jsonParams) {
+		this.jsonParams = jsonParams;
+	}
 }

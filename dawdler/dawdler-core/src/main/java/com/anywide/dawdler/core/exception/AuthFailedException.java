@@ -25,9 +25,9 @@ package com.anywide.dawdler.core.exception;
  * @email suxuan696@gmail.com
  */
 public class AuthFailedException extends Exception {
-    private static final long serialVersionUID = 3289645316917497913L;
+	private static final long serialVersionUID = 3289645316917497913L;
 
-    public AuthFailedException(String message) {
-        super(message);
-    }
+	public AuthFailedException(String message) {
+		super(message);
+	}
 }

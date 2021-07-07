@@ -27,14 +27,14 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @email suxuan696@gmail.com
  */
 public class DisplaySwitcher {
-    public static void switchDisplay(ViewForward wf) {
-        String serviceType = wf.getServiceType();
-        DisplayPlug displayPlug = null;
-        if (serviceType != null) {
-            displayPlug = PlugFactory.getDisplayPlug(serviceType);
-        }
-        if (displayPlug == null)
-            displayPlug = PlugFactory.getDisplayPlug("default");
-        displayPlug.display(wf);
-    }
+	public static void switchDisplay(ViewForward wf) {
+		String serviceType = wf.getServiceType();
+		DisplayPlug displayPlug = null;
+		if (serviceType != null) {
+			displayPlug = PlugFactory.getDisplayPlug(serviceType);
+		}
+		if (displayPlug == null)
+			displayPlug = PlugFactory.getDisplayPlug("default");
+		displayPlug.display(wf);
+	}
 }

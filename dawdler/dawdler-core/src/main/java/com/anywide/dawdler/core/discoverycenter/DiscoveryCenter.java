@@ -11,15 +11,15 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public interface DiscoveryCenter {
-    String OFFLINESTATUS = "Offline";
+	String OFFLINESTATUS = "Offline";
 
-    List<String> getServiceList(String path) throws Exception;
+	List<String> getServiceList(String path) throws Exception;
 
-    void init() throws Exception;
+	void init() throws Exception;
 
-    void destroy() throws Exception;
+	void destroy() throws Exception;
 
-    boolean addProvider(String path, String value) throws Exception;
+	boolean addProvider(String path, String value) throws Exception;
 
-    boolean updateProvider(String path, String value) throws Exception;
+	boolean updateProvider(String path, String value) throws Exception;
 }

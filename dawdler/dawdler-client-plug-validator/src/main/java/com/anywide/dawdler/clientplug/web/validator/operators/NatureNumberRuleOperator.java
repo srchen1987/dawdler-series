@@ -26,22 +26,22 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  */
 public class NatureNumberRuleOperator extends StringRuleOperator {
 
-    public static final String RULEKEY = "natureNumber";
-    public static final String REGEX = "^[0-9]+$";
-    public static final String EXPLAIN = "自然数验证";
+	public static final String RULEKEY = "natureNumber";
+	public static final String REGEX = "^[0-9]+$";
+	public static final String EXPLAIN = "自然数验证";
 
-    public NatureNumberRuleOperator() {
-        super(RULEKEY, REGEX, EXPLAIN);
-    }
+	public NatureNumberRuleOperator() {
+		super(RULEKEY, REGEX, EXPLAIN);
+	}
 
-    @Override
-    public String toString() {
-        return EXPLAIN;
-    }
+	@Override
+	public String toString() {
+		return EXPLAIN;
+	}
 
-    @Override
-    public String validate(Object value) {
-        return super.validate(value, "请输入自然数!");
-    }
+	@Override
+	public String validate(Object value) {
+		return super.validate(value, "请输入自然数!");
+	}
 
 }

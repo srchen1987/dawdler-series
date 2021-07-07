@@ -25,9 +25,9 @@ package com.anywide.dawdler.util;
  * @email suxuan696@gmail.com
  */
 public class LogUtil {
-    public static String getLineInfo() {
-        StackTraceElement ste = new Throwable().getStackTrace()[1];
-        return ste.getFileName() + ": Line " + ste.getLineNumber() + "\t" + Thread.currentThread().getName() + "\t";
-    }
+	public static String getLineInfo() {
+		StackTraceElement ste = new Throwable().getStackTrace()[1];
+		return ste.getFileName() + ": Line " + ste.getLineNumber() + "\t" + Thread.currentThread().getName() + "\t";
+	}
 
 }

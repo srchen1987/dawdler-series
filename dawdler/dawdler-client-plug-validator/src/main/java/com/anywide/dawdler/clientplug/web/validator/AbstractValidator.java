@@ -16,10 +16,10 @@
  */
 package com.anywide.dawdler.clientplug.web.validator;
 
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.regex.Pattern;
 
 /**
  * @author jackson.song
@@ -30,26 +30,26 @@ import java.util.regex.Pattern;
  * @email suxuan696@gmail.com
  */
 public abstract class AbstractValidator {
-    private static final Logger logger = LoggerFactory.getLogger(AbstractValidator.class);
-    private final Pattern pattern;
+	private static final Logger logger = LoggerFactory.getLogger(AbstractValidator.class);
+	private final Pattern pattern;
 
-    public AbstractValidator(String patternKey) {
-        this.pattern = RegexRules.getPatternRule(patternKey);
-        validatePatternIsNull(pattern, patternKey);
-    }
+	public AbstractValidator(String patternKey) {
+		this.pattern = RegexRules.getPatternRule(patternKey);
+		validatePatternIsNull(pattern, patternKey);
+	}
 
-    public boolean validate(String value) {
-        if (value == null || value.trim().equals(""))
-            return true;
-        if (pattern == null)
-            return true;
-        return pattern.matcher(value).find();
-    }
+	public boolean validate(String value) {
+		if (value == null || value.trim().equals(""))
+			return true;
+		if (pattern == null)
+			return true;
+		return pattern.matcher(value).find();
+	}
 
-    private void validatePatternIsNull(Pattern pattern, String patternKey) {
-        if (pattern == null) {
-            logger.error(patternKey + "\tis not register,plesase register it in " + RegexRules.class.getName()
-                    + " pattern can't null!");
-        }
-    }
+	private void validatePatternIsNull(Pattern pattern, String patternKey) {
+		if (pattern == null) {
+			logger.error(patternKey + "\tis not register,plesase register it in " + RegexRules.class.getName()
+					+ " pattern can't null!");
+		}
+	}
 }

@@ -16,6 +16,19 @@
  */
 package com.anywide.dawdler.server.deploys;
 
+import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.security.ProtectionDomain;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.anywide.dawdler.core.annotation.ListenerConfig;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.annotation.RemoteService;
@@ -33,17 +46,6 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.security.ProtectionDomain;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author jackson.song
@@ -54,209 +56,239 @@ import java.util.Set;
  * @email suxuan696@gmail.com
  */
 public class ServiceBase implements Service {
-    public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutor_prefix";
-    public static final String ASPECT_SUPPORT_OBJ = "aspectSupportObj";// aspect 支持
-    public static final String ASPECT_SUPPORT_METHOD = "aspectSupportMethod";
-    private static final Logger logger = LoggerFactory.getLogger(ServiceBase.class);
-    private static final String CLASSES_PATH = "classes";
-    private static final String LIB_PATH = "lib";
-    private final DawdlerDeployClassLoader classLoader;
-    private final File deploy;
-    private final DawdlerContext dawdlerContext;
-    private final ServiceExecutor defaultServiceExecutor = new DefaultServiceExecutor();
-    private final DawdlerListenerProvider dawdlerListenerProvider = new DawdlerListenerProvider();
-    private final ServicesManager servicesManager = new ServicesManager();
-    private final FilterProvider filterProvider = new FilterProvider();
-    private ServiceExecutor serviceExecutor = defaultServiceExecutor;
+	private static final Logger logger = LoggerFactory.getLogger(ServiceBase.class);
+	public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutor_prefix";
+	public static final String ASPECT_SUPPORT_OBJ = "aspectSupportObj";// aspect 支持
+	public static final String ASPECT_SUPPORT_METHOD = "aspectSupportMethod";
+	private static final String CLASSES_PATH = "classes";
+	private static final String LIB_PATH = "lib";
+	private final DawdlerDeployClassLoader classLoader;
+	private final File deploy;
+	private final DawdlerContext dawdlerContext;
+	private final ServiceExecutor defaultServiceExecutor = new DefaultServiceExecutor();
+	private final DawdlerListenerProvider dawdlerListenerProvider = new DawdlerListenerProvider();
+	private final ServicesManager servicesManager = new ServicesManager();
+	private final FilterProvider filterProvider = new FilterProvider();
+	private ServiceExecutor serviceExecutor = defaultServiceExecutor;
+	private final static int WAIT_TIME_MILLIS = 1000;
 
-    public ServiceBase(File deploy, String host, int port, ClassLoader parent) throws MalformedURLException {
-        this.deploy = deploy;
-        classLoader = DawdlerDeployClassLoader.createLoader(parent, getClassLoaderURL());
-        dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
-                host, port, servicesManager);
-        try {
-            Class clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
-            Object obj = clazz.newInstance();
-            Method initializeMethod = clazz.getMethod("initialize");
-            initializeMethod.invoke(obj);
-            Method preProcessMethod = clazz.getMethod("preProcess", String.class, byte[].class, ClassLoader.class,
-                    ProtectionDomain.class);
-            dawdlerContext.setAttribute(ASPECT_SUPPORT_METHOD, preProcessMethod);
-            dawdlerContext.setAttribute(ASPECT_SUPPORT_OBJ, obj);
-        } catch (Exception e) {
+	public ServiceBase(File deploy, String host, int port, ClassLoader parent) throws MalformedURLException {
+		this.deploy = deploy;
+		classLoader = DawdlerDeployClassLoader.createLoader(parent, getClassLoaderURL());
+		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
+				host, port, servicesManager);
+		try {
+			Class<?> clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
+			Object obj = clazz.newInstance();
+			Method initializeMethod = clazz.getMethod("initialize");
+			initializeMethod.invoke(obj);
+			Method preProcessMethod = clazz.getMethod("preProcess", String.class, byte[].class, ClassLoader.class,
+					ProtectionDomain.class);
+			dawdlerContext.setAttribute(ASPECT_SUPPORT_METHOD, preProcessMethod);
+			dawdlerContext.setAttribute(ASPECT_SUPPORT_OBJ, obj);
+		} catch (Exception e) {
+		}
+		classLoader.setDawdlerContext(dawdlerContext);
+		Thread.currentThread().setContextClassLoader(classLoader);
+	}
 
-        }
-        classLoader.setDawdlerContext(dawdlerContext);
-        Thread.currentThread().setContextClassLoader(classLoader);
-    }
+	public ServicesBean getServicesBean(String name) {
+		return servicesManager.getService(name);
+	}
 
-    public ServicesBean getServicesBean(String name) {
-        return servicesManager.getService(name);
-    }
+	public ServicesBean getServicesBeanNoSafe(String name) {
+		return servicesManager.getService(name);
+	}
 
-    public ServicesBean getServicesBeanNoSafe(String name) {
-        return servicesManager.getService(name);
-    }
+	private File getClassesDir() {
+		return new File(deploy, CLASSES_PATH);
+	}
 
-    private File getClassesDir() {
-        return new File(deploy, CLASSES_PATH);
-    }
+	private URL[] getClassLoaderURL() throws MalformedURLException {
+		File file = new File(deploy, LIB_PATH);
+		return PathUtils.getLibURL(file, getClassesDir().toURI().toURL());
+	}
 
-    private URL[] getClassLoaderURL() throws MalformedURLException {
-        File file = new File(deploy, LIB_PATH);
-        return PathUtils.getLibURL(file, getClassesDir().toURI().toURL());
-    }
+	public Class<?> getClass(String className) throws ClassNotFoundException {
+		return classLoader.loadClass(className);
+	}
 
-    public Class<?> getClass(String className) throws ClassNotFoundException {
-        return classLoader.loadClass(className);
-    }
+	private void initPlug(String className) {
+		try {
+			Class<?> clazz = classLoader.loadClass(className);
+			clazz.getConstructor(DawdlerContext.class).newInstance(dawdlerContext);
+		} catch (Exception e) {
+		}
+	}
 
-    @Override
-    public void start() throws Exception {
-        try {
-            Class<?> clazz = classLoader.loadClass("com.anywide.dawdler.serverplug.init.PlugInit");
-            clazz.getConstructor(DawdlerContext.class).newInstance(dawdlerContext);
-        } catch (Exception e) {
-        }
+	@Override
+	public void start() throws Exception {
+		initPlug("com.anywide.dawdler.serverplug.init.PlugInit");
+		initPlug("com.anywide.dawdler.serverplug.db.init.PlugInit");
+		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
+		if (definedServiceExecutor != null)
+			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
+		Set<Class<?>> classes;
+		classes = DeployClassesScanner.getClassesInPath(deploy);
+		Set<Class<?>> serviceClasses = new HashSet<>();
+		for (Class<?> c : classes) {
+			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
+					&& ((c.getModifiers() & 16384) != 16384) && ((c.getModifiers() & 8192) != 8192)
+					&& ((c.getModifiers() & 512) != 512)) {
+				if (DawdlerServiceListener.class.isAssignableFrom(c)) {
+					DawdlerServiceListener listener = (DawdlerServiceListener) SunReflectionFactoryInstantiator
+							.newInstance(c);
+					dawdlerListenerProvider.addListener(listener);
+				}
+				if (DawdlerServiceCreateListener.class.isAssignableFrom(c)) {
+					DawdlerServiceCreateListener dl = (DawdlerServiceCreateListener) SunReflectionFactoryInstantiator
+							.newInstance(c);
+					servicesManager.getDawdlerServiceCreateProvider().addServiceCreate(dl);
+				}
+				if (DawdlerFilter.class.isAssignableFrom(c)) {
+					Order order = c.getAnnotation(Order.class);
+					DawdlerFilter filter = (DawdlerFilter) SunReflectionFactoryInstantiator.newInstance(c);
+					OrderData<DawdlerFilter> orderData = new OrderData<>();
+					orderData.setData(filter);
+					if (order != null)
+						orderData.setOrder(order.value());
+					filterProvider.addFilter(filter);
+				}
 
-        Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
-        Set<Class<?>> classes;
-        if (definedServiceExecutor != null)
-            serviceExecutor = (ServiceExecutor) definedServiceExecutor;
-        classes = DeployClassesScanner.getClassesInPath(deploy);
-        Set<Class<?>> serviceClasses = new HashSet<>();
-        for (Class<?> c : classes) {
-            if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
-                    && ((c.getModifiers() & 16384) != 16384) && ((c.getModifiers() & 8192) != 8192)
-                    && ((c.getModifiers() & 512) != 512)) {
-                if (DawdlerServiceListener.class.isAssignableFrom(c)) {
-                    DawdlerServiceListener dl = (DawdlerServiceListener) SunReflectionFactoryInstantiator
-                            .newInstance(c);
-                    dawdlerListenerProvider.addHandlerInterceptors(dl);
-                }
-                if (DawdlerServiceCreateListener.class.isAssignableFrom(c)) {
-                    DawdlerServiceCreateListener dl = (DawdlerServiceCreateListener) SunReflectionFactoryInstantiator
-                            .newInstance(c);
-                    servicesManager.getDawdlerServiceCreateProvider().addHandlerInterceptors(dl);
-                }
-                if (DawdlerFilter.class.isAssignableFrom(c)) {
-                    Order order = c.getAnnotation(Order.class);
-                    DawdlerFilter filter = (DawdlerFilter) SunReflectionFactoryInstantiator.newInstance(c);
-                    OrderData<DawdlerFilter> orderData = new OrderData<>();
-                    orderData.setData(filter);
-                    if (order != null)
-                        orderData.setOrder(order.value());
-                    filterProvider.addFilter(filter);
-                }
+				if (servicesManager.isService(c)) {
+					serviceClasses.add(c);
+				}
+			}
+		}
+		for (Class<?> c : serviceClasses) {
+			servicesManager.smartRegister(c);
+		}
+		servicesManager.getDawdlerServiceCreateProvider().order();
+		servicesManager.fireCreate(dawdlerContext);
+		dawdlerListenerProvider.order();
+		filterProvider.orderAndBuildChain();
 
-                if (servicesManager.isService(c)) {
-                    serviceClasses.add(c);
-                }
-            }
-        }
-        for (Class<?> c : serviceClasses) {
-            servicesManager.smartRegister(c);
-        }
-        servicesManager.getDawdlerServiceCreateProvider().order();
-        servicesManager.fireCreate(dawdlerContext);
-        dawdlerListenerProvider.order();
-        filterProvider.orderAndBuildChain();
+		for (OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
+			injectService(data.getData());
+		}
 
-        for (OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
-            injectService(data.getData());
-        }
+		for (OrderData<DawdlerFilter> data : filterProvider.getFilters()) {
+			injectService(data.getData());
+		}
 
-        for (OrderData<DawdlerFilter> data : filterProvider.getFilters()) {
-            injectService(data.getData());
-        }
+		loadConfModuleAndExecuteStaticMethod("init");
 
-        for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
-            ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
-            if (listenerConfig != null && listenerConfig.asyn()) {
-                new Thread(() -> {
-                    if (listenerConfig.delayMsec() > 0) {
-                        try {
-                            Thread.sleep(listenerConfig.delayMsec());
-                        } catch (InterruptedException e) {
-                        }
-                        try {
-                            orderData.getData().contextInitialized(dawdlerContext);
-                        } catch (Exception e) {
-                            logger.error("", e);
-                        }
-                    }
-                }).start();
-            } else {
-                orderData.getData().contextInitialized(dawdlerContext);
-            }
-        }
-    }
+		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
+			ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
+			if (listenerConfig != null && listenerConfig.asyn()) {
+				new Thread(() -> {
+					if (listenerConfig.delayMsec() > 0) {
+						try {
+							Thread.sleep(listenerConfig.delayMsec());
+						} catch (InterruptedException e) {
+						}
+						try {
+							orderData.getData().contextInitialized(dawdlerContext);
+						} catch (Exception e) {
+							logger.error("", e);
+						}
+					}
+				}).start();
+			} else {
+				orderData.getData().contextInitialized(dawdlerContext);
+			}
+		}
+	}
 
-    public FilterProvider getFilterProvider() {
-        return filterProvider;
-    }
+	public FilterProvider getFilterProvider() {
+		return filterProvider;
+	}
 
-    @Override
-    public void prepareStop() {
-        DiscoveryCenter discoveryCenter = (DiscoveryCenter) dawdlerContext.getAttribute(DiscoveryCenter.class);
-        if (discoveryCenter != null) {
-            try {
-                discoveryCenter.destroy();
-            } catch (Exception e) {
-                logger.error("", e);
-            }
-        }
-    }
+	@Override
+	public void prepareStop() {
+		DiscoveryCenter discoveryCenter = (DiscoveryCenter) dawdlerContext.getAttribute(DiscoveryCenter.class);
+		if (discoveryCenter != null) {
+			try {
+				discoveryCenter.destroy();
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+		}
+		try {
+			Thread.sleep(WAIT_TIME_MILLIS);
+		} catch (InterruptedException e) {
+			// ignore
+		}
+	}
 
-    @Override
-    public void stop() {
-        if (dawdlerListenerProvider.getListeners() != null) {
-            for (int i = dawdlerListenerProvider.getListeners().size(); i > 0; i--) {
-                try {
-                    dawdlerListenerProvider.getListeners().get(i - 1).getData().contextDestroyed(dawdlerContext);
-                } catch (Exception e) {
-                    logger.error("", e);
-                }
-            }
-        }
-        servicesManager.clear();
-    }
+	@Override
+	public void stop() {
+		if (dawdlerListenerProvider.getListeners() != null) {
+			for (int i = dawdlerListenerProvider.getListeners().size(); i > 0; i--) {
+				try {
+					dawdlerListenerProvider.getListeners().get(i - 1).getData().contextDestroyed(dawdlerContext);
+				} catch (Exception e) {
+					logger.error("", e);
+				}
+			}
+		}
+		servicesManager.clear();
 
-    public DawdlerContext getDawdlerContext() {
-        return dawdlerContext;
-    }
+		loadConfModuleAndExecuteStaticMethod("destroy");
+	}
 
-    @Override
-    public ServiceExecutor getServiceExecutor() {
-        return serviceExecutor;
-    }
+	public DawdlerContext getDawdlerContext() {
+		return dawdlerContext;
+	}
 
-    private void injectService(Object service) {
-        Field[] fields = service.getClass().getDeclaredFields();
-        for (Field filed : fields) {
-            RemoteService remoteService = filed.getAnnotation(RemoteService.class);
-            if (!filed.getType().isPrimitive()) {
-                Class<?> serviceClass = filed.getType();
-                filed.setAccessible(true);
-                try {
-                    Object obj = null;
-                    if (remoteService != null) {
-                        if (!remoteService.remote()) {
-                            obj = ServiceFactory.getService(serviceClass, serviceExecutor, dawdlerContext);
-                        } else {
-                            Class c = classLoader.loadClass("com.anywide.dawdler.client.ServiceFactory");
-                            Method method = c.getMethod("getService", Class.class, String.class);
-                            String groupName = remoteService.group();
-                            obj = method.invoke(null, serviceClass, groupName);
-                        }
-                        if (obj != null)
-                            filed.set(service, obj);
-                    }
-                } catch (Exception e) {
-                    logger.error("", e);
-                }
-            }
-        }
-    }
+	@Override
+	public ServiceExecutor getServiceExecutor() {
+		return serviceExecutor;
+	}
 
+	private void injectService(Object service) {
+		Field[] fields = service.getClass().getDeclaredFields();
+		for (Field field : fields) {
+			RemoteService remoteService = field.getAnnotation(RemoteService.class);
+			if (!field.getType().isPrimitive()) {
+				Class<?> serviceClass = field.getType();
+				field.setAccessible(true);
+				try {
+					Object obj = null;
+					if (remoteService != null) {
+						if (!remoteService.remote()) {
+							obj = ServiceFactory.getService(serviceClass, serviceExecutor, dawdlerContext);
+						} else {
+							Class<?> serviceFactoryClass = classLoader
+									.loadClass("com.anywide.dawdler.client.ServiceFactory");
+							Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class);
+							String groupName = remoteService.group();
+							obj = method.invoke(null, serviceClass, groupName);
+						}
+						if (obj != null)
+							field.set(service, obj);
+					}
+				} catch (Exception e) {
+					logger.error("", e);
+				}
+			}
+		}
+	}
+
+	private void loadConfModuleAndExecuteStaticMethod(String methodName) {
+		try {
+			Class<?> configInitClass = classLoader.loadClass("com.anywide.dawdler.conf.server.init.ServerConfigInit");
+			Method method;
+			if (methodName.equals("init")) {
+				method = configInitClass.getMethod(methodName, List.class, List.class);
+				method.invoke(null, dawdlerListenerProvider.getListeners(), filterProvider.getFilters());
+			} else {
+				method = configInitClass.getMethod(methodName);
+				method.invoke(null);
+			}
+
+		} catch (Exception e) {
+			// ignore
+		}
+	}
 }

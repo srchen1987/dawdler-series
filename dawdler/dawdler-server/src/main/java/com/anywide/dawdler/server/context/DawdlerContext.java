@@ -16,6 +16,10 @@
  */
 package com.anywide.dawdler.server.context;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.deploys.DawdlerDeployClassLoader;
 import com.anywide.dawdler.server.deploys.ServiceBase;
@@ -24,10 +28,6 @@ import com.anywide.dawdler.server.serivce.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.TLS;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @author jackson.song
@@ -38,96 +38,96 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class DawdlerContext {
-    private static final String DAWDLER_CONTEXT_PREFIX = "dawdler_context_prefix";
-    private final ClassLoader classLoader;
-    private final String deployPath;
-    private final String deployName;
-    private final String deployClassPath;
-    private final String host;
-    private final int port;
-    private final ServicesManager servicesManager;
-    private final Map<Object, Object> attributes = new HashMap<>();
+	private static final String DAWDLER_CONTEXT_PREFIX = "dawdler_context_prefix";
+	private final ClassLoader classLoader;
+	private final String deployPath;
+	private final String deployName;
+	private final String deployClassPath;
+	private final String host;
+	private final int port;
+	private final ServicesManager servicesManager;
+	private final Map<Object, Object> attributes = new HashMap<>();
 
-    public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
-                          String host, int port, ServicesManager servicesManager) {
-        this.classLoader = classLoader;
-        this.deployPath = deployPath + File.separator;
-        this.deployName = deployName;
-        this.deployClassPath = deployClassPath + File.separator;
-        this.host = host;
-        this.port = port;
-        this.servicesManager = servicesManager;
-    }
+	public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
+			String host, int port, ServicesManager servicesManager) {
+		this.classLoader = classLoader;
+		this.deployPath = deployPath + File.separator;
+		this.deployName = deployName;
+		this.deployClassPath = deployClassPath + File.separator;
+		this.host = host;
+		this.port = port;
+		this.servicesManager = servicesManager;
+	}
 
-    public static void remove() {
-        TLS.remove(DAWDLER_CONTEXT_PREFIX);
-    }
+	public static void remove() {
+		TLS.remove(DAWDLER_CONTEXT_PREFIX);
+	}
 
-    public static DawdlerContext getDawdlerContext() {
-        DawdlerContext context = (DawdlerContext) TLS.get(DAWDLER_CONTEXT_PREFIX);
-        if (context == null)
-            context = ((DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader()).getDawdlerContext();
-        return context;
-    }
+	public static DawdlerContext getDawdlerContext() {
+		DawdlerContext context = (DawdlerContext) TLS.get(DAWDLER_CONTEXT_PREFIX);
+		if (context == null)
+			context = ((DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader()).getDawdlerContext();
+		return context;
+	}
 
-    public static void setDawdlerContext(DawdlerContext dawdlerContext) {
-        TLS.set(DAWDLER_CONTEXT_PREFIX, dawdlerContext);
-    }
+	public static void setDawdlerContext(DawdlerContext dawdlerContext) {
+		TLS.set(DAWDLER_CONTEXT_PREFIX, dawdlerContext);
+	}
 
-    public ClassLoader getClassLoader() {
-        return classLoader;
-    }
+	public ClassLoader getClassLoader() {
+		return classLoader;
+	}
 
-    public String getDeployPath() {
-        return deployPath;
-    }
+	public String getDeployPath() {
+		return deployPath;
+	}
 
-    public String getDeployClassPath() {
-        return deployClassPath;
-    }
+	public String getDeployClassPath() {
+		return deployClassPath;
+	}
 
-    public String getDeployName() {
-        return deployName;
-    }
+	public String getDeployName() {
+		return deployName;
+	}
 
-    public String getHost() {
-        return host;
-    }
+	public String getHost() {
+		return host;
+	}
 
-    public int getPort() {
-        return port;
-    }
+	public int getPort() {
+		return port;
+	}
 
-    public Object getService(String name) {
-        ServicesBean sb = servicesManager.getService(name);
-        return sb == null ? null : sb.getService();
-    }
+	public Object getService(String name) {
+		ServicesBean sb = servicesManager.getService(name);
+		return sb == null ? null : sb.getService();
+	}
 
-    public <T> T getService(Class<T> type) {
-        String name = ServiceFactory.getServiceName(type);
-        return (T) getService(name);
-    }
+	public <T> T getService(Class<T> type) {
+		String name = ServiceFactory.getServiceName(type);
+		return (T) getService(name);
+	}
 
-    public <T> T getServiceProxy(Class<T> type) {
-        Object obj = getAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX);
-        if (obj != null)
-            return ServiceFactory.getService(type, (ServiceExecutor) obj, this);
-        return getService(type);
-    }
+	public <T> T getServiceProxy(Class<T> type) {
+		Object obj = getAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX);
+		if (obj != null)
+			return ServiceFactory.getService(type, (ServiceExecutor) obj, this);
+		return getService(type);
+	}
 
-    public void setAttribute(Object key, Object value) {
-        attributes.put(key, value);
-    }
+	public void setAttribute(Object key, Object value) {
+		attributes.put(key, value);
+	}
 
-    public Object getAttribute(Object key) {
-        return attributes.get(key);
-    }
+	public Object getAttribute(Object key) {
+		return attributes.get(key);
+	}
 
-    public void removeAttribute(Object key) {
-        attributes.remove(key);
-    }
+	public void removeAttribute(Object key) {
+		attributes.remove(key);
+	}
 
-    public DawdlerServiceCreateProvider getDawdlerServiceCreateProvider() {
-        return servicesManager.getDawdlerServiceCreateProvider();
-    }
+	public DawdlerServiceCreateProvider getDawdlerServiceCreateProvider() {
+		return servicesManager.getDawdlerServiceCreateProvider();
+	}
 }

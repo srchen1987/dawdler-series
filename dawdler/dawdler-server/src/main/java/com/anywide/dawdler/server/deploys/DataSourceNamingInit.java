@@ -16,18 +16,20 @@
  */
 package com.anywide.dawdler.server.deploys;
 
-import com.anywide.dawdler.server.conf.DataSourceParser;
+import java.util.Hashtable;
+import java.util.Map;
+
+import javax.naming.Context;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 import org.apache.naming.ContextBindings;
 import org.apache.naming.SelectorContext;
 import org.apache.naming.java.javaURLContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
-import java.util.Hashtable;
-import java.util.Map;
+import com.anywide.dawdler.server.conf.DataSourceParser;
 
 /**
  * @author jackson.song
@@ -38,30 +40,30 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class DataSourceNamingInit {
-    private static final Logger logger = LoggerFactory.getLogger(DataSourceNamingInit.class);
+	private static final Logger logger = LoggerFactory.getLogger(DataSourceNamingInit.class);
 
-    public static void init(ClassLoader classLoader)
-            throws ClassNotFoundException, NamingException, InstantiationException, IllegalAccessException {
-        Object token = new Object();
-        Hashtable table = new Hashtable<>();
-        SelectorContext selectorContext = new SelectorContext(table, true);
-        // ContextAccessController.setSecurityToken(getName(), this);
-        ContextBindings.bindContext(classLoader, selectorContext, token);
-        ContextBindings.bindClassLoader(classLoader, token, classLoader);
-        System.setProperty(javax.naming.Context.INITIAL_CONTEXT_FACTORY,
-                "org.apache.naming.java.javaURLContextFactory");
-        javaURLContextFactory jf = new javaURLContextFactory();
-        Context context = jf.getInitialContext(table);
-        Map<String, DataSource> datasource = DataSourceParser.getDataSource(null, classLoader);
-        if (datasource != null) {
-            datasource.forEach((K, V) -> {
-                try {
-                    context.bind("java:" + K, V);
-                } catch (NamingException e) {
-                    logger.error("", e);
-                }
-            });
-        }
-    }
+	public static void init(ClassLoader classLoader)
+			throws ClassNotFoundException, NamingException, InstantiationException, IllegalAccessException {
+		Object token = new Object();
+		Hashtable table = new Hashtable<>();
+		SelectorContext selectorContext = new SelectorContext(table, true);
+		// ContextAccessController.setSecurityToken(getName(), this);
+		ContextBindings.bindContext(classLoader, selectorContext, token);
+		ContextBindings.bindClassLoader(classLoader, token, classLoader);
+		System.setProperty(javax.naming.Context.INITIAL_CONTEXT_FACTORY,
+				"org.apache.naming.java.javaURLContextFactory");
+		javaURLContextFactory jf = new javaURLContextFactory();
+		Context context = jf.getInitialContext(table);
+		Map<String, DataSource> datasource = DataSourceParser.getDataSource(null, classLoader);
+		if (datasource != null) {
+			datasource.forEach((K, V) -> {
+				try {
+					context.bind("java:" + K, V);
+				} catch (NamingException e) {
+					logger.error("", e);
+				}
+			});
+		}
+	}
 
 }

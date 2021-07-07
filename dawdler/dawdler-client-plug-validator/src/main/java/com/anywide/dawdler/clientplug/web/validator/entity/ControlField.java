@@ -25,42 +25,42 @@ package com.anywide.dawdler.clientplug.web.validator.entity;
  * @email suxuan696@gmail.com
  */
 public class ControlField {
-    private String fieldName;
-    private String rules;
-    private String fieldExplain;
+	private String fieldName;
+	private String rules;
+	private String fieldExplain;
 
-    public ControlField(String fieldName, String rules, String fieldExplain) {
-        this.fieldName = fieldName;
-        this.rules = rules;
-        this.fieldExplain = fieldExplain;
-    }
+	public ControlField(String fieldName, String rules, String fieldExplain) {
+		this.fieldName = fieldName;
+		this.rules = rules;
+		this.fieldExplain = fieldExplain;
+	}
 
-    public String getFieldName() {
-        return fieldName;
-    }
+	public String getFieldName() {
+		return fieldName;
+	}
 
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
-    }
+	public void setFieldName(String fieldName) {
+		this.fieldName = fieldName;
+	}
 
-    public String getRules() {
-        return rules;
-    }
+	public String getRules() {
+		return rules;
+	}
 
-    public void setRules(String rules) {
-        this.rules = rules;
-    }
+	public void setRules(String rules) {
+		this.rules = rules;
+	}
 
-    public String getFieldExplain() {
-        return fieldExplain;
-    }
+	public String getFieldExplain() {
+		return fieldExplain;
+	}
 
-    public void setFieldExplain(String fieldExplain) {
-        this.fieldExplain = fieldExplain;
-    }
+	public void setFieldExplain(String fieldExplain) {
+		this.fieldExplain = fieldExplain;
+	}
 
-    @Override
-    public String toString() {
-        return fieldName + "\t" + rules + "\t" + fieldExplain;
-    }
+	@Override
+	public String toString() {
+		return fieldName + "\t" + rules + "\t" + fieldExplain;
+	}
 }

@@ -27,12 +27,12 @@ import com.anywide.dawdler.breaker.state.CircuitBreakerState;
  * @email suxuan696@gmail.com
  */
 public interface CircuitBreaker {
-    boolean check();
+	boolean check();
 
-    void fail();
+	void fail();
 
-    void pass();
+	void pass();
 
-    CircuitBreakerState getState();
+	CircuitBreakerState getState();
 
 }

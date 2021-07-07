@@ -27,5 +27,5 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @email suxuan696@gmail.com
  */
 public interface DawdlerClientFilter {
-    Object doFilter(RequestBean request, FilterChain chain) throws Exception;
+	Object doFilter(RequestBean request, FilterChain chain) throws Exception;
 }

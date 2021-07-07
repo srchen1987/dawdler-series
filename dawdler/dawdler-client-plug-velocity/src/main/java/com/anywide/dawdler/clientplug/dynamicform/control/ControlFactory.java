@@ -27,24 +27,24 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
  * @email suxuan696@gmail.com
  */
 public class ControlFactory {
-    public static final Control getControl(ControlTag tag) {
-        String controltype = tag.getControltype();
-        if (controltype == null) {
-            throw new NullPointerException("controltype can't null !");
-        }
-        if (controltype.equals("text") || controltype.equals("password") || controltype.equals("hidden")) {
-            return new TextControl(tag);
-        } else if (controltype.equals("select")) {
-            return new SelectControl(tag);
-        } else if (controltype.equals("radio")) {
-            return new RadioControl(tag);
-        } else if (controltype.equals("textarea")) {
-            return new TextareaControl(tag);
-        } else if (controltype.equals("checkbox")) {
-            return new CheckboxControl(tag);
-        } else {
-            throw new NullPointerException("unknown " + controltype + " tag!");
-        }
+	public static final Control getControl(ControlTag tag) {
+		String controltype = tag.getControltype();
+		if (controltype == null) {
+			throw new NullPointerException("controltype can't null !");
+		}
+		if (controltype.equals("text") || controltype.equals("password") || controltype.equals("hidden")) {
+			return new TextControl(tag);
+		} else if (controltype.equals("select")) {
+			return new SelectControl(tag);
+		} else if (controltype.equals("radio")) {
+			return new RadioControl(tag);
+		} else if (controltype.equals("textarea")) {
+			return new TextareaControl(tag);
+		} else if (controltype.equals("checkbox")) {
+			return new CheckboxControl(tag);
+		} else {
+			throw new NullPointerException("unknown " + controltype + " tag!");
+		}
 
-    }
+	}
 }
