@@ -1,25 +1,24 @@
 <?xml version="1.0"?>
-<project
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-        xmlns="http://maven.apache.org/POM/4.0.0">
-    <modelVersion>4.0.0</modelVersion>
-    <parent>
-        <groupId>dawdler</groupId>
-        <artifactId>dawdler</artifactId>
-        <version>0.0.2-RELEASES</version>
-    </parent>
-    <artifactId>dawdler-server</artifactId>
-    <name>dawdler-server</name>
-    <packaging>jar</packaging>
-    <dependencies>
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>dawdler</groupId>
-            <artifactId>dawdler-core</artifactId>
-        </dependency>
-    </dependencies>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>dawdler</groupId>
+		<artifactId>dawdler</artifactId>
+		<version>0.0.2-RELEASES</version>
+	</parent>
+	<artifactId>dawdler-server</artifactId>
+	<name>dawdler-server</name>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib-nodep</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
+		</dependency>
+	</dependencies>
 </project>
