@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.annotation.RequestMethod;
 import com.anywide.dawdler.clientplug.web.AntPathMatcher;
 import com.anywide.dawdler.clientplug.web.TransactionController;
@@ -47,27 +48,24 @@ import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
  */
 public class AnnotationUrlHandler extends AbstractUrlHandler {
 	private static final ConcurrentHashMap<String, RequestUrlData> anturlRules = new ConcurrentHashMap<>(32);
-	
+
 	private static final ConcurrentHashMap<String, RequestUrlData> urlRules = new ConcurrentHashMap<>(64);
 	private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
-	
-	
-
 	public static RequestUrlData registMapping(String path, RequestUrlData data) {
 		boolean antPath = isAntPath(path);
-		if(antPath) {
+		if (antPath) {
 			return anturlRules.putIfAbsent(path, data);
-		}else {
+		} else {
 			return urlRules.putIfAbsent(path, data);
 		}
 	}
 
 	public static RequestUrlData removeMapping(String path) {
 		boolean antPath = isAntPath(path);
-		if(antPath) {
+		if (antPath) {
 			return anturlRules.remove(path);
-		}else {
+		} else {
 			return urlRules.remove(path);
 		}
 	}
@@ -75,11 +73,12 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 	public boolean handleUrl(String uriShort, String httpMethod, boolean isJson, HttpServletRequest request,
 			HttpServletResponse response) {
 		Set<Entry<String, RequestUrlData>> rules = urlRules.entrySet();
-		if(!isAntPath(uriShort)) {
+		if (!isAntPath(uriShort)) {
 			RequestUrlData requestUrlData = urlRules.get(uriShort);
-			if(requestUrlData == null)return false;
+			if (requestUrlData == null)
+				return false;
 			return handleUrl(requestUrlData, uriShort, httpMethod, isJson, null, request, response);
-		}else {
+		} else {
 			for (Entry<String, RequestUrlData> entry : rules) {
 				Map<String, String> variables = new LinkedHashMap<>();
 				boolean matched = antPathMatcher.doMatch(entry.getKey(), uriShort, true, variables);
@@ -89,104 +88,60 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 			}
 			return false;
 		}
-		
-		
-//		for (Entry<String, RequestUrlData> entry : rules) {
-//			boolean matched = antPathMatcher.doMatch(entry.getKey(), uriShort, true, variables);
-//			if (matched) {
-//				RequestUrlData requestUrlData = entry.getValue();
-//				RequestMapping requestMapping = requestUrlData.getRequestMapping();
-//				if (!validateHttpMethods(requestMapping, httpMethod)) {
-//					response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-//					return true;
-//				}
-//				boolean multipart = ServletFileUpload.isMultipartContent(request);
-//				ViewForward wf = createViewForward();
-//				String exceptionHandler = requestMapping.exceptionHandler();
-//				if (wf == null) {
-//					if (multipart) {
-//						wf = new MultipartViewForward(request, response);
-//					} else
-//						wf = new ViewForward(request, response);
-//				}
-//				wf.setParamsVariable(variables);
-//				wf.setRequestUrlData(requestUrlData);
-//				wf.setUriShort(uriShort);
-//				ViewControllerContext.setViewForward(wf);
-//
-//				TransactionController targetController = requestUrlData.getTarget();
-//				Method method = requestUrlData.getMethod();
-//				try {
-//					if (multipart) {
-//						long uploadSizeMax = requestMapping.uploadSizeMax();
-//						long uploadPerSizeMax = requestMapping.uploadPerSizeMax();
-//						MultipartViewForward mwf = (MultipartViewForward) wf;
-//						mwf.parse(uploadSizeMax, uploadPerSizeMax);
-//					}
-//					if (WebValidateExecutor.validate(request, response, isJson, targetController))
-//						return invokeMethod(targetController, method, wf);
-//					else
-//						return true;
-//				} catch (Exception e) {
-//					HttpExceptionHandler httpExceptionHandler = HttpExceptionHolder
-//							.getHttpExceptionHandler(exceptionHandler);
-//					httpExceptionHandler.handle(request, response, wf, e);
-//					return true;
-//				} finally {
-//					wf.release();
-//					ViewControllerContext.removeViewForward();
-//				}
-//			}
-//		}
-//		return false;
 	}
 
-	private boolean handleUrl(RequestUrlData requestUrlData,String uriShort, String httpMethod, boolean isJson, Map<String, String> variables, HttpServletRequest request,
-			HttpServletResponse response) {
+	private boolean handleUrl(RequestUrlData requestUrlData, String uriShort, String httpMethod, boolean isJson,
+			Map<String, String> variables, HttpServletRequest request, HttpServletResponse response) {
 		RequestMapping requestMapping = requestUrlData.getRequestMapping();
 		if (!validateHttpMethods(requestMapping, httpMethod)) {
 			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			return true;
 		}
 		boolean multipart = ServletFileUpload.isMultipartContent(request);
-		ViewForward wf = createViewForward();
+		ViewForward viewForward = createViewForward();
 		String exceptionHandler = requestMapping.exceptionHandler();
-		if (wf == null) {
+		ViewType viewType = requestMapping.viewType();
+		if (viewForward == null) {
 			if (multipart) {
-				wf = new MultipartViewForward(request, response);
+				viewForward = new MultipartViewForward(request, response);
 			} else
-				wf = new ViewForward(request, response);
+				viewForward = new ViewForward(request, response);
 		}
-		wf.setParamsVariable(variables);
-		wf.setRequestUrlData(requestUrlData);
-		wf.setUriShort(uriShort);
-		ViewControllerContext.setViewForward(wf);
-
+		viewForward.setParamsVariable(variables);
+		viewForward.setRequestUrlData(requestUrlData);
+		viewForward.setUriShort(uriShort);
+		ViewControllerContext.setViewForward(viewForward);
+		boolean responseBody = requestUrlData.getResponseBody() != null;
 		TransactionController targetController = requestUrlData.getTarget();
 		Method method = requestUrlData.getMethod();
 		try {
 			if (multipart) {
 				long uploadSizeMax = requestMapping.uploadSizeMax();
 				long uploadPerSizeMax = requestMapping.uploadPerSizeMax();
-				MultipartViewForward mwf = (MultipartViewForward) wf;
+				MultipartViewForward mwf = (MultipartViewForward) viewForward;
 				mwf.parse(uploadSizeMax, uploadPerSizeMax);
 			}
 			if (WebValidateExecutor.validate(request, response, isJson, targetController))
-				return invokeMethod(targetController, method, wf);
+				return invokeMethod(targetController, method, viewForward, responseBody);
 			else
 				return true;
-		} catch (Exception e) {
-			HttpExceptionHandler httpExceptionHandler = HttpExceptionHolder
-					.getHttpExceptionHandler(exceptionHandler);
-			httpExceptionHandler.handle(request, response, wf, e);
+		} catch (Throwable e) {
+			HttpExceptionHandler httpExceptionHandler = null;
+			if (exceptionHandler.isEmpty()) {
+				exceptionHandler = viewType.toString();
+			}
+			httpExceptionHandler = HttpExceptionHolder.getHttpExceptionHandler(exceptionHandler);
+			if (httpExceptionHandler == null)
+				httpExceptionHandler = HttpExceptionHolder.getJsonHttpExceptionHandler();
+			httpExceptionHandler.handle(request, response, viewForward, e);
 			return true;
 		} finally {
-			wf.release();
+			viewForward.release();
 			ViewControllerContext.removeViewForward();
 		}
-	
+
 	}
-	
+
 	private boolean validateHttpMethods(RequestMapping requestMapping, String httpMethod) {
 		RequestMethod[] requestMethods = requestMapping.method();
 		if (requestMethods.length == 0)
@@ -198,18 +153,18 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		}
 		return false;
 	}
-	
+
 	private static boolean isAntPath(String uri) {
-		return (uri.indexOf("{")!=-1) || (uri.indexOf("?")!=-1) || (uri.indexOf("*")!=-1);
+		return (uri.indexOf("{") != -1) || (uri.indexOf("?") != -1) || (uri.indexOf("*") != -1);
 	}
-	
-	public static Set<TransactionController> getTransactionControllers(){
+
+	public static Set<TransactionController> getTransactionControllers() {
 		Set controllers = new HashSet<>(32);
-		urlRules.values().forEach(requestUrlData->{
+		urlRules.values().forEach(requestUrlData -> {
 			controllers.add(requestUrlData.getTarget());
 		});
-		
-		anturlRules.values().forEach(requestUrlData->{
+
+		anturlRules.values().forEach(requestUrlData -> {
 			controllers.add(requestUrlData.getTarget());
 		});
 		return controllers;

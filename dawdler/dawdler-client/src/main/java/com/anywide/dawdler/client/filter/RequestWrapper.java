@@ -38,10 +38,10 @@ public class RequestWrapper extends RequestBean {
 	private final int timeout;
 
 	private final CircuitBreaker circuitBreaker;
-	private final Class proxyInterface;
+	private final Class<?> proxyInterface;
 
 	public RequestWrapper(RequestBean request, SocketSession session, CircuitBreaker circuitBreaker,
-			Class proxyInterface, int timeout) {
+			Class<?> proxyInterface, int timeout) {
 		this.timeout = timeout;
 		this.request = request;
 		this.session = session;
@@ -90,16 +90,16 @@ public class RequestWrapper extends RequestBean {
 	}
 
 	@Override
-	public String getAttachment(String key) {
+	public Object getAttachment(String key) {
 		return request.getAttachment(key);
 	}
 
 	@Override
-	public Map<String, String> getAttachments() {
+	public Map<String, Object> getAttachments() {
 		return request.getAttachments();
 	}
 
-	public Class getProxyInterface() {
+	public Class<?> getProxyInterface() {
 		return proxyInterface;
 	}
 
@@ -128,17 +128,17 @@ public class RequestWrapper extends RequestBean {
 	}
 
 	@Override
-	public void setAttachment(String key, String value) {
+	public void setAttachment(String key, Object value) {
 		request.setAttachment(key, value);
 	}
 
 	@Override
-	public void setAttachmentIfAbsent(String key, String value) {
+	public void setAttachmentIfAbsent(String key, Object value) {
 		request.setAttachmentIfAbsent(key, value);
 	}
 
 	@Override
-	public void setAttachments(Map<String, String> attachments) {
+	public void setAttachments(Map<String, Object> attachments) {
 		request.setAttachments(attachments);
 	}
 }

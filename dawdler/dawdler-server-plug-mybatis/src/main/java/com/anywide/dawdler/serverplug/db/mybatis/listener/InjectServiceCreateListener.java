@@ -50,7 +50,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 		for (Field field : fields) {
 			Resource resource = field.getAnnotation(Resource.class);
 			if (!field.getType().isPrimitive()) {
-				Class serviceClass = field.getType();
+				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
 				try {
 					if (resource != null && serviceClass.isInterface()) {

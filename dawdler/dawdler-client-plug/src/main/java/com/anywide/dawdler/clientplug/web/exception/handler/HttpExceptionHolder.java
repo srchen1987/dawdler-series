@@ -24,7 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import com.anywide.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
 
 /**
@@ -36,12 +38,13 @@ import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
  * @email suxuan696@gmail.com
  */
 public class HttpExceptionHolder {
-	public static final String JSON = "json";
 	private static final Logger logger = LoggerFactory.getLogger(HttpExceptionHolder.class);
 	private static final ConcurrentHashMap<String, HttpExceptionHandler> handles = new ConcurrentHashMap<>();
 
 	static {
-		handles.put(JSON, new JsonHttpExceptionHandler());
+		handles.put(ViewType.json.toString(), new JsonHttpExceptionHandler());
+		handles.put(ViewType.velocity.toString(), new VelocityHttpExceptionHandler());
+		handles.put(ViewType.jsp.toString(), new JspHttpExceptionHandler());
 	}
 
 	public static void regist(String id, HttpExceptionHandler handler) {
@@ -56,19 +59,35 @@ public class HttpExceptionHolder {
 	}
 
 	public static HttpExceptionHandler getJsonHttpExceptionHandler() {
-		return getHttpExceptionHandler(JSON);
+		return getHttpExceptionHandler(ViewType.json.toString());
 	}
 
 	public static class JsonHttpExceptionHandler implements HttpExceptionHandler {
 		@Override
 		public void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward,
-				Exception ex) {
+				Throwable ex) {
 			logger.error("", ex);// 如果不想输出这个，可以注册自己的handler，也可以注释源码
 			response.setStatus(500);
+			viewForward.setStatus(ResponseType.ERROR);
 			viewForward.putData("success", false);
-			viewForward.putData("msg", ex.getMessage());
 			DisplaySwitcher.switchDisplay(viewForward);
 		}
-
+	}
+	
+	public static class JspHttpExceptionHandler implements HttpExceptionHandler {
+		@Override
+		public void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward,
+				Throwable ex) {
+			DisplaySwitcher.switchDisplay(viewForward);
+		}
+	}
+	
+	
+	public static class VelocityHttpExceptionHandler implements HttpExceptionHandler {
+		@Override
+		public void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward,
+				Throwable ex) {
+			DisplaySwitcher.switchDisplay(viewForward);
+		}
 	}
 }

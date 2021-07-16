@@ -33,7 +33,7 @@ import com.esotericsoftware.kryo.io.UnsafeOutput;
  * @email suxuan696@gmail.com
  */
 public class KryoSerializer implements Serializer {
-	private static final ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
+	private static final InheritableThreadLocal<KryoLocal> kryos = new InheritableThreadLocal<KryoLocal>() {
 		protected KryoLocal initialValue() {
 			KryoLocal kryoLocal = new KryoLocal();
 			return kryoLocal;

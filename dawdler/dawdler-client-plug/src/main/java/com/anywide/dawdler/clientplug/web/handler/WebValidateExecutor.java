@@ -58,7 +58,7 @@ import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWr
 public class WebValidateExecutor {
 	public static final String VALIDATE_ERROR = "validate_error";// 验证错误
 	private static final Logger logger = LoggerFactory.getLogger(WebValidateExecutor.class);
-	private static final Map<Class, ControlValidator> validators = new ConcurrentHashMap<>();
+	private static final Map<Class<?>, ControlValidator> validators = new ConcurrentHashMap<>();
 
 	public static boolean validate(HttpServletRequest request, HttpServletResponse response, boolean isJson,
 			Object controller) throws IOException {

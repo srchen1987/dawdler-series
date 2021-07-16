@@ -96,6 +96,7 @@ public class JavassistProxyFactory implements org.apache.ibatis.executor.loader.
 		} catch (Exception e) {
 			throw new ExecutorException("Error creating lazy proxy.  Cause: " + e, e);
 		}
+		
 		((Proxy) enhanced).setHandler(callback);
 		return enhanced;
 	}

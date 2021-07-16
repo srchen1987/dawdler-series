@@ -18,9 +18,9 @@ package com.anywide.dawdler.client.filter;
 
 import java.util.concurrent.TimeUnit;
 
-import com.anywide.dawdler.client.context.RpcClientContext;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.RequestBean;
+import com.anywide.dawdler.core.rpc.context.RpcContext;
 import com.anywide.dawdler.core.thread.InvokeFuture;
 
 /**
@@ -35,7 +35,7 @@ public class DefaultFilterChain implements FilterChain {
 	@Override
 	public Object doFilter(RequestBean request) throws Exception {
 		RequestWrapper rq = (RequestWrapper) request;
-		RpcClientContext.getContext().setRequest(rq);
+		request.setAttachments(RpcContext.getContext().getAttachments());
 		try {
 			SocketSession socketSession = rq.getSession();
 			InvokeFuture<Object> future = new InvokeFuture<>();
@@ -43,7 +43,7 @@ public class DefaultFilterChain implements FilterChain {
 			socketSession.getDawdlerConnection().write(rq.getRequest(), socketSession);
 			return future.getResult(rq.getTimeout(), TimeUnit.SECONDS);
 		} finally {
-			RpcClientContext.removeContext();
+			RpcContext.removeContext();
 		}
 
 	}

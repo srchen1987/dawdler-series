@@ -27,6 +27,7 @@ import java.util.Map;
 import org.dom4j.Attribute;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,9 +81,9 @@ public class XmlConfig {
 	}
 
 	private static void loadDataSource() {
-		List<Element> list = xmlobject.selectNodes("/config/server-datas/server-data");
-		for (Iterator<Element> it = list.iterator(); it.hasNext();) {
-			Element ele = it.next();
+		List<Node> list = xmlobject.selectNodes("/config/server-datas/server-data");
+		for (Object obj : list) {
+			Element ele = (Element) obj;
 			Map<String, String> items = new HashMap<>();
 			for (Iterator<Attribute> its = ele.attributes().iterator(); its.hasNext();) {
 				Attribute ab = its.next();

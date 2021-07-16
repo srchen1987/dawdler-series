@@ -6,7 +6,7 @@ public class RpcServerContext {
 
 	private RequestWrapper request;
 
-	private static final ThreadLocal<RpcServerContext> THREAD_LOCAL = new ThreadLocal<RpcServerContext>() {
+	private static final InheritableThreadLocal<RpcServerContext> THREAD_LOCAL = new InheritableThreadLocal<RpcServerContext>() {
 		@Override
 		protected RpcServerContext initialValue() {
 			return new RpcServerContext();

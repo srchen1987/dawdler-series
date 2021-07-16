@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.plugs;
+package com.anywide.dawdler.clientplug.web.plugs.impl;
 
 import java.io.IOException;
 import java.util.Map;
@@ -29,7 +29,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 
 /**
  * @author jackson.song
@@ -41,24 +43,14 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  */
 public class JspDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(JspDisplayPlug.class);
-
-	private final String path;
-
-	public JspDisplayPlug(ServletContext servletContext) {
-		super(servletContext);
-		String templatePath = servletContext.getInitParameter("template-path");
-		if (templatePath != null && !templatePath.trim().equals(""))
-			path = "/WEB-INF/" + templatePath + "/";
-		else
-			path = "/WEB-INF/template/";
-	}
+	private String path;
 
 	@Override
 	public void display(ViewForward wf) {
 		logException(wf);
 		HttpServletRequest request = wf.getRequest();
 		HttpServletResponse response = wf.getResponse();
-		response.setContentType(MIME_TYPE_TEXT);
+		response.setContentType(MIME_TYPE_TEXT_HTML);
 		if (wf.getInvokeException() != null) {
 			logger.error("", wf.getInvokeException());
 			try {
@@ -96,9 +88,9 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 			return;
 		}
 		try {
-			Map<String, Object> map = wf.getData();
-			if (map != null) {
-				Set<Entry<String, Object>> entrys = map.entrySet();
+			Map<String, Object> data = wf.getData();
+			if (data != null) {
+				Set<Entry<String, Object>> entrys = data.entrySet();
 				for (Entry<String, Object> entry : entrys) {
 					request.setAttribute(entry.getKey(), entry.getValue());
 				}
@@ -107,5 +99,20 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 		} catch (ServletException | IOException e) {
 			logger.error("", e);
 		}
+	}
+
+	@Override
+	public void init(ServletContext servletContext) {
+		String templatePath = servletContext.getInitParameter("template-path");
+		if (templatePath != null && !templatePath.trim().equals(""))
+			path = "/WEB-INF/" + templatePath + "/";
+		else
+			path = "/WEB-INF/template/";
+
+	}
+
+	@Override
+	public String plugName() {
+		return ViewType.jsp.toString();
 	}
 }
