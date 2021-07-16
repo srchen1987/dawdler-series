@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.load;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
 import java.util.Iterator;
@@ -35,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ConnectionPool;
+import com.anywide.dawdler.clientplug.load.classloader.ClientPlugClassLoader;
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
 import com.anywide.dawdler.util.DawdlerTool;
@@ -81,6 +83,7 @@ public class LoadListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
+		ClientPlugClassLoader classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getcurrentPath());
 		XmlObject xml = ClientConfig.getInstance().getXml();
 		for (Object o : xml.selectNodes("/config/loads-on/item")) {
 			Element ele = (Element) o;
@@ -95,7 +98,7 @@ public class LoadListener implements ServletContextListener {
 			}
 			arg0.getServletContext().getContextPath();
 			String channelGroupId = ele.attributeValue("channel-group-id");
-			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId);
+			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
 			try {
 				loadCore.toCheck();
 			} catch (IOException e) {

@@ -58,11 +58,12 @@ public class RWSplittingDataSourceManager {
 
 	public void init() throws Exception {
 		XmlObject xmlo = XmlConfig.getConfig();
-		List<Element> list = xmlo.selectNodes("/config/datasources/datasource");
-		for (Element ele : list) {
+		List<Node> dataSources = xmlo.selectNodes("/config/datasources/datasource");
+		for (Object dataSource : dataSources) {
+			Element ele = (Element) dataSource;
 			String id = ele.attributeValue("id");
 			String code = ele.attributeValue("code");
-			Class c = Class.forName(code);
+			Class<?> c = Class.forName(code);
 			Object obj = c.newInstance();
 			List<Node> attrs = ele.selectNodes("attribute");
 			for (Node node : attrs) {
@@ -77,18 +78,20 @@ public class RWSplittingDataSourceManager {
 
 			}
 			DataSource ds = (DataSource) obj;
-			dataSources.put(id, ds);
+			this.dataSources.put(id, ds);
 		}
 
-		List<Element> datasourceExpressionList = xmlo.selectNodes("/config/datasource-expression");
-		for (Element ele : datasourceExpressionList) {
+		List<Node> datasourceExpressionList = xmlo.selectNodes("/config/datasource-expression");
+		for (Object datasourceExpression : datasourceExpressionList) {
+			Element ele = (Element) datasourceExpression;
 			String id = ele.attributeValue("id");
 			String latentExpression = ele.attributeValue("latent-expression");
-			datasourceExpression.put(id, latentExpression);
+			this.datasourceExpression.put(id, latentExpression);
 		}
 
-		List<Element> decisionList = xmlo.selectNodes("/config/decision");
-		for (Element ele : decisionList) {
+		List<Node> decisionList = xmlo.selectNodes("/config/decision");
+		for (Object decision : decisionList) {
+			Element ele = (Element) decision;
 			String mapping = ele.attributeValue("mapping");
 			String latentExpression = ele.attributeValue("latent-expression");
 			packages.put(mapping, new MappingDecision(datasourceExpression.get(latentExpression)));

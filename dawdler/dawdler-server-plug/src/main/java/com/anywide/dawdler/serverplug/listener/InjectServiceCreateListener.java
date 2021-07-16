@@ -47,7 +47,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 		for (Field field : fields) {
 			RemoteService remoteService = field.getAnnotation(RemoteService.class);
 			if (!field.getType().isPrimitive()) {
-				Class serviceClass = field.getType();
+				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
 				try {
 					if (remoteService != null) {
@@ -55,7 +55,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 							String groupName = remoteService.group();
 							try {
 								field.set(service, ServiceFactory.getService(serviceClass, groupName,
-										remoteService.loadBalance()));
+										remoteService.loadBalance(), dawdlerContext.getClassLoader()));
 							} catch (Exception e) {
 								logger.error("", e);
 							}

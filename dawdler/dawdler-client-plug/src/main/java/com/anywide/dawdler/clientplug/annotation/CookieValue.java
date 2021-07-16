@@ -21,7 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -35,7 +34,5 @@ import java.lang.annotation.Target;
 public @interface CookieValue {
 
 	String value() default "";
-
-	String defaultValue() default "";
 
 }

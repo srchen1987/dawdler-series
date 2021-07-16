@@ -42,7 +42,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 public class DawdlerHttpSession implements HttpSession {
 	public final static String CREATION_TIME_KEY = "creationTime";
 	public final static String LAST_ACCESSED_TIME_KEY = "lastAccessedTime";
-	public static ThreadLocal<Boolean> flushImmediately = new ThreadLocal<>();
+	public static InheritableThreadLocal<Boolean> flushImmediately = new InheritableThreadLocal<>();
 	private final Map<String, Object> attributesAddNew = new HashMap<>();
 	private final SessionOperator sessionOperator;
 	private final MessageOperator messageOperator;

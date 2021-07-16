@@ -28,7 +28,7 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class TLS {
-	private final static ThreadLocal<Map<Object, Object>> THREAD_LOCAL = new ThreadLocal<Map<Object, Object>>();
+	private final static InheritableThreadLocal<Map<Object, Object>> THREAD_LOCAL = new InheritableThreadLocal<Map<Object, Object>>();
 
 	public static void set(Object key, Object value) {
 		Map<Object, Object> map = createIfNotExist();

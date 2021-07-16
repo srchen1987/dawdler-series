@@ -1,0 +1,3 @@
+com.anywide.dawdler.clientplug.web.plugs.impl.JsonDisplayPlug
+com.anywide.dawdler.clientplug.web.plugs.impl.JspDisplayPlug
+com.anywide.dawdler.clientplug.web.plugs.impl.VelocityDisplayPlug

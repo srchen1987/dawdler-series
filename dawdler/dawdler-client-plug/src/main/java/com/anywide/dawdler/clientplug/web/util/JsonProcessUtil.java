@@ -18,7 +18,9 @@ package com.anywide.dawdler.clientplug.web.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Writer;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -46,6 +48,11 @@ public class JsonProcessUtil {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public static void beanToJson(Writer writer, Object obj) throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		mapper.writeValue(writer, obj);
 	}
 
 	public static <T> T jsonToBean(String json, Class<T> valueType) {

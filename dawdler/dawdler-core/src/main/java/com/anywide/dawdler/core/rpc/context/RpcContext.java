@@ -14,9 +14,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.client.context;
+package com.anywide.dawdler.core.rpc.context;
 
-import com.anywide.dawdler.client.filter.RequestWrapper;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -25,32 +27,52 @@ import com.anywide.dawdler.client.filter.RequestWrapper;
  * @date 2020年04月22日
  * @email suxuan696@gmail.com
  */
-public class RpcClientContext {
+public class RpcContext {
 
-	private RequestWrapper request;
-
-	private static final ThreadLocal<RpcClientContext> THREAD_LOCAL = new ThreadLocal<RpcClientContext>() {
+	private Map<String, Object> attachments;
+	private static final InheritableThreadLocal<RpcContext> THREAD_LOCAL = new InheritableThreadLocal<RpcContext>() {
 		@Override
-		protected RpcClientContext initialValue() {
-			return new RpcClientContext();
+		protected RpcContext initialValue() {
+			return new RpcContext();
 		}
 	};
 
-	public static RpcClientContext getContext() {
+	public static RpcContext getContext() {
 		return THREAD_LOCAL.get();
 	}
 
 	public static void removeContext() {
 		THREAD_LOCAL.remove();
 	}
-
-	public void setRequest(RequestWrapper request) {
-		if (this.request == null)
-			this.request = request;
+	
+	public void setAttachment(String key, Object value) {
+		checkIfNullCreateAttachment();
+		attachments.put(key, value);
 	}
 
-	public RequestWrapper getRequest() {
-		return request;
+	public void setAttachmentIfAbsent(String key, Object value) {
+		checkIfNullCreateAttachment();
+		attachments.putIfAbsent(key, value);
 	}
+
+	public void setAttachments(Map<String, Object> attachments) {
+		this.attachments = attachments;
+	}
+
+	public Object getAttachment(String key) {
+		return attachments != null ? attachments.get(key) : null;
+	}
+
+	public Map<String, Object> getAttachments() {
+		return attachments;
+	}
+
+	private void checkIfNullCreateAttachment() {
+		if (attachments == null) {
+			attachments = new HashMap<String, Object>();
+		}
+	}
+
+	
 
 }

@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.plugs;
+package com.anywide.dawdler.clientplug.web.plugs.impl;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,8 +44,10 @@ import org.apache.velocity.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.velocity.VelocityToolBox;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
 import com.anywide.dawdler.util.DawdlerTool;
 
@@ -61,8 +63,116 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(VelocityDisplayPlug.class);
 	private Map<String, VelocityToolBox> toolboxs = new HashMap<String, VelocityToolBox>();
 
-	public VelocityDisplayPlug(ServletContext servletContext) {
-		super(servletContext);
+	public Map<String, VelocityToolBox> getToolboxs() {
+		return toolboxs;
+	}
+
+	public void setToolboxs(Map<String, VelocityToolBox> toolboxs) {
+		this.toolboxs = toolboxs;
+	}
+
+	@Override
+	public void display(ViewForward wf) {
+		HttpServletRequest request = wf.getRequest();
+		HttpServletResponse response = wf.getResponse();
+		response.setContentType(MIME_TYPE_TEXT_HTML);
+		if (wf.getInvokeException() != null) {
+			logger.error("", wf.getInvokeException());
+			try {
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error.");
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+			return;
+		}
+		String tpath = null;
+		switch (wf.getStatus()) {
+		case SUCCESS:
+			tpath = wf.getTemplatePath();
+			break;
+		case ERROR:
+			tpath = wf.getErrorPage();
+			break;
+		case REDIRECT:
+			tpath = wf.getForwardAndRedirectPath();
+			try {
+				response.sendRedirect(tpath);
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+			return;
+		case FORWARD:
+			tpath = wf.getForwardAndRedirectPath();
+			try {
+				request.getRequestDispatcher(tpath).forward(request, response);
+			} catch (ServletException | IOException e) {
+				logger.error("", e);
+			}
+			return;
+		case STOP:
+			return;
+		default:
+			break;
+		}
+		try {
+			mergeTemplate(request, response, tpath, wf);
+		} catch (Exception e) {
+			logger.error("", e);
+			return;
+		}
+	}
+
+	private void mergeTemplate(HttpServletRequest request, HttpServletResponse response, String tpath, ViewForward wf)
+			throws IOException, ServletException {
+		if (tpath == null)
+			throw new ServletException("not set template!");
+		PrintWriter out = null;
+		try {
+			Template template;
+			try {
+				template = VelocityTemplateManager.getInstance().getTemplate(tpath);
+			} catch (ResourceNotFoundException e) {
+				throw new ServletException(e);
+			}
+			Map<String, Object> data = wf.getData();
+			Context context = new VelocityContext(data);
+			if (wf.isAddRequestAttribute()) {
+				Enumeration<String> attrs = request.getAttributeNames();
+				while (attrs.hasMoreElements()) {
+					String key = attrs.nextElement();
+					Object obj = request.getAttribute(key);
+					context.put(key, obj);
+				}
+			}
+			if (!toolboxs.isEmpty()) {
+				Set<Entry<String, VelocityToolBox>> vts = toolboxs.entrySet();
+				for (Entry<String, VelocityToolBox> en : vts) {
+					context.put(en.getKey(), en.getValue());
+				}
+			}
+			String ae = request.getHeader("accept-encoding");
+			if (ae != null && ae.indexOf("gzip") != -1) {
+				OutputStreamWriter ow = new OutputStreamWriter(new GZIPOutputStream(response.getOutputStream()),
+						StandardCharsets.UTF_8);
+				out = new PrintWriter(ow);
+				response.setHeader("Content-Encoding", "gzip");
+			} else {
+				out = response.getWriter();
+			}
+			template.merge(context, out);
+			out.flush();
+		} catch (Exception e) {
+			throw new ServletException(e);
+		} finally {
+			if (out != null) {
+				out.close();
+			}
+		}
+	}
+
+	@Override
+	public void init(ServletContext servletContext) {
+
 		InputStream fin;
 		Properties pstool = new Properties();
 		try {
@@ -136,112 +246,11 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 				}
 		}
 		tm.init(ps);
-	}
 
-	public Map<String, VelocityToolBox> getToolboxs() {
-		return toolboxs;
-	}
-
-	public void setToolboxs(Map<String, VelocityToolBox> toolboxs) {
-		this.toolboxs = toolboxs;
 	}
 
 	@Override
-	public void display(ViewForward wf) {
-		HttpServletRequest request = wf.getRequest();
-		HttpServletResponse response = wf.getResponse();
-		response.setContentType(MIME_TYPE_TEXT);
-		if (wf.getInvokeException() != null) {
-			logger.error("", wf.getInvokeException());
-			try {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error.");
-			} catch (IOException e) {
-				logger.error("", e);
-			}
-			return;
-		}
-		String tpath = null;
-		switch (wf.getStatus()) {
-		case SUCCESS:
-			tpath = wf.getTemplatePath();
-			break;
-		case ERROR:
-			tpath = wf.getErrorPage();
-			break;
-		case REDIRECT:
-			tpath = wf.getForwardAndRedirectPath();
-			try {
-				response.sendRedirect(tpath);
-			} catch (IOException e) {
-				logger.error("", e);
-			}
-			return;
-		case FORWARD:
-			tpath = wf.getForwardAndRedirectPath();
-			try {
-				request.getRequestDispatcher(tpath).forward(request, response);
-			} catch (ServletException | IOException e) {
-				logger.error("", e);
-			}
-			return;
-		case STOP:
-			return;
-		default:
-			break;
-		}
-		try {
-			mergeTemplate(request, response, tpath, wf);
-		} catch (Exception e) {
-			logger.error("", e);
-			return;
-		}
-	}
-
-	private void mergeTemplate(HttpServletRequest request, HttpServletResponse response, String tpath, ViewForward wf)
-			throws IOException, ServletException {
-		if (tpath == null)
-			throw new ServletException("not set template!");
-		PrintWriter out = null;
-		try {
-			Template template;
-			try {
-				template = VelocityTemplateManager.getInstance().getTemplate(tpath);
-			} catch (ResourceNotFoundException e) {
-				throw new ServletException(e);
-			}
-			Map data = wf.getData();
-			Context context = new VelocityContext(data);
-			if (wf.isAddRequestAttribute()) {
-				Enumeration<String> attrs = request.getAttributeNames();
-				while (attrs.hasMoreElements()) {
-					String key = attrs.nextElement();
-					Object obj = request.getAttribute(key);
-					context.put(key, obj);
-				}
-			}
-			if (!toolboxs.isEmpty()) {
-				Set<Entry<String, VelocityToolBox>> vts = toolboxs.entrySet();
-				for (Entry<String, VelocityToolBox> en : vts) {
-					context.put(en.getKey(), en.getValue());
-				}
-			}
-			String ae = request.getHeader("accept-encoding");
-			if (ae != null && ae.indexOf("gzip") != -1) {
-				OutputStreamWriter ow = new OutputStreamWriter(new GZIPOutputStream(response.getOutputStream()),
-						StandardCharsets.UTF_8);
-				out = new PrintWriter(ow);
-				response.setHeader("Content-Encoding", "gzip");
-			} else {
-				out = response.getWriter();
-			}
-			template.merge(context, out);
-			out.flush();
-		} catch (Exception e) {
-			throw new ServletException(e);
-		} finally {
-			if (out != null) {
-				out.close();
-			}
-		}
+	public String plugName() {
+		return ViewType.velocity.toString();
 	}
 }
