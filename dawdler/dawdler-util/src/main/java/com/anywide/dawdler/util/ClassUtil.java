@@ -21,6 +21,15 @@ import java.math.BigDecimal;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
+/**
+ * @author jackson.song
+ * @version V1.0
+ * @Title ClassUtil.java
+ * @Package com.anywide.dawdler.util
+ * @Description Class操作类
+ * @date 2021年04月03日
+ * @email suxuan696@gmail.com
+ */
 public class ClassUtil {
 	private static final Map<Class<?>, Class<?>> primitiveWrapperTypeMap = new IdentityHashMap<>(8);
 	static {
@@ -43,8 +52,7 @@ public class ClassUtil {
 	}
 
 	public static boolean isSimpleValueType(Class<?> type) {
-		return (Void.class != type && void.class != type
-				&& (isPrimitiveOrWrapper(type) || BigDecimal.class.isAssignableFrom(type)));
+		return ((isPrimitiveOrWrapper(type) || BigDecimal.class.isAssignableFrom(type)) && Void.class != type && void.class != type);
 	}
 
 	public static boolean isSimpleArrayType(Class<?> type) {

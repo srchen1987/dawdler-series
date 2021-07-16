@@ -33,8 +33,6 @@ public class DisplaySwitcher {
 		if (serviceType != null) {
 			displayPlug = PlugFactory.getDisplayPlug(serviceType);
 		}
-		if (displayPlug == null)
-			displayPlug = PlugFactory.getDisplayPlug("default");
 		displayPlug.display(wf);
 	}
 }

@@ -27,7 +27,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @email suxuan696@gmail.com
  */
 public class ViewControllerContext {
-	private static final ThreadLocal<ViewForward> viewForward = new ThreadLocal<ViewForward>();
+	private static final InheritableThreadLocal<ViewForward> viewForward = new InheritableThreadLocal<ViewForward>();
 
 	public static ViewForward getViewForward() {
 		return viewForward.get();

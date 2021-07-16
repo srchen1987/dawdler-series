@@ -25,7 +25,8 @@ import com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
  * @author jackson.song
  * @version V1.0
  * @Title CompileParameterDiscoverer.java
- * @Description 基于java api 获取方法参数名称的实现类（1.8之后加入 parameter 才生效），由于开启的概率不高 所以此类无用 没有加入到SPI
+ * @Description 基于java api 获取方法参数名称的实现类（1.8之后加入 parameter 才生效），由于开启的概率不高 所以此类无用
+ *              没有加入到SPI
  * @date 2021年04月10日
  * @email suxuan696@gmail.com
  */

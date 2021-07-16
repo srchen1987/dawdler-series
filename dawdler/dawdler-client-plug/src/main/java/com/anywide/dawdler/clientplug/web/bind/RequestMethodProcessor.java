@@ -63,14 +63,6 @@ public class RequestMethodProcessor {
 			if(methodArgumentResolver != null) {
 				args[requestParamFieldData.getIndex()] = methodArgumentResolver.resolveArgument(requestParamFieldData, viewForward);
 			}
-//			for (MethodArgumentResolver resolver : methodArgumentResolvers)
-//				if (resolver.isSupport(requestParamFieldData)) {
-//					Object value = resolver.resolveArgument(requestParamFieldData, viewForward);
-//					if (value != null) {
-//						args[requestParamFieldData.getIndex()] = value;
-//						break;
-//					}
-//				}
 		}
 		return args;
 	}

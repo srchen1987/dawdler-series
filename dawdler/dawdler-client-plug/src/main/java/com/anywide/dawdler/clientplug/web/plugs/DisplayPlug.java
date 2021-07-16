@@ -16,6 +16,8 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs;
 
+import javax.servlet.ServletContext;
+
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
@@ -29,5 +31,8 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 public interface DisplayPlug {
 
 	void display(ViewForward wf);
-
+	
+	String plugName();
+	
+	void init(ServletContext servletContext);
 }

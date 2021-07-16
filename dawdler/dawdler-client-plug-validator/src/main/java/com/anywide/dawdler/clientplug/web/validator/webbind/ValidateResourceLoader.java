@@ -136,10 +136,11 @@ public class ValidateResourceLoader {
 	}
 
 	private static void parserGlobal(XmlObject xml, ControlValidator cv) {
-		List<Element> globallist = (List<Element>) xml.selectNodes("/validator/global-validator/validator");
-		if (globallist != null && !globallist.isEmpty()) {
+		List<Node> globalList = xml.selectNodes("/validator/global-validator/validator");
+		if (globalList != null && !globalList.isEmpty()) {
 			Map<String, ControlField> globals = new LinkedHashMap<String, ControlField>();
-			for (Element ele : globallist) {
+			for (Node node : globalList) {
+				Element ele = (Element) node;
 				String refgid = ele.attributeValue("refgid");
 				String ref = ele.attributeValue("ref");
 				if (refgid != null) {
@@ -163,11 +164,12 @@ public class ValidateResourceLoader {
 	}
 
 	private static void parserFields(XmlObject xml, ControlValidator cv) {
-		List<Element> fieldslist = (List<Element>) xml.selectNodes("/validator/validator-fields/validator-field");
-		if (fieldslist != null) {
+		List<Node> fieldsList = xml.selectNodes("/validator/validator-fields/validator-field");
+		if (fieldsList != null) {
 			Map<String, ControlField> fields = new LinkedHashMap<String, ControlField>();
 			cv.setControlFields(fields);
-			for (Element ele : fieldslist) {
+			for (Node node : fieldsList) {
+				Element ele = (Element) node;
 				String name = ele.attributeValue("name");
 				String explain = ele.attributeValue("explain");
 				String rules = ele.getTextTrim();
@@ -189,9 +191,10 @@ public class ValidateResourceLoader {
 	}
 
 	private static void parserMapping(XmlObject xml, ControlValidator cv) {
-		List<Element> mappinglist = (List<Element>) xml.selectNodes("/validator/validator-mappings/validator-mapping");
-		if (mappinglist != null && !mappinglist.isEmpty()) {
-			for (Element ele : mappinglist) {
+		List<Node> mappingList =  xml.selectNodes("/validator/validator-mappings/validator-mapping");
+		if (mappingList != null && !mappingList.isEmpty()) {
+			for (Node mappingNode : mappingList) {
+				Element ele = (Element) mappingNode;
 				Map<String, ControlField> mappings = new LinkedHashMap<String, ControlField>();
 				if (cv.getGlobalControlFields() != null && !cv.getGlobalControlFields().isEmpty()) {
 					mappings.putAll(cv.getGlobalControlFields());
@@ -234,13 +237,13 @@ public class ValidateResourceLoader {
 
 	private static void parserFieldsGroups(XmlObject xml, ControlValidator cv) {
 		Map<String, ControlField> fields = cv.getControlFields();
-		List<Element> groupslist = (List<Element>) xml
-				.selectNodes("/validator/validator-fields-groups/validator-fields-group");
+		List<Node> groupsList = xml.selectNodes("/validator/validator-fields-groups/validator-fields-group");
 		Map<String, Map<String, ControlField>> groups = new LinkedHashMap<String, Map<String, ControlField>>();
 		cv.setFieldGroups(groups);
-		if (groupslist != null) {
+		if (groupsList != null) {
 			Map<String, Map<String, String>> relation = new LinkedHashMap<String, Map<String, String>>();
-			for (Element ele : groupslist) {
+			for (Node groupsNode : groupsList) {
+				Element ele = (Element) groupsNode;
 				Map<String, ControlField> gfields = new LinkedHashMap<>();
 				String gid = ele.attributeValue("id");
 				groups.put(gid, gfields);

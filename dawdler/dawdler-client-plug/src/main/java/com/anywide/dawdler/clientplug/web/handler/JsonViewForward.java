@@ -24,16 +24,16 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JsonWiewForward.java
+ * @Title JsonViewForward.java
  * @Description json类型获取数据的一种实现，无用了 在楼兰为了兼容前端请求的格式而做
  * @date 2013年04月18日
  * @email suxuan696@gmail.com
  */
 @Deprecated
-public class JsonWiewForward extends ViewForward {
+public class JsonViewForward extends ViewForward {
 	private Map<String, Object> jsonParams;
 
-	public JsonWiewForward(HttpServletRequest request, HttpServletResponse response) {
+	public JsonViewForward(HttpServletRequest request, HttpServletResponse response) {
 		super(request, response);
 	}
 

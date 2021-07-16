@@ -38,6 +38,7 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.dom4j.io.DocumentResult;
 import org.dom4j.io.DocumentSource;
 import org.dom4j.io.OutputFormat;
@@ -60,7 +61,7 @@ public final class XmlObject {
 	private Document document;
 	private String filepath;
 	private File file;
-	private boolean xmlfile = true;
+	private boolean xmlFile = true;
 
 	{
 //		Map map = new HashMap();
@@ -94,18 +95,18 @@ public final class XmlObject {
 		inputStreamToXML(in);
 	}
 
-	public XmlObject(File file, boolean xmlfile) throws DocumentException, IOException {
-		this.xmlfile = xmlfile;
+	public XmlObject(File file, boolean xmlFile) throws DocumentException, IOException {
+		this.xmlFile = xmlFile;
 		fileToXML(file);
 	}
 
-	public XmlObject(InputStream in, boolean xmlfile) throws DocumentException, IOException {
-		this.xmlfile = xmlfile;
+	public XmlObject(InputStream in, boolean xmlFile) throws DocumentException, IOException {
+		this.xmlFile = xmlFile;
 		inputStreamToXML(in);
 	}
 
-	public XmlObject(String path, boolean xmlfile) throws DocumentException, IOException {
-		this.xmlfile = xmlfile;
+	public XmlObject(String path, boolean xmlFile) throws DocumentException, IOException {
+		this.xmlFile = xmlFile;
 		readPathToXML(path);
 	}
 
@@ -114,11 +115,11 @@ public final class XmlObject {
 	}
 
 	public boolean isXmlfile() {
-		return xmlfile;
+		return xmlFile;
 	}
 
-	public void setXmlfile(boolean xmlfile) {
-		this.xmlfile = xmlfile;
+	public void setXmlfile(boolean xmlFile) {
+		this.xmlFile = xmlFile;
 	}
 
 	private void initXML() {
@@ -131,7 +132,7 @@ public final class XmlObject {
 	}
 
 	private void fileToXML(File file) throws DocumentException, IOException {
-		if (xmlfile) {
+		if (xmlFile) {
 			this.document = this.reader.read(file);
 		} else {
 			inputStreamToXML(new FileInputStream(file));
@@ -146,7 +147,7 @@ public final class XmlObject {
 	}
 
 	private void inputStreamToXML(InputStream in) throws DocumentException, IOException {
-		this.document = this.reader.read(xmlfile ? in : new GZIPInputStream(in));
+		this.document = this.reader.read(xmlFile ? in : new GZIPInputStream(in));
 		getXMLRoot();
 	}
 
@@ -161,11 +162,11 @@ public final class XmlObject {
 		return this.root;
 	}
 
-	public List selectNodes(String xpath) {
+	public List<Node> selectNodes(String xpath) {
 		return root.selectNodes(xpath);
 	}
 
-	public List selectNodes(String xpath, String cxe) {
+	public List<Node> selectNodes(String xpath, String cxe) {
 		return root.selectNodes(xpath, cxe);
 	}
 
@@ -179,7 +180,7 @@ public final class XmlObject {
 	public void removeNode(String xpath) throws Exception {
 		if (xpath.equals("/"))
 			throw new Exception("Can't remove Root!");
-		List list = selectNodes(xpath);
+		List<Node> list = selectNodes(xpath);
 		if (list != null)
 			for (Object o : list) {
 				Element el = (Element) o;
@@ -267,7 +268,7 @@ public final class XmlObject {
 		format.setEncoding("UTF-8");
 		format.setTrimText(true);
 		format.setPadText(false);
-		XMLWriter output = new XMLWriter(xmlfile ? new FileOutputStream(new File(this.filepath))
+		XMLWriter output = new XMLWriter(xmlFile ? new FileOutputStream(new File(this.filepath))
 				: new GZIPOutputStream(new FileOutputStream(new File(this.filepath))), format);
 		output.write(document);
 		output.close();

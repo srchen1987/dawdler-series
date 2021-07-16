@@ -30,5 +30,5 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @email suxuan696@gmail.com
  */
 public interface HttpExceptionHandler {
-	void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward, Exception ex);
+	void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward, Throwable ex);
 }

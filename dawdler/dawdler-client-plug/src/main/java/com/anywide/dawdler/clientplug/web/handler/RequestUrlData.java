@@ -19,6 +19,7 @@ package com.anywide.dawdler.clientplug.web.handler;
 import java.lang.reflect.Method;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 
 /**
@@ -33,6 +34,7 @@ public class RequestUrlData {
 	private RequestMapping requestMapping;
 	private TransactionController target;
 	private Method method;
+	private ResponseBody responseBody;
 
 	public RequestMapping getRequestMapping() {
 		return requestMapping;
@@ -56,5 +58,13 @@ public class RequestUrlData {
 
 	public void setMethod(Method method) {
 		this.method = method;
+	}
+
+	public ResponseBody getResponseBody() {
+		return responseBody;
+	}
+
+	public void setResponseBody(ResponseBody responseBody) {
+		this.responseBody = responseBody;
 	}
 }
