@@ -77,6 +77,8 @@ public class ServiceBase implements Service {
 		classLoader = DawdlerDeployClassLoader.createLoader(parent, getClassLoaderURL());
 		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
 				host, port, servicesManager);
+		classLoader.setDawdlerContext(dawdlerContext);
+		Thread.currentThread().setContextClassLoader(classLoader);
 		try {
 			Class<?> clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
 			Object obj = clazz.newInstance();
@@ -88,8 +90,6 @@ public class ServiceBase implements Service {
 			dawdlerContext.setAttribute(ASPECT_SUPPORT_OBJ, obj);
 		} catch (Exception e) {
 		}
-		classLoader.setDawdlerContext(dawdlerContext);
-		Thread.currentThread().setContextClassLoader(classLoader);
 	}
 
 	public ServicesBean getServicesBean(String name) {

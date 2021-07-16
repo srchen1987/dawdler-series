@@ -45,11 +45,11 @@ import com.anywide.dawdler.clientplug.web.session.base.StandardSessionIdGenerato
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.anywide.dawdler.clientplug.web.session.message.MessageOperator;
 import com.anywide.dawdler.clientplug.web.session.message.RedisMessageOperator;
-import com.anywide.dawdler.clientplug.web.session.store.DistributedSessionRedisUtil;
 import com.anywide.dawdler.clientplug.web.session.store.RedisSessionStore;
 import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
+import com.anywide.dawdler.redis.JedisPoolFactory;
 import com.anywide.dawdler.util.DawdlerTool;
 
 import redis.clients.jedis.Jedis;
@@ -156,12 +156,17 @@ public class DawdlerSessionFilter implements Filter {
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
 	private Pool<Jedis> jedisPool;
+	private final static String sessionRedisFileName = "session-redis";
 	private MessageOperator messageOperator;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		if (jedisPool == null)
-			jedisPool = DistributedSessionRedisUtil.getJedisPool();
+		try {
+			jedisPool = JedisPoolFactory.getJedisPool(sessionRedisFileName);
+		} catch (Exception e) {
+			logger.error("", e);
+			throw new ServletException(e);
+		}
 		servletContext = filterConfig.getServletContext();
 		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize);
 		Object listener = servletContext

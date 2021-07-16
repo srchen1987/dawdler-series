@@ -17,6 +17,7 @@
 package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -31,6 +32,7 @@ import java.util.WeakHashMap;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,6 +40,7 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import sun.misc.Resource;
 import sun.misc.URLClassPath;
 
@@ -116,18 +119,18 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 
 		DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 				.getContextClassLoader();
-		java.nio.ByteBuffer bb = res.getByteBuffer();
+		java.nio.ByteBuffer codeBytes = res.getByteBuffer();
 		Object obj = dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_OBJ);
 		CodeSigner[] signers = res.getCodeSigners();
 		CodeSource cs = new CodeSource(url, signers);
 		sun.misc.PerfCounter.getReadClassBytesTime().addElapsedTimeFrom(t0);
-		if (bb != null) {
+		if (codeBytes != null) {
 			if (obj != null) {
-				bb.flip();
-				byte[] classData = bb.array();
+				codeBytes.flip();
+				byte[] classData = codeBytes.array();
 				return loadClassFromBytes(name, classData, obj, classLoader);
 			} else {
-				return defineClass(name, bb, cs);
+				return defineClass(name, codeBytes, cs);
 			}
 		} else {
 			byte[] b = res.getBytes();
@@ -195,10 +198,11 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 					Resource res = ucp.getResource(path, false);
 					if (res != null) {
 						try {
-							Class clazz = findLoadedClass(name);
+							Class<?> clazz = findLoadedClass(name);
 							if (clazz != null)
 								return clazz;
-							return defineClassForDawdler(name, res);
+							clazz = defineClassForDawdler(name, res);
+							return clazz;
 						} catch (IOException e) {
 							throw new ClassNotFoundException(name, e);
 						}
@@ -224,7 +228,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 		} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			logger.error("", e);
 		}
-		Class clazz = defineClass(name, classData, 0, classData.length);
+		Class<?> clazz = defineClass(name, classData, 0, classData.length);
 		resolveClass(clazz);
 		return clazz;
 	}

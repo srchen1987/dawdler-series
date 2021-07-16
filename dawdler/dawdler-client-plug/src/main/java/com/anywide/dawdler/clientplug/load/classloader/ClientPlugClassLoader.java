@@ -16,7 +16,9 @@
  */
 package com.anywide.dawdler.clientplug.load.classloader;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -24,10 +26,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.order.OrderData;
+import com.anywide.dawdler.util.IOUtil;
+import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.aspect.AspectHolder;
 
 /**
  * @author jackson.song
@@ -59,7 +67,7 @@ public class ClientPlugClassLoader {
 		return remoteClass.get(key);
 	}
 
-	public void load(String host, String className,byte[] classCodes) {
+	public void load(String host, String className, byte[] classCodes) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
 		}
@@ -73,9 +81,9 @@ public class ClientPlugClassLoader {
 			logger.error("", e);
 		}
 	}
-	
+
 	public Class<?> defineClass(String className, byte[] classBytes) {
-			return urlCL.defineClass(className, classBytes);
+		return urlCL.defineClass(className, classBytes);
 	}
 
 	public void remove(String name) {
@@ -93,6 +101,7 @@ public class ClientPlugClassLoader {
 		try {
 			URL url = new URL("file:" + path + "/");
 			this.urlCL = ClientClassLoader.newInstance(new URL[] { url }, getClass().getClassLoader());
+			loadAspectj();
 		} catch (MalformedURLException e) {
 			logger.error("", e);
 		} finally {
@@ -103,5 +112,47 @@ public class ClientPlugClassLoader {
 			}
 		}
 	}
-	
+
+	private void loadAspectj() {
+		ClassLoader classLoader = getClass().getClassLoader();
+		InputStream aopXmlInput = classLoader.getResourceAsStream("/META-INF/aop.xml");
+		if (aopXmlInput != null) {
+			if (AspectHolder.aj != null) {
+				try {
+					XmlObject xmlo = new XmlObject(aopXmlInput);
+					for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
+						Element aspectElement = (Element) aspectNode;
+						String className = aspectElement.attributeValue("name");
+						if (className != null) {
+							String fileName = className.replace(".", File.separator) + ".class";
+							try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
+								if (classInput == null) {
+									logger.error(fileName + " not found !");
+								} else {
+									byte[] classData = IOUtil.toByteArray(classInput);
+									classData = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj,
+											className, classData, classLoader, null);
+									Class<?> clazz = urlCL.defineClass(className, classData);
+									urlCL.toResolveClass(clazz);
+								}
+							} catch (Exception e) {
+								logger.error("", e);
+							}
+						}
+					}
+				} catch (DocumentException | IOException e) {
+					logger.error("", e);
+				} finally {
+					if (aopXmlInput != null)
+						try {
+							aopXmlInput.close();
+						} catch (IOException e) {
+						}
+				}
+			} else {
+				logger.error("not found aspectjrt and aspectjweaver in classpath !");
+			}
+		}
+	}
+
 }

@@ -34,7 +34,7 @@ import com.anywide.dawdler.util.reflectasm.MethodAccess;
  * @email suxuan696@gmail.com
  */
 public class ReflectionUtil {
-	private static ConcurrentHashMap<Class, MethodAccess> methodAccessCache = new ConcurrentHashMap<Class, MethodAccess>();
+	private static ConcurrentHashMap<Class<?>, MethodAccess> methodAccessCache = new ConcurrentHashMap<>();
 
 	public static Object invoke(Object object, String methodName, Object... args) {
 		if (object == null) {
@@ -55,7 +55,7 @@ public class ReflectionUtil {
 		return getMethodAccess(object.getClass());
 	}
 
-	public static MethodAccess getMethodAccess(Class objectClass) {
+	public static MethodAccess getMethodAccess(Class<?> objectClass) {
 		MethodAccess methodAccess = methodAccessCache.get(objectClass);
 		if (methodAccess == null) {
 			methodAccess = MethodAccess.get(objectClass);
@@ -66,7 +66,7 @@ public class ReflectionUtil {
 		return methodAccess;
 	}
 
-	public static int getMethodIndex(MethodAccess methodAccess, String methodName, Class... paramTypes) {
+	public static int getMethodIndex(MethodAccess methodAccess, String methodName, Class<?>... paramTypes) {
 		return methodAccess.getIndex(methodName, paramTypes);
 	}
 

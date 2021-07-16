@@ -21,12 +21,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.anywide.dawdler.client.cglib.proxy.Enhancer;
+import com.anywide.dawdler.client.cglib.proxy.MethodInterceptor;
+import com.anywide.dawdler.client.cglib.proxy.MethodProxy;
 import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.annotation.RemoteService;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
 /**
  * @author jackson.song
@@ -39,7 +39,7 @@ import net.sf.cglib.proxy.MethodProxy;
 public class ServiceFactory {
 	private static final ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> proxyObjects = new ConcurrentHashMap<>();
 
-	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance) {
+	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance, ClassLoader classLoader) {
 		ConcurrentHashMap<Class<?>, Object> proxy = proxyObjects.get(groupName);
 		if (proxy == null) {
 			proxy = new ConcurrentHashMap<>();
@@ -49,7 +49,7 @@ public class ServiceFactory {
 		}
 		Object obj = proxy.get(delegate);
 		if (obj == null) {
-			obj = createCglibDynamicProxy(delegate, groupName, loadBalance);
+			obj = createCglibDynamicProxy(delegate, groupName, loadBalance,classLoader);
 			Object preObj = proxy.putIfAbsent(delegate, obj);
 			if (preObj != null)
 				obj = preObj;
@@ -57,16 +57,17 @@ public class ServiceFactory {
 		return (T) obj;
 	}
 
-	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName, String loadBalance) {
+	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName, String loadBalance, ClassLoader classLoader) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setCallback(new CglibInterceptor(delegate, groupName, loadBalance));
 		enhancer.setInterfaces(new Class[] { delegate });
+		enhancer.setClassLoader(classLoader);
 		return (T) enhancer.create();
 	}
 
 	private static class CglibInterceptor implements MethodInterceptor {
 		private final String groupName;
-		private final Class delegate;
+		private final Class<?> delegate;
 		private String serviceName;
 		private boolean fuzzy;
 		private int timeout;

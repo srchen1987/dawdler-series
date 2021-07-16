@@ -20,7 +20,7 @@ package com.anywide.dawdler.util;
  * @author jackson.song
  * @version V1.0
  * @Title LogUtil.java
- * @Description TODO
+ * @Description 输出代码调用行的工具类
  * @date 2007年04月16日
  * @email suxuan696@gmail.com
  */

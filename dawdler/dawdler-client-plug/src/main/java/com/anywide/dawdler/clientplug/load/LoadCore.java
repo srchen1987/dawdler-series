@@ -64,10 +64,10 @@ public class LoadCore implements Runnable {
 	private final String channelGroupId;
 	private boolean start = true;
 	private long time = 60000;
-	private ClientPlugClassLoader cl = null;
+	private ClientPlugClassLoader classLoder = null;
 
-	public LoadCore(String host, long time, String channelGroupId) {
-		cl = ClientPlugClassLoader.newInstance(CURRENT_PATH);
+	public LoadCore(String host, long time, String channelGroupId,ClientPlugClassLoader classLoder) {
+		this.classLoder = classLoder;
 		this.host = host;
 		if (time > 1000)
 			this.time = time;
@@ -124,7 +124,6 @@ public class LoadCore implements Runnable {
 	}
 
 	public void initWebComponent() {
-		cl.updateLoad(CURRENT_PATH);
 		try {
 			String filepath = getLogFilePath();
 			XmlObject xmlo = new XmlObject(filepath, false);
@@ -183,7 +182,7 @@ public class LoadCore implements Runnable {
 					needLoad.add(className+CLASSP_REFIX);
 					if (!isApi
 							&& ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
-						cl.remove(host + "-" + className);
+						this.classLoder.remove(host + "-" + className);
 				}
 			}
 		}
@@ -204,7 +203,7 @@ public class LoadCore implements Runnable {
 						file.delete();
 					if (!isApi
 							&& ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
-						cl.remove(host + "-" + className);
+						this.classLoder.remove(host + "-" + className);
 				}
 			}
 			List items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']");
@@ -222,14 +221,19 @@ public class LoadCore implements Runnable {
 						file.delete();
 					if (!isApi
 							&& ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
-						cl.remove(host + "-" + className);
+						this.classLoder.remove(host + "-" + className);
 				}
 			}
 		}
 		String[] loadClasses = new String[needLoad.size()];
 		loadClasses = needLoad.toArray(loadClasses);
-		if (loadClasses != null && loadClasses.length > 0)
+		if (loadClasses != null && loadClasses.length > 0) {
+			if (!isApi)
+				classLoder.updateLoad(CURRENT_PATH);
+			
 			loadClass(loadClasses, isApi);
+		}
+			
 		return remark;
 	}
 
@@ -256,8 +260,6 @@ public class LoadCore implements Runnable {
 	}
 
 	private void loadClass(String[] classNames, boolean isApi) throws IOException {
-		if (!isApi)
-			cl.updateLoad(CURRENT_PATH);
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
 		tr.setServiceName("com.anywide.dawdler.serverplug.service.DownloadFile");
 		tr.setMethod("download");
@@ -301,7 +303,7 @@ public class LoadCore implements Runnable {
 						}
 					}
 				}else {
-						cl.load(host, className, rf.getData());
+						this.classLoder.load(host, className, rf.getData());
 				}
 			}
 		}

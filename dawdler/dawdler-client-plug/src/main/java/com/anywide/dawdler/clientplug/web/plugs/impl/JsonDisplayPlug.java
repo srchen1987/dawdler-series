@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.plugs;
+package com.anywide.dawdler.clientplug.web.plugs.impl;
 
 import java.io.PrintWriter;
 
@@ -24,7 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.util.JsonProcessUtil;
 
 /**
@@ -37,33 +39,22 @@ import com.anywide.dawdler.clientplug.web.util.JsonProcessUtil;
  */
 public class JsonDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(JsonDisplayPlug.class);
-
-	public JsonDisplayPlug(ServletContext servletContext) {
-		super(servletContext);
-	}
-
 	@Override
 	public void display(ViewForward wf) {
 		logException(wf);
 		HttpServletResponse response = wf.getResponse();
 		response.setContentType(MIME_TYPE_JSON);
 		String json = null;
-		if (wf.getInvokeException() != null) {
-			logger.error("", wf.getInvokeException());
-			response.setStatus(500);
-			wf.putData("success", true);
-			wf.putData("msg", "Internal Server Error.");
-			print(response, JsonProcessUtil.beanToJson(wf.getData()));
-			return;
-		}
 		switch (wf.getStatus()) {
 		case SUCCESS:
 			json = JsonProcessUtil.beanToJson(wf.getData());
 			break;
-		case ERROR:
+		case ERROR:{
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			wf.putData("msg", "Internal Server Error!");
 			json = JsonProcessUtil.beanToJson(wf.getData());
 			break;
+		}
 		case REDIRECT:
 		case FORWARD:
 		case STOP:
@@ -87,6 +78,16 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 			if (out != null)
 				out.close();
 		}
+	}
+
+	@Override
+	public void init(ServletContext servletContext) {
+
+	}
+
+	@Override
+	public String plugName() {
+		return ViewType.json.toString();
 	}
 
 }

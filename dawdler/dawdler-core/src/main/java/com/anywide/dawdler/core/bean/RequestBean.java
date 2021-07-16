@@ -38,7 +38,7 @@ public class RequestBean implements Serializable {
 	private boolean single;
 	private String path;
 	private boolean fuzzy;
-	private Map<String, String> attachments;
+	private Map<String, Object> attachments;
 
 	public boolean isFuzzy() {
 		return fuzzy;
@@ -104,31 +104,31 @@ public class RequestBean implements Serializable {
 		this.args = args;
 	}
 
-	public void setAttachment(String key, String value) {
+	public void setAttachment(String key, Object value) {
 		checkIfNullCreateAttachment();
 		attachments.put(key, value);
 	}
 
-	public void setAttachmentIfAbsent(String key, String value) {
+	public void setAttachmentIfAbsent(String key, Object value) {
 		checkIfNullCreateAttachment();
 		attachments.putIfAbsent(key, value);
 	}
 
-	public void setAttachments(Map<String, String> attachments) {
+	public void setAttachments(Map<String, Object> attachments) {
 		this.attachments = attachments;
 	}
 
-	public String getAttachment(String key) {
+	public Object getAttachment(String key) {
 		return attachments != null ? attachments.get(key) : null;
 	}
 
-	public Map<String, String> getAttachments() {
+	public Map<String, Object> getAttachments() {
 		return attachments;
 	}
 
-	public void checkIfNullCreateAttachment() {
+	private void checkIfNullCreateAttachment() {
 		if (attachments == null) {
-			attachments = new HashMap<String, String>();
+			attachments = new HashMap<String, Object>();
 		}
 	}
 

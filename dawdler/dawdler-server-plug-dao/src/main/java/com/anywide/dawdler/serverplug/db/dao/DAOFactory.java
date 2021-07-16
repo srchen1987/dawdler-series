@@ -27,16 +27,14 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class DAOFactory {
-	private static DAOFactory daofactory = null;
+	private static DAOFactory daofactory = new DAOFactory();
 	private Map<Class<?>, SuperDAO> instances = null;
 
 	private DAOFactory() {
 		instances = new java.util.concurrent.ConcurrentHashMap<Class<?>, SuperDAO>();
 	}
 
-	public static synchronized DAOFactory getInstance() {
-		if (daofactory == null)
-			daofactory = new DAOFactory();
+	public static DAOFactory getInstance() {
 		return daofactory;
 	}
 
