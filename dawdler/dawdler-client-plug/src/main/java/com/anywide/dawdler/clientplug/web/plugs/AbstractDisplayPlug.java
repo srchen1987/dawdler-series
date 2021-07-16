@@ -16,8 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs;
 
-import javax.servlet.ServletContext;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,18 +31,13 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  */
 public abstract class AbstractDisplayPlug implements DisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);
-	protected final String MIME_TYPE_TEXT = "text/html;charset=UTF-8";
-	protected final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
-	protected ServletContext servletContext;
-
-	public AbstractDisplayPlug(ServletContext servletContext) {
-		this.servletContext = servletContext;
-	}
+	public static final String MIME_TYPE_TEXT_HTML = "text/html;charset=UTF-8";
+	public static final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
 
 	protected void logException(ViewForward wf) {
 		if (wf.getInvokeException() != null) {
 			logger.error("", wf.getInvokeException());
 		}
 	}
-
+	
 }

@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -28,8 +29,11 @@ import com.anywide.dawdler.clientplug.web.ViewControllerContext;
 import com.anywide.dawdler.clientplug.web.bind.RequestMethodProcessor;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
 import com.anywide.dawdler.clientplug.web.interceptor.InterceptorProvider;
+import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
+import com.anywide.dawdler.clientplug.web.util.JsonProcessUtil;
 import com.anywide.dawdler.core.order.OrderData;
+import com.anywide.dawdler.util.ClassUtil;
 
 /**
  * @author jackson.song
@@ -43,8 +47,6 @@ public abstract class AbstractUrlHandler {
 	private final List<OrderData<HandlerInterceptor>> handlerInterceptors = InterceptorProvider
 			.getHandlerInterceptors();
 
-	// protected TransactionControllerProxy transactionControllerProxy = new
-	// TransactionControllerProxy();
 	public boolean preHandle(TransactionController tc) throws Exception {
 		if (handlerInterceptors != null)
 			for (OrderData<HandlerInterceptor> handlerInterceptor : handlerInterceptors) {
@@ -73,27 +75,52 @@ public abstract class AbstractUrlHandler {
 	public abstract boolean handleUrl(String urishort, String method, boolean isJson, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException;
 
-	protected boolean invokeMethod(TransactionController targetobj, Method method, ViewForward wf) {
+	protected boolean invokeMethod(TransactionController targetobj, Method method, ViewForward wf, boolean responseBody)
+			throws Throwable {
 		try {
 			if (!preHandle(targetobj))
 				return true;
 
-			method.invoke(targetobj, RequestMethodProcessor.process(targetobj, wf, method));
-		} catch (Exception e) {
+			Object result = method.invoke(targetobj, RequestMethodProcessor.process(targetobj, wf, method));
+			if (responseBody && result != null) {
+				HttpServletResponse response = targetobj.getResponse();
+				PrintWriter out = response.getWriter();
+				try {
+					if (ClassUtil.isSimpleValueType(result.getClass())) {
+						response.setContentType(AbstractDisplayPlug.MIME_TYPE_TEXT_HTML);
+						out.print(result);
+						out.flush();
+					} else {
+						response.setContentType(AbstractDisplayPlug.MIME_TYPE_JSON);
+						JsonProcessUtil.beanToJson(out, result);
+						out.flush();
+					}
+				} finally {
+					out.close();
+				}
+				return true;
+			}
+			postHandle(targetobj, wf.getInvokeException());
+		} catch (Throwable e) {
 			wf.setInvokeException(e);
 		}
 		try {
-			postHandle(targetobj, wf.getInvokeException());
-		} catch (Exception e) {
-			wf.setInvokeException(e);
+			if (wf.getInvokeException() == null) {
+				DisplaySwitcher.switchDisplay(wf);
+			} else {
+				throw wf.getInvokeException();
+			}
+		} catch (Throwable e) {
+			throw e;
+		} finally {
+			afterCompletion(targetobj, wf.getInvokeException());
 		}
-		DisplaySwitcher.switchDisplay(wf);
-		afterCompletion(targetobj, wf.getInvokeException());
 		return true;
 	}
 
 	protected ViewForward createViewForward() {
 		return ViewControllerContext.getViewForward();
 	}
+
 
 }

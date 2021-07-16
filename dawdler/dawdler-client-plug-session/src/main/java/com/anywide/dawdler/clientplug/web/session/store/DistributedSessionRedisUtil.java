@@ -53,7 +53,6 @@ public final class DistributedSessionRedisUtil {
 	private static Pool<Jedis> jedisPool = null;
 
 	static {
-
 		String path = DawdlerTool.getcurrentPath() + "redis.properties";
 		InputStream inStream = null;
 		try {

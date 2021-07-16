@@ -23,16 +23,16 @@
 			<artifactId>caffeine</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-serialization</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-redis-plug</artifactId>
 		</dependency>
 	</dependencies>
 </project>

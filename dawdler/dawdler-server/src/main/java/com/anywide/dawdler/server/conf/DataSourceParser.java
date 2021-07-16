@@ -58,11 +58,12 @@ public class DataSourceParser {
 		if (xmlo == null)
 			return null;
 		Map<String, DataSource> dataSources = new HashMap<>();
-		List<Element> dataSourceList = xmlo.selectNodes("/config/datasources/datasource");
-		for (Element ele : dataSourceList) {
+		List<Node> dataSourceList = xmlo.selectNodes("/config/datasources/datasource");
+		for (Object dataSource : dataSourceList) {
+			Element ele = (Element) dataSource;
 			String id = ele.attributeValue("id");
 			String code = ele.attributeValue("code");
-			Class c = null;
+			Class<?> c = null;
 			if (classLoader != null)
 				c = classLoader.loadClass(code);
 			else

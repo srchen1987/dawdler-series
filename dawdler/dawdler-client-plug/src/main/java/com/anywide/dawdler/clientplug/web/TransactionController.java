@@ -17,7 +17,6 @@
 package com.anywide.dawdler.clientplug.web;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import com.anywide.dawdler.clientplug.web.upload.UploadFile;
+import com.anywide.dawdler.util.ClassUtil;
 
 /**
  * @author jackson.song
@@ -53,15 +53,6 @@ public abstract class TransactionController {
 		return getViewForward().getParamsVariable(key);
 	}
 
-	// protected void setHasResult(boolean hasResult) {
-//		getViewForward().setHasResult(hasResult);
-//	}
-//	protected void setAotuExcute() {
-//		getViewForward().setAotuExcute(true);
-//	}
-//	protected void setAotuExcute(boolean aotu) {
-//		getViewForward().setAotuExcute(aotu);
-//	}
 	public void setData(Map<String, Object> data) {
 		getViewForward().setData(data);
 	}
@@ -104,28 +95,12 @@ public abstract class TransactionController {
 			return null;
 		}
 		for (Field field : fields) {
-			Class type = field.getType();
+			Class<?> type = field.getType();
 			String fieldName = field.getName();
-			if (type == String.class) {
-				value = paramString(fieldName);
-			} else if (type == int.class || type == Integer.class) {
-				value = paramObjectInt(fieldName);
-			} else if (type == long.class || type == Long.class) {
-				value = paramObjectLong(fieldName);
-			} else if (type == short.class || type == Short.class) {
-				value = paramObjectShort(fieldName);
-			} else if (type == byte.class || type == Byte.class) {
-				value = paramObjectByte(fieldName);
-			} else if (type == float.class || type == Float.class) {
-				value = paramObjectFloat(fieldName);
-			} else if (type == double.class || type == Double.class) {
-				value = paramObjectDouble(fieldName);
-			} else if (type == boolean.class || type == Boolean.class) {
-				value = paramObjectBoolean(fieldName);
-			} else if (type == BigDecimal.class) {
-				Double v = paramObjectDouble(fieldName);
-				if (v != null)
-					value = new BigDecimal((fieldName));
+			if (ClassUtil.isSimpleValueType(type)) {
+				value = ClassUtil.convert(paramString(fieldName), type);
+			} else if (ClassUtil.isSimpleArrayType(type)) {
+				value = ClassUtil.convertArray(paramValues(fieldName), type);
 			}
 
 			if (value != null) {

@@ -49,7 +49,7 @@ public class Transaction {
 	private int timeout = 15;
 	private CircuitBreaker circuitBreaker;
 	private Class<?> proxyInterface;
-	private Map<String, String> attachments;
+	private Map<String, Object> attachments;
 	private String loadBalance;
 	private String defaultLoadBalance = "roundRobin";
 	private List<DawdlerConnection> connections;
@@ -177,19 +177,19 @@ public class Transaction {
 		return innerExecute(true);
 	}
 
-	public void setAttachment(String key, String value) {
+	public void setAttachment(String key, Object value) {
 		checkIfNullCreateAttachment();
 		attachments.put(key, value);
 	}
 
-	public void setAttachmentIfAbsent(String key, String value) {
+	public void setAttachmentIfAbsent(String key, Object value) {
 		checkIfNullCreateAttachment();
 		attachments.putIfAbsent(key, value);
 	}
 
 	public void checkIfNullCreateAttachment() {
 		if (attachments == null) {
-			attachments = new HashMap<String, String>();
+			attachments = new HashMap<String, Object>();
 		}
 	}
 

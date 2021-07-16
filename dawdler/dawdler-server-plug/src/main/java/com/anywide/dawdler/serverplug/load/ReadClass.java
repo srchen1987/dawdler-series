@@ -27,6 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,13 +53,14 @@ public class ReadClass {
 		String path = DawdlerTool.getcurrentPath();
 		try {
 			XmlObject xml = new XmlObject(XmlConfig.getRemoteLoad());
-			List<Element> hosts = (List<Element>) xml.selectNodes("/hosts/host[@name='" + host + "']/package");
+			List<Node> hosts = xml.selectNodes("/hosts/host[@name='" + host + "']/package");
 			if (hosts == null || hosts.isEmpty())
 				return null;
 			XmlObject xmlo = new XmlObject();
 			xmlo.CreateRoot("hosts");
 			Element root = xmlo.getRoot();
-			for (Element hostele : hosts) {
+			for (Object hostObj : hosts) {
+				Element hostele = (Element) hostObj;
 				String type = hostele.attributeValue("type");
 				boolean isbean = type != null && type.trim().equals("api");
 				String pack = hostele.getTextTrim().replace(".", File.separator);

@@ -88,12 +88,12 @@ public class RequestWrapper extends RequestBean {
 	}
 
 	@Override
-	public String getAttachment(String key) {
+	public Object getAttachment(String key) {
 		return request.getAttachment(key);
 	}
 
 	@Override
-	public Map<String, String> getAttachments() {
+	public Map<String, Object> getAttachments() {
 		return request.getAttachments();
 	}
 
@@ -118,17 +118,17 @@ public class RequestWrapper extends RequestBean {
 	}
 
 	@Override
-	public void setAttachment(String key, String value) {
+	public void setAttachment(String key, Object value) {
 		request.setAttachment(key, value);
 	}
 
 	@Override
-	public void setAttachmentIfAbsent(String key, String value) {
+	public void setAttachmentIfAbsent(String key, Object value) {
 		request.setAttachmentIfAbsent(key, value);
 	}
 
 	@Override
-	public void setAttachments(Map<String, String> attachments) {
+	public void setAttachments(Map<String, Object> attachments) {
 		request.setAttachments(attachments);
 	}
 }

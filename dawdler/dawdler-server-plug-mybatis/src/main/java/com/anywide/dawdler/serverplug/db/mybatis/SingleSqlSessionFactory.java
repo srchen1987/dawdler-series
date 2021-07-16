@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +26,11 @@ public class SingleSqlSessionFactory {
 	}
 
 	public List<Resource> getMapperLocations() throws IOException {
-		List<Element> mappers = XmlConfig.getConfig().selectNodes("/config/mybatis/mappers/mapper");
+		List<Node> mappers = XmlConfig.getConfig().selectNodes("/config/mybatis/mappers/mapper");
 		if (!mappers.isEmpty()) {
 			List<Resource> resourceList = new ArrayList<>();
-			for (Element mapper : mappers) {
+			for (Node Nodemapper : mappers) {
+				Element mapper = (Element) Nodemapper;
 				Resource[] resources = resolver.getResources(mapper.getTextTrim());
 				for (Resource resource : resources) {
 					resourceList.add(resource);

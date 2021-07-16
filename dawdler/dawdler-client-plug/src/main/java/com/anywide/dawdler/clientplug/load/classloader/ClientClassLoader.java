@@ -159,9 +159,13 @@ public class ClientClassLoader extends URLClassLoader {
 		}
 		return "true".equalsIgnoreCase(sealed);
 	}
-	
+
 	public Class<?> defineClass(String name, byte[] data) {
 		return defineClass(name, data, 0, data.length);
+	}
+
+	public void toResolveClass(Class c) {
+		resolveClass(c);
 	}
 
 }

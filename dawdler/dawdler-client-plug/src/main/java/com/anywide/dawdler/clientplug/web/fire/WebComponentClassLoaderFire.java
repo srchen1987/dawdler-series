@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ServiceFactory;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoderFire;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.bind.ParameterNameReader;
@@ -132,7 +133,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 				field.setAccessible(true);
 				String groupName = remoteService.group();
 				try {
-					field.set(target, ServiceFactory.getService(serviceClass, groupName, remoteService.loadBalance()));
+					field.set(target, ServiceFactory.getService(serviceClass, groupName, remoteService.loadBalance(), clazz.getClassLoader()));
 				} catch (Exception e) {
 					logger.error("", e);
 				}
@@ -150,6 +151,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 				requestUrlData.setMethod(method);
 				requestUrlData.setRequestMapping(requestMapping);
 				requestUrlData.setTarget(target);
+				requestUrlData.setResponseBody(method.getAnnotation(ResponseBody.class));
 				for (String requestMappingPath : requestMapping.value()) {
 					try {
 						String mapping = prefix == null ? requestMappingPath : (prefix + requestMappingPath);
