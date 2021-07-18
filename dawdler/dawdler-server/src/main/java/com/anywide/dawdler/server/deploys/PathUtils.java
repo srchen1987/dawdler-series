@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author jackson.song
@@ -30,11 +32,11 @@ import java.net.URL;
  * @email suxuan696@gmail.com
  */
 public class PathUtils {
-	public static URL[] getLibURL(File file, URL defaultURL) throws MalformedURLException {
-		File[] files = file.listFiles(new FileFilter() {
+	public static URL[] getLibURL(File path, URL defaultURL) throws MalformedURLException {
+		File[] files = path.listFiles(new FileFilter() {
 			@Override
-			public boolean accept(File pathname) {
-				return pathname.getName().endsWith(".jar");
+			public boolean accept(File file) {
+				return file.getName().endsWith(".jar");
 			}
 		});
 		boolean hasDefault = defaultURL != null;
@@ -60,6 +62,22 @@ public class PathUtils {
 				return urls;
 			}
 			return null;
+		}
+	}
+
+	public static URL[] getRecursionLibURL(File path) throws MalformedURLException {
+		List<URL> urlArray = new ArrayList<>(32);
+		dirFile(path, urlArray);
+		return urlArray.toArray(new URL[0]);
+	}
+
+	public static void dirFile(File path, List<URL> files) throws MalformedURLException {
+		if (path.isDirectory()) {
+			for (File file : path.listFiles()) {
+				dirFile(file, files);
+			}
+		} else {
+			files.add(path.toURI().toURL());
 		}
 	}
 }
