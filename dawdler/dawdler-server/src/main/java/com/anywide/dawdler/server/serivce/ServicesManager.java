@@ -19,7 +19,6 @@ package com.anywide.dawdler.server.serivce;
 import java.lang.reflect.InvocationTargetException;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,29 +95,29 @@ public class ServicesManager {
 		if (service == null) {
 			throw new IllegalAccessException("service can't null!");
 		}
-		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
-		if (remoteServiceContract != null) {
-			String name = remoteServiceContract.value();
-			if (StringUtils.isBlank(name)) {
+		RemoteService remoteService = service.getAnnotation(RemoteService.class);
+		if (remoteService != null) {
+			String serviceName = remoteService.value();
+			if (serviceName.trim().equals("")) {
 				registerService(service, SunReflectionFactoryInstantiator.newInstance(service),
-						remoteServiceContract.single());
+						remoteService.single());
 			} else {
-				register(name, SunReflectionFactoryInstantiator.newInstance(service), remoteServiceContract.single());
+				register(serviceName, SunReflectionFactoryInstantiator.newInstance(service), remoteService.single());
 			}
 		} else {
 			Class<?>[] interfaceList = service.getInterfaces();
 			for (Class<?> clazz : interfaceList) {
-				remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-				if (remoteServiceContract == null) {
+				remoteService = clazz.getAnnotation(RemoteService.class);
+				if (remoteService == null) {
 					continue;
 				}
-				String name = remoteServiceContract.value();
-				if (StringUtils.isBlank(name)) {
+				String serviceName = remoteService.value();
+				if (serviceName.trim().equals("")) {
 					registerService(clazz, SunReflectionFactoryInstantiator.newInstance(service),
-							remoteServiceContract.single());
+							remoteService.single());
 				} else {
-					register(name, SunReflectionFactoryInstantiator.newInstance(service),
-							remoteServiceContract.single());
+					register(serviceName, SunReflectionFactoryInstantiator.newInstance(service),
+							remoteService.single());
 				}
 			}
 		}

@@ -54,12 +54,12 @@ public class ServiceRoot {
 	private static final String DAWDLER_LIB_PATH = "lib";
 
 	public static Service getService(String path) {
-		Service sb = services.get(path);
-		if (sb == null)
+		Service service = services.get(path);
+		if (service == null)
 			return null;
-		Thread.currentThread().setContextClassLoader(sb.getDawdlerContext().getClassLoader());
-		DawdlerContext.setDawdlerContext(sb.getDawdlerContext());
-		return sb;
+		Thread.currentThread().setContextClassLoader(service.getDawdlerContext().getClassLoader());
+		DawdlerContext.setDawdlerContext(service.getDawdlerContext());
+		return service;
 	}
 
 	public ClassLoader createServerClassLoader() {
@@ -79,12 +79,11 @@ public class ServiceRoot {
 		return new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
 	}
 
-	private URL[] getLibURL() throws MalformedURLException {
-		return PathUtils.getLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH), null);
+	private URL[] getLibURL() throws MalformedURLException { 
+		return PathUtils.getRecursionLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH));
 	}
 
 	public void initApplication(DawdlerServerContext dawdlerServerContext) {
-//		this.dawdlerServerContext = dawdlerServerContext;
 		File file = getDeploys();
 		File[] files = file.listFiles();
 		long start = JVMTimeProvider.currentTimeMillis();

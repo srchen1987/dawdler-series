@@ -19,7 +19,6 @@ package com.anywide.dawdler.client;
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang.StringUtils;
 
 import com.anywide.dawdler.client.cglib.proxy.Enhancer;
 import com.anywide.dawdler.client.cglib.proxy.MethodInterceptor;
@@ -90,7 +89,7 @@ public class ServiceFactory {
 				fuzzy = rs.fuzzy();
 				single = rs.single();
 			}
-			if (StringUtils.isBlank(serviceName)) {
+			if (serviceName.trim().equals("")) {
 				serviceName = delegate.getName();
 			}
 			this.serviceName = serviceName;

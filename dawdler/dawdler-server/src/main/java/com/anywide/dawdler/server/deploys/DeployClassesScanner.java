@@ -106,30 +106,6 @@ public class DeployClassesScanner {
 		return classes;
 	}
 
-	private static Set<Class<?>> getClassesInPath(File file, Set<Class<?>> classes) {
-		boolean recursive = true;
-		String packageName = "";
-		String packageDirName = packageName.replace('.', '/');
-		if (file.isDirectory()) {
-			try {
-				File[] files = file.listFiles();
-				for (File f : files) {
-					if (f.getName().endsWith(".jar")) {
-						JarFile jarFile = new JarFile(f);
-						findAndAddClassesInPackageInJar(packageName, packageDirName, jarFile, recursive, classes);
-					} else {
-						String filePath = URLDecoder.decode(f.getAbsolutePath(), "UTF-8");
-						findAndAddClassesInPackageByFile(packageName, filePath, recursive, classes);
-					}
-				}
-			} catch (IOException e) {
-				logger.error("", e);
-			}
-
-		}
-
-		return classes;
-	}
 
 	public static void findAndAddClassesInPackageInJar(String packageName, String packageDirName, JarFile jar,
 			final boolean recursive, Set<Class<?>> classes) {
@@ -269,7 +245,7 @@ public class DeployClassesScanner {
 		}
 	}
 
-	public static Set<Class<?>> getLibClasses(Class c) {
+	public static Set<Class<?>> getLibClasses(Class<?> c) {
 		Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
 		if (c != null) {
 			URL url = c.getResource(c.getSimpleName() + ".class");
