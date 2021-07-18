@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.lang.StringUtils;
 
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.bean.RequestBean;
@@ -48,9 +47,9 @@ public class ServiceFactory {
 
 	public static <T> T getService(final Class<T> delegate, ServiceExecutor serviceExecutor,
 			DawdlerContext dawdlerContext) {
-		String name = getServiceName(delegate);
-		if (name != null) {
-			ServicesBean servicesBean = new ServicesBean(name, dawdlerContext.getService(name),
+		String serviceName = getServiceName(delegate);
+		if (serviceName != null) {
+			ServicesBean servicesBean = new ServicesBean(serviceName, dawdlerContext.getService(serviceName),
 					dawdlerContext.getDawdlerServiceCreateProvider());
 			Object proxy = proxyObjects.get(delegate);
 			if (proxy == null) {
@@ -73,17 +72,17 @@ public class ServiceFactory {
 	}
 
 	public static String getServiceName(Class<?> service) {
-		String name = servicesName.get(service);
-		if (name != null)
-			return name;
+		String serviceName = servicesName.get(service);
+		if (serviceName != null)
+			return serviceName;
 		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
 		if (remoteServiceContract != null) {
-			name = remoteServiceContract.value();
-			if (StringUtils.isBlank(name)) {
-				name = service.getName();
+			serviceName = remoteServiceContract.value();
+			if (serviceName.trim().equals("")) {
+				serviceName = service.getName();
 			}
-			servicesName.put(service, name);
-			return name;
+			servicesName.put(service, serviceName);
+			return serviceName;
 		} else {
 			Class<?>[] interfaceList = service.getInterfaces();
 			for (Class<?> clazz : interfaceList) {
@@ -91,12 +90,12 @@ public class ServiceFactory {
 				if (remoteServiceContract == null) {
 					continue;
 				}
-				name = remoteServiceContract.value();
-				if (StringUtils.isBlank(name)) {
-					name = service.getName();
+				serviceName = remoteServiceContract.value();
+				if (serviceName.trim().equals("")) {
+					serviceName = service.getName();
 				}
-				servicesName.put(service, name);
-				return name;
+				servicesName.put(service, serviceName);
+				return serviceName;
 			}
 			return null;
 		}
