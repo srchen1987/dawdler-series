@@ -17,17 +17,16 @@
 package com.anywide.dawdler.serverplug.load;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,45 +50,19 @@ import com.anywide.dawdler.util.XmlObject;
 public class LoadCore implements Runnable {
 	private static final String PREFIX = ".dat";
 	private static final Logger logger = LoggerFactory.getLogger(LoadCore.class);
-	private static final Pattern p = Pattern.compile("(.*)\\.class$");
-	private static String path;
-	private static final String currentpath;
+	private static final Pattern CLASS_PATTERN = Pattern.compile("(.*)\\.class$");
+	private static final String CLASSP_REFIX=".class";
+	private static final String CURRENT_PATH;
 	private static final String TYPE_API = "api";
-
+	private static final String TYPE_COMPONENT = "component";
 	static {
-		XmlObject xmlo = ClientConfig.getInstance().getXml();
-		Element ele = xmlo.selectSingleNode("/config/load-url");
-		currentpath = DawdlerTool.getcurrentPath();
-
-		String tmpPath = System.getProperty("user.home");
-		if (tmpPath != null) {
-			tmpPath = tmpPath + File.separator + ".load" + File.separator + UUID.randomUUID().toString();
-			File file = new File(tmpPath);
-			if (!file.exists()) {
-				if (!file.mkdirs())
-					tmpPath = currentpath;
-			}
-		} else
-			tmpPath = currentpath;
-		path = tmpPath;
-		if (ele != null) {
-			if (!ele.getTextTrim().equals("")) {
-				File f = new File(ele.getTextTrim());
-				if (!f.isDirectory()) {
-					if (f.mkdirs()) {
-						path = f.getAbsolutePath();
-					}
-				} else {
-					path = f.getAbsolutePath();
-				}
-			}
-		}
+		CURRENT_PATH = DawdlerTool.getcurrentPath();
 	}
 
-	private boolean start = true;
 	private final String host;
 	private final String channelGroupId;
-	private long time = 600000;
+	private boolean start = true;
+	private long time = 60000;
 
 	public LoadCore(String host, long time, String channelGroupId) {
 		this.host = host;
@@ -98,109 +71,133 @@ public class LoadCore implements Runnable {
 		this.channelGroupId = channelGroupId;
 	}
 
-	private final static String classNameToFilePath(String classname) {
-		int tag = classname.lastIndexOf(".");
-		String filepath = classname.substring(0, tag).replace(".", File.separator);
-		String filetype = classname.substring(tag);
-		return filepath + filetype;
-	}
+	
 
 	public String getLogFilePath() {
-		return path + File.separator + channelGroupId + "-" + host + PREFIX;
+		return CURRENT_PATH + channelGroupId + host + PREFIX;
 	}
 
-	public void toCheck() throws Exception {
+	public void toCheck() throws IOException {
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
 		tr.setServiceName("com.anywide.dawdler.serverplug.service.CheckUpdate");
 		tr.setMethod("check");
 		tr.addString(host);
-		XmlBean xmlb = (XmlBean) tr.pureExecuteResult();
+		XmlBean xmlb = null;
+		try {
+			xmlb = (XmlBean) tr.pureExecuteResult();
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+		if (xmlb == null)
+			throw new NullPointerException("not found host " + host + "!");
 		XmlObject xmlo = new XmlObject(xmlb.getDocument());
 		String filepath = getLogFilePath();
 		File file = new File(filepath);
 		if (!file.exists()) {
 			xmlo.setFilepath(filepath);
-			xmlo.setXmlfile(false);
-			xmlo.saveXML();
-			initClassMap(xmlo);
-		} else {
-			if (check(new XmlObject(filepath, false), xmlo)) {
-				xmlo.setFilepath(filepath);
+			try {
 				xmlo.setXmlfile(false);
 				xmlo.saveXML();
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+			initClassMap(xmlo);
+		} else {
+			try {
+				XmlObject local = new XmlObject(filepath, false);
+				if (check(local, xmlo)) {
+					xmlo.setFilepath(filepath);
+					try {
+						xmlo.setXmlfile(false);
+						xmlo.saveXML();
+					} catch (IOException e) {
+						logger.error("", e);
+					}
+				}
+			} catch (DocumentException | IOException e) {
+				logger.error("", e);
 			}
 		}
+	}
+
+	
+	private static String toClassName(String checkName) {
+		return checkName.replace(File.separator, ".").substring(0, checkName.lastIndexOf("."));
 	}
 
 	private void initClassMap(XmlObject xmlo) throws IOException {
-		willLoad(xmlo, TYPE_API);
+		willLoad(xmlo, "api");
 	}
 
 	private void willLoad(XmlObject xmlo, String type) throws IOException {
-		List beanlist = xmlo.selectNodes("/hosts/host[@type='" + type + "']/item");
-		String[] tem = new String[beanlist.size()];
+		List beanList = xmlo.selectNodes("/hosts/host[@type='" + type + "']/item");
+		String[] loadBeans = new String[beanList.size()];
 		int i = 0;
-		for (Object o : beanlist) {
+		for (Object o : beanList) {
 			Element ele = (Element) o;
-			tem[i++] = ele.getTextTrim();
+			loadBeans[i++] = ele.attributeValue("checkname").replace(File.separator, ".");
 		}
-		loadClass(tem);
+		
+		loadClass(loadBeans, type.equals(TYPE_API));
 	}
 
 	private boolean willCheckAndLoad(XmlObject local, XmlObject remote, String type) throws IOException {
-		boolean isbean = type.equals(TYPE_API);
+		boolean isApi = type.equals(TYPE_API);
 		boolean remark = false;
-		List<String> list = new ArrayList<String>();
-		Set<String> set = new HashSet<String>();
+		List<String> allClass = new ArrayList<String>();
+		Set<String> needLoad = new HashSet<String>();
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
 		for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item")) {
 			Element ele = (Element) item;
-			String checkname = ele.attributeValue("checkname");
-			for (Object item2 : remote
-					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + checkname + "']")) {
-				Element ele2 = (Element) item2;
-				String ele2checkname = ele2.attributeValue("checkname");
-				list.add(ele2checkname);
-				if (!ele.attributeValue("update").equals(ele2.attributeValue("update"))) {
+			for (Object remoteItem : remote
+					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + ele.attributeValue("checkname") + "']")) {
+				Element remoteEle = (Element) remoteItem;
+				String checkName = remoteEle.attributeValue("checkname");
+				String className = toClassName(checkName);
+				allClass.add(checkName);
+				if (!ele.attributeValue("update").equals(remoteEle.attributeValue("update"))) {
 					remark = true;
-					set.add(ele2.getText());
+					needLoad.add(className+CLASSP_REFIX);
 				}
 			}
 		}
-		String classFilePath = (isbean ? currentpath : (path + File.separator));
-		Set<String> temset = new HashSet<String>();
-		for (String names : list) {// 循环客户端和服务器端都有的类
+		String classFilePath = CURRENT_PATH;
+		Set<String> loadCache = new HashSet<String>();
+		for (String name : allClass) {// 循环客户端和服务器端都有的类
 			for (Object item : local
-					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
+					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
 				Element ele = (Element) item;
-				if (!list.contains(ele.attributeValue("checkname"))
-						&& !temset.contains(ele.attributeValue("checkname"))) {// 如果list里面不包含并且set中也不包含
-					temset.add(ele.attributeValue("checkname"));// set中添加进去
+				String checkName = ele.attributeValue("checkname");
+				if (!allClass.contains(checkName)
+						&& !loadCache.contains(checkName)) {// 如果list里面不包含并且set中也不包含
+					loadCache.add(checkName);// set中添加进去
 					remark = true;
-					File file = new File(classFilePath + classNameToFilePath(ele.getText()));
+					File file = new File(classFilePath + checkName);
 					if (file.exists())
 						file.delete();
 				}
 			}
-			List items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + names + "']");
+			List items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']");
 			for (Object item : items) {
 				Element ele = (Element) item;
-				if (!list.contains(ele.attributeValue("checkname"))
-						&& !temset.contains(ele.attributeValue("checkname"))) {
-					temset.add(ele.attributeValue("checkname"));
+				String checkName = ele.attributeValue("checkname");
+				if (!allClass.contains(checkName)
+						&& !loadCache.contains(checkName)) {
+					loadCache.add(checkName);
 					remark = true;
-					set.add(ele.getText());
-					File file = new File(classFilePath + classNameToFilePath(ele.getText()));
+					String className = toClassName(checkName);
+					needLoad.add(className+CLASSP_REFIX);
+					File file = new File(classFilePath + checkName);
 					if (file.exists())
 						file.delete();
-
 				}
 			}
 		}
-		String[] tem = new String[set.size()];
-		tem = set.toArray(tem);
-		if (tem != null && tem.length > 0)
-			loadClass(tem);
+		String[] loadClasses = new String[needLoad.size()];
+		loadClasses = needLoad.toArray(loadClasses);
+		if (loadClasses != null && loadClasses.length > 0) {
+			loadClass(loadClasses, isApi);
+		}
 		return remark;
 	}
 
@@ -213,7 +210,6 @@ public class LoadCore implements Runnable {
 			try {
 				toCheck();
 			} catch (Exception e) {
-				logger.error("", e);
 			}
 		}
 
@@ -224,14 +220,14 @@ public class LoadCore implements Runnable {
 	}
 
 	private boolean check(XmlObject local, XmlObject remote) throws IOException {
-		return willCheckAndLoad(local, remote, TYPE_API) | willCheckAndLoad(local, remote, "component");
+		return willCheckAndLoad(local, remote, TYPE_API) | willCheckAndLoad(local, remote, TYPE_COMPONENT);
 	}
 
-	private void loadClass(String[] tem) throws IOException {
+	private void loadClass(String[] classNames, boolean isApi) throws IOException {
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
 		tr.setServiceName("com.anywide.dawdler.serverplug.service.DownloadFile");
 		tr.setMethod("download");
-		tr.addObject(tem);
+		tr.addObject(classNames);
 		RemoteFiles rfs = null;
 		try {
 			rfs = (RemoteFiles) tr.pureExecuteResult();
@@ -241,38 +237,40 @@ public class LoadCore implements Runnable {
 		}
 		List<RemoteFile> list = rfs.getFiles();
 		for (RemoteFile rf : list) {
-			Matcher match = p.matcher(rf.getFilename());
+			Matcher match = CLASS_PATTERN.matcher(rf.getFilename());
 			if (match.find()) {
-				String classpath = match.group(1);
-				String temname = classpath.replace(".", File.separator);
-				File file = new File(currentpath + temname + ".class");
-				File temfile = new File(file.getParent());
-				if (file.exists())
-					file.delete();
-				if (!temfile.exists()) {
-					if (!temfile.mkdirs())
-						throw new IOException("can't write file to" + temfile.getPath());
-				}
-				FileOutputStream fo = null;
-				try {
-					fo = new FileOutputStream(file);
-				} catch (FileNotFoundException e) {
-					logger.error("", e);
-					return;
-				}
-				try {
-					fo.write(rf.getData());
-				} catch (IOException e) {
-					logger.error("", e);
-				}
-				try {
-					fo.flush();
-					fo.close();
-				} catch (IOException e) {
-					logger.error("", e);
+				String className = match.group(1);
+				if(isApi) {
+					String filePath = className.replace(".",File.separator);
+					File file = new File(CURRENT_PATH + filePath + CLASSP_REFIX);
+					File parentFile = new File(file.getParent());
+					if (file.exists())
+						file.delete();
+					if (!parentFile.exists()) {
+						if (!parentFile.mkdirs())
+							throw new IOException("can't write file to" + parentFile.getPath());
+					}
+					FileOutputStream fo = null;
+					try {
+						fo = new FileOutputStream(file);
+						fo.write(rf.getData());
+						fo.flush();
+					} catch (Exception e) {
+						logger.error("", e);
+						return;
+					} finally {
+						try {
+							if (fo != null)
+								fo.close();
+						} catch (IOException e) {
+							logger.error("", e);
+						}
+					}
 				}
 			}
 		}
+		if (logger.isDebugEnabled())
+			logger.debug("load over \t" + host + "\tmodel !");
 	}
 
 	public String getHost() {

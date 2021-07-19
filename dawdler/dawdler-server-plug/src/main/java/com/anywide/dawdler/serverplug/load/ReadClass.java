@@ -60,10 +60,10 @@ public class ReadClass {
 			xmlo.CreateRoot("hosts");
 			Element root = xmlo.getRoot();
 			for (Object hostObj : hosts) {
-				Element hostele = (Element) hostObj;
-				String type = hostele.attributeValue("type");
+				Element hostEle = (Element) hostObj;
+				String type = hostEle.attributeValue("type");
 				boolean isbean = type != null && type.trim().equals("api");
-				String pack = hostele.getTextTrim().replace(".", File.separator);
+				String pack = hostEle.getTextTrim().replace(".", File.separator);
 				File file = new File(path + pack);
 				if (!file.isDirectory())
 					throw new FileNotFoundException(
@@ -87,11 +87,8 @@ public class ReadClass {
 			if (match.find()) {
 				File f = new File(file.getPath() + File.separator + s);
 				Element item = hostele.addElement("item");
-//				item.addAttribute("name", match.group(1).toLowerCase());
 				item.addAttribute("checkname", fs.getAbsolutePath().replace(DawdlerTool.getcurrentPath(), ""));
-//				item.addAttribute("package", pack);
 				item.addAttribute("update", "" + f.lastModified());
-//				item.addText(pack.replace(File.separator, ".") + "." + s);
 			}
 		}
 	}
