@@ -19,13 +19,11 @@ package com.anywide.dawdler.client;
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 import com.anywide.dawdler.client.cglib.proxy.Enhancer;
 import com.anywide.dawdler.client.cglib.proxy.MethodInterceptor;
 import com.anywide.dawdler.client.cglib.proxy.MethodProxy;
 import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.annotation.RemoteService;
-
 
 /**
  * @author jackson.song
@@ -38,7 +36,9 @@ import com.anywide.dawdler.core.annotation.RemoteService;
 public class ServiceFactory {
 	private static final ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> proxyObjects = new ConcurrentHashMap<>();
 
-	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance, ClassLoader classLoader) {
+	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance,
+			ClassLoader classLoader) {
+		if(classLoader == null) classLoader = Thread.currentThread().getContextClassLoader();
 		ConcurrentHashMap<Class<?>, Object> proxy = proxyObjects.get(groupName);
 		if (proxy == null) {
 			proxy = new ConcurrentHashMap<>();
@@ -48,15 +48,20 @@ public class ServiceFactory {
 		}
 		Object obj = proxy.get(delegate);
 		if (obj == null) {
-			obj = createCglibDynamicProxy(delegate, groupName, loadBalance,classLoader);
+			obj = createCglibDynamicProxy(delegate, groupName, loadBalance, classLoader);
 			Object preObj = proxy.putIfAbsent(delegate, obj);
 			if (preObj != null)
 				obj = preObj;
 		}
 		return (T) obj;
 	}
+	
+	public static <T> T getService(final Class<T> delegate, String groupName) {
+		return getService(delegate, groupName, null, null);
+	}
 
-	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName, String loadBalance, ClassLoader classLoader) {
+	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName, String loadBalance,
+			ClassLoader classLoader) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setCallback(new CglibInterceptor(delegate, groupName, loadBalance));
 		enhancer.setInterfaces(new Class[] { delegate });
