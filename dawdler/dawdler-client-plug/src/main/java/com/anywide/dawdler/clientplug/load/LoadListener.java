@@ -99,12 +99,12 @@ public class LoadListener implements ServletContextListener {
 			arg0.getServletContext().getContextPath();
 			String channelGroupId = ele.attributeValue("channel-group-id");
 			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
+			loadCore.initWebComponent();
 			try {
 				loadCore.toCheck();
 			} catch (IOException e) {
 				logger.error("", e);
 			}
-			loadCore.initWebComponent();
 			String mode = ele.attributeValue("mode");
 			boolean run = mode != null && (mode.trim().equals("run"));
 			if (!run) {
