@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -28,6 +28,7 @@ import java.util.regex.Pattern;
 
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,7 +78,7 @@ public class LoadCore implements Runnable {
 	
 
 	public String getLogFilePath() {
-		return CURRENT_PATH + channelGroupId + host + PREFIX;
+		return CURRENT_PATH + channelGroupId +"-"+ host + PREFIX;
 	}
 
 	public void toCheck() throws IOException {
@@ -130,7 +131,7 @@ public class LoadCore implements Runnable {
 			if(!xmlFile.isFile())
 				return;
 			XmlObject xmlo = new XmlObject(filepath, false);
-			Set<String> needLoad = new HashSet<String>();
+			Set<String> needLoad = new LinkedHashSet<String>();
 			for (Object o : xmlo.selectNodes("/hosts/host[@type='component']/item")) {
 				Element ele = (Element) o;
 				String checkName = ele.attributeValue("checkname");
@@ -155,7 +156,7 @@ public class LoadCore implements Runnable {
 	}
 
 	private void willLoad(XmlObject xmlo, String type) throws IOException {
-		List beanList = xmlo.selectNodes("/hosts/host[@type='" + type + "']/item");
+		List<Node> beanList = xmlo.selectNodes("/hosts/host[@type='" + type + "']/item");
 		String[] loadBeans = new String[beanList.size()];
 		int i = 0;
 		for (Object o : beanList) {
@@ -170,7 +171,7 @@ public class LoadCore implements Runnable {
 		boolean isApi = type.equals(TYPE_API);
 		boolean remark = false;
 		List<String> allClass = new ArrayList<String>();
-		Set<String> needLoad = new HashSet<String>();
+		Set<String> needLoad = new LinkedHashSet<String>();
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
 		for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item")) {
 			Element ele = (Element) item;
@@ -190,7 +191,7 @@ public class LoadCore implements Runnable {
 			}
 		}
 		String classFilePath = CURRENT_PATH;
-		Set<String> loadCache = new HashSet<String>();
+		Set<String> loadCache = new LinkedHashSet<String>();
 		for (String name : allClass) {// 循环客户端和服务器端都有的类
 			for (Object item : local
 					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
@@ -209,7 +210,7 @@ public class LoadCore implements Runnable {
 						this.classLoder.remove(host + "-" + className);
 				}
 			}
-			List items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']");
+			List<Node> items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']");
 			for (Object item : items) {
 				Element ele = (Element) item;
 				String checkName = ele.attributeValue("checkname");
