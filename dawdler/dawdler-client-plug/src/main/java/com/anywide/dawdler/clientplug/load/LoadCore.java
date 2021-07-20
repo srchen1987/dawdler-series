@@ -126,6 +126,9 @@ public class LoadCore implements Runnable {
 	public void initWebComponent() {
 		try {
 			String filepath = getLogFilePath();
+			File xmlFile = new File(filepath);
+			if(!xmlFile.isFile())
+				return;
 			XmlObject xmlo = new XmlObject(filepath, false);
 			Set<String> needLoad = new HashSet<String>();
 			for (Object o : xmlo.selectNodes("/hosts/host[@type='component']/item")) {
