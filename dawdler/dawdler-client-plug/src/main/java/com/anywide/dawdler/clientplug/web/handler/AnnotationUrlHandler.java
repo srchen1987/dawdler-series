@@ -159,7 +159,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 	}
 
 	public static Set<TransactionController> getTransactionControllers() {
-		Set controllers = new HashSet<>(32);
+		Set<TransactionController> controllers = new HashSet<>(32);
 		urlRules.values().forEach(requestUrlData -> {
 			controllers.add(requestUrlData.getTarget());
 		});

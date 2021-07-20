@@ -297,7 +297,7 @@ public abstract class AbstractSocketSession {
 
 	@Override
 	public String toString() {
-		return describe + "\tlastRead:" + (JVMTimeProvider.currentTimeMillis() - lastReadTime) + "\tLastWrite"
+		return describe + "\tlastRead: " + (JVMTimeProvider.currentTimeMillis() - lastReadTime) + "\tLastWrite: "
 				+ (System.currentTimeMillis() - lastWriteTime);
 	}
 
