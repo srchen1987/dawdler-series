@@ -59,7 +59,11 @@ public final class JedisPoolFactory {
 			Properties ps = new Properties();
 			ps.load(inStream);
 			String addr = ps.get("addr").toString();
-			String auth = ps.get("auth").toString();
+			Object authObj = ps.get("auth");
+			String auth = null;
+			if(authObj != null) {
+				auth = authObj.toString();
+			}
 			int port = Integer.parseInt(ps.get("port").toString());
 			int database = getIfNullReturnDefaultValueInt("database", 0, ps);
 			int max_idle = getIfNullReturnDefaultValueInt("max_idle", JedisPoolConfig.DEFAULT_MAX_IDLE, ps);
