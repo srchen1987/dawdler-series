@@ -131,7 +131,7 @@ public class ConnectionPool {
 	public List<DawdlerConnection> getConnections() {
 		if (connections.isEmpty()) {
 			try {
-				if (semaphore.tryAcquire(5000, TimeUnit.MILLISECONDS))
+				if (semaphore.tryAcquire(3000, TimeUnit.MILLISECONDS))
 					return connections;
 			} catch (InterruptedException e) {
 			}
@@ -152,6 +152,7 @@ public class ConnectionPool {
 			if (connections.isEmpty()) {
 				initConnection(gid);
 				semaphore.release(Integer.MAX_VALUE);
+				semaphore.drainPermits();
 			}
 		}
 		connections.forEach(con -> {
