@@ -43,17 +43,19 @@ public class ClientConfig {
 	private static File file = null;
 
 	static {
-		try {
-			file = new File(DawdlerTool.getcurrentPath() + SRC_CONFIG);
-//			isUpdate();
+		file = new File(DawdlerTool.getcurrentPath() + SRC_CONFIG);
+		if (!file.isFile()) {
+			logger.warn("not found " + SRC_CONFIG);
+		}else {
 			try {
 				xml = XmlObject.loadClassPathXML(SRC_CONFIG);
 			} catch (IOException e) {
 				logger.error("", e);
+			} catch (DocumentException e) {
+				logger.error("", e);
 			}
-		} catch (DocumentException e) {
-			logger.error("", e);
 		}
+		
 	}
 
 	private ClientConfig() {
@@ -65,7 +67,7 @@ public class ClientConfig {
 
 	private static boolean isUpdate() {
 		if (!file.exists()) {
-			System.err.println("not found " + SRC_CONFIG);
+			logger.warn("not found " + SRC_CONFIG);
 			return false;
 		}
 		if (updateTime != file.lastModified()) {
@@ -82,7 +84,7 @@ public class ClientConfig {
 			} catch (DocumentException e) {
 				logger.error("", e);
 			} catch (IOException e) {
-				logger.error("", e);
+				logger.warn("not found " + SRC_CONFIG);
 			}
 		}
 		return xml;
