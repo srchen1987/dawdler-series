@@ -48,15 +48,9 @@ public class SocketSession extends AbstractSocketSession {
 	private String password;
 	private DawdlerConnection dawdlerConnection;
 	private ClassLoader classLoader;
-//	private boolean runInDawdlerServer;
 
 	public SocketSession(AsynchronousSocketChannel channel, boolean init) throws IOException {
 		super(channel, init);
-//		try {
-//			Class.forName("com.anywide.dawdler.server.bootstarp.Bootstrap");
-//			runInDawdlerServer = true;
-//		} catch (ClassNotFoundException e) {
-//		}
 	}
 
 	public String getUser() {
@@ -82,7 +76,7 @@ public class SocketSession extends AbstractSocketSession {
 	public void setDawdlerConnection(DawdlerConnection dawdlerConnection) {
 		this.dawdlerConnection = dawdlerConnection;
 	}
-	
+
 	public ClassLoader getClassLoader() {
 		return classLoader;
 	}
@@ -90,6 +84,7 @@ public class SocketSession extends AbstractSocketSession {
 	public void setClassLoader(ClassLoader classLoader) {
 		this.classLoader = classLoader;
 	}
+
 	public void close() {
 		close(true);
 	}
