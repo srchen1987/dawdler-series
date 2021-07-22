@@ -77,6 +77,7 @@ public abstract class AbstractSocketSession {
 	protected int alreadyRead;
 	protected byte[] appendData;
 	protected boolean compress;
+	protected String path;
 	protected Serializer serializer;
 	protected boolean needNext;
 	protected AtomicBoolean close = new AtomicBoolean();
@@ -294,7 +295,14 @@ public abstract class AbstractSocketSession {
 	public int getRemotePort() {
 		return remotePort;
 	}
-
+	
+	public String getPath() {
+		return path;
+	}
+	
+	public void setPath(String path) {
+		this.path = path;
+	}
 	@Override
 	public String toString() {
 		return describe + "\tlastRead: " + (JVMTimeProvider.currentTimeMillis() - lastReadTime) + "\tLastWrite: "

@@ -46,19 +46,17 @@ public class SocketSession extends AbstractSocketSession {
 	private static final Logger logger = LoggerFactory.getLogger(SocketSession.class);
 	private String user;
 	private String password;
-	private String path;
 	private DawdlerConnection dawdlerConnection;
+	private ClassLoader classLoader;
+//	private boolean runInDawdlerServer;
 
 	public SocketSession(AsynchronousSocketChannel channel, boolean init) throws IOException {
 		super(channel, init);
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
+//		try {
+//			Class.forName("com.anywide.dawdler.server.bootstarp.Bootstrap");
+//			runInDawdlerServer = true;
+//		} catch (ClassNotFoundException e) {
+//		}
 	}
 
 	public String getUser() {
@@ -84,7 +82,14 @@ public class SocketSession extends AbstractSocketSession {
 	public void setDawdlerConnection(DawdlerConnection dawdlerConnection) {
 		this.dawdlerConnection = dawdlerConnection;
 	}
+	
+	public ClassLoader getClassLoader() {
+		return classLoader;
+	}
 
+	public void setClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
 	public void close() {
 		close(true);
 	}
@@ -131,8 +136,9 @@ public class SocketSession extends AbstractSocketSession {
 	}
 
 	public void messageCompleted() {
+		Thread.currentThread().setContextClassLoader(getClassLoader());
 		byte[] data = getAppendData();
-		new DataProcessor(this, headData, compress, serializer, data).run();
+		new DataProcessor(this, compress, serializer, data).run();
 		if (markClose.get() && futures.isEmpty()) {
 			close(false);
 		}
