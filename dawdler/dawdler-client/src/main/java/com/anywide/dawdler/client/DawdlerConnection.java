@@ -386,6 +386,7 @@ public class DawdlerConnection {
 	public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
 		if (ioHandler != null)
 			ioHandler.messageSent(socketSession, obj);
+		socketSession.setClassLoader(Thread.currentThread().getContextClassLoader());
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] data = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
