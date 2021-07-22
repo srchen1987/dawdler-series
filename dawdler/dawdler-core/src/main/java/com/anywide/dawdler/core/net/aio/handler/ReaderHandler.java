@@ -55,10 +55,10 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 				if (session.isNeedNext() ? buffer.remaining() <= HEADER_FIELD_LENGTH
 						: buffer.position() <= HEADER_FIELD_LENGTH) {
 					if (session.isNeedNext()) {
-						byte[] temp = new byte[buffer.remaining()];
-						buffer.get(temp);
+						byte[] data = new byte[buffer.remaining()];
+						buffer.get(data);
 						buffer.clear();
-						buffer.put(temp);
+						buffer.put(data);
 						session.setNeedNext(false);
 					}
 					process(session);
