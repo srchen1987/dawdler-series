@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.client.processor;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,11 +25,9 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.AuthResponseBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
-import com.anywide.dawdler.core.compression.strategy.CompressionWrapper;
 import com.anywide.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
 import com.anywide.dawdler.core.handler.IoHandler;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
-import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.core.thread.InvokeFuture;
 
@@ -47,17 +44,15 @@ public class DataProcessor implements Runnable {
 	private final SocketSession socketSession;
 	private final boolean compress;
 	private final Serializer serializer;
-	private final byte headData;
 	private byte[] data;
 	private final IoHandler ioHandler = IoHandlerFactory.getHandler();
 
-	public DataProcessor(SocketSession socketSession, byte headData, boolean compress, Serializer serializer,
+	public DataProcessor(SocketSession socketSession, boolean compress, Serializer serializer,
 			byte[] data) {
 		this.socketSession = socketSession;
 		this.compress = compress;
 		this.serializer = serializer;
 		this.data = data;
-		this.headData = headData;
 	}
 
 	@Override
@@ -112,34 +107,4 @@ public class DataProcessor implements Runnable {
 		data = null;
 	}
 
-	public void write() throws Exception {
-		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
-		data = cr.getBuffer();
-		synchronized (socketSession) {
-			ByteBuffer bf = socketSession.getWriteBuffer();
-			int size = data.length + 1;
-			int capacity = size + 4;
-			PoolBuffer pb = null;
-			try {
-				if (capacity > SocketSession.CAPACITY) {
-					pb = PoolBuffer.selectPool(capacity);
-					if (pb == null) {
-						bf = ByteBuffer.allocate(capacity);
-						logger.warn("The serialized object is too large.\t size :" + capacity);
-					} else
-						bf = pb.getByteBuffer();
-				}
-				bf.putInt(size);
-				bf.put((byte) (cr.isCompressed() ? headData | 1 : headData));
-				bf.put(data);
-				bf.flip();
-				socketSession.write(bf);
-			} finally {
-				bf.clear();
-				if (pb != null) {
-					pb.release(bf);
-				}
-			}
-		}
-	}
 }
