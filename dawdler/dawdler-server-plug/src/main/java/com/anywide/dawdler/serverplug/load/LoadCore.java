@@ -85,7 +85,7 @@ public class LoadCore implements Runnable {
 		tr.addString(host);
 		XmlBean xmlb = null;
 		try {
-			xmlb = (XmlBean) tr.pureExecuteResult();
+			xmlb = (XmlBean)tr.pureExecuteResult();
 		} catch (Exception e) {
 			logger.error("", e);
 		}

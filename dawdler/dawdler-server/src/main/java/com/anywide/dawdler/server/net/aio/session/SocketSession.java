@@ -41,7 +41,6 @@ import com.anywide.dawdler.server.thread.processor.DataProcessor;
 public class SocketSession extends AbstractSocketSession {
 	private static final Logger logger = LoggerFactory.getLogger(SocketSession.class);
 	private DawdlerServerContext dawdlerServerContext;
-	private String path;
 	private byte pathLength;
 
 	public SocketSession(AsynchronousSocketChannel channel) throws IOException {
@@ -180,7 +179,4 @@ public class SocketSession extends AbstractSocketSession {
 		super.toPrepare();
 	}
 
-	public String getPath() {
-		return path;
-	}
 }
