@@ -14,9 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web;
-
-import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+package com.anywide.dawdler.clientplug.web.handler;
 
 /**
  * @author jackson.song
@@ -27,13 +25,13 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @email suxuan696@gmail.com
  */
 public class ViewControllerContext {
-	private static final InheritableThreadLocal<ViewForward> viewForward = new InheritableThreadLocal<ViewForward>();
+	private static final ThreadLocal<ViewForward> viewForward = new ThreadLocal<ViewForward>();
 
 	public static ViewForward getViewForward() {
 		return viewForward.get();
 	}
 
-	public static void setViewForward(ViewForward vd) {
+	static void setViewForward(ViewForward vd) {
 		viewForward.set(vd);
 	}
 

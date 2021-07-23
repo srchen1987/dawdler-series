@@ -40,9 +40,9 @@ import com.anywide.dawdler.serverplug.db.DBAction;
  */
 public class LocalConnectionFacotry {
 	private final static ConcurrentMap<DataSource, TransactionManager> localManager = new ConcurrentHashMap<>();
-	private final static InheritableThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>> localWriteConnectionHolder;
-	private final static InheritableThreadLocal<SynReadConnectionObject> synReadConnection = new InheritableThreadLocal<>();
-	private static final InheritableThreadLocal<Map<DBAction, Connection>> localconnection = new InheritableThreadLocal<Map<DBAction, Connection>>() {
+	private final static ThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>> localWriteConnectionHolder;
+	private final static ThreadLocal<SynReadConnectionObject> synReadConnection = new ThreadLocal<>();
+	private static final ThreadLocal<Map<DBAction, Connection>> localconnection = new ThreadLocal<Map<DBAction, Connection>>() {
 		protected java.util.Map<DBAction, Connection> initialValue() {
 			return new HashMap<DBAction, Connection>(2);
 		}
@@ -51,7 +51,7 @@ public class LocalConnectionFacotry {
 	private static Context ctx = null;
 
 	static {
-		localWriteConnectionHolder = new InheritableThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>>() {
+		localWriteConnectionHolder = new ThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>>() {
 			protected ConcurrentMap<DataSource, WriteConnectionHolder> initialValue() {
 				return new ConcurrentHashMap<DataSource, WriteConnectionHolder>();
 			}
