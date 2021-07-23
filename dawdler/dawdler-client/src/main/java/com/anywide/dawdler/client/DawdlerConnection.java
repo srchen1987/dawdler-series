@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
@@ -42,9 +43,6 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,7 +69,6 @@ public class DawdlerConnection {
 	private static final ConnectorHandler connectorHandler = new ConnectorHandler();
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerConnection.class);
 	private final AtomicInteger TNUMBER = new AtomicInteger(0);
-	private final AtomicInteger INDEX = new AtomicInteger(0);
 	private final int sessionNum;
 	private final String gid;
 	private final String user;
@@ -80,7 +77,6 @@ public class DawdlerConnection {
 	private final ConcurrentHashMap<SocketAddress, List<SocketSession>> sessionGroup = new ConcurrentHashMap<>();
 	private final ScheduledExecutorService reconnectScheduled;
 	private final AtomicBoolean complete = new AtomicBoolean();
-	private final ReadWriteLock rwLock = new ReentrantReadWriteLock();
 	private final IoHandler ioHandler = IoHandlerFactory.getHandler();
 	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
 	protected Semaphore semaphore = new Semaphore(0);
@@ -88,8 +84,6 @@ public class DawdlerConnection {
 	private final String groupName;
 	private int serializer;
 	private String path;
-	private List<SocketSession>[] socketSessionList;
-
 	private volatile List<List<SocketSession>> socketSessions;
 
 	public DawdlerConnection(String gid, String path, int serializer, int sessionNum, String user, String password)
@@ -159,9 +153,7 @@ public class DawdlerConnection {
 			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
 			if (disconnAddressList.isEmpty())
 				return;
-			Lock lock = rwLock.writeLock();
 			try {
-				lock.lock();
 				boolean activate = false;
 				for (final SocketAddress socketAddress : disconnAddressList) {
 					int num = connectManager.removeDisconnect(socketAddress).get();
@@ -174,8 +166,8 @@ public class DawdlerConnection {
 				}
 				if (activate)
 					DawdlerConnection.this.rebuildSessionGroup();
-			} finally {
-				lock.unlock();
+			}catch(Exception e) {
+				logger.error("", e);
 			}
 		}, 5000, 3000, TimeUnit.MILLISECONDS);
 	}
@@ -342,46 +334,13 @@ public class DawdlerConnection {
 	}
 
 	public void rebuildSessionGroup() {
-		socketSessions = new ArrayList(sessionGroup.values());
-		socketSessionList = sessionGroup.values().toArray(new ArrayList[0]);
+		socketSessions = new CopyOnWriteArrayList<>(sessionGroup.values());
 	}
 
 	public List<List<SocketSession>> getSessions() {
 		return socketSessions;
 	}
 
-	public SocketSession getSession() {
-		Lock lock = rwLock.readLock();
-		try {
-			lock.lock();
-			if (socketSessionList.length == 0)
-				return null;
-			int index = Math.abs(INDEX.getAndIncrement());
-			int position = (int) (index % socketSessionList.length);
-			List<SocketSession> sessionList = socketSessionList[position];
-			while (true) {
-				if (sessionList == null || sessionList.isEmpty()) {
-					if (socketSessionList.length > 0) {
-						sessionList = socketSessionList[(int) (++index % socketSessionList.length)];
-						continue;
-					}
-					return null;
-				}
-				position = (int) (index % sessionList.size());
-				SocketSession socketSession = sessionList.get(position);
-				if (socketSession.isClose()) {
-					// sessionList.remove(socketSession);
-					// FIXME tolog
-					sessionList = null;
-					rebuildSessionGroup();
-					continue;
-				}
-				return socketSession;
-			}
-		} finally {
-			lock.unlock();
-		}
-	}
 
 	public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
 		if (ioHandler != null)

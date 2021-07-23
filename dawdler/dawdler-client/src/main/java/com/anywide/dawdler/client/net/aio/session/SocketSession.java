@@ -131,7 +131,7 @@ public class SocketSession extends AbstractSocketSession {
 	}
 
 	public void messageCompleted() {
-		Thread.currentThread().setContextClassLoader(getClassLoader());
+//		Thread.currentThread().setContextClassLoader(getClassLoader());
 		byte[] data = getAppendData();
 		new DataProcessor(this, compress, serializer, data).run();
 		if (markClose.get() && futures.isEmpty()) {

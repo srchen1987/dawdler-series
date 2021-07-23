@@ -16,8 +16,8 @@
  */
 package com.anywide.dawdler.client.processor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,7 +84,7 @@ public class DataProcessor implements Runnable {
 		} else if (obj instanceof AuthResponseBean) {
 			AuthResponseBean authResponse = (AuthResponseBean) obj;
 			if (authResponse.isSuccess()) {
-				List<SocketSession> sessions = new ArrayList<>();
+				List<SocketSession> sessions = new CopyOnWriteArrayList<>();
 				List<SocketSession> preSessions = socketSession.getDawdlerConnection().getSessionGroup()
 						.putIfAbsent(socketSession.getRemoteAddress(), sessions);
 				if (preSessions != null) {
@@ -93,8 +93,8 @@ public class DataProcessor implements Runnable {
 				sessions.add(socketSession);
 				if (ioHandler != null)
 					ioHandler.channelOpen(socketSession);
-				socketSession.getInitLatch().countDown();
 				socketSession.getDawdlerConnection().rebuildSessionGroup();
+				socketSession.getInitLatch().countDown();
 				if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
 					socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
 				}
