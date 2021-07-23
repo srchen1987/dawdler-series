@@ -30,7 +30,7 @@ import java.util.Map;
 public class RpcContext {
 
 	private Map<String, Object> attachments;
-	private static final InheritableThreadLocal<RpcContext> THREAD_LOCAL = new InheritableThreadLocal<RpcContext>() {
+	private static final ThreadLocal<RpcContext> THREAD_LOCAL = new ThreadLocal<RpcContext>() {
 		@Override
 		protected RpcContext initialValue() {
 			return new RpcContext();
