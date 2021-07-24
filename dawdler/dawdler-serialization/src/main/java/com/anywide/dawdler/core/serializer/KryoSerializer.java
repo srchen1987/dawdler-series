@@ -53,6 +53,7 @@ public class KryoSerializer implements Serializer {
 	@Override
 	public byte[] serialize(Object object) throws Exception {
 		KryoLocal kryoLocal = kryos.get();
+		synchronized (kryoLocal) {
 		Kryo kryo = kryoLocal.kryo;
 		Output out = kryoLocal.out;
 		byte[] data;
@@ -63,6 +64,7 @@ public class KryoSerializer implements Serializer {
 			out.clear();
 		}
 		return data;
+		}
 	}
 
 	public static class KryoLocal {
