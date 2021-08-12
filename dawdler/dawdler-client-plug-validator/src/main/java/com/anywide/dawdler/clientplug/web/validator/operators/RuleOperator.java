@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  * @version V1.0
  * @Title RuleOperator.java
  * @Description 验证规则定义抽象类
- * @date 2007年07月22日
+ * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
 public abstract class RuleOperator {

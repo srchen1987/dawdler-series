@@ -30,7 +30,7 @@ import com.anywide.dawdler.conf.annotation.FieldConfig;
  * @version V1.0
  * @Title ConfigMappingDataCache.java
  * @Description 缓存path指定映射类型的对象
- * @date 2021年05月29日
+ * @date 2021年5月29日
  * @email suxuan696@gmail.com
  */
 public class PathMappingTargetCache {

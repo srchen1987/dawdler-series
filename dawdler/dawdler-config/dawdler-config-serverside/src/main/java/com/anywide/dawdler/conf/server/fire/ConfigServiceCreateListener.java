@@ -28,7 +28,7 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
  * @version V1.0
  * @Title ConfigServiceCreateListener.java
  * @Description 监听服务器端服务创建的事件，注入配置信息
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 public class ConfigServiceCreateListener implements DawdlerServiceCreateListener {

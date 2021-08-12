@@ -35,7 +35,7 @@ import com.anywide.dawdler.serverplug.db.DBAction;
  * @version V1.0
  * @Title LocalConnectionFacotry.java
  * @Description 线程内存储Connection的工厂
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public class LocalConnectionFacotry {

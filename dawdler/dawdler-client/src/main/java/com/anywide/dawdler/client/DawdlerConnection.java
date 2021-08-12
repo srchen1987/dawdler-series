@@ -62,7 +62,7 @@ import com.anywide.dawdler.core.serializer.Serializer;
  * @version V1.0
  * @Title DawdlerConnection.java
  * @Description dawdler连接
- * @date 2015年03月16日
+ * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
 public class DawdlerConnection {

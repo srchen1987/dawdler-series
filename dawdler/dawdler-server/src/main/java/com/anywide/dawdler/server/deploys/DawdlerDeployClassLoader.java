@@ -49,7 +49,7 @@ import sun.misc.URLClassPath;
  * @version V1.0
  * @Title DawdlerDeployClassLoader.java
  * @Description Dawdler部署在deploys下的类加载器
- * @date 2015年03月09日
+ * @date 2015年3月09日
  * @email suxuan696@gmail.com
  */
 public class DawdlerDeployClassLoader extends DawdlerClassLoader {
@@ -229,7 +229,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			logger.error("", e);
 		}
 		Class<?> clazz = defineClass(name, classData, 0, classData.length);
-		resolveClass(clazz);
+//		resolveClass(clazz);
 		return clazz;
 	}
 

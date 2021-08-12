@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
  * @version V1.0
  * @Title DawdlerClientTool.java
  * @Description TODO
- * @date 2008年08月28日
+ * @date 2008年8月28日
  * @email suxuan696@gmail.com
  */
 public class DawdlerClientTool {

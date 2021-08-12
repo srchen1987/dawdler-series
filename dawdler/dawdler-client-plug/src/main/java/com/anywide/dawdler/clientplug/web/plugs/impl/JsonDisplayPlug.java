@@ -27,14 +27,14 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
-import com.anywide.dawdler.clientplug.web.util.JsonProcessUtil;
+import com.anywide.dawdler.util.JsonProcessUtil;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title JsonDisplayPlug.java
  * @Description json的实现
- * @date 2007年04月21日
+ * @date 2007年4月21日
  * @email suxuan696@gmail.com
  */
 public class JsonDisplayPlug extends AbstractDisplayPlug {

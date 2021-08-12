@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @version V1.0
  * @Title DataAutomaticNewV2.java
  * @Description TODO
- * @date 2007年04月15日
+ * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */
 public class DataAutomaticNewV2 {

@@ -42,7 +42,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title ReadClass.java
  * @Description 读取服务端类模版
- * @date 2007年09月07日
+ * @date 2007年9月07日
  * @email suxuan696@gmail.com
  */
 public class ReadClass {
@@ -67,7 +67,7 @@ public class ReadClass {
 				File file = new File(path + pack);
 				if (!file.isDirectory())
 					throw new FileNotFoundException(
-							"not exist\t" + path + pack + "\t or " + path + pack + " is not Directory!");
+							"not exist\t" + path + pack + "\t or " + path + pack + " is not directory!");
 				createXmlObjectByFile(root, file, pack, host, isbean);
 			}
 			return xmlo;

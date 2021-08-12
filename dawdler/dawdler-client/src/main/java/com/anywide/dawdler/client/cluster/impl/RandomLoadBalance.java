@@ -26,7 +26,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @version V1.0
  * @Title RandomLoadBalance.java
  * @Description 随机方式负载均衡实现
- * @date 2019年08月16日
+ * @date 2019年8月16日
  * @email suxuan696@gmail.com
  */
 public class RandomLoadBalance<T> extends AbstractLoadBalance<T, Double> {

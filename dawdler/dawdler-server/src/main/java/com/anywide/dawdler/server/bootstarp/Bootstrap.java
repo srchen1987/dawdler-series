@@ -34,7 +34,7 @@ import com.anywide.dawdler.server.conf.ServerConfigParser;
  * @version V1.0
  * @Title Bootstrap.java
  * @Description dawdler服务器启动类
- * @date 2015年04月09日
+ * @date 2015年4月09日
  * @email suxuan696@gmail.com
  */
 public class Bootstrap {

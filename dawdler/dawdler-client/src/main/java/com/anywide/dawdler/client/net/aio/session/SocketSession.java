@@ -39,7 +39,7 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
  * @version V1.0
  * @Title SocketSession.java
  * @Description 客户端session 主要功能在父类中，包含了 读写超时重连、心跳处理等方式。
- * @date 2015年03月12日
+ * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
 public class SocketSession extends AbstractSocketSession {

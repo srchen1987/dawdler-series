@@ -36,7 +36,7 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
  * @version V1.0
  * @Title DataProcessor.java
  * @Description 数据处理者，经过readhandler的粘包后进行包处理。
- * @date 2015年03月12日
+ * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
 public class DataProcessor implements Runnable {

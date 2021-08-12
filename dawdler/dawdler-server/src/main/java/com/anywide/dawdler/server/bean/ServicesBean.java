@@ -33,7 +33,7 @@ import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
  * @version V1.0
  * @Title ServicesBean.java
  * @Description 服务提供类
- * @date 2015年04月21日
+ * @date 2015年4月21日
  * @email suxuan696@gmail.com
  */
 public class ServicesBean {

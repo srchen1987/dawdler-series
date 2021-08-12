@@ -21,7 +21,7 @@ package com.anywide.dawdler.core.exception;
  * @version V1.0
  * @Title DawdlerOperateException.java
  * @Description 操作异常
- * @date 2015年06月12日
+ * @date 2015年6月12日
  * @email suxuan696@gmail.com
  */
 public class DawdlerOperateException extends RuntimeException {

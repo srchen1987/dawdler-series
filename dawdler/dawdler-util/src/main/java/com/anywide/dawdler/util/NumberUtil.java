@@ -23,7 +23,7 @@ import java.nio.ByteOrder;
  * @version V1.0
  * @Title NumberUtil.java
  * @Description 数字位数转换类
- * @date 2014年08月12日
+ * @date 2014年8月12日
  * @email suxuan696@gmail.com
  */
 public class NumberUtil {

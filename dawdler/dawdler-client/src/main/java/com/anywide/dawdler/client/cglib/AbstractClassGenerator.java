@@ -21,9 +21,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-//import org.aspectj.weaver.loadtime.Aj;
 import org.objectweb.asm.ClassReader;
 
 import com.anywide.dawdler.util.aspect.AspectHolder;
@@ -62,7 +60,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	private boolean useCache = DEFAULT_USE_CACHE;
 	private String className;
 	private boolean attemptLoad;
-
+	
 	protected static class ClassLoaderData {
 		private final Set<String> reservedClassNames = new HashSet<String>();
 
@@ -331,8 +329,6 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 		}
 	}
 
-	private static AtomicBoolean init = new AtomicBoolean(false);
-
 	protected Class generate(ClassLoaderData data) {
 		Class gen;
 		Object save = CURRENT.get();
@@ -360,7 +356,8 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 			byte[] b = strategy.generate(this);
 			String className = ClassNameReader.getClassName(new ClassReader(b));
 			ProtectionDomain protectionDomain = getProtectionDomain();
-			if (AspectHolder.aj != null) {
+			boolean matchAspect = AspectHolder.aj != null;
+			if (matchAspect) {
 				b = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, b, classLoader,
 						protectionDomain);
 			}

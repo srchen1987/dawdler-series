@@ -37,7 +37,7 @@ import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWr
  * @version V1.0
  * @Title ViewFilter.java
  * @Description 请求处理过滤器
- * @date 2007年04月18日
+ * @date 2007年4月18日
  * @email suxuan696@gmail.com
  */
 public class ViewFilter implements Filter {

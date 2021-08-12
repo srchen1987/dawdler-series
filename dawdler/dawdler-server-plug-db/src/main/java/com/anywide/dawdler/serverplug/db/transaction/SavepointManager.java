@@ -24,7 +24,7 @@ import java.sql.Savepoint;
  * @version V1.0
  * @Title SavepointManager.java
  * @Description 当前连接保存点管理者
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public interface SavepointManager {

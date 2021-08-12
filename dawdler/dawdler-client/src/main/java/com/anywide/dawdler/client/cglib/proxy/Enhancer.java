@@ -33,7 +33,7 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Type;
 
-import com.anywide.dawdler.client.cglib.*;
+import com.anywide.dawdler.client.cglib.AbstractClassGenerator;
 
 import net.sf.cglib.core.ClassEmitter;
 import net.sf.cglib.core.CodeEmitter;
@@ -178,12 +178,13 @@ public class Enhancer extends AbstractClassGenerator
                                   Long serialVersionUID);
     }
 
-    private Class[] interfaces;
+    
     private CallbackFilter filter;
     private Callback[] callbacks;
     private Type[] callbackTypes;
     private boolean validateCallbackTypes;
     private boolean classOnly;
+    protected Class[] interfaces;
     private Class superclass;
     private Class[] argumentTypes;
     private Object[] arguments;

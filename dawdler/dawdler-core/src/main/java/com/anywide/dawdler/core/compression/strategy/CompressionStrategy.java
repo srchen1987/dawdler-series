@@ -23,7 +23,7 @@ import java.io.IOException;
  * @version V1.0
  * @Title CompressionStrategy.java
  * @Description 压缩策略，返回压缩包装类
- * @date 2015年06月12日
+ * @date 2015年6月12日
  * @email suxuan696@gmail.com
  */
 public interface CompressionStrategy {

@@ -26,7 +26,7 @@ import com.anywide.dawdler.conf.client.ConfigClient;
  * @version V1.0
  * @Title ConfigClientFactory.java
  * @Description ConfigClient的工厂，通过SPI初始化之后会加入到此工厂中
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 public class ConfigClientFactory {

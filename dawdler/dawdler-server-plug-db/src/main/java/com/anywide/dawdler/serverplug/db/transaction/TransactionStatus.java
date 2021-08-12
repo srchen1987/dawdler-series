@@ -23,7 +23,7 @@ import java.sql.SQLException;
  * @version V1.0
  * @Title TransactionStatus.java
  * @Description 事务状态定义的接口
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public interface TransactionStatus extends TransactionDefinition {
