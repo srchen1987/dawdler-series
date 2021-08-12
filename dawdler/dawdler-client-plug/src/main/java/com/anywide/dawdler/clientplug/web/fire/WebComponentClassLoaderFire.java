@@ -17,7 +17,6 @@
 package com.anywide.dawdler.clientplug.web.fire;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -29,7 +28,6 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoderFire;
 import com.anywide.dawdler.clientplug.web.TransactionController;
-import com.anywide.dawdler.clientplug.web.bind.ParameterNameReader;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.handler.RequestUrlData;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
@@ -37,15 +35,15 @@ import com.anywide.dawdler.clientplug.web.interceptor.InterceptorProvider;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
 import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.order.OrderData;
+import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title WebComponentClassLoaderFire.java
  * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller service等
- * @date 2015年03月11日
+ * @date 2015年3月11日
  * @email suxuan696@gmail.com
  */
 @Order(0)
@@ -71,7 +69,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 			try {
 				WebContextListener listener = clazz.asSubclass(WebContextListener.class).newInstance();
 				WebContextListenerProvider.addWebContextListener(listener);
-				injectRemoteService(clazz, listener);
+				ServiceFactory.injectRemoteService(clazz, listener, clazz.getClassLoader());
 				WebContextListenerProvider.order();
 			} catch (InstantiationException | IllegalAccessException e) {
 				logger.error("", e);
@@ -89,7 +87,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 						return;
 				}
 				InterceptorProvider.addHandlerInterceptor(interceptor);
-				injectRemoteService(clazz, interceptor);
+				ServiceFactory.injectRemoteService(clazz, interceptor, clazz.getClassLoader());
 				InterceptorProvider.order();
 			} catch (InstantiationException | IllegalAccessException e) {
 				logger.error("", e);
@@ -102,7 +100,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 			TransactionController target;
 			try {
 				target = clazz.asSubclass(TransactionController.class).newInstance();
-				injectRemoteService(clazz, target);
+				ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
 			} catch (InstantiationException | IllegalAccessException e) {
 				logger.error("", e);
 				return;
@@ -124,22 +122,6 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 		}
 	}
 
-	private void injectRemoteService(Class<?> clazz, Object target) {
-		Field[] fields = clazz.getDeclaredFields();
-		for (Field field : fields) {
-			RemoteService remoteService = field.getAnnotation(RemoteService.class);
-			if (!field.getType().isPrimitive() && remoteService != null) {
-				Class<?> serviceClass = field.getType();
-				field.setAccessible(true);
-				String groupName = remoteService.group();
-				try {
-					field.set(target, ServiceFactory.getService(serviceClass, groupName, remoteService.loadBalance(), clazz.getClassLoader()));
-				} catch (Exception e) {
-					logger.error("", e);
-				}
-			}
-		}
-	}
 
 	public void registMapping(String prefix, Class<?> clazz, TransactionController target) {
 		Method[] methods = clazz.getMethods();

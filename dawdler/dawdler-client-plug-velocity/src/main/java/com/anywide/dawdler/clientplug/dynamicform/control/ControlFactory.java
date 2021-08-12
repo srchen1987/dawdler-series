@@ -23,7 +23,7 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
  * @version V1.0
  * @Title ControlFactory.java
  * @Description 控件工厂
- * @date 2006年08月10日
+ * @date 2006年8月10日
  * @email suxuan696@gmail.com
  */
 public class ControlFactory {

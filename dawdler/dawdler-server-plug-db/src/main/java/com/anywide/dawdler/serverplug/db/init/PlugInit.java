@@ -30,7 +30,7 @@ import com.anywide.dawdler.serverplug.db.transaction.TransactionServiceExecutor;
  * @Title PlugInit.java
  * @Description 服务器端插件，绑定事务管理器（将com.anywide.dawdler.serverplug.init.PlugInit
  *              拆分出来）
- * @date 2021年03月12日
+ * @date 2021年3月12日
  * @email suxuan696@gmail.com
  */
 public class PlugInit {

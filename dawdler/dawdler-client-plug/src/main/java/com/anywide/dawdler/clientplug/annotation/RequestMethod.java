@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.annotation;
  * @version V1.0
  * @Title RequestMethod.java
  * @Description http请求方法
- * @date 2007年04月17日
+ * @date 2007年4月17日
  * @email suxuan696@gmail.com
  */
 public enum RequestMethod {

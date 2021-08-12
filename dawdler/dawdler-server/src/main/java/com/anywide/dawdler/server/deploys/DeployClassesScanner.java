@@ -40,7 +40,7 @@ import com.anywide.dawdler.server.conf.ServerConfigParser;
  * @version V1.0
  * @Title DeployClassesScanner.java
  * @Description 部署项目扫描类
- * @date 2013年03月11日
+ * @date 2013年3月11日
  * @email suxuan696@gmail.com
  */
 public class DeployClassesScanner {

@@ -35,7 +35,7 @@ import com.anywide.dawdler.clientplug.web.validator.scanner.RuleOperatorScanner;
  * @version V1.0
  * @Title RuleOperatorProvider.java
  * @Description 验证规则提供则
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public class RuleOperatorProvider {

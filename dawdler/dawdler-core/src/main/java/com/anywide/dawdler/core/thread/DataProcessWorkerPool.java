@@ -24,7 +24,7 @@ import java.util.concurrent.Executors;
  * @version V1.0
  * @Title DataProcessWorkerPool.java
  * @Description 数据处理的线程池
- * @date 2015年04月21日
+ * @date 2015年4月21日
  * @email suxuan696@gmail.com
  */
 public class DataProcessWorkerPool {

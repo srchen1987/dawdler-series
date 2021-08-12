@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.web.validator.entity;
  * @version V1.0
  * @Title ControlField.java
  * @Description 控制基础对应属性
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public class ControlField {

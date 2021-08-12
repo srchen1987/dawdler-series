@@ -31,7 +31,7 @@ import com.anywide.dawdler.core.order.OrderData;
  * @version V1.0
  * @Title ClientConfigInit.java
  * @Description client端配置中心初始化
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 public class ClientConfigInit {

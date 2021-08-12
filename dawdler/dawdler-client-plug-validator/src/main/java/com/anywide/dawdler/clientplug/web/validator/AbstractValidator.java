@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @version V1.0
  * @Title AbstractValidator.java
  * @Description 验证器的抽象类
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public abstract class AbstractValidator {

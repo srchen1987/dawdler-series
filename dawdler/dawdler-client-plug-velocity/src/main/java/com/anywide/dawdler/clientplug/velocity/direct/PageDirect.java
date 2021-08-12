@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.ToolEL;
  * @version V1.0
  * @Title ControlDirect.java
  * @Description 自定义控件的指令 （注释后补的）
- * @date 2007年04月18日
+ * @date 2007年4月18日
  * @email suxuan696@gmail.com
  */
 public class PageDirect extends Directive {

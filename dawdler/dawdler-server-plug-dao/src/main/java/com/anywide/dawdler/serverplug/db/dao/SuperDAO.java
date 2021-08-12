@@ -30,7 +30,7 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
  * @version V1.0
  * @Title SuperDAO.java
  * @Description TODO
- * @date 2007年04月15日
+ * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */
 public class SuperDAO implements BaseData {

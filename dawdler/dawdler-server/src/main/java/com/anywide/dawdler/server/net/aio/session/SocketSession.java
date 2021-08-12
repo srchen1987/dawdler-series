@@ -35,7 +35,7 @@ import com.anywide.dawdler.server.thread.processor.DataProcessor;
  * @version V1.0
  * @Title SocketSession.java
  * @Description 服务器端session具体实现类 还有在极端情况下触发的其他粘包规则没有进行System.copyArray优化
- * @date 2015年03月11日
+ * @date 2015年3月11日
  * @email suxuan696@gmail.com
  */
 public class SocketSession extends AbstractSocketSession {

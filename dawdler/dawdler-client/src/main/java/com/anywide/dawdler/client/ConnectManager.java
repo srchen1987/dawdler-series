@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version V1.0
  * @Title ConnectManager.java
  * @Description 连接管理器
- * @date 2015年03月16日
+ * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
 public class ConnectManager {

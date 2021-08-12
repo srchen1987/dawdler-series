@@ -28,7 +28,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @version V1.0
  * @Title RequestWrapper.java
  * @Description 一个request的包装类
- * @date 2015年04月06日
+ * @date 2015年4月06日
  * @email suxuan696@gmail.com
  */
 public class RequestWrapper extends RequestBean {

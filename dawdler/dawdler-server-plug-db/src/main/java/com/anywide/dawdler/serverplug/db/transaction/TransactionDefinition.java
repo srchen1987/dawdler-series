@@ -26,7 +26,7 @@ import com.anywide.dawdler.serverplug.db.annotation.Propagation;
  * @version V1.0
  * @Title TransactionDefinition.java
  * @Description 传播性，隔离级别定义接口
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public interface TransactionDefinition {

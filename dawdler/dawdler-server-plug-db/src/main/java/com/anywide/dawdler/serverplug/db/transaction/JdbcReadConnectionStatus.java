@@ -23,7 +23,7 @@ import com.anywide.dawdler.serverplug.db.annotation.DBTransaction;
  * @version V1.0
  * @Title JdbcReadConnectionStatus.java
  * @Description 数据库读连接的状态存储类
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public class JdbcReadConnectionStatus {

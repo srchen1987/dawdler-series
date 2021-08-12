@@ -39,7 +39,7 @@ import com.thoughtworks.xstream.security.PrimitiveTypePermission;
  * @version V1.0
  * @Title ServerConfigParser.java
  * @Description 服务器配置解析类 通过xstream映射
- * @date 2015年04月04日
+ * @date 2015年4月04日
  * @email suxuan696@gmail.com
  */
 public class ServerConfigParser {

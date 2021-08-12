@@ -34,7 +34,7 @@ import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
  * @version V1.0
  * @Title HttpExceptionHolder.java
  * @Description 异常处理持有者，可以注册，提供json默认的处理方式
- * @date 2007年04月23日
+ * @date 2007年4月23日
  * @email suxuan696@gmail.com
  */
 public class HttpExceptionHolder {

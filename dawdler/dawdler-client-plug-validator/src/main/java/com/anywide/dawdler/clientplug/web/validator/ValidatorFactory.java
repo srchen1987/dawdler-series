@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
  * @version V1.0
  * @Title ValidatorFactory.java
  * @Description 验证器工厂
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public class ValidatorFactory {

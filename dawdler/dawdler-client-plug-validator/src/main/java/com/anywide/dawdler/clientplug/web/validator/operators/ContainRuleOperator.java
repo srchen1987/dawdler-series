@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
  * @version V1.0
  * @Title ContainRuleOperator.java
  * @Description 包含项验证
- * @date 2007年07月22日
+ * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
 public class ContainRuleOperator extends RegexRuleOperator {
