@@ -50,7 +50,7 @@ import org.dom4j.io.XMLWriter;
  * @version V1.0
  * @Title XmlObject.java
  * @Description 基于dom4j来做xml操作的类 支持压缩
- * @date 2007年07月11日
+ * @date 2007年7月11日
  * @email suxuan696@gmail.com
  */
 public final class XmlObject {

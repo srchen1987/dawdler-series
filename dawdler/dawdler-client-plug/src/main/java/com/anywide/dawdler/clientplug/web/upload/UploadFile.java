@@ -28,7 +28,7 @@ import org.apache.commons.fileupload.FileItem;
  * @version V1.0
  * @Title UploadFile.java
  * @Description 上传文件时包装的类
- * @date 2007年04月17日
+ * @date 2007年4月17日
  * @email suxuan696@gmail.com
  */
 public class UploadFile {

@@ -49,7 +49,7 @@ import sun.nio.ch.DirectBuffer;
  * @version V1.0
  * @Title AbstractSocketSession.java
  * @Description 抽象session类 提供读写超时重连、心跳处理等方式。
- * @date 2015年03月11日
+ * @date 2015年3月11日
  * @email suxuan696@gmail.com
  */
 public abstract class AbstractSocketSession {

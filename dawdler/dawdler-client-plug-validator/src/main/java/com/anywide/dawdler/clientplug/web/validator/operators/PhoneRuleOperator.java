@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @version V1.0
  * @Title PhoneRuleOperator.java
  * @Description 座机验证
- * @date 2007年07月22日
+ * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
 public class PhoneRuleOperator extends StringRuleOperator {

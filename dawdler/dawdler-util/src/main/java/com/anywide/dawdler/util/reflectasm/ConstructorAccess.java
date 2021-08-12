@@ -41,7 +41,7 @@ import org.objectweb.asm.MethodVisitor;
  * @version V1.0
  * @Title ConstructorAccess.java
  * @Description asm的改进版 已升到asm支持jdk9
- * @date 2012年05月16日
+ * @date 2012年5月16日
  * @email suxuan696@gmail.com
  */
 public abstract class ConstructorAccess<T> {

@@ -28,7 +28,7 @@ import com.anywide.dawdler.serverplug.db.annotation.Propagation;
  * @version V1.0
  * @Title JdbcTransactionStatus.java
  * @Description 事务具体实现类 参考spring实现
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public class JdbcTransactionStatus implements TransactionStatus {

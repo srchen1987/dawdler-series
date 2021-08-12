@@ -52,14 +52,22 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 	public void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean) {
 		Object object = servicesBean.getService();
 		String methodName = requestBean.getMethodName();
-		MethodAccess methodAccess = ReflectionUtil.getMethodAccess(object);
+		MethodAccess methodAccess;
 		int methodIndex;
+		try {
+			methodAccess = ReflectionUtil.getMethodAccess(object);
+		}catch (Throwable e) {
+			logger.error("", e);
+			responseBean.setCause(new DawdlerOperateException(e.getMessage()));
+			return;
+		}
 		if (requestBean.isFuzzy()) {
 			methodIndex = methodAccess.getIndex(methodName,
 					requestBean.getArgs() == null ? 0 : requestBean.getArgs().length);
 		} else {
 			methodIndex = methodAccess.getIndex(methodName, requestBean.getTypes());
 		}
+		
 		DBTransaction dbt = methodAccess.getAnnotation(methodIndex, DBTransaction.class);
 		TransactionStatus tranStatus = null;
 		TransactionManager manager = null;
@@ -155,7 +163,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 			}
 			object = ReflectionUtil.invoke(methodAccess, object, methodIndex, requestBean.getArgs());
 			responseBean.setTarget(object);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			logger.error("", e);
 			responseBean.setCause(new DawdlerOperateException(e.getMessage()));
 			if (tranStatus != null)

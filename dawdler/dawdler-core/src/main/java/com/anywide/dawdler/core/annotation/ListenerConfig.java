@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * @Title ListenerConfig.java
  * @Description 监听器注解
  * @author jackson.song
- * @date 2015年06月19日
+ * @date 2015年6月19日
  * @version V1.0
  * @email suxuan696@gmail.com
  */

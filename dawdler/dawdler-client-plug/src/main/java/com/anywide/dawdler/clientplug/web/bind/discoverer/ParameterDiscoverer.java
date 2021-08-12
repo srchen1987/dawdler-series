@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
  * @version V1.0
  * @Title ParameterDiscoverer.java
  * @Description 获取方法参数名称的接口
- * @date 2021年04月10日
+ * @date 2021年4月10日
  * @email suxuan696@gmail.com
  */
 public interface ParameterDiscoverer {

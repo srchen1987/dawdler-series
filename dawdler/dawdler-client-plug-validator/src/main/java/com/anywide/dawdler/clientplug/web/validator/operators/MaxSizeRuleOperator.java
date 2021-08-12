@@ -24,7 +24,7 @@ import java.util.regex.Matcher;
  * @version V1.0
  * @Title MaxSizeRuleOperator.java
  * @Description 字符个数大于判断
- * @date 2007年07月22日
+ * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
 public class MaxSizeRuleOperator extends RegexRuleOperator {

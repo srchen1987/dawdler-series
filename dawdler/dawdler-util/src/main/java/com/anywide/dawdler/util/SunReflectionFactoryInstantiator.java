@@ -25,7 +25,7 @@ import java.lang.reflect.InvocationTargetException;
  * @version V1.0
  * @Title SunReflectionFactoryInstantiator.java
  * @Description ReflectionFactory来构建对象 针对私有构造函数的类
- * @date 2012年08月22日
+ * @date 2012年8月22日
  * @email suxuan696@gmail.com
  */
 public class SunReflectionFactoryInstantiator {

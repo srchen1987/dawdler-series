@@ -23,12 +23,14 @@ import com.anywide.dawdler.server.context.DawdlerContext;
  * @version V1.0
  * @Title DawdlerServiceListener.java
  * @Description 服务器启动监听器 服务器端的类实现此接口即可
- * @date 2015年04月19日
+ * @date 2015年4月19日
  * @email suxuan696@gmail.com
  */
 public interface DawdlerServiceListener {
+	
+	void contextInitialized(DawdlerContext dawdlerContext) throws Exception;
 
 	void contextDestroyed(DawdlerContext dawdlerContext) throws Exception;
 
-	void contextInitialized(DawdlerContext dawdlerContext) throws Exception;
+	
 }

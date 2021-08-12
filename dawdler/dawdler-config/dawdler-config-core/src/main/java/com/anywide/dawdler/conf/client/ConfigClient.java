@@ -23,7 +23,7 @@ import java.util.Map;
  * @version V1.0
  * @Title ConfigClient.java
  * @Description ConfigClient接口定义，支持SPI扩展
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 public interface ConfigClient {

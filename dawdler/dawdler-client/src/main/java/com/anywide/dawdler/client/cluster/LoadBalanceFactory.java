@@ -24,7 +24,7 @@ import java.util.ServiceLoader;
  * @version V1.0
  * @Title LoadBalanceFactory.java
  * @Description 负载均衡工厂
- * @date 2019年08月16日
+ * @date 2019年8月16日
  * @email suxuan696@gmail.com
  */
 public class LoadBalanceFactory<T, K> {

@@ -32,7 +32,7 @@ import com.anywide.dawdler.clientplug.web.validator.operators.StringRuleOperator
  * @version V1.0
  * @Title RuleOperatorExecuter.java
  * @Description 验证执行者
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public class RuleOperatorExecuter {

@@ -32,7 +32,7 @@ import com.anywide.dawdler.clientplug.web.upload.UploadFile;
  * @version V1.0
  * @Title ViewForward.java
  * @Description viewForward定义父类
- * @date 2007年04月18日
+ * @date 2007年4月18日
  * @email suxuan696@gmail.com
  */
 public class ViewForward {

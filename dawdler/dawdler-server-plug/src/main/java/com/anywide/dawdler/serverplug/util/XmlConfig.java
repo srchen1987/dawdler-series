@@ -39,7 +39,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title XmlConfig.java
  * @Description 简单的xml操作类
- * @date 2007年07月22日
+ * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
 public class XmlConfig {
@@ -62,7 +62,7 @@ public class XmlConfig {
 	public static String getRemoteLoad() {
 		Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote-load");
 		if (ele == null)
-			throw new NullPointerException(CONFIG_PATH + "config/remote-load not found！");
+			throw new NullPointerException(CONFIG_PATH + "\tconfig/remote-load not found！");
 		String path = ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
 		return path;
 	}

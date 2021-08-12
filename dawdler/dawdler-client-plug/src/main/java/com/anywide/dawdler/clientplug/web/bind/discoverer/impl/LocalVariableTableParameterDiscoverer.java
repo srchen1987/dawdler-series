@@ -18,15 +18,15 @@ package com.anywide.dawdler.clientplug.web.bind.discoverer.impl;
 
 import java.lang.reflect.Method;
 
-import com.anywide.dawdler.clientplug.web.bind.ParameterNameReader;
 import com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
+import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title LocalVariableTableParameterDiscoverer.java
  * @Description 基于asm获取方法参数名称的实现类
- * @date 2021年04月10日
+ * @date 2021年4月10日
  * @email suxuan696@gmail.com
  */
 public class LocalVariableTableParameterDiscoverer implements ParameterDiscoverer {

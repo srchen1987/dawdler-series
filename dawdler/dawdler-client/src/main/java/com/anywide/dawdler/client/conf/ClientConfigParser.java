@@ -36,7 +36,7 @@ import com.thoughtworks.xstream.security.PrimitiveTypePermission;
  * @version V1.0
  * @Title ClientConfigParser.java
  * @Description xtream映射类
- * @date 2015年03月16日
+ * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
 public class ClientConfigParser {

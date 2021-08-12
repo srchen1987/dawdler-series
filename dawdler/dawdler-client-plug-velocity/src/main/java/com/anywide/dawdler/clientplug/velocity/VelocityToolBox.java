@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.velocity;
  * @version V1.0
  * @Title VelocityToolBox.java
  * @Description velocity工具包
- * @date 2007年04月18日
+ * @date 2007年4月18日
  * @email suxuan696@gmail.com
  */
 public abstract class VelocityToolBox {

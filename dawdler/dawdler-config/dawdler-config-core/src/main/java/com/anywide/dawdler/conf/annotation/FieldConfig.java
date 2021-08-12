@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * @Description 统一配置中心配置注解
  *  支持用在服务器端 service listener(DawdlerServiceListener) filter(DawdlerFilter) 
  *  调用者（客户端） controller(TransactionController) listener(WebContextListener) interceptor(HandlerInterceptor) 
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)

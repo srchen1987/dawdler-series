@@ -27,7 +27,7 @@ import javax.crypto.Cipher;
  * @Title SecurityPlus.java
  * @Package com.anywide.dawdler.util
  * @Description DES加密解密工具类
- * @date 2009年04月21日
+ * @date 2009年4月21日
  * @email suxuan696@gmail.com
  */
 public class SecurityPlus {

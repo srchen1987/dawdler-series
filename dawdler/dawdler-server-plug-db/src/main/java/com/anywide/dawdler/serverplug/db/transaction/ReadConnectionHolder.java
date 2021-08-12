@@ -26,7 +26,7 @@ import javax.sql.DataSource;
  * @version V1.0
  * @Title ReadConnectionHolder.java
  * @Description 读连接持有者
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public class ReadConnectionHolder {

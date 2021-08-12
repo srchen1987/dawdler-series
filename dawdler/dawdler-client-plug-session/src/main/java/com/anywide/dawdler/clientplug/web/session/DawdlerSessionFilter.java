@@ -51,6 +51,7 @@ import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.redis.JedisPoolFactory;
 import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.PropertiesUtil;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
@@ -65,12 +66,12 @@ import redis.clients.jedis.util.Pool;
  */
 public class DawdlerSessionFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);
-	public static String cookieName;
+	public static String cookieName="_dawdler_key";
 	public static String domain;
 	public static String path = "/";
 	public static boolean secure;
-	private static int maxInactiveInterval = 1800;
-	private static int maxSize = 65525;
+	private static int maxInactiveInterval;
+	private static int maxSize;
 //	private static int synFlushInterval = 0;
 
 	static {
@@ -88,9 +89,7 @@ public class DawdlerSessionFilter implements Filter {
 		}
 
 		Properties ps = new Properties();
-
 		try {
-
 			ps.load(inStream);
 			String domainString = ps.getProperty("domain");
 			if (domainString != null && !domainString.trim().equals("")) {
@@ -102,30 +101,9 @@ public class DawdlerSessionFilter implements Filter {
 				path = pathString;
 			}
 			cookieName = ps.getProperty("cookieName");
-			String secureString = ps.getProperty("secure");
-			if (secureString != null) {
-				secure = Boolean.parseBoolean(secureString);
-			}
-
-			String maxInactiveIntervalString = ps.getProperty("maxInactiveInterval");
-			if (maxInactiveIntervalString != null) {
-				try {
-					int temp = Integer.parseInt(maxInactiveIntervalString);
-					if (temp > 0)
-						maxInactiveInterval = temp;
-				} catch (Exception e) {
-				}
-			}
-
-			String maxSizeString = ps.getProperty("maxSize");
-			if (maxSizeString != null) {
-				try {
-					int temp = Integer.parseInt(maxSizeString);
-					if (temp > 0)
-						maxSize = temp;
-				} catch (Exception e) {
-				}
-			}
+			secure = PropertiesUtil.getIfNullReturnDefaultValueBoolean("secure", false, ps);
+			maxInactiveInterval = PropertiesUtil.getIfNullReturnDefaultValueInt("maxInactiveInterval", 1800, ps);
+			maxSize = PropertiesUtil.getIfNullReturnDefaultValueInt("maxSize", 65525, ps);
 
 //			String synchFlushIntervalString = ps.getProperty("synchFlushInterval");
 //			if (synchFlushIntervalString != null) {

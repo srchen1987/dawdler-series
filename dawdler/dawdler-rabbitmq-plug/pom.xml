@@ -7,17 +7,19 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.0.2-RELEASES</version>
 	</parent>
-	<groupId>dawdler-rabbitmq-plug</groupId>
 	<artifactId>dawdler-rabbitmq-plug</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
 			<artifactId>amqp-client</artifactId>
-			<version>5.12.0</version>
 		</dependency>
 		<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-pool2</artifactId>
+		</dependency>
+		<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-util</artifactId>
 		</dependency>
 	</dependencies>
 

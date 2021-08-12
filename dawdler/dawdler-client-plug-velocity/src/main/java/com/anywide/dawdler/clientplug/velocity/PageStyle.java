@@ -26,7 +26,7 @@ import java.util.Map;
  * @version V1.0
  * @Title PageStyle.java
  * @Description 分页样式 （注释后补的）
- * @date 2006年08月10日
+ * @date 2006年8月10日
  * @email suxuan696@gmail.com
  */
 public class PageStyle {

@@ -27,7 +27,7 @@ import com.anywide.dawdler.serverplug.db.annotation.Isolation;
  * @version V1.0
  * @Title TransactionObject.java
  * @Description 事务类相关信息的存储类
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public class TransactionObject {

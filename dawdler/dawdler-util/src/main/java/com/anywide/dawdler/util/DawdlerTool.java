@@ -29,7 +29,7 @@ import java.util.Base64;
  * @version V1.0
  * @Title DawdlerTool.java
  * @Description 常用工具类
- * @date 2007年07月03日
+ * @date 2007年7月03日
  * @email suxuan696@gmail.com
  */
 public class DawdlerTool {

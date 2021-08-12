@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @version V1.0
  * @Title CapitalLettersRuleOperator.java
  * @Description TODO
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public class CapitalLettersRuleOperator extends StringRuleOperator {

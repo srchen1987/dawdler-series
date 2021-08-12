@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.dynamicform.control;
  * @version V1.0
  * @Title ControlContent.java
  * @Description 常量类
- * @date 2006年08月10日
+ * @date 2006年8月10日
  * @email suxuan696@gmail.com
  */
 public interface ControlContent {

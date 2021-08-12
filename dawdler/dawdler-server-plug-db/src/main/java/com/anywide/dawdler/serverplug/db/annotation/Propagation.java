@@ -23,7 +23,7 @@ import com.anywide.dawdler.serverplug.db.transaction.TransactionDefinition;
  * @version V1.0
  * @Title Propagation.java
  * @Description 事务传播方式
- * @date 2012年09月27日
+ * @date 2012年9月27日
  * @email suxuan696@gmail.com
  */
 public enum Propagation {

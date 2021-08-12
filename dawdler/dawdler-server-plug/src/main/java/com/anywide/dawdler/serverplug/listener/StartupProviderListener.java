@@ -18,12 +18,6 @@ public class StartupProviderListener implements DawdlerServiceListener {
 	private DiscoveryCenter discoveryCenter;
 
 	@Override
-	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
-		if (discoveryCenter != null)
-			discoveryCenter.destroy();
-	}
-
-	@Override
 	public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
 		Map data = XmlConfig.getDatas().get("discoveryServer");
 		if (data != null) {
@@ -45,5 +39,10 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		}
 
 	}
-
+	
+	@Override
+	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
+		if (discoveryCenter != null)
+			discoveryCenter.destroy();
+	}
 }

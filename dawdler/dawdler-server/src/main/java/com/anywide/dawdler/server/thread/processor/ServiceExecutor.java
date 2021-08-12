@@ -25,7 +25,7 @@ import com.anywide.dawdler.server.bean.ServicesBean;
  * @version V1.0
  * @Title ServiceExecutor.java
  * @Description 服务处理器接口
- * @date 2015年03月12日
+ * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
 public interface ServiceExecutor {

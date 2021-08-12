@@ -30,7 +30,7 @@ import com.anywide.dawdler.serverplug.db.annotation.Propagation;
  * @version V1.0
  * @Title JdbcTransactionManager.java
  * @Description 事务管理器 参考spring的实现
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public class JdbcTransactionManager implements TransactionManager {

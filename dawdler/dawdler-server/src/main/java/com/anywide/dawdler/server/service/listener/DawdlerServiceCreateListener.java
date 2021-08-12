@@ -23,7 +23,7 @@ import com.anywide.dawdler.server.context.DawdlerContext;
  * @version V1.0
  * @Title DawdlerServiceCreateListener.java
  * @Description 服务创建监听器
- * @date 2008年03月12日
+ * @date 2008年3月12日
  * @email suxuan696@gmail.com
  */
 public interface DawdlerServiceCreateListener {

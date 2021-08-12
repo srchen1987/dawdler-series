@@ -28,7 +28,7 @@ import java.util.List;
  * @version V1.0
  * @Title PathUtils.java
  * @Description 工具类 获取多个jar包组装成url数组
- * @date 2008年03月28日
+ * @date 2008年3月28日
  * @email suxuan696@gmail.com
  */
 public class PathUtils {

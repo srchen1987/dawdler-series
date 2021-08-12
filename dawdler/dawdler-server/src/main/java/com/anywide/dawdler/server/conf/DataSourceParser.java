@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title DataSourceParser.java
  * @Description 解析数据源配置的类
- * @date 2015年03月12日
+ * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
 public class DataSourceParser {
