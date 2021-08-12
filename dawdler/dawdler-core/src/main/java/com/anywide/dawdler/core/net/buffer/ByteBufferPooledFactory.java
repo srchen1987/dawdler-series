@@ -29,7 +29,7 @@ import sun.nio.ch.DirectBuffer;
  * @version V1.0
  * @Title ByteBufferPooledFactory.java
  * @Description 通过apache的Pooled组件实现了 buffer池，极端情况下才会使用到
- * @date 2015年03月14日
+ * @date 2015年3月14日
  * @email suxuan696@gmail.com
  */
 public class ByteBufferPooledFactory implements PooledObjectFactory<ByteBuffer> {

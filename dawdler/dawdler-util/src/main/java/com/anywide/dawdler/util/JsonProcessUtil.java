@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.util;
+package com.anywide.dawdler.util;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @version V1.0
  * @Title JsonProcessUtil.java
  * @Description TODO
- * @date 2010年03月28日
+ * @date 2010年3月28日
  * @email suxuan696@gmail.com
  */
 public class JsonProcessUtil {
@@ -56,6 +56,20 @@ public class JsonProcessUtil {
 	}
 
 	public static <T> T jsonToBean(String json, Class<T> valueType) {
+		T obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+//		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
+		try {
+			obj = mapper.readValue(json, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+	
+	public static <T> T jsonToBean(byte[] json, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);

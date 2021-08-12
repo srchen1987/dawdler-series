@@ -23,7 +23,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @version V1.0
  * @Title AccessFilter.java
  * @Description 一个前端Filter的演示类 //需要通过SPI配置 此类只是空实现 无用
- * @date 2015年04月06日
+ * @date 2015年4月06日
  * @email suxuan696@gmail.com
  */
 public class AccessFilter implements DawdlerClientFilter {

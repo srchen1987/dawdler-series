@@ -29,7 +29,7 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @version V1.0
  * @Title RequestWrapper.java
  * @Description request的包装类
- * @date 2015年04月08日
+ * @date 2015年4月08日
  * @email suxuan696@gmail.com
  */
 public class RequestWrapper extends RequestBean {

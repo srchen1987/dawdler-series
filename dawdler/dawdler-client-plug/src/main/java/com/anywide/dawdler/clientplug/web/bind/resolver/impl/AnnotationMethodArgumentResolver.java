@@ -32,16 +32,16 @@ import com.anywide.dawdler.clientplug.annotation.SessionAttribute;
 import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.util.CookieUtil;
-import com.anywide.dawdler.clientplug.web.util.JsonProcessUtil;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import com.anywide.dawdler.util.ClassUtil;
+import com.anywide.dawdler.util.JsonProcessUtil;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title AnnotationMethodArgumentResolver.java
  * @Description 获取mvc中常用方法参数注解相关参数值的决策者
- * @date 2021年04月03日
+ * @date 2021年4月03日
  * @email suxuan696@gmail.com
  */
 public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentResolver {
@@ -50,7 +50,6 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 	public boolean isSupport(RequestParamFieldData requestParamFieldData) {
 		return (requestParamFieldData.hasAnnotation(PathVariable.class)
 				|| requestParamFieldData.hasAnnotation(RequestBody.class)
-				|| requestParamFieldData.hasAnnotation(RequestAttribute.class)
 				|| requestParamFieldData.hasAnnotation(RequestAttribute.class)
 				|| requestParamFieldData.hasAnnotation(SessionAttribute.class)
 				|| requestParamFieldData.hasAnnotation(CookieValue.class)
@@ -108,7 +107,6 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 				}
 			}
 		}
-
 		return null;
 	}
 

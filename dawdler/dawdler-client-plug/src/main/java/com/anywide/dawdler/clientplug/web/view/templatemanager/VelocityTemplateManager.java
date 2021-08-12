@@ -26,7 +26,7 @@ import org.apache.velocity.app.VelocityEngine;
  * @version V1.0
  * @Title VelocityTemplateManager.java
  * @Description TODO
- * @date 2009年04月19日
+ * @date 2009年4月19日
  * @email suxuan696@gmail.com
  */
 public class VelocityTemplateManager implements TemplateManager {

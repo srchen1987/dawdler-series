@@ -41,7 +41,7 @@ import com.ecwid.consul.v1.kv.model.GetValue;
  * @version V1.0
  * @Title ConsulConfigClient.java
  * @Description ConfigClient接口的consul实现，支持SPI扩展
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 public class ConsulConfigClient implements ConfigClient {

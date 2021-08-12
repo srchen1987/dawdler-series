@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.CertificateOperator;
  * @version V1.0
  * @Title ConnectorHandler.java
  * @Description aio实现连接处理器，初始化session，同时做身份校验
- * @date 2015年03月12日
+ * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
 public class ConnectorHandler implements CompletionHandler<Void, SocketSession> {

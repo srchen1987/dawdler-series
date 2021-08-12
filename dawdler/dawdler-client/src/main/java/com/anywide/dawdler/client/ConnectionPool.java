@@ -40,7 +40,7 @@ import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
  * @version V1.0
  * @Title ConnectionPool.java
  * @Description 客户端连接池
- * @date 2015年03月16日
+ * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
 

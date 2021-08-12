@@ -26,7 +26,7 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @version V1.0
  * @Title Service.java
  * @Description deploy下服务模块定义的接口
- * @date 2015年03月22日
+ * @date 2015年3月22日
  * @email suxuan696@gmail.com
  */
 public interface Service {

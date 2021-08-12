@@ -16,10 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs.impl;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
@@ -49,14 +46,14 @@ import com.anywide.dawdler.clientplug.velocity.VelocityToolBox;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
-import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.PropertiesUtil;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title VelocityDisplayPlug.java
  * @Description velocity的实现
- * @date 2009年06月22日
+ * @date 2009年6月22日
  * @email suxuan696@gmail.com
  */
 public class VelocityDisplayPlug extends AbstractDisplayPlug {
@@ -173,27 +170,12 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 	@Override
 	public void init(ServletContext servletContext) {
 
-		InputStream fin;
-		Properties pstool = new Properties();
+		Properties pstool = null;
 		try {
-			fin = new FileInputStream(DawdlerTool.getcurrentPath() + "toolboxs.properties");
-		} catch (FileNotFoundException e) {
-			logger.error("", e);
-			fin = null;
-		}
-		try {
-			if (fin != null) {
-				pstool.load(fin);
-			}
+			pstool = PropertiesUtil.loadProperties("toolboxs");
 		} catch (Exception e) {
 			logger.error("", e);
-		} finally {
-			if (fin != null)
-				try {
-					fin.close();
-				} catch (IOException e) {
-					logger.error("", e);
-				}
+			return;
 		}
 		Set<Object> set = pstool.keySet();
 		for (Object o : set) {
@@ -219,32 +201,19 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		pstool = null;
 		String templatePath = servletContext.getInitParameter("template-path");
 		VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
-		Properties ps = new Properties();
+		Properties ps = null;
 		try {
-			fin = new FileInputStream(DawdlerTool.getcurrentPath() + "velocity.properties");
-		} catch (FileNotFoundException e1) {
-			fin = null;
+			ps = PropertiesUtil.loadProperties("velocity");
+		} catch (IOException e) {
+			ps = new Properties();
 		}
-		try {
-			if (fin != null) {
-				ps.load(fin);
-			}
-			String path;
-			if (templatePath != null && !templatePath.trim().equals(""))
-				path = servletContext.getRealPath("WEB-INF/" + templatePath);
-			else
-				path = servletContext.getRealPath("WEB-INF/template");
-			ps.put("file.resource.loader.path", path);
-			ps.put("file.resource.loader.cache", "true");
-		} catch (Exception e) {
-			logger.error("", e);
-		} finally {
-			if (fin != null)
-				try {
-					fin.close();
-				} catch (IOException ignored) {
-				}
-		}
+		String path;
+		if (templatePath != null && !templatePath.trim().equals(""))
+			path = servletContext.getRealPath("WEB-INF/" + templatePath);
+		else
+			path = servletContext.getRealPath("WEB-INF/template");
+		ps.put("file.resource.loader.path", path);
+		ps.put("file.resource.loader.cache", "true");
 		tm.init(ps);
 
 	}

@@ -28,7 +28,7 @@ import com.anywide.dawdler.serverplug.service.DownloadFile;
  * @version V1.0
  * @Title DownloadFileBean.java
  * @Description 下载模版类文件的接口的具体实现类
- * @date 2007年09月18日
+ * @date 2007年9月18日
  * @email suxuan696@gmail.com
  */
 public class DownloadFileBean implements DownloadFile {

@@ -33,7 +33,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @version V1.0
  * @Title ServerConfig.java
  * @Description 服务器配置类
- * @date 2015年04月04日
+ * @date 2015年4月04日
  * @email suxuan696@gmail.com
  */
 @XStreamAlias("conf")

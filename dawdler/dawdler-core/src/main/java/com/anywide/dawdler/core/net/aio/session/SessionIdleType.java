@@ -21,7 +21,7 @@ package com.anywide.dawdler.core.net.aio.session;
  * @version V1.0
  * @Title SessionIdleType.java
  * @Description session读写操作过期标识
- * @date 2015年03月11日
+ * @date 2015年3月11日
  * @email suxuan696@gmail.com
  */
 public enum SessionIdleType {

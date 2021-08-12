@@ -42,7 +42,7 @@ import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
  * @version V1.0
  * @Title AnnotationUrlHandler.java
  * @Description 基于Annotation的UrlHandler实现 基于xml的删除掉了 因为servlet3.0之后不建议使用web.xml了
- * @date 2007年04月18日
+ * @date 2007年4月18日
  * @email suxuan696@gmail.com
  */
 public class AnnotationUrlHandler extends AbstractUrlHandler {

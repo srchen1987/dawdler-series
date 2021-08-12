@@ -24,7 +24,7 @@ import java.util.Map;
  * @version V1.0
  * @Title ControlValidator.java
  * @Description 控制验证器
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public class ControlValidator {

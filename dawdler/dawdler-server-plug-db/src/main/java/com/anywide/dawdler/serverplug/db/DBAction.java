@@ -21,7 +21,7 @@ package com.anywide.dawdler.serverplug.db;
  * @version V1.0
  * @Title DBAction.java
  * @Description 读写动作
- * @date 2007年08月06日
+ * @date 2007年8月06日
  * @email suxuan696@gmail.com
  */
 public enum DBAction {

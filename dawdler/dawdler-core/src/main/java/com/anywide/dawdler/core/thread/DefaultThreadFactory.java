@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @version V1.0
  * @Title DefaultThreadFactory.java
  * @Description netty中copy的线程工厂
- * @date 2015年04月21日
+ * @date 2015年4月21日
  * @email suxuan696@gmail.com
  */
 public class DefaultThreadFactory implements ThreadFactory {

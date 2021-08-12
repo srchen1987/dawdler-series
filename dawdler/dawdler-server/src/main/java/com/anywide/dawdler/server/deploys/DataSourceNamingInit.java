@@ -36,7 +36,7 @@ import com.anywide.dawdler.server.conf.DataSourceParser;
  * @version V1.0
  * @Title DataSourceNamingInit.java
  * @Description 服务器端数据源初始化
- * @date 2015年03月06日
+ * @date 2015年3月06日
  * @email suxuan696@gmail.com
  */
 public class DataSourceNamingInit {

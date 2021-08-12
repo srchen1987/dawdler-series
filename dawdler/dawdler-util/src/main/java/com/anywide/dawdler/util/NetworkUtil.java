@@ -32,7 +32,7 @@ import java.util.List;
  * @author jackson.song
  * @version V1.0
  * @Description 网络接口的工具类
- * @date 2018年08月13日
+ * @date 2018年8月13日
  * @email suxuan696@gmail.com
  */
 public class NetworkUtil {
@@ -45,7 +45,7 @@ public class NetworkUtil {
 	 * @Title selectActiveNetworkInterfaces
 	 * @Description 获取可用网络接口
 	 * @author jackson.song
-	 * @date 2018年08月13日
+	 * @date 2018年8月13日
 	 */
 	public static List<NetworkInterface> selectActiveNetworkInterfaces() throws SocketException {
 		List<NetworkInterface> interfacesList = new ArrayList<>();

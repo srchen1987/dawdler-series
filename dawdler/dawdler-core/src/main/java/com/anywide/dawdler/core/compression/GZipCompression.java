@@ -27,7 +27,7 @@ import java.util.zip.GZIPOutputStream;
  * @version V1.0
  * @Title GZipCompression.java
  * @Description copy过来的GZIP实现
- * @date 2015年07月16日
+ * @date 2015年7月16日
  * @email suxuan696@gmail.com
  */
 public class GZipCompression implements CompressionAlgorithm {

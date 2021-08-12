@@ -16,8 +16,12 @@
  */
 package com.anywide.dawdler.client;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.cglib.proxy.Enhancer;
 import com.anywide.dawdler.client.cglib.proxy.MethodInterceptor;
@@ -30,10 +34,11 @@ import com.anywide.dawdler.core.annotation.RemoteService;
  * @version V1.0
  * @Title ServiceFactory.java
  * @Description 代理工厂，用于创建客户端代理对象，采用cglib
- * @date 2008年03月22日
+ * @date 2008年3月22日
  * @email suxuan696@gmail.com
  */
 public class ServiceFactory {
+	private static Logger logger = LoggerFactory.getLogger(ServiceFactory.class);
 	private static final ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> proxyObjects = new ConcurrentHashMap<>();
 
 	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance,
@@ -68,6 +73,27 @@ public class ServiceFactory {
 		enhancer.setClassLoader(classLoader);
 		return (T) enhancer.create();
 	}
+	
+	
+	public static void injectRemoteService(Class<?> clazz, Object target, ClassLoader classLoader) {
+		if(classLoader == null)
+			classLoader = clazz.getClassLoader();
+		Field[] fields = clazz.getDeclaredFields();
+		for (Field field : fields) {
+			RemoteService remoteService = field.getAnnotation(RemoteService.class);
+			if (!field.getType().isPrimitive() && remoteService != null) {
+				Class<?> serviceClass = field.getType();
+				field.setAccessible(true);
+				String groupName = remoteService.group();
+				try {
+					field.set(target, getService(serviceClass, groupName, remoteService.loadBalance(), classLoader));
+				} catch (Exception e) {
+					logger.error("", e);
+				}
+			}
+		}
+	}
+	
 
 	private static class CglibInterceptor implements MethodInterceptor {
 		private final String groupName;
@@ -94,7 +120,7 @@ public class ServiceFactory {
 				fuzzy = rs.fuzzy();
 				single = rs.single();
 			}
-			if (serviceName.trim().equals("")) {
+			if (serviceName == null || serviceName.trim().equals("")) {
 				serviceName = delegate.getName();
 			}
 			this.serviceName = serviceName;

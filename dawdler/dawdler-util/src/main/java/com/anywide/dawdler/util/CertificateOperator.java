@@ -41,7 +41,7 @@ import javax.crypto.Cipher;
  *              -storepass suxuan696@gmail.com -keypass jackson.song keytool
  *              -export -v -alias srchen -keystore dawdler.keystore -storepass
  *              suxuan696@gmail.com -rfc -file dawdler.cer
- * @date 2015年05月23日
+ * @date 2015年5月23日
  * @email suxuan696@gmail.com
  */
 public class CertificateOperator {

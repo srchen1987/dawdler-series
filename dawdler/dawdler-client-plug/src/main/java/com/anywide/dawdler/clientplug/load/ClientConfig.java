@@ -31,7 +31,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title ClientConfig.java
  * @Description 客户端配置文件解析器
- * @date 2007年05月22日
+ * @date 2007年5月22日
  * @email suxuan696@gmail.com
  */
 public class ClientConfig {

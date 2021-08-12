@@ -38,7 +38,7 @@ import net.sf.cglib.proxy.MethodProxy;
  * @version V1.0
  * @Title ServiceFactory.java
  * @Description 代理工厂，用于创建客户端代理对象，采用cglib 处理服务器端远程调用的过程
- * @date 2008年03月22日
+ * @date 2008年3月22日
  * @email suxuan696@gmail.com
  */
 public class ServiceFactory {

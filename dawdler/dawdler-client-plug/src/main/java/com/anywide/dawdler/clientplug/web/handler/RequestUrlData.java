@@ -27,7 +27,7 @@ import com.anywide.dawdler.clientplug.web.TransactionController;
  * @version V1.0
  * @Title RequestUrlData.java
  * @Description 一个包装的实体类
- * @date 2007年04月17日
+ * @date 2007年4月17日
  * @email suxuan696@gmail.com
  */
 public class RequestUrlData {

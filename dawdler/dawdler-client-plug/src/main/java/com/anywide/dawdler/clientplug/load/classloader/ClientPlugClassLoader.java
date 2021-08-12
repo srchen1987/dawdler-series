@@ -1,5 +1,5 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
+ 						* Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
@@ -19,6 +19,7 @@ package com.anywide.dawdler.clientplug.load.classloader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -42,7 +43,7 @@ import com.anywide.dawdler.util.aspect.AspectHolder;
  * @version V1.0
  * @Title ClientPlugClassLoader.java
  * @Description 提供加载方法来加载远端模版类到jvm中
- * @date 2007年07月22日
+ * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
 public class ClientPlugClassLoader {
@@ -67,15 +68,22 @@ public class ClientPlugClassLoader {
 		return remoteClass.get(key);
 	}
 
-	public void load(String host, String className, byte[] classCodes) {
+	public void load(String host, String className, byte[] classBytes) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
 		}
 		try {
-			Class<?> clazz = defineClass(className, classCodes);
+			if(AspectHolder.aj != null) {
+				try {
+					classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, classBytes, urlCL, null);
+				} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					logger.error("", e);
+				}
+			}
+			Class<?> clazz = defineClass(className, classBytes);
 			remoteClass.put(host.trim() + "-" + className, clazz);
 			for (OrderData<RemoteClassLoderFire> rf : fireList) {
-				rf.getData().onLoadFire(clazz, classCodes);
+				rf.getData().onLoadFire(clazz, classBytes);
 			}
 		} catch (Exception e) {
 			logger.error("", e);

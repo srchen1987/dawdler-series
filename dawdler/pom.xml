@@ -23,6 +23,7 @@
 		<commons-fileupload.version>1.4</commons-fileupload.version>
 		<velocity.version>2.2</velocity.version>
 		<jedis.version>3.3.0</jedis.version>
+		<rabbitmq.version>5.12.0</rabbitmq.version>
 		<caffeine.version>2.8.4</caffeine.version>
 		<mysql.version>8.0.21</mysql.version>
 		<jsoup.version>1.13.1</jsoup.version>
@@ -124,6 +125,12 @@
 				<groupId>org.apache.zookeeper</groupId>
 				<artifactId>zookeeper</artifactId>
 				<version>${zookeeper.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>io.netty</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.zookeeper</groupId>
@@ -182,6 +189,11 @@
 				<version>${jedis.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.rabbitmq</groupId>
+				<artifactId>amqp-client</artifactId>
+				<version>${rabbitmq.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.github.ben-manes.caffeine</groupId>
 				<artifactId>caffeine</artifactId>
 				<version>${caffeine.version}</version>
@@ -206,7 +218,6 @@
 				<artifactId>javassist</artifactId>
 				<version>${javassist.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-core</artifactId>
@@ -278,6 +289,31 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-rabbitmq-plug</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-distributed-transaction-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-distributed-transaction-server</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-distributed-transaction-client</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-distributed-transaction-compensator</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-yaml</artifactId>
 				<version>${jackson-dataformat-yaml.version}</version>
@@ -341,9 +377,9 @@
 		<module>dawdler-load-bean</module>
 		<module>dawdler-client-plug-velocity</module>
 		<module>dawdler-config</module>
-		<module>dawdler-distributed-transaction</module>
 		<module>dawdler-redis-plug</module>
 		<module>dawdler-rabbitmq-plug</module>
+		<module>dawdler-distributed-transaction</module>
 	</modules>
 
 

@@ -34,7 +34,7 @@ import com.anywide.dawdler.util.ClassUtil;
  * @version V1.0
  * @Title TransactionController.java
  * @Description 提供通用的Controller
- * @date 2007年04月17日
+ * @date 2007年4月17日
  * @email suxuan696@gmail.com
  */
 public abstract class TransactionController {

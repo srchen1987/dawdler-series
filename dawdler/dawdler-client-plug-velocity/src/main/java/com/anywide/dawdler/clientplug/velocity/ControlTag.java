@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.velocity;
  * @version V1.0
  * @Title CheckboxControl.java
  * @Description 控件标签 之前支持jsp标签库 目前放弃了jsp的支持
- * @date 2006年08月10日
+ * @date 2006年8月10日
  * @email suxuan696@gmail.com
  */
 public class ControlTag /* extends TagSupport */ {

@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * @Title DBTransaction.java
  * @Description 事务注解，应用于service方法中
  * @author jackson.song
- * @date 2012年09月27日
+ * @date 2012年9月27日
  * @version V1.0
  * @email suxuan696@gmail.com
  */

@@ -21,7 +21,7 @@ package com.anywide.dawdler.util;
  * @version V1.0
  * @Title HashedWheelTimerSingleCreator.java
  * @Description 定时器创建者
- * @date 2015年05月13日
+ * @date 2015年5月13日
  * @email suxuan696@gmail.com
  */
 public class HashedWheelTimerSingleCreator {

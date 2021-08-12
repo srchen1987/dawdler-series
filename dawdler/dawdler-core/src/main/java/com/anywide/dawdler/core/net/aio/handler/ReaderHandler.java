@@ -33,7 +33,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
  * @version V1.0
  * @Title ReaderHandler.java
  * @Description aio读包的处理者，相对比较复杂 实现粘包等功能
- * @date 2015年03月12日
+ * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
 public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketSession> {

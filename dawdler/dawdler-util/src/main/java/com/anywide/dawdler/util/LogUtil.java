@@ -21,7 +21,7 @@ package com.anywide.dawdler.util;
  * @version V1.0
  * @Title LogUtil.java
  * @Description 输出代码调用行的工具类
- * @date 2007年04月16日
+ * @date 2007年4月16日
  * @email suxuan696@gmail.com
  */
 public class LogUtil {
