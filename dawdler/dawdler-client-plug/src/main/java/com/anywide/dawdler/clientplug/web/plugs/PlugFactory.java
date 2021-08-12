@@ -28,7 +28,7 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
  * @version V1.0
  * @Title PlugFactory.java
  * @Description 插件工厂
- * @date 2007年04月21日
+ * @date 2007年4月21日
  * @email suxuan696@gmail.com
  */
 public class PlugFactory {

@@ -1,1 +1,2 @@
+com.anywide.dawdler.clientplug.web.bind.discoverer.impl.CompileParameterDiscoverer
 com.anywide.dawdler.clientplug.web.bind.discoverer.impl.LocalVariableTableParameterDiscoverer

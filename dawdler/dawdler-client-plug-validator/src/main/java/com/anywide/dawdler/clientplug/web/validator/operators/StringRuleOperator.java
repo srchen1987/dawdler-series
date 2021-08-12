@@ -29,7 +29,7 @@ import com.anywide.dawdler.clientplug.web.validator.ValidatorFactory;
  * @version V1.0
  * @Title StringRuleOperator.java
  * @Description 普通字符串类定义抽象类
- * @date 2007年07月22日
+ * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
 public abstract class StringRuleOperator extends RuleOperator {

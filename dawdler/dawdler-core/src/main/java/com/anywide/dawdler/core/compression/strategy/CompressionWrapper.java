@@ -21,7 +21,7 @@ package com.anywide.dawdler.core.compression.strategy;
  * @version V1.0
  * @Title CompressionWrapper.java
  * @Description 压缩包装类
- * @date 2015年06月12日
+ * @date 2015年6月12日
  * @email suxuan696@gmail.com
  */
 public class CompressionWrapper {

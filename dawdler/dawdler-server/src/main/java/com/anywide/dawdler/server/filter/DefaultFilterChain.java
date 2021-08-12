@@ -16,8 +16,11 @@
  */
 package com.anywide.dawdler.server.filter;
 
+import java.util.Map;
+
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
+import com.anywide.dawdler.core.rpc.context.RpcContext;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 
 /**
@@ -25,7 +28,7 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @version V1.0
  * @Title DefaultFilterChain.java
  * @Description 服务器链的具体实现类
- * @date 2015年04月08日
+ * @date 2015年4月08日
  * @email suxuan696@gmail.com
  */
 public class DefaultFilterChain implements FilterChain {
@@ -33,7 +36,18 @@ public class DefaultFilterChain implements FilterChain {
 	public void doFilter(RequestBean request, ResponseBean response) {
 		RequestWrapper rw = (RequestWrapper) request;
 		ServiceExecutor serviceExecutor = rw.getServiceExecutor();
-		serviceExecutor.execute(request, response, rw.getServices());
+		Map<String, Object> attachments = request.getAttachments();
+		try {
+			if(attachments != null) {
+				RpcContext context = RpcContext.getContext();
+				attachments.forEach((k,v)->{
+					context.setAttachment(k, v);
+				});
+			}
+			serviceExecutor.execute(request, response, rw.getServices());
+		} finally {
+			RpcContext.removeContext();
+		}
 	}
 
 }

@@ -23,7 +23,7 @@ import java.io.IOException;
  * @version V1.0
  * @Title CompressionAlgorithm.java
  * @Description 压缩接口
- * @date 2015年07月16日
+ * @date 2015年7月16日
  * @email suxuan696@gmail.com
  */
 public interface CompressionAlgorithm {

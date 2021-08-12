@@ -38,7 +38,7 @@ import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
  * @version V1.0
  * @Title JspDisplayPlug.java
  * @Description jsp的实现
- * @date 2007年04月21日
+ * @date 2007年4月21日
  * @email suxuan696@gmail.com
  */
 public class JspDisplayPlug extends AbstractDisplayPlug {

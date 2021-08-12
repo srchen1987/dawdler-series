@@ -23,7 +23,7 @@ import javax.servlet.http.Cookie;
  * @version V1.0
  * @Title CookieUtil.java
  * @Description TODO
- * @date 2006年09月22日
+ * @date 2006年9月22日
  * @email suxuan696@gmail.com
  */
 public class CookieUtil {

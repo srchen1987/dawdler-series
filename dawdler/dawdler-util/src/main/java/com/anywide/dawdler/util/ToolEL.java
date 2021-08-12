@@ -30,7 +30,7 @@ import java.util.regex.Pattern;
  * @version V1.0
  * @Title ToolEL.java
  * @Description 通过反射实现的简易版EL语言，只建议在配置中使用
- * @date 2006年03月26日
+ * @date 2006年3月26日
  * @email suxuan696@gmail.com
  */
 public class ToolEL {

@@ -25,7 +25,7 @@ import com.anywide.dawdler.serverplug.db.annotation.DBTransaction;
  * @version V1.0
  * @Title TransactionManager.java
  * @Description 事务管理器
- * @date 2015年09月28日
+ * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
 public interface TransactionManager {

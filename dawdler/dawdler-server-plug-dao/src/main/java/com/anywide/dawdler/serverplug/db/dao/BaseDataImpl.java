@@ -32,7 +32,7 @@ import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFacotry;
  * @version V1.0
  * @Title BaseDataImpl.java
  * @Description TODO
- * @date 2007年04月15日
+ * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */
 public class BaseDataImpl implements BaseData {

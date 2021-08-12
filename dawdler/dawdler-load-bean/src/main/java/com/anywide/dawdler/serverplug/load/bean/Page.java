@@ -23,7 +23,7 @@ import java.io.Serializable;
  * @version V1.0
  * @Title Page.java
  * @Description 可序列化的page类
- * @date 2007年04月05日
+ * @date 2007年4月05日
  * @email suxuan696@gmail.com
  */
 public class Page implements Serializable {

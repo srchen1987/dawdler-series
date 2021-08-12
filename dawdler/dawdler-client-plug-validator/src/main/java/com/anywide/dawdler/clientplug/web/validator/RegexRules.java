@@ -28,7 +28,7 @@ import org.slf4j.LoggerFactory;
  * @version V1.0
  * @Title RegexRules.java
  * @Description 正则实现验证规则的存储类
- * @date 2007年07月21日
+ * @date 2007年7月21日
  * @email suxuan696@gmail.com
  */
 public class RegexRules {

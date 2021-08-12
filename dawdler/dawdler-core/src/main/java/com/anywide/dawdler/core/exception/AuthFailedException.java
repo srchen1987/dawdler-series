@@ -21,7 +21,7 @@ package com.anywide.dawdler.core.exception;
  * @version V1.0
  * @Title AuthFailedException.java
  * @Description 身份验证异常
- * @date 2015年06月12日
+ * @date 2015年6月12日
  * @email suxuan696@gmail.com
  */
 public class AuthFailedException extends Exception {

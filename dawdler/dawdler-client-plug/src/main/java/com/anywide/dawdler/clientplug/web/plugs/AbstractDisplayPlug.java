@@ -26,7 +26,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @version V1.0
  * @Title AbstractDisplayPlug.java
  * @Description 抽象显示插件
- * @date 2007年04月21日
+ * @date 2007年4月21日
  * @email suxuan696@gmail.com
  */
 public abstract class AbstractDisplayPlug implements DisplayPlug {

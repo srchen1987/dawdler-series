@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @Title RequestHeader.java
  * @Description 获取request请求头的注解
- * @date 2021年03月06日
+ * @date 2021年3月06日
  * @email suxuan696@gmail.com
  */
 @Target(ElementType.PARAMETER)

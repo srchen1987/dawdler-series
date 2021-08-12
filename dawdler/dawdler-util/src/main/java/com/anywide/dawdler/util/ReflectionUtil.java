@@ -30,7 +30,7 @@ import com.anywide.dawdler.util.reflectasm.MethodAccess;
  * @version V1.0
  * @Title ReflectionUtil.java
  * @Description 反射工具类
- * @date 2007年03月12日
+ * @date 2007年3月12日
  * @email suxuan696@gmail.com
  */
 public class ReflectionUtil {

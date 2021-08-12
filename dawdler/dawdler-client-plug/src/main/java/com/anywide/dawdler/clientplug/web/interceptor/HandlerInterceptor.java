@@ -23,7 +23,7 @@ import com.anywide.dawdler.clientplug.web.TransactionController;
  * @version V1.0
  * @Title HandlerInterceptor.java
  * @Description 拦截器接口
- * @date 2007年04月19日
+ * @date 2007年4月19日
  * @email suxuan696@gmail.com
  */
 public interface HandlerInterceptor {

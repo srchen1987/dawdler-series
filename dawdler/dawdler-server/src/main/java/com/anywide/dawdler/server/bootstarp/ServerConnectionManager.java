@@ -28,7 +28,7 @@ import com.anywide.dawdler.server.net.aio.session.SocketSession;
  * @version V1.0
  * @Title ServerConnectionManager.java
  * @Description 服务器连接管理器
- * @date 2015年03月12日
+ * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
 public class ServerConnectionManager {

@@ -23,7 +23,7 @@ import java.nio.ByteBuffer;
  * @version V1.0
  * @Title DirectBufferCreator.java
  * @Description jvm堆外分配buffer
- * @date 2015年03月14日
+ * @date 2015年3月14日
  * @email suxuan696@gmail.com
  */
 public class DirectBufferCreator implements BufferCreator {

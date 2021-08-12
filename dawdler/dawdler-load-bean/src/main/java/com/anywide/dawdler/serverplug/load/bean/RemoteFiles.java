@@ -24,7 +24,7 @@ import java.util.List;
  * @version V1.0
  * @Title RemoteFiles.java
  * @Description 可序列化的远程模版类传输对象
- * @date 2007年09月15日
+ * @date 2007年9月15日
  * @email suxuan696@gmail.com
  */
 public class RemoteFiles implements Serializable {

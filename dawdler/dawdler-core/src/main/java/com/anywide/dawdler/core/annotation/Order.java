@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * @Title Order.java
  * @Description 排序注解
  * @author jackson.song
- * @date 2015年06月03日
+ * @date 2015年6月03日
  * @version V1.0
  * @email suxuan696@gmail.com
  */

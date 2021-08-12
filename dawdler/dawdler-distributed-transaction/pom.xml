@@ -7,24 +7,12 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.0.2-RELEASES</version>
 	</parent>
+	<packaging>pom</packaging>
 	<artifactId>dawdler-distributed-transaction</artifactId>
-	<dependencies>
-		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-			<version>5.12.0</version>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-client-plug</artifactId>
-		</dependency>
-			<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-util</artifactId>
-		</dependency>
-	</dependencies>
+	<modules>
+		<module>dawdler-distributed-transaction-core</module>
+		<module>dawdler-distributed-transaction-client</module>
+		<module>dawdler-distributed-transaction-server</module>
+		<module>dawdler-distributed-transaction-compensator</module>
+	</modules>
 </project>

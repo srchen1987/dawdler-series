@@ -29,7 +29,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
  * @version V1.0
  * @Title ServerConfigInit.java
  * @Description 服务器端初始化类
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 public class ServerConfigInit {

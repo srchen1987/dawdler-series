@@ -28,7 +28,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title PlugInit.java
  * @Description 服务器端插件，主要是做调用远端的注入service与模版类
- * @date 2015年07月12日
+ * @date 2015年7月12日
  * @email suxuan696@gmail.com
  */
 public class PlugInit {

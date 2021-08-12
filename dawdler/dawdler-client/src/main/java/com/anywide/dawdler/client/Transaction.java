@@ -35,8 +35,8 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
  * @version V2.0
  * @Title Transaction.java
  * @Description 客户端调用服务器端的行为，不考虑异步
- * @date 2008年03月13日
- * @email suxuan696@gmail.com modify 2015年03月22日 脱离jboss 采用自有容器
+ * @date 2008年3月13日
+ * @email suxuan696@gmail.com modify 2015年3月22日 脱离jboss 采用自有容器
  */
 public class Transaction {
 	private final List<Class<?>> types = new ArrayList<>();

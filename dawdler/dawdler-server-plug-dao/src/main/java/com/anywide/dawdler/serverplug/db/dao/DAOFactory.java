@@ -23,7 +23,7 @@ import java.util.Map;
  * @version V1.0
  * @Title DAOFactory.java
  * @Description TODO
- * @date 2007年04月15日
+ * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */
 public class DAOFactory {

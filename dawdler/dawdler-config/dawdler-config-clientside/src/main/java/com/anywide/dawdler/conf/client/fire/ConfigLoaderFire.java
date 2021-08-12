@@ -36,7 +36,7 @@ import com.anywide.dawdler.core.order.OrderData;
  * @version V1.0
  * @Title ConfigLoaderFire.java
  * @Description 获取远程类加载时触发通知，实现动态注入config
- * @date 2021年05月30日
+ * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 @Order(1)

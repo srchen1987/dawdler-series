@@ -41,7 +41,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title RWSplittingDataSourceManager.java
  * @Description 读写分离的数据管理器
- * @date 2007年08月06日
+ * @date 2007年8月06日
  * @email suxuan696@gmail.com
  */
 public class RWSplittingDataSourceManager {

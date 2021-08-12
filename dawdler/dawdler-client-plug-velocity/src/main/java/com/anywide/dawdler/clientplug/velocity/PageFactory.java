@@ -23,7 +23,7 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
  * @version V1.0
  * @Title PageFactory.java
  * @Description 分页工厂类 （注释后补的）
- * @date 2006年08月10日
+ * @date 2006年8月10日
  * @email suxuan696@gmail.com
  */
 public class PageFactory {

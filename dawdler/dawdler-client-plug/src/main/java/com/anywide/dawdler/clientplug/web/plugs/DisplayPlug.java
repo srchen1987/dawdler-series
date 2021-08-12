@@ -25,7 +25,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @version V1.0
  * @Title DisplayPlug.java
  * @Description 显示插件接口
- * @date 2007年04月21日
+ * @date 2007年4月21日
  * @email suxuan696@gmail.com
  */
 public interface DisplayPlug {

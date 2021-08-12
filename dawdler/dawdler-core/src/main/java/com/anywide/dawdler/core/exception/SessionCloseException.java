@@ -21,7 +21,7 @@ package com.anywide.dawdler.core.exception;
  * @version V1.0
  * @Title SessionCloseException.java
  * @Description session关闭异常
- * @date 2015年06月06日
+ * @date 2015年6月06日
  * @email suxuan696@gmail.com
  */
 public class SessionCloseException extends Exception {

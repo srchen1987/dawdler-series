@@ -28,7 +28,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @version V1.0
  * @Title ClientConfig.java
  * @Description xstream映射的一个配置类
- * @date 2015年03月16日
+ * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
 @XStreamAlias("conf")

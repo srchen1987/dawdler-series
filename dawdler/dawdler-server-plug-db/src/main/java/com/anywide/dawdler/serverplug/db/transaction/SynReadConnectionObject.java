@@ -24,7 +24,7 @@ import com.anywide.dawdler.serverplug.db.datasource.RWSplittingDataSourceManager
  * @version V1.0
  * @Title SynReadConnectionObject.java
  * @Description 存放读连接与事务配置的类
- * @date 2015年09月29日
+ * @date 2015年9月29日
  * @email suxuan696@gmail.com
  */
 public class SynReadConnectionObject {
