@@ -1,10 +1,32 @@
 # dawdler-series
 #### 项目介绍
-dawdler-series 是rpc的一个解决方案，其特点简单、高效、安全。包含了容器，客户端，mvc,前后端一致的校验框架，数据库事务传播方式（同spring一致）等等常用研发组件等.
+dawdler-series 是一站式分布式应用、微服务架构的解决方案，其特点简单、高效、安全。
 
-为什么要重复的发明轮子？请看下面的dawdler之美，dawdler早期应用在linuxsir开源社区上（如今的www.linuxsir.org 由于公司原因已不再是java语言开发的了），2008年之前采用ejb3.0通过jboss4.x版本进行，2010年采用nio写了一个版本，但容器部分功能未做完整，直到2014年之后开始基于aio重新编写了容器dawdler.
 
-dawdler成熟么？基于dawdler早先版本开发的linuxsir稳定运行在服务器上4年没有出现过任何性能问题（这块不足以证明，必定基于jboss）。dawdler还运行在了某一元购商城，某移动社区，某支付平台上，tps高峰时期可以达到上千，订单量每天在800-1000万条数据左右，稳定性方面表现的非常出色，没出现过问题。可放心使用.通过本地测试单机下的dawdler每秒可以处理60000多次调用。
+####dawdler源码模块介绍:
+
+
+1.  dawdler-server(容器的服务端)
+2.  dawdler-server-plug(服务端插件，提供远程加载服务，注入service到过滤器，监听器，远程加载客户端)
+3.  dawdler-server-plug-db(服务端数据库事务，读写分离的插件)
+4.  dawdler-server-plug-dao(通过反射实现的jdbc通用dao插件，注入dao到service)
+5.  dawdler-server-plug-mybatis(通过mybatis实现的数据库操作插件，注入mapper到service)
+6.  dawdler-client(客户端核心代码，服务发现，连接池，动态代理，aop实现，负载均衡等)
+7.  dawdler-client-plug(客户端插件，webmvc，远程加载组件的客户端，远程加载组件的通知器，web监听器，web拦截器等)
+8.  dawdler-client-plug-session（客户端高性能分布式session实现）
+9.  dawdler-client-plug-validator(客户端前后端通用校验器，支持js和java后端通用表达式校验，支持扩展，支持后端校验规则生成前端表达式，java后端支持分组，继承，排除等特性，js支持校验扩展，各种事件扩展)
+10.  dawdler-client-plug-velocity(客户端velocity模板插件，目前已升级到2.2，提供一行代码分页pages指令，动态表单指令)
+11.  dawdler-circuit-breaker(熔断器，支持熔断配置，降级，采用时间滑动窗口方式统计)
+12.  dawdler-config(统一配置中心，clientside应用到web端，serverside应用到dawdler服务端)
+13.  dawdler-distributed-transaction(分布式事务模块，client应用到web端，server应用到dawdler端，compensator补偿器模块)
+14.  dawdler-rabbitmq-plug(rabbitmq插件，通过pool2实现池)
+15.  dawdler-redis-plug(redis插件)
+16.  dawdler-serialization(序列化模块)
+17.  dawdler-load-bean(dawdler中需要序列化的类)
+18.  dawdler-util(常用工具模块)
+为什么要重复的发明轮子？请看下面的dawdler之美，dawdler早期应用在linuxsir开源社区上（如今的www.linuxsir.org 由于公司原因已不再是java语言开发的了），2008年之前采用ejb3.0通过jboss4.x版本进行，2010年采用nio写了一个版本，但容器部分功能未做完整，直到2014年之后开始基于aio重新编写了容器dawdler。
+
+dawdler成熟么？基于dawdler早先版本开发的linuxsir稳定运行在服务器上4年已久。dawdler还运行在了某一元购商城，某移动社区，某支付平台上，tps高峰时期可以达到上千，订单量每天在800-1000万条数据左右，稳定性方面表现的非常出色，没出现过问题。可放心使用，通过本地测试单机下的dawdler每秒可以处理60000多次调用。
 
 dawdler之美
 架构上支持容器数据源，数据库读写分离，心跳探测，断网重连，优雅关机，rpc请求负载均衡，web端与服务器端的filter、listener，web端验证器（根据后端验证配置自动生成前端js表达式）等功能。
@@ -75,8 +97,3 @@ dawdler文件结构说明
     2.2  demo-server/src/com/anywide/load/loadconfig.xml [点击查看配置说明](https://gitee.com/srchen1987/dawdler-series/blob/master/demos/simple/demo-server/src/com/anywide/load/loadconfig.xml)
    
  
-
-3. 未完待续，还有好多demo和文档要写的. 有问题可发送email：suxuan696@gmail.com或qq:121616325
-
-
-
