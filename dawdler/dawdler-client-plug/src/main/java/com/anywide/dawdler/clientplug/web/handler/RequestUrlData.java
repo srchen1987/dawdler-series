@@ -20,7 +20,6 @@ import java.lang.reflect.Method;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
-import com.anywide.dawdler.clientplug.web.TransactionController;
 
 /**
  * @author jackson.song
@@ -32,7 +31,7 @@ import com.anywide.dawdler.clientplug.web.TransactionController;
  */
 public class RequestUrlData {
 	private RequestMapping requestMapping;
-	private TransactionController target;
+	private Object target;
 	private Method method;
 	private ResponseBody responseBody;
 
@@ -44,11 +43,11 @@ public class RequestUrlData {
 		this.requestMapping = requestMapping;
 	}
 
-	public TransactionController getTarget() {
+	public Object getTarget() {
 		return target;
 	}
 
-	public void setTarget(TransactionController target) {
+	public void setTarget(Object target) {
 		this.target = target;
 	}
 

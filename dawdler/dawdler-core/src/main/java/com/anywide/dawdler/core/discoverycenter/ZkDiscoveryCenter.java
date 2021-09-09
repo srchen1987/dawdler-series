@@ -86,4 +86,10 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 		client.setData().forPath(path, value.getBytes());
 		return true;
 	}
+
+	@Override
+	public boolean deleteProvider(String path, String value) throws Exception {
+		client.delete().forPath(path);
+		return true;
+	}
 }

@@ -44,14 +44,16 @@ public class ServletMethodArgumentResolver implements MethodArgumentResolver {
 		Class<?> type = requestParamFieldData.getType();
 		return (HttpServletRequest.class == type || HttpServletResponse.class == type || HttpSession.class == type
 				|| InputStream.class == type || Reader.class == type || PrintWriter.class == type
-				|| Locale.class == type || Locale.class == type);
+				|| Locale.class == type || Locale.class == type || ViewForward.class == type);
 	}
 
 	@Override
 	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward)
 			throws Exception {
 		Class<?> type = requestParamFieldData.getType();
-		if (HttpServletRequest.class == type) {
+		if(ViewForward.class == type) {
+			return viewForward;
+		} else if (HttpServletRequest.class == type) {
 			return viewForward.getRequest();
 		} else if (HttpServletResponse.class == type) {
 			return viewForward.getResponse();

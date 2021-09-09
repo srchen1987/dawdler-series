@@ -16,7 +16,8 @@
  */
 package com.anywide.dawdler.clientplug.web.interceptor;
 
-import com.anywide.dawdler.clientplug.web.TransactionController;
+import com.anywide.dawdler.clientplug.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
 /**
  * @author jackson.song
@@ -27,9 +28,10 @@ import com.anywide.dawdler.clientplug.web.TransactionController;
  * @email suxuan696@gmail.com
  */
 public interface HandlerInterceptor {
-	boolean preHandle(TransactionController controller) throws Exception;
+	boolean preHandle(Object controller, ViewForward viewForward, RequestMapping requestMapping) throws Exception;
 
-	void postHandle(TransactionController controller, Throwable ex) throws Exception;
+	void postHandle(Object controller, ViewForward viewForward, RequestMapping requestMapping, Throwable ex)
+			throws Exception;
 
-	void afterCompletion(TransactionController controller, Throwable ex);
+	void afterCompletion(Object controller, ViewForward viewForward, RequestMapping requestMapping, Throwable ex);
 }

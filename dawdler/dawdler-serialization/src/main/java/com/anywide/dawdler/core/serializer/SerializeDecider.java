@@ -16,32 +16,44 @@
  */
 package com.anywide.dawdler.core.serializer;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title SerializeDecider.java
- * @Description 序列化决策者，可扩充，目前没采用SPI方式
+ * @Description 序列化决策者，可通过SPI方式扩展
  * @date 2014年12月22日
  * @email suxuan696@gmail.com
  */
 public class SerializeDecider {
-	private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<Byte, Serializer>() {
-		{
-			put((byte) 1, new JDKDefaultSerializer());
-			put((byte) 2, new KryoSerializer());
-		}
-
-	};
+	private static final Logger logger = LoggerFactory.getLogger(SerializeDecider.class);
+	static {
+		ServiceLoader<Serializer> loader = ServiceLoader.load(Serializer.class);
+		loader.forEach(SerializeDecider::addSerializer);
+	}
+	private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<>();
 
 	public static void register(byte key, Serializer serializer) {
-		serializers.put(key, serializer);
+		Serializer preSerializer = serializers.putIfAbsent(key, serializer);
+		if(preSerializer != null) {
+			logger.error(preSerializer.key()+" already exists in "+preSerializer.getClass().getName());
+		}
 	}
 
 	public static Serializer decide(byte key) {
 		return serializers.get(key);
+	}
+
+	public static void addSerializer(Serializer serializer) {
+		register(serializer.key(), serializer);
 	}
 
 }
