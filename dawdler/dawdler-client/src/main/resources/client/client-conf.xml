@@ -13,19 +13,8 @@
  session-num 会话数
  serializer 序列化方式（1，jdk默认，2 kroy，支持扩展）
  user与password是帐号密码
- 
   -->
-
-
     </server-channel-group>
-    <!--
-    <server-channel-group channel-group-id="server-id-2" connection-num="4" serializer="1">
-
-
-
-
-    </server-channel-group>
-    -->
 
     <loads-on>
         <item sleep="15000" channel-group-id="defaultgroup" mode="run">core

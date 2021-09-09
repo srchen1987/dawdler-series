@@ -29,6 +29,7 @@ import com.anywide.dawdler.breaker.state.CircuitBreakerState;
 import com.anywide.dawdler.client.filter.DawdlerClientFilter;
 import com.anywide.dawdler.client.filter.FilterChain;
 import com.anywide.dawdler.client.filter.RequestWrapper;
+import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.bean.RequestBean;
 
 /**
@@ -39,6 +40,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @date 2018年3月16日
  * @email suxuan696@gmail.com
  */
+@Order(1)
 public class CircuitBreakerFilter implements DawdlerClientFilter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerClientFilter.class);
 	private final ConcurrentHashMap<String, CircuitBreaker> breakers = new ConcurrentHashMap<>();
@@ -46,6 +48,7 @@ public class CircuitBreakerFilter implements DawdlerClientFilter {
 	@Override
 	public Object doFilter(RequestBean request, FilterChain chain) throws Exception {
 		RequestWrapper rw = (RequestWrapper) request;
+		
 		com.anywide.dawdler.core.annotation.CircuitBreaker cb = rw.getCircuitBreaker();
 		if (cb == null)
 			return chain.doFilter(request);
@@ -67,7 +70,7 @@ public class CircuitBreakerFilter implements DawdlerClientFilter {
 				Object result = chain.doFilter(request);
 				circuitBreaker.pass();
 				return result;
-			} catch (Exception e) {
+			} catch (Throwable e) {
 				metric.failIncrt();
 				circuitBreaker.fail();
 				throw e;
@@ -79,7 +82,7 @@ public class CircuitBreakerFilter implements DawdlerClientFilter {
 				try {
 					Method method = c.getMethod(fallbackMethod, request.getTypes());
 					return method.invoke(null, request.getArgs());
-				} catch (Exception e) {
+				} catch (Throwable e) {
 					logger.error("", e);
 					throw e;
 				}

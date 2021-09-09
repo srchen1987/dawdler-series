@@ -70,13 +70,13 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 
 	@Override
 	public void display(ViewForward wf) {
+		logException(wf);
 		HttpServletRequest request = wf.getRequest();
 		HttpServletResponse response = wf.getResponse();
 		response.setContentType(MIME_TYPE_TEXT_HTML);
 		if (wf.getInvokeException() != null) {
-			logger.error("", wf.getInvokeException());
 			try {
-				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error.");
+				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error!");
 			} catch (IOException e) {
 				logger.error("", e);
 			}
