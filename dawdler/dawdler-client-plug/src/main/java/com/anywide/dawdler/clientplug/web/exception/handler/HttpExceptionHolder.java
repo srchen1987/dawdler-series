@@ -47,7 +47,7 @@ public class HttpExceptionHolder {
 		handles.put(ViewType.jsp.toString(), new JspHttpExceptionHandler());
 	}
 
-	public static void regist(String id, HttpExceptionHandler handler) {
+	public static void register(String id, HttpExceptionHandler handler) {
 		HttpExceptionHandler handlerPre = handles.putIfAbsent(id, handler);
 		if (handlerPre != null) {
 			logger.warn(handler.getClass().getName() + " : " + id + "\talready exists!");
@@ -73,7 +73,7 @@ public class HttpExceptionHolder {
 			DisplaySwitcher.switchDisplay(viewForward);
 		}
 	}
-	
+
 	public static class JspHttpExceptionHandler implements HttpExceptionHandler {
 		@Override
 		public void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward,
@@ -81,8 +81,7 @@ public class HttpExceptionHolder {
 			DisplaySwitcher.switchDisplay(viewForward);
 		}
 	}
-	
-	
+
 	public static class VelocityHttpExceptionHandler implements HttpExceptionHandler {
 		@Override
 		public void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward,

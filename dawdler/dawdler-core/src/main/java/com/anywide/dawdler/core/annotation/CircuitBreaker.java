@@ -37,11 +37,16 @@ import java.lang.annotation.Target;
  */
 public @interface CircuitBreaker {
 
+	/**
+	 * @return String
+	 * @Description 标识key，默认为"" 则为servicePath+serviceName+serviceMethod组合
+	 * @date 2018年3月10日
+	 */
 	String breakerKey() default "";
 
 	/**
 	 * @return int
-	 * @Description 统计时长 intervalInMs/windowsCount 最好为整数
+	 * @Description 统计时长 intervalInMs/windowsCount 建议为整数，默认3000，单位为毫秒。
 	 * @date 2018年3月10日
 	 */
 	int intervalInMs() default 3000;
@@ -57,14 +62,14 @@ public @interface CircuitBreaker {
 	 * @return int
 	 * @Title sleepWindowInMilliseconds
 	 * @Description 熔断器打开后，所有的请求都会直接失败，熔断器打开时会在经过一段时间后就放行一条请求成功则关闭熔断器，此配置就为指定的这段时间，默认值是
-	 *              5000。
+	 *              5000，单位为毫秒。
 	 * @date 2018年3月10日
 	 */
 	int sleepWindowInMilliseconds() default 5000;
 
 	/**
 	 * @return int
-	 * @Description 启用熔断器功能窗口时间内的最小请求数。
+	 * @Description 启用熔断器功能窗口时间内的最小请求数，默认为5。
 	 * @date 2018年3月10日
 	 */
 

@@ -24,7 +24,7 @@ import java.util.List;
  * @author jackson.song
  * @version V1.0
  * @Title OrderComparator.java
- * @Description 排序
+ * @Description 排序(升序)
  * @date 2007年12月03日
  * @email suxuan696@gmail.com
  */

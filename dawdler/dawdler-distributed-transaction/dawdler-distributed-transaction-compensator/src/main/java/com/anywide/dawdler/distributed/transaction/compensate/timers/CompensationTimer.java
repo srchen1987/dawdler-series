@@ -75,7 +75,6 @@ public class CompensationTimer implements Runnable {
 				data.put("status", dc.getStatus());
 				data.put("action", dc.getAction());
 				data.put("globalTxId", dc.getGlobalTxId());
-				System.out.println("globalTxId:" + dc.getGlobalTxId() + ":" + dc.getAction());
 				String msg = JsonProcessUtil.beanToJson(data);
 				if (logger.isDebugEnabled())
 					logger.debug("transaction compensate:{}", msg);

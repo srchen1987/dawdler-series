@@ -28,4 +28,7 @@ public interface Serializer {
 	Object deserialize(byte[] bytes) throws Exception;
 
 	byte[] serialize(Object object) throws Exception;
+	
+	byte key();
+	
 }

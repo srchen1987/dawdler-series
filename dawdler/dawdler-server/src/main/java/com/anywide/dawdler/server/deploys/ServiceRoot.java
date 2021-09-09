@@ -79,7 +79,7 @@ public class ServiceRoot {
 		return new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
 	}
 
-	private URL[] getLibURL() throws MalformedURLException { 
+	private URL[] getLibURL() throws MalformedURLException {
 		return PathUtils.getRecursionLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH));
 	}
 
@@ -127,10 +127,10 @@ public class ServiceRoot {
 				System.out.println("Server startup time out 3 minutes!");
 				return;
 			}
-			long end = JVMTimeProvider.currentTimeMillis();
-			System.out.println("Server startup in " + (end - start) + " ms,Listening port: "
-					+ dawdlerServerContext.getServerConfig().getServer().getTcpPort() + "!");
 		}
+		long end = JVMTimeProvider.currentTimeMillis();
+		System.out.println("Server startup in " + (end - start) + " ms,Listening port: "
+				+ dawdlerServerContext.getServerConfig().getServer().getTcpPort() + "!");
 	}
 
 	public void prepareDestroyedApplication() {
