@@ -16,6 +16,8 @@
  */
 package com.anywide.dawdler.clientplug.web.listener;
 
+import javax.servlet.ServletContext;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -25,7 +27,7 @@ package com.anywide.dawdler.clientplug.web.listener;
  * @email suxuan696@gmail.com
  */
 public interface WebContextListener {
-	void contextInitialized(javax.servlet.ServletContext servletContext);
+	void contextInitialized(ServletContext servletContext);
 
-	void contextDestroyed(javax.servlet.ServletContext servletContext);
+	void contextDestroyed(ServletContext servletContext);
 }

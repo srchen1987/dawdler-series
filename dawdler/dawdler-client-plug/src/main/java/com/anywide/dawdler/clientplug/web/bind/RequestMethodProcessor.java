@@ -24,7 +24,6 @@ import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
 import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
@@ -37,7 +36,6 @@ public class RequestMethodProcessor {
 
 	private static Map<Class<?>, Map<Method, List<RequestParamFieldData>>> requestParamFieldDataCache = new ConcurrentHashMap<>();
 
-	
 	private static Map<Class<?>, Map<RequestParamFieldData, MethodArgumentResolver>> paramFieldMethodArgumentResolverCache = new ConcurrentHashMap<>();
 	static {
 		ServiceLoader.load(MethodArgumentResolver.class).forEach(resolver -> {
@@ -49,19 +47,18 @@ public class RequestMethodProcessor {
 		});
 	}
 
-	public static Object[] process(TransactionController controller, ViewForward viewForward, Method method)
-			throws Exception {
+	public static Object[] process(Object controller, ViewForward viewForward, Method method) throws Exception {
 		int parameterCount = method.getParameterCount();
 		if (parameterCount == 0)
 			return null;
 		Class<?> controllerClass = controller.getClass();
-		List<RequestParamFieldData> requestParamFieldDataList = loadRequestParamFieldDataList(controllerClass,
-				method);
+		List<RequestParamFieldData> requestParamFieldDataList = loadRequestParamFieldDataList(controllerClass, method);
 		Object[] args = new Object[parameterCount];
 		for (RequestParamFieldData requestParamFieldData : requestParamFieldDataList) {
 			MethodArgumentResolver methodArgumentResolver = matchResolver(controllerClass, requestParamFieldData);
-			if(methodArgumentResolver != null) {
-				args[requestParamFieldData.getIndex()] = methodArgumentResolver.resolveArgument(requestParamFieldData, viewForward);
+			if (methodArgumentResolver != null) {
+				args[requestParamFieldData.getIndex()] = methodArgumentResolver.resolveArgument(requestParamFieldData,
+						viewForward);
 			}
 		}
 		return args;
@@ -107,17 +104,20 @@ public class RequestMethodProcessor {
 			requestParamFieldDataList.add(requestParamFieldData);
 		}
 	}
-	
-	public static MethodArgumentResolver matchResolver(Class<?> controllerClass, RequestParamFieldData requestParamFieldData) {
-		Map<RequestParamFieldData, MethodArgumentResolver> resolverCache = paramFieldMethodArgumentResolverCache.get(controllerClass);
-		if(resolverCache == null) {
+
+	public static MethodArgumentResolver matchResolver(Class<?> controllerClass,
+			RequestParamFieldData requestParamFieldData) {
+		Map<RequestParamFieldData, MethodArgumentResolver> resolverCache = paramFieldMethodArgumentResolverCache
+				.get(controllerClass);
+		if (resolverCache == null) {
 			resolverCache = new ConcurrentHashMap<>();
-			Map<RequestParamFieldData, MethodArgumentResolver> preCache = paramFieldMethodArgumentResolverCache.putIfAbsent(controllerClass, resolverCache);
-			if(preCache != null)
+			Map<RequestParamFieldData, MethodArgumentResolver> preCache = paramFieldMethodArgumentResolverCache
+					.putIfAbsent(controllerClass, resolverCache);
+			if (preCache != null)
 				resolverCache = preCache;
 		}
 		MethodArgumentResolver methodArgumentResolver = resolverCache.get(requestParamFieldData);
-		if(methodArgumentResolver == null) {
+		if (methodArgumentResolver == null) {
 			for (MethodArgumentResolver resolver : methodArgumentResolvers)
 				if (resolver.isSupport(requestParamFieldData)) {
 					resolverCache.put(requestParamFieldData, resolver);

@@ -1,0 +1,2 @@
+com.anywide.dawdler.core.serializer.JDKDefaultSerializer
+com.anywide.dawdler.core.serializer.KryoSerializer

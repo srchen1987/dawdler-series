@@ -24,7 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.anywide.dawdler.clientplug.web.TransactionController;
+import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.bind.RequestMethodProcessor;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
 import com.anywide.dawdler.clientplug.web.interceptor.InterceptorProvider;
@@ -46,27 +46,28 @@ public abstract class AbstractUrlHandler {
 	private final List<OrderData<HandlerInterceptor>> handlerInterceptors = InterceptorProvider
 			.getHandlerInterceptors();
 
-	public boolean preHandle(TransactionController tc) throws Exception {
+	public boolean preHandle(Object target, ViewForward viewForward, RequestMapping requestMapping) throws Exception {
 		if (handlerInterceptors != null)
 			for (OrderData<HandlerInterceptor> handlerInterceptor : handlerInterceptors) {
-				if (!handlerInterceptor.getData().preHandle(tc))
+				if (!handlerInterceptor.getData().preHandle(target, viewForward, requestMapping))
 					return false;
 			}
 		return true;
 	}
 
-	public void postHandle(TransactionController tc, Throwable ex) throws Exception {
+	public void postHandle(Object target, ViewForward viewForward, RequestMapping requestMapping, Throwable ex)
+			throws Exception {
 		if (handlerInterceptors != null) {
 			for (int i = handlerInterceptors.size(); i > 0; i--) {
-				handlerInterceptors.get(i - 1).getData().postHandle(tc, ex);
+				handlerInterceptors.get(i - 1).getData().postHandle(target, viewForward, requestMapping, ex);
 			}
 		}
 	}
 
-	public void afterCompletion(TransactionController tc, Throwable ex) {
+	public void afterCompletion(Object target, ViewForward viewForward, RequestMapping requestMapping, Throwable ex) {
 		if (handlerInterceptors != null) {
 			for (int i = handlerInterceptors.size(); i > 0; i--) {
-				handlerInterceptors.get(i - 1).getData().afterCompletion(tc, ex);
+				handlerInterceptors.get(i - 1).getData().afterCompletion(target, viewForward, requestMapping, ex);
 			}
 		}
 	}
@@ -74,15 +75,15 @@ public abstract class AbstractUrlHandler {
 	public abstract boolean handleUrl(String urishort, String method, boolean isJson, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException;
 
-	protected boolean invokeMethod(TransactionController targetobj, Method method, ViewForward wf, boolean responseBody)
-			throws Throwable {
+	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,
+			boolean responseBody) throws Throwable {
 		try {
-			if (!preHandle(targetobj))
+			if (!preHandle(target, viewForward, requestMapping))
 				return true;
 
-			Object result = method.invoke(targetobj, RequestMethodProcessor.process(targetobj, wf, method));
+			Object result = method.invoke(target, RequestMethodProcessor.process(target, viewForward, method));
 			if (responseBody && result != null) {
-				HttpServletResponse response = targetobj.getResponse();
+				HttpServletResponse response = viewForward.getResponse();
 				PrintWriter out = response.getWriter();
 				try {
 					if (ClassUtil.isSimpleValueType(result.getClass())) {
@@ -99,20 +100,20 @@ public abstract class AbstractUrlHandler {
 				}
 				return true;
 			}
-			postHandle(targetobj, wf.getInvokeException());
+			postHandle(target, viewForward, requestMapping, viewForward.getInvokeException());
 		} catch (Throwable e) {
-			wf.setInvokeException(e);
+			viewForward.setInvokeException(e);
 		}
 		try {
-			if (wf.getInvokeException() == null) {
-				DisplaySwitcher.switchDisplay(wf);
+			if (viewForward.getInvokeException() == null) {
+				DisplaySwitcher.switchDisplay(viewForward);
 			} else {
-				throw wf.getInvokeException();
+				throw viewForward.getInvokeException();
 			}
 		} catch (Throwable e) {
 			throw e;
 		} finally {
-			afterCompletion(targetobj, wf.getInvokeException());
+			afterCompletion(target, viewForward, requestMapping, viewForward.getInvokeException());
 		}
 		return true;
 	}
@@ -120,6 +121,5 @@ public abstract class AbstractUrlHandler {
 	protected ViewForward createViewForward() {
 		return ViewControllerContext.getViewForward();
 	}
-
 
 }
