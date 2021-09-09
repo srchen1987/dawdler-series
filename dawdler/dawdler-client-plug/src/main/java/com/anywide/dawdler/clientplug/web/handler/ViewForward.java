@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
-import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.upload.UploadFile;
 
 /**
@@ -38,7 +37,7 @@ import com.anywide.dawdler.clientplug.web.upload.UploadFile;
 public class ViewForward {
 	private String errorPage = "error.html";// 错误地址
 	private String templatePath;// 模板路径
-	private boolean addRequestAttribute = true;// 自动添加request请求范围
+	private boolean addRequestAttribute = false;// 自动添加request请求范围
 	private String forwardAndRedirectPath;// 跳转路径
 	protected HttpServletRequest request;
 	protected HttpServletResponse response;
@@ -75,7 +74,7 @@ public class ViewForward {
 		this.createContext = createContext;
 	}
 
-	public TransactionController getTransactionController() {
+	public Object getTransactionController() {
 		return requestUrlData.getTarget();
 	}
 

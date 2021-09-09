@@ -16,14 +16,21 @@
  */
 package com.anywide.dawdler.clientplug.annotation;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestMethod.java
- * @Description http请求方法
- * @date 2007年4月17日
+ * @Title Controller.java
+ * @Description 标识为Controller
+ * @date 2021年3月06日
  * @email suxuan696@gmail.com
  */
-public enum RequestMethod {
-	GET, HEAD, POST, PUT, DELETE, OPTIONS, TRACE
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Controller {
+
 }

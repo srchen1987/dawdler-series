@@ -141,6 +141,16 @@ public class ClassUtil {
 			for (int i = 0; i < value.length; i++) {
 				Array.set(array, i, Float.parseFloat(value[i]));
 			}
+		} else if (type == char[].class) {
+			array = new char[value.length];
+			for (int i = 0; i < value.length; i++) {
+				Array.set(array, i, value[i].charAt(0));
+			}
+		} else if (type == Character[].class) {
+			array = new Character[value.length];
+			for (int i = 0; i < value.length; i++) {
+				Array.set(array, i, value[i].charAt(0));
+			}
 		} else if (type == BigDecimal[].class) {
 			array = new BigDecimal[value.length];
 			for (int i = 0; i < value.length; i++) {
@@ -169,6 +179,8 @@ public class ClassUtil {
 			value = Byte.parseByte(value.toString());
 		} else if (type == float.class || type == Float.class) {
 			value = Float.parseFloat(value.toString());
+		} else if (type == char.class || type == Character.class) {
+			value = value.toString().charAt(0);
 		} else if (type == BigDecimal.class) {
 			value = new BigDecimal((value.toString()));
 		} else {

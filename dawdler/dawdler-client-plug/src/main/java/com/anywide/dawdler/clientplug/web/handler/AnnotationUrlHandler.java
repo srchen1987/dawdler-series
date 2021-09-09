@@ -30,10 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
-import com.anywide.dawdler.clientplug.annotation.RequestMethod;
 import com.anywide.dawdler.clientplug.web.AntPathMatcher;
-import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHandler;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
 
@@ -111,7 +110,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		viewForward.setUriShort(uriShort);
 		ViewControllerContext.setViewForward(viewForward);
 		boolean responseBody = requestUrlData.getResponseBody() != null;
-		TransactionController targetController = requestUrlData.getTarget();
+		Object targetController = requestUrlData.getTarget();
 		Method method = requestUrlData.getMethod();
 		try {
 			if (multipart) {
@@ -121,7 +120,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 				mwf.parse(uploadSizeMax, uploadPerSizeMax);
 			}
 			if (WebValidateExecutor.validate(request, response, isJson, targetController))
-				return invokeMethod(targetController, method, viewForward, responseBody);
+				return invokeMethod(targetController, method, requestMapping, viewForward, responseBody);
 			else
 				return true;
 		} catch (Throwable e) {
@@ -157,8 +156,8 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		return (uri.indexOf("{") != -1) || (uri.indexOf("?") != -1) || (uri.indexOf("*") != -1);
 	}
 
-	public static Set<TransactionController> getTransactionControllers() {
-		Set<TransactionController> controllers = new HashSet<>(32);
+	public static Set<Object> getTransactionControllers() {
+		Set<Object> controllers = new HashSet<>(32);
 		urlRules.values().forEach(requestUrlData -> {
 			controllers.add(requestUrlData.getTarget());
 		});

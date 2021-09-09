@@ -16,9 +16,14 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs.impl;
 
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -39,17 +44,37 @@ import com.anywide.dawdler.util.JsonProcessUtil;
  */
 public class JsonDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(JsonDisplayPlug.class);
+
 	@Override
 	public void display(ViewForward wf) {
 		logException(wf);
+		HttpServletRequest request = wf.getRequest();
 		HttpServletResponse response = wf.getResponse();
 		response.setContentType(MIME_TYPE_JSON);
 		String json = null;
+		if (wf.getInvokeException() != null) {
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			Map<String, String> data = new HashMap<String, String>();
+			data.put("msg", "Internal Server Error!");
+			json = JsonProcessUtil.beanToJson(data);
+			if (json != null)
+				print(response, json);
+			return;
+		}
 		switch (wf.getStatus()) {
-		case SUCCESS:
+		case SUCCESS:{
+			if (wf.isAddRequestAttribute()) {
+				Enumeration<String> attrs = request.getAttributeNames();
+				while (attrs.hasMoreElements()) {
+					String key = attrs.nextElement();
+					Object obj = request.getAttribute(key);
+					wf.getData().put(key, obj);
+				}
+			}
 			json = JsonProcessUtil.beanToJson(wf.getData());
 			break;
-		case ERROR:{
+		}
+		case ERROR: {
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			wf.putData("msg", "Internal Server Error!");
 			json = JsonProcessUtil.beanToJson(wf.getData());
@@ -58,9 +83,7 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 		case REDIRECT:
 		case FORWARD:
 		case STOP:
-			if (wf.getData() != null)
-				json = JsonProcessUtil.beanToJson(wf.getData());
-			break;
+			return;
 		}
 		if (json != null)
 			print(response, json);

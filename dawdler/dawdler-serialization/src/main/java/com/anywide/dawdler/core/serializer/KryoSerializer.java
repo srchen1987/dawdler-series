@@ -28,7 +28,7 @@ import com.esotericsoftware.kryo.io.UnsafeOutput;
  * @author jackson.song
  * @version V1.0
  * @Title KryoSerializer.java
- * @Description kroy实现的序列化 目前升级到最新版本 4x
+ * @Description kroy实现的序列化 目前升级到新版本 4x
  * @date 2014年12月22日
  * @email suxuan696@gmail.com
  */
@@ -90,5 +90,10 @@ public class KryoSerializer implements Serializer {
 		public void setKryo(Kryo kryo) {
 			this.kryo = kryo;
 		}
+	}
+
+	@Override
+	public byte key() {
+		return 2;
 	}
 }

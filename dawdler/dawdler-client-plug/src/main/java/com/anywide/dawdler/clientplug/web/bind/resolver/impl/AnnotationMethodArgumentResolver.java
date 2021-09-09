@@ -86,9 +86,11 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					paramName = getParameterName(sessionAttribute.value(), requestParamFieldData);
 					return viewForward.getRequest().getSession().getAttribute(paramName);
 				} else if (annotationClass == CookieValue.class) {
-					CookieValue cookieValue = (CookieValue) annotation;
-					paramName = getParameterName(cookieValue.value(), requestParamFieldData);
-					return CookieUtil.getCookieValue(viewForward.getRequest().getCookies(), paramName);
+					if (type == String.class) {
+						CookieValue cookieValue = (CookieValue) annotation;
+						paramName = getParameterName(cookieValue.value(), requestParamFieldData);
+						return CookieUtil.getCookieValue(viewForward.getRequest().getCookies(), paramName);
+					}
 				} else if (annotationClass == RequestHeader.class) {
 					RequestHeader requestHeader = (RequestHeader) annotation;
 					paramName = getParameterName(requestHeader.value(), requestParamFieldData);

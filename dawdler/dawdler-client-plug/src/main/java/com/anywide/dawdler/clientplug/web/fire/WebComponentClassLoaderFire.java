@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ServiceFactory;
+import com.anywide.dawdler.clientplug.annotation.Controller;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoderFire;
@@ -51,7 +52,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 	private static final Logger logger = LoggerFactory.getLogger(WebComponentClassLoaderFire.class);
 
 	@Override
-	public void onLoadFire(Class<?> clazz,byte[] classCodes) {
+	public void onLoadFire(Class<?> clazz, byte[] classCodes) {
 		initListener(clazz);
 		initInterceptor(clazz);
 		initMapping(clazz, classCodes);
@@ -96,10 +97,12 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 	}
 
 	private void initMapping(Class<?> clazz, byte[] classCodes) {
-		if (TransactionController.class.isAssignableFrom(clazz)) {
-			TransactionController target;
+		if (clazz.isInterface())
+			return;
+		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
+			Object target;
 			try {
-				target = clazz.asSubclass(TransactionController.class).newInstance();
+				target = clazz.newInstance();
 				ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
 			} catch (InstantiationException | IllegalAccessException e) {
 				logger.error("", e);
@@ -122,8 +125,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 		}
 	}
 
-
-	public void registMapping(String prefix, Class<?> clazz, TransactionController target) {
+	public void registMapping(String prefix, Class<?> clazz, Object target) {
 		Method[] methods = clazz.getMethods();
 		for (Method method : methods) {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
@@ -138,8 +140,9 @@ public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
 					try {
 						String mapping = prefix == null ? requestMappingPath : (prefix + requestMappingPath);
 						RequestUrlData preRequestUrlData = AnnotationUrlHandler.registMapping(mapping, requestUrlData);
-						if(preRequestUrlData != null) {
-							logger.error("regist {} failed because it was registered at {} {}", mapping, preRequestUrlData.getTarget().getClass().getName(), preRequestUrlData.getMethod());
+						if (preRequestUrlData != null) {
+							logger.error("regist {} failed because it was registered at {} {}", mapping,
+									preRequestUrlData.getTarget().getClass().getName(), preRequestUrlData.getMethod());
 						}
 					} catch (Exception e) {
 						logger.error("", e);

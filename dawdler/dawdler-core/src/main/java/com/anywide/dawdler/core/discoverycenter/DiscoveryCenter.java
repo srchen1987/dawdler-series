@@ -11,7 +11,6 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public interface DiscoveryCenter {
-	String OFFLINESTATUS = "Offline";
 
 	List<String> getServiceList(String path) throws Exception;
 
@@ -22,4 +21,6 @@ public interface DiscoveryCenter {
 	boolean addProvider(String path, String value) throws Exception;
 
 	boolean updateProvider(String path, String value) throws Exception;
+	
+	boolean deleteProvider(String path, String value) throws Exception;
 }

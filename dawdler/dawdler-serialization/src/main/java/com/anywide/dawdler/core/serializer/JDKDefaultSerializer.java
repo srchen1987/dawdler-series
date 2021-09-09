@@ -88,4 +88,9 @@ public class JDKDefaultSerializer implements Serializer {
 
 	}
 
+	@Override
+	public byte key() {
+		return 1;
+	}
+
 }

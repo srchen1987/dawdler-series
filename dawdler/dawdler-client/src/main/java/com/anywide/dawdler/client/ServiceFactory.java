@@ -64,6 +64,10 @@ public class ServiceFactory {
 	public static <T> T getService(final Class<T> delegate, String groupName) {
 		return getService(delegate, groupName, null, null);
 	}
+	
+	public static <T> T getService(final Class<T> delegate, String groupName,String loadBalance) {
+		return getService(delegate, groupName, loadBalance, null);
+	}
 
 	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName, String loadBalance,
 			ClassLoader classLoader) {
