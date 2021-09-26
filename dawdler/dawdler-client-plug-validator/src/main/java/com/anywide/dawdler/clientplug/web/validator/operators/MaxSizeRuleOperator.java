@@ -28,10 +28,10 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MaxSizeRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^maxsize:([1-9]{1}\\d*$)";
+	public static final String RULE_KEY = "^maxSize:([1-9]{1}\\d*$)";
 
 	public MaxSizeRuleOperator() {
-		super(RULEKEY);
+		super(RULE_KEY);
 	}
 
 	@Override
@@ -77,6 +77,6 @@ public class MaxSizeRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "字符串或数组中的字符串的长度不能大于指定长度,如：maxsize:32!";
+		return "字符串或数组中的字符串的长度不能大于指定长度,如：maxSize:32!";
 	}
 }

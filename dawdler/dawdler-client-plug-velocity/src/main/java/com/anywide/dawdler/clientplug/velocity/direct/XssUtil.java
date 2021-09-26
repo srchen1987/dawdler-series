@@ -1,7 +1,7 @@
 package com.anywide.dawdler.clientplug.velocity.direct;
 
 import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
+import org.jsoup.safety.Safelist;
 
 /**
  * @author jackson.song
@@ -12,7 +12,7 @@ import org.jsoup.safety.Whitelist;
  */
 public class XssUtil {
 
-	private final static Whitelist user_content_filter = Whitelist.basic();
+	private final static Safelist user_content_filter = Safelist.basic();
 
 	static {
 		user_content_filter.addTags("embed", "object", "td", "param", "span", "div", "p", "strong", "b", "font", "img",

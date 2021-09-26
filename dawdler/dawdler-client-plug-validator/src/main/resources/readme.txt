@@ -64,5 +64,3 @@ org.src.validatedemo.listener.SystemListener类下为加载自定义扩展的过
 	
 	
 前台的js验证框架的规则与后台的一模一样 请参考 js-readme.txt
-
-TODO:以后会通过后台的自动生成前台的规则 省去配置的时间(已经实现)

@@ -25,121 +25,93 @@ package com.anywide.dawdler.clientplug.velocity;
  * @email suxuan696@gmail.com
  */
 public class ControlTag /* extends TagSupport */ {
-	private String controlname; // 前台控件名称
+	private String controlName; // 前台控件名称
 	private String viewName; // 前台显示名称
-	private String controltype; // 控件的类型，如text,hiden,password,textarea,radio,checkbox,select等
-	private String showitems;// 显示项目
+	private String controlType; // 控件的类型，如text,hiden,password,textarea,radio,checkbox,select等
+	private String showItems;// 显示项目
 	private String value;// 值
 	private String validateRule; // 验证规则
-	private String viewdescription; // 前台描述
+	private String viewDescription; // 前台描述
 	private String css;// CSS
 	private String additional; // 追加信息
-	private boolean radiodefault;// 为radio类型时默认选中第一位
-	private boolean autoaddviewname;// 是否自动添加前面的viewname
-	private boolean autoaddviewdescription;// 是否自动添加后面的viewdescription
-	private String[] selectValue;// 这个属性只有显示页面时候才有用 在标签里不需要
-
-	public boolean isAutoaddviewname() {
-		return autoaddviewname;
+	private boolean radioDefault;// 为radio类型时默认选中第一位
+	private boolean autoAddViewName;// 是否自动添加前面的viewName
+	private boolean autoAddViewDescription;// 是否自动添加后面的viewdescription
+	public String getControlName() {
+		return controlName;
 	}
-
-	public void setAutoaddviewname(boolean autoaddviewname) {
-		this.autoaddviewname = autoaddviewname;
+	public void setControlName(String controlName) {
+		this.controlName = controlName;
 	}
-
-	public boolean isAutoaddviewdescription() {
-		return autoaddviewdescription;
-	}
-
-	public void setAutoaddviewdescription(boolean autoaddviewdescription) {
-		this.autoaddviewdescription = autoaddviewdescription;
-	}
-
-	public boolean getRadiodefault() {
-		return radiodefault;
-	}
-
-	public void setRadiodefault(boolean radiodefault) {
-		this.radiodefault = radiodefault;
-	}
-
-	public String[] getSelectValue() {
-		return selectValue;
-	}
-
-	public void setSelectValue(String... selectValue) {
-		this.selectValue = selectValue;
-	}
-
-	public String getAdditional() {
-		return additional;
-	}
-
-	public void setAdditional(String additional) {
-		this.additional = additional;
-	}
-
-	public String getControlname() {
-		return controlname;
-	}
-
-	public void setControlname(String controlname) {
-		this.controlname = controlname;
-	}
-
-	public String getControltype() {
-		return controltype;
-	}
-
-	public void setControltype(String controltype) {
-		this.controltype = controltype;
-	}
-
-	public String getCss() {
-		return css;
-	}
-
-	public void setCss(String css) {
-		this.css = css;
-	}
-
-	public String getViewname() {
+	public String getViewName() {
 		return viewName;
 	}
-
-	public void setViewname(String viewName) {
+	public void setViewName(String viewName) {
 		this.viewName = viewName;
 	}
-
-	public String getViewdescription() {
-		return viewdescription;
+	public String getControlType() {
+		return controlType;
 	}
-
-	public void setViewdescription(String viewdescription) {
-		this.viewdescription = viewdescription;
+	public void setControlType(String controlType) {
+		this.controlType = controlType;
 	}
-
-	public String getShowitems() {
-		return showitems;
+	public String getShowItems() {
+		return showItems;
 	}
-
-	public void setShowitems(String showitems) {
-		this.showitems = showitems;
+	public void setShowItems(String showItems) {
+		this.showItems = showItems;
 	}
-
-	public String getValidaterule() {
-		return validateRule;
-	}
-
-	public void setValidaterule(String validateRule) {
-		this.validateRule = validateRule;
-	}
-
 	public String getValue() {
 		return value;
 	}
-
 	public void setValue(String value) {
 		this.value = value;
 	}
+	public String getValidateRule() {
+		return validateRule;
+	}
+	public void setValidateRule(String validateRule) {
+		this.validateRule = validateRule;
+	}
+	public String getViewDescription() {
+		return viewDescription;
+	}
+	public void setViewDescription(String viewDescription) {
+		this.viewDescription = viewDescription;
+	}
+	public String getCss() {
+		return css;
+	}
+	public void setCss(String css) {
+		this.css = css;
+	}
+	public String getAdditional() {
+		return additional;
+	}
+	public void setAdditional(String additional) {
+		this.additional = additional;
+	}
+	public boolean isRadioDefault() {
+		return radioDefault;
+	}
+	public void setRadioDefault(boolean radioDefault) {
+		this.radioDefault = radioDefault;
+	}
+	public boolean isAutoAddViewName() {
+		return autoAddViewName;
+	}
+	public void setAutoAddViewName(boolean autoAddViewName) {
+		this.autoAddViewName = autoAddViewName;
+	}
+	public boolean isAutoAddViewDescription() {
+		return autoAddViewDescription;
+	}
+	public void setAutoAddViewDescription(boolean autoAddViewDescription) {
+		this.autoAddViewDescription = autoAddViewDescription;
+	}
+	 
+	 
+  
+
+	 
 }

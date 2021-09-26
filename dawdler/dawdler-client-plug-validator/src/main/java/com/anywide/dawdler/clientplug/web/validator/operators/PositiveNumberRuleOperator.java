@@ -26,12 +26,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  */
 
 public class PositiveNumberRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "positiveNumber";
+	public static final String RULE_KEY = "positiveNumber";
 	public static final String REGEX = "(^[1-9]{1}\\d*$)";
 	public static final String EXPLAIN = "正整数验证";
 
 	public PositiveNumberRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

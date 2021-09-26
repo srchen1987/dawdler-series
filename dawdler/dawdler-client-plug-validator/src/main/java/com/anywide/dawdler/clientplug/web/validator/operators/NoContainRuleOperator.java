@@ -28,10 +28,10 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class NoContainRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^noContain:\\[(.+)\\]$";
+	public static final String RULE_KEY = "^noContain:\\[(.+)\\]$";
 
 	public NoContainRuleOperator() {
-		super(RULEKEY);
+		super(RULE_KEY);
 	}
 
 	public String validate(Object value, Matcher matcher) {

@@ -40,10 +40,10 @@ public abstract class Control {
 
 	public String showView() {
 		ControlTag ntag = tag;
-		if (ntag.getControlname() == null) {
-			throw new NullPointerException("controlname can't null !");
+		if (ntag.getControlName() == null) {
+			throw new NullPointerException("controlName can't null !");
 		}
-		if (ntag.getViewname() == null) {
+		if (ntag.getViewName() == null) {
 			throw new NullPointerException("viewName can't null !");
 		}
 		return translation();
@@ -53,13 +53,13 @@ public abstract class Control {
 
 	protected String translation() {
 		String notEmpty = "";
-		if (tag.getValidaterule() != null) {
-			if (tag.getValidaterule().contains("notEmpty"))
+		if (tag.getValidateRule() != null) {
+			if (tag.getValidateRule().contains("notEmpty"))
 				notEmpty = "<font color=\"red\">*</font>";
 		}
-		return notEmpty + (tag.isAutoaddviewname() ? tag.getViewname() + (showcolon ? " : " : "  ") : "")
+		return notEmpty + (tag.isAutoAddViewName() ? tag.getViewName() + (showcolon ? " : " : "  ") : "")
 				+ replaceContent()
-				+ ((tag.getViewdescription() != null && tag.isAutoaddviewdescription()) ? tag.getViewdescription()
+				+ ((tag.getViewDescription() != null && tag.isAutoAddViewDescription()) ? tag.getViewDescription()
 						: "");
 	}
 }
