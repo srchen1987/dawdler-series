@@ -28,10 +28,10 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MaxNumberRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^maxnumber:([-+]?\\d+(\\.\\d+)?$)";
+	public static final String RULE_KEY = "^maxNumber:([-+]?\\d+(\\.\\d+)?$)";
 
 	public MaxNumberRuleOperator() {
-		super(RULEKEY);
+		super(RULE_KEY);
 	}
 
 	@Override
@@ -99,6 +99,6 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "最大数值不能大于指定数字如:maxnumber:25或maxnumber:25.32!";
+		return "最大数值不能大于指定数字如:maxNumber:25或maxNumber:25.32，支持整数或小数!";
 	}
 }

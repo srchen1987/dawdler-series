@@ -27,11 +27,11 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public class NotEmptyRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "notEmpty";
+	public static final String RULE_KEY = "notEmpty";
 	public static final String EXPLAIN = "不能为空验证";
 
 	public NotEmptyRuleOperator() {
-		super(RULEKEY, null, EXPLAIN);
+		super(RULE_KEY, null, EXPLAIN);
 
 	}
 

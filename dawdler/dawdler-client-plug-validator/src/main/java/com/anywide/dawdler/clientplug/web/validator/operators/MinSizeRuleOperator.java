@@ -28,10 +28,10 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MinSizeRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^minsize:([1-9]{1}\\d*$)";
+	public static final String RULE_KEY = "^minSize:([1-9]{1}\\d*$)";
 
 	public MinSizeRuleOperator() {
-		super(RULEKEY);
+		super(RULE_KEY);
 	}
 
 	@Override
@@ -78,6 +78,6 @@ public class MinSizeRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "字符串或数组中的字符串的长度不能小于指定长度,如：minsize:3!";
+		return "字符串或数组中的字符串的长度不能小于指定长度,如：minSize:3!";
 	}
 }

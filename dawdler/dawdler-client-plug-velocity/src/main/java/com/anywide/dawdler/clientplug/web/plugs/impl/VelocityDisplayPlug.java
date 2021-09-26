@@ -201,19 +201,20 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		pstool = null;
 		String templatePath = servletContext.getInitParameter("template-path");
 		VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
+		String path;
+		if (templatePath != null && !templatePath.trim().equals(""))
+			path = servletContext.getRealPath("WEB-INF/" + templatePath);
+		else
+			path = servletContext.getRealPath("WEB-INF/template");
+		
 		Properties ps = null;
 		try {
 			ps = PropertiesUtil.loadProperties("velocity");
 		} catch (IOException e) {
 			ps = new Properties();
 		}
-		String path;
-		if (templatePath != null && !templatePath.trim().equals(""))
-			path = servletContext.getRealPath("WEB-INF/" + templatePath);
-		else
-			path = servletContext.getRealPath("WEB-INF/template");
-		ps.put("file.resource.loader.path", path);
-		ps.put("file.resource.loader.cache", "true");
+		ps.put("resource.loader.file.path", path);
+		ps.put("resource.loader.file.cache", true);
 		tm.init(ps);
 
 	}

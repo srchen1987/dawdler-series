@@ -25,12 +25,12 @@ package com.anywide.dawdler.clientplug.dynamicform.control;
  * @email suxuan696@gmail.com
  */
 public interface ControlContent {
-	String CONTROLNAMEREPLACE = "controlnamereplace";
-	String CONTROLTYPEREPLACE = "controltypereplace";
+	String CONTROLNAMEREPLACE = "controlNamereplace";
+	String CONTROLTYPEREPLACE = "controlTypereplace";
 	String CSSREPLACE = "cssreplace";
-	String VALIDATERULEREPLACE = "validaterulereplace";
+	String VALIDATERULEREPLACE = "validateRulereplace";
 	String VALUEREPLACE = "valuereplace";
-	String VIEWNAMEREPLACE = "viewnamereplace";
+	String VIEWNAMEREPLACE = "viewNamereplace";
 	String TAGVALUE = " value=\"" + VALUEREPLACE + "\"";
 	String TAGVALIDATE = " validateRule=\"" + VALIDATERULEREPLACE + "\"";
 	String TAGCSS = " style=\"" + CSSREPLACE + "\"";

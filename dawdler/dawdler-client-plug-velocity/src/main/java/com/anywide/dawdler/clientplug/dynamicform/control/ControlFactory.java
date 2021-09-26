@@ -28,22 +28,22 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
  */
 public class ControlFactory {
 	public static final Control getControl(ControlTag tag) {
-		String controltype = tag.getControltype();
-		if (controltype == null) {
-			throw new NullPointerException("controltype can't null !");
+		String controlType = tag.getControlType();
+		if (controlType == null) {
+			throw new NullPointerException("controlType can't null !");
 		}
-		if (controltype.equals("text") || controltype.equals("password") || controltype.equals("hidden")) {
+		if (controlType.equals("text") || controlType.equals("password") || controlType.equals("hidden")) {
 			return new TextControl(tag);
-		} else if (controltype.equals("select")) {
+		} else if (controlType.equals("select")) {
 			return new SelectControl(tag);
-		} else if (controltype.equals("radio")) {
+		} else if (controlType.equals("radio")) {
 			return new RadioControl(tag);
-		} else if (controltype.equals("textarea")) {
+		} else if (controlType.equals("textarea")) {
 			return new TextareaControl(tag);
-		} else if (controltype.equals("checkbox")) {
+		} else if (controlType.equals("checkbox")) {
 			return new CheckboxControl(tag);
 		} else {
-			throw new NullPointerException("unknown " + controltype + " tag!");
+			throw new NullPointerException("unknown " + controlType + " tag!");
 		}
 
 	}
