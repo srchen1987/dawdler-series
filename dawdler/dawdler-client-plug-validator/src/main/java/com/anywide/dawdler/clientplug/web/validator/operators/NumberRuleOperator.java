@@ -25,12 +25,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class NumberRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "number";
+	public static final String RULE_KEY = "number";
 	public static final String REGEX = "(^-\\d+$)|(^\\d+$)";
 	public static final String EXPLAIN = "整数验证";
 
 	public NumberRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

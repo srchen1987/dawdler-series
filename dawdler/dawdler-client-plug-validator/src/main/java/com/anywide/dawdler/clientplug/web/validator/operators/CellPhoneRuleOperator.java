@@ -25,7 +25,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class CellPhoneRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "cellPhone";
+	public static final String RULE_KEY = "cellPhone";
 	// public static final String REGEX
 	// ="(^[1][3,5,8][0-9]{9}$)|(^0[1][3,5][0-9]{9}$)";
 	public static final String REGEX = "^0?(13[0-9]|15[0-9]|18[0-9]|14[0-9]|17[0-9]|19[0-9]|16[0-9])\\d{8}$";
@@ -33,7 +33,7 @@ public class CellPhoneRuleOperator extends StringRuleOperator {
 	public static final String EXPLAIN = "手机号验证";
 
 	public CellPhoneRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

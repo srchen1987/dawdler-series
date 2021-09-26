@@ -26,12 +26,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  */
 public class DateRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "date";
+	public static final String RULE_KEY = "date";
 	public static final String REGEX = "^(?:(?!0000)[0-9]{4}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-8])|(?:0[13-9]|1[0-2])-(?:29|30)|(?:0[13578]|1[02])-31)|(?:[0-9]{2}(?:0[48]|[2468][048]|[13579][26])|(?:0[48]|[2468][048]|[13579][26])00)-02-29)\\s+([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$";
 	public static final String EXPLAIN = "日期验证";
 
 	public DateRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

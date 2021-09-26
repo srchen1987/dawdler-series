@@ -19,8 +19,6 @@ package com.anywide.dawdler.clientplug.web.validator.webbind;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -39,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
+import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 
 /**
@@ -54,58 +53,43 @@ public class ValidateResourceLoader {
 	private static final Map<String, ControlField> globalFields = new HashMap<>();
 	private static final ResourceBundle properties;
 
-	static {
-		properties = ResourceBundle.getBundle("validate_global_variable");
-	}
 
 	static {
+		properties = ResourceBundle.getBundle("validate-global-variable");
 		try {
-			String globalPath = properties.getString("global_path");
-			if (globalPath != null) {
-				globalPath = globalPath.trim();
-				if (!globalPath.equals("")) {
-					String classpath = "";
-					try {
-						classpath = URLDecoder.decode(
-								Thread.currentThread().getContextClassLoader().getResource("").getPath(), "utf-8");
-					} catch (UnsupportedEncodingException e1) {
-					}
-
-					if (globalPath.startsWith("${classpath}"))
-						globalPath = globalPath.replace("${classpath}", classpath);
-					if (new File(globalPath).isFile())
-						try {
-							XmlObject xmlo = new XmlObject(globalPath);
-							List list = xmlo.selectNodes("/global-validator/validator-fields/validator-field");
-							for (Object obj : list) {
-								Element ele = (Element) obj;
-								String name = ele.attributeValue("name");
-								String explain = ele.attributeValue("explain");
-								String rules = ele.getTextTrim();
-								String globalRules = ele.attributeValue("globalrules");
-								if (globalRules != null) {
-									try {
-										String glpro = properties.getString(globalRules);
-										if (rules == null || rules.trim().equals(""))
-											rules = glpro;
-										else
-											rules += "&" + glpro;
-									} catch (Exception e) {
-										logger.warn("not find " + globalRules + " in global properties!");
-									}
-								}
-								globalFields.put(name, new ControlField(name, rules, explain));
+			String globalPath = DawdlerTool.getcurrentPath() + "global-validator.xml";
+			if (new File(globalPath).isFile()) {
+				try {
+					XmlObject xmlo = new XmlObject(globalPath);
+					List list = xmlo.selectNodes("/global-validator/validator-fields/validator-field");
+					for (Object obj : list) {
+						Element ele = (Element) obj;
+						String name = ele.attributeValue("name");
+						String explain = ele.attributeValue("explain");
+						String rules = ele.getTextTrim();
+						String globalRules = ele.attributeValue("globalRules");
+						if (globalRules != null) {
+							try {
+								String glpro = properties.getString(globalRules);
+								if (rules == null || rules.trim().equals(""))
+									rules = glpro;
+								else
+									rules += "&" + glpro;
+							} catch (Exception e) {
+								logger.warn("not find " + globalRules + " in global properties!");
 							}
-						} catch (Exception e) {
-							logger.error("", e);
 						}
+						globalFields.put(name, new ControlField(name, rules, explain));
+					}
+				} catch (Exception e) {
+					logger.error("", e);
 				}
 			}
 		} catch (MissingResourceException e) {
 		}
 	}
 
-	public static ControlValidator getControlValidator(Class controlClass) {
+	public static ControlValidator getControlValidator(Class<?> controlClass) {
 		InputStream input = controlClass.getResourceAsStream(controlClass.getSimpleName() + "-validator.xml");
 		if (input != null) {
 			try {
@@ -144,9 +128,9 @@ public class ValidateResourceLoader {
 				String refgid = ele.attributeValue("refgid");
 				String ref = ele.attributeValue("ref");
 				if (refgid != null) {
-					Map map = cv.getFieldGroups().get(refgid);
-					if (map != null)
-						globals.putAll(map);
+					Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
+					if (fieldGroup != null)
+						globals.putAll(fieldGroup);
 				}
 				if (ref != null) {
 					ControlField confield = cv.getControlFields().get(ref);
@@ -173,16 +157,16 @@ public class ValidateResourceLoader {
 				String name = ele.attributeValue("name");
 				String explain = ele.attributeValue("explain");
 				String rules = ele.getTextTrim();
-				String globalrules = ele.attributeValue("globalrules");
-				if (globalrules != null) {
+				String globalRules = ele.attributeValue("globalRules");
+				if (globalRules != null) {
 					try {
-						String glpro = properties.getString(globalrules);
+						String glpro = properties.getString(globalRules);
 						if (rules.equals(""))
 							rules = glpro;
 						else
 							rules += "&" + glpro;
 					} catch (Exception e) {
-						logger.warn("not find " + globalrules + " in global properties!");
+						logger.warn("not find " + globalRules + " in global properties!");
 					}
 				}
 				fields.put(name, new ControlField(name, rules, explain));
@@ -191,7 +175,7 @@ public class ValidateResourceLoader {
 	}
 
 	private static void parserMapping(XmlObject xml, ControlValidator cv) {
-		List<Node> mappingList =  xml.selectNodes("/validator/validator-mappings/validator-mapping");
+		List<Node> mappingList = xml.selectNodes("/validator/validator-mappings/validator-mapping");
 		if (mappingList != null && !mappingList.isEmpty()) {
 			for (Node mappingNode : mappingList) {
 				Element ele = (Element) mappingNode;
@@ -208,8 +192,8 @@ public class ValidateResourceLoader {
 						String refgid = vele.attributeValue("refgid");
 						String ref = vele.attributeValue("ref");
 						if (refgid != null) {
-							Map map = cv.getFieldGroups().get(refgid);
-							if (map != null)
+							Map<String, ControlField> map = cv.getFieldGroups().get(refgid);
+							if (map != null) 
 								mappings.putAll(map);
 						}
 						if (ref != null) {
@@ -254,9 +238,9 @@ public class ValidateResourceLoader {
 						String agid = vele.attributeValue("refgid");
 						String aref = vele.attributeValue("ref");
 						if (agid != null) {
-							Map rmap = relation.get(gid);
+							Map<String, String> rmap = relation.get(gid);
 							if (rmap == null) {
-								rmap = new LinkedHashMap();
+								rmap = new LinkedHashMap<>();
 								relation.put(gid, rmap);
 							}
 							rmap.put(agid, gid);
@@ -284,7 +268,7 @@ public class ValidateResourceLoader {
 	}
 
 	private static void groupsOperation(String gid, Map<String, Map<String, ControlField>> groups,
-			Map<String, Map<String, String>> relation, Set locations, Map<String, ControlField> additive) {
+			Map<String, Map<String, String>> relation, Set<String> locations, Map<String, ControlField> additive) {
 		Map<String, String> dependents = relation.get(gid);
 		if (locations.contains(gid)) {
 			logger.error("", gid + " have relation too many in " + locations.toString());

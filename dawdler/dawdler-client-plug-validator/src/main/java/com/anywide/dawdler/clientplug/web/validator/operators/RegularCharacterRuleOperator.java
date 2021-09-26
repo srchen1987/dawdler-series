@@ -26,12 +26,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  */
 public class RegularCharacterRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "regularCharacter";
+	public static final String RULE_KEY = "regularCharacter";
 	public static final String REGEX = "^[0-9a-zA-Z\u4e00-\u9fa5]+$";
 	public static final String EXPLAIN = "汉字字母或数字验证";
 
 	public RegularCharacterRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

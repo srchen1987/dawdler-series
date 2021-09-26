@@ -37,10 +37,11 @@ import com.anywide.dawdler.util.ToolEL;
  * @author jackson.song
  * @version V1.0
  * @Title TreeDirect.java
- * @Description 数型结构的指令 （注释后补的）
+ * @Description 数型结构的指令 已废弃 有需求采用前端组件实现
  * @date 2007年4月18日
  * @email suxuan696@gmail.com
  */
+@Deprecated
 public class TreeDirect extends Directive {
 	@Override
 	public String getName() {

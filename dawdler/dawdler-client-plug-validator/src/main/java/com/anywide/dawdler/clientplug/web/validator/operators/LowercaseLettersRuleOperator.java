@@ -25,12 +25,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class LowercaseLettersRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "lowercaseLetters";
+	public static final String RULE_KEY = "lowercaseLetters";
 	public static final String REGEX = "^[a-z]+$";
 	public static final String EXPLAIN = "小写字母验证";
 
 	public LowercaseLettersRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

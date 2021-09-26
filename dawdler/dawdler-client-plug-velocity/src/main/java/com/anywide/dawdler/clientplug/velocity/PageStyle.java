@@ -25,7 +25,7 @@ import java.util.Map;
  * @author jackson.song
  * @version V1.0
  * @Title PageStyle.java
- * @Description 分页样式 （注释后补的）
+ * @Description 分页样式
  * @date 2006年8月10日
  * @email suxuan696@gmail.com
  */
@@ -35,7 +35,7 @@ public class PageStyle {
 	public static final String PAGECOUNTMARK = "(pagecount)";
 	public static final String CONTENTMARK = "~content_mark";
 
-	private static final Map<String, PageStyleContent> stylecontents = new HashMap();
+	private static final Map<String, PageStyleContent> stylecontents = new HashMap<>();
 	private static final PageStyle pageStyle = new PageStyle();
 
 	static {
@@ -47,13 +47,13 @@ public class PageStyle {
 		pcont.setLastpage("<a href=\"" + CONTENTMARK + "\">下一页</a> ");
 		pcont.setEndpage("<a href=\"" + CONTENTMARK + "\">尾页</a>");
 		stylecontents.put("default", pcont);
-		export("adminstyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
+		export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
 				"<a class=\"prev\" href=\"" + CONTENTMARK + "\"></a>",
 				"<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a>",
 				"<strong><font color=\"red\">" + PMARK + "</font></strong>",
 				"<a class=\"nxt\" href=\"" + CONTENTMARK + "\"></a>",
 				"<span><a href=\"" + CONTENTMARK + "\">尾页</a></span>", null);
-		export("bbsstyle", "<a href=\"" + CONTENTMARK + "\">首页</a>", "<a href=\"" + CONTENTMARK + "\">上一页</a>",
+		export("bbsStyle", "<a href=\"" + CONTENTMARK + "\">首页</a>", "<a href=\"" + CONTENTMARK + "\">上一页</a>",
 				"<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a>", "<strong>" + PMARK + "</strong>",
 				"<a href=\"" + CONTENTMARK + "\">下一页</a>", "<a href=\"" + CONTENTMARK + "\">尾页</a>",
 				"<label><input type=\"text\" value=\"" + PAGEONMARK

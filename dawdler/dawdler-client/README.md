@@ -1,19 +1,21 @@
 # dawdler-client
-#### 模块介绍
+
+## 模块介绍
+
 dawdler-client 客户端核心代码，过滤器，服务发现，连接池，动态代理，aop实现，负载均衡等。
 
+### 1. web端的pom中引入依赖
 
-##### 1. web端的pom中引入依赖
-	
-	<groupId>dawdler</groupId>
-	<artifactId>dawdler-client</artifactId>
+```xml
+ <groupId>dawdler</groupId>
+ <artifactId>dawdler-client</artifactId>
+```
 
-##### 2. client/client-conf.xml配置文件说明
+### 2. client/client-conf.xml配置文件说明
 
 例:
 
-```
-
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
     <zk-host>localhost:2181</zk-host><!-- zookeeeper的地址 目前只支持zk-->
@@ -38,43 +40,38 @@ dawdler-client 客户端核心代码，过滤器，服务发现，连接池，�
     </loads-on>
 
 </config>
-
 ```
 
+### 3. api 调用方式
 
- 
-##### 3. api 调用方式
-
-```
-
+```java
 public static void main(String[] args) throws Exception {
-		Transaction tr = TransactionProvider.getTransaction("defaultgroup");
-		tr.setServiceName("com.anywide.dawdler.demo.service.HelloService");//接口全名
-		tr.setMethod("say");//方法名
-		tr.addString("jackson");//参数 String类型并传值 Transaction有一系列传参方法 具体查看Transaction
-		Object obj = tr.executeResult();//执行
-		
-		System.out.println(obj);
-		
-		ConnectionPool.shutdown();	
-	}
-
+  Transaction tr = TransactionProvider.getTransaction("defaultgroup");
+  tr.setServiceName("com.anywide.dawdler.demo.service.HelloService");//接口全名
+  tr.setMethod("say");//方法名
+  tr.addString("jackson");//参数 String类型并传值 Transaction有一系列传参方法 具体查看Transaction
+  Object obj = tr.executeResult();//执行
+  
+  System.out.println(obj);
+  
+  ConnectionPool.shutdown(); 
+ }
 ```
 
-##### 4. interface proxy 调用方式
+### 4. interface proxy 调用方式
 
+```java
+ HelloService hs = ServiceFactory.getService(HelloService.class, "defaultgroup");
+ String response = hs.say("jackson");
 ```
 
-	HelloService hs = ServiceFactory.getService(HelloService.class, "defaultgroup");
-	String response = hs.say("jackson");
-		
+### 5.  调用端过滤器 DawdlerClientFilter
 
-```
-##### 4.  调用端过滤器 DawdlerClientFilter
+实现DawdlerClientFilter接口，同时通过SPI方式扩展，具体可参考dawdler-circuit-breaker模块下的CircuitBreakerFilter。
 
-实现DawdlerClientFilter接口，同时通过SPI方式扩展，具体可参考dawdler-circuit-breaker模块下的CircuitBreakerFilter
+### 6.  调用端负载均衡扩展
 
-##### 5.  调用端负载均衡扩展
+ 继承AbstractLoadBalance抽象类，构造方法中传入的name即为RemoteService注解中的loadBalance(默认为roundRobin)，也为ServiceFactory中的getService方法参数loadBalance。
 
- 继承AbstractLoadBalance抽象类，构造方法中传入的name即为RemoteService注解中的loadBalance(默认为roundRobin)，也为ServiceFactory中的getService方法参数loadBalance。自行扩展请参考本模块下com.anywide.dawdler.client.cluster.impl.RoundRobinLoadBalance
+自行扩展请参考本模块下com.anywide.dawdler.client.cluster.impl.RoundRobinLoadBalance
  目前提供随机负载与轮询负载，如果需要其他实现可以自行扩展。

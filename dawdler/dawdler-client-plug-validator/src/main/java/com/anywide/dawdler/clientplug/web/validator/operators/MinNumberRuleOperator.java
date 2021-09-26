@@ -28,10 +28,10 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MinNumberRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^minnumber:([-+]?\\d+(\\.\\d+)?$)";
+	public static final String RULE_KEY = "^minNumber:([-+]?\\d+(\\.\\d+)?$)";
 
 	public MinNumberRuleOperator() {
-		super(RULEKEY);
+		super(RULE_KEY);
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class MinNumberRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "最小数值不能小于指定数字如:minnumber:25或minnumber:25.32!";
+		return "最小数值不能小于指定数字如:minNumber:25或minNumber:25.32，支持整数或小数!";
 	}
 
 }
