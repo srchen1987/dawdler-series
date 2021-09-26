@@ -28,10 +28,10 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MaxSelectRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^maxselect:([1-9]{1}\\d*$)";
+	public static final String RULE_KEY = "^maxSelect:([1-9]{1}\\d*$)";
 
 	public MaxSelectRuleOperator() {
-		super(RULEKEY);
+		super(RULE_KEY);
 	}
 
 	@Override
@@ -52,6 +52,6 @@ public class MaxSelectRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "最大选择数或最大参数个数或List或数组的长度不能大于指定数字如:maxselect:3!";
+		return "最大选择数或最大参数个数或List或数组的长度不能大于指定数字如:maxSelect:3!";
 	}
 }

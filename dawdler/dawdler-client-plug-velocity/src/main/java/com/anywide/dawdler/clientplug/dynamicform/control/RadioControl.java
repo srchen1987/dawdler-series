@@ -33,23 +33,23 @@ public class RadioControl extends Control {
 
 	@Override
 	protected String replaceContent() {
-		String controlname = tag.getControlname();
-		String controltype = tag.getControltype();
+		String controlName = tag.getControlName();
+		String controlType = tag.getControlType();
 		String css = tag.getCss();
-		String viewName = tag.getViewname();
-		String validateRule = tag.getValidaterule();
-		String showitems = tag.getShowitems();
+		String viewName = tag.getViewName();
+		String validateRule = tag.getValidateRule();
+		String showItems = tag.getShowItems();
 		String value = tag.getValue();
 		String additional = tag.getAdditional();
-		boolean radiodefault = tag.getRadiodefault();
-		if (showitems == null) {
+		boolean radioDefault = tag.isRadioDefault();
+		if (showItems == null) {
 			throw new NullPointerException("show item can't null!");
 		}
-		String[] showitem = showitems.split(",");
+		String[] showitem = showItems.split(",");
 		StringBuffer sb = new StringBuffer(150);
 		for (int i = 0; i < showitem.length; i++) {
-			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
-					.replace(ControlContent.CONTROLTYPEREPLACE, controltype)
+			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
+					.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 					.replace(ControlContent.VIEWNAMEREPLACE, viewName));
 			if (css != null && !css.trim().equals(""))
 				sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
@@ -57,7 +57,7 @@ public class RadioControl extends Control {
 				sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
 			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, i + ""));
 			sb.append(value != null ? value.equals("" + i) ? ControlContent.CHECKED : ""
-					: (i == 0 && radiodefault) ? ControlContent.CHECKED : "");
+					: (i == 0 && radioDefault) ? ControlContent.CHECKED : "");
 			if (additional != null)
 				sb.append(" " + additional);
 			sb.append(ControlContent.INPUTEND);

@@ -38,8 +38,8 @@ import com.anywide.dawdler.clientplug.web.validator.operators.StringRuleOperator
 public class RuleOperatorExecuter {
 	private static final Logger logger = LoggerFactory.getLogger(RuleOperatorExecuter.class);
 
-	public static String invokeStringRuleOperator(String ruleKey, Object value) {
-		StringRuleOperator so = RuleOperatorProvider.getStringRules().get(ruleKey);
+	public static String invokeStringRuleOperator(String RULE_KEY, Object value) {
+		StringRuleOperator so = RuleOperatorProvider.getStringRules().get(RULE_KEY);
 		if (so == null)
 			return null;
 		return so.validate(value);

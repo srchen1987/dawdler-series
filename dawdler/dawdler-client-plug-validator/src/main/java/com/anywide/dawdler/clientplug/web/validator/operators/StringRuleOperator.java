@@ -33,10 +33,10 @@ import com.anywide.dawdler.clientplug.web.validator.ValidatorFactory;
  * @email suxuan696@gmail.com
  */
 public abstract class StringRuleOperator extends RuleOperator {
-	public StringRuleOperator(String RULEKEY, String REGEX, String EXPLAIN) {
-		super(RULEKEY, false);
-		if (REGEX != null)
-			RegexRules.registerRule(RULEKEY, Pattern.compile(REGEX), EXPLAIN);
+	public StringRuleOperator(String RULE_KEY, String regex, String explain) {
+		super(RULE_KEY, false);
+		if (regex != null)
+			RegexRules.registerRule(RULE_KEY, Pattern.compile(regex), explain);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public abstract class StringRuleOperator extends RuleOperator {
 	protected String validate(Object value, String errorMessage) {
 		if (value == null)
 			return null;
-		AbstractValidator validator = ValidatorFactory.getValidator(ruleKey);
+		AbstractValidator validator = ValidatorFactory.getValidator(RULE_KEY);
 		if (validator == null)
 			return null;
 		boolean flag = true;

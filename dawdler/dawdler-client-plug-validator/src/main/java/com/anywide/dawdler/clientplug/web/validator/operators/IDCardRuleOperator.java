@@ -29,12 +29,12 @@ import com.anywide.dawdler.clientplug.web.validator.ext.IDCard;
  * @email suxuan696@gmail.com
  */
 public class IDCardRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "IDCard";
+	public static final String RULE_KEY = "IDCard";
 	public static final String REGEX = null;
 	public static final String EXPLAIN = "身份证验证";
 
 	public IDCardRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

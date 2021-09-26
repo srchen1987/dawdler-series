@@ -27,10 +27,10 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 public class NegativeNumberOperator extends StringRuleOperator {
 	public static final String EXPLAIN = "负整数验证";
 	public static final String REGEX = "^-[1-9]{1}\\d*$";
-	public static final String RULEKEY = "negativeNumber";
+	public static final String RULE_KEY = "negativeNumber";
 
 	public NegativeNumberOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

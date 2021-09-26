@@ -28,10 +28,10 @@ import java.util.regex.Matcher;
  * @email suxuan696@gmail.com
  */
 public class MinSelectRuleOperator extends RegexRuleOperator {
-	public static final String RULEKEY = "^minselect:([1-9]{1}\\d*$)";
+	public static final String RULE_KEY = "^minSelect:([1-9]{1}\\d*$)";
 
 	public MinSelectRuleOperator() {
-		super(RULEKEY);
+		super(RULE_KEY);
 	}
 
 	@Override
@@ -56,6 +56,6 @@ public class MinSelectRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minselect:3!";
+		return "最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minSelect:3!";
 	}
 }

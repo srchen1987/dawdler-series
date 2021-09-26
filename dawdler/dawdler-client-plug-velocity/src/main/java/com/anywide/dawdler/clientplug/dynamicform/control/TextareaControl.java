@@ -33,16 +33,16 @@ public class TextareaControl extends Control {
 
 	@Override
 	protected String replaceContent() {
-		String controlname = tag.getControlname();
-		String controltype = tag.getControltype();
+		String controlName = tag.getControlName();
+		String controlType = tag.getControlType();
 		String css = tag.getCss();
-		String viewName = tag.getViewname();
-		String validateRule = tag.getValidaterule();
+		String viewName = tag.getViewName();
+		String validateRule = tag.getValidateRule();
 		String value = tag.getValue();
 		String additional = tag.getAdditional();
 		StringBuffer sb = new StringBuffer(128);
-		sb.append(ControlContent.TEXTAREASTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
-				.replace(ControlContent.CONTROLTYPEREPLACE, controltype)
+		sb.append(ControlContent.TEXTAREASTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
+				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
 		if (css != null && !css.trim().equals(""))
 			sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
