@@ -1,31 +1,18 @@
 /**
- * date : 2007-2-25 11:05 author colorless glasses QQ 121616325
+ * date : 2007-2-25 11:05 author jackson.song
  *
  *
- * notempty&englishWords&maxsize:25&minsize:3
+ * 空值 notEmpty 手机号码 cellPhone, email email, 电话 phone, 整数 number, 英文字母 englishWords, 汉字 chineseWords, 网址 webSite, 实数
+ * realNumber, 自然数 natureNumber, 日期 date, 汉字、字母或数字 regularCharacter, 小写英文字母
+ * lowercaseLetters, 大写英文字母 capitalLetters, 负整数 negativeNumber, 正整数 positiveNumber,
+ * 身份证 IDCard, chineseWords只能是汉字, englishWords只能是英文字母。
  *
- * 空值 notempty 手机号码 cellPhone email email 电话 phone 整数 number 英文字母 englishWords 汉字 chineseWords 网址 webSite 实数
- * realNumber 自然数 natureNumber 日期 date 汉字、字母或数字 regularCharacter 小写英文字母
- * lowercaseLetters 大写英文字母 capitalLetters 负整数 negativeNumber 正整数 positiveNumber
- * 身份证 IDCard chineseWords只能是汉字 englishWords只能是英文字母
- *
- * 以下是包括数值的表达式,包括数值的必须在:号后追加你想加入的数字 如 maxsize:25 字符串长度不能超过25 长度 大 maxsize 字符串的长度
- * 长度 小 minsize 选择数量 大 maxselect 只针对下拉列表框 复选框 单选框有作用 选择数量 小 minselect 数字值 大
- * maxnumber 数字值 小 minnumber
- *
- *
- *
- *
- * 请注意 如果需要组合应用请用&连接起来,如 number&maxnumber:25&minnumber:3 表示含义为 必须是一个大于3并小于25的数
+ * 以下是包括数值的表达式,包括数值的必须在:号后追加你想加入的数字 如 maxSize:25 字符串长度不能超过25 长度 大 maxSize 字符串的长度
+ * 长度 小 minSize 选择数量 大 maxSelect 只针对下拉列表框 复选框 单选框有作用 选择数量 小 minSelect 数字值 大
+ * maxNumber 数字值 小 minNumber
+ * 请注意 如果需要组合应用请用&连接起来,如 number&maxNumber:25&minNumber:3 表示含义为 必须是一个大于3并小于25的数
  */
-var isNullNoSkip = new Array("notEmpty", "maxselect", "minselect");
-var rulesdata = new Array(['notEmpty', 2], ['cellPhone', 4],
-    ['email', 8], ['phone', 16], ['number', 32], ['length', 64], [
-        'englishWords', 128], ['chineseWords', 256], [
-        'webSite', 512], ['realNumber', 1024], ['natureNumber',
-        2048], ['date', 4096], ['regularCharacter', 8192], [
-        'lowercaseLetters', 16384], ['capitalLetters', 32768], [
-        'IDCard', 65536]);
+var isNullNoSkip = new Array("notEmpty", "maxSelect", "minSelect");
 var debug = false;
 var success_prefix = "";
 var success_suffix = "";
@@ -36,9 +23,9 @@ function print(text) {
     if (debug) alert(text);
 }
 
-var regs = new Array(/maxsize:([0-9]+)/, /minsize:([0-9]+)/,
-    /maxnumber:([0-9]+)/, /minnumber:([0-9]+)/, /maxselect:([0-9]+)/,
-    /minselect:([0-9]+)/);
+var regs = new Array(/maxSize:([0-9]+)/, /minSize:([0-9]+)/,
+    /maxNumber:([0-9]+)/, /minNumber:([0-9]+)/, /maxSelect:([0-9]+)/,
+    /minSelect:([0-9]+)/);
 
 // 空值
 function notEmpty(none) {
@@ -48,32 +35,20 @@ function notEmpty(none) {
     return true;
 }
 
-/**
- function ni(ni){
-	if(ni!='你')return "必须输入 你 ";
-		return true;
-
-}
- **/
 // 手机号码
 function cellPhone(cellPhone) {
     //var reg = /(^[1][3,5,8][0-9]{9}$)|(^0[1][3,5][0-9]{9}$)/;
     var reg = /(^(16[0-9]|17[0-9]|13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)|(^0(13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)/;
-    return cellPhone.match(reg) ? true : "请输入合法的手机号码！";
+    return cellPhone.match(reg) ? true : "请输入手机号码！";
 }
 
 // email
 function email(email) {
     //var reg = /^([-_A-Za-z0-9\.]+)@([_A-Za-z0-9\-]+\.)[A-Za-z0-9]{2,3}$/;
     var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,4}){1,3})$/;
-    return email.match(reg) ? true : "请输入合法E-Mail地址！";
+    return email.match(reg) ? true : "请输入E-Mail地址！";
 }
 
-// 固定电话
-function phone(phone) {
-    var reg = /(^([0][1-9]{2,3}[-])?\d{3,8}(-\d{1,6})?$)|(^\([0][1-9]{2,3}\)\d{3,8}(\(\d{1,6}\))?$)|(^\d{3,8}$)/;
-    return phone.match(reg) ? true : "请输入合法的电话号码！";
-}
 
 // 数字
 function number(number) {
@@ -82,33 +57,29 @@ function number(number) {
 }
 
 // 长度大小
-function maxsize(value, size) {
+function maxSize(value, size) {
     return value.trim().length > size[1] ? ("不能大于" + size[1] + "个字符!") : true;
 }
 
-function minsize(value, size) {
+function minSize(value, size) {
     return value.trim().length < size[1] ? ("不能小于" + size[1] + "个字符!") : true;
 }
 
-function minselect(selectsize, size) {
+function minSelect(selectsize, size) {
     return selectsize < size[1] ? ("至少要选择或选中" + size[1] + "项!") : true;
 }
 
-function maxselect(selectsize, size) {
+function maxSelect(selectsize, size) {
     return selectsize > size[1] ? ("最多只能选择或选中" + size[1] + "项!") : true;
 }
 
-function maxnumber(value, size) {
-    return value > Number(size[1]) ? ("数值不能大于" + size[1]) : true;
-}
-
-function minnumber(value, size) {
+function minNumber(value, size) {
     return value < Number(size[1]) ? ("数值不能小于" + size[1]) : true;
 }
 
 function englishWords(englishWords) {
     var reg = /^[A-Z|a-z]+$/;
-    return englishWords.match(reg) ? true : "请输入合法的英文字母！";
+    return englishWords.match(reg) ? true : "请输入英文字母！";
 }
 
 function chineseWords(chineseWords) {
@@ -118,7 +89,7 @@ function chineseWords(chineseWords) {
 
 function webSite(webSite) {
     var reg = /^(http(s)?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-    return webSite.match(reg) ? true : "请输入合法网址！";
+    return webSite.match(reg) ? true : "请输入网址！";
 }
 
 function realNumber(realNumber) {
@@ -165,35 +136,30 @@ function positiveNumber(positiveNumber) {
 
 function IDCard(IDCard) {
     num = IDCard.toUpperCase();
-    // 身份证号码为15位或者18位，15位时全为数字，18位前17位为数字，最后一位是校验位，可能为数字或字符X。
     if (!(/(^\d{15}$)|(^\d{17}([0-9]|X)$)/.test(num))) {
         return '输入的身份证号长度不对，或者号码不符合规定！\n15位号码应全为数字，18位号码末位可以为数字或X。';
         return false;
     }
-    // 校验位按照ISO 7064:1983.MOD 11-2的规定生成，X可以认为是数字10。
-    // 下面分别分析出生日期和校验位
     var len, re;
     len = num.length;
     if (len == 15) {
         re = new RegExp(/^(\d{6})(\d{2})(\d{2})(\d{2})(\d{3})$/);
         var arrSplit = num.match(re);
-        // 检查生日日期是否正确
-        var dtmBirth = new Date('19' + arrSplit[2] + '/' + arrSplit[3] + '/'
-            + arrSplit[4]);
+        var dtmBirth = new Date('19' + arrSplit[2] + '/' + arrSplit[3] + '/' +
+            arrSplit[4]);
         var bGoodDay;
-        bGoodDay = (dtmBirth.getYear() == Number(arrSplit[2]))
-            && ((dtmBirth.getMonth() + 1) == Number(arrSplit[3]))
-            && (dtmBirth.getDate() == Number(arrSplit[4]));
+        bGoodDay = (dtmBirth.getYear() == Number(arrSplit[2])) &&
+            ((dtmBirth.getMonth() + 1) == Number(arrSplit[3])) &&
+            (dtmBirth.getDate() == Number(arrSplit[4]));
         if (!bGoodDay) {
-            return '输入的身份证号里出生日期不对！';
+            return '输入的身份证号里出生日期不正确！';
         } else {
-            // 将15位身份证转成18位
-            // 校验位按照ISO 7064:1983.MOD 11-2的规定生成，X可以认为是数字10。
             var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5,
                 8, 4, 2);
             var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4',
                 '3', '2');
-            var nTemp = 0, i;
+            var nTemp = 0,
+                i;
             num = num.substr(0, 6) + '19' + num.substr(6, num.length - 6);
             for (i = 0; i < 17; i++) {
                 nTemp += num.substr(i, 1) * arrInt[i];
@@ -205,24 +171,22 @@ function IDCard(IDCard) {
     if (len == 18) {
         re = new RegExp(/^(\d{6})(\d{4})(\d{2})(\d{2})(\d{3})([0-9]|X)$/);
         var arrSplit = num.match(re);
-        // 检查生日日期是否正确
-        var dtmBirth = new Date(arrSplit[2] + "/" + arrSplit[3] + "/"
-            + arrSplit[4]);
+        var dtmBirth = new Date(arrSplit[2] + "/" + arrSplit[3] + "/" +
+            arrSplit[4]);
         var bGoodDay;
-        bGoodDay = (dtmBirth.getFullYear() == Number(arrSplit[2]))
-            && ((dtmBirth.getMonth() + 1) == Number(arrSplit[3]))
-            && (dtmBirth.getDate() == Number(arrSplit[4]));
+        bGoodDay = (dtmBirth.getFullYear() == Number(arrSplit[2])) &&
+            ((dtmBirth.getMonth() + 1) == Number(arrSplit[3])) &&
+            (dtmBirth.getDate() == Number(arrSplit[4]));
         if (!bGoodDay) {
             return '输入的身份证号里出生日期不对！';
         } else {
-            // 检验18位身份证的校验码是否正确。
-            // 校验位按照ISO 7064:1983.MOD 11-2的规定生成，X可以认为是数字10。
             var valnum;
             var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5,
                 8, 4, 2);
             var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4',
                 '3', '2');
-            var nTemp = 0, i;
+            var nTemp = 0,
+                i;
             for (i = 0; i < 17; i++) {
                 nTemp += num.substr(i, 1) * arrInt[i];
             }
@@ -236,7 +200,7 @@ function IDCard(IDCard) {
     return false;
 }
 
-String.prototype.trim = function () {
+String.prototype.trim = function() {
     return this.replace(/(^\s*)|(\s*$)/g, "");
 };
 
@@ -247,8 +211,6 @@ function contains(a, e) {
             for (var rg in regs) {
                 var reg = regs[rg];
                 if (e.match(reg)) {
-                    //var de = RegExp.$+;
-                    //var vs =reg.exec(e);
                     var str = e.substr(0, e.indexOf(":"));
                     if (a[j][0] == str)
                         return true;
@@ -290,7 +252,7 @@ function uniqueArr(a) {
 }
 
 function getParamType(param) {
-    return ((_t = typeof (param)) == "object" ? Object.prototype.toString.call(
+    return ((_t = typeof(param)) == "object" ? Object.prototype.toString.call(
         param).slice(8, -1) : _t).toLowerCase();
 }
 
@@ -313,10 +275,10 @@ function executeFunction(fname, value) {
     return true;
 }
 
-function parse(parserule, obj) {
-    if (parserule == null || parserule == '')
+function parse(parseRule, obj) {
+    if (parseRule == null || parseRule == '')
         return true;
-    parserule = uniqueArr(parserule.split("&"));
+    parseRule = uniqueArr(parseRule.split("&"));
     var type = arguments[2];
     if (typeof type == 'boolean') {
         try {
@@ -325,10 +287,10 @@ function parse(parserule, obj) {
                 var error = null;
                 for (var ri = 0; ri < objs.length; ri++) {
                     value = objs[ri].value;
-                    for (var rle in parserule) {
-                        var rlre = parserule[rle];
+                    for (var rle in parseRule) {
+                        var rlre = parseRule[rle];
                         if (getParamType(rlre) == 'array') {
-                            if ((rlre[0] != 'maxselect' && rlre[0] != 'minselect')) {
+                            if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
                                 error = executeFunction(rlre[0], value, rlre[1]);
                                 if (typeof error != 'boolean')
                                     return new Array(objs[ri], error.toString());
@@ -342,11 +304,11 @@ function parse(parserule, obj) {
                 }
             } else {
                 var value = obj.value.trim();
-                for (var rle in parserule) {
-                    var rlre = parserule[rle];
+                for (var rle in parseRule) {
+                    var rlre = parseRule[rle];
                     var error = null;
                     if (getParamType(rlre) == 'array') {
-                        if ((rlre[0] != 'maxselect' && rlre[0] != 'minselect')) {
+                        if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
                             error = executeFunction(rlre[0], value, rlre[1]);
                         }
                     } else {
@@ -365,22 +327,22 @@ function parse(parserule, obj) {
     } else {
         if (type == 'radio') {
             var objs = document.getElementsByName(obj.name);
-            var objvar = null;
+            var objVar = null;
             var value = null;
             var size = 0;
             for (var ri = 0; ri < objs.length; ri++) {
                 if (objs[ri].checked) {
                     value = objs[ri].value;
-                    var objvar = objs[ri];
+                    var objVar = objs[ri];
                     size++;
                     break;
                 }
             }
-            for (var rle in parserule) {
-                var rlre = parserule[rle];
+            for (var rle in parseRule) {
+                var rlre = parseRule[rle];
                 var error = null;
                 if (getParamType(rlre) == 'array') {
-                    if (rlre[0] == 'maxselect' || rlre[0] == 'minselect')
+                    if (rlre[0] == 'maxSelect' || rlre[0] == 'minSelect')
                         error = executeFunction(rlre[0], size, rlre[1]);
                     else
                         error = executeFunction(rlre[0], value, rlre[1]);
@@ -388,23 +350,23 @@ function parse(parserule, obj) {
                     error = executeFunction(rlre, value);
                 }
                 if (typeof error != 'boolean') {
-                    return new Array(objvar == null ? objs[0] : objvar, error.toString());
+                    return new Array(objVar == null ? objs[0] : objVar, error.toString());
                 }
             }
         } else if (type == 'checkbox') {
             var objs = document.getElementsByName(obj.name);
             var size = 0;
             var error = null;
-            var cobjvar = null;
+            var cObjVar = null;
             for (var ri = 0; ri < objs.length; ri++) {
                 if (objs[ri].checked) {
                     value = objs[ri].value;
-                    cobjvar = objs[ri];
+                    cObjVar = objs[ri];
                     size++;
-                    for (var rle in parserule) {
-                        var rlre = parserule[rle];
+                    for (var rle in parseRule) {
+                        var rlre = parseRule[rle];
                         if (getParamType(rlre) == 'array') {
-                            if ((rlre[0] != 'maxselect' && rlre[0] != 'minselect')) {
+                            if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
                                 error = executeFunction(rlre[0], value, rlre[1]);
                                 if (typeof error != 'boolean')
                                     return new Array(objs[ri], error.toString());
@@ -417,12 +379,12 @@ function parse(parserule, obj) {
                     }
                 }
             }
-            for (var rle in parserule) {
-                var rlre = parserule[rle];
-                if ((rlre[0] == 'maxselect' || rlre[0] == 'minselect')) {
+            for (var rle in parseRule) {
+                var rlre = parseRule[rle];
+                if ((rlre[0] == 'maxSelect' || rlre[0] == 'minSelect')) {
                     error = executeFunction(rlre[0], size, rlre[1]);
                     if (typeof error != 'boolean')
-                        return new Array(cobjvar == null ? objs[0] : cobjvar, error.toString());
+                        return new Array(cObjVar == null ? objs[0] : cObjVar, error.toString());
                 }
             }
         } else if (type == 'SELECT') {
@@ -431,10 +393,10 @@ function parse(parserule, obj) {
                 if (obj.options[i].selected) {
                     var value = obj.options[i].value;
                     size++;
-                    for (var rle in parserule) {
-                        var rlre = parserule[rle];
+                    for (var rle in parseRule) {
+                        var rlre = parseRule[rle];
                         if (getParamType(rlre) == 'array') {
-                            if ((rlre[0] != 'maxselect' && rlre[0] != 'minselect')) {
+                            if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
                                 error = executeFunction(rlre[0], value, rlre[1]);
                                 if (typeof error != 'boolean')
                                     return error.toString();
@@ -447,9 +409,9 @@ function parse(parserule, obj) {
                     }
                 }
             }
-            for (var rle in parserule) {
-                var rlre = parserule[rle];
-                if ((rlre[0] == 'maxselect' || rlre[0] == 'minselect')) {
+            for (var rle in parseRule) {
+                var rlre = parseRule[rle];
+                if ((rlre[0] == 'maxSelect' || rlre[0] == 'minSelect')) {
                     error = executeFunction(rlre[0], size, rlre[1]);
                     if (typeof error != 'boolean')
                         return new Array(obj, error.toString());
@@ -460,30 +422,24 @@ function parse(parserule, obj) {
     return true;
 }
 
-function invoke(obj, type, validaterule, viewname, tagname, fromid) {
-    if (type == 'text' || tagname == 'TEXTAREA' || type == 'password'
-        || type == 'hidden') {
-        return parse(validaterule, obj, fromid);
+function invoke(obj, type, validateRule, tagName, fromId) {
+    if (type == 'text' || tagName == 'TEXTAREA' || type == 'password' ||
+        type == 'hidden') {
+        return parse(validateRule, obj, fromId);
     } else if (type == 'radio' || type == 'checkbox') {
-        return parse(validaterule, obj, type);
-    } else if (tagname == "SELECT") {
-        return parse(validaterule, obj, tagname);
+        return parse(validateRule, obj, type);
+    } else if (tagName == "SELECT") {
+        return parse(validateRule, obj, tagName);
     } else {
         return new Array(obj, "can't define " + type);
     }
 }
 
 function validate(param) {
-    /**    var obj;
-     if(param.id==""){
-		obj=param;
-		param.viewname=param.getAttribute("viewname");
-		param.validaterule=param.getAttribute("validaterule");
-	}else{**/
     var obj = document.getElementById(param.id);
-    var fromid = true;
+    var fromId = true;
     if (typeof obj == 'undefined' || obj == null) {
-        fromid = false;
+        fromId = false;
         obj = document.getElementsByName(param.id);
         if (typeof obj == 'undefined' || obj == null || obj.length == 0) {
             print("can't find id or name : " + param.id);
@@ -491,58 +447,57 @@ function validate(param) {
         }
         obj = obj[0];
     }
-//	}
 
-    var validaterule = param.validaterule;
-    if (validaterule == null)
+    var validateRule = param.validateRule;
+    if (validateRule == null)
         return true;
-    var tagname = obj.tagName;
+    var tagName = obj.tagName;
     var type = obj.getAttribute("type");
-    var viewname = param.viewname;
-    if (viewname == null) {
-        print("viewname can't null!");
+    var viewName = param.viewName;
+    if (viewName == null) {
+        print("viewName can't null!");
         return false;
     }
-    if (tagname != 'INPUT' && tagname != 'TEXTAREA' && tagname != 'SELECT') {
-        print(viewname + "\t" + tagname + "不属于表单对象!");
+    if (tagName != 'INPUT' && tagName != 'TEXTAREA' && tagName != 'SELECT') {
+        print(viewName + "\t" + tagName + "不属于表单对象!");
         return true;
     }
-    var invokevar = invoke(obj, type, validaterule, viewname, tagname, fromid);
+    var invokeVar = invoke(obj, type, validateRule, tagName, fromId);
     var error = true;
-    var invokeobj;
-    if (typeof invokevar != 'boolean') {
-        error = invokevar[1];
-        invokeobj = invokevar[0];
+    var invokeObj;
+    if (typeof invokeVar != 'boolean') {
+        error = invokeVar[1];
+        invokeObj = invokeVar[0];
     }
     //alertFunction only support user-defined  object not support html object
     if (typeof error != 'undefined' && typeof error != 'boolean') {
-        //invokeobj.style="border: 1px solid rgb(255, 0, 0);";
-        //	invokeobj.focus();
+        //invokeObj.style="border: 1px solid rgb(255, 0, 0);";
+        //	invokeObj.focus();
         if (typeof param.alertFunction == 'string') {
             var af = document.getElementById(param.alertFunction);
             if (typeof af == 'undefined' || af == null) {
                 print("can't find id: " + param.alertFunction);
                 return false;
             }
-            af.innerHTML = error_prefix + viewname + error + error_suffix;
+            af.innerHTML = error_prefix + viewName + error + error_suffix;
             return false;
         } else if (typeof param.alertFunction == 'function') {
-            param.alertFunction(invokeobj, viewname + error);
+            param.alertFunction(invokeObj, viewName + error);
             return false;
         } else {
-            if (typeof sir_validate.globalAlertFunction == 'function') {
-                sir_validate.globalAlertFunction(invokeobj, viewname + error);
+            if (typeof globalAlertFunction == 'function') {
+                globalAlertFunction(invokeObj, viewName + error);
                 return false;
-            } else if (typeof sir_validate.globalErrorDivPrefix == 'string') {
-                var af = document.getElementById(param.id + sir_validate.globalErrorDivPrefix);
+            } else if (typeof globalAlertFunction == 'string') {
+                var af = document.getElementById(param.id + globalAlertFunction);
                 if (typeof af == 'undefined' || af == null) {
-                    print("can't find id: " + param.id + sir_validate.globalErrorDivPrefix);
+                    print("can't find id: " + param.id + globalAlertFunction);
                     return false;
                 }
-                af.innerHTML = error_prefix + viewname + error + error_suffix;
+                af.innerHTML = error_prefix + viewName + error + error_suffix;
                 return false;
             } else {
-                alert(viewname + error);
+                alert(viewName + error);
                 return false;
             }
         }
@@ -553,258 +508,251 @@ function validate(param) {
                 print("can't find id: " + param.alertFunction);
                 return false;
             }
-            af.innerHTML = success_prefix + viewname + "通过验证" + success_suffix;
-        } else if (typeof sir_validate.globalErrorDivPrefix == 'string') {
-            var af = document.getElementById(param.id + sir_validate.globalErrorDivPrefix);
+            af.innerHTML = success_prefix + viewName + "通过验证" + success_suffix;
+        } else if (typeof globalAlertFunction == 'string') {
+            var af = document.getElementById(param.id + globalAlertFunction);
             if (typeof af == 'undefined' || af == null) {
-                print("can't find id: " + param.id + sir_validate.globalErrorDivPrefix);
+                print("can't find id: " + param.id + globalAlertFunction);
                 return false;
             }
-            af.innerHTML = success_prefix + viewname + "通过验证!" + success_suffix;
+            af.innerHTML = success_prefix + viewName + "通过验证!" + success_suffix;
         }
         return true;
     }
 }
 
-function buildOn(funobj, funname, funvalue) {
+function buildOn(funObj, funName, funValue) {
     try {
-        funobj.addEventListener(funname, function () {
-            return validate(funvalue);
+        funObj.addEventListener(funName, function() {
+            return validate(funValue);
         }, true);
     } catch (e) {
-        funobj.attachEvent("on" + funname, function () {
-            return validate(funvalue);
+        funObj.attachEvent("on" + funName, function() {
+            return validate(funValue);
         });
     }
 }
 
-function getValidateObjById(id) {
-    var list = sir_validate.list;
-    for (var i = 0; i < list.length; i++) {
-        var obj = list[i];
-        if (obj.id == id) return obj;
-    }
-    return null;
-}
+//globalAlertFunction = function|string
 
-var sir_validate = {
-    //globalAlertFunction:""|functionName,
-    //globalErrorDivPrefix:"_error",
-    version: "beta0.1",
-    list: new Array(),
-    addRegExp: function (exp) {
-        regs.push(exp);
-    },
-    addNoSkip: function (fname) {
-        isNullNoSkip.push(fname);
-    },
-    appendRule: function (id, rule) {
-        var obj = getValidateObjById(id);
-        if (obj != null) {
-            var ary = null;
-            if (obj.validaterule == null) ary = new Array();
-            else ary = uniqueArr(obj.validaterule.split("&"));
-            for (var i = 0; i < ary.length; i++) {
-                if (getParamType(ary[i]) == 'array') {
-                    if (ary[i][1][0] == rule) return;
-                } else {
-                    if (ary[i] == rule) return;
-                }
+function Validator() {
+    return {
+        version: "v0.1",
+        list: new Array(),
+        getValidateObjById: function(id) {
+            var list = this.list;
+            for (var i = 0; i < list.length; i++) {
+                var obj = list[i];
+                if (obj.id == id) return obj;
             }
-            if (ary.length > 0) obj.validaterule = obj.validaterule + "&" + rule;
-            else obj.validaterule = rule;
-        } else
-            print("can't find rule id:" + id + "!");
-    },
-    removeRule: function (id, rule) {
-        var obj = getValidateObjById(id);
-        if (obj != null) {
-            var ary = null;
-            if (obj.validaterule == null) ary = new Array();
-            else ary = uniqueArr(obj.validaterule.split("&"));
-            for (var i = 0; i < ary.length; i++) {
-                var rem = false;
-                if (getParamType(ary[i]) == 'array')
-                    rem = ary[i][1][0] == rule;
-                else
-                    rem = ary[i] == rule;
-                if (rem) {
-                    ary.splice(i, 1);
-                    break;
-                }
-            }
-            if (ary.length > 0) {
-                var strbuf = "";
+            return null;
+        },
+        addRegExp: function(exp) {
+            regs.push(exp);
+        },
+        addNoSkip: function(fname) {
+            isNullNoSkip.push(fname);
+        },
+        appendRule: function(id, rule) {
+            var obj = getValidateObjById(id);
+            if (obj != null) {
+                var ary = null;
+                if (obj.validateRule == null) ary = new Array();
+                else ary = uniqueArr(obj.validateRule.split("&"));
                 for (var i = 0; i < ary.length; i++) {
-                    strbuf += ary[i];
-                    if (i < ary.length - 1)
-                        strbuf += "&";
+                    if (getParamType(ary[i]) == 'array') {
+                        if (ary[i][1][0] == rule) return;
+                    } else {
+                        if (ary[i] == rule) return;
+                    }
                 }
-                obj.validaterule = strbuf;
-            } else {
-                obj.validaterule = null;
+                if (ary.length > 0) obj.validateRule = obj.validateRule + "&" + rule;
+                else obj.validateRule = rule;
+            } else
+                print("can't find rule id:" + id + "!");
+        },
+        removeRule: function(id, rule) {
+            var obj = getValidateObjById(id);
+            if (obj != null) {
+                var ary = null;
+                if (obj.validateRule == null) ary = new Array();
+                else ary = uniqueArr(obj.validateRule.split("&"));
+                for (var i = 0; i < ary.length; i++) {
+                    var rem = false;
+                    if (getParamType(ary[i]) == 'array')
+                        rem = ary[i][1][0] == rule;
+                    else
+                        rem = ary[i] == rule;
+                    if (rem) {
+                        ary.splice(i, 1);
+                        break;
+                    }
+                }
+                if (ary.length > 0) {
+                    var strBuf = "";
+                    for (var i = 0; i < ary.length; i++) {
+                        strBuf += ary[i];
+                        if (i < ary.length - 1)
+                            strBuf += "&";
+                    }
+                    obj.validateRule = strBuf;
+                } else {
+                    obj.validateRule = null;
+                }
             }
-        }
-    },
-    removeAllRule: function (id) {
-        var obj = getValidateObjById(id);
-        if (obj != null) {
-            obj.validaterule = null;
-        }
-    },
-    setRule: function (id, rule) {
-        var obj = getValidateObjById(id);
-        if (obj != null) {
-            obj.validaterule = rule;
-        }
-    },
-    setViewName: function (id, viewname) {
-        var obj = getValidateObjById(id);
-        if (obj != null) {
-            obj.viewname = viewname;
-        }
-    },
-    datas: {
-        push: function (edata) {
-            var isht = goodNodeHTML(edata);
-            if (isht) {
-                edata.id = edata.name;
-                edata.viewname = edata.getAttribute("viewname");
-                edata.validaterule = edata.getAttribute("validaterule");
-                edata.buildFunction = edata.getAttribute("buildFunction");
-                if (edata.getAttribute("alertFunction") != null) {
+        },
+        removeAllRule: function(id) {
+            var obj = getValidateObjById(id);
+            if (obj != null) {
+                obj.validateRule = null;
+            }
+        },
+        setRule: function(id, rule) {
+            var obj = getValidateObjById(id);
+            if (obj != null) {
+                obj.validateRule = rule;
+            }
+        },
+        setViewName: function(id, viewName) {
+            var obj = getValidateObjById(id);
+            if (obj != null) {
+                obj.viewName = viewName;
+            }
+        },
+        push: function(eData) {
+            var isHtml = goodNodeHTML(eData);
+            if (isHtml) {
+                eData.id = eData.name;
+                eData.viewName = eData.getAttribute("viewName");
+                eData.validateRule = eData.getAttribute("validateRule");
+                eData.buildFunction = eData.getAttribute("buildFunction");
+                if (eData.getAttribute("alertFunction") != null) {
                     try {
-                        if (typeof eval(edata.getAttribute("alertFunction")) == 'function') {
-                            edata.alertFunction = eval(edata.getAttribute("alertFunction"));
+                        if (typeof eval(eData.getAttribute("alertFunction")) == 'function') {
+                            eData.alertFunction = eval(eData.getAttribute("alertFunction"));
                         }
                     } catch (e) {
-                        edata.alertFunction = edata.getAttribute("alertFunction");
+                        eData.alertFunction = eData.getAttribute("alertFunction");
                     }
                 }
             }
-            if (edata.viewname) edata.viewname = removeHTMLTag(edata.viewname);
-            if (edata.id == null || edata.id == "") {
+            if (eData.viewName) eData.viewName = removeHTMLTag(eData.viewName);
+            if (eData.id == null || eData.id == "") {
                 print("id can't null!");
                 return;
             }
-            for (var i = 0; i < sir_validate.list.length; i++) {
-                if (edata.id == sir_validate.list[i].id) return;
+            for (var i = 0; i < this.list.length; i++) {
+                if (eData.id == this.list[i].id) return;
             }
-            if (edata != null && edata.buildFunction != null) {
-                var af = document.getElementById(edata.id);
-                var bfs = edata.buildFunction.split(",");
+            if (eData != null && eData.buildFunction != null) {
+                var af = document.getElementById(eData.id);
+                var bfs = eData.buildFunction.split(",");
                 if (typeof af == 'undefined' || af == null) {
-                    var objs = document.getElementsByName(edata.id);
+                    var objs = document.getElementsByName(eData.id);
                     if (typeof objs == 'undefined' || objs == null || objs.length == 0) {
-                        print("can't find id: " + edata.id);
+                        print("can't find id: " + eData.id);
                         return;
                     } else {
                         for (var ri = 0; ri < objs.length; ri++) {
                             for (var index in bfs) {
-                                buildOn(objs[ri], bfs[index], edata);
+                                buildOn(objs[ri], bfs[index], eData);
                             }
                         }
                     }
                 } else {
                     if (af.type == 'checkbox' || af.type == 'radio') {
-                        var objs = document.getElementsByName(edata.id);
+                        var objs = document.getElementsByName(eData.id);
                         if (typeof objs == 'undefined' || objs == null || objs.length == 0) {
                             for (var index in bfs) {
-                                buildOn(af, bfs[index], edata);
+                                buildOn(af, bfs[index], eData);
                             }
                         } else {
                             for (var ri = 0; ri < objs.length; ri++) {
                                 for (var index in bfs)
-                                    buildOn(objs[ri], bfs[index], edata);
+                                    buildOn(objs[ri], bfs[index], eData);
                             }
                         }
                     } else
                         for (var index in bfs) {
-                            buildOn(af, bfs[index], edata);
+                            buildOn(af, bfs[index], eData);
                         }
                 }
             }
-            sir_validate.list.push(edata);
-        }
-    }
-};
-(function ($) {
-    $.carete_validate_rule = function (id, viewname, validaterule, buildFunction, alertFunction) {
-        return new this.validate_rule(id, viewname, validaterule, buildFunction, alertFunction);
-    },
-        $.validate_rule = function (id, viewname, validaterule, buildFunction, alertFunction) {
+            this.list.push(eData);
+        },
+        validate_rule: function(id, viewName, validateRule, buildFunction, alertFunction) {
             this.id = id;
-            this.viewname = viewname;
-            this.validaterule = validaterule;
+            this.viewName = viewName;
+            this.validateRule = validateRule;
             this.alertFunction = alertFunction;
             this.buildFunction = buildFunction;
         },
-        $.addRuleString = function (id, viewname, validaterule, buildFunction, alertFunction) {
-            this.datas.push(this.carete_validate_rule(id, viewname, validaterule, buildFunction, alertFunction));
-        },
-        $.addRuleString = function (id, viewname, validaterule, alertFunction) {
-            this.datas.push(this.carete_validate_rule(id, viewname, validaterule, null, alertFunction));
-        },
-        $.addRule = function (validate_rule) {
+        addRule: function(validate_rule) {
             if (getParamType(validate_rule) == 'array') {
                 for (var rle in validate_rule) {
-                    this.datas.push(validate_rule[rle]);
+                    this.push(validate_rule[rle]);
                 }
             } else if (getParamType(validate_rule) == 'object') {
-                this.datas.push(validate_rule);
+                this.push(validate_rule);
             } else {
                 print("unknown this addRule" + getParamType(validate_rule) + ",rule must in array or object!");
             }
         },
-        $.validateAll = function () {
-            for (var index in sir_validate.list) {
-                var param = sir_validate.list[index];
+        validateAll: function() {
+            for (var index in this.list) {
+                var param = this.list[index];
                 var rm = validate(param);
                 if (!rm) return false;
             }
             return true;
-        }, $.buildFormValidateAutoRule = function (formId, build) {
-        var form = document.getElementById(formId);
-        if (typeof form == 'undefined') {
-            print("can't build on " + formId);
-            return;
-        }
-        var vData = new Array();
-        loadNeedElement(form, vData);
-        sir_validate.addRule(vData);
-        if (build)
-            form.onsubmit = $.validateAll;
-    },
-        $.buildFormValidate = function (formId) {
+        },
+        buildFormValidateAutoRule: function(formId, build) {
             var form = document.getElementById(formId);
             if (typeof form == 'undefined') {
                 print("can't build on " + formId);
                 return;
             }
-            form.onsubmit = $.validateAll;
-        };
-})(sir_validate);
-
-function loadNeedElement(ele, vData) {
-    var eles;
-    if (ele.hasChildNodes()) {
-        eles = ele.childNodes;
-        for (var i = 0; i < eles.length; i++) {
-            loadNeedElement(eles[i], vData);
+            var vData = new Array();
+            loadNeedElement(form, vData);
+            this.addRule(vData);
+            if (build)
+                form.onsubmit = this.validateAll;
+        },
+        buildFormValidate: function(formId) {
+            var form = document.getElementById(formId);
+            var validator = this;
+            if (typeof form == 'undefined') {
+                print("can't build on " + formId);
+                return;
+            }
+            form.onsubmit = function() {
+                return validator.validateAll();
+            }
         }
     }
-    var tagname = ele.tagName;
-    if (tagname != 'INPUT' && tagname != 'TEXTAREA' && tagname != 'SELECT') return;
+};
+
+
+function loadNeedElement(ele, vData) {
+    var elements;
+    if (ele.hasChildNodes()) {
+        elements = ele.childNodes;
+        for (var i = 0; i < elements.length; i++) {
+            loadNeedElement(elements[i], vData);
+        }
+    }
+    var tagName = ele.tagName;
+    if (tagName != 'INPUT' && tagName != 'TEXTAREA' && tagName != 'SELECT') return;
     var type = ele.type;
-    if (tagname == 'INPUT' && type != 'text' && type != 'password' && type != 'radio' && type != 'checkbox' && type != 'hidden') return;
+    if (tagName == 'INPUT' && type != 'text' && type != 'password' && type != 'radio' && type != 'checkbox' && type != 'hidden') return;
     vData.push(ele);
 }
 
-function goodNodeHTML(objh) {
+function goodNodeHTML(objHtml) {
     var de = document.createElement("div");
     try {
-        de.appendChild(objh.cloneNode(true));
-        return objh.nodeType == 1 ? true : false;
+        de.appendChild(objHtml.cloneNode(true));
+        return objHtml.nodeType == 1 ? true : false;
     } catch (e) {
         return false;
     }
@@ -814,8 +762,8 @@ function removeHTMLTag(str) {
     str = str.replace(/<\/?[^>]*>/g, ''); //去除HTML tag
     str = str.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
     str = str.replace(/\n[\s| | ]*\r/g, '\n'); //去除多余空行
-    str = str.replace(/&nbsp;/ig, '');//去掉&nbsp;
+    str = str.replace(/&nbsp;/ig, ''); //去掉&nbsp;
     return str;
 }
 
-
+var sir_validator = new Validator();

@@ -28,13 +28,12 @@ import org.apache.velocity.runtime.parser.node.Node;
 
 import com.anywide.dawdler.clientplug.velocity.PageStyle;
 import com.anywide.dawdler.serverplug.load.bean.Page;
-import com.anywide.dawdler.util.ToolEL;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title ControlDirect.java
- * @Description 自定义控件的指令 （注释后补的）
+ * @Description 自定义控件的指令
  * @date 2007年4月18日
  * @email suxuan696@gmail.com
  */
@@ -57,13 +56,10 @@ public class PageDirect extends Directive {
 		if (arg2.jjtGetNumChildren() > 1) {
 			stylename = arg2.jjtGetChild(1).value(arg0) + "";
 		}
-		Object pageobj = arg0.get("page");
+		Object pageObj = arg0.get("page");
 		Page page = null;
-		if (pageobj == null) {
-			Object action = arg0.get("action");
-			page = (Page) ToolEL.getBeanValue(action, "page");
-		} else {
-			page = (Page) pageobj;
+		if (pageObj != null) {
+			page = (Page) pageObj;
 		}
 		if (page == null)
 			throw new ParseErrorException("not set page in action !");

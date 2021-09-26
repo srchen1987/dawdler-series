@@ -32,20 +32,20 @@ public class SelectControl extends Control {
 	}
 
 	protected String replaceContent() {
-		String controlname = tag.getControlname();
-		String controltype = tag.getControltype();
+		String controlName = tag.getControlName();
+		String controlType = tag.getControlType();
 		String css = tag.getCss();
-		String viewName = tag.getViewname();
-		String validateRule = tag.getValidaterule();
-		String showitems = tag.getShowitems();
+		String viewName = tag.getViewName();
+		String validateRule = tag.getValidateRule();
+		String showItems = tag.getShowItems();
 		String value = tag.getValue();
 		String additional = tag.getAdditional();
-		if (showitems == null) {
+		if (showItems == null) {
 			throw new NullPointerException("show item can't null!");
 		}
 		StringBuffer sbt = new StringBuffer(32);
-		sbt.append(ControlContent.SELECTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
-				.replace(ControlContent.CONTROLTYPEREPLACE, controltype)
+		sbt.append(ControlContent.SELECTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
+				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
 		if (css != null && !css.trim().equals(""))
 			sbt.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
@@ -54,7 +54,7 @@ public class SelectControl extends Control {
 		if (additional != null)
 			sbt.append(" " + additional);
 		sbt.append(">");
-		String[] showitem = showitems.split(",");
+		String[] showitem = showItems.split(",");
 		StringBuffer sb = new StringBuffer(150);
 		sb.append(ControlContent.OPTIONSTART.replace(ControlContent.VALUEREPLACE, "")
 				.replace(ControlContent.CHECKEDREPLACE, value == null ? ControlContent.SELECTED : ""));

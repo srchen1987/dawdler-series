@@ -26,12 +26,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  */
 public class RealNumberRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "realNumber";
+	public static final String RULE_KEY = "realNumber";
 	public static final String REGEX = "^[-+]?\\d+(\\.\\d+)?$";
 	public static final String EXPLAIN = "实数验证";
 
 	public RealNumberRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

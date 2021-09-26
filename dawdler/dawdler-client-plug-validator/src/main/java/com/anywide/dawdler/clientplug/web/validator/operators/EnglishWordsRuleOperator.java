@@ -25,12 +25,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @email suxuan696@gmail.com
  */
 public class EnglishWordsRuleOperator extends StringRuleOperator {
-	public static final String RULEKEY = "englishWords";
+	public static final String RULE_KEY = "englishWords";
 	public static final String REGEX = "^[A-Z|a-z]+$";
 	public static final String EXPLAIN = "英文字母验证";
 
 	public EnglishWordsRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

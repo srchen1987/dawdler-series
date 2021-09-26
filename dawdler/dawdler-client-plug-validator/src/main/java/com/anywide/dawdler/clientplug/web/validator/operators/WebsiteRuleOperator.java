@@ -26,12 +26,12 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  */
 public class WebsiteRuleOperator extends StringRuleOperator {
 
-	public static final String RULEKEY = "webSite";
+	public static final String RULE_KEY = "webSite";
 	public static final String REGEX = "^(http(s)?://)?([\\w-]+\\.)+[\\w-]+(\\/[\\w- .\\/?%&=]*)?";
 	public static final String EXPLAIN = "网址验证";
 
 	public WebsiteRuleOperator() {
-		super(RULEKEY, REGEX, EXPLAIN);
+		super(RULE_KEY, REGEX, EXPLAIN);
 	}
 
 	@Override

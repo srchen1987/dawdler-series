@@ -33,6 +33,9 @@ public class DisplaySwitcher {
 		if (serviceType != null) {
 			displayPlug = PlugFactory.getDisplayPlug(serviceType);
 		}
+		if(displayPlug == null) {
+			throw new NullPointerException("not found viewType "+serviceType+"!");
+		}
 		displayPlug.display(wf);
 	}
 }

@@ -32,22 +32,22 @@ public class CheckboxControl extends Control {
 	}
 
 	public String replaceContent() {
-		String controlname = tag.getControlname();
-		String controltype = tag.getControltype();
+		String controlName = tag.getControlName();
+		String controlType = tag.getControlType();
 		String css = tag.getCss();
-		String viewName = tag.getViewname();
-		String validateRule = tag.getValidaterule();
-		String showitems = tag.getShowitems();
+		String viewName = tag.getViewName();
+		String validateRule = tag.getValidateRule();
+		String showItems = tag.getShowItems();
 		String value = tag.getValue();
 		String additional = tag.getAdditional();
-		if (showitems == null) {
+		if (showItems == null) {
 			throw new NullPointerException("show item can't null!");
 		}
-		String[] showitem = showitems.split(",");
+		String[] showItem = showItems.split(",");
 		StringBuffer sb = new StringBuffer(150);
-		for (int i = 0; i < showitem.length; i++) {
-			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlname)
-					.replace(ControlContent.CONTROLTYPEREPLACE, controltype)
+		for (int i = 0; i < showItem.length; i++) {
+			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
+					.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 					.replace(ControlContent.VIEWNAMEREPLACE, viewName));
 			if (css != null && !css.trim().equals(""))
 				sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
@@ -64,7 +64,7 @@ public class CheckboxControl extends Control {
 			if (additional != null)
 				sb.append(" " + additional);
 			sb.append(ControlContent.INPUTEND);
-			sb.append(showitem[i] + "   ");
+			sb.append(showItem[i] + "   ");
 		}
 		return sb.toString();
 	}
