@@ -39,7 +39,7 @@ webmvc，使用上基本与springmvc一致。提供远程加载组件的客户�
 | :-: | :-: | :-: | :-: |
 | @RequestParam | 参数 | 获取request参数，其中value为参数名 | 支持类型转换 |
 | @PathVariable | 参数 | 获取antPath的参数，其中value为antPath变量名 | 支持类型转换 |
-| @RequestAttribute | 参数 | 获取requset作用域下的属性值，其中value为属性名 | 不支持 |
+| @RequestAttribute | 参数 | 获取request作用域下的属性值，其中value为属性名 | 不支持 |
 | @SessionAttribute | 参数 | 获取session作用域下的属性值，其中value为属性名 | 不支持 |
 | @RequestHeader | 参数 | 获取http请求头值，其中value为请求头名 | 只支持String或String[] |
 | @CookieValue | 参数 | 获取cookie值，其中value为cookie名 | 只支持String |
@@ -220,7 +220,7 @@ public class OrderController {
 
 ### 5. HandlerInterceptor 拦截器
 
-拦截器的作用与springmvc的一样,实现接口HandlerInterceptor（为了降低学习成本后改成类似springmvc的拦截器，之前接口中的方法是TransactionController参数），拦截请求api之前，之后，渲染模板之后的方法。
+拦截器的作用与springmvc的一样,实现接口HandlerInterceptor，如果有多个拦截器，支持@Order注解进行升序排序，拦截请求api之前，之后，渲染模板之后的方法。
 
 示例：
 
@@ -265,7 +265,7 @@ public class UserWebInterceptor implements HandlerInterceptor {
 
 <a name="WebContextListener"></a>
 
-监听器的作用与Servlet提供的ServletContextListener完全一致，目前只提供容器启动与销毁的监听器（HttpSessionListener，ServletRequestListener，HttpSessionActivationListener 不提供，如果有需要采用servlet提供的即可）。
+监听器的作用与Servlet提供的ServletContextListener完全一致，如果有多个监听器，支持@Order注解进行升序排序。目前只提供容器启动与销毁的监听器（HttpSessionListener，ServletRequestListener，HttpSessionActivationListener 不提供，如果有需要采用servlet提供的即可）。
 
 示例：
 
@@ -344,10 +344,10 @@ public long paramLong(String paramName, long value) {
  }
 ```
 
-### 8. RemoteClassLoderFire 加载类通知器
+### 8. RemoteClassLoaderFire 加载类通知器
 
-需要获取加载类触发一些操作可以实现RemoteClassLoderFire接口，通过SPI方式扩展，参考WebComponentClassLoaderFire，用于实现自动注入Service到Controller，Listener，Interceptor。(普通开发人员一般无须扩展)
+需要获取加载类触发一些操作可以实现RemoteClassLoaderFire接口，通过SPI方式扩展，支持@Order注解进行升序排序，参考WebComponentClassLoaderFire，用于实现自动注入Service到Controller，Listener，Interceptor。(普通开发人员一般无须扩展)
 
 ### 9. DisplayPlug 视图插件扩展
 
-dawdler内部提供JsonDisplayPlug，JspDisplayPlug，VelocityDisplayPlug三种视图插件，如果有其他需要比如freemarker的需求可以实现DisplayPlug接口，通过SPI方式来进行扩展。可以参考系统内的三个插件。(普通开发人员一般无须扩展)
+dawdler内部提供JsonDisplayPlug，JspDisplayPlug，VelocityDisplayPlug三种视图插件，如果有其他需要，比如freemarker的需求可以实现DisplayPlug接口，通过SPI方式来进行扩展。可以参考系统内的三个插件。(普通开发人员一般无须扩展)

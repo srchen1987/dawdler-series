@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFacotry;
+import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFactory;
 import com.anywide.dawdler.serverplug.load.bean.Page;
 
 /**
@@ -49,13 +49,13 @@ public class SuperDAO implements BaseData {
 	public Connection getReadConnection() throws SQLException {
 		if (con != null)
 			return con;
-		return LocalConnectionFacotry.getReadConnection();
+		return LocalConnectionFactory.getReadConnection();
 	}
 
 	public Connection getWriteConnection() {
 		if (con != null)
 			return con;
-		return LocalConnectionFacotry.getWriteConnection();
+		return LocalConnectionFactory.getWriteConnection();
 	}
 
 	public <T> List<T> queryList(String sql, Class<T> c) throws SQLException {

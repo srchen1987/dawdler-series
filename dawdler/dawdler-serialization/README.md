@@ -27,4 +27,4 @@ com.anywide.dawdler.core.serializer.Serializer
 
 ### 3. 通过listener方式扩展
 
-另一种扩增方法SerializeDecider中有register方法，可以通过监听器在启动时进行扩展。
+另一种扩增方法SerializeDecider中有register方法，可以通过监听器在启动时进行扩展。这种方式客户端和服务器端都需要进行设置，不建议使用这种方式。

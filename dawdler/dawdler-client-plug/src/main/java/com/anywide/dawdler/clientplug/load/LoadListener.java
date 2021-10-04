@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ConnectionPool;
+import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.clientplug.load.classloader.ClientPlugClassLoader;
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
@@ -83,7 +84,7 @@ public class LoadListener implements ServletContextListener {
 
 	public void contextInitialized(ServletContextEvent arg0) {
 		ClientPlugClassLoader classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getcurrentPath());
-		XmlObject xml = ClientConfig.getInstance().getXml();
+		XmlObject xml = ClientConfigParser.getXmlObject();
 		for (Object o : xml.selectNodes("/config/loads-on/item")) {
 			Element ele = (Element) o;
 			String host = ele.getText();

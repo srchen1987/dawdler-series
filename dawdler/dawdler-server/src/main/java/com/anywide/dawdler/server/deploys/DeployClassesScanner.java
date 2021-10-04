@@ -54,7 +54,7 @@ public class DeployClassesScanner {
 		}
 		Scanner scanner = ServerConfigParser.getServerConfig().getScanner();
 		File[] dirfiles;
-		if (scanner == null || scanner.getFile() == null || scanner.getFile().isEmpty()) {
+		if (scanner.getJarFiles().isEmpty()) {
 			dirfiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
 					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
@@ -64,7 +64,7 @@ public class DeployClassesScanner {
 			dirfiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
 					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"))
-							|| scanner.getFile().contains(file.getName());
+							|| scanner.getJarFiles().contains(file.getName());
 				}
 			});
 		}

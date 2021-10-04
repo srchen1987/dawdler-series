@@ -48,7 +48,7 @@ public class ClientConfigInit {
 			Refresher.refreshAllConfig(orderData.getData());
 		}
 
-		for (TransactionController transactionController : AnnotationUrlHandler.getTransactionControllers()) {
+		for (Object transactionController : AnnotationUrlHandler.getTransactionControllers()) {
 			Refresher.refreshAllConfig(transactionController);
 		}
 	}

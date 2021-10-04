@@ -73,12 +73,13 @@ public @interface DBTransaction {
 
 	enum MODE {
 		forceReadOnWrite, // 强制读从写连接上，在做读写分离时需要根据插入数据做业务不能保证从库数据的实时性所以采用这种方式
-		deferToConfig// 跟从配置,根据本方法的注解定义
+		deferToConfig,// 根据本方法的注解定义
+		readOnly// 只传入读连接
 	}
 
 	enum READ_CONFIG {
 		idem, // 同上层定义
-		deferToConfig// 跟从配置,根据本方法的注解定义
+		deferToConfig// 根据本方法的注解定义
 	}
 
 }
