@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-redis-plug redis插件，针对jedis进行封装，支持单机模式与哨兵模式
+dawdler-redis-plug redis插件，针对jedis进行封装，支持单机模式与哨兵模式。
 
 ### 1. pom中引入依赖
 

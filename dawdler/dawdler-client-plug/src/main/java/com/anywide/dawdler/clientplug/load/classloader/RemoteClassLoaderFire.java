@@ -19,12 +19,12 @@ package com.anywide.dawdler.clientplug.load.classloader;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RemoteClassLoderFire.java
+ * @Title RemoteClassLoaderFire.java
  * @Description 远程类加载时触发接口
  * @date 2015年3月11日
  * @email suxuan696@gmail.com
  */
-public interface RemoteClassLoderFire {
+public interface RemoteClassLoaderFire {
 	void onLoadFire(Class<?> clazz, byte[] classCodes);
 
 	void onRemoveFire(Class<?> clazz);

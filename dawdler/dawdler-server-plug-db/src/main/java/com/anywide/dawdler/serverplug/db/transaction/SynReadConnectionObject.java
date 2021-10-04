@@ -53,7 +53,7 @@ public class SynReadConnectionObject {
 	void released() {
 		referenceCount--;
 		if (referenceCount == 0) {
-			LocalConnectionFacotry.clearSynReadConnectionObject();
+			LocalConnectionFactory.clearSynReadConnectionObject();
 			readConnectionHolder = null;
 		}
 	}

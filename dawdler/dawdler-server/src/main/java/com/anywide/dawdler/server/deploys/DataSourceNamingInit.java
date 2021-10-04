@@ -45,7 +45,7 @@ public class DataSourceNamingInit {
 	public static void init(ClassLoader classLoader)
 			throws ClassNotFoundException, NamingException, InstantiationException, IllegalAccessException {
 		Object token = new Object();
-		Hashtable table = new Hashtable<>();
+		Hashtable<String, Object> table = new Hashtable<>();
 		SelectorContext selectorContext = new SelectorContext(table, true);
 		// ContextAccessController.setSecurityToken(getName(), this);
 		ContextBindings.bindContext(classLoader, selectorContext, token);

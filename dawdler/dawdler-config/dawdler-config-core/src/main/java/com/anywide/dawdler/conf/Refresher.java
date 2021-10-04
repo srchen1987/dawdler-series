@@ -69,7 +69,7 @@ public class Refresher {
 			String path = config.path();
 			field.setAccessible(true);
 			if (!value.equals("")) {
-				Map mappingData = ConfigMappingDataCache.getMappingDataCache(path, HashMap.class);
+				Map<String, Object> mappingData = ConfigMappingDataCache.getMappingDataCache(path, HashMap.class);
 				JexlContext context = new MapContext(mappingData);
 				Object obj = engine.createExpression(value).evaluate(context);
 				setValue(field, target, obj);

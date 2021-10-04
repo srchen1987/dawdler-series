@@ -27,7 +27,7 @@ import com.anywide.dawdler.client.ServiceFactory;
 import com.anywide.dawdler.clientplug.annotation.Controller;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
-import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoderFire;
+import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.handler.RequestUrlData;
@@ -48,7 +48,7 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
  * @email suxuan696@gmail.com
  */
 @Order(0)
-public class WebComponentClassLoaderFire implements RemoteClassLoderFire {
+public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	private static final Logger logger = LoggerFactory.getLogger(WebComponentClassLoaderFire.class);
 
 	@Override

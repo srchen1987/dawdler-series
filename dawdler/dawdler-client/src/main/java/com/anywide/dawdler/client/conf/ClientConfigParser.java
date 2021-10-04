@@ -16,20 +16,19 @@
  */
 package com.anywide.dawdler.client.conf;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collection;
+import static com.anywide.dawdler.util.XmlObject.getElementAttribute;
+import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Int;
 
+import java.util.List;
+
+import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.client.conf.ClientConfig.ServerChannelGroup;
 import com.anywide.dawdler.util.DawdlerTool;
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.security.NoTypePermission;
-import com.thoughtworks.xstream.security.NullPermission;
-import com.thoughtworks.xstream.security.PrimitiveTypePermission;
+import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
@@ -42,46 +41,57 @@ import com.thoughtworks.xstream.security.PrimitiveTypePermission;
 public class ClientConfigParser {
 	private static final Logger logger = LoggerFactory.getLogger(ClientConfigParser.class);
 	private static ClientConfig config = null;
+	private static XmlObject xmlObject;
 
 	static {
-		InputStream input = null;
 		try {
-//			XStream schema = new XStream();
-//			// clear out existing permissions and set own ones
-//			schema.addPermission(NoTypePermission.NONE);
-//			// allow some basics
-//			schema.addPermission(NullPermission.NULL);
-//			schema.addPermission(PrimitiveTypePermission.PRIMITIVES);
-//			schema.allowTypeHierarchy(Collection.class);
-//			// allow any type from the same package
-//			schema.allowTypesByWildcard(new String[] {
-//			    "com.anywide.dawdler.client.conf.*"
-//			});
+			xmlObject = new XmlObject(DawdlerTool.getcurrentPath() + "client/client-conf.xml");
+			Element root = xmlObject.getRoot();
+			config = new ClientConfig();
+			Node zkHost = root.selectSingleNode("zk-host");
+			if (zkHost != null) {
+				config.setZkHost(zkHost.getText());
+			}
 
-			input = new FileInputStream(DawdlerTool.getcurrentPath() + "client/client-conf.xml");
-			XStream xstream = new XStream();
-			xstream.ignoreUnknownElements();
-			xstream.alias("config", ClientConfig.class);
-			xstream.autodetectAnnotations(true);
-			xstream.addPermission(NoTypePermission.NONE);
-			xstream.addPermission(NullPermission.NULL);
-			xstream.addPermission(PrimitiveTypePermission.PRIMITIVES);
-			xstream.allowTypeHierarchy(Collection.class);
-			xstream.allowTypesByWildcard(new String[] { "com.anywide.dawdler.client.conf.*" });
-			config = (ClientConfig) xstream.fromXML(input);
-		} catch (FileNotFoundException e) {
+			Node certificatePath = root.selectSingleNode("certificatePath");
+			if (certificatePath != null) {
+				config.setCertificatePath(certificatePath.getText());
+			}
+
+			List<Node> serverChannelGroupNode = root.selectNodes("server-channel-group");
+			for (Node node : serverChannelGroupNode) {
+				ServerChannelGroup serverChannelGroup = config.new ServerChannelGroup();
+
+				Element serverChannelGroupEle = (Element) node;
+				String groupId = getElementAttribute(serverChannelGroupEle, "channel-group-id");
+				String path = getElementAttribute(serverChannelGroupEle, "service-path");
+				int connectionNum = getElementAttribute2Int(serverChannelGroupEle, "connection-num", 2);
+				int sessionNum = getElementAttribute2Int(serverChannelGroupEle, "session-num", 2);
+				int serializer = getElementAttribute2Int(serverChannelGroupEle, "serializer", 2);
+				String user = getElementAttribute(serverChannelGroupEle, "user");
+				String password = getElementAttribute(serverChannelGroupEle, "password");
+
+				serverChannelGroup.setGroupId(groupId);
+				serverChannelGroup.setPath(path);
+				serverChannelGroup.setConnectionNum(connectionNum);
+				serverChannelGroup.setSessionNum(sessionNum);
+				serverChannelGroup.setSerializer(serializer);
+				serverChannelGroup.setUser(user);
+				serverChannelGroup.setPassword(password);
+
+				config.getServerChannelGroups().add(serverChannelGroup);
+			}
+		} catch (Exception e) {
 			logger.error("", e);
 		} finally {
-			if (input != null)
-				try {
-					input.close();
-				} catch (IOException e) {
-					logger.error("", e);
-				}
 		}
 	}
 
 	public static ClientConfig getClientConfig() {
 		return config;
+	}
+
+	public static XmlObject getXmlObject() {
+		return xmlObject;
 	}
 }
