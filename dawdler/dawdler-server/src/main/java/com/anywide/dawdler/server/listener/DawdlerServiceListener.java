@@ -22,7 +22,7 @@ import com.anywide.dawdler.server.context.DawdlerContext;
  * @author jackson.song
  * @version V1.0
  * @Title DawdlerServiceListener.java
- * @Description 服务器启动监听器 服务器端的类实现此接口即可
+ * @Description 服务器启动销毁监听器
  * @date 2015年4月19日
  * @email suxuan696@gmail.com
  */

@@ -50,7 +50,7 @@ public class ClientPlugClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(ClientPlugClassLoader.class);
 	private static final Map<String, Class<?>> remoteClass = new ConcurrentHashMap<>();
 	private static ClientPlugClassLoader classloader = null;
-	private final List<OrderData<RemoteClassLoderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
+	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
 			.getRemoteClassLoaderFire();
 	private ClientClassLoader urlCL = null;
 
@@ -82,7 +82,7 @@ public class ClientPlugClassLoader {
 			}
 			Class<?> clazz = defineClass(className, classBytes);
 			remoteClass.put(host.trim() + "-" + className, clazz);
-			for (OrderData<RemoteClassLoderFire> rf : fireList) {
+			for (OrderData<RemoteClassLoaderFire> rf : fireList) {
 				rf.getData().onLoadFire(clazz, classBytes);
 			}
 		} catch (Exception e) {
@@ -99,7 +99,7 @@ public class ClientPlugClassLoader {
 			logger.debug("remove class " + name + ".class");
 		}
 		Class<?> clazz = remoteClass.remove(name);
-		for (OrderData<RemoteClassLoderFire> rf : fireList) {
+		for (OrderData<RemoteClassLoaderFire> rf : fireList) {
 			rf.getData().onRemoveFire(clazz);
 		}
 	}

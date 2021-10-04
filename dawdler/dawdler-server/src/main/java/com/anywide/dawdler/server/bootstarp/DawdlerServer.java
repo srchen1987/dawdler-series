@@ -91,7 +91,6 @@ public class DawdlerServer {
 		} catch (InterruptedException e) {
 			logger.error("", e);
 		}
-
 	}
 
 	private void listenStop() {
