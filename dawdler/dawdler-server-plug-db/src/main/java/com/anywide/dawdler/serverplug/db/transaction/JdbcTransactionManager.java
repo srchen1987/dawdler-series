@@ -158,7 +158,7 @@ public class JdbcTransactionManager implements TransactionManager {
 		//
 		TransactionObject tranConn = defStatus.getTranConn();
 		defStatus.setSuspendConn(tranConn);
-		LocalConnectionFacotry.removeCurrentConnectionHolder(dataSource);
+		LocalConnectionFactory.removeCurrentConnectionHolder(dataSource);
 		defStatus.setTranConn(this.doGetConnection(defStatus));
 	}
 
@@ -168,8 +168,8 @@ public class JdbcTransactionManager implements TransactionManager {
 		}
 		if (defStatus.isSuspend()) {
 			TransactionObject tranConn = defStatus.getSuspendConn();
-			LocalConnectionFacotry.changeCurrentConnectionHolder(getDataSource(), tranConn.getHolder());
-			LocalConnectionFacotry.setWriteConnection(tranConn.getHolder().getConnection());
+			LocalConnectionFactory.changeCurrentConnectionHolder(getDataSource(), tranConn.getHolder());
+			LocalConnectionFactory.setWriteConnection(tranConn.getHolder().getConnection());
 			defStatus.setTranConn(tranConn);
 			defStatus.setSuspendConn(null);
 			tranConn.getHolder().released();
@@ -192,14 +192,14 @@ public class JdbcTransactionManager implements TransactionManager {
 	}
 
 	protected TransactionObject doGetConnection(final JdbcTransactionStatus defStatus) throws SQLException {
-		WriteConnectionHolder holder = LocalConnectionFacotry.currentConnectionHolder(dataSource);
+		WriteConnectionHolder holder = LocalConnectionFactory.currentConnectionHolder(dataSource);
 		if (!holder.isOpen() || !holder.hasTransaction())
 			defStatus.markNewConnection();
 		holder.requested();
 		Connection con = holder.getConnection();
 		if (defStatus.isReadOnly())
 			con.setReadOnly(true);
-		LocalConnectionFacotry.setWriteConnection(con);
+		LocalConnectionFactory.setWriteConnection(con);
 		Isolation originalIsolationLevel = null;
 		if (defStatus.getIsolationLevel() != Isolation.DEFAULT) {
 			int isolationLevel = con.getTransactionIsolation();

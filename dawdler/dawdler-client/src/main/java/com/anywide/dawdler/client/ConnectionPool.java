@@ -57,18 +57,16 @@ public class ConnectionPool {
 			ClientConfig clientConfig = ClientConfigParser.getClientConfig();
 			String connectString = clientConfig.getZkHost();
 			List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
-			if (sgs != null) {
-				for (ServerChannelGroup sg : sgs) {
-					String gid = sg.getGroupId();
-					serverChannelGroup.put(gid, sg);
-					ConnectionPool cp = getConnectionPool(gid);
-					if (cp == null) {
-						cp = new ConnectionPool();
-						cp.groupName = gid;
-						addGroup(gid, cp);
-					}
-					discoveryCenter = new ZkDiscoveryCenterClient(connectString, null, null);
+			for (ServerChannelGroup sg : sgs) {
+				String gid = sg.getGroupId();
+				serverChannelGroup.put(gid, sg);
+				ConnectionPool cp = getConnectionPool(gid);
+				if (cp == null) {
+					cp = new ConnectionPool();
+					cp.groupName = gid;
+					addGroup(gid, cp);
 				}
+				discoveryCenter = new ZkDiscoveryCenterClient(connectString, null, null);
 			}
 		} catch (Exception e) {
 			logger.error("", e);

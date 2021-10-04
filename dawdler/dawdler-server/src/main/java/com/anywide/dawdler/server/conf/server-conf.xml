@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<scanner>
-		<file>dawdler-server-plug-0.0.2-RELEASES.jar</file>
-		<file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</file>
-		<file>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</file>
-		<file>dawdler-config-serverside-0.0.2-RELEASES.jar</file>
+		<jarFile>dawdler-server-plug-0.0.2-RELEASES.jar</jarFile>
+		<jarFile>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jarFile>
+		<jarFile>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jarFile>
+		<jarFile>dawdler-config-serverside-0.0.2-RELEASES.jar</jarFile>
 		<!-- 扫描的插件包名 -->
 	</scanner>
 	<keyStore
@@ -19,46 +19,18 @@
 	<!-- tcp-port服务器启动端口号， shutdownWhiteList允许关闭服务的白名单， tcp-shutdownPort关闭服务器的端口号 
 		其他为tcp的配置 -->
 	<global-auth>
-		<list>
-			<string>global_user</string>
-			<string>song</string>
-		</list>
-		<list>
-			<string>global_user1</string>
-			<string>song1</string>
-		</list>
-		<list>
-			<string>global_user2</string>
-			<string>song2</string>
-		</list>
+		<user username="global_user" password="global_password" />
+		<user username="global_user_1" password="global_password" />
 	</global-auth>
 	<!-- 全局通用的用户，可以通用在任意本服务的模块中 第一行为帐号 第二行为密码 -->
 	<module-auth>
-		<list>
-			<string>mydemo1</string>
-			<users>
-				<list>
-					<string>jackson</string>
-					<string>song</string>
-				</list>
-				<list>
-					<string>jackson1</string>
-					<string>song1</string>
-				</list>
-			</users>
-		</list>
-		<list>
-			<string>mydemo2</string>
-			<users>
-				<list>
-					<string>srchen</string>
-					<string>song</string>
-				</list>
-				<list>
-					<string>srchen21</string>
-					<string>song1</string>
-				</list>
-			</users>
-		</list>
+		<module name="user-service">
+			<user username="user1" password="user1password" />
+			<user username="user2" password="user2password" />
+		</module>
+
+		<module name="order-service">
+			<user username="order_user1" password="user1password" />
+		</module>
 	</module-auth><!-- 模块下的用户，只能调用指定模块 第一行为帐号 第二行为密码 -->
 </config>

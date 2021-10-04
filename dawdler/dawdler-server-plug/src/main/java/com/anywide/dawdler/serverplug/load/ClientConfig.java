@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @email suxuan696@gmail.com
  */
 public class ClientConfig {
-	private static final String SRC_CONFIG = "client/client-conf.xml";
+	private static final String CLIENT_CONFIG = "client/client-conf.xml";
 	private static final ClientConfig remoteFactory = new ClientConfig();
 	private static final Logger logger = LoggerFactory.getLogger(ClientConfig.class);
 	private static long updateTime = 0;
@@ -43,12 +43,12 @@ public class ClientConfig {
 	private static File file = null;
 
 	static {
-		file = new File(DawdlerTool.getcurrentPath() + SRC_CONFIG);
+		file = new File(DawdlerTool.getcurrentPath() + CLIENT_CONFIG);
 		if (!file.isFile()) {
-			logger.warn("not found " + SRC_CONFIG);
+			logger.warn("not found " + CLIENT_CONFIG);
 		}else {
 			try {
-				xml = XmlObject.loadClassPathXML(SRC_CONFIG);
+				xml = XmlObject.loadClassPathXML(CLIENT_CONFIG);
 			} catch (IOException e) {
 				logger.error("", e);
 			} catch (DocumentException e) {
@@ -67,7 +67,7 @@ public class ClientConfig {
 
 	private static boolean isUpdate() {
 		if (!file.exists()) {
-			logger.warn("not found " + SRC_CONFIG);
+			logger.warn("not found " + CLIENT_CONFIG);
 			return false;
 		}
 		if (updateTime != file.lastModified()) {
@@ -80,11 +80,11 @@ public class ClientConfig {
 	public XmlObject getXml() {
 		if (isUpdate()) {
 			try {
-				xml = XmlObject.loadClassPathXML(SRC_CONFIG);
+				xml = XmlObject.loadClassPathXML(CLIENT_CONFIG);
 			} catch (DocumentException e) {
 				logger.error("", e);
 			} catch (IOException e) {
-				logger.warn("not found " + SRC_CONFIG);
+				logger.warn("not found " + CLIENT_CONFIG);
 			}
 		}
 		return xml;

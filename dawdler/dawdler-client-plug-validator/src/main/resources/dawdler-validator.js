@@ -65,12 +65,12 @@ function minSize(value, size) {
     return value.trim().length < size[1] ? ("不能小于" + size[1] + "个字符!") : true;
 }
 
-function minSelect(selectsize, size) {
-    return selectsize < size[1] ? ("至少要选择或选中" + size[1] + "项!") : true;
+function minSelect(selectSize, size) {
+    return selectSize < size[1] ? ("至少要选择或选中" + size[1] + "项!") : true;
 }
 
-function maxSelect(selectsize, size) {
-    return selectsize > size[1] ? ("最多只能选择或选中" + size[1] + "项!") : true;
+function maxSelect(selectSize, size) {
+    return selectSize > size[1] ? ("最多只能选择或选中" + size[1] + "项!") : true;
 }
 
 function minNumber(value, size) {
@@ -207,7 +207,7 @@ String.prototype.trim = function() {
 function contains(a, e) {
     var j = 0;
     for (j = 0; j < a.length; j++) {
-        if (getParamType(a[j]) == 'array') {
+        if (getParamTyp e(a[j]) == 'array') {
             for (var rg in regs) {
                 var reg = regs[rg];
                 if (e.match(reg)) {

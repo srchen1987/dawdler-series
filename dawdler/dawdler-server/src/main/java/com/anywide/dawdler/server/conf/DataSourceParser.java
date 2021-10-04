@@ -25,10 +25,14 @@ import javax.sql.DataSource;
 
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.server.deploys.DataSourceNamingInit;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.XmlObject;
+import com.esotericsoftware.minlog.Log;
 
 /**
  * @author jackson.song
@@ -40,13 +44,14 @@ import com.anywide.dawdler.util.XmlObject;
  */
 public class DataSourceParser {
 	private static XmlObject datasourceConfig;
-
+	private static final Logger logger = LoggerFactory.getLogger(DataSourceParser.class);
 	static {
-		File file = new File(DawdlerTool.getcurrentPath() + "../conf/datasources.xml");
+		File file = new File(DawdlerTool.getcurrentPath() + "../conf/data-sources.xml");
 		if (file.isFile()) {
 			try {
 				datasourceConfig = new XmlObject(file);
 			} catch (Exception e) {
+				logger.error("", e);
 			}
 		}
 	}
@@ -74,16 +79,24 @@ public class DataSourceParser {
 				Element e = (Element) node;
 				String attributeName = e.attributeValue("name");
 				String value = e.getText().trim();
-				try {
-					ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
-				} catch (Exception ex) {
-					ReflectionUtil.invoke(obj, "set" + attributeName, value);
+				if(attributeName != null) {
+					try {
+						attributeName = captureName(attributeName);
+						ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
+					} catch (Exception ex) {
+						ReflectionUtil.invoke(obj, "set" + attributeName, value);
+					}
 				}
-
 			}
 			DataSource ds = (DataSource) obj;
 			dataSources.put(id, ds);
 		}
 		return dataSources;
+	}
+
+	private static String captureName(String str) {
+		char[] cs = str.toCharArray();
+		cs[0] -= 32;
+		return String.valueOf(cs);
 	}
 }

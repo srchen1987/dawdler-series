@@ -31,7 +31,7 @@ import javax.sql.DataSource;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
-import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFacotry;
+import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFactory;
 import com.anywide.dawdler.serverplug.util.XmlConfig;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.XmlObject;
@@ -104,7 +104,7 @@ public class RWSplittingDataSourceManager {
 		if (dataSource != null)
 			return dataSource;
 		try {
-			dataSource = LocalConnectionFacotry.getDataSourceInDawdler(id);
+			dataSource = LocalConnectionFactory.getDataSourceInDawdler(id);
 			dataSources.put(id, dataSource);
 			return dataSource;
 		} catch (NamingException e) {
