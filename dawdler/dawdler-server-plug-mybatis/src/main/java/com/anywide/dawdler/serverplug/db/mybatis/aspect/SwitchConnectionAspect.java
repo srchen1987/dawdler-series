@@ -21,7 +21,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 
 import com.anywide.dawdler.serverplug.db.mybatis.DawdlerMybatisTransaction;
-import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFacotry;
+import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFactory;
 import com.anywide.dawdler.util.TLS;
 
 /**
@@ -38,7 +38,7 @@ public class SwitchConnectionAspect {
 	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.select*(..))")
 	public Object select(ProceedingJoinPoint pjp) throws Throwable {
 		try {
-			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFacotry.getReadConnection());
+			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getReadConnection());
 			return pjp.proceed();
 		} catch (Throwable t) {
 			throw t;
@@ -50,7 +50,7 @@ public class SwitchConnectionAspect {
 	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.insert(..))")
 	public Object insert(ProceedingJoinPoint pjp) throws Throwable {
 		try {
-			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFacotry.getWriteConnection());
+			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
 			return pjp.proceed();
 		} catch (Throwable t) {
 			throw t;
@@ -62,7 +62,7 @@ public class SwitchConnectionAspect {
 	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.update(..))")
 	public Object update(ProceedingJoinPoint pjp) throws Throwable {
 		try {
-			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFacotry.getWriteConnection());
+			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
 			return pjp.proceed();
 		} catch (Throwable t) {
 			throw t;
@@ -74,7 +74,7 @@ public class SwitchConnectionAspect {
 	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.delete(..))")
 	public Object delete(ProceedingJoinPoint pjp) throws Throwable {
 		try {
-			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFacotry.getWriteConnection());
+			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
 			return pjp.proceed();
 		} catch (Throwable t) {
 			throw t;

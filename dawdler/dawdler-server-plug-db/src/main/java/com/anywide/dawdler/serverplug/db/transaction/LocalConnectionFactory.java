@@ -38,7 +38,7 @@ import com.anywide.dawdler.serverplug.db.DBAction;
  * @date 2015年9月28日
  * @email suxuan696@gmail.com
  */
-public class LocalConnectionFacotry {
+public class LocalConnectionFactory {
 	private final static ConcurrentMap<DataSource, TransactionManager> localManager = new ConcurrentHashMap<>();
 	private final static ThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>> localWriteConnectionHolder;
 	private final static ThreadLocal<SynReadConnectionObject> synReadConnection = new ThreadLocal<>();
@@ -62,14 +62,14 @@ public class LocalConnectionFacotry {
 		}
 	}
 
-	private LocalConnectionFacotry() {
+	private LocalConnectionFactory() {
 	}
 
 	public static Connection getReadConnection() throws SQLException {
 		Connection con = localconnection.get().get(DBAction.READ);
 		if (con != null)
 			return con;
-		SynReadConnectionObject sb = LocalConnectionFacotry.getSynReadConnectionObject();
+		SynReadConnectionObject sb = LocalConnectionFactory.getSynReadConnectionObject();
 		if (sb == null)
 			return null;
 		if (sb.getReadConnectionHolder().isUseWriteConnection()) {
@@ -141,6 +141,10 @@ public class LocalConnectionFacotry {
 
 	public static DataSource getDataSourceInDawdler(String id) throws NamingException {
 		return (DataSource) ctx.lookup("java:" + id);
+	}
+	
+	public static void closeDataSourceInDawdler(String id) throws NamingException {
+		ctx.close();
 	}
 
 	public static SynReadConnectionObject getSynReadConnectionObject() {

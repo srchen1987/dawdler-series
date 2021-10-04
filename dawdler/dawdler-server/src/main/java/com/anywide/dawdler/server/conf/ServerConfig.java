@@ -17,6 +17,8 @@
 package com.anywide.dawdler.server.conf;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,9 +26,6 @@ import com.anywide.dawdler.server.deploys.ServiceRoot;
 import com.anywide.dawdler.util.CertificateOperator;
 import com.anywide.dawdler.util.CertificateOperator.KeyStoreConfig;
 import com.anywide.dawdler.util.DawdlerTool;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
  * @author jackson.song
@@ -36,19 +35,19 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @date 2015年4月04日
  * @email suxuan696@gmail.com
  */
-@XStreamAlias("conf")
 public class ServerConfig {
-	@XStreamAlias("server")
+	public ServerConfig() {
+		this.scanner = new Scanner();
+		this.keyStore = new KeyStore();
+		this.server = new Server();
+	}
+
 	private Server server;
 
-	@XStreamAlias("keyStore")
 	private KeyStore keyStore;
-	@XStreamAlias("scanner")
 	private Scanner scanner;
-	@XStreamAlias("global-auth")
-	private Map<String, String> globalAuth;
-	@XStreamAlias("module-auth")
-	private Map<String, Map<String, String>> moduleAuth;
+	private Map<String, String> globalAuth = new HashMap<>();
+	private Map<String, Map<String, String>> moduleAuth = new HashMap<>();
 	private volatile CertificateOperator certificateOperator;
 
 	public KeyStore getKeyStore() {
@@ -71,16 +70,8 @@ public class ServerConfig {
 		return globalAuth;
 	}
 
-	public void setGlobalAuth(Map<String, String> globalAuth) {
-		this.globalAuth = globalAuth;
-	}
-
 	public Map<String, Map<String, String>> getModuleAuth() {
 		return moduleAuth;
-	}
-
-	public void setModuleAuth(Map<String, Map<String, String>> moduleAuth) {
-		this.moduleAuth = moduleAuth;
 	}
 
 	public boolean auth(String path, String user, byte[] passwordByte) throws Exception {
@@ -119,30 +110,19 @@ public class ServerConfig {
 	}
 
 	public class Scanner {
-		// @XStreamAlias("file")
-		@XStreamImplicit(itemFieldName = "file")
-		private Set<String> file;
+		private Set<String> jarFiles = new LinkedHashSet<String>();
 
-		public Set<String> getFile() {
-			return file;
+		public Set<String> getJarFiles() {
+			return jarFiles;
 		}
 
-		public void setFile(Set<String> file) {
-			this.file = file;
-		}
 	}
 
 	public class KeyStore {
-		@XStreamAlias("keyStorePath")
-		@XStreamAsAttribute
 		private String keyStorePath;
 
-		@XStreamAlias("alias")
-		@XStreamAsAttribute
 		private String alias;
 
-		@XStreamAlias("password")
-		@XStreamAsAttribute
 		private String password;
 
 		public String getKeyStorePath() {
@@ -175,42 +155,14 @@ public class ServerConfig {
 	}
 
 	public class Server {
-		// host="0.0.0.0" tcp-port="9527" tcp-backlog="200" tcp-sendBuffer="16384"
-//				tcp-receiveBuffer="16384" tcp-keepAlive="true" tcp-noDelay="true">
-		@XStreamAlias("host")
-		@XStreamAsAttribute
-		private String host;
-
-		@XStreamAlias("tcp-port")
-		@XStreamAsAttribute
+		private String host = "0.0.0.0";
 		private int tcpPort = 9527;
-
-		@XStreamAlias("tcp-backlog")
-		@XStreamAsAttribute
 		private int tcpBacklog = 200;
-
-		@XStreamAlias("tcp-sendBuffer")
-		@XStreamAsAttribute
 		private int tcpSendBuffer = 16384;
-
-		@XStreamAlias("tcp-receiveBuffer")
-		@XStreamAsAttribute
 		private int tcpReceiveBuffer = 16384;
-
-		@XStreamAlias("tcp-keepAlive")
-		@XStreamAsAttribute
 		private boolean tcpKeepAlive = true;
-
-		@XStreamAlias("tcp-noDelay")
-		@XStreamAsAttribute
 		private boolean tcpNoDelay = true;
-
-		@XStreamAlias("tcp-shutdownPort")
-		@XStreamAsAttribute
 		private int tcpShutdownPort = 19527;
-
-		@XStreamAlias("shutdownWhiteList")
-		@XStreamAsAttribute
 		private String shutdownWhiteList = "127.0.0.1,localhost";
 
 		public String getHost() {

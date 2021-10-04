@@ -34,15 +34,15 @@ import com.anywide.dawdler.core.order.OrderData;
  */
 public class RemoteClassLoaderFireHolder {
 	private static final RemoteClassLoaderFireHolder remoteClassLoaderFireHolder = new RemoteClassLoaderFireHolder();
-	private final List<OrderData<RemoteClassLoderFire>> fires = new ArrayList<>();
+	private final List<OrderData<RemoteClassLoaderFire>> fires = new ArrayList<>();
 
 	public static RemoteClassLoaderFireHolder getInstance() {
 		return remoteClassLoaderFireHolder;
 	}
 
 	private RemoteClassLoaderFireHolder() {
-		ServiceLoader.load(RemoteClassLoderFire.class).forEach(service -> {
-			OrderData<RemoteClassLoderFire> orderData = new OrderData<>();
+		ServiceLoader.load(RemoteClassLoaderFire.class).forEach(service -> {
+			OrderData<RemoteClassLoaderFire> orderData = new OrderData<>();
 			Order order = service.getClass().getAnnotation(Order.class);
 			if (order != null) {
 				orderData.setOrder(order.value());
@@ -53,7 +53,7 @@ public class RemoteClassLoaderFireHolder {
 		OrderComparator.sort(fires);
 	}
 
-	List<OrderData<RemoteClassLoderFire>> getRemoteClassLoaderFire() {
+	List<OrderData<RemoteClassLoaderFire>> getRemoteClassLoaderFire() {
 		return fires;
 	}
 }

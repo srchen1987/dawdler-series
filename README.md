@@ -10,71 +10,75 @@ dawdler-series 是一站式分布式应用、微服务架构的解决方案，�
 
 容器的服务端。
 
-#### 2.  dawdler-server-plug
+#### 2. dawdler-core
+
+dawdler-server与dawdler-client公用的核心模块。包含网络，服务发现实现，线程池，注解，压缩算法等。
+
+#### 3.  dawdler-server-plug
 
 服务端插件，提供远程加载服务，注入service到过滤器，监听器，远程加载客户端。
 
-#### 3.  dawdler-server-plug-db
+#### 4.  dawdler-server-plug-db
 
 服务端数据库事务，读写分离的插件。
 
-#### 4.  dawdler-server-plug-dao
+#### 5.  dawdler-server-plug-dao
 
 通过反射实现的jdbc通用dao插件，注入dao到service。
 
-#### 5.  dawdler-server-plug-mybatis
+#### 6.  dawdler-server-plug-mybatis
 
 通过mybatis实现的数据库操作插件，注入mapper到service。
 
-#### 6.  dawdler-client
+#### 7.  dawdler-client
 
 客户端核心代码，服务发现，连接池，动态代理，aop实现，负载均衡等。
 
-#### 7.  dawdler-client-plug
+#### 8.  dawdler-client-plug
 
 客户端插件，webmvc，远程加载组件的客户端，远程加载组件的通知器，web监听器，web拦截器等。
 
-#### 8.  dawdler-client-plug-session
+#### 9.  dawdler-client-plug-session
 
 客户端高性能分布式session实现。
 
-#### 9.  dawdler-client-plug-validator
+#### 10.  dawdler-client-plug-validator
 
 是一个强大的前后端通用校验器，支持js和java后端通用表达式校验，支持扩展，支持后端校验规则生成前端表达式，java后端支持分组，继承，排除等特性，js支持校验扩展，各种事件扩展。
 
-#### 10.  dawdler-client-plug-velocity
+#### 11.  dawdler-client-plug-velocity
 
 客户端velocity模板插件，目前已升级到2.3，提供一行代码分页pages指令，动态表单指令。
 
-#### 11.  dawdler-circuit-breaker
+#### 12.  dawdler-circuit-breaker
 
 熔断器，支持熔断配置，降级，采用时间滑动窗口方式统计。
 
-#### 12.  dawdler-config
+#### 13.  dawdler-config
 
 统一配置中心，clientside应用到web端，serverside应用到dawdler服务端。
 
-#### 13.  dawdler-distributed-transaction
+#### 14.  dawdler-distributed-transaction
 
 分布式事务模块，client应用到web端，server应用到dawdler端，compensator补偿器模块。
 
-#### 14.  dawdler-rabbitmq-plug
+#### 15.  dawdler-rabbitmq-plug
 
 rabbitmq连接池插件，通过pool2实现池。
 
-#### 15.  dawdler-redis-plug
+#### 16.  dawdler-redis-plug
 
 redis池插件，通过jedis实现。
 
-#### 16.  dawdler-serialization
+#### 17.  dawdler-serialization
 
 序列化模块。
 
-#### 17.  dawdler-load-bean
+#### 18.  dawdler-load-bean
 
 dawdler中需要序列化的类，dawdler内部使用。
 
-#### 18.  dawdler-util
+#### 19.  dawdler-util
 
 常用工具模块。
 
@@ -134,7 +138,7 @@ dawdler文件结构说明
 2. demo是用eclipse写的，分别导入到eclipse中，demo-web不用多说（小学生都会将它部署到tomcat中）。demo-server可以直接将编译好的classes拷贝到dawdler的deploys目录的项目中,在实际开发的情况下建议将eclipse下的dawdler服务端的classes直接编译到dawdler/deploys/模块/classes。这样可以方便研发调试。
 3. 导入demo-server下的sql到数据库,同时注意项目下的数据源配置 参考使用说明中的 2.1 demo-server/src/src_config.xml [点击查看配置说明](https://gitee.com/srchen1987/dawdler-series/blob/master/demos/simple/demo-server/src/src_config.xml)
 4. 由于demo中用到了容器的数据源所以需要配置下 参考dawdler-server 配置文件说明 1.2 dawdler-server/conf/datasources.xml [点击这里查详细说明](https://gitee.com/srchen1987/dawdler-series/blob/master/myserver/servers/dawdler1/conf/datasources.xml)
-5. 先启动dawdler ，然后启动tomcat 访问controler即可体验（与spring mvc很相似)
+5. 先启动dawdler ，然后启动tomcat 访问controller即可体验（与spring mvc很相似)
 
 #### 使用说明
 

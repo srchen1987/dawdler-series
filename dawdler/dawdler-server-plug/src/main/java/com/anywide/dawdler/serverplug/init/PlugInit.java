@@ -27,7 +27,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @author jackson.song
  * @version V1.0
  * @Title PlugInit.java
- * @Description 服务器端插件，主要是做调用远端的注入service与模版类
+ * @Description 服务器端插件，加载远端的注入service与模版类
  * @date 2015年7月12日
  * @email suxuan696@gmail.com
  */

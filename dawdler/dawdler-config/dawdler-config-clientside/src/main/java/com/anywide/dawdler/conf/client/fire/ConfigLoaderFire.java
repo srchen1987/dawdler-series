@@ -21,7 +21,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoderFire;
+import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
@@ -40,7 +40,7 @@ import com.anywide.dawdler.core.order.OrderData;
  * @email suxuan696@gmail.com
  */
 @Order(1)
-public class ConfigLoaderFire implements RemoteClassLoderFire {
+public class ConfigLoaderFire implements RemoteClassLoaderFire {
 	private static Logger logger = LoggerFactory.getLogger(ConfigLoaderFire.class);
 
 	@Override
@@ -64,14 +64,12 @@ public class ConfigLoaderFire implements RemoteClassLoderFire {
 	}
 
 	private void refreshMappingConfig(Class<?> clazz) throws Exception {
-		if (TransactionController.class.isAssignableFrom(clazz)) {
-			for (TransactionController transactionController : AnnotationUrlHandler.getTransactionControllers()) {
+			for (Object transactionController : AnnotationUrlHandler.getTransactionControllers()) {
 				if (transactionController.getClass() == clazz) {
 					Refresher.refreshAllConfig(transactionController);
 					return;
 				}
 			}
-		}
 	}
 
 	public void removeMappingConfig(Class<?> clazz) {

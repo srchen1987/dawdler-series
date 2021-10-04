@@ -16,12 +16,10 @@
  */
 package com.anywide.dawdler.client.conf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.anywide.dawdler.util.DawdlerTool;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import com.thoughtworks.xstream.annotations.XStreamImplicit;
 
 /**
  * @author jackson.song
@@ -31,14 +29,14 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
  * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
-@XStreamAlias("conf")
 public class ClientConfig {
-	@XStreamAlias("certificatePath")
 	public String certificatePath;
-	@XStreamAlias("zk-host")
 	private String zkHost;
-	@XStreamImplicit(itemFieldName = "server-channel-group")
 	private List<ServerChannelGroup> serverChannelGroups;
+
+	public ClientConfig() {
+		serverChannelGroups = new ArrayList<>();
+	}
 
 	public String getZkHost() {
 		return zkHost;
@@ -52,10 +50,6 @@ public class ClientConfig {
 		return serverChannelGroups;
 	}
 
-	public void setServerChannelGroups(List<ServerChannelGroup> serverChannelGroups) {
-		this.serverChannelGroups = serverChannelGroups;
-	}
-
 	public String getCertificatePath() {
 		if (certificatePath != null)
 			certificatePath = certificatePath.replace("${CLASSPATH}", DawdlerTool.getcurrentPath());
@@ -67,32 +61,18 @@ public class ClientConfig {
 	}
 
 	public class ServerChannelGroup {
-		@XStreamAlias("channel-group-id")
-		@XStreamAsAttribute
 		private String groupId;
 
-		@XStreamAlias("service-path")
-		@XStreamAsAttribute
 		private String path;
 
-		@XStreamAlias("connection-num")
-		@XStreamAsAttribute
 		private int connectionNum;
 
-		@XStreamAlias("session-num")
-		@XStreamAsAttribute
 		private int sessionNum;
 
-		@XStreamAlias("serializer")
-		@XStreamAsAttribute
 		private int serializer;
 
-		@XStreamAlias("user")
-		@XStreamAsAttribute
 		private String user;
 
-		@XStreamAlias("password")
-		@XStreamAsAttribute
 		private String password;
 
 		public String getUser() {

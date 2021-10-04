@@ -34,6 +34,7 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.dom4j.Attribute;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
@@ -135,7 +136,13 @@ public final class XmlObject {
 		if (xmlFile) {
 			this.document = this.reader.read(file);
 		} else {
-			inputStreamToXML(new FileInputStream(file));
+			InputStream input=  new FileInputStream(file);
+			try {
+				inputStreamToXML(input);
+			}finally {
+				if(input != null)
+					input.close();
+			}
 		}
 		getXMLRoot();
 		this.filepath = file.getPath();
@@ -281,4 +288,38 @@ public final class XmlObject {
 	public void setFilepath(String filepath) {
 		this.filepath = filepath;
 	}
+	
+	public static String getElementAttribute(Element element, String attribute, String defaultValue) {
+		Attribute attr = element.attribute(attribute);
+		if (attr == null)
+			return defaultValue;
+		return attr.getStringValue();
+	}
+
+	public static int getElementAttribute2Int(Element element, String attribute, int defaultValue) {
+		Attribute attr = element.attribute(attribute);
+		if (attr == null)
+			return defaultValue;
+		try {
+			return Integer.parseInt(attr.getStringValue());
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+
+	public static boolean getElementAttribute2Boolean(Element element, String attribute, boolean defaultValue) {
+		Attribute attr = element.attribute(attribute);
+		if (attr == null)
+			return defaultValue;
+		try {
+			return Boolean.parseBoolean(attr.getStringValue());
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+
+	public static String getElementAttribute(Element element, String attribute) {
+		return getElementAttribute(element, attribute, null);
+	}
+
 }
