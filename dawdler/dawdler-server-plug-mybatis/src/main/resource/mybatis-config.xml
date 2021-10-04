@@ -3,17 +3,15 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-  <typeAliases>
- <!--  <package name="com.coffee.entity"/> -->
-  <typeAlias alias="Student" type="com.coffee.entity.Student"/>
-  <typeAlias alias="LeaveEvent" type="com.coffee.entity.LeaveEvent"/>
-  <typeAlias alias="User" type="com.coffee.entity.tbl_user"/>
-  <typeAlias alias="Address" type="com.coffee.entity.tbl_address"/>
-  <typeAlias alias="Visit" type="com.coffee.entity.tbl_visit"/>
-  </typeAliases>
-  <mappers>
-    <mapper resource="com/coffee/xml/Address.xml"/>
-    <mapper resource="com/coffee/xml/MyUser.xml"/>
-     <mapper resource="com/coffee/xml/User.xml"/>
-  </mappers>
+	<typeAliases>
+		<!-- 包扫描 以此法被扫描的实体类，别名为类名的首字母小写形式(类似于Bean -> bean) -->
+		<!-- <package name="com.anywide.shop.order.entity"/> -->
+
+		<!-- 逐个声明别名 -->
+		<typeAlias alias="Order" type="com.anywide.shop.order.entity.Order" />
+	</typeAliases>
+	<mappers>
+		<!-- 添加mapper -->
+		<mapper resource="com/anywide/shop/order/mapper/Order.xml" />
+	</mappers>
 </configuration>
