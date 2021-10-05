@@ -28,51 +28,51 @@ import java.io.Serializable;
  */
 public class Page implements Serializable {
 	private static final long serialVersionUID = 7024911260241474159L;
-	private int pageon;
-	private int rowcount;
-	private int pagecount;
+	private int pageOn;
+	private int rowCount;
+	private int pageCount;
 	private int row;
 	private int start;
 	private int end;
 	private int pageNumber = 11;
 
-	public Page(int pageon, int row, int rowcount) {
-		this.pageon = pageon;
+	public Page(int pageOn, int row, int rowCount) {
+		this.pageOn = pageOn;
 		this.row = row;
-		this.rowcount = rowcount;
+		this.rowCount = rowCount;
 		compute();
 	}
 
-	public Page(int pageon, int row) {
-		this.pageon = pageon;
+	public Page(int pageOn, int row) {
+		this.pageOn = pageOn;
 		this.row = row;
 	}
 
 	public Page() {
 	}
 
-	public int getPageon() {
-		return pageon;
+	public int getPageOn() {
+		return pageOn;
 	}
 
-	public void setPageon(int pageon) {
-		this.pageon = pageon;
+	public void setPageOn(int pageOn) {
+		this.pageOn = pageOn;
 	}
 
-	public int getRowcount() {
-		return rowcount;
+	public int getRowCount() {
+		return rowCount;
 	}
 
-	public void setRowcount(int rowcount) {
-		this.rowcount = rowcount;
+	public void setRowCount(int rowCount) {
+		this.rowCount = rowCount;
 	}
 
-	public int getPagecount() {
-		return pagecount;
+	public int getPageCount() {
+		return pageCount;
 	}
 
-	public void setPagecount(int pagecount) {
-		this.pagecount = pagecount;
+	public void setPageCount(int pageCount) {
+		this.pageCount = pageCount;
 	}
 
 	public int getRow() {
@@ -92,19 +92,19 @@ public class Page implements Serializable {
 	}
 
 	public void compute() {
-		if (rowcount <= 0)
+		if (rowCount <= 0)
 			return;
 		if (row <= 0)
 			row = 10;
-		pagecount = rowcount % row == 0 ? rowcount / row : rowcount / row + 1;
-		if (pageon > pagecount)
-			pageon = pagecount;
-		if (pageon < 1)
-			pageon = 1;
-		start = (pageon - 1) * row;
-		end = pageon * row;
-		if (end > rowcount)
-			end = rowcount;
+		pageCount = rowCount % row == 0 ? rowCount / row : rowCount / row + 1;
+		if (pageOn > pageCount)
+			pageOn = pageCount;
+		if (pageOn < 1)
+			pageOn = 1;
+		start = (pageOn - 1) * row;
+		end = pageOn * row;
+		if (end > rowCount)
+			end = rowCount;
 	}
 
 	public int getStart() {
@@ -123,8 +123,8 @@ public class Page implements Serializable {
 		this.end = end;
 	}
 
-	public void setRowcountAndCompute(int rowcount) {
-		this.rowcount = rowcount;
+	public void setRowCountAndCompute(int rowCount) {
+		this.rowCount = rowCount;
 		compute();
 	}
 }

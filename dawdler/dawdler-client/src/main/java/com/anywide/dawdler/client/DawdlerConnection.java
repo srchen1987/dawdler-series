@@ -387,13 +387,13 @@ public class DawdlerConnection {
 		if (ioHandler != null)
 			ioHandler.messageSent(socketSession, obj);
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
-		byte[] datas = serializer.serialize(obj);
-		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(datas);
-		datas = cr.getBuffer();
+		byte[] data = serializer.serialize(obj);
+		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
+		data = cr.getBuffer();
 		synchronized (socketSession) {
 			ByteBuffer bf = socketSession.getWriteBuffer();
 			PoolBuffer pb = null;
-			int size = datas.length + 1;
+			int size = data.length + 1;
 			int capacity = size + 4;
 			try {
 				if (capacity > SocketSession.CAPACITY) {
@@ -408,7 +408,7 @@ public class DawdlerConnection {
 				bf.putInt(size);
 				int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
 				bf.put((byte) head);
-				bf.put(datas);
+				bf.put(data);
 				bf.flip();
 				socketSession.write(bf);
 			} finally {

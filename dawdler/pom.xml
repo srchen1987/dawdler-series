@@ -124,6 +124,14 @@
 						<groupId>io.netty</groupId>
 						<artifactId>*</artifactId>
 					</exclusion>
+					<exclusion>
+						<groupId>log4j</groupId>
+						<artifactId>log4j</artifactId>
+					</exclusion>
+					<exclusion>
+						<groupId>org.slf4j</groupId>
+						<artifactId>slf4j-log4j12</artifactId>
+					</exclusion>
 				</exclusions>
 			</dependency>
 			<dependency>
@@ -259,6 +267,16 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-mybatis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-dao</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-util</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
@@ -327,6 +345,11 @@
 				<artifactId>dawdler-config-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-config-serverside</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -374,6 +397,7 @@
 		<module>dawdler-redis-plug</module>
 		<module>dawdler-rabbitmq-plug</module>
 		<module>dawdler-distributed-transaction</module>
+		<module>dawdler-services-starter</module>
 	</modules>
 
 

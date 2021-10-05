@@ -35,11 +35,11 @@ public class PageFactory {
 		return new Page();
 	}
 
-	public static Page getPage(int pageon, int row, int rowcount) {
-		return new Page(pageon, row, rowcount);
+	public static Page getPage(int pageOn, int row, int rowCount) {
+		return new Page(pageOn, row, rowCount);
 	}
 
-	public static Page getPage(int pageon, int row) {
-		return new Page(pageon, row);
+	public static Page getPage(int pageOn, int row) {
+		return new Page(pageOn, row);
 	}
 }

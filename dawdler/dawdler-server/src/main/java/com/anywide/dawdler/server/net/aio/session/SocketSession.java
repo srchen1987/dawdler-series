@@ -142,8 +142,8 @@ public class SocketSession extends AbstractSocketSession {
 	}
 
 	public void messageCompleted() {
-		byte[] datas = getAppendData();
-		DataProcessWorkerPool.getInstance().execute(new DataProcessor(this, headData, compress, serializer, datas));
+		byte[] data = getAppendData();
+		DataProcessWorkerPool.getInstance().execute(new DataProcessor(this, headData, compress, serializer, data));
 		toPrepare();
 	}
 
