@@ -43,20 +43,17 @@ public interface BaseData {
 
 	int update(String sql) throws SQLException;
 
-	// int updateObject(String sql)throws SQLException ;
 	int updatePrepare(String sql, Object... values) throws SQLException;
 
 	int insert(String sql) throws SQLException;
 
-	// int insertObject(String sql)throws SQLException;
 	int insertPrepare(String sql, Object... values) throws SQLException;
 
-	// int insertObjectGetKey(String sql)throws SQLException;
-	int insertPrepareGetKey(String sql, Object... values) throws SQLException;
+	long insertPrepareGetKey(String sql, Object... values) throws SQLException;
 
-	int insertMap(String tableName, Map<String, Object> datas) throws SQLException;
+	int insertMap(String tableName, Map<String, Object> data) throws SQLException;
 
-	int insertMapGetKey(String tableName, Map<String, Object> datas) throws SQLException;
+	long insertMapGetKey(String tableName, Map<String, Object> data) throws SQLException;
 
 	int delete(String sql) throws SQLException;
 

@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-circuit-breaker 是基于时间滑动窗口方式实现的熔断器，支持熔断配置，降级。
+dawdler-circuit-breaker 是基于时间滑动窗口方式实现的熔断器,支持熔断配置,降级.
 
 ### 1. web端的pom中引入依赖
 
@@ -39,7 +39,7 @@ public interface UserService {
 
 ### 3.  服务降级
 
-@CircuitBreaker 中有fallbackMethod的属性，fallbackMethod是接口中方法的实现。
+@CircuitBreaker 中有fallbackMethod的属性,fallbackMethod是接口中方法的实现.
 
 例：
 
@@ -60,14 +60,14 @@ public @interface CircuitBreaker {
 
  /**
   * @return String
-  * @Description 标识key，默认为"" 则为servicePath+serviceName+serviceMethod组合
+  * @Description 标识key,默认为"" 则为servicePath+serviceName+serviceMethod组合
   * @date 2018年3月10日
   */
  String breakerKey() default "";
 
  /**
   * @return int
-  * @Description 统计时长 intervalInMs/windowsCount 建议为整数，默认3000，单位为毫秒。
+  * @Description 统计时长 intervalInMs/windowsCount 建议为整数,默认3000,单位为毫秒.
   * @date 2018年3月10日
   */
  int intervalInMs() default 3000;
@@ -82,15 +82,15 @@ public @interface CircuitBreaker {
  /**
   * @return int
   * @Title sleepWindowInMilliseconds
-  * @Description 熔断器打开后，所有的请求都会直接失败，熔断器打开时会在经过一段时间后就放行一条请求成功则关闭熔断器，此配置就为指定的这段时间，默认值是
-  *              5000，单位为毫秒。
+  * @Description 熔断器打开后,所有的请求都会直接失败,熔断器打开时会在经过一段时间后就放行一条请求成功则关闭熔断器,此配置就为指定的这段时间,默认值是
+  *              5000,单位为毫秒.
   * @date 2018年3月10日
   */
  int sleepWindowInMilliseconds() default 5000;
 
  /**
   * @return int
-  * @Description 启用熔断器功能窗口时间内的最小请求数，默认为5。
+  * @Description 启用熔断器功能窗口时间内的最小请求数,默认为5.
   * @date 2018年3月10日
   */
 
@@ -98,7 +98,7 @@ public @interface CircuitBreaker {
 
  /**
   * @return double
-  * @Description 错误百分比，默认为40% 达到40%的错误率会触发熔断（大于requestVolumeThreshold）
+  * @Description 错误百分比,默认为40% 达到40%的错误率会触发熔断（大于requestVolumeThreshold）
   * @date 2018年3月10日
   */
  double errorThresholdPercentage() default 0.4;

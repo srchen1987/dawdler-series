@@ -43,13 +43,13 @@ import com.esotericsoftware.minlog.Log;
  * @email suxuan696@gmail.com
  */
 public class DataSourceParser {
-	private static XmlObject datasourceConfig;
+	private static XmlObject dataourceConfig;
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceParser.class);
 	static {
 		File file = new File(DawdlerTool.getcurrentPath() + "../conf/data-sources.xml");
 		if (file.isFile()) {
 			try {
-				datasourceConfig = new XmlObject(file);
+				dataourceConfig = new XmlObject(file);
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -59,7 +59,7 @@ public class DataSourceParser {
 	public static Map<String, DataSource> getDataSource(XmlObject xmlo, ClassLoader classLoader)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		if (xmlo == null)
-			xmlo = datasourceConfig;
+			xmlo = dataourceConfig;
 		if (xmlo == null)
 			return null;
 		Map<String, DataSource> dataSources = new HashMap<>();
