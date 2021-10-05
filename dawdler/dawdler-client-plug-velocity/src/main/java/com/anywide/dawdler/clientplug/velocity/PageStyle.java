@@ -31,8 +31,8 @@ import java.util.Map;
  */
 public class PageStyle {
 	public static final String PMARK = "~p";
-	public static final String PAGEONMARK = "(pageone)";
-	public static final String PAGECOUNTMARK = "(pagecount)";
+	public static final String PAGEONMARK = "(pageOne)";
+	public static final String PAGECOUNTMARK = "(pageCount)";
 	public static final String CONTENTMARK = "~content_mark";
 
 	private static final Map<String, PageStyleContent> stylecontents = new HashMap<>();
@@ -43,7 +43,7 @@ public class PageStyle {
 		pcont.setFirstpage("<a href=\"" + CONTENTMARK + "\">首页</a> ");
 		pcont.setUppage("<a href=\"" + CONTENTMARK + "\">上一页</a> ");
 		pcont.setPages("<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a> ");
-		pcont.setPageon(PMARK + " ");
+		pcont.setPageOn(PMARK + " ");
 		pcont.setLastpage("<a href=\"" + CONTENTMARK + "\">下一页</a> ");
 		pcont.setEndpage("<a href=\"" + CONTENTMARK + "\">尾页</a>");
 		stylecontents.put("default", pcont);
@@ -70,33 +70,33 @@ public class PageStyle {
 		return pageStyle;
 	}
 
-	public static void printPage(int pageon, int pagecount, int pagenumber, String linkcontent, String stylename,
+	public static void printPage(int pageOn, int pageCount, int pagenumber, String linkcontent, String stylename,
 			Writer out) throws IOException {
 		PageStyleContent pc = getPageStyle().getPageStyleContent(stylename);
 		int start = 1;
 		int end;
-		if (pageon < 0)
-			pageon = 1;
-		if (pagenumber > pagecount)
-			pagenumber = pagecount;
-		if (pageon > pagecount)
-			pageon = pagecount;
+		if (pageOn < 0)
+			pageOn = 1;
+		if (pagenumber > pageCount)
+			pagenumber = pageCount;
+		if (pageOn > pageCount)
+			pageOn = pageCount;
 		int pagenumber2 = pagenumber / 2;// 取 pagenumber的一半
 		boolean sig = pagenumber % 2 == 0;// 取余是否为整数
-		if (pageon > pagenumber2) {// 如果当前页大于了 pagenumber的一半
-			start = pageon - pagenumber2;// 起始值 从 pageon减去pagenumber2的数开始
+		if (pageOn > pagenumber2) {// 如果当前页大于了 pagenumber的一半
+			start = pageOn - pagenumber2;// 起始值 从 pageOn减去pagenumber2的数开始
 			if (sig)
 				start += 1;// 如果没有余数 起始值加一
 		}
-		if (pageon + pagenumber2 > pagecount) {// 如果 当前页面加上pagenumber2大于了总页数
-			start -= (pageon + pagenumber2) - pagecount;// 起始值减去 （当前页数加上pagenumber2） 减去 pagecount的值
+		if (pageOn + pagenumber2 > pageCount) {// 如果 当前页面加上pagenumber2大于了总页数
+			start -= (pageOn + pagenumber2) - pageCount;// 起始值减去 （当前页数加上pagenumber2） 减去 pageCount的值
 			if (start < 1)
 				start = 1;// 起始值小于1则等于1
-			end = pagecount;// 结束值为 总页数
+			end = pageCount;// 结束值为 总页数
 		} else {
-			end = pageon + pagenumber2;
-			if (pageon <= pagenumber2) {
-				end += pagenumber2 - (pageon - 1);
+			end = pageOn + pagenumber2;
+			if (pageOn <= pagenumber2) {
+				end += pagenumber2 - (pageOn - 1);
 			}
 			if (sig) {
 				if (end - start < pagenumber) {
@@ -105,37 +105,37 @@ public class PageStyle {
 				end -= 1;
 			}
 
-			if (end > pagecount)
-				end = pagecount;
+			if (end > pageCount)
+				end = pageCount;
 		}
-		if (pageon > 1) {
+		if (pageOn > 1) {
 			out.write(pc.getFirstpage(linkcontent, 1));
-			out.write(pc.getUppage(linkcontent, (pageon - 1)));
+			out.write(pc.getUppage(linkcontent, (pageOn - 1)));
 		}
-		if (pagecount > 1)
+		if (pageCount > 1)
 			for (; start <= end; start++) {
-				if (start == pageon)
-					out.write(pc.getPageon(pageon));
+				if (start == pageOn)
+					out.write(pc.getPageOn(pageOn));
 				else
 					out.write(pc.getPages(linkcontent, start));
 			}
-		if (pageon < pagecount) {
-			out.write(pc.getLastpage(linkcontent, (pageon + 1)));
-			out.write(pc.getEndpage(linkcontent, pagecount));
+		if (pageOn < pageCount) {
+			out.write(pc.getLastpage(linkcontent, (pageOn + 1)));
+			out.write(pc.getEndpage(linkcontent, pageCount));
 		}
-		String steppage = pc.getSteppage(linkcontent, pageon, pagecount);
+		String steppage = pc.getSteppage(linkcontent, pageOn, pageCount);
 		if (steppage != null) {
 			out.write(steppage);
 		}
 	}
 
-	public static void export(String prefix, String first, String up, String pages, String pageon, String last,
+	public static void export(String prefix, String first, String up, String pages, String pageOn, String last,
 			String end, String steppage) {
 		PageStyleContent pcont = pageStyle.new PageStyleContent();
 		pcont.setFirstpage(first);
 		pcont.setUppage(up);
 		pcont.setPages(pages);
-		pcont.setPageon(pageon);
+		pcont.setPageOn(pageOn);
 		pcont.setLastpage(last);
 		pcont.setEndpage(end);
 		pcont.setSteppage(steppage);
@@ -161,7 +161,7 @@ public class PageStyle {
 	}
 
 	public class PageStyleContent {
-		private String pageon;// 当前页
+		private String pageOn;// 当前页
 		private String firstpage;// 首页
 		private String uppage;// 上一页
 		private String pages;// 循环中的页面
@@ -169,18 +169,18 @@ public class PageStyle {
 		private String endpage;// 结束页
 		private String steppage;// 追加
 
-		public String getPageon(int pageon) {
-			return this.pageon.replace(PMARK, pageon + "");
+		public String getPageOn(int pageOn) {
+			return this.pageOn.replace(PMARK, pageOn + "");
 		}
 
-		public void setPageon(String pageon) {
-			this.pageon = pageon;
+		public void setPageOn(String pageOn) {
+			this.pageOn = pageOn;
 		}
 
-		public String getSteppage(String linkcontent, int pageon, int pagecount) {
+		public String getSteppage(String linkcontent, int pageOn, int pageCount) {
 			return steppage != null
 					? steppage.replace(CONTENTMARK, linkcontent).replace(PMARK, "'+this.value+'")
-							.replace(PAGEONMARK, pageon + "").replace(PAGECOUNTMARK, pagecount + "")
+							.replace(PAGEONMARK, pageOn + "").replace(PAGECOUNTMARK, pageCount + "")
 					: null;
 		}
 

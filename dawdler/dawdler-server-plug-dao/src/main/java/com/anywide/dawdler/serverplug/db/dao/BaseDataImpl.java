@@ -213,7 +213,7 @@ public class BaseDataImpl implements BaseData {
 
 	}
 
-	public int insertPrepareGetKey(String sql, Object... values) throws SQLException {
+	public long insertPrepareGetKey(String sql, Object... values) throws SQLException {
 		PreparedStatement ps = getWritePrepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 		int sum = values != null ? values.length : 0;
 		for (int i = 0; i < sum; i++) {
@@ -225,10 +225,11 @@ public class BaseDataImpl implements BaseData {
 			return 0;
 		}
 		ResultSet rs = null;
+		long id = 0;
 		try {
 			rs = ps.getGeneratedKeys();
 			if (rs.next()) {
-				i = rs.getInt(1);
+				id = rs.getLong(1);
 			}
 		} finally {
 			try {
@@ -243,7 +244,7 @@ public class BaseDataImpl implements BaseData {
 			}
 
 		}
-		return i;
+		return id;
 	}
 
 	public List<Map<String, Object>> queryListMaps(String sql) throws SQLException {
@@ -342,7 +343,7 @@ public class BaseDataImpl implements BaseData {
 	}
 
 	@Override
-	public int insertMapGetKey(String tableName, Map<String, Object> data) throws SQLException {
+	public long insertMapGetKey(String tableName, Map<String, Object> data) throws SQLException {
 		if (!data.isEmpty()) {
 			Object[] values = new Object[data.size()];
 			String sql = builderInsertSql(tableName, data, values);

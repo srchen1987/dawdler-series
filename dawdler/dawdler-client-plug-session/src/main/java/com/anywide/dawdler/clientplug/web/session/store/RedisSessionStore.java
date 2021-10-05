@@ -139,8 +139,8 @@ public class RedisSessionStore implements SessionStore {
 	public class GetAttributeJedisExecutor implements JedisExecutor<byte[]> {
 		@Override
 		public byte[] execute(Jedis jedis, Object attr) throws Exception {
-			byte[][] datas = (byte[][]) attr;
-			return jedis.hget(datas[0], datas[1]);
+			byte[][] data = (byte[][]) attr;
+			return jedis.hget(data[0], data[1]);
 		}
 	}
 

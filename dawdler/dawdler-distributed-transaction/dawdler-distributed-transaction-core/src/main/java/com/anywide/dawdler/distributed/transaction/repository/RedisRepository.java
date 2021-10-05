@@ -59,9 +59,9 @@ public class RedisRepository extends TransactionRepository {
 
 	@Override
 	public int create(DistributedTransactionContext transaction) throws Exception {
-		byte[] datas = serializer.serialize(transaction);
+		byte[] data = serializer.serialize(transaction);
 		Map<byte[], byte[]> map = new HashMap<>();
-		map.put(transaction.getBranchTxId().getBytes(), datas);
+		map.put(transaction.getBranchTxId().getBytes(), data);
 		return execute(pool, new JedisExecutor<Integer>() {
 			@Override
 			public Integer execute(Jedis jedis) {
@@ -76,10 +76,10 @@ public class RedisRepository extends TransactionRepository {
 		return execute(pool, new JedisExecutor<Integer>() {
 			@Override
 			public Integer execute(Jedis jedis) throws Exception {
-				byte[] datas = serializer.serialize(transaction);
+				byte[] data = serializer.serialize(transaction);
 				Map<byte[], byte[]> map = jedis.hgetAll(transaction.getGlobalTxId().getBytes());
 				if (map != null) {
-					map.put(transaction.getBranchTxId().getBytes(), datas);
+					map.put(transaction.getBranchTxId().getBytes(), data);
 					jedis.hmset((PREFIX + transaction.getGlobalTxId()).getBytes(), map);
 					return 1;
 				}

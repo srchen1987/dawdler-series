@@ -120,17 +120,17 @@ public class DistributedTransactionAspect {
 				DistributedTransactionContext branchContext = new DistributedTransactionContext(globalTxId);
 				branchContext.init();
 				branchContext.setAction(dt.action());
-				branchContext.setStatus(TransactionStatus.COMMITING);
+				branchContext.setStatus(TransactionStatus.TRYING);
 				RpcContext.getContext().setAttachment(DistributedTransactionContext.DISTRIBUTED_TRANSACTION_CONTEXT_KEY,
 						branchContext);
 				Object args[] = pjp.getArgs();
 				Parameter[] parameters = method.getParameters();
 				if (args.length > 0) {
-					Map<String, Object> datas = new HashMap<>();
+					Map<String, Object> data = new HashMap<>();
 					for (int i = 0; i < parameters.length; i++) {
-						datas.put(parameters[i].getName(), args[i]);
+						data.put(parameters[i].getName(), args[i]);
 					}
-					branchContext.setDatas(datas);
+					branchContext.setDatas(data);
 				}
 				Object obj = null;
 				Exception error = null;

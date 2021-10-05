@@ -98,71 +98,71 @@ public class SuperDAO implements BaseData {
 		return basedata.queryCountPrepare(sql, values);
 	}
 
-	public <T> List<T> queryListPage(String countsql, String sql, int pageon, int row, Class<T> c) throws SQLException {
-		int rowcount = queryCount(countsql);
-		if (pageon <= 0)
-			pageon = 1;
+	public <T> List<T> queryListPage(String countsql, String sql, int pageOn, int row, Class<T> c) throws SQLException {
+		int rowCount = queryCount(countsql);
+		if (pageOn <= 0)
+			pageOn = 1;
 		if (row <= 0)
 			row = 1;
-		int pagecount = rowcount % row == 0 ? rowcount / row : rowcount / row + 1;
-		pageon = pageon < pagecount ? pageon : pagecount;
-		if (rowcount == 0)
+		int pageCount = rowCount % row == 0 ? rowCount / row : rowCount / row + 1;
+		pageOn = pageOn < pageCount ? pageOn : pageCount;
+		if (rowCount == 0)
 			return new ArrayList<T>();
-		return basedata.queryList(sql + " limit " + ((pageon - 1) * row) + "," + row, c);
+		return basedata.queryList(sql + " limit " + ((pageOn - 1) * row) + "," + row, c);
 	}
 
-	public <T> List<T> queryListPagePrepare(String countsql, String sql, int pageon, int row, Class<T> c,
+	public <T> List<T> queryListPagePrepare(String countsql, String sql, int pageOn, int row, Class<T> c,
 			Object... values) throws SQLException {
-		int rowcount = queryCountPrepare(countsql, values);
-		if (pageon <= 0)
-			pageon = 1;
+		int rowCount = queryCountPrepare(countsql, values);
+		if (pageOn <= 0)
+			pageOn = 1;
 		if (row <= 0)
 			row = 1;
-		int pagecount = rowcount % row == 0 ? rowcount / row : rowcount / row + 1;
-		pageon = pageon < pagecount ? pageon : pagecount;
-		if (pageon == 0)
-			pageon = 1;
-		if (rowcount == 0)
+		int pageCount = rowCount % row == 0 ? rowCount / row : rowCount / row + 1;
+		pageOn = pageOn < pageCount ? pageOn : pageCount;
+		if (pageOn == 0)
+			pageOn = 1;
+		if (rowCount == 0)
 			return new ArrayList<T>();
-		return basedata.queryListPrepare(sql + " limit ?,? ", c, setPage(((pageon - 1) * row), row, values));
+		return basedata.queryListPrepare(sql + " limit ?,? ", c, setPage(((pageOn - 1) * row), row, values));
 	}
 
-	public <T> List<T> queryListPage(String countsql, String sql, int pageon, int row, Page page, Class<T> c)
+	public <T> List<T> queryListPage(String countsql, String sql, int pageOn, int row, Page page, Class<T> c)
 			throws SQLException {
 		page.setRow(row);
-		page.setPageon(pageon);
-		page.setRowcountAndCompute(queryCount(countsql));
-		if (page.getRowcount() == 0)
+		page.setPageOn(pageOn);
+		page.setRowCountAndCompute(queryCount(countsql));
+		if (page.getRowCount() == 0)
 			return new ArrayList<T>();
-		return basedata.queryList(sql + " limit " + ((page.getPageon() - 1) * page.getRow()) + "," + page.getRow(), c);
+		return basedata.queryList(sql + " limit " + ((page.getPageOn() - 1) * page.getRow()) + "," + page.getRow(), c);
 	}
 
-	public <T> List<T> queryListPagePrepare(String countsql, String sql, int pageon, int row, Page page, Class<T> c,
+	public <T> List<T> queryListPagePrepare(String countsql, String sql, int pageOn, int row, Page page, Class<T> c,
 			Object... values) throws SQLException {
 		page.setRow(row);
-		page.setPageon(pageon);
-		page.setRowcountAndCompute(queryCountPrepare(countsql, values));
-		if (page.getRowcount() == 0)
+		page.setPageOn(pageOn);
+		page.setRowCountAndCompute(queryCountPrepare(countsql, values));
+		if (page.getRowCount() == 0)
 			return new ArrayList<T>();
 		return basedata.queryListPrepare(sql + " limit ?,? ", c,
-				setPage(((page.getPageon() - 1) * page.getRow()), page.getRow(), values));
+				setPage(((page.getPageOn() - 1) * page.getRow()), page.getRow(), values));
 	}
 
-	private Object[] setPage(int pageon, int row, Object... values) {
+	private Object[] setPage(int pageOn, int row, Object... values) {
 		if (values == null) {
-			Object[] tem = { pageon, row };
+			Object[] tem = { pageOn, row };
 			return tem;
 		}
 		Object[] tem = new Object[values.length + 2];
 		for (int i = 0; i < values.length; i++) {
 			tem[i] = values[i];
 		}
-		tem[values.length] = pageon;
+		tem[values.length] = pageOn;
 		tem[values.length + 1] = row;
 		return tem;
 	}
 
-	public int insertPrepareGetKey(String sql, Object... values) throws SQLException {
+	public long insertPrepareGetKey(String sql, Object... values) throws SQLException {
 		return basedata.insertPrepareGetKey(sql, values);
 	}
 
@@ -174,21 +174,21 @@ public class SuperDAO implements BaseData {
 		return basedata.queryListMapsPrepare(sql, values);
 	}
 
-	public List<Map<String, Object>> queryListMapsPage(String countsql, String sql, int pageon, int row, Page page,
+	public List<Map<String, Object>> queryListMapsPage(String countsql, String sql, int pageOn, int row, Page page,
 			Object... values) throws SQLException {
 		page.setRow(row);
-		page.setPageon(pageon);
-		page.setRowcountAndCompute(queryCountPrepare(countsql, values));
-		return basedata.queryListMaps(sql + " limit " + ((page.getPageon() - 1) * row) + "," + row);
+		page.setPageOn(pageOn);
+		page.setRowCountAndCompute(queryCountPrepare(countsql, values));
+		return basedata.queryListMaps(sql + " limit " + ((page.getPageOn() - 1) * row) + "," + row);
 	}
 
-	public List<Map<String, Object>> queryListMapsPagePrepare(String countsql, String sql, int pageon, int row,
+	public List<Map<String, Object>> queryListMapsPagePrepare(String countsql, String sql, int pageOn, int row,
 			Page page, Object... values) throws SQLException {
 		page.setRow(row);
-		page.setPageon(pageon);
-		page.setRowcountAndCompute(queryCountPrepare(countsql, values));
+		page.setPageOn(pageOn);
+		page.setRowCountAndCompute(queryCountPrepare(countsql, values));
 		return basedata.queryListMapsPrepare(sql + " limit ?,? ",
-				setPage(((page.getPageon() - 1) * page.getRow()), page.getRow(), values));
+				setPage(((page.getPageOn() - 1) * page.getRow()), page.getRow(), values));
 	}
 
 	public Page newPage() {
@@ -196,13 +196,13 @@ public class SuperDAO implements BaseData {
 	}
 
 	@Override
-	public int insertMap(String tableName, Map<String, Object> datas) throws SQLException {
-		return basedata.insertMap(tableName, datas);
+	public int insertMap(String tableName, Map<String, Object> data) throws SQLException {
+		return basedata.insertMap(tableName, data);
 	}
 
 	@Override
-	public int insertMapGetKey(String tableName, Map<String, Object> datas) throws SQLException {
-		return basedata.insertMapGetKey(tableName, datas);
+	public long insertMapGetKey(String tableName, Map<String, Object> data) throws SQLException {
+		return basedata.insertMapGetKey(tableName, data);
 	}
 
 	@Override
