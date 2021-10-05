@@ -46,7 +46,7 @@ public class XmlConfig {
 	private static final String CONFIG_PATH = "services-config.xml";
 	private static final Logger logger = LoggerFactory.getLogger(XmlConfig.class);
 	private static XmlObject xmlobject = null;
-	private static final Map<String, Map<String, String>> datas = Collections.synchronizedMap(new HashMap<>());
+	private static final Map<String, Map<String, String>> data = Collections.synchronizedMap(new HashMap<>());
 
 	static {
 		loadXML();
@@ -68,7 +68,7 @@ public class XmlConfig {
 	}
 
 	public static Map<String, Map<String, String>> getDatas() {
-		return datas;
+		return data;
 	}
 
 	private static void loadXML() {
@@ -81,7 +81,7 @@ public class XmlConfig {
 	}
 
 	private static void loadDataSource() {
-		List<Node> list = xmlobject.selectNodes("/config/server-datas/server-data");
+		List<Node> list = xmlobject.selectNodes("/config/server-data/server-data");
 		for (Object obj : list) {
 			Element ele = (Element) obj;
 			Map<String, String> items = new HashMap<>();
@@ -89,7 +89,7 @@ public class XmlConfig {
 				Attribute ab = its.next();
 				items.put(ab.getName(), ab.getValue());
 			}
-			datas.put(ele.attributeValue("id"), items);
+			data.put(ele.attributeValue("id"), items);
 		}
 	}
 
