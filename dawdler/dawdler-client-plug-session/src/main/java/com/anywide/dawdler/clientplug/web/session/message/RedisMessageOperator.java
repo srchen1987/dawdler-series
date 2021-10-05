@@ -163,12 +163,12 @@ public class RedisMessageOperator implements MessageOperator {
 					}
 				}
 			} else {
-				String[] datas = splitMessage(message);
-				String sessionKey = datas[0].replace(RedisSessionStore.SESSIONKEY_PREFIX, "");
+				String[] data = splitMessage(message);
+				String sessionKey = data[0].replace(RedisSessionStore.SESSIONKEY_PREFIX, "");
 				DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionKey);
 				if (session != null) {
 					if (CHANNEL_ATTRIBUTE_CHANGE_RELOAD.equals(channel)) {
-						if (session.getSessionSign().equals(datas[1]))
+						if (session.getSessionSign().equals(data[1]))
 							return;
 						session.clear();
 						try {

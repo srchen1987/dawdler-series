@@ -26,7 +26,7 @@ package com.anywide.dawdler.distributed.transaction;
  * @email suxuan696@gmail.com
  */
 public class TransactionStatus {
-	public static final String COMMITING = "commiting";
+	public static final String TRYING = "trying";
 	public static final String CONFIRM = "confirm";
 	public static final String CANCEL = "cancel";
 

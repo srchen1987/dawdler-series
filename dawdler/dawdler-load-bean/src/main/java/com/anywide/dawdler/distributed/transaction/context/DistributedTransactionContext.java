@@ -37,11 +37,11 @@ public class DistributedTransactionContext implements Serializable, Cloneable {
 	private String globalTxId;
 	private String branchTxId;
 	private boolean cancel = false;// 整个事务取消
-	private String status;// 状态 commiting cancel confirm
+	private String status;// 状态 trying cancel confirm
 	private int addtime;// 添加时间
 	private String action;// 模块功能的简称
 	private int retryTime = 0;// 重试次数
-	private Map<String, Object> datas;
+	private Map<String, Object> data;
 	/**
 	 * 是否被干扰 如果被干扰 其他状态不生效 存为commting状态 在商城实际应用场景中是因为开发人员没有将订单业务绑定到分布式事务中 所以应用此字段作标记
 	 * 一般用不上这个配置
@@ -85,11 +85,11 @@ public class DistributedTransactionContext implements Serializable, Cloneable {
 	}
 
 	public Map<String, Object> getDatas() {
-		return datas;
+		return data;
 	}
 
-	public void setDatas(Map<String, Object> datas) {
-		this.datas = datas;
+	public void setDatas(Map<String, Object> data) {
+		this.data = data;
 	}
 
 	public String getStatus() {

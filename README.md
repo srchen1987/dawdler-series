@@ -138,7 +138,7 @@ dawdler文件结构说明
 2. demo是用eclipse写的，分别导入到eclipse中，demo-web不用多说（小学生都会将它部署到tomcat中）。demo-server可以直接将编译好的classes拷贝到dawdler的deploys目录的项目中,在实际开发的情况下建议将eclipse下的dawdler服务端的classes直接编译到dawdler/deploys/模块/classes。这样可以方便研发调试。
 3. 导入demo-server下的sql到数据库,同时注意项目下的数据源配置 参考使用说明中的 2.1 demo-server/src/src_config.xml [点击查看配置说明](https://gitee.com/srchen1987/dawdler-series/blob/master/demos/simple/demo-server/src/src_config.xml)
 4. 由于demo中用到了容器的数据源所以需要配置下 参考dawdler-server 配置文件说明 1.2 dawdler-server/conf/datasources.xml [点击这里查详细说明](https://gitee.com/srchen1987/dawdler-series/blob/master/myserver/servers/dawdler1/conf/datasources.xml)
-5. 先启动dawdler ，然后启动tomcat 访问controller即可体验（与spring mvc很相似)
+5. 先启动dawdler ，然后启动tomcat 访问controller即可体验（与spring mvcW相似)
 
 #### 使用说明
 

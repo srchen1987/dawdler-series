@@ -49,7 +49,7 @@ public class RWSplittingDataSourceManager {
 	private static final Pattern EXPRESSION = Pattern
 			.compile("write=\\[(\\w+|(\\w+\\|\\w+)+)\\],read=\\[(\\w+|(\\w+\\|\\w+)+)\\]");
 	private final Map<String, DataSource> dataSources = new HashMap<>();
-	private final Map<String, String> datasourceExpression = new HashMap<>();
+	private final Map<String, String> dataourceExpression = new HashMap<>();
 	private final Map<String, MappingDecision> packages = new HashMap<>();
 
 	public RWSplittingDataSourceManager() throws Exception {
@@ -81,12 +81,12 @@ public class RWSplittingDataSourceManager {
 			this.dataSources.put(id, ds);
 		}
 
-		List<Node> datasourceExpressionList = xmlo.selectNodes("/config/datasource-expression");
-		for (Object datasourceExpression : datasourceExpressionList) {
-			Element ele = (Element) datasourceExpression;
+		List<Node> dataourceExpressionList = xmlo.selectNodes("/config/datasource-expression");
+		for (Object dataourceExpression : dataourceExpressionList) {
+			Element ele = (Element) dataourceExpression;
 			String id = ele.attributeValue("id");
 			String latentExpression = ele.attributeValue("latent-expression");
-			this.datasourceExpression.put(id, latentExpression);
+			this.dataourceExpression.put(id, latentExpression);
 		}
 
 		List<Node> decisionList = xmlo.selectNodes("/config/decision");
@@ -94,7 +94,7 @@ public class RWSplittingDataSourceManager {
 			Element ele = (Element) decision;
 			String mapping = ele.attributeValue("mapping");
 			String latentExpression = ele.attributeValue("latent-expression");
-			packages.put(mapping, new MappingDecision(datasourceExpression.get(latentExpression)));
+			packages.put(mapping, new MappingDecision(dataourceExpression.get(latentExpression)));
 		}
 
 	}
