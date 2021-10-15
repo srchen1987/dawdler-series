@@ -263,7 +263,7 @@ registerRuleOperatorScanPackage接收参数为Class对象,添加这个Class所�
 
 #### 5.1 监听器中添加扫描验证器
 
-关于监听器参考 [WebContextListener](../dawdler-client-plug/README.md#WebContextListener)
+关于监听器参考 [WebContextListener](../dawdler-client-plug/README.md#6-webcontextlistener-监听器)
 
 ```java
 package com.anywide.yyg.user.web.listener;
@@ -339,9 +339,9 @@ viewName： 控件的描述,例如：用户名.
 
 validateRule： 验证规则,可以用多个&组合到一起.
 
-alertFunction： 提示方法或提示组件的id. [参考alertFunction的例子](#alertFunction_demo)
+alertFunction： 提示方法或提示组件的id. [参考alertFunction的例子](#622-alertfunction的示例)
 
-buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#buildFunction_demo)
+buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-buildFunction的示例)
 
 ##### 6.2.1 添加验证规则添加规则的示例
 
@@ -374,8 +374,6 @@ sir_validate.addRule([{
 ------------------------------------------------------
 
 ##### 6.2.2 alertFunction的示例
-
-<a name="alertFunction_demo"></a>
 
 传入提示方法的示例：
 
@@ -417,7 +415,6 @@ sir_validate.addRule([{
 ##### 6.2.3 buildFunction的示例
 
 绑定了click事件与onblur事件.
-<a name="buildFunction_demo"></a>
 
 ```javascript
  sir_validate.addRule({

@@ -32,6 +32,25 @@ import com.anywide.dawdler.util.DawdlerTool;
 public class ClientConfig {
 	public String certificatePath;
 	private String zkHost;
+	private String zkUsername;
+	private String zkPassword;
+
+	public String getZkUsername() {
+		return zkUsername;
+	}
+
+	public void setZkUsername(String zkUsername) {
+		this.zkUsername = zkUsername;
+	}
+
+	public String getZkPassword() {
+		return zkPassword;
+	}
+
+	public void setZkPassword(String zkPassword) {
+		this.zkPassword = zkPassword;
+	}
+
 	private List<ServerChannelGroup> serverChannelGroups;
 
 	public ClientConfig() {
@@ -97,14 +116,6 @@ public class ClientConfig {
 
 		public void setGroupId(String groupId) {
 			this.groupId = groupId;
-		}
-
-		public String getPath() {
-			return path;
-		}
-
-		public void setPath(String path) {
-			this.path = path;
 		}
 
 		public int getConnectionNum() {
