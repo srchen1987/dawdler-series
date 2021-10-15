@@ -83,13 +83,11 @@ public class DawdlerConnection {
 	AsynchronousChannelGroup asynchronousChannelGroup;
 	private final String groupName;
 	private int serializer;
-	private String path;
 	private volatile List<List<SocketSession>> socketSessions;
 
-	public DawdlerConnection(String gid, String path, int serializer, int sessionNum, String user, String password)
+	public DawdlerConnection(String gid, int serializer, int sessionNum, String user, String password)
 			throws IOException {
 		this.gid = gid;
-		this.path = path;
 		this.groupName = getDefaultGroupName();
 		this.sessionNum = sessionNum;
 		this.serializer = serializer;
@@ -115,14 +113,6 @@ public class DawdlerConnection {
 
 	public ConcurrentHashMap<SocketAddress, List<SocketSession>> getSessionGroup() {
 		return sessionGroup;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 	public int getSerializer() {
@@ -189,7 +179,7 @@ public class DawdlerConnection {
 				socketSession.setRemoteAddress(address);
 				socketSession.setUser(user);
 				socketSession.setPassword(password);
-				socketSession.setPath(path);
+				socketSession.setPath(gid);
 			} catch (Exception e) {
 				logger.error("", e);
 				if (socketSession != null)

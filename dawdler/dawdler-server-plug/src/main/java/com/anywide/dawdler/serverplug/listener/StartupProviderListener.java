@@ -1,7 +1,6 @@
 package com.anywide.dawdler.serverplug.listener;
 
-import java.util.Map;
-
+import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,27 +18,26 @@ public class StartupProviderListener implements DawdlerServiceListener {
 
 	@Override
 	public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
-		Map data = XmlConfig.getDatas().get("discoveryServer");
-		if (data != null) {
-			if ("zk".equals(data.get("type"))) {
-				String url = (String) data.get("url");
-				String channelGroup = (String) data.get("channel-group-id");
-				if (channelGroup == null || channelGroup.trim().equals(""))
-					channelGroup = "defaultgroup";
-				if (url == null)
-					throw new NullPointerException("zk url can't be null!");
-				discoveryCenter = new ZkDiscoveryCenter(url, null, null);
-				discoveryCenter.init();
-				String path = channelGroup + "/" + dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-				discoveryCenter.addProvider(path, dawdlerContext.getHost() + ":" + dawdlerContext.getPort());
-				dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
-			}
+		Element root = XmlConfig.getConfig().getRoot();
+		Element zkHost = (Element) root.selectSingleNode("zk-host");
+		if (zkHost != null) {
+			String username = zkHost.attributeValue("username");
+			String password = zkHost.attributeValue("password");
+			String url = zkHost.getTextTrim();
+			String channelGroup = dawdlerContext.getDeployName();
+			if ("".equals(url))
+				throw new NullPointerException("zk-host can't be null!");
+			discoveryCenter = new ZkDiscoveryCenter(url, username, password);
+			discoveryCenter.init();
+			String path = channelGroup + "/" + dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
+			discoveryCenter.addProvider(path, dawdlerContext.getHost() + ":" + dawdlerContext.getPort());
+			dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
 		} else {
 			logger.error("not find discoveryServer config!");
 		}
 
 	}
-	
+
 	@Override
 	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
 		if (discoveryCenter != null)

@@ -134,11 +134,11 @@ Locale 为 request.getLocale();
 
 ViewForward 提供了非常丰富的api 可以设置数据集,可以设置模板路径
 
-#### 4.5 自定义对象
+#### 4.6 自定义对象
 
-需要使用@RequestBody注解标识
+使用@RequestBody注解标识
 
-#### 4.6 部分示例
+#### 4.7 部分示例
 
 示例1：
 演示@RequestParam使用方式
@@ -226,13 +226,6 @@ public class OrderController {
 
 ```java
 
-package com.anywide.yyg.user.web.interceptor;
-
-import com.anywide.dawdler.clientplug.annotation.RequestMapping;
-import com.anywide.dawdler.clientplug.web.handler.ViewForward;
-import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
-import com.anywide.dawdler.core.annotation.Order;
-
 @Order(1)//可以有多个拦截器 支持排序 排序为升序
 public class UserWebInterceptor implements HandlerInterceptor {
 
@@ -262,8 +255,6 @@ public class UserWebInterceptor implements HandlerInterceptor {
 ```
 
 ### 6. WebContextListener 监听器
-
-<a name="WebContextListener"></a>
 
 监听器的作用与Servlet提供的ServletContextListener完全一致,如果有多个监听器,支持@Order注解进行升序排序.目前只提供容器启动与销毁的监听器（HttpSessionListener,ServletRequestListener,HttpSessionActivationListener 不提供,如果有需要采用servlet提供的即可）.
 
@@ -346,8 +337,34 @@ public long paramLong(String paramName, long value) {
 
 ### 8. RemoteClassLoaderFire 加载类通知器
 
-需要获取加载类触发一些操作可以实现RemoteClassLoaderFire接口,通过SPI方式扩展,支持@Order注解进行升序排序,参考WebComponentClassLoaderFire,用于实现自动注入Service到Controller,Listener,Interceptor.(普通开发人员一般无须扩展)
+需要获取加载类触发一些操作可以实现RemoteClassLoaderFire接口,通过SPI方式扩展,支持@Order注解进行升序排序,参考[WebComponentClassLoaderFire](src/main/java/com/anywide/dawdler/clientplug/web/fire/WebComponentClassLoaderFire.java),用于实现自动注入Service到Controller,WebContextListener,HandlerInterceptor.(普通开发人员一般无须扩展)
 
 ### 9. DisplayPlug 视图插件扩展
 
-dawdler内部提供JsonDisplayPlug,JspDisplayPlug,VelocityDisplayPlug三种视图插件,如果有其他需要,比如freemarker的需求可以实现DisplayPlug接口,通过SPI方式来进行扩展.可以参考系统内的三个插件.(普通开发人员一般无须扩展)
+dawdler内部提供[JsonDisplayPlug](src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/JsonDisplayPlug.java),[JspDisplayPlug](src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/JspDisplayPlug.java),[VelocityDisplayPlug](../dawdler-client-plug-velocity/src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/VelocityDisplayPlug.java)三种视图插件,如果有其他需要,比如freemarker的需求可以实现DisplayPlug接口,通过SPI方式来进行扩展.可以参考系统内的三个插件.(普通开发人员一般无须扩展)
+
+### 10. 注入远程服务接口
+
+在Controller,WebContextListener,HandlerInterceptor中支持使用@RemoteService进行注入远程调用的服务接口.
+
+[RemoteService介绍](../dawdler-core/README.md#2-RemoteService注解介绍)
+
+示例：
+
+```java
+@RequestMapping(value="/user")
+public class UserController{
+ 
+ @RemoteService(group="user-service")
+ UserService userService;
+
+@RequestMapping(value="/list.html" ,viewType=ViewType.json)
+ public void list(int pageOn) throws Exception{
+  int row = 20;
+  Map<String, Object> result = userService.selectUserList(pageOn, row);
+  setData(result);
+ }
+
+}
+
+```
