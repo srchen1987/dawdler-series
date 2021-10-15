@@ -48,9 +48,11 @@ public class ClientConfigParser {
 			xmlObject = new XmlObject(DawdlerTool.getcurrentPath() + "client/client-conf.xml");
 			Element root = xmlObject.getRoot();
 			config = new ClientConfig();
-			Node zkHost = root.selectSingleNode("zk-host");
+			Element zkHost = (Element) root.selectSingleNode("zk-host");
 			if (zkHost != null) {
-				config.setZkHost(zkHost.getText());
+				config.setZkHost(zkHost.getTextTrim());
+				config.setZkUsername(zkHost.attributeValue("username"));
+				config.setZkPassword(zkHost.attributeValue("password"));
 			}
 
 			Node certificatePath = root.selectSingleNode("certificatePath");
@@ -64,7 +66,6 @@ public class ClientConfigParser {
 
 				Element serverChannelGroupEle = (Element) node;
 				String groupId = getElementAttribute(serverChannelGroupEle, "channel-group-id");
-				String path = getElementAttribute(serverChannelGroupEle, "service-path");
 				int connectionNum = getElementAttribute2Int(serverChannelGroupEle, "connection-num", 2);
 				int sessionNum = getElementAttribute2Int(serverChannelGroupEle, "session-num", 2);
 				int serializer = getElementAttribute2Int(serverChannelGroupEle, "serializer", 2);
@@ -72,7 +73,6 @@ public class ClientConfigParser {
 				String password = getElementAttribute(serverChannelGroupEle, "password");
 
 				serverChannelGroup.setGroupId(groupId);
-				serverChannelGroup.setPath(path);
 				serverChannelGroup.setConnectionNum(connectionNum);
 				serverChannelGroup.setSessionNum(sessionNum);
 				serverChannelGroup.setSerializer(serializer);

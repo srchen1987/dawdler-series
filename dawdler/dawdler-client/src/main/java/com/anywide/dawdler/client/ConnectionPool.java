@@ -66,7 +66,8 @@ public class ConnectionPool {
 					cp.groupName = gid;
 					addGroup(gid, cp);
 				}
-				discoveryCenter = new ZkDiscoveryCenterClient(connectString, null, null);
+				discoveryCenter = new ZkDiscoveryCenterClient(connectString, clientConfig.getZkUsername(),
+						clientConfig.getZkPassword());
 			}
 		} catch (Exception e) {
 			logger.error("", e);
@@ -79,7 +80,6 @@ public class ConnectionPool {
 		if (sg == null)
 			throw new NullPointerException("not configure " + gid + "!");
 		ConnectionPool cp = getConnectionPool(gid);
-		String path = sg.getPath();
 		String user = sg.getUser();
 		String password = sg.getPassword();
 		int connectionNum = sg.getConnectionNum();
@@ -92,7 +92,7 @@ public class ConnectionPool {
 		for (int j = 0; j < connectionNum; j++) {
 			DawdlerConnection dc;
 			try {
-				dc = new DawdlerConnection(gid, path, serializer, sessionNum, user, password);
+				dc = new DawdlerConnection(gid, serializer, sessionNum, user, password);
 				cp.add(dc);
 			} catch (IOException e) {
 				logger.error("", e);
@@ -150,7 +150,6 @@ public class ConnectionPool {
 			if (connections.isEmpty()) {
 				initConnection(gid);
 				semaphore.release(Byte.MAX_VALUE);
-//				semaphore.drainPermits();
 			}
 		}
 		connections.forEach(con -> {
