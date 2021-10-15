@@ -1,6 +1,23 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.anywide.dawdler.rabbitmq.connection;
 
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.net.InetAddress;
 import java.util.LinkedList;
 import java.util.Map;
@@ -8,7 +25,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import com.anywide.dawdler.rabbitmq.channel.ChannelWarpper;
+import com.anywide.dawdler.rabbitmq.channel.ChannelWarpperHandler;
 import com.anywide.dawdler.rabbitmq.connection.pool.ConnectionPool;
 import com.rabbitmq.client.BlockedCallback;
 import com.rabbitmq.client.BlockedListener;
@@ -20,21 +37,21 @@ import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.UnblockedCallback;
 
 /**
-*
-* @Title AMQPConnectionWarpper.java
-* @Description Rabbitmq的Connection包装类
-* @author jackson.song
-* @date 2021年4月11日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title AMQPConnectionWarpper.java
+ * @Description Rabbitmq的Connection包装类
+ * @author jackson.song
+ * @date 2021年4月11日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 public class AMQPConnectionWarpper implements Connection {
 	private Connection target;
 	private ConnectionPool connectionPool;
 	private int channelSize;
 	private int getChannelTimeOut;
 	private Semaphore semaphore;
-	LinkedList<ChannelWarpper> channels = new LinkedList<ChannelWarpper>();
+	LinkedList<Channel> channels = new LinkedList<>();
 
 	public AMQPConnectionWarpper(Connection target, ConnectionPool connectionPool, int channelSize,
 			int getChannelTimeOut) {
@@ -110,6 +127,8 @@ public class AMQPConnectionWarpper implements Connection {
 		return target.getServerProperties();
 	}
 
+	static Class<?>[] channelClass = new Class[] { Channel.class };
+
 	@Override
 	public Channel createChannel() throws IOException {
 		try {
@@ -120,7 +139,10 @@ public class AMQPConnectionWarpper implements Connection {
 					}
 				}
 				Channel channel = target.createChannel();
-				return new ChannelWarpper(channel, channels, semaphore);
+				ChannelWarpperHandler channelWarpperHandler = new ChannelWarpperHandler(channel, connectionPool,
+						channels, semaphore);
+				return (Channel) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), channelClass,
+						channelWarpperHandler);
 			} else {
 				throw new IOException(new TimeoutException("timed out after " + getChannelTimeOut + " milliseconds !"));
 			}

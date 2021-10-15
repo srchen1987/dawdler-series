@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hosts>
+    <host name="core">
+        <package type="component">com.anywide.remote.core</package>
+        <package type="api">com.anywide.bean.core</package>
+    </host>
+    <host name="user">
+        <package>com.anywide.remote.user</package>
+        <package type="api">com.anywide.bean.user</package>
+    </host>
+</hosts>
