@@ -212,14 +212,6 @@ public class UserServiceStartupListener implements DawdlerServiceListener{
 示例：
 
 ```java
-
-package com.anywide.yyg.user.filter;
-
-import com.anywide.dawdler.core.bean.RequestBean;
-import com.anywide.dawdler.core.bean.ResponseBean;
-import com.anywide.dawdler.server.filter.DawdlerFilter;
-import com.anywide.dawdler.server.filter.FilterChain;
-
 public class MyFilter implements DawdlerFilter{
 
  @Override
@@ -228,8 +220,6 @@ public class MyFilter implements DawdlerFilter{
  }
 
 }
-
-
 ```
 
 ### 5. dawdler服务创建监听器

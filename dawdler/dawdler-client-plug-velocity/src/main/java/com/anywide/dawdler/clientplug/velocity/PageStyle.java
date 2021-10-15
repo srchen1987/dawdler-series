@@ -130,7 +130,7 @@ public class PageStyle {
 	}
 
 	public static void export(String prefix, String first, String up, String pages, String pageOn, String last,
-			String end, String steppage) {
+			String end, String stepPage) {
 		PageStyleContent pcont = pageStyle.new PageStyleContent();
 		pcont.setFirstpage(first);
 		pcont.setUppage(up);
@@ -138,7 +138,7 @@ public class PageStyle {
 		pcont.setPageOn(pageOn);
 		pcont.setLastpage(last);
 		pcont.setEndpage(end);
-		pcont.setSteppage(steppage);
+		pcont.setSteppage(stepPage);
 		stylecontents.put(prefix, pcont);
 
 	}

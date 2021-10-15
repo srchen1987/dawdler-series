@@ -59,12 +59,12 @@ runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDir
 
 自定义样式扩展
 
-参考PageStyle源代码中的export方法：
+参考[PageStyle](src/main/java/com/anywide/dawdler/clientplug/velocity/PageStyle.java)源代码中的export方法：
 
 ```java
 //相关注释可以看源代码
- public static void export(String prefix, String first, String up, String pages, String pageon, String last,
-   String end, String steppage)
+ public static void export(String prefix, String first, String up, String pages, String pageOn, String last,
+   String end, String stepPage)
 ```
 
 举例如下：
@@ -87,9 +87,9 @@ export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
 
 ```html
 //直接过滤字符串
-#XSSFilter("<script>alert(1);</scropt>")
+#XSSFilter("<script>alert(1);</script>")
 
-//举例输出实体对象中的属性
+//举例输出实体对象中的属性,thread是后台返回的对象放置了velocity的上下文中.
 #XSSFilter($thread.content)
 
 ```
@@ -102,7 +102,7 @@ export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
 
 ### 4. 关于模板路径的设置
 
-参考VelocityDisplayPlug类中的init方法,在init方法中定义了模板的路径.
+参考[VelocityDisplayPlug](src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/VelocityDisplayPlug.java)类中的init方法,在init方法中定义了模板的路径.
 具体代码：
 
 ```java
@@ -117,3 +117,47 @@ String templatePath = servletContext.getInitParameter("template-path");
 ```
 
 如果在servletContext指定了初始化参数则按指定的来设置,如果没设置默认则为WEB-INF/template.
+
+### 5. VelocityToolBox的使用
+
+自定义指令比较麻烦,为了方便使用一些工具类的方法,提供了VelocityToolBox的扩展方法.
+
+使用方式：
+
+1、编写一个类继承VelocityToolBox,需要传入一个别名到构造函数中.
+
+```java
+public class MyTool extends VelocityToolBox{
+
+ public MyTool(String name) {
+  super(name);//别名 用于velocity
+ }
+ //定义一个转换大写的方法
+ public String toUpperCase(String content) {
+  if(content == null)
+   return null;
+  return content.toUpperCase();
+ }
+}
+```
+
+2、在resources下创建toolboxs.properties文件并配置,properties中的key为别名,value为类名.
+
+```properties
+myTool=com.anywide.yyg.user.velocity.tool.MyTool
+```
+
+3、在velocity中使用
+
+```html
+<html>
+<head>
+<title>velocity自定义工具类</title>
+</head>
+
+<body>
+  $myTool.toUpperCase("hello")
+</body>
+
+</html> 
+```

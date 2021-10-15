@@ -38,7 +38,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @author jackson.song
  * @version V1.0
  * @Title XmlConfig.java
- * @Description 简单的xml操作类
+ * @Description 后台服务的配置类
  * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */
@@ -46,7 +46,6 @@ public class XmlConfig {
 	private static final String CONFIG_PATH = "services-config.xml";
 	private static final Logger logger = LoggerFactory.getLogger(XmlConfig.class);
 	private static XmlObject xmlobject = null;
-	private static final Map<String, Map<String, String>> data = Collections.synchronizedMap(new HashMap<>());
 
 	static {
 		loadXML();
@@ -67,29 +66,12 @@ public class XmlConfig {
 		return path;
 	}
 
-	public static Map<String, Map<String, String>> getDatas() {
-		return data;
-	}
 
 	private static void loadXML() {
 		try {
 			xmlobject = XmlObject.loadClassPathXML(File.separator + CONFIG_PATH);
 		} catch (DocumentException | IOException e) {
 			logger.error("", e);
-		}
-		loadDataSource();
-	}
-
-	private static void loadDataSource() {
-		List<Node> list = xmlobject.selectNodes("/config/server-data/server-data");
-		for (Object obj : list) {
-			Element ele = (Element) obj;
-			Map<String, String> items = new HashMap<>();
-			for (Iterator<Attribute> its = ele.attributes().iterator(); its.hasNext();) {
-				Attribute ab = its.next();
-				items.put(ab.getName(), ab.getValue());
-			}
-			data.put(ele.attributeValue("id"), items);
 		}
 	}
 

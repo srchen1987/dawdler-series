@@ -18,21 +18,11 @@ dawdler-circuit-breaker 是基于时间滑动窗口方式实现的熔断器,支�
 例:
 
 ```java
-package com.anywide.yyg.user.service;
-
-import java.util.Map;
-
-import com.anywide.dawdler.core.annotation.CircuitBreaker;
-import com.anywide.dawdler.core.annotation.RemoteService;
-import com.anywide.yyg.user.entity.User;
-
-@RemoteService
+@RemoteService(group="user-service")
 public interface UserService {
-
- int addUser(User user)throws Exception;
  
  @CircuitBreaker
- Map<String, Object> selectUserList(int pageon,int row)throws Exception;
+ Map<String, Object> selectUserList(int pageOn)throws Exception;
  
 }
 ```
@@ -45,9 +35,9 @@ public interface UserService {
 
 ```java
 @CircuitBreaker(fallbackMethod = "selectUserListFallback")
-Map<String, Object> selectUserList(int pageon,int row)throws Exception;
+Map<String, Object> selectUserList(int pageOn)throws Exception;
  
-default Map<String, Object> selectUserListFallback(int pageon,int row)throws Exception{
+default Map<String, Object> selectUserListFallback(int pageOn)throws Exception{
   Map<String, Object> result = new HashMap<>();
   return result;
 }

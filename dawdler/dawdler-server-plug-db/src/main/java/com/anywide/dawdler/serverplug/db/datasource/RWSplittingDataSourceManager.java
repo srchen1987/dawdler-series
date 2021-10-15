@@ -71,6 +71,7 @@ public class RWSplittingDataSourceManager {
 				String attributeName = e.attributeValue("name");
 				String value = e.getText().trim();
 				try {
+					attributeName = captureName(attributeName);
 					ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
 				} catch (Exception ex) {
 					ReflectionUtil.invoke(obj, "set" + attributeName, value);
@@ -245,4 +246,11 @@ public class RWSplittingDataSourceManager {
 			return originalReadExpression != null && (originalReadExpression.equals(md.originalReadExpression));
 		}
 	}
+	
+	private static String captureName(String str) {
+		char[] cs = str.toCharArray();
+		cs[0] -= 32;
+		return String.valueOf(cs);
+	}
+	
 }
