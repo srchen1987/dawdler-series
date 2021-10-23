@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.conf.client.init;
 
-import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
 import com.anywide.dawdler.clientplug.web.interceptor.InterceptorProvider;
