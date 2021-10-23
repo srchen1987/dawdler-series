@@ -28,16 +28,10 @@ dawdler-client 客户端核心代码,过滤器,服务发现,连接池,动态代�
  connection-num 连接数
  session-num 会话数
  serializer 序列化方式（1,jdk默认,2 kroy,支持扩展）
- user与password是帐号密码
+ user 帐号
+ password 密码
   -->
     </server-channel-group>
-    
-<!-- 以下是动态加载配置 -->
-    <loads-on>
-        <item sleep="15000" channel-group-id="user-api" mode="run">user-api</item><!-- 配置加载user-api模块  sleep 检查更新间隔 毫秒单位,channel-group-id指定组,mode=run 为运行模式 不在检查更新-->
-        <item sleep="15000" channel-group-id="user" mode="run">user</item><!-- 配置加载user模块 -->
-    </loads-on>
-
 </config>
 ```
 

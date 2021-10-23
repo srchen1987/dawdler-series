@@ -368,3 +368,35 @@ public class UserController{
 }
 
 ```
+
+### 11. 配置需要加载的api与entity
+
+参考以下示例,loads-on是配置加载项,其中channel-group-id对应上面server-channel-group中声明的server-channel-group.关于示例中其他配置请参考[client/client-conf.xml配置文件说明](../dawdler-client/README.md#2-clientclient-confxml配置文件说明)
+
+示例：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <zk-host>localhost:2181</zk-host>
+    <certificatePath>key/dawdler.cer</certificatePath>
+    <server-channel-group channel-group-id="user-api"
+                          connection-num="1"
+                          sessionNum="4" serializer="2"
+                          user="global_user" password="global_password">
+    </server-channel-group>
+    
+        <server-channel-group channel-group-id="user-load-web"
+                          connection-num="1"
+                          sessionNum="4" serializer="2"
+                          user="global_user" password="global_password">
+    </server-channel-group>
+  
+    <!-- web启动时动态加载配置,dawdler-client-plug需要此配置 -->
+    <loads-on>
+        <item sleep="15000" channel-group-id="user-api" mode="run">user</item><!-- 配置加载user-api模块  sleep 检查更新间隔 毫秒单位,channel-group-id指定组,mode=run 为运行模式 不在检查更新-->
+        <item sleep="15000" channel-group-id="user-load-web" mode="run">user</item><!-- 配置加载user模块 -->
+    </loads-on>
+
+</config>d
+```
