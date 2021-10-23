@@ -86,7 +86,7 @@ public class ConsulConfigClient implements ConfigClient {
 			client = new ConsulClient(host, port);
 		}
 		if (watchKeys != null)
-			executor = Executors.newScheduledThreadPool(watchKeys.size());
+			executor = Executors.newFixedThreadPool(watchKeys.size());
 	}
 
 	@Override

@@ -36,7 +36,7 @@ import java.lang.annotation.Target;
 public @interface FieldConfig {
 	//配置中心的path 如 consul的path
 	String path();
-	//表达式 如 name 或 user.username 注意这里和SPEL不同
+	//表达式 如 name 或 user.username 注意这里和SPEL不同,采用的Jexl来实现.
 	String value() default "";
 
 }
