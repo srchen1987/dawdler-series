@@ -65,7 +65,7 @@ UserController-validator.xml 内容：
     <validator-fields><!--定义控件信息的根节点--> 
         <validator-field name="userid" explain="用户Id">
             <![CDATA[notEmpty&positiveNumber]]>
-        </validator-field><!-- 控件信息节点,@name 控件名称 @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合 .<![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展）-->
+        </validator-field><!-- 控件信息节点,@name 控件名称 @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合 .<![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展)-->
         <validator-field name="username" explain="用户名">
             <![CDATA[notEmpty&maxSize:32]]>
         </validator-field>
@@ -311,7 +311,7 @@ dawdler-validator.js 是一套兼容后台验证表达式的前端框架.
 
 #### 6.1 使用方式
 
-引入dawdler-validator.js,内部提供了一个实例sir_validate（sir是为了纪念linuxsir,linuxsir当年就采用这个这个变量名）.
+引入dawdler-validator.js,内部提供了一个实例sir_validate(sir是为了纪念linuxsir,linuxsir当年就采用这个这个变量名).
 
 可以重新声明一个对象
 
@@ -482,7 +482,7 @@ addNoSkip("email");
 
 #### 6.8 验证方法
 
-通过调用validateAll方法进行验证,该方法返回boolean类型,如果返回true为验证通过,如果为false会触发提醒事件（如果配置了alertFunction或全局的事件或全局展现控件,则触发对应的配置,否则会默认调用alert进行提醒）.
+通过调用validateAll方法进行验证,该方法返回boolean类型,如果返回true为验证通过,如果为false会触发提醒事件(如果配置了alertFunction或全局的事件或全局展现控件,则触发对应的配置,否则会默认调用alert进行提醒).
 
 示例：
 
@@ -524,12 +524,12 @@ sir_validate.addRule([{
 sir_validate.buildFormValidate("myform");
 ```
 
-#### 6.10 加载通过html属性配置的验证规则（不常用）
+#### 6.10 加载通过html属性配置的验证规则(不常用)
 
 通过调用buildFormValidateAutoRule加载通过dom属性配置的验证规则,第一个参数方法绑定form提交事件,buildFormValidate的参数为form的id,第二个参数为boolean类型,是否绑定form提交事件.
 
 以下示例中在html的控件中定义了验证框架的相关属性,其属性与通过对象方式传入的方式完全相同.
-一般不推荐这种方式,除非采用了动态表单（dawdler-client-plug-velocity 模块中实现的）会自动生成相关属性.
+一般不推荐这种方式,除非采用了动态表单(dawdler-client-plug-velocity 模块中实现的)会自动生成相关属性.
 
 示例：
 
@@ -549,7 +549,7 @@ sir_validate.buildFormValidateAutoRule("myform", true);
 
 #### 6.11 全局提醒方法
 
-定义一个方法或一个全局变量,来实现全局提醒方法,方法名或变量名为globalAlertFunction,方法的优先级优于变量的（如果验证控件规则中定义了alertFunction,则优先调用alertFunction）.
+定义一个方法或一个全局变量,来实现全局提醒方法,方法名或变量名为globalAlertFunction,方法的优先级优于变量的(如果验证控件规则中定义了alertFunction,则优先调用alertFunction).
 
 如果定义方法会调用此方法,第一个参数为控件对象,第二个为错误信息.
 
@@ -621,7 +621,7 @@ sir_validate.addRule({
 
 实现方式：
 
-通过调用addRegExp方法来添加一个正则类验证规则,规则的组成由（表达式名:正则）组成.定义一个方法,方法名为表达式名.参数1为控件值,参数二为正则匹配到的数组.
+通过调用addRegExp方法来添加一个正则类验证规则,规则的组成由(表达式名:正则)组成.定义一个方法,方法名为表达式名.参数1为控件值,参数二为正则匹配到的数组.
 
 示例：
 

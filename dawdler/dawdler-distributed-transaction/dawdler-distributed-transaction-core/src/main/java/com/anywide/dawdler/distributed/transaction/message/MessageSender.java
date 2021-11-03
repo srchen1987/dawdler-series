@@ -26,6 +26,6 @@ package com.anywide.dawdler.distributed.transaction.message;
  * @email suxuan696@gmail.com
  */
 public interface MessageSender {
-	public String queueName = "distributed_transaction_queue";
+	public final String queueName = "distributed_transaction_queue";
 	public void sent(final String msg);
 }

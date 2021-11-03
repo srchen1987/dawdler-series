@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.clientplug.web.session.AbstractDistributedSessionManager;
 import com.anywide.dawdler.clientplug.web.session.SessionOperator;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
+import com.anywide.dawdler.clientplug.web.session.message.RedisMessageOperator.ResponseDataListener;
 import com.anywide.dawdler.clientplug.web.session.store.RedisSessionStore;
 import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.Serializer;
@@ -79,26 +80,37 @@ public class RedisMessageOperator implements MessageOperator {
 
 	@Override
 	public void listenExpireAndDelAndChange() {
-		new Thread(() -> {
-			Jedis jedis = null;
-			try {
-				jedis = jedisPool.getResource();
-				config(jedis);
-				CHANNEL_EXPIRED = CHANNEL_EXPIRED.replace("database", jedis.getDB() + "");
-				CHANNEL_DEL = CHANNEL_DEL.replace("database", jedis.getDB() + "");
-//					jedis.subscribe(new ResponseDataListener(),"__keyevent@0__:expired", "__keyevent@0__:del","__keyevent@0__:hset");
-				jedis.subscribe(new ResponseDataListener(), CHANNEL_EXPIRED, CHANNEL_DEL, CHANNEL_ATTRIBUTE_CHANGE,
-						CHANNEL_ATTRIBUTE_CHANGE_RELOAD, CHANNEL_ATTRIBUTE_CHANGE_DEL);
-			} catch (Exception e) {
-				logger.error("", e);
-				if (jedis != null)
+		Thread thread = new Thread(() -> {
+			while (true) {
+				Jedis jedis = null;
+				try {
+					jedis = jedisPool.getResource();
+					config(jedis);
+					CHANNEL_EXPIRED = CHANNEL_EXPIRED.replace("database", jedis.getDB() + "");
+					CHANNEL_DEL = CHANNEL_DEL.replace("database", jedis.getDB() + "");
+					subscribe(jedis);
+				} catch (Exception e) {
+					logger.error("", e);
+					if (jedis != null)
+						try {
+							jedis.close();
+						} catch (Exception e1) {
+						}
 					try {
-						jedis.close();
-					} catch (Exception e1) {
+						Thread.sleep(500);
+					} catch (InterruptedException e1) {
 					}
+					abstractDistributedSessionManager.invalidateAll();
+				}
 			}
-		}).start();
+		});
+		thread.setDaemon(true);
+		thread.start();
+	}
 
+	private void subscribe(Jedis jedis) {
+		jedis.subscribe(new ResponseDataListener(), CHANNEL_EXPIRED, CHANNEL_DEL, CHANNEL_ATTRIBUTE_CHANGE,
+				CHANNEL_ATTRIBUTE_CHANGE_RELOAD, CHANNEL_ATTRIBUTE_CHANGE_DEL);
 	}
 
 	@Override

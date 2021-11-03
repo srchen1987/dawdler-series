@@ -37,7 +37,7 @@ public class EmailRuleOperator extends StringRuleOperator {
 
 	@Override
 	public String validate(Object value) {
-		return validate(value, "请输入合法E-Mail地址!");
+		return validate(value, "请输入E-Mail地址!");
 	}
 
 	@Override

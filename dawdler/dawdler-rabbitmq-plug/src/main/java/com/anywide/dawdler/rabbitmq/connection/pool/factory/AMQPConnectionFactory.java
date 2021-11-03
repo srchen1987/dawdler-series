@@ -55,7 +55,7 @@ public class AMQPConnectionFactory {
 	}
 
 	public AMQPConnectionFactory(String fileName) throws IOException {
-		Properties ps = PropertiesUtil.loadProperties(fileName);
+		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setAutomaticRecoveryEnabled(true);
 		connectionFactory.setHost(ps.getProperty("host"));

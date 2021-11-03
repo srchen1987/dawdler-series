@@ -51,6 +51,6 @@ public interface TransactionDefinition {
 
 	int getTimeout();
 
-	boolean isReadOnly();
+//	boolean isReadOnly();
 
 }

@@ -12,12 +12,16 @@
 			<attribute name="password">anywide1948@0</attribute>
 		</datasource>
 	</datasources>
-
-	<datasource-expression id="test1"
-		latent-expression="write=[read1],read=[read1|read1]" />
-	<decision mapping="com.anywide.demo" reference="test1" />
-	<decision mapping="com.anywide.service.user.impl"
-		latent-expression="test1" />
+	
+	<datasource-expressions>
+		<datasource-expression id="test1" latent-expression="write=[read1],read=[read1|read1]" />
+	</datasource-expressions>
+	
+	<decisions>
+		<decision mapping="com.anywide.demo" reference="test1" />
+		<decision mapping="com.anywide.service.user.impl" latent-expression="test1" />
+	</decisions>
+	
 	<remote-load
 		package="${classpath}/load-config.xml"></remote-load>
 	<mybatis>

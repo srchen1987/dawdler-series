@@ -1,7 +1,6 @@
 package com.anywide.dawdler.util;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -51,6 +50,19 @@ public class PropertiesUtil {
 		} finally {
 			if (inStream != null)
 				inStream.close();
+		}
+	}
+	
+	public static Properties loadActiveProfileProperties(String fileName) throws IOException {
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		return loadProperties(fileName +(activeProfile != null ? "-"+activeProfile : ""));
+	}
+	
+	public static Properties loadActiveProfileIfNotExistUseDefaultProperties(String fileName) throws IOException {
+		try {
+			return loadActiveProfileProperties(fileName);
+		} catch (Exception e) {
+			return loadProperties(fileName);
 		}
 	}
 }

@@ -27,5 +27,3 @@ maxSize=65525 #最大支持多少用户在线,在线是指登录使用session存
 ### 3. session-redis.properties文件说明
 
 分布式session基于redis实现,redis客户端配置参考[dawdler-redis-plug](../dawdler-redis-plug/README.md#2-properties文件说明)
-
-
