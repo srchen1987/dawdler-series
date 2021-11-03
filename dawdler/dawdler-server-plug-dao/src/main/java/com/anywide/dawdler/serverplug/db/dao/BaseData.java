@@ -24,7 +24,7 @@ import java.util.Map;
  * @author jackson.song
  * @version V1.0
  * @Title BaseData.java
- * @Description TODO
+ * @Description jdbc常用操作的接口
  * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */

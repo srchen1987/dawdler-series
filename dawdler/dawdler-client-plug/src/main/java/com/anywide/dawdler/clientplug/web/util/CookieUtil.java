@@ -22,7 +22,7 @@ import javax.servlet.http.Cookie;
  * @author jackson.song
  * @version V1.0
  * @Title CookieUtil.java
- * @Description TODO
+ * @Description Cookie工具
  * @date 2006年9月22日
  * @email suxuan696@gmail.com
  */

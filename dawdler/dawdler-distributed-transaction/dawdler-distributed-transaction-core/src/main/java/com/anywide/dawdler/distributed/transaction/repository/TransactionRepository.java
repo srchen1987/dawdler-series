@@ -47,6 +47,6 @@ public abstract class TransactionRepository {
 
 	public abstract List<DistributedTransactionContext> findAllByGlobalTxId(String globalTxId) throws Exception;
 
-	public abstract List<DistributedTransactionContext> findALLBySecondsLater(int seconds) throws Exception;
+	public abstract List<DistributedTransactionContext> findALLBySecondsLater() throws Exception;
 
 }

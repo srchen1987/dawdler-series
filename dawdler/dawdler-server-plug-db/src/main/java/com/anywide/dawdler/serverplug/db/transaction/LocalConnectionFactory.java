@@ -42,7 +42,7 @@ public class LocalConnectionFactory {
 	private final static ConcurrentMap<DataSource, TransactionManager> localManager = new ConcurrentHashMap<>();
 	private final static ThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>> localWriteConnectionHolder;
 	private final static ThreadLocal<SynReadConnectionObject> synReadConnection = new ThreadLocal<>();
-	private static final ThreadLocal<Map<DBAction, Connection>> localconnection = new ThreadLocal<Map<DBAction, Connection>>() {
+	private static final ThreadLocal<Map<DBAction, Connection>> localConnection = new ThreadLocal<Map<DBAction, Connection>>() {
 		protected java.util.Map<DBAction, Connection> initialValue() {
 			return new HashMap<DBAction, Connection>(2);
 		}
@@ -66,7 +66,7 @@ public class LocalConnectionFactory {
 	}
 
 	public static Connection getReadConnection() throws SQLException {
-		Connection con = localconnection.get().get(DBAction.READ);
+		Connection con = localConnection.get().get(DBAction.READ);
 		if (con != null)
 			return con;
 		SynReadConnectionObject sb = LocalConnectionFactory.getSynReadConnectionObject();
@@ -83,20 +83,28 @@ public class LocalConnectionFactory {
 	}
 
 	public static void setReadConnection(Connection con) {
-		localconnection.get().put(DBAction.READ, con);
+		localConnection.get().put(DBAction.READ, con);
+	}
+
+	public static void removeReadConnection() {
+		localConnection.get().remove(DBAction.READ);
 	}
 
 	public static Connection getWriteConnection() {
-		return localconnection.get().get(DBAction.WRITE);
+		return localConnection.get().get(DBAction.WRITE);
 	}
 
 	public static void setWriteConnection(Connection con) {
-		localconnection.get().put(DBAction.WRITE, con);
+		localConnection.get().put(DBAction.WRITE, con);
+	}
+	
+	public static void removeWriteConnection() {
+		localConnection.get().remove(DBAction.WRITE);
 	}
 
-	public static void clear() {
-		localconnection.remove();
-	}
+//	public static void clear() {
+//		localConnection.remove();
+//	}
 
 	static WriteConnectionHolder currentConnectionHolder(DataSource dataSource) {
 		ConcurrentMap<DataSource, WriteConnectionHolder> localMap = localWriteConnectionHolder.get();

@@ -19,6 +19,7 @@ package com.anywide.dawdler.client.conf;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Int;
 
+import java.io.File;
 import java.util.List;
 
 import org.dom4j.Element;
@@ -44,46 +45,60 @@ public class ClientConfigParser {
 	private static XmlObject xmlObject;
 
 	static {
-		try {
-			xmlObject = new XmlObject(DawdlerTool.getcurrentPath() + "client/client-conf.xml");
-			Element root = xmlObject.getRoot();
-			config = new ClientConfig();
-			Element zkHost = (Element) root.selectSingleNode("zk-host");
-			if (zkHost != null) {
-				config.setZkHost(zkHost.getTextTrim());
-				config.setZkUsername(zkHost.attributeValue("username"));
-				config.setZkPassword(zkHost.attributeValue("password"));
+		String fileName;
+		File file;
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		String prefix = "client/client-conf";
+		String subfix = ".xml";
+		fileName = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		file = new File(DawdlerTool.getcurrentPath() + fileName);
+		if (!file.isFile()) {
+			fileName = prefix + subfix;
+			file = new File(DawdlerTool.getcurrentPath() + fileName);
+		}
+		if (!file.isFile()) {
+			logger.error("not found " + fileName);
+		} else {
+			try {
+				xmlObject = new XmlObject(DawdlerTool.getcurrentPath() + fileName);
+				Element root = xmlObject.getRoot();
+				config = new ClientConfig();
+				Element zkHost = (Element) root.selectSingleNode("zk-host");
+				if (zkHost != null) {
+					config.setZkHost(zkHost.getTextTrim());
+					config.setZkUsername(zkHost.attributeValue("username"));
+					config.setZkPassword(zkHost.attributeValue("password"));
+				}
+
+				Node certificatePath = root.selectSingleNode("certificatePath");
+				if (certificatePath != null) {
+					config.setCertificatePath(certificatePath.getText());
+				}
+
+				List<Node> serverChannelGroupNode = root.selectNodes("server-channel-group");
+				for (Node node : serverChannelGroupNode) {
+					ServerChannelGroup serverChannelGroup = config.new ServerChannelGroup();
+
+					Element serverChannelGroupEle = (Element) node;
+					String groupId = getElementAttribute(serverChannelGroupEle, "channel-group-id");
+					int connectionNum = getElementAttribute2Int(serverChannelGroupEle, "connection-num", 2);
+					int sessionNum = getElementAttribute2Int(serverChannelGroupEle, "session-num", 2);
+					int serializer = getElementAttribute2Int(serverChannelGroupEle, "serializer", 2);
+					String user = getElementAttribute(serverChannelGroupEle, "user");
+					String password = getElementAttribute(serverChannelGroupEle, "password");
+
+					serverChannelGroup.setGroupId(groupId);
+					serverChannelGroup.setConnectionNum(connectionNum);
+					serverChannelGroup.setSessionNum(sessionNum);
+					serverChannelGroup.setSerializer(serializer);
+					serverChannelGroup.setUser(user);
+					serverChannelGroup.setPassword(password);
+
+					config.getServerChannelGroups().add(serverChannelGroup);
+				}
+			} catch (Exception e) {
+				logger.error("", e);
 			}
-
-			Node certificatePath = root.selectSingleNode("certificatePath");
-			if (certificatePath != null) {
-				config.setCertificatePath(certificatePath.getText());
-			}
-
-			List<Node> serverChannelGroupNode = root.selectNodes("server-channel-group");
-			for (Node node : serverChannelGroupNode) {
-				ServerChannelGroup serverChannelGroup = config.new ServerChannelGroup();
-
-				Element serverChannelGroupEle = (Element) node;
-				String groupId = getElementAttribute(serverChannelGroupEle, "channel-group-id");
-				int connectionNum = getElementAttribute2Int(serverChannelGroupEle, "connection-num", 2);
-				int sessionNum = getElementAttribute2Int(serverChannelGroupEle, "session-num", 2);
-				int serializer = getElementAttribute2Int(serverChannelGroupEle, "serializer", 2);
-				String user = getElementAttribute(serverChannelGroupEle, "user");
-				String password = getElementAttribute(serverChannelGroupEle, "password");
-
-				serverChannelGroup.setGroupId(groupId);
-				serverChannelGroup.setConnectionNum(connectionNum);
-				serverChannelGroup.setSessionNum(sessionNum);
-				serverChannelGroup.setSerializer(serializer);
-				serverChannelGroup.setUser(user);
-				serverChannelGroup.setPassword(password);
-
-				config.getServerChannelGroups().add(serverChannelGroup);
-			}
-		} catch (Exception e) {
-			logger.error("", e);
-		} finally {
 		}
 	}
 

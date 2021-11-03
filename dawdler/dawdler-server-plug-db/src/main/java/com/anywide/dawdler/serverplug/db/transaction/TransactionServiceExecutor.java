@@ -52,6 +52,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 	public void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean) {
 		Object object = servicesBean.getService();
 		String methodName = requestBean.getMethodName();
+		long index = Math.abs(requestBean.getSeq());
 		MethodAccess methodAccess;
 		int methodIndex;
 		try {
@@ -74,7 +75,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 		SynReadConnectionObject synReadObj = null;
 		JdbcReadConnectionStatus readStatus = null;
 		try {
-			if (dbt != null && dbt.useConnection()) {
+			if (dbt != null) {
 				DawdlerContext context = DawdlerContext.getDawdlerContext();
 				RWSplittingDataSourceManager dm = (RWSplittingDataSourceManager) context
 						.getAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX);
@@ -93,7 +94,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 								synReadObj.setReadConnectionHolder(readConnection);
 								readStatus.setCurrentConn(readConnection);
 							} else {
-								DataSource dataSource = mappingDecision.getReadDataSource();
+								DataSource dataSource = mappingDecision.getReadDataSource(index);
 								ReadConnectionHolder readConnection = new ReadConnectionHolder(dataSource);
 								readConnection.requested();
 								readStatus.setCurrentConn(readConnection);
@@ -103,8 +104,8 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 							if (!synReadObj.getReadConnectionHolder().isUseWriteConnection())
 								synReadObj.getReadConnectionHolder().requested();
 							readStatus.setCurrentConn(synReadObj.getReadConnectionHolder());
-							synReadObj.setMappingDecision(mappingDecision);
-							synReadObj.setDBTransaction(dbt);
+//							synReadObj.setMappingDecision(mappingDecision);
+//							synReadObj.setDBTransaction(dbt);
 						}
 					} else {
 						if (synReadObj == null) {
@@ -116,7 +117,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 								synReadObj.setReadConnectionHolder(readConnection);
 								readStatus.setCurrentConn(readConnection);
 							} else {
-								DataSource dataSource = mappingDecision.getReadDataSource();
+								DataSource dataSource = mappingDecision.getReadDataSource(index);
 								ReadConnectionHolder readConnection = new ReadConnectionHolder(dataSource);
 								readConnection.requested();
 								readStatus.setCurrentConn(readConnection);
@@ -135,14 +136,13 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 									synReadObj.getReadConnectionHolder().requested();
 									readStatus.setCurrentConn(synReadObj.getReadConnectionHolder());
 								} else {
-									DataSource dataSource = mappingDecision.getReadDataSource();
+									DataSource dataSource = mappingDecision.getReadDataSource(index);
 									readStatus.setOldConn(synReadObj.getReadConnectionHolder());
 									ReadConnectionHolder readConnection = new ReadConnectionHolder(dataSource);
 									readConnection.requested();
 									readStatus.setCurrentConn(readConnection);
 									synReadObj.setReadConnectionHolder(readConnection);
 								}
-							
 							}
 							synReadObj.setMappingDecision(mappingDecision);
 							synReadObj.setDBTransaction(dbt);
@@ -151,7 +151,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 					synReadObj.requested();
 					try {
 						if (!(mode == MODE.readOnly) && mappingDecision != null) {
-							DataSource dataSource = mappingDecision.getWriteDataSource();
+							DataSource dataSource = mappingDecision.getWriteDataSource(index);
 							manager = LocalConnectionFactory.getManager(dataSource);
 							tranStatus = manager.getTransaction(dbt);
 						}
@@ -167,7 +167,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 		} catch (Throwable e) {
 			logger.error("", e);
 			responseBean.setCause(new DawdlerOperateException(e.getMessage()));
-			if (tranStatus != null)
+			if (tranStatus != null) {
 				if (!this.isNoRollBackFor(dbt.noRollbackFor(), e)) {
 					try {
 						tranStatus.setRollbackOnly();
@@ -175,6 +175,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 						logger.error("", e1);
 					}
 				}
+			}
 		} finally {
 			doCommit(tranStatus, manager);
 			if (synReadObj != null) {

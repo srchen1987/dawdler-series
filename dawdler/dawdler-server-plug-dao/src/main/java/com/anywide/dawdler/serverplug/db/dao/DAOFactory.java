@@ -22,7 +22,7 @@ import java.util.Map;
  * @author jackson.song
  * @version V1.0
  * @Title DAOFactory.java
- * @Description TODO
+ * @Description dao工厂
  * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */

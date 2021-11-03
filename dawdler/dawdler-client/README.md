@@ -27,7 +27,7 @@ dawdler-client 客户端核心代码,过滤器,服务发现,连接池,动态代�
     <!-- channel-group-id 标识id 一般用于@RemoteService(标识id),在服务器端是dawdler下deploys下部署的项目名称.
  connection-num 连接数
  session-num 会话数
- serializer 序列化方式（1,jdk默认,2 kroy,支持扩展）
+ serializer 序列化方式(1,jdk默认,2 kroy,支持扩展)
  user 帐号
  password 密码
   -->
@@ -35,7 +35,7 @@ dawdler-client 客户端核心代码,过滤器,服务发现,连接池,动态代�
 </config>
 ```
 
-### 3. api 调用方式
+### 3. api调用方式
 
 ```java
 public static void main(String[] args) throws Exception {
@@ -58,11 +58,11 @@ public static void main(String[] args) throws Exception {
  String response = hs.say("jackson");
 ```
 
-### 5.  调用端过滤器 DawdlerClientFilter
+### 5. 调用端过滤器 DawdlerClientFilter
 
 实现DawdlerClientFilter接口,同时通过SPI方式扩展,具体可参考[dawdler-circuit-breaker模块下的CircuitBreakerFilter](../dawdler-circuit-breaker/src/main/java/com/anywide/dawdler/breaker/filter/CircuitBreakerFilter.java).
 
-### 6.  调用端负载均衡SPI扩展
+### 6. 调用端负载均衡SPI扩展
 
 目前提供随机负载与轮询负载.
 

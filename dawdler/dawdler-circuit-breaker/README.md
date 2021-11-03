@@ -11,7 +11,7 @@ dawdler-circuit-breaker 是基于时间滑动窗口方式实现的熔断器,支�
  <artifactId>dawdler-circuit-breaker</artifactId>
 ```
 
-### 2.  在service接口层的方法上定义熔断器
+### 2. 在service接口层的方法上定义熔断器
 
 使用@CircuitBreaker标注的方法会被开启熔断器
 
@@ -27,7 +27,7 @@ public interface UserService {
 }
 ```
 
-### 3.  服务降级
+### 3. 服务降级
 
 @CircuitBreaker 中有fallbackMethod的属性,fallbackMethod是接口中方法的实现.
 
@@ -88,7 +88,7 @@ public @interface CircuitBreaker {
 
  /**
   * @return double
-  * @Description 错误百分比,默认为40% 达到40%的错误率会触发熔断（大于requestVolumeThreshold）
+  * @Description 错误百分比,默认为40% 达到40%的错误率会触发熔断(大于requestVolumeThreshold)
   * @date 2018年3月10日
   */
  double errorThresholdPercentage() default 0.4;

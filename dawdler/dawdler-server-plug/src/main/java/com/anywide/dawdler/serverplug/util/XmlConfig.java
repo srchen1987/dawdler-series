@@ -18,16 +18,9 @@ package com.anywide.dawdler.serverplug.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 
-import org.dom4j.Attribute;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +36,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @email suxuan696@gmail.com
  */
 public class XmlConfig {
-	private static final String CONFIG_PATH = "services-config.xml";
+	private static String config_path;
 	private static final Logger logger = LoggerFactory.getLogger(XmlConfig.class);
 	private static XmlObject xmlobject = null;
 
@@ -61,15 +54,29 @@ public class XmlConfig {
 	public static String getRemoteLoad() {
 		Element ele = (Element) xmlobject.getRoot().selectSingleNode("/config/remote-load");
 		if (ele == null)
-			throw new NullPointerException(CONFIG_PATH + "\tconfig/remote-load not found！");
+			throw new NullPointerException(config_path + "\tconfig/remote-load not found！");
 		String path = ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
 		return path;
 	}
 
-
 	private static void loadXML() {
 		try {
-			xmlobject = XmlObject.loadClassPathXML(File.separator + CONFIG_PATH);
+
+			String config_path;
+			File file;
+			String activeProfile = System.getProperty("dawdler.profiles.active");
+			String prefix = "services-config";
+			String subfix = ".xml";
+			config_path = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+			file = new File(DawdlerTool.getcurrentPath() + config_path);
+			if (!file.isFile()) {
+				config_path = prefix + subfix;
+				file = new File(DawdlerTool.getcurrentPath() + config_path);
+			}
+			if (!file.isFile()) {
+				logger.error("not found services-config.xml");
+			}
+			xmlobject = XmlObject.loadClassPathXML(config_path);
 		} catch (DocumentException | IOException e) {
 			logger.error("", e);
 		}

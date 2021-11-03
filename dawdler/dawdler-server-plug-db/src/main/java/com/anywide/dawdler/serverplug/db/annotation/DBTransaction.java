@@ -34,7 +34,6 @@ import java.lang.annotation.Target;
  * @email suxuan696@gmail.com
  */
 public @interface DBTransaction {
-	boolean useConnection() default true;
 
 	MODE mode() default MODE.deferToConfig;
 
@@ -46,7 +45,7 @@ public @interface DBTransaction {
 
 	Isolation isolation() default Isolation.DEFAULT;
 
-	boolean readOnly() default false;
+//	boolean readOnly() default false;
 
 	/**
 	 * 
@@ -57,23 +56,24 @@ public @interface DBTransaction {
 	 * @author jackson.song
 	 * @date 2021年5月20日
 	 * @return int
-	 *         <p>
-	 *         Description: dao模块 unimplemented mybatis模块是有效的
-	 *         因为mybatis判断如果小于querytime就进行设置，所以如果为-1
-	 *         则返回空，防止获取querytime时调用mysql驱动,底层实现用了个同步块通过当前时间/1000
-	 * 
-	 *         mysql驱动代码如下： public int getQueryTimeout() throws SQLException {
-	 *         synchronized (checkClosed().getConnectionMutex()) { return
-	 *         getTimeoutInMillis() / 1000; } }
-	 *         </p>
-	 * @return
+	 *  Description: 设置事务超时时间
+	 *  逻辑如下：
+	 *  if (queryTimeout == null || queryTimeout == 0 || transactionTimeout < queryTimeout) {
+	 *		statement.setQueryTimeout(transactionTimeout);
+	 *	 }
+	 *  mysql驱动代码如下：
+	 *  public int getQueryTimeout() throws SQLException {
+	 *  synchronized (checkClosed().getConnectionMutex()) {
+	 *   return getTimeoutInMillis() / 1000; 
+	 *   } 
+	 *  }
 	 *
 	 */
 	int timeOut() default -1;
 
 	enum MODE {
 		forceReadOnWrite, // 强制读从写连接上，在做读写分离时需要根据插入数据做业务不能保证从库数据的实时性所以采用这种方式
-		deferToConfig,// 根据本方法的注解定义
+		deferToConfig, // 根据本方法的注解定义
 		readOnly// 只传入读连接
 	}
 
