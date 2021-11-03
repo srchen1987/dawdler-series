@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-core 是dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现实现,线程池,注解,压缩算法等（系统内部使用,用户无须关注）.相关注解在不同的模块有说明.
+dawdler-core 是dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现实现,线程池,注解,压缩算法等(系统内部使用,用户无须关注).相关注解在不同的模块有说明.
 
 ### 1. pom中引入依赖
 
@@ -24,7 +24,7 @@ RemoteService参数介绍：
 
  boolean single() default true;//在服务端有效,标识一个服务的实现类是否为单例.默认为单例.
 
- boolean remote() default false;//在服务端有效,标识是否是一个远程服务,一般不建议在服务端再次调用另一个服务,默认为否,调用本服务中的服务（适用事务传播）.
+ boolean remote() default false;//在服务端有效,标识是否是一个远程服务,一般不建议在服务端再次调用另一个服务,默认为否,调用本服务中的服务(适用事务传播).
 
  int timeout() default 120;//在调用端有效,调用远程服务的超时事件,单位为秒,默认120秒.
 

@@ -5,6 +5,8 @@ import java.sql.SQLException;
 
 import org.apache.ibatis.transaction.Transaction;
 
+import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFactory;
+import com.anywide.dawdler.serverplug.db.transaction.SynReadConnectionObject;
 import com.anywide.dawdler.util.TLS;
 
 public class DawdlerMybatisTransaction implements Transaction {
@@ -32,6 +34,9 @@ public class DawdlerMybatisTransaction implements Transaction {
 
 	@Override
 	public Integer getTimeout() throws SQLException {
+		SynReadConnectionObject synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
+		if(synReadObj != null)
+			return synReadObj.getDBTransaction().timeOut();
 		return null;
 	}
 

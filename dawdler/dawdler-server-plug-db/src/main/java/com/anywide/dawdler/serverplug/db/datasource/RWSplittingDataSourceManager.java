@@ -16,12 +16,9 @@
  */
 package com.anywide.dawdler.serverplug.db.datasource;
 
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,7 +79,7 @@ public class RWSplittingDataSourceManager {
 			this.dataSources.put(id, ds);
 		}
 
-		List<Node> dataourceExpressionList = xmlo.selectNodes("/config/datasource-expression");
+		List<Node> dataourceExpressionList = xmlo.selectNodes("/config/datasource-expressions/datasource-expression");
 		for (Object dataourceExpression : dataourceExpressionList) {
 			Element ele = (Element) dataourceExpression;
 			String id = ele.attributeValue("id");
@@ -90,7 +87,7 @@ public class RWSplittingDataSourceManager {
 			this.dataourceExpression.put(id, latentExpression);
 		}
 
-		List<Node> decisionList = xmlo.selectNodes("/config/decision");
+		List<Node> decisionList = xmlo.selectNodes("/config/decisions/decision");
 		for (Object decision : decisionList) {
 			Element ele = (Element) decision;
 			String mapping = ele.attributeValue("mapping");
@@ -118,7 +115,6 @@ public class RWSplittingDataSourceManager {
 	}
 
 	public class MappingDecision {
-		private final AtomicInteger index = new AtomicInteger(0);
 		private String[] readExpression;
 		private int rlength;
 		private String[] writeExpression;
@@ -136,87 +132,21 @@ public class RWSplittingDataSourceManager {
 			}
 		}
 
-		public Connection[] getConnections() throws SQLException {
-			int num = 0;
-			if (wlength > 1 || rlength > 1)
-				num = Math.abs(index.getAndIncrement());
+		public DataSource getWriteDataSource(long index) {
 			int position = 0;
 			String write;
 			if (wlength > 1) {
-				position = num % wlength;
-			}
-			write = writeExpression[position];
-			String read;
-			int readPosition = 0;
-			if (rlength > 1) {
-				readPosition = num % rlength;
-			}
-			read = readExpression[readPosition];
-			return new Connection[] { getDataSource(write).getConnection(), getDataSource(read).getConnection() };
-		}
-
-		public Connection getWriteConnection() throws SQLException {
-			int num = 0;
-			int position = 0;
-			String write;
-			if (wlength > 1) {
-				num = Math.abs(index.getAndIncrement());
-				position = num % wlength;
-			}
-			write = writeExpression[position];
-			return getDataSource(write).getConnection();
-		}
-
-		public Connection getReadConnection() throws SQLException {
-			int num = 0;
-			int position = 0;
-			String read;
-			if (rlength > 1) {
-				num = Math.abs(index.getAndIncrement());
-				position = num % rlength;
-			}
-			read = readExpression[position];
-			return getDataSource(read).getConnection();
-		}
-
-		public DataSource[] getDataSources() throws SQLException {
-			int num = 0;
-			if (wlength > 1 || rlength > 1)
-				num = Math.abs(index.getAndIncrement());
-			int position = 0;
-			String write;
-			if (wlength > 1) {
-				position = num % wlength;
-			}
-			write = writeExpression[position];
-			String read;
-			int readPosition = 0;
-			if (rlength > 1) {
-				readPosition = num % rlength;
-			}
-			read = readExpression[readPosition];
-			return new DataSource[] { getDataSource(write), getDataSource(read) };
-		}
-
-		public DataSource getWriteDataSource() {
-			int num = 0;
-			int position = 0;
-			String write;
-			if (wlength > 1) {
-				num = Math.abs(index.getAndIncrement());
-				position = num % wlength;
+				position = (int) (index % wlength);
 			}
 			write = writeExpression[position];
 			return getDataSource(write);
 		}
 
-		public DataSource getReadDataSource() {
-			int num = 0;
+		public DataSource getReadDataSource(long index) {
 			int position = 0;
 			String read;
 			if (rlength > 1) {
-				num = Math.abs(index.getAndIncrement());
-				position = num % rlength;
+				position = (int) (index % rlength);
 			}
 			read = readExpression[position];
 			return getDataSource(read);

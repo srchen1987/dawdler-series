@@ -40,13 +40,13 @@ public class JdbcTransactionStatus implements TransactionStatus {
 	private boolean completed = false; // 完成（true表示完成）
 	private boolean rollbackOnly = false; // 要求回滚（true表示回滚）
 	private boolean newConnection = false; // 是否使用了一个全新的数据库连接开启事务（true表示新连接）
-	private boolean readOnly = false; // 只读模式（true表示只读）
+	
 	private final int timeOut;
 
 	public JdbcTransactionStatus(DBTransaction dBTransaction) {
 		behavior = dBTransaction.propagation();
 		isolation = dBTransaction.isolation();
-		readOnly = dBTransaction.readOnly();
+//		readOnly = dBTransaction.readOnly();
 		timeOut = dBTransaction.timeOut();
 	}
 
@@ -123,10 +123,10 @@ public class JdbcTransactionStatus implements TransactionStatus {
 		return this.rollbackOnly;
 	}
 
-	@Override
-	public boolean isReadOnly() {
-		return this.readOnly;
-	}
+//	@Override
+//	public boolean isReadOnly() {
+//		return this.readOnly;
+//	}
 
 	@Override
 	public boolean isNewConnection() {

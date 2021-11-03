@@ -20,7 +20,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * @author jackson.song
  * @version V1.0
  * @Title ChineseWordsRuleOperator.java
- * @Description TODO
+ * @Description 中文字母验证
  * @date 2007年7月22日
  * @email suxuan696@gmail.com
  */

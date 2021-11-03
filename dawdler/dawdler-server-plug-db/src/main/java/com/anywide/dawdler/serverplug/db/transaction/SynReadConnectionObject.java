@@ -66,7 +66,7 @@ public class SynReadConnectionObject {
 		this.mappingDecision = mappingDecision;
 	}
 
-	DBTransaction getDBTransaction() {
+	public DBTransaction getDBTransaction() {
 		return dBTransaction;
 	}
 

@@ -33,7 +33,6 @@ public class DataProcessWorkerPool {
 
 	private DataProcessWorkerPool() {
 		executor = Executors.newFixedThreadPool(200, new DefaultThreadFactory(DataProcessWorkerPool.class));// FIXME
-																											// 动态配置 池大小
 	}
 
 	public static DataProcessWorkerPool getInstance() {

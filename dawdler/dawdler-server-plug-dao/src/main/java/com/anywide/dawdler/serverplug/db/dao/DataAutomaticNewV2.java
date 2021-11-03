@@ -34,7 +34,7 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @author jackson.song
  * @version V1.0
  * @Title DataAutomaticNewV2.java
- * @Description TODO
+ * @Description 反射实现的数据赋值工具
  * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */
@@ -87,14 +87,10 @@ public class DataAutomaticNewV2 {
 				return list;
 			}
 			for (int j = 1; j <= numberOfColumns; j++) {
-				// String columnName = rsmd.getColumnName(j);
 				String columnName = rsmd.getColumnLabel(j);
-				// String type = rsmd.getColumnClassName(j);
-				String typename = rsmd.getColumnTypeName(j);
-				// String firstLetter = columnName.substring(0, 1).toUpperCase();
-				// String setMethodName = "set" + firstLetter + columnName.substring(1);
+				String typeName = rsmd.getColumnTypeName(j);
 				String setMethodName = "set" + DawdlerTool.fnameToUpper(columnName);
-				invoke(typename, clazz, setMethodName, object, rs.getObject(columnName));
+				invoke(typeName, clazz, setMethodName, object, rs.getObject(columnName));
 			}
 			list.add(object);
 		}
@@ -130,7 +126,6 @@ public class DataAutomaticNewV2 {
 		dataTypes.put("SMALLINT", new Class[] { short.class, Short.class, int.class, Integer.class });
 	}
 
-	// FIXME method will be for many times
 	private final static void invoke(String columntypename, Class<?> type, String setMethodName, Object obj,
 			Object object) {
 		Map<String, Method> methods = cacheMethod.get(type);
@@ -178,4 +173,7 @@ public class DataAutomaticNewV2 {
 		} catch (InvocationTargetException e) {
 		}
 	}
+	
+	
+	
 }

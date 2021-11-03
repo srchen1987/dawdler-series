@@ -56,7 +56,7 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 
 	@Override
 	public void close() {
-		sessions.cleanUp();
+		invalidateAll();
 	}
 
 	@Override
@@ -79,5 +79,10 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 			dawdlerHttpSession.clear();
 			sessions.invalidate(dawdlerHttpSession.getId());
 		}
+	}
+
+	@Override
+	public void invalidateAll() {
+		sessions.invalidateAll();
 	}
 }
