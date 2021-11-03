@@ -21,7 +21,7 @@ webmvc,使用上基本与springmvc一致.提供远程加载组件的客户端,�
 
 #### 2.2 创建API
 
-通过RequestMapping定义webApi,RequestMapping可以用在类上和方法上,也可以用在类上,用在某个类上那么所有webApi的开头都必须以用在类上定义的RequestMapping开头.（RequestMapping用在类上只有value有效,其余无效）
+通过RequestMapping定义webApi,RequestMapping可以用在类上和方法上,也可以用在类上,用在某个类上那么所有webApi的开头都必须以用在类上定义的RequestMapping开头.(RequestMapping用在类上只有value有效,其余无效)
 
 ### 3. Controller注解说明
 
@@ -57,7 +57,7 @@ public @interface RequestMapping {
 
  boolean generateValidator() default false;//生成验证规则,根据后台的验证框架生成前端的表达式
 
- String input() default "";//配置验证框架之后验证未通过的跳转路径,默认为空,返回json类型的错误提醒,如果配置会在request域下设置属性validate_error并forward到
+ String input() default "";//配置验证框架之后验证未通过的跳转路径,默认为空,返回json类型的错误提醒,如果配置会在request域下设置属性validate_error并forward到指定的路径
 
  long uploadSizeMax() default 0l;//上传文件最大的限制,单位byte
 
@@ -256,7 +256,7 @@ public class UserWebInterceptor implements HandlerInterceptor {
 
 ### 6. WebContextListener 监听器
 
-监听器的作用与Servlet提供的ServletContextListener完全一致,如果有多个监听器,支持@Order注解进行升序排序.目前只提供容器启动与销毁的监听器（HttpSessionListener,ServletRequestListener,HttpSessionActivationListener 不提供,如果有需要采用servlet提供的即可）.
+监听器的作用与Servlet提供的ServletContextListener完全一致,如果有多个监听器,支持@Order注解进行升序排序.目前只提供容器启动与销毁的监听器(HttpSessionListener,ServletRequestListener,HttpSessionActivationListener 不提供,如果有需要采用servlet提供的即可).
 
 示例：
 

@@ -38,7 +38,6 @@ public class DawdlerTool {
 		try {
 			return URLDecoder.decode(Thread.currentThread().getContextClassLoader().getResource("").getPath(), "utf-8");
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
 		}
 		return Thread.currentThread().getContextClassLoader().getResource("").getPath().replace("%20", " ");
 	}
@@ -47,7 +46,6 @@ public class DawdlerTool {
 		try {
 			return new URL("file:/" + getcurrentPath());
 		} catch (MalformedURLException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}

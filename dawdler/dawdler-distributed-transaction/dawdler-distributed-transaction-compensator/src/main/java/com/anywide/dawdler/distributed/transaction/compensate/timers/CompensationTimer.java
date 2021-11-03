@@ -65,7 +65,7 @@ public class CompensationTimer implements Runnable {
 	@Override
 	public void run() {
 		try {
-			List<DistributedTransactionContext> list = transactionRepository.findALLBySecondsLater(3600);
+			List<DistributedTransactionContext> list = transactionRepository.findALLBySecondsLater();
 			for (DistributedTransactionContext dc : list) {
 				String trying = TransactionStatus.TRYING;
 				if (trying.equals(dc.getStatus()))

@@ -169,10 +169,9 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 
 	@Override
 	public void init(ServletContext servletContext) {
-
 		Properties pstool = null;
 		try {
-			pstool = PropertiesUtil.loadProperties("toolboxs");
+			pstool = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties("toolboxs");
 		} catch (Exception e) {
 			logger.error("", e);
 			return;

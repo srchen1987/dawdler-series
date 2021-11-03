@@ -101,7 +101,7 @@ tcp-noDelay="false" 禁用纳格算法
 
 #### 2.2 data-sources.xml说明
 
-dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的服务公用.datasources节点下可以有多个datasource节点,每个节点都是一个数据源配置,datasource中id属性是数据源的id,code属性是连接池的datasource实现类.attribute节点中的属性name是连接池中的配置名,attribute节点的text为具体配置值.
+dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的服务公用.datasources节点下可以有多个datasource节点,每个节点都是一个数据源配置,datasource中id属性是数据源的id,code属性是连接池的dataSource实现类.attribute节点中的属性name是连接池中的配置名,attribute节点的text为具体配置值.
 
 示例：
 
