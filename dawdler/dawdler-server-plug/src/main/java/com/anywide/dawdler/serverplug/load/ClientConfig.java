@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @email suxuan696@gmail.com
  */
 public class ClientConfig {
-	private static final String CLIENT_CONFIG = "client/client-conf.xml";
+	private static String client_config;
 	private static final ClientConfig remoteFactory = new ClientConfig();
 	private static final Logger logger = LoggerFactory.getLogger(ClientConfig.class);
 	private static long updateTime = 0;
@@ -43,19 +43,27 @@ public class ClientConfig {
 	private static File file = null;
 
 	static {
-		file = new File(DawdlerTool.getcurrentPath() + CLIENT_CONFIG);
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		String prefix = "client/client-conf";
+		String subfix = ".xml";
+		client_config = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		file = new File(DawdlerTool.getcurrentPath() + client_config);
 		if (!file.isFile()) {
-			logger.warn("not found " + CLIENT_CONFIG);
-		}else {
+			client_config = prefix + subfix;
+			file = new File(DawdlerTool.getcurrentPath() + client_config);
+		}
+		if (!file.isFile()) {
+			logger.warn("not found " + client_config);
+		} else {
 			try {
-				xml = XmlObject.loadClassPathXML(CLIENT_CONFIG);
+				xml = XmlObject.loadClassPathXML(client_config);
 			} catch (IOException e) {
 				logger.error("", e);
 			} catch (DocumentException e) {
 				logger.error("", e);
 			}
 		}
-		
+
 	}
 
 	private ClientConfig() {
@@ -67,7 +75,7 @@ public class ClientConfig {
 
 	private static boolean isUpdate() {
 		if (!file.exists()) {
-			logger.warn("not found " + CLIENT_CONFIG);
+			logger.warn("not found " + client_config);
 			return false;
 		}
 		if (updateTime != file.lastModified()) {
@@ -80,11 +88,11 @@ public class ClientConfig {
 	public XmlObject getXml() {
 		if (isUpdate()) {
 			try {
-				xml = XmlObject.loadClassPathXML(CLIENT_CONFIG);
+				xml = XmlObject.loadClassPathXML(client_config);
 			} catch (DocumentException e) {
 				logger.error("", e);
 			} catch (IOException e) {
-				logger.warn("not found " + CLIENT_CONFIG);
+				logger.warn("not found " + client_config);
 			}
 		}
 		return xml;

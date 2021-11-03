@@ -29,7 +29,7 @@ import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
  * @author jackson.song
  * @version V1.0
  * @Title ZkDiscoveryCenterClient.java
- * @Description 配置中心zk的实现 代替 PropertiesCenter.java
+ * @Description 配置中心zk的实现
  * @date 2018年8月13日
  * @email suxuan696@gmail.com
  */

@@ -10,14 +10,6 @@
 	<artifactId>dawdler-distributed-transaction-core</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-core</artifactId>
 		</dependency>

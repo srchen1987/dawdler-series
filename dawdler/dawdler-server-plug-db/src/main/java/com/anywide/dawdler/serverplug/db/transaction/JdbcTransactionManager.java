@@ -197,8 +197,8 @@ public class JdbcTransactionManager implements TransactionManager {
 			defStatus.markNewConnection();
 		holder.requested();
 		Connection con = holder.getConnection();
-		if (defStatus.isReadOnly())
-			con.setReadOnly(true);
+//		if (defStatus.isReadOnly())
+//			con.setReadOnly(true);
 		LocalConnectionFactory.setWriteConnection(con);
 		Isolation originalIsolationLevel = null;
 		if (defStatus.getIsolationLevel() != Isolation.DEFAULT) {

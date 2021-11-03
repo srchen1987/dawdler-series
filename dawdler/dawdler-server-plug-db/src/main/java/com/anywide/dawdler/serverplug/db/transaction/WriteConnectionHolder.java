@@ -50,7 +50,7 @@ public class WriteConnectionHolder implements SavepointManager {
 		this.referenceCount--;
 		if (!this.isOpen() && this.connection != null) {
 			try {
-				LocalConnectionFactory.clear();
+				LocalConnectionFactory.removeWriteConnection();
 				this.savepointCounter = 0;
 				this.savepointsSupported = null;
 				this.connection.close();

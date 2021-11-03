@@ -1001,7 +1001,6 @@ public class Enhancer extends AbstractClassGenerator
                 e.goTo(end);
             }
             public void processDefault() {
-                // TODO: error?
             }
         });
         e.return_value();

@@ -44,7 +44,7 @@ public final class JedisPoolFactory {
 
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {
 		Pool<Jedis> jedisPool = null;
-		Properties ps = PropertiesUtil.loadProperties(fileName);
+		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		String auth = ps.getProperty("auth");
 		int database = PropertiesUtil.getIfNullReturnDefaultValueInt("database", 0, ps);
 		int max_idle = PropertiesUtil.getIfNullReturnDefaultValueInt("max_idle", JedisPoolConfig.DEFAULT_MAX_IDLE, ps);

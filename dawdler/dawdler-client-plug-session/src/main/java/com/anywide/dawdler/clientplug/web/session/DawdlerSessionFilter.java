@@ -75,27 +75,30 @@ public class DawdlerSessionFilter implements Filter {
 //	private static int synFlushInterval = 0;
 
 	static {
-		String filePath = DawdlerTool.getcurrentPath() + "identityConfig.properties";
-		File file = new File(filePath);
+//		String filePath = DawdlerTool.getcurrentPath() + "identityConfig.properties";
+//		File file = new File(filePath);
+		Properties ps = null;
+		try {
+			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties("identityConfig");
+		} catch (Exception e) {
+			logger.warn("use default identityConfig in dawdler-session jar!");
+		}
 		InputStream inStream = null;
-		if (!file.isFile()) {
-			logger.warn("use  default identityConfig in dawdler-session jar!");
+		if(ps == null) {
 			inStream = DawdlerSessionFilter.class.getResourceAsStream("/identityConfig.properties");
-		} else {
+			ps = new Properties();
 			try {
-				inStream = new FileInputStream(filePath);
-			} catch (FileNotFoundException e) {
+				ps.load(inStream);
+			} catch (IOException e) {
+				logger.error("", e);
 			}
 		}
-
-		Properties ps = new Properties();
+		
 		try {
-			ps.load(inStream);
 			String domainString = ps.getProperty("domain");
 			if (domainString != null && !domainString.trim().equals("")) {
 				domain = domainString;
 			}
-
 			String pathString = ps.getProperty("path");
 			if (pathString != null && !pathString.trim().equals("")) {
 				path = pathString;

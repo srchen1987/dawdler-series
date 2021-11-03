@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
  * @author jackson.song
  * @version V1.0
  * @Title DawdlerClientTool.java
- * @Description TODO
+ * @Description 常用工具
  * @date 2008年8月28日
  * @email suxuan696@gmail.com
  */
