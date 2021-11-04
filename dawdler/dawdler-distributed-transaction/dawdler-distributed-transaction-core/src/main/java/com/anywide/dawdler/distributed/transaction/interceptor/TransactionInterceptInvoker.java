@@ -23,7 +23,7 @@ import com.anywide.dawdler.distributed.transaction.context.DistributedTransactio
 /**
  *
  * @Title TransactionInterceptInvoker.java
- * @Description 事务执行拦截者，主要是针对不同的响应结果做拦截
+ * @Description 事务执行拦截器，主要是针对不同的响应结果做拦截
  * @author jackson.song
  * @date 2021年4月10日
  * @version V1.0
@@ -31,6 +31,6 @@ import com.anywide.dawdler.distributed.transaction.context.DistributedTransactio
  */
 public interface TransactionInterceptInvoker {
 
-	Object invoke(ProceedingJoinPoint invocation, DistributedTransactionContext tc) throws Throwable;
+	Object invoke(ProceedingJoinPoint invocation, DistributedTransactionContext distributedTransactionContext) throws Throwable;
 
 }

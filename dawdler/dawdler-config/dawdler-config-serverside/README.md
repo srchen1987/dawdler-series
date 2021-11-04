@@ -21,6 +21,6 @@
 
 [dawdler服务过滤器](../../dawdler-server/README.md#4-dawdler服务过滤器)
 
-#### 2.2 FieldConfig注解使用
+#### 2.2 FieldConfig注解
 
-参考[FieldConfig注解使用](../dawdler-config-core/README.md#4-FieldConfig注解使用)
+参考[FieldConfig注解使用](../dawdler-config-core/README.md#4-FieldConfig注解)
