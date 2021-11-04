@@ -23,7 +23,7 @@ webmvc,使用上基本与springmvc一致.提供远程加载组件的客户端,�
 
 通过RequestMapping定义webApi,RequestMapping可以用在类上和方法上,也可以用在类上,用在某个类上那么所有webApi的开头都必须以用在类上定义的RequestMapping开头.(RequestMapping用在类上只有value有效,其余无效)
 
-### 3. Controller注解说明
+### 3. Controller注解
 
 #### 3.1 标识注解介绍
 
@@ -347,7 +347,7 @@ dawdler内部提供[JsonDisplayPlug](src/main/java/com/anywide/dawdler/clientplu
 
 在Controller,WebContextListener,HandlerInterceptor中支持使用@RemoteService进行注入远程调用的服务接口.
 
-[RemoteService介绍](../dawdler-core/README.md#2-RemoteService注解介绍)
+[RemoteService介绍](../dawdler-core/README.md#2-RemoteService注解)
 
 示例：
 
