@@ -100,7 +100,7 @@ public class DistributedTransactionAspect {
 							logger.debug("transaction proceed cancel sponsor:{} action:{} ", dc.getGlobalTxId(),
 									action);
 						cancel(action, globalTxId);
-					} catch (Exception e) {
+					} catch (Throwable e) {
 						logger.error("distributed_transaction_cancel ", e);
 					}
 				} else {
@@ -109,62 +109,67 @@ public class DistributedTransactionAspect {
 							logger.debug("transaction proceed confirm sponsor:{} action:{} ", dc.getGlobalTxId(),
 									action);
 						confirm(action, globalTxId);
-					} catch (Exception e) {
+					} catch (Throwable e) {
 						logger.error("distributed_transaction_confirm ", e);
 					}
 				}
 			return obj;
 		} else {
-			if (dc != null && !dc.isCancel()) {
-				String globalTxId = dc.getGlobalTxId();
-				DistributedTransactionContext branchContext = new DistributedTransactionContext(globalTxId);
-				branchContext.init();
-				branchContext.setAction(dt.action());
-				branchContext.setStatus(TransactionStatus.TRYING);
-				RpcContext.getContext().setAttachment(DistributedTransactionContext.DISTRIBUTED_TRANSACTION_CONTEXT_KEY,
-						branchContext);
-				Object args[] = pjp.getArgs();
-				Parameter[] parameters = method.getParameters();
-				if (args.length > 0) {
-					Map<String, Object> data = new HashMap<>();
-					for (int i = 0; i < parameters.length; i++) {
-						data.put(parameters[i].getName(), args[i]);
+			if (dc != null) {
+				if (!dc.isCancel()) {
+					String globalTxId = dc.getGlobalTxId();
+					DistributedTransactionContext branchContext = new DistributedTransactionContext(globalTxId);
+					branchContext.init();
+					branchContext.setAction(dt.action());
+					branchContext.setStatus(TransactionStatus.TRYING);
+					RpcContext.getContext().setAttachment(
+							DistributedTransactionContext.DISTRIBUTED_TRANSACTION_CONTEXT_KEY, branchContext);
+					Object args[] = pjp.getArgs();
+					Parameter[] parameters = method.getParameters();
+					if (args.length > 0) {
+						Map<String, Object> data = new HashMap<>();
+						for (int i = 0; i < parameters.length; i++) {
+							data.put(parameters[i].getName(), args[i]);
+						}
+						branchContext.setDatas(data);
 					}
-					branchContext.setDatas(data);
+					Object obj = null;
+					Throwable error = null;
+					boolean success = true;
+					try {
+						if (logger.isDebugEnabled())
+							logger.debug("transaction proceed globalTxid:{} branchTxId:{} action:{} create to redis",
+									branchContext.getGlobalTxId(), branchContext.getBranchTxId(),
+									branchContext.getAction());
+						transactionRepository.create(branchContext);
+						TransactionInterceptInvoker invoker = TransactionInterceptInvokerHolder
+								.getTransactionInterceptInvoker();
+						if (invoker != null)
+							obj = invoker.invoke(pjp, dc);
+						else
+							obj = pjp.proceed();
+					} catch (Throwable e) {
+						error = e;
+						success = false;
+					}
+					if (!success) {
+						if (logger.isDebugEnabled())
+							logger.debug(
+									"transaction proceed failed globalTxid:{} branchTxId:{} action:{} create to redis",
+									branchContext.getGlobalTxId(), branchContext.getBranchTxId(),
+									branchContext.getAction());
+						dc.setCancel(true);
+						if (error != null)
+							throw error;
+					}
+					return obj;
 				}
-				Object obj = null;
-				Exception error = null;
-				boolean success = true;
-				try {
-					if (logger.isDebugEnabled())
-						logger.debug("transaction proceed  globalTxid:{} branchTxId:{} action:{} create to redis",
-								branchContext.getGlobalTxId(), branchContext.getBranchTxId(),
-								branchContext.getAction());
-					transactionRepository.create(branchContext);
-					TransactionInterceptInvoker invoker = TransactionInterceptInvokerHolder
-							.getTransactionInterceptInvoker();
-					if (invoker != null)
-						obj = invoker.invoke(pjp, dc);
-					else
-						obj = pjp.proceed();
-				} catch (Exception e) {
-					error = e;
-					success = false;
-				}
-				if (!success) {
-					if (logger.isDebugEnabled())
-						logger.debug("transaction proceed failed globalTxid:{} branchTxId:{} action:{} create to redis",
-								branchContext.getGlobalTxId(), branchContext.getBranchTxId(),
-								branchContext.getAction());
-					dc.setCancel(true);
-					if (error != null)
-						throw error;
-				}
-				return obj;
+				logger.warn("this transaction was cancel,globalTxid:{}.",dc.getGlobalTxId());
+				return null;
 			} else {
 				try {
 					return pjp.proceed();
-				} catch (Exception e) {
+				} catch (Throwable e) {
 					throw e;
 				}
 			}
