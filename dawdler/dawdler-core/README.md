@@ -11,7 +11,7 @@ dawdler-core 是dawdler-server与dawdler-client公用的核心模块.包含网�
  <artifactId>dawdler-core</artifactId>
 ```
 
-### 2. RemoteService注解介绍
+### 2. RemoteService注解
 
 @RemoteService可以用于服务端,也可以用于调用端.
 

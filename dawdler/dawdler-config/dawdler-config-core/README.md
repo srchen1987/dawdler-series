@@ -87,7 +87,7 @@ ui: 开启访问web管理界面.
 
 启动完成 访问[consul管理界面](http://localhost:8500/) 验证是否成功.
 
-### 4. FieldConfig注解使用
+### 4. FieldConfig注解
 
 FieldConfig用于支持配置的类中的全局变量上.
 
