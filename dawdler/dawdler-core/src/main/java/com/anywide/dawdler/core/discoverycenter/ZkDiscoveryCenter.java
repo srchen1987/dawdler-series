@@ -92,4 +92,10 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 		client.delete().forPath(path);
 		return true;
 	}
+
+	@Override
+	public boolean isExist(String path) throws Exception {
+		return client.checkExists().forPath(path) != null;
+	}
+	
 }

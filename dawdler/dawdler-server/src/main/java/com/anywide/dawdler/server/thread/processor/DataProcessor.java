@@ -27,7 +27,6 @@ import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.core.compression.strategy.CompressionWrapper;
 import com.anywide.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
-import com.anywide.dawdler.core.exception.AuthFailedException;
 import com.anywide.dawdler.core.handler.IoHandler;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
@@ -131,8 +130,10 @@ public class DataProcessor implements Runnable {
 				if (ioHandler != null)
 					ioHandler.channelOpen(socketSession);
 				ServerConnectionManager.getInstance().addSession(socketSession);
-			} else
-				throw new AuthFailedException(socketSession.getRemoteAddress() + " auth failed!");
+			} else {
+				logger.warn(socketSession.getRemoteAddress() + " auth failed!");
+			}
+				
 			data = serializer.serialize(authResponse);
 			write();
 		} else
@@ -141,8 +142,8 @@ public class DataProcessor implements Runnable {
 	}
 
 	public void write() throws Exception {
-		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
-		data = cr.getBuffer();
+		CompressionWrapper compressionWrapper = ThresholdCompressionStrategy.staticSingle().compress(data);
+		data = compressionWrapper.getBuffer();
 		synchronized (socketSession) {
 			ByteBuffer bf = socketSession.getWriteBuffer();
 			int size = data.length + 1;
@@ -158,7 +159,7 @@ public class DataProcessor implements Runnable {
 						bf = pb.getByteBuffer();
 				}
 				bf.putInt(size);
-				bf.put((byte) (cr.isCompressed() ? headData | 1 : headData));
+				bf.put((byte) (compressionWrapper.isCompressed() ? headData | 1 : headData));
 				bf.put(data);
 				bf.flip();
 				socketSession.write(bf);

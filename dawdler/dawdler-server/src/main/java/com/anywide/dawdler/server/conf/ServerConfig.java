@@ -164,6 +164,7 @@ public class ServerConfig {
 		private boolean tcpNoDelay = true;
 		private int tcpShutdownPort = 19527;
 		private String shutdownWhiteList = "127.0.0.1,localhost";
+		private int maxThreads = 200;
 
 		public String getHost() {
 			return host;
@@ -235,6 +236,14 @@ public class ServerConfig {
 
 		public void setTcpNoDelay(boolean tcpNoDelay) {
 			this.tcpNoDelay = tcpNoDelay;
+		}
+		
+		public int getMaxThreads() {
+			return maxThreads;
+		}
+
+		public void setMaxThreads(int maxThreads) {
+			this.maxThreads = maxThreads;
 		}
 	}
 }

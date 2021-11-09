@@ -53,11 +53,11 @@ public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChan
 		try {
 			socketSession = new SocketSession(channel);
 			socketSession.setDawdlerServerContext(dawdlerServerContext);
-			readerHandler.new ReadProcessor(socketSession).run();
+			readerHandler.process(socketSession);
 		} catch (Exception e) {
 			logger.error("", e);
 			if (socketSession != null)
-				socketSession.close(false);
+				socketSession.close();
 		}
 		if (serverChannel.isOpen() && DawdlerServer.isStart()) {
 			serverChannel.accept(dawdlerServerContext, this);
