@@ -38,8 +38,7 @@ server-conf.xml 是dawdler服务器的核心配置文件.
   tcp-backlog="200" tcp-sendBuffer="163840" tcp-receiveBuffer="163840"
   tcp-keepAlive="false" tcp-noDelay="false">
  </server>
- <!-- tcp-port服务器启动端口号, shutdownWhiteList允许关闭服务的白名单, tcp-shutdownPort关闭服务器的端口号 
-		其他为tcp的配置 -->
+ <!-- tcp-port服务器启动端口号, shutdownWhiteList允许关闭服务的白名单, tcp-shutdownPort关闭服务器的端口号,maxThreads处理业务线程池的大小,其他为tcp的配置 -->
  <global-auth>
   <user username="global_user" password="global_password" />
   <user username="global_user_1" password="global_password" />

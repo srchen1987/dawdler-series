@@ -1,5 +1,7 @@
 package com.anywide.dawdler.serverplug.listener;
 
+import java.util.concurrent.TimeUnit;
+
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +12,17 @@ import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 import com.anywide.dawdler.serverplug.util.XmlConfig;
+import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
+import com.anywide.dawdler.util.JVMTimeProvider;
+import com.anywide.dawdler.util.Timeout;
+import com.anywide.dawdler.util.TimerTask;
 
 @Order(Integer.MAX_VALUE)
 public class StartupProviderListener implements DawdlerServiceListener {
 	private static final Logger logger = LoggerFactory.getLogger(StartupProviderListener.class);
 	private DiscoveryCenter discoveryCenter;
+	private Timeout timeout;
+	private long checkTime = 3000;
 
 	@Override
 	public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
@@ -30,8 +38,12 @@ public class StartupProviderListener implements DawdlerServiceListener {
 			discoveryCenter = new ZkDiscoveryCenter(url, username, password);
 			discoveryCenter.init();
 			String path = channelGroup + "/" + dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-			discoveryCenter.addProvider(path, dawdlerContext.getHost() + ":" + dawdlerContext.getPort());
+			String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
+			discoveryCenter.addProvider(path, value);
 			dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
+			timeout = HashedWheelTimerSingleCreator.getHashedWheelTimer()
+					.newTimeout(new ProviderTimeoutTask(path, value), checkTime, TimeUnit.MILLISECONDS);
+
 		} else {
 			logger.error("not find discoveryServer config!");
 		}
@@ -40,7 +52,34 @@ public class StartupProviderListener implements DawdlerServiceListener {
 
 	@Override
 	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
-		if (discoveryCenter != null)
+		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
+		}
+		timeout.cancel();
+		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
+		JVMTimeProvider.stop();
+	}
+
+	public class ProviderTimeoutTask implements TimerTask {
+		private String path;
+		private String value;
+
+		public ProviderTimeoutTask(String path, String value) {
+			this.path = path;
+			this.value = value;
+		}
+
+		@Override
+		public void run(Timeout timeout) throws Exception {
+			try {
+				if (!discoveryCenter.isExist(path)) {
+					discoveryCenter.addProvider(path, value);
+				}
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+			StartupProviderListener.this.timeout = timeout.timer().newTimeout(this, checkTime, TimeUnit.MILLISECONDS);
+		}
+
 	}
 }

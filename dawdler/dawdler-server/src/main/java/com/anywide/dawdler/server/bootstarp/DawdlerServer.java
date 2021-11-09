@@ -36,7 +36,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
@@ -60,7 +59,6 @@ public class DawdlerServer {
 	private final AsynchronousChannelGroup asynchronousChannelGroup;
 	private final DawdlerServerContext dawdlerServerContext;
 	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
-
 	public DawdlerServer(ServerConfig serverConfig) throws IOException {
 		dawdlerServerContext = new DawdlerServerContext(serverConfig);
 		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(
@@ -188,9 +186,10 @@ public class DawdlerServer {
 		if (started.compareAndSet(true, false)) {
 			dawdlerServerContext.destroyedApplication();
 			ServerConnectionManager.getInstance().closeNow();
-			DataProcessWorkerPool.getInstance().shutdownNow();
-			if (serverChannel.isOpen())
+			dawdlerServerContext.shutdownWorkPoolNow();
+			if (serverChannel.isOpen()) {
 				serverChannel.close();
+			}
 			if (!asynchronousChannelGroup.isShutdown()) {
 				asynchronousChannelGroup.shutdownNow();
 			}
@@ -202,7 +201,6 @@ public class DawdlerServer {
 			dawdlerServerContext.prepareDestroyedApplication();
 			ServerConnectionManager sm = ServerConnectionManager.getInstance();
 			while (sm.hasTask()) {
-//				sm.close();
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -210,10 +208,10 @@ public class DawdlerServer {
 			}
 			dawdlerServerContext.destroyedApplication();
 			sm.closeNow();
-			DataProcessWorkerPool.getInstance().shutdown();
-			if (serverChannel.isOpen())
+			dawdlerServerContext.shutdownWorkPool();
+			if (serverChannel.isOpen()) {
 				serverChannel.close();
-
+			}
 			if (!asynchronousChannelGroup.isShutdown()) {
 				asynchronousChannelGroup.shutdown();
 			}

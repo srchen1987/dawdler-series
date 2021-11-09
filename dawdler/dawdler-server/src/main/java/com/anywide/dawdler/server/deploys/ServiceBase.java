@@ -46,7 +46,6 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
-import com.anywide.dawdler.util.aspect.AspectHolder;
 
 /**
  * @author jackson.song
