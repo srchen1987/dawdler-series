@@ -6,7 +6,7 @@
 		公钥路径 -->
 
 	<server-channel-group
-		channel-group-id="defaultgroup" service-path="services"
+		channel-group-id="defaultgroup"
 		connection-num="2" session-num="4" serializer="2" user="jackson.song"
 		password="srchen"> <!-- channel-group-id 标识id 一般用于@RemoteService(标识id),在服务器端是dawdler下deploys下部署的项目名称. 
 			connection-num 连接数 session-num 会话数 serializer 序列化方式（1,jdk默认,2 kroy,支持扩展） 

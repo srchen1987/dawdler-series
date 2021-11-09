@@ -47,7 +47,7 @@ public class DeployClassesScanner {
 	private static final Logger logger = LoggerFactory.getLogger(DeployClassesScanner.class);
 
 	public static void findAndAddClassesInPackageByPath(String packageName, String packagePath, final boolean recursive,
-			Set<Class<?>> classes) {
+			Set<Class<?>> classes) throws ClassNotFoundException {
 		File dir = new File(packagePath);
 		if (!dir.exists() || !dir.isDirectory()) {
 			return;
@@ -64,7 +64,7 @@ public class DeployClassesScanner {
 			dirfiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
 					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"))
-							|| scanner.getJarFiles().contains(file.getName());
+							||(file.getName().endsWith(".jar") && scanner.getJarFiles().contains(file.getName()));
 				}
 			});
 		}
@@ -90,17 +90,13 @@ public class DeployClassesScanner {
 					String loadClassName = packageName.equals("") ? className : (packageName + '.' + className);
 					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 							.getContextClassLoader();
-					try {
 						classes.add(classLoader.findClassForDawdler(loadClassName));
-					} catch (Throwable e) {
-						logger.error("{}", loadClassName, e);
-					}
 				}
 			}
 		}
 	}
 
-	public static Set<Class<?>> getClassesInPath(File file) {
+	public static Set<Class<?>> getClassesInPath(File file) throws ClassNotFoundException {
 		Set<Class<?>> classes = new LinkedHashSet<>();
 		findAndAddClassesInPackageByPath("", file.getPath(), true, classes);
 		return classes;

@@ -35,11 +35,12 @@ import org.slf4j.LoggerFactory;
  */
 public class SerializeDecider {
 	private static final Logger logger = LoggerFactory.getLogger(SerializeDecider.class);
+	private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<>();
 	static {
 		ServiceLoader<Serializer> loader = ServiceLoader.load(Serializer.class);
 		loader.forEach(SerializeDecider::addSerializer);
 	}
-	private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<>();
+	
 
 	public static void register(byte key, Serializer serializer) {
 		Serializer preSerializer = serializers.putIfAbsent(key, serializer);
