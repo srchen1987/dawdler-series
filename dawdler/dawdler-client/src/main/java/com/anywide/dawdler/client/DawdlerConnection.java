@@ -302,21 +302,38 @@ public class DawdlerConnection {
 			if (sessionGroup.isEmpty()) {
 				ConnectionPool.getConnectionPool(gid).remove(this);
 				reconnectScheduled.shutdown();
-				if (shutdownNow)
+				if (shutdownNow) {
 					try {
 						asynchronousChannelGroup.shutdownNow();
 					} catch (IOException e) {
 						logger.error("", e);
 					}
-				else {
+				} else {
 					asynchronousChannelGroup.shutdown();
 				}
+			}
+		}
+	}
+	
+	public void shutdownExecutors() {
+		if(!reconnectScheduled.isShutdown()) {
+			reconnectScheduled.shutdownNow();
+		}
+		if(!asynchronousChannelGroup.isShutdown()) {
+			try {
+				asynchronousChannelGroup.shutdownNow();
+			} catch (IOException e) {
+				logger.error("", e);
 			}
 		}
 	}
 
 	public void shutdownAll() {
 		Enumeration<SocketAddress> addresses = sessionGroup.keys();
+		if(!addresses.hasMoreElements()) {
+			shutdownExecutors();
+			return ;
+		}
 		while (addresses.hasMoreElements()) {
 			SocketAddress ad = addresses.nextElement();
 			shutdown(ad);

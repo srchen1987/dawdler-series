@@ -213,7 +213,6 @@ public class Transaction {
 		SocketSession socketSession = LoadBalanceFactory
 				.<SocketSession, Object>getLoadBalance(loadBalance == null ? defaultLoadBalance : loadBalance)
 				.select(request, sessionList);
-//        SocketSession socketSession = con.getSession();
 		request.setSeq(socketSession.getSequence());
 		Object obj;
 		if (pure) {

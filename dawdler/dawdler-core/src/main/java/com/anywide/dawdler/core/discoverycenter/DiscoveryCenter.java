@@ -23,4 +23,6 @@ public interface DiscoveryCenter {
 	boolean updateProvider(String path, String value) throws Exception;
 	
 	boolean deleteProvider(String path, String value) throws Exception;
+	
+	boolean isExist(String path) throws Exception;
 }

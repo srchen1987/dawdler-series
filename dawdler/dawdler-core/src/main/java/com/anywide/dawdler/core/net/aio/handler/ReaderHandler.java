@@ -173,22 +173,4 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 		}
 	}
 
-	public class ReadProcessor implements Runnable {
-		private final AbstractSocketSession socketSession;
-
-		public ReadProcessor(AbstractSocketSession socketSession) {
-			this.socketSession = socketSession;
-		}
-
-		@Override
-		public void run() {
-			try {
-				process(socketSession);
-			} catch (Exception e) {
-				socketSession.close();
-				logger.error("", e);
-			}
-		}
-
-	}
 }
