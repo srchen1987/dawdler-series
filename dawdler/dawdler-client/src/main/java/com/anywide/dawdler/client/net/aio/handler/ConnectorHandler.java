@@ -61,7 +61,7 @@ public class ConnectorHandler implements CompletionHandler<Void, SocketSession> 
 				auth.setPassword(certificate.encrypt(session.getPassword().getBytes()));
 				auth.setPath(session.getPath());
 				session.getDawdlerConnection().writeFirst(session.getPath(), auth, session);
-				readerHandler.new ReadProcessor(session).run();
+				readerHandler.process(session);
 			} catch (Exception e) {
 				session.close(false);
 				logger.error("", e);

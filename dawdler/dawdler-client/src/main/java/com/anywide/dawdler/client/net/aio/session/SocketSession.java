@@ -124,16 +124,21 @@ public class SocketSession extends AbstractSocketSession {
 			}
 			if (writerIdleTimeout != null) {
 				writerIdleTimeout.cancel();
+			}
+			if (readerIdleTimeout != null) {
 				readerIdleTimeout.cancel();
 			}
 		}
 
 	}
 
-	public void messageCompleted() {
-//		Thread.currentThread().setContextClassLoader(getClassLoader());
+	public void messageCompleted(){
 		byte[] data = getAppendData();
-		new DataProcessor(this, compress, serializer, data).run();
+		try {
+			new DataProcessor(this, compress, serializer, data).process();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 		if (markClose.get() && futures.isEmpty()) {
 			close(false);
 		}

@@ -61,7 +61,6 @@ public abstract class AbstractSocketSession {
 	private final Object writeLock = new Object();
 	private final CountDownLatch sessionInitLatch = new CountDownLatch(1);
 	private final AtomicLong sequence = new AtomicLong(0);
-	private final boolean server;
 	protected SocketAddress remoteAddress;
 	protected SocketAddress localAddress;
 	protected String describe;
@@ -92,8 +91,9 @@ public abstract class AbstractSocketSession {
 
 	public AbstractSocketSession(AsynchronousSocketChannel channel, boolean init) throws IOException {
 		this.channel = channel;
-		if ((server = init))
+		if (init) {
 			init();
+		}
 	}
 
 	public AbstractSocketSession(AsynchronousSocketChannel channel) throws IOException {
@@ -106,22 +106,6 @@ public abstract class AbstractSocketSession {
 
 	public void setAuthored(boolean authored) {
 		this.authored = authored;
-	}
-
-	public Timeout getReaderIdleTimeout() {
-		return readerIdleTimeout;
-	}
-
-	public void setReaderIdleTimeout(Timeout readerIdleTimeout) {
-		this.readerIdleTimeout = readerIdleTimeout;
-	}
-
-	public Timeout getWriterIdleTimeout() {
-		return writerIdleTimeout;
-	}
-
-	public void setWriterIdleTimeout(Timeout writerIdleTimeout) {
-		this.writerIdleTimeout = writerIdleTimeout;
 	}
 
 	public String getGroupName() {
@@ -178,11 +162,7 @@ public abstract class AbstractSocketSession {
 			byteBuffer.clear();
 	}
 
-	public void close() {
-		close(true);
-	}
-
-	public abstract void close(boolean reconnect);
+	public abstract void close();
 
 	public boolean isClose() {
 		return close.get();
@@ -306,7 +286,7 @@ public abstract class AbstractSocketSession {
 	@Override
 	public String toString() {
 		return describe + "\tlastRead: " + (JVMTimeProvider.currentTimeMillis() - lastReadTime) + "\tLastWrite: "
-				+ (System.currentTimeMillis() - lastWriteTime);
+				+ (JVMTimeProvider.currentTimeMillis() - lastWriteTime);
 	}
 
 	public void markClose() {
@@ -391,15 +371,12 @@ public abstract class AbstractSocketSession {
 			long lastReadTime = AbstractSocketSession.this.lastReadTime;
 			long nextDelay = readerIdleTimeMillis - (currentTime - lastReadTime);
 			if (nextDelay <= 0) {
-				if (ioHandler != null)
+				if (ioHandler != null) {
 					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.READ);
+				}
 				AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, readerIdleTimeMillis,
 						TimeUnit.MILLISECONDS);
-				if (server) {
-					AbstractSocketSession.this.close(false);
-				} else {
-					AbstractSocketSession.this.close();
-				}
+				AbstractSocketSession.this.close();
 			} else {
 				AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, nextDelay,
 						TimeUnit.MILLISECONDS);

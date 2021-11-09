@@ -60,10 +60,6 @@ public class SocketSession extends AbstractSocketSession {
 	}
 
 	public void close() {
-		close(true);
-	}
-
-	public void close(boolean reconnect) {
 		if (close.compareAndSet(false, true)) {
 			if (ioHandler != null)
 				ioHandler.channelClose(this);
@@ -85,10 +81,11 @@ public class SocketSession extends AbstractSocketSession {
 			}
 			if (writerIdleTimeout != null) {
 				writerIdleTimeout.cancel();
+			}
+			if (readerIdleTimeout != null) {
 				readerIdleTimeout.cancel();
 			}
 		}
-
 	}
 
 	public void appendData(byte[] data) {
@@ -143,7 +140,7 @@ public class SocketSession extends AbstractSocketSession {
 
 	public void messageCompleted() {
 		byte[] data = getAppendData();
-		DataProcessWorkerPool.getInstance().execute(new DataProcessor(this, headData, compress, serializer, data));
+		dawdlerServerContext.execute(new DataProcessor(this, headData, compress, serializer, data));
 		toPrepare();
 	}
 

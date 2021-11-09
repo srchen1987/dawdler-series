@@ -19,9 +19,6 @@ package com.anywide.dawdler.client.processor;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.AuthResponseBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
@@ -39,8 +36,7 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
  * @date 2015年3月12日
  * @email suxuan696@gmail.com
  */
-public class DataProcessor implements Runnable {
-	private static final Logger logger = LoggerFactory.getLogger(DataProcessor.class);
+public class DataProcessor {
 	private final SocketSession socketSession;
 	private final boolean compress;
 	private final Serializer serializer;
@@ -55,16 +51,6 @@ public class DataProcessor implements Runnable {
 		this.data = data;
 	}
 
-	@Override
-	public void run() {
-		try {
-			process();
-		} catch (Exception e) {
-			socketSession.close();
-			logger.error("", e);
-		}
-
-	}
 
 	public void process() throws Exception {
 		if (compress)
@@ -100,6 +86,9 @@ public class DataProcessor implements Runnable {
 				}
 			} else {
 				socketSession.getInitLatch().countDown();
+				if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
+					socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
+				}
 				throw new IllegalAccessException("Invalid auth !");
 			}
 		} else
