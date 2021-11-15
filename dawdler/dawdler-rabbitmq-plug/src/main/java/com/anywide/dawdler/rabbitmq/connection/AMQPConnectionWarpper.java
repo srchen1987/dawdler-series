@@ -25,8 +25,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.commons.pool2.impl.GenericObjectPool;
+
 import com.anywide.dawdler.rabbitmq.channel.ChannelWarpperHandler;
-import com.anywide.dawdler.rabbitmq.connection.pool.ConnectionPool;
 import com.rabbitmq.client.BlockedCallback;
 import com.rabbitmq.client.BlockedListener;
 import com.rabbitmq.client.Channel;
@@ -47,16 +48,16 @@ import com.rabbitmq.client.UnblockedCallback;
  */
 public class AMQPConnectionWarpper implements Connection {
 	private Connection target;
-	private ConnectionPool connectionPool;
+	private GenericObjectPool<Connection> genericObjectPool;
 	private int channelSize;
 	private int getChannelTimeOut;
 	private Semaphore semaphore;
 	LinkedList<Channel> channels = new LinkedList<>();
 
-	public AMQPConnectionWarpper(Connection target, ConnectionPool connectionPool, int channelSize,
+	public AMQPConnectionWarpper(Connection target, GenericObjectPool<Connection> genericObjectPool, int channelSize,
 			int getChannelTimeOut) {
 		this.target = target;
-		this.connectionPool = connectionPool;
+		this.genericObjectPool = genericObjectPool;
 		this.channelSize = channelSize;
 		this.getChannelTimeOut = getChannelTimeOut;
 		this.semaphore = new Semaphore(channelSize);
@@ -139,7 +140,7 @@ public class AMQPConnectionWarpper implements Connection {
 					}
 				}
 				Channel channel = target.createChannel();
-				ChannelWarpperHandler channelWarpperHandler = new ChannelWarpperHandler(channel, connectionPool,
+				ChannelWarpperHandler channelWarpperHandler = new ChannelWarpperHandler(channel, genericObjectPool,
 						channels, semaphore);
 				return (Channel) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), channelClass,
 						channelWarpperHandler);
@@ -159,7 +160,7 @@ public class AMQPConnectionWarpper implements Connection {
 
 	@Override
 	public void close() throws IOException {
-		connectionPool.returnObject(this);
+		genericObjectPool.returnObject(this);
 	}
 
 	public void physicsClose() throws IOException {

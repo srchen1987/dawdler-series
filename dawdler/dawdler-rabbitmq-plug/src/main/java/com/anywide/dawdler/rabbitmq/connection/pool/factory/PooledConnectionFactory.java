@@ -19,11 +19,11 @@ package com.anywide.dawdler.rabbitmq.connection.pool.factory;
 import org.apache.commons.pool2.BasePooledObjectFactory;
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
+import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.rabbitmq.connection.AMQPConnectionWarpper;
-import com.anywide.dawdler.rabbitmq.connection.pool.ConnectionPool;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Recoverable;
@@ -43,7 +43,7 @@ public class PooledConnectionFactory extends BasePooledObjectFactory<Connection>
 	private static final Logger logger = LoggerFactory.getLogger(PooledConnectionFactory.class);
 
 	private ConnectionFactory connectionFactory;
-	private ConnectionPool connectionPool;
+	private GenericObjectPool<Connection> genericObjectPool;
 	private int channelSize;
 	private int getChannelTimeOut;
 
@@ -58,8 +58,8 @@ public class PooledConnectionFactory extends BasePooledObjectFactory<Connection>
 		this.getChannelTimeOut = getChannelTimeOut;
 	}
 
-	public void setConnectionPool(ConnectionPool connectionPool) {
-		this.connectionPool = connectionPool;
+	public void setConnectionPool(GenericObjectPool<Connection> genericObjectPool) {
+		this.genericObjectPool = genericObjectPool;
 	}
 
 	public void setChannelSize(int channelSize) {
@@ -77,7 +77,7 @@ public class PooledConnectionFactory extends BasePooledObjectFactory<Connection>
 		con.addShutdownListener((shutdownSignalException) -> {
 			logger.error("amqp connection shutdown:" + shutdownSignalException.getMessage());
 			try {
-				connectionPool.invalidateObject((Connection) shutdownSignalException.getReference());
+				genericObjectPool.invalidateObject((Connection) shutdownSignalException.getReference());
 			} catch (Exception e) {
 			}
 		});
@@ -94,7 +94,7 @@ public class PooledConnectionFactory extends BasePooledObjectFactory<Connection>
 
 			}
 		});
-		return new AMQPConnectionWarpper(con, connectionPool, channelSize, getChannelTimeOut);
+		return new AMQPConnectionWarpper(con, genericObjectPool, channelSize, getChannelTimeOut);
 	}
 
 	@Override
