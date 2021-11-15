@@ -21,11 +21,12 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
 
+import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.rabbitmq.connection.pool.ConnectionPool;
 import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
 
 /**
  *
@@ -42,14 +43,14 @@ public class ChannelWarpperHandler implements InvocationHandler {
 	private Channel target;
 	private LinkedList<Channel> channels;
 	private Semaphore semaphore;
-	private ConnectionPool connectionPool;
+	private GenericObjectPool<Connection> genericObjectPool;
 
-	public ChannelWarpperHandler(Channel target, ConnectionPool connectionPool, LinkedList<Channel> channels,
-			Semaphore semaphore) {
+	public ChannelWarpperHandler(Channel target, GenericObjectPool<Connection> genericObjectPool,
+			LinkedList<Channel> channels, Semaphore semaphore) {
 		this.target = target;
 		this.channels = channels;
 		this.semaphore = semaphore;
-		this.connectionPool = connectionPool;
+		this.genericObjectPool = genericObjectPool;
 	}
 
 	@Override
@@ -84,7 +85,7 @@ public class ChannelWarpperHandler implements InvocationHandler {
 	public void handleAbnormalDisconnection() {
 		while (!target.isOpen()) {
 			try {
-				target = connectionPool.borrowObject().createChannel();
+				target = genericObjectPool.borrowObject().createChannel();
 			} catch (Exception e) {
 				logger.error("", e);
 			}

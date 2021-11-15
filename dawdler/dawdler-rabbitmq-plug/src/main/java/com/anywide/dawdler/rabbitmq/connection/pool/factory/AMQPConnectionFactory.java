@@ -21,9 +21,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
-import com.anywide.dawdler.rabbitmq.connection.pool.ConnectionPool;
 import com.anywide.dawdler.util.PropertiesUtil;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -38,7 +38,7 @@ import com.rabbitmq.client.ConnectionFactory;
  * @email suxuan696@gmail.com
  */
 public class AMQPConnectionFactory {
-	private ConnectionPool connectionPool;
+	private GenericObjectPool<Connection> genericObjectPool;
 	private static Map<String, AMQPConnectionFactory> instances = new ConcurrentHashMap<>();
 
 	public static AMQPConnectionFactory getInstance(String fileName) throws IOException {
@@ -73,7 +73,7 @@ public class AMQPConnectionFactory {
 		PooledConnectionFactory pooledConnectionFactory = new PooledConnectionFactory(connectionFactory, channelSize,
 				getChannelTimeOut);
 		GenericObjectPoolConfig<Connection> config = new GenericObjectPoolConfig<>();
-		connectionPool = new ConnectionPool(pooledConnectionFactory, config);
+		genericObjectPool = new GenericObjectPool<Connection>(pooledConnectionFactory, config);
 		int minIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle",
 				GenericObjectPoolConfig.DEFAULT_MIN_IDLE, ps);
 		int maxIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxIdle",
@@ -97,15 +97,15 @@ public class AMQPConnectionFactory {
 		config.setTestOnCreate(testOnCreate);
 		config.setTestOnReturn(testOnReturn);
 
-		pooledConnectionFactory.setConnectionPool(connectionPool);
+		pooledConnectionFactory.setConnectionPool(genericObjectPool);
 	}
 
 	public Connection getConnection() throws Exception {
-		return connectionPool.borrowObject();
+		return genericObjectPool.borrowObject();
 	}
 
 	public void close() {
-		connectionPool.close();
+		genericObjectPool.close();
 	}
 
 }
