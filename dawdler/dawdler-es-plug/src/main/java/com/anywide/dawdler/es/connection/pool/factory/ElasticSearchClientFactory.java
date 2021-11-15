@@ -30,7 +30,7 @@ import com.anywide.dawdler.util.PropertiesUtil;
 
 /**
 *
-* @Title PooledEsClientFactory.java
+* @Title ElasticSearchClientFactory.java
 * @Description ElasticSearchClient多例工厂
 * @author jackson.song
 * @date 2021年11月14日
