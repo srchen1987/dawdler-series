@@ -65,13 +65,25 @@ public class ElasticSearchClientFactory {
 		int connectTimeout = PropertiesUtil.getIfNullReturnDefaultValueInt("connectTimeout", -1, ps);
 		int socketTimeout = PropertiesUtil.getIfNullReturnDefaultValueInt("socketTimeout", -1, ps);
 		GenericObjectPoolConfig<ElasticSearchClient> config = new GenericObjectPoolConfig<>();
-		config.setMaxTotal(PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxTotal", 8, ps));
-		config.setMaxWaitMillis(PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxWaitMillis", 5000, ps));
-		config.setMinIdle(PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle", 0, ps));
-		config.setMaxIdle(PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxIdle", 4, ps));
-		boolean testOnBorrow = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnBorrow", false, ps);
-		boolean testOnCreate = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnCreate", false, ps);
-		boolean testOnReturn = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnReturn", false, ps);
+		int minIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle",
+				GenericObjectPoolConfig.DEFAULT_MIN_IDLE, ps);
+		int maxIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxIdle",
+				GenericObjectPoolConfig.DEFAULT_MAX_IDLE, ps);
+		long maxWaitMillis = PropertiesUtil.getIfNullReturnDefaultValueLong("pool.maxWaitMillis",
+				GenericObjectPoolConfig.DEFAULT_MAX_WAIT_MILLIS, ps);
+		int maxTotal = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxTotal",
+				GenericObjectPoolConfig.DEFAULT_MAX_TOTAL, ps);
+		boolean testOnBorrow = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnBorrow",
+				GenericObjectPoolConfig.DEFAULT_TEST_ON_BORROW, ps);
+		boolean testOnCreate = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnCreate",
+				GenericObjectPoolConfig.DEFAULT_TEST_ON_CREATE, ps);
+		boolean testOnReturn = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnReturn",
+				GenericObjectPoolConfig.DEFAULT_TEST_ON_RETURN, ps);
+
+		config.setMaxTotal(maxTotal);
+		config.setMaxIdle(maxIdle);
+		config.setMinIdle(minIdle);
+		config.setMaxWaitMillis(maxWaitMillis);
 		config.setTestOnBorrow(testOnBorrow);
 		config.setTestOnCreate(testOnCreate);
 		config.setTestOnReturn(testOnReturn);
