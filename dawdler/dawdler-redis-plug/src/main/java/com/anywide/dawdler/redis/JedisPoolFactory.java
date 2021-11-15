@@ -48,23 +48,31 @@ public final class JedisPoolFactory {
 		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		String auth = ps.getProperty("auth");
 		int database = PropertiesUtil.getIfNullReturnDefaultValueInt("database", 0, ps);
-		int max_idle = PropertiesUtil.getIfNullReturnDefaultValueInt("max_idle", JedisPoolConfig.DEFAULT_MAX_IDLE, ps);
-		long max_wait = PropertiesUtil.getIfNullReturnDefaultValueLong("max_wait",
+//		
+		int minIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle", JedisPoolConfig.DEFAULT_MIN_IDLE,
+				ps);
+		int maxIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxIdle", JedisPoolConfig.DEFAULT_MAX_IDLE,
+				ps);
+		long maxWaitMillis = PropertiesUtil.getIfNullReturnDefaultValueLong("pool.maxWaitMillis",
 				JedisPoolConfig.DEFAULT_MAX_WAIT_MILLIS, ps);
-		int max_active = PropertiesUtil.getIfNullReturnDefaultValueInt("max_active", JedisPoolConfig.DEFAULT_MAX_TOTAL,
+		int maxTotal = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxTotal", JedisPoolConfig.DEFAULT_MAX_TOTAL,
 				ps);
 		int timeout = PropertiesUtil.getIfNullReturnDefaultValueInt("timeout", Protocol.DEFAULT_TIMEOUT, ps);
-		Object test_on_borrowObj = ps.get("test_on_borrow");
-		boolean test_on_borrow = JedisPoolConfig.DEFAULT_TEST_ON_BORROW;
-		if (test_on_borrowObj != null) {
-			test_on_borrow = Boolean.parseBoolean(test_on_borrowObj.toString());
-		}
+		boolean testOnBorrow = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnBorrow",
+				JedisPoolConfig.DEFAULT_TEST_ON_BORROW, ps);
+		boolean testOnCreate = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnCreate",
+				JedisPoolConfig.DEFAULT_TEST_ON_CREATE, ps);
+		boolean testOnReturn = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnReturn",
+				JedisPoolConfig.DEFAULT_TEST_ON_RETURN, ps);
 
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
-		poolConfig.setMaxTotal(max_active);
-		poolConfig.setMaxIdle(max_idle);
-		poolConfig.setMaxWaitMillis(max_wait);
-		poolConfig.setTestOnBorrow(test_on_borrow);
+		poolConfig.setMaxTotal(maxTotal);
+		poolConfig.setMaxIdle(maxIdle);
+		poolConfig.setMinIdle(minIdle);
+		poolConfig.setMaxWaitMillis(maxWaitMillis);
+		poolConfig.setTestOnBorrow(testOnBorrow);
+		poolConfig.setTestOnCreate(testOnCreate);
+		poolConfig.setTestOnReturn(testOnReturn);
 		String masterName = (String) ps.get("masterName");
 		String sentinels = (String) ps.get("sentinels");
 		if (masterName != null && sentinels != null) {
