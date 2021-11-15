@@ -40,7 +40,7 @@ public class JdbcTransactionStatus implements TransactionStatus {
 	private boolean completed = false; // 完成（true表示完成）
 	private boolean rollbackOnly = false; // 要求回滚（true表示回滚）
 	private boolean newConnection = false; // 是否使用了一个全新的数据库连接开启事务（true表示新连接）
-	
+
 	private final int timeOut;
 
 	public JdbcTransactionStatus(DBTransaction dBTransaction) {

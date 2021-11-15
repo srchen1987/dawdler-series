@@ -33,6 +33,7 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
  */
 public class PlugFactory {
 	private static final java.util.concurrent.ConcurrentMap<String, DisplayPlug> displayPlugs = new ConcurrentHashMap<>();
+
 	public static void initFactory(ServletContext servletContext) {
 		ServiceLoader.load(DisplayPlug.class).forEach(displayPlug -> {
 			displayPlug.init(servletContext);

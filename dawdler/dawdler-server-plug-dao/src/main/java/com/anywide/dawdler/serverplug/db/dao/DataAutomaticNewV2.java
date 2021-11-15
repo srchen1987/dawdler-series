@@ -173,7 +173,5 @@ public class DataAutomaticNewV2 {
 		} catch (InvocationTargetException e) {
 		}
 	}
-	
-	
-	
+
 }

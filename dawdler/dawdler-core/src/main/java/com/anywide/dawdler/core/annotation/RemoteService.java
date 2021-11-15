@@ -33,17 +33,19 @@ import java.lang.annotation.Target;
  * @email suxuan696@gmail.com
  */
 public @interface RemoteService {
-	 String value() default "";//服务调用
+	String value() default "";// 服务调用
 
-	 String group() default "";//在调用端有效,指定服务端部署的服务名.
+	String group() default "";// 在调用端有效,指定服务端部署的服务名.
 
-	 boolean single() default true;//在服务端有效,标识一个服务的实现类是否为单例.默认为单例.
+	boolean single() default true;// 在服务端有效,标识一个服务的实现类是否为单例.默认为单例.
 
-	 boolean remote() default false;//在服务端有效,标识是否是一个远程服务,一般不建议在服务端再次调用另一个服务,默认为否,调用本服务中的服务（适用事务传播）.
+	boolean async() default false;// 在客户端有效,是否为异步执行.
 
-	 int timeout() default 120;//在调用端有效,调用远程服务的超时事件,单位为秒,默认120秒.
+	boolean remote() default false;// 在服务端有效,标识是否是一个远程服务,一般不建议在服务端再次调用另一个服务,默认为否,调用本服务中的服务（适用事务传播）.
 
-	 boolean fuzzy() default true;//在调用端有效,是否模糊匹配方法,默认为true,模糊匹配根据方法名与参数个数进行匹配,非模糊匹配会根据方法名与参数类型进行精确匹配.模糊匹配效率高,如果一个服务实现类中存在相同方法相同参数个数时需要设置此参数为true.
+	int timeout() default 120;// 在调用端有效,调用远程服务的超时事件,单位为秒,默认120秒.
 
-	 String loadBalance() default "roundRobin";//调用端有效,负载方式
+	boolean fuzzy() default true;// 在调用端有效,是否模糊匹配方法,默认为true,模糊匹配根据方法名与参数个数进行匹配,非模糊匹配会根据方法名与参数类型进行精确匹配.模糊匹配效率高,如果一个服务实现类中存在相同方法相同参数个数时需要设置此参数为true.
+
+	String loadBalance() default "roundRobin";// 调用端有效,负载方式
 }

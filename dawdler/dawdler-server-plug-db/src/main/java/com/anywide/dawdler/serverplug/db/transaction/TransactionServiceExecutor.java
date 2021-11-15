@@ -88,7 +88,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 						if (synReadObj == null) {
 							synReadObj = new SynReadConnectionObject(mappingDecision, dbt);
 							LocalConnectionFactory.setSynReadConnectionObject(synReadObj);
-							if(mode == MODE.forceReadOnWrite) {
+							if (mode == MODE.forceReadOnWrite) {
 								ReadConnectionHolder readConnection = new ReadConnectionHolder(null);
 								readConnection.setUseWriteConnection(true);
 								synReadObj.setReadConnectionHolder(readConnection);
@@ -111,7 +111,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 						if (synReadObj == null) {
 							synReadObj = new SynReadConnectionObject(mappingDecision, dbt);
 							LocalConnectionFactory.setSynReadConnectionObject(synReadObj);
-							if(mode == MODE.forceReadOnWrite) {
+							if (mode == MODE.forceReadOnWrite) {
 								ReadConnectionHolder readConnection = new ReadConnectionHolder(null);
 								readConnection.setUseWriteConnection(true);
 								synReadObj.setReadConnectionHolder(readConnection);

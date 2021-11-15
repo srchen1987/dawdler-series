@@ -27,12 +27,10 @@ import com.anywide.dawdler.serverplug.db.transaction.TransactionDefinition;
  * @email suxuan696@gmail.com
  */
 public enum Propagation {
-	REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED),
-	SUPPORTS(TransactionDefinition.PROPAGATION_SUPPORTS),
+	REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED), SUPPORTS(TransactionDefinition.PROPAGATION_SUPPORTS),
 	MANDATORY(TransactionDefinition.PROPAGATION_MANDATORY),
 	REQUIRES_NEW(TransactionDefinition.PROPAGATION_REQUIRES_NEW),
-	NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED),
-	NEVER(TransactionDefinition.PROPAGATION_NEVER),
+	NOT_SUPPORTED(TransactionDefinition.PROPAGATION_NOT_SUPPORTED), NEVER(TransactionDefinition.PROPAGATION_NEVER),
 	NESTED(TransactionDefinition.PROPAGATION_NESTED);
 
 	private final int value;

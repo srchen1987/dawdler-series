@@ -133,7 +133,7 @@ public class DataProcessor implements Runnable {
 			} else {
 				logger.warn(socketSession.getRemoteAddress() + " auth failed!");
 			}
-				
+
 			data = serializer.serialize(authResponse);
 			write();
 		} else

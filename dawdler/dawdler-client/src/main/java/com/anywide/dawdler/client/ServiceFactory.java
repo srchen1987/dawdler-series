@@ -43,7 +43,8 @@ public class ServiceFactory {
 
 	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance,
 			ClassLoader classLoader) {
-		if(classLoader == null) classLoader = Thread.currentThread().getContextClassLoader();
+		if (classLoader == null)
+			classLoader = Thread.currentThread().getContextClassLoader();
 		ConcurrentHashMap<Class<?>, Object> proxy = proxyObjects.get(groupName);
 		if (proxy == null) {
 			proxy = new ConcurrentHashMap<>();
@@ -60,12 +61,12 @@ public class ServiceFactory {
 		}
 		return (T) obj;
 	}
-	
+
 	public static <T> T getService(final Class<T> delegate, String groupName) {
 		return getService(delegate, groupName, null, null);
 	}
-	
-	public static <T> T getService(final Class<T> delegate, String groupName,String loadBalance) {
+
+	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance) {
 		return getService(delegate, groupName, loadBalance, null);
 	}
 
@@ -77,10 +78,9 @@ public class ServiceFactory {
 		enhancer.setClassLoader(classLoader);
 		return (T) enhancer.create();
 	}
-	
-	
+
 	public static void injectRemoteService(Class<?> clazz, Object target, ClassLoader classLoader) {
-		if(classLoader == null)
+		if (classLoader == null)
 			classLoader = clazz.getClassLoader();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
@@ -97,7 +97,6 @@ public class ServiceFactory {
 			}
 		}
 	}
-	
 
 	private static class CglibInterceptor implements MethodInterceptor {
 		private final String groupName;
@@ -107,6 +106,7 @@ public class ServiceFactory {
 		private int timeout;
 		private boolean single;
 		private String loadBalance;
+		private boolean async;
 
 		CglibInterceptor(Class<?> delegate, String groupName, String loadBalance) {
 			this.groupName = groupName;
@@ -123,6 +123,7 @@ public class ServiceFactory {
 				timeout = rs.timeout();
 				fuzzy = rs.fuzzy();
 				single = rs.single();
+				async = rs.async();
 			}
 			if (serviceName == null || serviceName.trim().equals("")) {
 				serviceName = delegate.getName();
@@ -141,6 +142,7 @@ public class ServiceFactory {
 			tr.setProxyInterface(delegate);
 			tr.setSingle(single);
 			tr.setLoadBalance(loadBalance);
+			tr.setAsync(async);
 			Class<?>[] types = method.getParameterTypes();
 			for (int i = 0; i < types.length; i++) {
 				Class<?> typeClass = types[i];

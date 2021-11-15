@@ -97,5 +97,5 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	public boolean isExist(String path) throws Exception {
 		return client.checkExists().forPath(path) != null;
 	}
-	
+
 }

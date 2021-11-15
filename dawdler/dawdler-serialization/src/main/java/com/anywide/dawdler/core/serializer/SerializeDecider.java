@@ -16,14 +16,12 @@
  */
 package com.anywide.dawdler.core.serializer;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 /**
  * @author jackson.song
@@ -40,12 +38,11 @@ public class SerializeDecider {
 		ServiceLoader<Serializer> loader = ServiceLoader.load(Serializer.class);
 		loader.forEach(SerializeDecider::addSerializer);
 	}
-	
 
 	public static void register(byte key, Serializer serializer) {
 		Serializer preSerializer = serializers.putIfAbsent(key, serializer);
-		if(preSerializer != null) {
-			logger.error(preSerializer.key()+" already exists in "+preSerializer.getClass().getName());
+		if (preSerializer != null) {
+			logger.error(preSerializer.key() + " already exists in " + preSerializer.getClass().getName());
 		}
 	}
 

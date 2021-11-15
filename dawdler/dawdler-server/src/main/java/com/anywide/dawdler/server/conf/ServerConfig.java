@@ -237,7 +237,7 @@ public class ServerConfig {
 		public void setTcpNoDelay(boolean tcpNoDelay) {
 			this.tcpNoDelay = tcpNoDelay;
 		}
-		
+
 		public int getMaxThreads() {
 			return maxThreads;
 		}

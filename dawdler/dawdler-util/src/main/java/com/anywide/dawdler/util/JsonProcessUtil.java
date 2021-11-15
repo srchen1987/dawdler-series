@@ -49,8 +49,9 @@ public class JsonProcessUtil {
 			return null;
 		}
 	}
-	
-	public static void beanToJson(Writer writer, Object obj) throws JsonGenerationException, JsonMappingException, IOException {
+
+	public static void beanToJson(Writer writer, Object obj)
+			throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		mapper.writeValue(writer, obj);
 	}
@@ -68,7 +69,7 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
-	
+
 	public static <T> T jsonToBean(byte[] json, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();

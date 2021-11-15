@@ -176,11 +176,11 @@ public class RWSplittingDataSourceManager {
 			return originalReadExpression != null && (originalReadExpression.equals(md.originalReadExpression));
 		}
 	}
-	
+
 	private static String captureName(String str) {
 		char[] cs = str.toCharArray();
 		cs[0] -= 32;
 		return String.valueOf(cs);
 	}
-	
+
 }

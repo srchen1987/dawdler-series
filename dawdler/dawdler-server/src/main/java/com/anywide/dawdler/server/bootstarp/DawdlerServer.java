@@ -59,6 +59,7 @@ public class DawdlerServer {
 	private final AsynchronousChannelGroup asynchronousChannelGroup;
 	private final DawdlerServerContext dawdlerServerContext;
 	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
+
 	public DawdlerServer(ServerConfig serverConfig) throws IOException {
 		dawdlerServerContext = new DawdlerServerContext(serverConfig);
 		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(

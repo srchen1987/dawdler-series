@@ -60,7 +60,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	private boolean useCache = DEFAULT_USE_CACHE;
 	private String className;
 	private boolean attemptLoad;
-	
+
 	protected static class ClassLoaderData {
 		private final Set<String> reservedClassNames = new HashSet<String>();
 

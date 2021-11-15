@@ -29,20 +29,20 @@ import com.anywide.dawdler.distributed.transaction.compensate.timers.Compensatio
 import com.anywide.dawdler.distributed.transaction.release.ResourceReleaser;
 
 /**
-*
-* @Title WebListener2StartCompensator.java
-* @Description 补偿模块的监听器 启动初始化定时任务，销毁时释放资源
-* @author jackson.song
-* @date 2021年4月17日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title WebListener2StartCompensator.java
+ * @Description 补偿模块的监听器 启动初始化定时任务，销毁时释放资源
+ * @author jackson.song
+ * @date 2021年4月17日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 @WebListener
 public class WebListener2StartCompensator implements ServletContextListener {
 	private static Logger logger = LoggerFactory.getLogger(AmqpConsumer.class);
 	private MessageConsumer messageConsumer;
 	private CompensationTimer compensationTimer;
-	
+
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		messageConsumer = new AmqpConsumer();
@@ -60,7 +60,7 @@ public class WebListener2StartCompensator implements ServletContextListener {
 		compensationTimer.shutdown();
 		messageConsumer.shutdown();
 		ResourceReleaser.release();
-		
+
 	}
 
 }
