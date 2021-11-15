@@ -33,6 +33,7 @@ import com.anywide.dawdler.client.conf.ClientConfig.ServerChannelGroup;
 import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.client.discoverycenter.ZkDiscoveryCenterClient;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
+import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 
 /**
  * @author jackson.song
@@ -112,8 +113,10 @@ public class ConnectionPool {
 		for (ConnectionPool c : groups.values()) {
 			c.close();
 		}
+		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
 		discoveryCenter.destroy();
 		groups.clear();
+
 	}
 
 	public void add(DawdlerConnection dawdlerConnection) {

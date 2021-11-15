@@ -17,7 +17,6 @@
 package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -32,7 +31,6 @@ import java.util.WeakHashMap;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +38,6 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
 import sun.misc.Resource;
 import sun.misc.URLClassPath;
 

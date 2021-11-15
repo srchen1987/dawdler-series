@@ -53,7 +53,7 @@ public class LoadCore implements Runnable {
 	private static final String PREFIX = ".dat";
 	private static final Logger logger = LoggerFactory.getLogger(LoadCore.class);
 	private static final Pattern CLASS_PATTERN = Pattern.compile("(.*)\\.class$");
-	private static final String CLASSP_REFIX=".class";
+	private static final String CLASSP_REFIX = ".class";
 	private static final String CURRENT_PATH;
 	private static final String TYPE_API = "api";
 	private static final String TYPE_COMPONENT = "component";
@@ -67,7 +67,7 @@ public class LoadCore implements Runnable {
 	private long time = 60000;
 	private ClientPlugClassLoader classLoder = null;
 
-	public LoadCore(String host, long time, String channelGroupId,ClientPlugClassLoader classLoder) {
+	public LoadCore(String host, long time, String channelGroupId, ClientPlugClassLoader classLoder) {
 		this.classLoder = classLoder;
 		this.host = host;
 		if (time > 1000)
@@ -75,10 +75,8 @@ public class LoadCore implements Runnable {
 		this.channelGroupId = channelGroupId;
 	}
 
-	
-
 	public String getLogFilePath() {
-		return CURRENT_PATH + channelGroupId +"-"+ host + PREFIX;
+		return CURRENT_PATH + channelGroupId + "-" + host + PREFIX;
 	}
 
 	public void toCheck() throws IOException {
@@ -128,7 +126,7 @@ public class LoadCore implements Runnable {
 		try {
 			String filepath = getLogFilePath();
 			File xmlFile = new File(filepath);
-			if(!xmlFile.isFile())
+			if (!xmlFile.isFile())
 				return;
 			XmlObject xmlo = new XmlObject(filepath, false);
 			Set<String> needLoad = new LinkedHashSet<String>();
@@ -137,7 +135,7 @@ public class LoadCore implements Runnable {
 				String checkName = ele.attributeValue("checkname");
 				String className = toClassName(checkName);
 				if (ClientPlugClassLoader.getRemoteClass((host + "-" + className)) == null) {
-					needLoad.add(className+CLASSP_REFIX);
+					needLoad.add(className + CLASSP_REFIX);
 				}
 			}
 			loadClass(needLoad.toArray(new String[0]), false);
@@ -145,7 +143,7 @@ public class LoadCore implements Runnable {
 			logger.error("", e);
 		}
 	}
-	
+
 	private static String toClassName(String checkName) {
 		return checkName.replace(File.separator, ".").substring(0, checkName.lastIndexOf("."));
 	}
@@ -163,7 +161,7 @@ public class LoadCore implements Runnable {
 			Element ele = (Element) o;
 			loadBeans[i++] = ele.attributeValue("checkname").replace(File.separator, ".");
 		}
-		
+
 		loadClass(loadBeans, type.equals(TYPE_API));
 	}
 
@@ -175,17 +173,16 @@ public class LoadCore implements Runnable {
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
 		for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item")) {
 			Element ele = (Element) item;
-			for (Object remoteItem : remote
-					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + ele.attributeValue("checkname") + "']")) {
+			for (Object remoteItem : remote.selectNodes(
+					"/hosts/host[@type='" + type + "']/item[@checkname='" + ele.attributeValue("checkname") + "']")) {
 				Element remoteEle = (Element) remoteItem;
 				String checkName = remoteEle.attributeValue("checkname");
 				String className = toClassName(checkName);
 				allClass.add(checkName);
 				if (!ele.attributeValue("update").equals(remoteEle.attributeValue("update"))) {
 					remark = true;
-					needLoad.add(className+CLASSP_REFIX);
-					if (!isApi
-							&& ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
+					needLoad.add(className + CLASSP_REFIX);
+					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
 						this.classLoder.remove(host + "-" + className);
 				}
 			}
@@ -198,15 +195,13 @@ public class LoadCore implements Runnable {
 				Element ele = (Element) item;
 				String checkName = ele.attributeValue("checkname");
 				String className = toClassName(checkName);
-				if (!allClass.contains(checkName)
-						&& !loadCache.contains(checkName)) {// 如果list里面不包含并且set中也不包含
+				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {// 如果list里面不包含并且set中也不包含
 					loadCache.add(checkName);// set中添加进去
 					remark = true;
 					File file = new File(classFilePath + checkName);
 					if (file.exists())
 						file.delete();
-					if (!isApi
-							&& ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
+					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
 						this.classLoder.remove(host + "-" + className);
 				}
 			}
@@ -214,17 +209,15 @@ public class LoadCore implements Runnable {
 			for (Object item : items) {
 				Element ele = (Element) item;
 				String checkName = ele.attributeValue("checkname");
-				if (!allClass.contains(checkName)
-						&& !loadCache.contains(checkName)) {
+				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {
 					loadCache.add(checkName);
 					remark = true;
 					String className = toClassName(checkName);
-					needLoad.add(className+CLASSP_REFIX);
+					needLoad.add(className + CLASSP_REFIX);
 					File file = new File(classFilePath + checkName);
 					if (file.exists())
 						file.delete();
-					if (!isApi
-							&& ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
+					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
 						this.classLoder.remove(host + "-" + className);
 				}
 			}
@@ -234,10 +227,10 @@ public class LoadCore implements Runnable {
 		if (loadClasses != null && loadClasses.length > 0) {
 			if (!isApi)
 				classLoder.updateLoad(CURRENT_PATH);
-			
+
 			loadClass(loadClasses, isApi);
 		}
-			
+
 		return remark;
 	}
 
@@ -280,8 +273,8 @@ public class LoadCore implements Runnable {
 			Matcher match = CLASS_PATTERN.matcher(rf.getFilename());
 			if (match.find()) {
 				String className = match.group(1);
-				if(isApi) {
-					String filePath = className.replace(".",File.separator);
+				if (isApi) {
+					String filePath = className.replace(".", File.separator);
 					File file = new File(CURRENT_PATH + filePath + CLASSP_REFIX);
 					File parentFile = new File(file.getParent());
 					if (file.exists())
@@ -306,8 +299,8 @@ public class LoadCore implements Runnable {
 							logger.error("", e);
 						}
 					}
-				}else {
-						this.classLoder.load(host, className, rf.getData());
+				} else {
+					this.classLoder.load(host, className, rf.getData());
 				}
 			}
 		}

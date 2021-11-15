@@ -52,12 +52,12 @@ public class PropertiesUtil {
 				inStream.close();
 		}
 	}
-	
+
 	public static Properties loadActiveProfileProperties(String fileName) throws IOException {
 		String activeProfile = System.getProperty("dawdler.profiles.active");
-		return loadProperties(fileName +(activeProfile != null ? "-"+activeProfile : ""));
+		return loadProperties(fileName + (activeProfile != null ? "-" + activeProfile : ""));
 	}
-	
+
 	public static Properties loadActiveProfileIfNotExistUseDefaultProperties(String fileName) throws IOException {
 		try {
 			return loadActiveProfileProperties(fileName);

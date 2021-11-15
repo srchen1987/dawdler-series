@@ -41,7 +41,6 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
 public class Transaction {
 	private final List<Class<?>> types = new ArrayList<>();
 	private final List<Object> values = new ArrayList<>();
-//    private DawdlerConnection con;
 	private String serviceName;
 	private String method;
 	private boolean fuzzy;
@@ -53,6 +52,7 @@ public class Transaction {
 	private String loadBalance;
 	private String defaultLoadBalance = "roundRobin";
 	private List<DawdlerConnection> connections;
+	private boolean async;
 
 	public Transaction(List<DawdlerConnection> connections) {
 		this.connections = connections;
@@ -76,6 +76,14 @@ public class Transaction {
 
 	public void setSingle(boolean single) {
 		this.single = single;
+	}
+
+	public boolean isAsync() {
+		return async;
+	}
+
+	public void setAsync(boolean async) {
+		this.async = async;
 	}
 
 	public String getServiceName() {
@@ -202,6 +210,7 @@ public class Transaction {
 		request.setArgs(values.toArray());
 		request.setFuzzy(fuzzy);
 		request.setSingle(single);
+		request.setAsync(async);
 		request.setAttachments(attachments);
 		DawdlerConnection con = LoadBalanceFactory
 				.<DawdlerConnection, Object>getLoadBalance(loadBalance == null ? defaultLoadBalance : loadBalance)

@@ -68,8 +68,8 @@ public class ServiceRef extends AbstractRef {
 		this(refname, serviceInterface, serviceQname, wsdl, jaxrpcmapping, null, null);
 	}
 
-	public ServiceRef(String refname, String serviceInterface, String[] serviceQname,
-			String wsdl, String jaxrpcmapping, String factory, String factoryLocation) {
+	public ServiceRef(String refname, String serviceInterface, String[] serviceQname, String wsdl, String jaxrpcmapping,
+			String factory, String factoryLocation) {
 		super(serviceInterface, factory, factoryLocation);
 		StringRefAddr refAddr = null;
 		if (serviceInterface != null) {

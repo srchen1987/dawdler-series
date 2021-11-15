@@ -35,7 +35,7 @@ public class DawdlerMybatisTransaction implements Transaction {
 	@Override
 	public Integer getTimeout() throws SQLException {
 		SynReadConnectionObject synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
-		if(synReadObj != null)
+		if (synReadObj != null)
 			return synReadObj.getDBTransaction().timeOut();
 		return null;
 	}

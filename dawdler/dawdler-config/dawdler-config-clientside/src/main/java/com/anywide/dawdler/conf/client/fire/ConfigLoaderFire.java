@@ -64,12 +64,12 @@ public class ConfigLoaderFire implements RemoteClassLoaderFire {
 	}
 
 	private void refreshMappingConfig(Class<?> clazz) throws Exception {
-			for (Object transactionController : AnnotationUrlHandler.getTransactionControllers()) {
-				if (transactionController.getClass() == clazz) {
-					Refresher.refreshAllConfig(transactionController);
-					return;
-				}
+		for (Object transactionController : AnnotationUrlHandler.getTransactionControllers()) {
+			if (transactionController.getClass() == clazz) {
+				Refresher.refreshAllConfig(transactionController);
+				return;
 			}
+		}
 	}
 
 	public void removeMappingConfig(Class<?> clazz) {

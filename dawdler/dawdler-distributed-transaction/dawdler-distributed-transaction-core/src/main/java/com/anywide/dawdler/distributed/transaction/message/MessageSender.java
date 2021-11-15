@@ -27,5 +27,6 @@ package com.anywide.dawdler.distributed.transaction.message;
  */
 public interface MessageSender {
 	public final String queueName = "distributed_transaction_queue";
+
 	public void sent(final String msg);
 }

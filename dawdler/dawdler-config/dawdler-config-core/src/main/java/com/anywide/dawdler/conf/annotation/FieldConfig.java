@@ -25,18 +25,19 @@ import java.lang.annotation.Target;
  * @author jackson.song
  * @version V1.0
  * @Title FieldConfig.java
- * @Description 统一配置中心配置注解
- *  支持用在服务器端 service listener(DawdlerServiceListener) filter(DawdlerFilter) 
- *  调用者（客户端） controller(TransactionController) listener(WebContextListener) interceptor(HandlerInterceptor) 
+ * @Description 统一配置中心配置注解 支持用在服务器端 service listener(DawdlerServiceListener)
+ *              filter(DawdlerFilter) 调用者（客户端） controller(TransactionController)
+ *              listener(WebContextListener) interceptor(HandlerInterceptor)
  * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.FIELD })
 public @interface FieldConfig {
-	//配置中心的path 如 consul的path
+	// 配置中心的path 如 consul的path
 	String path();
-	//表达式 如 name 或 user.username 注意这里和SPEL不同,采用的Jexl来实现.
+
+	// 表达式 如 name 或 user.username 注意这里和SPEL不同,采用的Jexl来实现.
 	String value() default "";
 
 }

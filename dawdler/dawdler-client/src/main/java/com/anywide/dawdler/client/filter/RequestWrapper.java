@@ -50,6 +50,11 @@ public class RequestWrapper extends RequestBean {
 	}
 
 	@Override
+	public boolean isAsync() {
+		return request.isAsync();
+	}
+
+	@Override
 	public boolean isFuzzy() {
 		return request.isFuzzy();
 	}

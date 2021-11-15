@@ -38,7 +38,7 @@ import com.rabbitmq.client.Channel;
  */
 public class ChannelWarpperHandler implements InvocationHandler {
 	private static final Logger logger = LoggerFactory.getLogger(ChannelWarpperHandler.class);
-	
+
 	private Channel target;
 	private LinkedList<Channel> channels;
 	private Semaphore semaphore;
