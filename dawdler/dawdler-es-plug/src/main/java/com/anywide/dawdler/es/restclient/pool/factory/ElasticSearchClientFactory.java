@@ -64,7 +64,6 @@ public class ElasticSearchClientFactory {
 				ps);
 		int connectTimeout = PropertiesUtil.getIfNullReturnDefaultValueInt("connectTimeout", -1, ps);
 		int socketTimeout = PropertiesUtil.getIfNullReturnDefaultValueInt("socketTimeout", -1, ps);
-		;
 		GenericObjectPoolConfig<ElasticSearchClient> config = new GenericObjectPoolConfig<>();
 		config.setMaxTotal(PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxTotal", 8, ps));
 		config.setMaxWaitMillis(PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxWaitMillis", 5000, ps));
