@@ -55,18 +55,12 @@ public @interface DBTransaction {
 	 * 
 	 * @author jackson.song
 	 * @date 2021年5月20日
-	 * @return int
-	 *  Description: 设置事务超时时间
-	 *  逻辑如下：
-	 *  if (queryTimeout == null || queryTimeout == 0 || transactionTimeout < queryTimeout) {
-	 *		statement.setQueryTimeout(transactionTimeout);
-	 *	 }
-	 *  mysql驱动代码如下：
-	 *  public int getQueryTimeout() throws SQLException {
-	 *  synchronized (checkClosed().getConnectionMutex()) {
-	 *   return getTimeoutInMillis() / 1000; 
-	 *   } 
-	 *  }
+	 * @return int Description: 设置事务超时时间 逻辑如下： if (queryTimeout == null ||
+	 *         queryTimeout == 0 || transactionTimeout < queryTimeout) {
+	 *         statement.setQueryTimeout(transactionTimeout); } mysql驱动代码如下： public
+	 *         int getQueryTimeout() throws SQLException { synchronized
+	 *         (checkClosed().getConnectionMutex()) { return getTimeoutInMillis() /
+	 *         1000; } }
 	 *
 	 */
 	int timeOut() default -1;

@@ -37,81 +37,101 @@ public class ControlTag /* extends TagSupport */ {
 	private boolean radioDefault;// 为radio类型时默认选中第一位
 	private boolean autoAddViewName;// 是否自动添加前面的viewName
 	private boolean autoAddViewDescription;// 是否自动添加后面的viewdescription
+
 	public String getControlName() {
 		return controlName;
 	}
+
 	public void setControlName(String controlName) {
 		this.controlName = controlName;
 	}
+
 	public String getViewName() {
 		return viewName;
 	}
+
 	public void setViewName(String viewName) {
 		this.viewName = viewName;
 	}
+
 	public String getControlType() {
 		return controlType;
 	}
+
 	public void setControlType(String controlType) {
 		this.controlType = controlType;
 	}
+
 	public String getShowItems() {
 		return showItems;
 	}
+
 	public void setShowItems(String showItems) {
 		this.showItems = showItems;
 	}
+
 	public String getValue() {
 		return value;
 	}
+
 	public void setValue(String value) {
 		this.value = value;
 	}
+
 	public String getValidateRule() {
 		return validateRule;
 	}
+
 	public void setValidateRule(String validateRule) {
 		this.validateRule = validateRule;
 	}
+
 	public String getViewDescription() {
 		return viewDescription;
 	}
+
 	public void setViewDescription(String viewDescription) {
 		this.viewDescription = viewDescription;
 	}
+
 	public String getCss() {
 		return css;
 	}
+
 	public void setCss(String css) {
 		this.css = css;
 	}
+
 	public String getAdditional() {
 		return additional;
 	}
+
 	public void setAdditional(String additional) {
 		this.additional = additional;
 	}
+
 	public boolean isRadioDefault() {
 		return radioDefault;
 	}
+
 	public void setRadioDefault(boolean radioDefault) {
 		this.radioDefault = radioDefault;
 	}
+
 	public boolean isAutoAddViewName() {
 		return autoAddViewName;
 	}
+
 	public void setAutoAddViewName(boolean autoAddViewName) {
 		this.autoAddViewName = autoAddViewName;
 	}
+
 	public boolean isAutoAddViewDescription() {
 		return autoAddViewDescription;
 	}
+
 	public void setAutoAddViewDescription(boolean autoAddViewDescription) {
 		this.autoAddViewDescription = autoAddViewDescription;
 	}
-	 
-	 
-  
 
-	 
 }

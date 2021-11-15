@@ -17,14 +17,14 @@
 package com.anywide.dawdler.distributed.transaction.interceptor;
 
 /**
-*
-* @Title TransactionInterceptInvokerHolder.java
-* @Description 事务执行拦截执行器持有者
-* @author jackson.song
-* @date 2021年4月17日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title TransactionInterceptInvokerHolder.java
+ * @Description 事务执行拦截执行器持有者
+ * @author jackson.song
+ * @date 2021年4月17日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 public class TransactionInterceptInvokerHolder {
 	public static TransactionInterceptInvoker transactionInterceptInvoker;
 
@@ -35,6 +35,5 @@ public class TransactionInterceptInvokerHolder {
 	public static void setTransactionInterceptInvoker(TransactionInterceptInvoker transactionInterceptInvoker) {
 		TransactionInterceptInvokerHolder.transactionInterceptInvoker = transactionInterceptInvoker;
 	}
-	
-	
+
 }

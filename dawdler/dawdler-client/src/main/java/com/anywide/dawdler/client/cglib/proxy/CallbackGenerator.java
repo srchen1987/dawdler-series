@@ -17,21 +17,30 @@ package com.anywide.dawdler.client.cglib.proxy;
 */
 
 import java.util.List;
-import net.sf.cglib.core.*;
 
-interface CallbackGenerator
-{
-   void generate(ClassEmitter ce, Context context, List methods) throws Exception;
-   void generateStatic(CodeEmitter e, Context context, List methods) throws Exception;
+import net.sf.cglib.core.ClassEmitter;
+import net.sf.cglib.core.CodeEmitter;
+import net.sf.cglib.core.MethodInfo;
+import net.sf.cglib.core.Signature;
 
-   interface Context
-   {
-       ClassLoader getClassLoader();
-       CodeEmitter beginMethod(ClassEmitter ce, MethodInfo method);
-       int getOriginalModifiers(MethodInfo method);
-       int getIndex(MethodInfo method);
-       void emitCallback(CodeEmitter ce, int index);
-       Signature getImplSignature(MethodInfo method);
-       void emitLoadArgsAndInvoke(CodeEmitter e, MethodInfo method);
-   }
+interface CallbackGenerator {
+	void generate(ClassEmitter ce, Context context, List methods) throws Exception;
+
+	void generateStatic(CodeEmitter e, Context context, List methods) throws Exception;
+
+	interface Context {
+		ClassLoader getClassLoader();
+
+		CodeEmitter beginMethod(ClassEmitter ce, MethodInfo method);
+
+		int getOriginalModifiers(MethodInfo method);
+
+		int getIndex(MethodInfo method);
+
+		void emitCallback(CodeEmitter ce, int index);
+
+		Signature getImplSignature(MethodInfo method);
+
+		void emitLoadArgsAndInvoke(CodeEmitter e, MethodInfo method);
+	}
 }

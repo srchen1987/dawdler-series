@@ -164,7 +164,7 @@ public class DistributedTransactionAspect {
 					}
 					return obj;
 				}
-				logger.warn("this transaction was cancel,globalTxid:{}.",dc.getGlobalTxId());
+				logger.warn("this transaction was cancel,globalTxid:{}.", dc.getGlobalTxId());
 				return null;
 			} else {
 				try {

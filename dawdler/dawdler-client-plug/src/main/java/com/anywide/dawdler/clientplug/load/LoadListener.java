@@ -40,7 +40,6 @@ import com.anywide.dawdler.clientplug.load.classloader.ClientPlugClassLoader;
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
 import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.XmlObject;
 
@@ -73,7 +72,6 @@ public class LoadListener implements ServletContextListener {
 				file.delete();
 			}
 		}
-		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
 		try {
 			ConnectionPool.shutdown();
 		} catch (Exception e) {

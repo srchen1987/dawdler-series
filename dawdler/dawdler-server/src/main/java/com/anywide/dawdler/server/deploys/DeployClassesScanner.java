@@ -64,7 +64,7 @@ public class DeployClassesScanner {
 			dirfiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
 					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"))
-							||(file.getName().endsWith(".jar") && scanner.getJarFiles().contains(file.getName()));
+							|| (file.getName().endsWith(".jar") && scanner.getJarFiles().contains(file.getName()));
 				}
 			});
 		}
@@ -90,7 +90,7 @@ public class DeployClassesScanner {
 					String loadClassName = packageName.equals("") ? className : (packageName + '.' + className);
 					DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 							.getContextClassLoader();
-						classes.add(classLoader.findClassForDawdler(loadClassName));
+					classes.add(classLoader.findClassForDawdler(loadClassName));
 				}
 			}
 		}
@@ -101,7 +101,6 @@ public class DeployClassesScanner {
 		findAndAddClassesInPackageByPath("", file.getPath(), true, classes);
 		return classes;
 	}
-
 
 	public static void findAndAddClassesInPackageInJar(String packageName, String packageDirName, JarFile jar,
 			final boolean recursive, Set<Class<?>> classes) {

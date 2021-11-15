@@ -156,7 +156,7 @@ public class DawdlerConnection {
 				}
 				if (activate)
 					DawdlerConnection.this.rebuildSessionGroup();
-			}catch(Exception e) {
+			} catch (Exception e) {
 				logger.error("", e);
 			}
 		}, 5000, 3000, TimeUnit.MILLISECONDS);
@@ -314,12 +314,12 @@ public class DawdlerConnection {
 			}
 		}
 	}
-	
+
 	public void shutdownExecutors() {
-		if(!reconnectScheduled.isShutdown()) {
+		if (!reconnectScheduled.isShutdown()) {
 			reconnectScheduled.shutdownNow();
 		}
-		if(!asynchronousChannelGroup.isShutdown()) {
+		if (!asynchronousChannelGroup.isShutdown()) {
 			try {
 				asynchronousChannelGroup.shutdownNow();
 			} catch (IOException e) {
@@ -330,9 +330,9 @@ public class DawdlerConnection {
 
 	public void shutdownAll() {
 		Enumeration<SocketAddress> addresses = sessionGroup.keys();
-		if(!addresses.hasMoreElements()) {
+		if (!addresses.hasMoreElements()) {
 			shutdownExecutors();
-			return ;
+			return;
 		}
 		while (addresses.hasMoreElements()) {
 			SocketAddress ad = addresses.nextElement();
@@ -347,7 +347,6 @@ public class DawdlerConnection {
 	public List<List<SocketSession>> getSessions() {
 		return socketSessions;
 	}
-
 
 	public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
 		if (ioHandler != null)

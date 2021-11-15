@@ -34,14 +34,15 @@ import com.anywide.dawdler.distributed.transaction.repository.TransactionReposit
 import com.anywide.dawdler.util.JsonProcessUtil;
 
 /**
-*
-* @Title MessageConsumer.java
-* @Description 消息消费者 将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
-* @author jackson.song
-* @date 2021年4月17日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title MessageConsumer.java
+ * @Description 消息消费者
+ *              将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
+ * @author jackson.song
+ * @date 2021年4月17日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 public class MessageConsumer {
 	private static Logger logger = LoggerFactory.getLogger(MessageConsumer.class);
 	private ExecutorService executor;
@@ -76,9 +77,9 @@ public class MessageConsumer {
 					String branchTxId = dt.getBranchTxId();
 					DistributedTransactionCustomProcessor dp = (DistributedTransactionCustomProcessor) obj;
 					boolean result = dp.process(dt, status);
-					if(logger.isDebugEnabled())
+					if (logger.isDebugEnabled())
 						logger.debug("compensate_result: globalTxId:{} branchId:{} action:{} status:{} result:{}",
-							dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
+								dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
 					if (result) {
 						try {
 							transactionRepository.deleteByBranchTxId(globalTxId, branchTxId);

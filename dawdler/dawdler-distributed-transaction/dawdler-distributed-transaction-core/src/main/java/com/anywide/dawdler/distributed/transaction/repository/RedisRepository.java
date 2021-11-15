@@ -48,25 +48,28 @@ import redis.clients.jedis.util.Pool;
 public class RedisRepository extends TransactionRepository {
 	private static final Logger logger = LoggerFactory.getLogger(RedisRepository.class);
 	public static String redisFileName = "distributed-transaction-redis";
-	private int expireTime = 24*60*60*3;
-	private int  compensateLater = 60;
+	private int expireTime = 24 * 60 * 60 * 3;
+	private int compensateLater = 60;
 	private Pool<Jedis> pool;
+
 	public RedisRepository() {
 		try {
 			pool = JedisPoolFactory.getJedisPool(redisFileName);
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-		serializer = SerializeDecider.decide((byte)2);
+		serializer = SerializeDecider.decide((byte) 2);
 		try {
 			Properties ps = PropertiesUtil.loadProperties("distributed-transaction");
 			expireTime = PropertiesUtil.getIfNullReturnDefaultValueInt("expireTime", expireTime, ps);
 			compensateLater = PropertiesUtil.getIfNullReturnDefaultValueInt("compensateLater", compensateLater, ps);
 		} catch (IOException e) {
-			logger.info("not found distributed-transaction.properties in classpath, use default set. expireTime={} seconds,compensateLater={} seconds.", expireTime, compensateLater);
+			logger.info(
+					"not found distributed-transaction.properties in classpath, use default set. expireTime={} seconds,compensateLater={} seconds.",
+					expireTime, compensateLater);
 		}
 	}
-	
+
 	private static final String PREFIX = "gtid_";
 
 	@Override
@@ -77,7 +80,7 @@ public class RedisRepository extends TransactionRepository {
 		return execute(pool, new JedisExecutor<Integer>() {
 			@Override
 			public Integer execute(Jedis jedis) {
-				byte[] globalKey = (PREFIX+transaction.getGlobalTxId()).getBytes();
+				byte[] globalKey = (PREFIX + transaction.getGlobalTxId()).getBytes();
 				jedis.hmset(globalKey, map);
 				jedis.expire(globalKey, expireTime);
 				return 1;
@@ -165,7 +168,7 @@ public class RedisRepository extends TransactionRepository {
 
 	@Override
 	public List<DistributedTransactionContext> findALLBySecondsLater() throws Exception {
-		final int  seconds= compensateLater;
+		final int seconds = compensateLater;
 		return execute(pool, new JedisExecutor<List<DistributedTransactionContext>>() {
 			@Override
 			public List<DistributedTransactionContext> execute(Jedis jedis) throws Exception {

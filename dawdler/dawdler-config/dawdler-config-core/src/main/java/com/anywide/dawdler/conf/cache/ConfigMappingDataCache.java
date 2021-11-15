@@ -74,5 +74,5 @@ public class ConfigMappingDataCache {
 		realObjMap.put(mappingClass, obj);
 		return (T) obj;
 	}
-	
+
 }

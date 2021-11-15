@@ -14,29 +14,34 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.client.cglib.proxy;
+
 import java.util.Iterator;
 import java.util.List;
-import net.sf.cglib.core.*;
 
-class NoOpGenerator
-implements CallbackGenerator
-{
-    public static final NoOpGenerator INSTANCE = new NoOpGenerator();
+import net.sf.cglib.core.ClassEmitter;
+import net.sf.cglib.core.CodeEmitter;
+import net.sf.cglib.core.EmitUtils;
+import net.sf.cglib.core.MethodInfo;
+import net.sf.cglib.core.TypeUtils;
 
-    public void generate(ClassEmitter ce, Context context, List methods) {
-        for (Iterator it = methods.iterator(); it.hasNext();) {
-            MethodInfo method = (MethodInfo)it.next();
-            if (TypeUtils.isBridge(method.getModifiers()) || (
-                    TypeUtils.isProtected(context.getOriginalModifiers(method)) &&
-                    TypeUtils.isPublic(method.getModifiers()))) {
-                CodeEmitter e = EmitUtils.begin_method(ce, method);
-                e.load_this();
-                context.emitLoadArgsAndInvoke(e, method);
-                e.return_value();
-                e.end_method();
-            }
-        }
-    }
-    
-    public void generateStatic(CodeEmitter e, Context context, List methods) { }
+class NoOpGenerator implements CallbackGenerator {
+	public static final NoOpGenerator INSTANCE = new NoOpGenerator();
+
+	public void generate(ClassEmitter ce, Context context, List methods) {
+		for (Iterator it = methods.iterator(); it.hasNext();) {
+			MethodInfo method = (MethodInfo) it.next();
+			if (TypeUtils.isBridge(method.getModifiers())
+					|| (TypeUtils.isProtected(context.getOriginalModifiers(method))
+							&& TypeUtils.isPublic(method.getModifiers()))) {
+				CodeEmitter e = EmitUtils.begin_method(ce, method);
+				e.load_this();
+				context.emitLoadArgsAndInvoke(e, method);
+				e.return_value();
+				e.end_method();
+			}
+		}
+	}
+
+	public void generateStatic(CodeEmitter e, Context context, List methods) {
+	}
 }

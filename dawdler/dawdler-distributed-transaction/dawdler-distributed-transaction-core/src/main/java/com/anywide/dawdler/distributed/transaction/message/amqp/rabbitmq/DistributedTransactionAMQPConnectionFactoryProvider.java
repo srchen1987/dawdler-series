@@ -24,14 +24,14 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
 
 /**
-*
-* @Title DistributedTransactionAMQPConnectionFactoryProvider.java
-* @Description amqp工厂单例提供者
-* @author jackson.song
-* @date 2021年4月11日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title DistributedTransactionAMQPConnectionFactoryProvider.java
+ * @Description amqp工厂单例提供者
+ * @author jackson.song
+ * @date 2021年4月11日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 public class DistributedTransactionAMQPConnectionFactoryProvider {
 	private static final Logger logger = LoggerFactory.getLogger(AMQPSender.class);
 	private AMQPConnectionFactory connectionFactory;

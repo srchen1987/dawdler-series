@@ -132,7 +132,7 @@ public class SocketSession extends AbstractSocketSession {
 
 	}
 
-	public void messageCompleted(){
+	public void messageCompleted() {
 		byte[] data = getAppendData();
 		try {
 			new DataProcessor(this, compress, serializer, data).process();

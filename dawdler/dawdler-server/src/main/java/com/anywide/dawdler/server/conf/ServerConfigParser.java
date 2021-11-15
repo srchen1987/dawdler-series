@@ -34,6 +34,7 @@ import com.anywide.dawdler.server.conf.ServerConfig.KeyStore;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -135,7 +136,6 @@ public class ServerConfigParser {
 		}
 	}
 
-	
 	public static ServerConfig getServerConfig() {
 		return serverConfig;
 	}

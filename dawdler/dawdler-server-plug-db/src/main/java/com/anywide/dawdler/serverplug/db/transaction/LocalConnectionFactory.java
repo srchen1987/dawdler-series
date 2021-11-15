@@ -97,7 +97,7 @@ public class LocalConnectionFactory {
 	public static void setWriteConnection(Connection con) {
 		localConnection.get().put(DBAction.WRITE, con);
 	}
-	
+
 	public static void removeWriteConnection() {
 		localConnection.get().remove(DBAction.WRITE);
 	}
@@ -150,7 +150,7 @@ public class LocalConnectionFactory {
 	public static DataSource getDataSourceInDawdler(String id) throws NamingException {
 		return (DataSource) ctx.lookup("java:" + id);
 	}
-	
+
 	public static void closeDataSourceInDawdler(String id) throws NamingException {
 		ctx.close();
 	}

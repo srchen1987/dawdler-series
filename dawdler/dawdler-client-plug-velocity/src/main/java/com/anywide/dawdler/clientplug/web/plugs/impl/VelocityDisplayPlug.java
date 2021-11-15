@@ -205,7 +205,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 			path = servletContext.getRealPath("WEB-INF/" + templatePath);
 		else
 			path = servletContext.getRealPath("WEB-INF/template");
-		
+
 		Properties ps = null;
 		try {
 			ps = PropertiesUtil.loadProperties("velocity");

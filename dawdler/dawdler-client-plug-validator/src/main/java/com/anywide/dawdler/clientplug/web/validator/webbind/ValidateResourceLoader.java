@@ -53,7 +53,6 @@ public class ValidateResourceLoader {
 	private static final Map<String, ControlField> globalFields = new HashMap<>();
 	private static final ResourceBundle properties;
 
-
 	static {
 		properties = ResourceBundle.getBundle("validate-global-variable");
 		try {
@@ -193,7 +192,7 @@ public class ValidateResourceLoader {
 						String ref = vele.attributeValue("ref");
 						if (refgid != null) {
 							Map<String, ControlField> map = cv.getFieldGroups().get(refgid);
-							if (map != null) 
+							if (map != null)
 								mappings.putAll(map);
 						}
 						if (ref != null) {
