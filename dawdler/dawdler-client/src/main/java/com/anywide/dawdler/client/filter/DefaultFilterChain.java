@@ -35,13 +35,19 @@ public class DefaultFilterChain implements FilterChain {
 	@Override
 	public Object doFilter(RequestBean request) throws Exception {
 		RequestWrapper rq = (RequestWrapper) request;
-		request.setAttachments(RpcContext.getContext().getAttachments());
+		RpcContext rpcContext = RpcContext.getContext();
+		request.setAttachments(rpcContext.getAttachments());
 		try {
 			SocketSession socketSession = rq.getSession();
 			InvokeFuture<Object> future = new InvokeFuture<>();
 			socketSession.getFutures().put(request.getSeq(), future);
 			socketSession.getDawdlerConnection().write(rq.getRequest(), socketSession);
-			return future.getResult(rq.getTimeout(), TimeUnit.SECONDS);
+			if (request.isAsync()) {
+				rpcContext.setInvokeFuture(future);
+				return null;
+			} else {
+				return future.getResult(rq.getTimeout(), TimeUnit.SECONDS);
+			}
 		} finally {
 			RpcContext.removeContext();
 		}

@@ -136,11 +136,11 @@ public final class XmlObject {
 		if (xmlFile) {
 			this.document = this.reader.read(file);
 		} else {
-			InputStream input=  new FileInputStream(file);
+			InputStream input = new FileInputStream(file);
 			try {
 				inputStreamToXML(input);
-			}finally {
-				if(input != null)
+			} finally {
+				if (input != null)
 					input.close();
 			}
 		}
@@ -288,7 +288,7 @@ public final class XmlObject {
 	public void setFilepath(String filepath) {
 		this.filepath = filepath;
 	}
-	
+
 	public static String getElementAttribute(Element element, String attribute, String defaultValue) {
 		Attribute attr = element.attribute(attribute);
 		if (attr == null)

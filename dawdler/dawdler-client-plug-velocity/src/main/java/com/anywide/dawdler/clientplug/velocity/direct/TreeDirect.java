@@ -163,7 +163,7 @@ public class TreeDirect extends Directive {
 			boolean temp = false;
 			if (data.get(key) == null)
 				temp = true;
-			targetdata.add(new Object[] { appendremark, o, temp});
+			targetdata.add(new Object[] { appendremark, o, temp });
 			createTree(data, targetdata, parentname, key.toString(), appendremark, remark);
 		}
 	}

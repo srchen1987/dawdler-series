@@ -411,7 +411,7 @@ public abstract class MethodAccess {
 			if (methodNames[i].equals(methodName) && parameterTypes[i].length == paramsCount)
 				return i;
 		}
-			
+
 		throw new IllegalArgumentException(
 				"Unable to find non-private method: " + methodName + " with " + paramsCount + " params.");
 	}

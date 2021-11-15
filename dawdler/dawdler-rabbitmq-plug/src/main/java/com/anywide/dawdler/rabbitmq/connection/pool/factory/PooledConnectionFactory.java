@@ -41,7 +41,7 @@ import com.rabbitmq.client.impl.recovery.AutorecoveringConnection;
  */
 public class PooledConnectionFactory extends BasePooledObjectFactory<Connection> {
 	private static final Logger logger = LoggerFactory.getLogger(PooledConnectionFactory.class);
-	
+
 	private ConnectionFactory connectionFactory;
 	private ConnectionPool connectionPool;
 	private int channelSize;

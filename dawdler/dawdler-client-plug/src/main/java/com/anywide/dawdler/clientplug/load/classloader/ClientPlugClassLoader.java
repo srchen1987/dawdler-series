@@ -73,10 +73,12 @@ public class ClientPlugClassLoader {
 			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
 		}
 		try {
-			if(AspectHolder.aj != null) {
+			if (AspectHolder.aj != null) {
 				try {
-					classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, classBytes, urlCL, null);
-				} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+					classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, classBytes,
+							urlCL, null);
+				} catch (SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
 					logger.error("", e);
 				}
 			}

@@ -51,7 +51,7 @@ public class ServletMethodArgumentResolver implements MethodArgumentResolver {
 	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward)
 			throws Exception {
 		Class<?> type = requestParamFieldData.getType();
-		if(ViewForward.class == type) {
+		if (ViewForward.class == type) {
 			return viewForward;
 		} else if (HttpServletRequest.class == type) {
 			return viewForward.getRequest();

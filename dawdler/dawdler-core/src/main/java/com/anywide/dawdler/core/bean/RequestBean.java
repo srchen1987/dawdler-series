@@ -39,6 +39,15 @@ public class RequestBean implements Serializable {
 	private String path;
 	private boolean fuzzy;
 	private Map<String, Object> attachments;
+	private boolean async;
+
+	public boolean isAsync() {
+		return async;
+	}
+
+	public void setAsync(boolean async) {
+		this.async = async;
+	}
 
 	public boolean isFuzzy() {
 		return fuzzy;

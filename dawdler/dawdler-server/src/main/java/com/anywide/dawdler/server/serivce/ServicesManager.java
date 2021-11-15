@@ -99,8 +99,7 @@ public class ServicesManager {
 		if (remoteService != null) {
 			String serviceName = remoteService.value();
 			if (serviceName.trim().equals("")) {
-				registerService(service, SunReflectionFactoryInstantiator.newInstance(service),
-						remoteService.single());
+				registerService(service, SunReflectionFactoryInstantiator.newInstance(service), remoteService.single());
 			} else {
 				register(serviceName, SunReflectionFactoryInstantiator.newInstance(service), remoteService.single());
 			}

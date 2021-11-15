@@ -38,9 +38,9 @@ public class DefaultFilterChain implements FilterChain {
 		ServiceExecutor serviceExecutor = rw.getServiceExecutor();
 		Map<String, Object> attachments = request.getAttachments();
 		try {
-			if(attachments != null) {
+			if (attachments != null) {
 				RpcContext context = RpcContext.getContext();
-				attachments.forEach((k,v)->{
+				attachments.forEach((k, v) -> {
 					context.setAttachment(k, v);
 				});
 			}
