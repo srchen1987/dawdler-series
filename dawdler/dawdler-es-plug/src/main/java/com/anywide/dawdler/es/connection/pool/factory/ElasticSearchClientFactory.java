@@ -93,34 +93,4 @@ public class ElasticSearchClientFactory {
 		genericObjectPool.close();
 	}
 
-	public static void main(String[] args) throws Exception {
-		ElasticSearchClientFactory pc = ElasticSearchClientFactory.getInstance("elasticsearch");
-		for (int i = 0; i < 32; i++) {
-			new Thread(() -> {
-				ElasticSearchClient ec = null;
-				try {
-					ec = pc.getElasticSearchClient();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-				RestHighLevelClient rc = ec.getRestHighLevelClient();
-				System.out.println(rc.toString());
-				try {
-					System.out.println(rc.info(RequestOptions.DEFAULT).getNodeName());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				try {
-					ec.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}).start();
-		}
-
-//		pc.close();
-	}
-
 }
