@@ -16,9 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.session;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -50,7 +47,6 @@ import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.redis.JedisPoolFactory;
-import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.PropertiesUtil;
 
 import redis.clients.jedis.Jedis;
@@ -66,7 +62,7 @@ import redis.clients.jedis.util.Pool;
  */
 public class DawdlerSessionFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);
-	public static String cookieName="_dawdler_key";
+	public static String cookieName = "_dawdler_key";
 	public static String domain;
 	public static String path = "/";
 	public static boolean secure;
@@ -84,7 +80,7 @@ public class DawdlerSessionFilter implements Filter {
 			logger.warn("use default identityConfig in dawdler-session jar!");
 		}
 		InputStream inStream = null;
-		if(ps == null) {
+		if (ps == null) {
 			inStream = DawdlerSessionFilter.class.getResourceAsStream("/identityConfig.properties");
 			ps = new Properties();
 			try {
@@ -93,7 +89,7 @@ public class DawdlerSessionFilter implements Filter {
 				logger.error("", e);
 			}
 		}
-		
+
 		try {
 			String domainString = ps.getProperty("domain");
 			if (domainString != null && !domainString.trim().equals("")) {

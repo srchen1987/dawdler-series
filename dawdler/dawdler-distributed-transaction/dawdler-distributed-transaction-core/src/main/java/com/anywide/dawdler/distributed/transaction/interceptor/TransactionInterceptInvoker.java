@@ -31,6 +31,7 @@ import com.anywide.dawdler.distributed.transaction.context.DistributedTransactio
  */
 public interface TransactionInterceptInvoker {
 
-	Object invoke(ProceedingJoinPoint invocation, DistributedTransactionContext distributedTransactionContext) throws Throwable;
+	Object invoke(ProceedingJoinPoint invocation, DistributedTransactionContext distributedTransactionContext)
+			throws Throwable;
 
 }

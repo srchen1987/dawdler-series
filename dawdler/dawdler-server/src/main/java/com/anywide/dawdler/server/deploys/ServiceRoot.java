@@ -20,7 +20,6 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -61,6 +60,7 @@ public class ServiceRoot {
 	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
 	private static final String DAWDLER_LIB_PATH = "lib";
 	private ExecutorService executor;
+
 	public static Service getService(String path) {
 		Service service = services.get(path);
 		if (service == null)
@@ -90,23 +90,23 @@ public class ServiceRoot {
 	private URL[] getLibURL() throws MalformedURLException {
 		return PathUtils.getRecursionLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH));
 	}
-	
+
 	private void initWorkPool(int nThreads) {
 		executor = Executors.newFixedThreadPool(nThreads, new DefaultThreadFactory(DataProcessWorkerPool.class));
 	}
-	
+
 	public void shutdownWorkPool() {
 		executor.shutdown();
 	}
-	
+
 	public void shutdownWorkPoolNow() {
 		executor.shutdownNow();
 	}
-	
+
 	public void execute(Runnable runnable) {
 		executor.execute(runnable);
 	}
-	
+
 	public void initApplication(DawdlerServerContext dawdlerServerContext) {
 		initWorkPool(dawdlerServerContext.getServerConfig().getServer().getMaxThreads());
 		File deployFileRoot = getDeploys();
@@ -128,7 +128,7 @@ public class ServiceRoot {
 			for (File deployFile : deployFiles) {
 				if (deployFile.isDirectory()) {
 					String deployName = deployFile.getName();
-					Callable<Void> call = (()->{
+					Callable<Void> call = (() -> {
 						try {
 							long serviceStart = JVMTimeProvider.currentTimeMillis();
 							Service service = new ServiceBase(deployFile, server.getHost(), server.getTcpPort(),
@@ -144,7 +144,7 @@ public class ServiceRoot {
 							service.prepareStop();
 							service.stop();
 						}
-					return null;
+						return null;
 					});
 					Future<Void> future = executor.submit(call);
 					deployDataList.add(new DeployData(deployName, future));
@@ -178,14 +178,16 @@ public class ServiceRoot {
 			v.stop();
 		});
 	}
-	public static class DeployData{
+
+	public static class DeployData {
 		public DeployData(String deployName, Future<Void> future) {
 			this.deployName = deployName;
 			this.future = future;
 		}
+
 		private String deployName;
 		private Future<Void> future;
-		
+
 	}
 
 }

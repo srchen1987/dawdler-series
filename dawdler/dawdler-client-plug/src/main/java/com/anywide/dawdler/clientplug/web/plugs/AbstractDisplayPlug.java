@@ -39,5 +39,5 @@ public abstract class AbstractDisplayPlug implements DisplayPlug {
 			logger.error("", wf.getInvokeException());
 		}
 	}
-	
+
 }

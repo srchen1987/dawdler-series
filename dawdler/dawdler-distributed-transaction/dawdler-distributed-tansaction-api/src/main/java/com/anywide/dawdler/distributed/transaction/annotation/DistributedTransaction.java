@@ -24,7 +24,8 @@ import java.lang.annotation.Target;
 /**
  *
  * @Title DistributedTransaction.java
- * @Description 分布式事务注解 从之前基于spring cloud的实现的分布式架构（https://github.com/srchen1987/springcloud_distributed_transaction）中移植过来
+ * @Description 分布式事务注解 从之前基于spring
+ *              cloud的实现的分布式架构（https://github.com/srchen1987/springcloud_distributed_transaction）中移植过来
  * @author jackson.song
  * @date 2021年4月10日
  * @version V1.0

@@ -62,15 +62,15 @@ public class DawdlerServerContext {
 	public void prepareDestroyedApplication() {
 		serviceRoot.prepareDestroyedApplication();
 	}
-	
+
 	public void shutdownWorkPool() {
 		serviceRoot.shutdownWorkPool();
 	}
-	
+
 	public void shutdownWorkPoolNow() {
 		serviceRoot.shutdownWorkPoolNow();
 	}
-	
+
 	public void execute(Runnable runnable) {
 		serviceRoot.execute(runnable);
 	}

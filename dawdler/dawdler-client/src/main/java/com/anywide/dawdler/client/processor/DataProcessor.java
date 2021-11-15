@@ -43,14 +43,12 @@ public class DataProcessor {
 	private byte[] data;
 	private final IoHandler ioHandler = IoHandlerFactory.getHandler();
 
-	public DataProcessor(SocketSession socketSession, boolean compress, Serializer serializer,
-			byte[] data) {
+	public DataProcessor(SocketSession socketSession, boolean compress, Serializer serializer, byte[] data) {
 		this.socketSession = socketSession;
 		this.compress = compress;
 		this.serializer = serializer;
 		this.data = data;
 	}
-
 
 	public void process() throws Exception {
 		if (compress)

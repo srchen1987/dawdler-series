@@ -31,7 +31,7 @@ import com.rabbitmq.client.ConnectionFactory;
 /**
  *
  * @Title AMQPConnectionFactory.java
- * @Description AMQP连接工厂
+ * @Description AMQP连接多例工厂
  * @author jackson.song
  * @date 2021年4月11日
  * @version V1.0
@@ -81,7 +81,7 @@ public class AMQPConnectionFactory {
 		boolean testOnBorrow = PropertiesUtil.getIfNullReturnDefaultValueBoolean("testOnBorrow", false, ps);
 		boolean testOnCreate = PropertiesUtil.getIfNullReturnDefaultValueBoolean("testOnCreate", false, ps);
 		boolean testOnReturn = PropertiesUtil.getIfNullReturnDefaultValueBoolean("testOnReturn", false, ps);
-		
+
 		config.setTestOnBorrow(testOnBorrow);
 		config.setTestOnCreate(testOnCreate);
 		config.setTestOnReturn(testOnReturn);

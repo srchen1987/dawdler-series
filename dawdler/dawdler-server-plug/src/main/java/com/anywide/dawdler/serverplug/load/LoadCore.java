@@ -52,7 +52,7 @@ public class LoadCore implements Runnable {
 	private static final String PREFIX = ".dat";
 	private static final Logger logger = LoggerFactory.getLogger(LoadCore.class);
 	private static final Pattern CLASS_PATTERN = Pattern.compile("(.*)\\.class$");
-	private static final String CLASSP_REFIX=".class";
+	private static final String CLASSP_REFIX = ".class";
 	private static final String CURRENT_PATH;
 	private static final String TYPE_API = "api";
 	private static final String TYPE_COMPONENT = "component";
@@ -72,10 +72,8 @@ public class LoadCore implements Runnable {
 		this.channelGroupId = channelGroupId;
 	}
 
-	
-
 	public String getLogFilePath() {
-		return CURRENT_PATH + channelGroupId +"-"+ host + PREFIX;
+		return CURRENT_PATH + channelGroupId + "-" + host + PREFIX;
 	}
 
 	public void toCheck() throws IOException {
@@ -85,7 +83,7 @@ public class LoadCore implements Runnable {
 		tr.addString(host);
 		XmlBean xmlb = null;
 		try {
-			xmlb = (XmlBean)tr.pureExecuteResult();
+			xmlb = (XmlBean) tr.pureExecuteResult();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
@@ -121,7 +119,6 @@ public class LoadCore implements Runnable {
 		}
 	}
 
-	
 	private static String toClassName(String checkName) {
 		return checkName.replace(File.separator, ".").substring(0, checkName.lastIndexOf("."));
 	}
@@ -138,7 +135,7 @@ public class LoadCore implements Runnable {
 			Element ele = (Element) o;
 			loadBeans[i++] = ele.attributeValue("checkname").replace(File.separator, ".");
 		}
-		
+
 		loadClass(loadBeans, type.equals(TYPE_API));
 	}
 
@@ -150,15 +147,15 @@ public class LoadCore implements Runnable {
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
 		for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item")) {
 			Element ele = (Element) item;
-			for (Object remoteItem : remote
-					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + ele.attributeValue("checkname") + "']")) {
+			for (Object remoteItem : remote.selectNodes(
+					"/hosts/host[@type='" + type + "']/item[@checkname='" + ele.attributeValue("checkname") + "']")) {
 				Element remoteEle = (Element) remoteItem;
 				String checkName = remoteEle.attributeValue("checkname");
 				String className = toClassName(checkName);
 				allClass.add(checkName);
 				if (!ele.attributeValue("update").equals(remoteEle.attributeValue("update"))) {
 					remark = true;
-					needLoad.add(className+CLASSP_REFIX);
+					needLoad.add(className + CLASSP_REFIX);
 				}
 			}
 		}
@@ -169,8 +166,7 @@ public class LoadCore implements Runnable {
 					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
 				Element ele = (Element) item;
 				String checkName = ele.attributeValue("checkname");
-				if (!allClass.contains(checkName)
-						&& !loadCache.contains(checkName)) {// 如果list里面不包含并且set中也不包含
+				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {// 如果list里面不包含并且set中也不包含
 					loadCache.add(checkName);// set中添加进去
 					remark = true;
 					File file = new File(classFilePath + checkName);
@@ -182,12 +178,11 @@ public class LoadCore implements Runnable {
 			for (Object item : items) {
 				Element ele = (Element) item;
 				String checkName = ele.attributeValue("checkname");
-				if (!allClass.contains(checkName)
-						&& !loadCache.contains(checkName)) {
+				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {
 					loadCache.add(checkName);
 					remark = true;
 					String className = toClassName(checkName);
-					needLoad.add(className+CLASSP_REFIX);
+					needLoad.add(className + CLASSP_REFIX);
 					File file = new File(classFilePath + checkName);
 					if (file.exists())
 						file.delete();
@@ -241,8 +236,8 @@ public class LoadCore implements Runnable {
 			Matcher match = CLASS_PATTERN.matcher(rf.getFilename());
 			if (match.find()) {
 				String className = match.group(1);
-				if(isApi) {
-					String filePath = className.replace(".",File.separator);
+				if (isApi) {
+					String filePath = className.replace(".", File.separator);
 					File file = new File(CURRENT_PATH + filePath + CLASSP_REFIX);
 					File parentFile = new File(file.getParent());
 					if (file.exists())

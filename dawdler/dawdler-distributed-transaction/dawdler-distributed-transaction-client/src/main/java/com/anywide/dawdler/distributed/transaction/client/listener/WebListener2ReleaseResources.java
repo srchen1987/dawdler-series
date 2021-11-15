@@ -23,26 +23,24 @@ import javax.servlet.annotation.WebListener;
 import com.anywide.dawdler.distributed.transaction.release.ResourceReleaser;
 
 /**
-*
-* @Title WebListener2ReleaseResources.java
-* @Description web容器端释放资源的监听器
-* @author jackson.song
-* @date 2021年4月17日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title WebListener2ReleaseResources.java
+ * @Description web容器端释放资源的监听器
+ * @author jackson.song
+ * @date 2021年4月17日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 @WebListener
 public class WebListener2ReleaseResources implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		
+
 	}
-	
+
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		ResourceReleaser.release();
 	}
-
-	
 
 }

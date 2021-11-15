@@ -52,7 +52,8 @@ public class ClassUtil {
 	}
 
 	public static boolean isSimpleValueType(Class<?> type) {
-		return ((isPrimitiveOrWrapper(type) || BigDecimal.class.isAssignableFrom(type)) && Void.class != type && void.class != type);
+		return ((isPrimitiveOrWrapper(type) || BigDecimal.class.isAssignableFrom(type)) && Void.class != type
+				&& void.class != type);
 	}
 
 	public static boolean isSimpleArrayType(Class<?> type) {

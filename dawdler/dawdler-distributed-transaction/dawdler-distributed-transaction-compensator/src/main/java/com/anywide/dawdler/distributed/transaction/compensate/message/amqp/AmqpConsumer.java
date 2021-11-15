@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.distributed.transaction.compensate.message.amqp;
 
-
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
@@ -34,20 +33,21 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 /**
-*
-* @Title AmqpConsumer.java
-* @Description Amqp消息消费者 将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
-* @author jackson.song
-* @date 2021年4月17日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title AmqpConsumer.java
+ * @Description Amqp消息消费者
+ *              将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
+ * @author jackson.song
+ * @date 2021年4月17日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 public class AmqpConsumer extends MessageConsumer {
 	private static Logger logger = LoggerFactory.getLogger(AmqpConsumer.class);
 	private AMQPConnectionFactory connectionFactory;
 	private Connection con;
 	private Channel channel;
-	
+
 	@Override
 	public void start() throws Exception {
 		super.start();
@@ -58,14 +58,14 @@ public class AmqpConsumer extends MessageConsumer {
 
 	@Override
 	public void shutdown() {
-		if(channel != null) {
+		if (channel != null) {
 			try {
 				channel.close();
 			} catch (IOException | TimeoutException e) {
 				logger.error("", e);
 			}
 		}
-		if(con != null) {
+		if (con != null) {
 			try {
 				con.close();
 			} catch (IOException e) {
@@ -90,7 +90,5 @@ public class AmqpConsumer extends MessageConsumer {
 			}
 		});
 	}
-
-	
 
 }

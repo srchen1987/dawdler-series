@@ -49,7 +49,7 @@ public abstract class AbstractDistributedSessionManager {
 	public abstract void removeSession(DawdlerHttpSession dawdlerHttpSession);
 
 	public abstract void addSession(String sessionKey, DawdlerHttpSession dawdlerHttpSession);
-	
+
 	public abstract void invalidateAll();
 
 }

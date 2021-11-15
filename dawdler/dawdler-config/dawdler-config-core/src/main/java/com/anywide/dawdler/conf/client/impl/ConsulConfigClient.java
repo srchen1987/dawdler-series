@@ -65,14 +65,15 @@ public class ConsulConfigClient implements ConfigClient {
 	public void init(Map<String, Object> conf) {
 		Object tlsConfig = conf.get("TLSConfig");
 		TLSConfig config = null;
-		if(tlsConfig != null && Map.class.isAssignableFrom(tlsConfig.getClass())) {
+		if (tlsConfig != null && Map.class.isAssignableFrom(tlsConfig.getClass())) {
 			Map tlsConfigMap = (Map) tlsConfig;
-			String keyStoreInstanceType = (String)tlsConfigMap.get("keyStoreInstanceType");
-			String certificatePath = (String)tlsConfigMap.get("certificatePath");
-			String certificatePassword = (String)tlsConfigMap.get("certificatePassword");
-			String keyStorePath = (String)tlsConfigMap.get("keyStorePath");
-			String keyStorePassword = (String)tlsConfigMap.get("keyStorePassword");
-			config = new TLSConfig(KeyStoreInstanceType.valueOf(keyStoreInstanceType), certificatePath, certificatePassword, keyStorePath, keyStorePassword);
+			String keyStoreInstanceType = (String) tlsConfigMap.get("keyStoreInstanceType");
+			String certificatePath = (String) tlsConfigMap.get("certificatePath");
+			String certificatePassword = (String) tlsConfigMap.get("certificatePassword");
+			String keyStorePath = (String) tlsConfigMap.get("keyStorePath");
+			String keyStorePassword = (String) tlsConfigMap.get("keyStorePassword");
+			config = new TLSConfig(KeyStoreInstanceType.valueOf(keyStoreInstanceType), certificatePath,
+					certificatePassword, keyStorePath, keyStorePassword);
 		}
 		String host = (String) conf.get("host");
 		Integer port = Integer.parseInt(conf.get("port").toString());
@@ -80,9 +81,9 @@ public class ConsulConfigClient implements ConfigClient {
 		separator = (String) conf.get("separator");
 		token = (String) conf.get("token");
 		waitTime = Integer.parseInt(conf.get("wait-time").toString());
-		if(config != null) {
+		if (config != null) {
 			client = new ConsulClient(host, port, config);
-		}else {
+		} else {
 			client = new ConsulClient(host, port);
 		}
 		if (watchKeys != null)

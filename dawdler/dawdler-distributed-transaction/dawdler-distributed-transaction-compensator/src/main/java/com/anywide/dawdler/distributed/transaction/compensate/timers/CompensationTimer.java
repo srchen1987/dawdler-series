@@ -34,14 +34,14 @@ import com.anywide.dawdler.distributed.transaction.repository.TransactionReposit
 import com.anywide.dawdler.util.JsonProcessUtil;
 
 /**
-*
-* @Title CompensationTimer.java
-* @Description 定时补偿器
-* @author jackson.song
-* @date 2021年4月17日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title CompensationTimer.java
+ * @Description 定时补偿器
+ * @author jackson.song
+ * @date 2021年4月17日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 public class CompensationTimer implements Runnable {
 	private static Logger logger = LoggerFactory.getLogger(CompensationTimer.class);
 	private TransactionRepository transactionRepository;

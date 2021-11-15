@@ -27,10 +27,9 @@ import com.anywide.dawdler.server.context.DawdlerContext;
  * @email suxuan696@gmail.com
  */
 public interface DawdlerServiceListener {
-	
+
 	void contextInitialized(DawdlerContext dawdlerContext) throws Exception;
 
 	void contextDestroyed(DawdlerContext dawdlerContext) throws Exception;
 
-	
 }

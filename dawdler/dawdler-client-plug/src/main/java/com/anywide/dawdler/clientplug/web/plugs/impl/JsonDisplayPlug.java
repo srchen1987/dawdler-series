@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.plugs.impl;
 
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -62,7 +61,7 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 			return;
 		}
 		switch (wf.getStatus()) {
-		case SUCCESS:{
+		case SUCCESS: {
 			if (wf.isAddRequestAttribute()) {
 				Enumeration<String> attrs = request.getAttributeNames();
 				while (attrs.hasMoreElements()) {

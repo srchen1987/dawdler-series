@@ -13,7 +13,6 @@
 		<commons-pool2.version>2.10.0</commons-pool2.version>
 		<kryo.version>4.0.2</kryo.version>
 		<org.apache.curator.version>5.1.0</org.apache.curator.version>
-		<guava.version>30.0-jre</guava.version>
 		<zookeeper.version>3.6.3</zookeeper.version>
 		<cglib-nodep.version>3.3.0</cglib-nodep.version>
 		<cglib.version>3.3.0</cglib.version>
@@ -33,6 +32,7 @@
 		<commons-jexl3.version>3.2</commons-jexl3.version>
 		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
+		<elasticsearch.version>7.15.0</elasticsearch.version>
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
@@ -109,11 +109,6 @@
 				<groupId>org.apache.curator</groupId>
 				<artifactId>curator-recipes</artifactId>
 				<version>${org.apache.curator.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.google.guava</groupId>
-				<artifactId>guava</artifactId>
-				<version>${guava.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.zookeeper</groupId>
@@ -355,6 +350,11 @@
 				<artifactId>dawdler-config-serverside</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
+			<dependency>
+			<groupId>org.elasticsearch.client</groupId>
+			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<version>${elasticsearch.version}</version>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -403,6 +403,7 @@
 		<module>dawdler-rabbitmq-plug</module>
 		<module>dawdler-distributed-transaction</module>
 		<module>dawdler-services-starter</module>
+		<module>dawdler-es-plug</module>
 	</modules>
 
 

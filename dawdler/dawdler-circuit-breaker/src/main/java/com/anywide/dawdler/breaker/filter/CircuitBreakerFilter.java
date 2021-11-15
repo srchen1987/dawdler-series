@@ -48,7 +48,7 @@ public class CircuitBreakerFilter implements DawdlerClientFilter {
 	@Override
 	public Object doFilter(RequestBean request, FilterChain chain) throws Exception {
 		RequestWrapper rw = (RequestWrapper) request;
-		
+
 		com.anywide.dawdler.core.annotation.CircuitBreaker cb = rw.getCircuitBreaker();
 		if (cb == null)
 			return chain.doFilter(request);

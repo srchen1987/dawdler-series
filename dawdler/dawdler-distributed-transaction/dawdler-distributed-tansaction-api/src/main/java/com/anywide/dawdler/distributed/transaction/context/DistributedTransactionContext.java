@@ -41,7 +41,7 @@ public class DistributedTransactionContext implements Serializable, Cloneable {
 	private int retryTime = 0;// 重试次数
 	private Map<String, Object> data;
 	private final transient static ThreadLocal<DistributedTransactionContext> THREAD_LOCAL = new ThreadLocal<>();
-	
+
 	/**
 	 * 是否被干扰 如果被干扰 其他状态不生效 存为commting状态 在商城实际应用场景中是因为开发人员没有将订单业务绑定到分布式事务中 所以应用此字段作标记
 	 * 一般用不上这个配置
@@ -140,7 +140,7 @@ public class DistributedTransactionContext implements Serializable, Cloneable {
 	public static void setDistributedTransactionContext(DistributedTransactionContext distributedTransactionContext) {
 		THREAD_LOCAL.set(distributedTransactionContext);
 	}
-	
+
 	public static void removeDistributedTransactionContext() {
 		THREAD_LOCAL.remove();
 	}

@@ -275,14 +275,15 @@ public abstract class AbstractSocketSession {
 	public int getRemotePort() {
 		return remotePort;
 	}
-	
+
 	public String getPath() {
 		return path;
 	}
-	
+
 	public void setPath(String path) {
 		this.path = path;
 	}
+
 	@Override
 	public String toString() {
 		return describe + "\tlastRead: " + (JVMTimeProvider.currentTimeMillis() - lastReadTime) + "\tLastWrite: "

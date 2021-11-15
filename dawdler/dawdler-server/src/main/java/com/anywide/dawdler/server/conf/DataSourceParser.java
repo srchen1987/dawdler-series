@@ -28,11 +28,9 @@ import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.server.deploys.DataSourceNamingInit;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.XmlObject;
-import com.esotericsoftware.minlog.Log;
 
 /**
  * @author jackson.song
@@ -79,7 +77,7 @@ public class DataSourceParser {
 				Element e = (Element) node;
 				String attributeName = e.attributeValue("name");
 				String value = e.getText().trim();
-				if(attributeName != null) {
+				if (attributeName != null) {
 					try {
 						attributeName = captureName(attributeName);
 						ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
