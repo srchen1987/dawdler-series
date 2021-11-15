@@ -23,8 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
 
 import com.anywide.dawdler.es.restclient.factory.RestHighLevelClientFactory;
 import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
