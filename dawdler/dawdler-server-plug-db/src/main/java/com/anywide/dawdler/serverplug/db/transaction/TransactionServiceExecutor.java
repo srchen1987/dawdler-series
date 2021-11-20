@@ -19,6 +19,7 @@ package com.anywide.dawdler.serverplug.db.transaction;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
+import javax.transaction.TransactionRequiredException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,9 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 				synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
 				if (dm != null) {
 					MappingDecision mappingDecision = dm.getMappingDecision(object.getClass().getPackage().getName());
+					if(mappingDecision == null) {
+						throw new TransactionRequiredException(object.getClass().getPackage().getName()+" transaction needs to be set.");
+					}
 					readStatus = new JdbcReadConnectionStatus(dbt);
 					if (dbt.readConfig() == READ_CONFIG.idem) {
 						if (synReadObj == null) {

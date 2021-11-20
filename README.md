@@ -82,6 +82,10 @@ dawdler中需要序列化的类，dawdler内部使用。
 
 常用工具模块。
 
+#### 20. dawdler-es-plug
+
+通过pool2对elasticsearch-rest-high-level-client进行封装实现的一套es连接池.
+
 为什么要重复的发明轮子？请看下面的dawdler之美，dawdler早期应用在linuxsir开源社区上（如今的www.linuxsir.org 由于公司原因已不再是java语言开发的了），2008年之前采用ejb3.0通过jboss4.x版本进行，2010年采用nio写了一个版本，但容器部分功能未做完整，直到2014年之后开始基于aio重新编写了容器dawdler。
 
 dawdler成熟么？基于dawdler早先版本开发的linuxsir稳定运行在服务器上4年已久。dawdler还运行在了某一元购商城，某移动社区，某支付平台上，tps高峰时期可以达到上千，订单量每天在800-1000万条数据左右，稳定性方面表现的非常出色，没出现过问题。可放心使用，通过本地测试单机下的dawdler每秒可以处理60000多次调用。

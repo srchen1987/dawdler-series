@@ -14,6 +14,6 @@
 		<module>dawdler-distributed-transaction-client</module>
 		<module>dawdler-distributed-transaction-server</module>
 		<module>dawdler-distributed-transaction-compensator</module>
-		<module>dawdler-distributed-tansaction-api</module>
+		<module>dawdler-distributed-transaction-api</module>
 	</modules>
 </project>

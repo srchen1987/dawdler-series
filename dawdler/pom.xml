@@ -302,7 +302,7 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-distributed-tansaction-api</artifactId>
+				<artifactId>dawdler-distributed-transaction-api</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
