@@ -60,11 +60,6 @@ public class RequestWrapper extends RequestBean {
 	}
 
 	@Override
-	public boolean isSingle() {
-		return request.isSingle();
-	}
-
-	@Override
 	public String getPath() {
 		return request.getPath();
 	}

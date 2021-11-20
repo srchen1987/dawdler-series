@@ -18,7 +18,7 @@ dawdler-core 是dawdler-server与dawdler-client公用的核心模块.包含网�
 RemoteService参数介绍：
 
 ```java
- String value() default "";//服务调用
+ String value() default "";//服务的类名,默认为空,则为接口名全称
 
  String group() default "";//在调用端有效,指定服务端部署的服务名.
 

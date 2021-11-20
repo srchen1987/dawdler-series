@@ -44,7 +44,7 @@ public class DefaultFilterChain implements FilterChain {
 					context.setAttachment(k, v);
 				});
 			}
-			serviceExecutor.execute(request, response, rw.getServices());
+			serviceExecutor.execute(request, response, rw.getService());
 		} finally {
 			RpcContext.removeContext();
 		}

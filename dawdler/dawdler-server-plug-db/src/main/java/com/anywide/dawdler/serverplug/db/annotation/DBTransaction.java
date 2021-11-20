@@ -63,7 +63,7 @@ public @interface DBTransaction {
 	 *         1000; } }
 	 *
 	 */
-	int timeOut() default -1;
+	int timeOut() default 0;
 
 	enum MODE {
 		forceReadOnWrite, // 强制读从写连接上，在做读写分离时需要根据插入数据做业务不能保证从库数据的实时性所以采用这种方式
