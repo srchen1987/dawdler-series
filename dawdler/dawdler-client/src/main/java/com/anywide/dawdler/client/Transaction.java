@@ -44,7 +44,6 @@ public class Transaction {
 	private String serviceName;
 	private String method;
 	private boolean fuzzy;
-	private boolean single = true;
 	private int timeout = 15;
 	private CircuitBreaker circuitBreaker;
 	private Class<?> proxyInterface;
@@ -74,9 +73,6 @@ public class Transaction {
 		this.circuitBreaker = circuitBreaker;
 	}
 
-	public void setSingle(boolean single) {
-		this.single = single;
-	}
 
 	public boolean isAsync() {
 		return async;
@@ -209,7 +205,6 @@ public class Transaction {
 		request.setTypes(types.toArray(new Class[] {}));
 		request.setArgs(values.toArray());
 		request.setFuzzy(fuzzy);
-		request.setSingle(single);
 		request.setAsync(async);
 		request.setAttachments(attachments);
 		DawdlerConnection con = LoadBalanceFactory

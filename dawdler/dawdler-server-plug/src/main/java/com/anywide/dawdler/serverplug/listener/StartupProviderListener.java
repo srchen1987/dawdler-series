@@ -22,7 +22,7 @@ public class StartupProviderListener implements DawdlerServiceListener {
 	private static final Logger logger = LoggerFactory.getLogger(StartupProviderListener.class);
 	private DiscoveryCenter discoveryCenter;
 	private Timeout timeout;
-	private long checkTime = 3000;
+	private long checkTime = 5000;
 
 	@Override
 	public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
@@ -39,7 +39,10 @@ public class StartupProviderListener implements DawdlerServiceListener {
 			discoveryCenter.init();
 			String path = channelGroup + "/" + dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
 			String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-			discoveryCenter.addProvider(path, value);
+			if (discoveryCenter.addProvider(path, value)) {
+				logger.info("add service {} on {}", channelGroup, value);
+			}
+
 			dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
 			timeout = HashedWheelTimerSingleCreator.getHashedWheelTimer()
 					.newTimeout(new ProviderTimeoutTask(path, value), checkTime, TimeUnit.MILLISECONDS);
@@ -55,7 +58,8 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
 		}
-		timeout.cancel();
+		if(timeout != null)
+			timeout.cancel();
 		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
 		JVMTimeProvider.stop();
 	}

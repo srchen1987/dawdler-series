@@ -33,6 +33,7 @@ import com.anywide.dawdler.core.annotation.ListenerConfig;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
+import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
@@ -249,20 +250,24 @@ public class ServiceBase implements Service {
 	private void injectService(Object service) {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			RemoteService remoteService = field.getAnnotation(RemoteService.class);
+			com.anywide.dawdler.core.annotation.Service serviceAnnotation = field.getAnnotation(com.anywide.dawdler.core.annotation.Service.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
 				try {
 					Object obj = null;
-					if (remoteService != null) {
-						if (!remoteService.remote()) {
+					if (serviceAnnotation != null) {
+						if (!serviceAnnotation.remote()) {
 							obj = ServiceFactory.getService(serviceClass, serviceExecutor, dawdlerContext);
 						} else {
+							RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
+							if(remoteService == null) {
+								throw new NotSetRemoteServiceException("not found @RemoteService on "+serviceClass.getName());
+							}
 							Class<?> serviceFactoryClass = classLoader
 									.loadClass("com.anywide.dawdler.client.ServiceFactory");
 							Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class);
-							String groupName = remoteService.group();
+							String groupName = remoteService.value();
 							obj = method.invoke(null, serviceClass, groupName);
 						}
 						if (obj != null)

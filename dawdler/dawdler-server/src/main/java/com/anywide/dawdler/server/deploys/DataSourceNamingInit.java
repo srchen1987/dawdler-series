@@ -47,7 +47,6 @@ public class DataSourceNamingInit {
 		Object token = new Object();
 		Hashtable<String, Object> table = new Hashtable<>();
 		SelectorContext selectorContext = new SelectorContext(table, true);
-		// ContextAccessController.setSecurityToken(getName(), this);
 		ContextBindings.bindContext(classLoader, selectorContext, token);
 		ContextBindings.bindClassLoader(classLoader, token, classLoader);
 		System.setProperty(javax.naming.Context.INITIAL_CONTEXT_FACTORY,

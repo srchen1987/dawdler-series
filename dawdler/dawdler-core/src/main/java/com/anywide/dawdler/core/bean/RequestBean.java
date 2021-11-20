@@ -35,7 +35,6 @@ public class RequestBean implements Serializable {
 	private String methodName;
 	private Class<?>[] types;
 	private Object[] args;
-	private boolean single;
 	private String path;
 	private boolean fuzzy;
 	private Map<String, Object> attachments;
@@ -63,14 +62,6 @@ public class RequestBean implements Serializable {
 
 	public void setPath(String path) {
 		this.path = path;
-	}
-
-	public boolean isSingle() {
-		return single;
-	}
-
-	public void setSingle(boolean single) {
-		this.single = single;
 	}
 
 	public long getSeq() {

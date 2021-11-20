@@ -1,5 +1,5 @@
 /*
- 						* Licensed to the Apache Software Foundation (ASF) under one or more
+ * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
@@ -23,6 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -124,44 +125,50 @@ public class ClientPlugClassLoader {
 	}
 
 	private void loadAspectj() {
-		ClassLoader classLoader = getClass().getClassLoader();
-		InputStream aopXmlInput = classLoader.getResourceAsStream("/META-INF/aop.xml");
-		if (aopXmlInput != null) {
-			if (AspectHolder.aj != null) {
-				try {
-					XmlObject xmlo = new XmlObject(aopXmlInput);
-					for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-						Element aspectElement = (Element) aspectNode;
-						String className = aspectElement.attributeValue("name");
-						if (className != null) {
-							String fileName = className.replace(".", File.separator) + ".class";
-							try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
-								if (classInput == null) {
-									logger.error(fileName + " not found !");
-								} else {
-									byte[] classData = IOUtil.toByteArray(classInput);
-									classData = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj,
-											className, classData, classLoader, null);
-									Class<?> clazz = urlCL.defineClass(className, classData);
-									urlCL.toResolveClass(clazz);
+		if (AspectHolder.aj != null) {
+			ClassLoader classLoader = getClass().getClassLoader();
+			try {
+				Enumeration<URL> enums = classLoader.getResources("META-INF/aop.xml");
+				while (enums.hasMoreElements()) {
+					URL url = enums.nextElement();
+					InputStream aopXmlInput = url.openStream();
+					try {
+						XmlObject xmlo = new XmlObject(aopXmlInput);
+						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
+							Element aspectElement = (Element) aspectNode;
+							String className = aspectElement.attributeValue("name");
+							if (className != null) {
+								String fileName = className.replace(".", File.separator) + ".class";
+								try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
+									if (classInput == null) {
+										logger.error(fileName + " not found !");
+									} else {
+										byte[] classData = IOUtil.toByteArray(classInput);
+										classData = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj,
+												className, classData, classLoader, null);
+										Class<?> clazz = urlCL.defineClass(className, classData);
+										urlCL.toResolveClass(clazz);
+									}
+								} catch (Exception e) {
+									logger.error("", e);
 								}
-							} catch (Exception e) {
-								logger.error("", e);
 							}
 						}
+					} catch (DocumentException | IOException e) {
+						logger.error("", e);
+					} finally {
+						if (aopXmlInput != null)
+							try {
+								aopXmlInput.close();
+							} catch (IOException e) {
+							}
 					}
-				} catch (DocumentException | IOException e) {
-					logger.error("", e);
-				} finally {
-					if (aopXmlInput != null)
-						try {
-							aopXmlInput.close();
-						} catch (IOException e) {
-						}
 				}
-			} else {
-				logger.error("not found aspectjrt and aspectjweaver in classpath !");
+			} catch (IOException e) {
+				logger.error("", e);
 			}
+		} else {
+			logger.error("not found aspectjrt and aspectjweaver in classpath !");
 		}
 	}
 

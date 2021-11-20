@@ -74,9 +74,9 @@ public class ServiceFactory {
 		String serviceName = servicesName.get(service);
 		if (serviceName != null)
 			return serviceName;
-		RemoteService remoteServiceContract = service.getAnnotation(RemoteService.class);
-		if (remoteServiceContract != null) {
-			serviceName = remoteServiceContract.value();
+		RemoteService remoteService = service.getAnnotation(RemoteService.class);
+		if (remoteService != null) {
+			serviceName = remoteService.serviceName();
 			if (serviceName.trim().equals("")) {
 				serviceName = service.getName();
 			}
@@ -85,11 +85,11 @@ public class ServiceFactory {
 		} else {
 			Class<?>[] interfaceList = service.getInterfaces();
 			for (Class<?> clazz : interfaceList) {
-				remoteServiceContract = clazz.getAnnotation(RemoteService.class);
-				if (remoteServiceContract == null) {
+				remoteService = clazz.getAnnotation(RemoteService.class);
+				if (remoteService == null) {
 					continue;
 				}
-				serviceName = remoteServiceContract.value();
+				serviceName = remoteService.serviceName();
 				if (serviceName.trim().equals("")) {
 					serviceName = service.getName();
 				}

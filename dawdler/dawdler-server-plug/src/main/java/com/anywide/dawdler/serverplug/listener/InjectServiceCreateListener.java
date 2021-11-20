@@ -23,6 +23,8 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ServiceFactory;
 import com.anywide.dawdler.core.annotation.RemoteService;
+import com.anywide.dawdler.core.annotation.Service;
+import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
@@ -45,14 +47,18 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 	private void inject(Object service, DawdlerContext dawdlerContext) {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			RemoteService remoteService = field.getAnnotation(RemoteService.class);
+			Service serviceAnnotation = field.getAnnotation(Service.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
 				try {
-					if (remoteService != null) {
-						if (remoteService.remote()) {
-							String groupName = remoteService.group();
+					if (serviceAnnotation != null) {
+						if (serviceAnnotation.remote()) {
+							RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
+							if(remoteService == null) {
+								throw new NotSetRemoteServiceException("not found @RemoteService on "+serviceClass.getName());
+							}
+							String groupName = remoteService.value();
 							try {
 								field.set(service, ServiceFactory.getService(serviceClass, groupName,
 										remoteService.loadBalance(), dawdlerContext.getClassLoader()));
