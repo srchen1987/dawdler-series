@@ -19,12 +19,10 @@ package com.anywide.dawdler.core.rpc.context;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.anywide.dawdler.core.thread.InvokeFuture;
-
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RpcClientContext.java
+ * @Title RpcContext.java
  * @Description rpc上下文
  * @date 2020年4月22日
  * @email suxuan696@gmail.com
@@ -32,7 +30,6 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
 public class RpcContext {
 
 	private Map<String, Object> attachments;
-	private InvokeFuture<?> invokeFuture;
 	private static final ThreadLocal<RpcContext> THREAD_LOCAL = new ThreadLocal<RpcContext>() {
 		@Override
 		protected RpcContext initialValue() {
@@ -74,14 +71,6 @@ public class RpcContext {
 		if (attachments == null) {
 			attachments = new HashMap<String, Object>();
 		}
-	}
-
-	public <T> void setInvokeFuture(InvokeFuture<T> invokeFuture) {
-		this.invokeFuture = invokeFuture;
-	}
-
-	public <T> InvokeFuture<T> getInvokeFuture() {
-		return (InvokeFuture<T>) invokeFuture;
 	}
 
 }

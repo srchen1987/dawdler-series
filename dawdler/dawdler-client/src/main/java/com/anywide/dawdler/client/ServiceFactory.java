@@ -28,6 +28,9 @@ import com.anywide.dawdler.client.cglib.proxy.MethodInterceptor;
 import com.anywide.dawdler.client.cglib.proxy.MethodProxy;
 import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.annotation.RemoteService;
+import com.anywide.dawdler.core.annotation.RemoteServiceAssistant;
+import com.anywide.dawdler.core.annotation.Service;
+import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 
 /**
  * @author jackson.song
@@ -84,11 +87,15 @@ public class ServiceFactory {
 			classLoader = clazz.getClassLoader();
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
-			RemoteService remoteService = field.getAnnotation(RemoteService.class);
-			if (!field.getType().isPrimitive() && remoteService != null) {
+			Service service = field.getAnnotation(Service.class);
+			if (!field.getType().isPrimitive() && service != null) {
 				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
-				String groupName = remoteService.group();
+				RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
+				if(remoteService == null) {
+					throw new NotSetRemoteServiceException("not found @RemoteService on "+serviceClass.getName());
+				}
+				String groupName = remoteService.value();
 				try {
 					field.set(target, getService(serviceClass, groupName, remoteService.loadBalance(), classLoader));
 				} catch (Exception e) {
@@ -104,9 +111,7 @@ public class ServiceFactory {
 		private String serviceName;
 		private boolean fuzzy;
 		private int timeout;
-		private boolean single;
 		private String loadBalance;
-		private boolean async;
 
 		CglibInterceptor(Class<?> delegate, String groupName, String loadBalance) {
 			this.groupName = groupName;
@@ -119,11 +124,9 @@ public class ServiceFactory {
 			String serviceName = null;
 			RemoteService rs = delegate.getAnnotation(RemoteService.class);
 			if (rs != null) {
-				serviceName = rs.value();
+				serviceName = rs.serviceName();
 				timeout = rs.timeout();
 				fuzzy = rs.fuzzy();
-				single = rs.single();
-				async = rs.async();
 			}
 			if (serviceName == null || serviceName.trim().equals("")) {
 				serviceName = delegate.getName();
@@ -133,6 +136,14 @@ public class ServiceFactory {
 
 		public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy)
 				throws Throwable {
+			boolean async = false;
+			RemoteServiceAssistant remoteServiceAssistant = method.getAnnotation(RemoteServiceAssistant.class);
+			if(remoteServiceAssistant != null) {
+				fuzzy = remoteServiceAssistant.fuzzy();
+				timeout= remoteServiceAssistant.timeout();
+				loadBalance = remoteServiceAssistant.loadBalance();
+				async = remoteServiceAssistant.async();
+			}
 			Transaction tr = TransactionProvider.getTransaction(groupName);
 			tr.setMethod(method.getName());
 			tr.setServiceName(serviceName);
@@ -140,7 +151,6 @@ public class ServiceFactory {
 			tr.setTimeout(timeout);
 			tr.setCircuitBreaker(method.getAnnotation(CircuitBreaker.class));
 			tr.setProxyInterface(delegate);
-			tr.setSingle(single);
 			tr.setLoadBalance(loadBalance);
 			tr.setAsync(async);
 			Class<?>[] types = method.getParameterTypes();

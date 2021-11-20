@@ -53,10 +53,6 @@ public class ClientConfigParser {
 		fileName = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
 		file = new File(DawdlerTool.getcurrentPath() + fileName);
 		if (!file.isFile()) {
-			fileName = prefix + subfix;
-			file = new File(DawdlerTool.getcurrentPath() + fileName);
-		}
-		if (!file.isFile()) {
 			logger.error("not found " + fileName);
 		} else {
 			try {

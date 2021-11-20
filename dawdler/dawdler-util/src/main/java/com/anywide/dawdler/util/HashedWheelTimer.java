@@ -168,7 +168,6 @@ public class HashedWheelTimer implements Timer {
 		if (ticksPerWheel <= 0) {
 			throw new IllegalArgumentException("ticksPerWheel must be greater than 0: " + ticksPerWheel);
 		}
-		System.out.println("clear.....");
 		// Normalize ticksPerWheel to power of two and initialize the wheel.
 		wheel = createWheel(ticksPerWheel);
 		mask = wheel.length - 1;
@@ -297,9 +296,7 @@ public class HashedWheelTimer implements Timer {
 			if (workerState.get() == WORKER_STATE_SHUTDOWN) {
 				throw new IllegalStateException("Cannot enqueue after shutdown");
 			}
-//			System.out.println("start:"+timeout.stopIndex+":"+wheel[timeout.stopIndex]);
 			wheel[timeout.stopIndex].add(timeout);
-//			System.out.println("end:"+timeout.stopIndex+":"+wheel[timeout.stopIndex]);
 		} finally {
 			lock.readLock().unlock();
 		}

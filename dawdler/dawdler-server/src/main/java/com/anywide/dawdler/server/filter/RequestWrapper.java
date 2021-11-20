@@ -35,14 +35,14 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 public class RequestWrapper extends RequestBean {
 	private static final long serialVersionUID = 2807385594696214109L;
 	private final RequestBean request;
-	private final ServicesBean services;
+	private final ServicesBean service;
 	private final ServiceExecutor serviceExecutor;
 	private final SocketSession session;
 
-	public RequestWrapper(RequestBean request, ServicesBean services, ServiceExecutor serviceExecutor,
+	public RequestWrapper(RequestBean request, ServicesBean service, ServiceExecutor serviceExecutor,
 			SocketSession session) {
 		this.request = request;
-		this.services = services;
+		this.service = service;
 		this.serviceExecutor = serviceExecutor;
 		this.session = session;
 	}
@@ -50,11 +50,6 @@ public class RequestWrapper extends RequestBean {
 	@Override
 	public boolean isFuzzy() {
 		return request.isFuzzy();
-	}
-
-	@Override
-	public boolean isSingle() {
-		return request.isSingle();
 	}
 
 	@Override
@@ -101,8 +96,8 @@ public class RequestWrapper extends RequestBean {
 		return serviceExecutor;
 	}
 
-	public ServicesBean getServices() {
-		return services;
+	public ServicesBean getService() {
+		return service;
 	}
 
 	RequestBean getRequest() {

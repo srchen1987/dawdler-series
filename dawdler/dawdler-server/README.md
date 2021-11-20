@@ -88,6 +88,8 @@ tcp-receiveBuffer="163840" TCP接收缓存区
 tcp-keepAlive="false" 保持长链
 
 tcp-noDelay="false" 禁用纳格算法
+
+maxThreads=200 处理业务线程池的大小
 ```
 
 ##### global-auth节点
@@ -100,7 +102,7 @@ tcp-noDelay="false" 禁用纳格算法
 
 #### 2.2 data-sources.xml说明
 
-dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的服务公用.datasources节点下可以有多个datasource节点,每个节点都是一个数据源配置,datasource中id属性是数据源的id,code属性是连接池的dataSource实现类.attribute节点中的属性name是连接池中的配置名,attribute节点的text为具体配置值.
+dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的服务公用. datasources节点下可以有多个datasource节点,每个节点都是一个数据源配置,datasource中id属性是数据源的id,code属性是连接池的dataSource实现类.attribute节点中的属性name是连接池中的配置名,attribute节点的text为具体配置值.
 
 示例：
 
@@ -149,8 +151,7 @@ DataSource dataSource = LocalConnectionFactory.getDataSourceInDawdler("orderData
 
 #### 2.3 采用keytool制作证书
 
-dawdler示例中采用keytool制作的证书,服务器端配置在server-conf文件中的keyStore节点.
-客户端配置在client-conf文件中的certificatePath节点.
+dawdler示例中采用keytool制作的证书,服务器端配置在server-conf文件中的keyStore节点. 客户端配置在client-conf文件中的certificatePath节点.
 
 keytool制作的证书的命令如下：
 
