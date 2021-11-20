@@ -5,5 +5,5 @@
     <artifactId>dawdler-distributed-transaction</artifactId>
     <version>0.0.2-RELEASES</version>
   </parent>
-  <artifactId>dawdler-distributed-tansaction-api</artifactId>
+  <artifactId>dawdler-distributed-transaction-api</artifactId>
 </project>

@@ -94,15 +94,15 @@ public class ServerConfigParser {
 	public static void loadServer(Element serverEle) {
 		Server server = serverConfig.getServer();
 		server.setHost(getElementAttribute(serverEle, "host", server.getHost()));
-		server.setTcpPort(getElementAttribute2Int(serverEle, "tcpPort", server.getTcpPort()));
-		server.setTcpBacklog(getElementAttribute2Int(serverEle, "tcpBacklog", server.getTcpBacklog()));
-		server.setTcpSendBuffer(getElementAttribute2Int(serverEle, "tcpSendBuffer", server.getTcpSendBuffer()));
+		server.setTcpPort(getElementAttribute2Int(serverEle, "tcp-port", server.getTcpPort()));
+		server.setTcpBacklog(getElementAttribute2Int(serverEle, "tcp-backlog", server.getTcpBacklog()));
+		server.setTcpSendBuffer(getElementAttribute2Int(serverEle, "tcp-sendBuffer", server.getTcpSendBuffer()));
 		server.setTcpReceiveBuffer(
-				getElementAttribute2Int(serverEle, "tcpReceiveBuffer", server.getTcpReceiveBuffer()));
-		server.setTcpKeepAlive(getElementAttribute2Boolean(serverEle, "tcpKeepAlive", server.isTcpKeepAlive()));
-		server.setTcpNoDelay(getElementAttribute2Boolean(serverEle, "tcpNoDelay", server.isTcpNoDelay()));
+				getElementAttribute2Int(serverEle, "tcp-receiveBuffer", server.getTcpReceiveBuffer()));
+		server.setTcpKeepAlive(getElementAttribute2Boolean(serverEle, "tcp-keepAlive", server.isTcpKeepAlive()));
+		server.setTcpNoDelay(getElementAttribute2Boolean(serverEle, "tcp-noDelay", server.isTcpNoDelay()));
 		server.setShutdownWhiteList(getElementAttribute(serverEle, "shutdownWhiteList", server.getShutdownWhiteList()));
-		server.setTcpShutdownPort(getElementAttribute2Int(serverEle, "tcpShutdownPort", server.getTcpShutdownPort()));
+		server.setTcpShutdownPort(getElementAttribute2Int(serverEle, "tcp-shutdownPort", server.getTcpShutdownPort()));
 		server.setMaxThreads(getElementAttribute2Int(serverEle, "maxThreads", server.getMaxThreads()));
 	}
 
