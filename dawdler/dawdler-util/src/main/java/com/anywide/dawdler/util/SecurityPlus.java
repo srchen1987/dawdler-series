@@ -26,10 +26,11 @@ import javax.crypto.Cipher;
  * @version V1.0
  * @Title SecurityPlus.java
  * @Package com.anywide.dawdler.util
- * @Description DES加密解密工具类
+ * @Description DES加密解密工具类,不建议使用DES
  * @date 2009年4月21日
  * @email suxuan696@gmail.com
  */
+@Deprecated
 public class SecurityPlus {
 	public static final String DEFAULTKEY = "dawdler_mylove";
 	private static ConcurrentHashMap<String, SecurityPlus> cachePlug = new ConcurrentHashMap<>();
@@ -52,7 +53,6 @@ public class SecurityPlus {
 		SecurityPlus sp = cachePlug.get(key);
 		if (sp == null) {
 			sp = new SecurityPlus(key);
-			cachePlug.put(key, sp);
 			SecurityPlus temp = cachePlug.putIfAbsent(key, sp);
 			if (temp != null)
 				return temp;

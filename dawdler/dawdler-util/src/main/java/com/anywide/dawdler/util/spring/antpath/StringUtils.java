@@ -22,7 +22,6 @@ import java.util.Collection;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
@@ -364,40 +363,7 @@ public abstract class StringUtils {
 		}
 	}
 
-	private static Locale parseLocaleTokens(String localeString, String[] tokens) {
-		String language = (tokens.length > 0 ? tokens[0] : "");
-		String country = (tokens.length > 1 ? tokens[1] : "");
-		validateLocalePart(language);
-		validateLocalePart(country);
 
-		String variant = "";
-		if (tokens.length > 2) {
-			// There is definitely a variant, and it is everything after the country
-			// code sans the separator between the country code and the variant.
-			int endIndexOfCountryCode = localeString.indexOf(country, language.length()) + country.length();
-			// Strip off any leading '_' and whitespace, what's left is the variant.
-			variant = trimLeadingWhitespace(localeString.substring(endIndexOfCountryCode));
-			if (variant.startsWith("_")) {
-				variant = trimLeadingCharacter(variant, '_');
-			}
-		}
-
-		if (variant.isEmpty() && country.startsWith("#")) {
-			variant = country;
-			country = "";
-		}
-
-		return (language.length() > 0 ? new Locale(language, country, variant) : null);
-	}
-
-	private static void validateLocalePart(String localePart) {
-		for (int i = 0; i < localePart.length(); i++) {
-			char ch = localePart.charAt(i);
-			if (ch != ' ' && ch != '_' && ch != '-' && ch != '#' && !Character.isLetterOrDigit(ch)) {
-				throw new IllegalArgumentException("Locale part \"" + localePart + "\" contains invalid characters");
-			}
-		}
-	}
 
 	public static TimeZone parseTimeZoneString(String timeZoneString) {
 		TimeZone timeZone = TimeZone.getTimeZone(timeZoneString);

@@ -45,6 +45,7 @@ public class XssUtil {
 			switch (content[i]) {
 			case '<':
 				result.append("&lt;");
+				break;
 			case '>':
 				result.append("&gt;");
 				break;

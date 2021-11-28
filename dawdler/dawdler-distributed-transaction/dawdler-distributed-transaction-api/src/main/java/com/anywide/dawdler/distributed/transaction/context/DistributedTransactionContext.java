@@ -124,11 +124,6 @@ public class DistributedTransactionContext implements Serializable, Cloneable {
 		return branchTxId;
 	}
 
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		return super.clone();
-	}
-
 	public void setBranchTxId(String branchTxId) {
 		this.branchTxId = branchTxId;
 	}

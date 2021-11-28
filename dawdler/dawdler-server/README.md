@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-server 是dawdler的容器端的具体实现,提供容器启动服务的监听器,过滤器,服务器配置,注入服务监听器,类加载器等功能.
+dawdler-server 是dawdler容器端的具体实现,提供容器启动服务的监听器,过滤器,服务器配置,注入服务监听器,类加载器,aop实现.
 
 ### 1. pom中引入依赖
 
@@ -185,10 +185,21 @@ Keytool是一个Java数据证书的管理工具,以下是简要说明.
 
 实现DawdlerServiceListener接口,支持@Order注解进行升序排序.contextInitialized方法是服务器初始化调用的方法 ,contextDestroyed方法是服务器销毁时调用的方法.这两个方法都是部署在dawdler服务器deploys下的服务启动与销毁时所调用的.
 
-示例：
+@ListenerConfig注解用于DawdlerServiceListener,可以标识是否为异步执行,并支持设置延迟时间.
+
+应用场景: DawdlerServiceListener实现类会在dawdler启动和销毁时运行,可以用来初始化和销毁资源.涉及异步执行的情况是防止容器启动时初始化资源造成卡顿,延迟时间是为了控制其他资源未加载完成时可以延迟调用当前的监听器.
 
 ```java
+public @interface ListenerConfig {
+ long delayMsec() default 0L;// delayTime 毫秒级,只有异步执行的条件下生效
 
+ boolean asyn() default false;// 是否为异步执行
+}
+```
+
+示例1：
+
+```java
 public class UserServiceStartupListener implements DawdlerServiceListener{
 
  @Override
@@ -202,7 +213,26 @@ public class UserServiceStartupListener implements DawdlerServiceListener{
  }
 
 }
+```
 
+示例2：
+
+```java
+//异步延迟3秒启动
+@ListenerConfig(asyn=true,delayMsec=3000)
+public class UserServiceAsyncStartupListener implements DawdlerServiceListener{
+
+ @Override
+ public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
+  System.out.println("UserServiceAsyncStartupListener contextDestroyed："+dawdlerContext.getDeployClassPath());
+ }
+
+ @Override
+ public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
+  System.out.println("UserServiceAsyncStartupListener contextInitialized："+dawdlerContext.getDeployClassPath());
+ }
+
+}
 ```
 
 ### 4. dawdler服务过滤器
@@ -224,7 +254,7 @@ public class MyFilter implements DawdlerFilter{
 
 ### 5. dawdler服务创建监听器
 
-实现DawdlerServiceCreateListener接口,实现create方法.服务实体类被初始化会调用此方法,单例情况下会在服务器启动时创建,如果是多例情况下则在被调用时调用.是否是单例是在服务端的@RemoteService注解中进行设置,single默认为true是单例.
+实现DawdlerServiceCreateListener接口,实现create方法.支持@Order注解进行升序排序.服务实体类被初始化会调用此方法,单例情况下会在服务器启动时创建,如果是多例情况下则在被调用时调用.是否是单例是在服务端的@RemoteService注解中进行设置,single默认为true是单例.
 
 dawdler-server-plug-mybatis中使用InjectServiceCreateListener的示例：
 
@@ -255,6 +285,49 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
     }
     }
  }
-
 }
 ```
+
+### 6. aop使用方式
+
+dawdler的aop支持采用aspjectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
+
+适用范围：dawdler服务端部署的所有类
+
+示例(拦截ServiceImpl)：
+
+注意: 以下两个文件都需要在服务端创建
+
+1、创建META-INF\aop.xml
+
+```xml
+<aspectj>
+  <aspects>
+    <aspect name="com.anywide.yyg.user.aop.UserServiceAspect"/>
+  </aspects>
+</aspectj>
+```
+
+2、创建com.anywide.yyg.user.controller.UserControllerAspect
+
+```java
+@Aspect
+public class UserServiceAspect {
+
+ @Around("execution(*  com.anywide.yyg.user.service.impl .*.selectUserList(..))")
+ public Object logAround(ProceedingJoinPoint pjp) throws Throwable {
+  System.out.println("start ...\tlogAround" + pjp.getSignature().getName());
+  Object o = null;
+  try {
+   o = pjp.proceed();
+  } catch (Throwable t) {
+   throw t;
+  }
+  Object[] args = pjp.getArgs();
+  System.out.println("over:\t" + args);
+  return o;
+ }
+}
+```
+
+dawdler-server-plug-mybatis中的读写分离也是基于aop实现的,请参考[通过aop切换数据库连接](../dawdler-server-plug-mybatis/src/main/java/com/anywide/dawdler/serverplug/db/mybatis/aspect/SwitchConnectionAspect.java).

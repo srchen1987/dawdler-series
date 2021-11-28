@@ -93,6 +93,9 @@ public class RequestMethodProcessor {
 			if (parameterNames != null)
 				break;
 		}
+		if(parameterNames == null) {
+			return;
+		}
 		Parameter[] parameters = method.getParameters();
 		for (int i = 0; i < parameters.length; i++) {
 			Parameter parameter = parameters[i];
