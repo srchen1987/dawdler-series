@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 /**
  *
  * @Title ListenerConfig.java
- * @Description 监听器注解
+ * @Description 监听器注解,用于DawdlerServiceListener
  * @author jackson.song
  * @date 2015年6月19日
  * @version V1.0

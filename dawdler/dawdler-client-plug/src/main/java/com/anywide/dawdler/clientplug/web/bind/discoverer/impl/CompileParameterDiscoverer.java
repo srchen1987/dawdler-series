@@ -37,9 +37,10 @@ public class CompileParameterDiscoverer implements ParameterDiscoverer {
 	}
 
 	private String[] getParameterNames(Parameter[] parameters) {
-		String[] parameterNames = null;
-		if (parameters.length > 0)
-			parameterNames = new String[parameters.length];
+		if (parameters.length == 0) {
+			return null;
+		}
+		String[] parameterNames = new String[parameters.length];
 		for (int i = 0; i < parameters.length; i++) {
 			Parameter param = parameters[i];
 			if (!param.isNamePresent()) {

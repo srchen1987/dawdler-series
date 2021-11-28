@@ -17,12 +17,23 @@
 package com.anywide.dawdler.util;
 
 import java.io.UnsupportedEncodingException;
+import java.lang.management.CompilationMXBean;
+import java.lang.management.GarbageCollectorMXBean;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryUsage;
+import java.lang.management.OperatingSystemMXBean;
+import java.lang.management.RuntimeMXBean;
+import java.lang.management.ThreadMXBean;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * @author jackson.song
@@ -93,23 +104,47 @@ public class DawdlerTool {
 		byte digest[] = MessageDigest.getInstance("SHA1").digest(idPassword.getBytes());
 		return parts[0] + ":" + new String(Base64.getEncoder().encode(digest));
 	}
-//	public static String memoryStatistic() {
-//      Runtime runtime = Runtime.getRuntime();
-//
-//      double freeMemory = (double) runtime.freeMemory() / (1024 * 1024);
-//      double maxMemory = (double) runtime.maxMemory() / (1024 * 1024);
-//      double totalMemory = (double) runtime.totalMemory() / (1024 * 1024);
-//      double usedMemory = totalMemory - freeMemory;
-//      double percentFree = ((maxMemory - usedMemory) / maxMemory) * 100.0;
-//
-//      double percentUsed = 100 - percentFree;
-//
-//      DecimalFormat mbFormat = new DecimalFormat("#0.00");
-//      DecimalFormat percentFormat = new DecimalFormat("#0.0");
-//
-//      StringBuilder sb = new StringBuilder();
-//      sb.append(mbFormat.format(usedMemory)).append("MB of ").append(mbFormat.format(maxMemory)).append(" MB (")
-//              .append(percentFormat.format(percentUsed)).append("%) used");
-//      return sb.toString();
-//  }
+
+	public static String memoryStatistic() {
+		Runtime runtime = Runtime.getRuntime();
+		double freeMemory = (double) runtime.freeMemory() / (1024 * 1024);
+		double maxMemory = (double) runtime.maxMemory() / (1024 * 1024);
+		double totalMemory = (double) runtime.totalMemory() / (1024 * 1024);
+		double usedMemory = totalMemory - freeMemory;
+		double percentFree = ((maxMemory - usedMemory) / maxMemory) * 100.0;
+		double percentUsed = 100 - percentFree;
+		DecimalFormat mbFormat = new DecimalFormat("#0.00");
+		DecimalFormat percentFormat = new DecimalFormat("#0.0");
+		StringBuilder sb = new StringBuilder();
+		sb.append("memory: " + mbFormat.format(usedMemory)).append("MB of ").append(mbFormat.format(maxMemory))
+				.append(" MB (").append(percentFormat.format(percentUsed)).append("%) used");
+		return sb.toString();
+	}
+
+	public static void printServerBaseInformation() {
+		DecimalFormat kbFormat = new DecimalFormat("#0.00");
+		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
+		System.out.println("OS arch: " + operatingSystemMXBean.getArch());
+		System.out.println("OS availableProcessors: " + operatingSystemMXBean.getAvailableProcessors());
+		System.out.println("OS name: " + operatingSystemMXBean.getName());
+		System.out.println("OS version: " + operatingSystemMXBean.getVersion());
+
+		Runtime runtime = Runtime.getRuntime();
+		double freeMemory = (double) runtime.freeMemory();
+		double totalMemory = (double) runtime.totalMemory();
+		System.out.println("Jvm totalMemory: " + totalMemory + "(" + kbFormat.format(totalMemory / 1024) + "K)");
+		System.out.println("Jvm freeMemory: " + freeMemory + "(" + kbFormat.format(freeMemory / 1024) + "K)");
+		MemoryMXBean memorymbean = ManagementFactory.getMemoryMXBean();
+		System.out.println("Heap Memory Usage:");
+		System.out.println(memorymbean.getHeapMemoryUsage());
+		System.out.println("Non-Heap Memory Usage:");
+		System.out.println(memorymbean.getNonHeapMemoryUsage());
+		List<String> inputArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
+		System.out.println("Java options:");
+		System.out.println(inputArguments);
+		RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
+		System.out.println("ClassPath: " + runtimeMXBean.getClassPath());
+		System.out.println("LibraryPath: " + runtimeMXBean.getLibraryPath());
+	}
+
 }
