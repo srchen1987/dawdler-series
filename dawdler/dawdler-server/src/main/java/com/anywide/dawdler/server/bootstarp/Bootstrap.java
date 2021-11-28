@@ -21,13 +21,17 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfigParser;
+import com.anywide.dawdler.util.DawdlerTool;
 
 /**
  * @author jackson.song
@@ -58,18 +62,27 @@ public class Bootstrap {
 				System.err.println("warn: failed command " + command);
 				return;
 			}
+			printServerInfo();
+			new DawdlerServer(serverConfig).start();
 		}
-
-		new DawdlerServer(serverConfig).start();
 	}
 
-	private static void toClose(String comment) throws IOException {
-		Socket socket = new Socket("127.0.0.1", serverConfig.getServer().getTcpShutdownPort());
-		OutputStream out = socket.getOutputStream();
-		PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
-		pw.println(comment);
-		pw.close();
-		socket.close();
+	private static void toClose(String comment) throws UnknownHostException, IOException {
+		Socket socket = null;
+		PrintWriter pw = null;
+		try {
+			socket = new Socket("127.0.0.1", serverConfig.getServer().getTcpShutdownPort());
+			OutputStream out = socket.getOutputStream();
+			pw = new PrintWriter(new OutputStreamWriter(out));
+			pw.println(comment);
+		} finally {
+			if (pw != null) {
+				pw.close();
+			}
+			if (socket != null) {
+				socket.close();
+			}
+		}
 	}
 
 	public static void overrideOutPut() {
@@ -91,5 +104,19 @@ public class Bootstrap {
 		};
 		System.setOut(new PrintStream(output));
 		System.setErr(new PrintStream(output));
+	}
+
+	private static void printServerInfo() {
+		System.out.println("Welcome to use dawdler!\n");
+		String logoAscii = "  _____              __          __  _____    _        ______   _____  \r\n"
+				+ " |  __ \\      /\\     \\ \\        / / |  __ \\  | |      |  ____| |  __ \\ \r\n"
+				+ " | |  | |    /  \\     \\ \\  /\\  / /  | |  | | | |      | |__    | |__) |\r\n"
+				+ " | |  | |   / /\\ \\     \\ \\/  \\/ /   | |  | | | |      |  __|   |  _  / \r\n"
+				+ " | |__| |  / ____ \\     \\  /\\  /    | |__| | | |____  | |____  | | \\ \\ \r\n"
+				+ " |_____/  /_/    \\_\\     \\/  \\/     |_____/  |______| |______| |_|  \\_\\\r\n"
+				+ "                                                                       \r\n"
+				+ "                                                                       ";
+		System.out.println(logoAscii);
+		DawdlerTool.printServerBaseInformation();
 	}
 }

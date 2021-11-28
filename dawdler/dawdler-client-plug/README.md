@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-webmvc,使用上基本与springmvc一致.提供远程加载组件的客户端,远程加载组件通知器,web监听器,web拦截器.
+webmvc,使用上基本与springmvc一致.提供远程加载组件的客户端,远程加载组件通知器,web监听器,web拦截器,aop实现.
 
 ### 1. pom中引入依赖
 
@@ -394,9 +394,81 @@ public class UserController{
   
     <!-- web启动时动态加载配置,dawdler-client-plug需要此配置 -->
     <loads-on>
-        <item sleep="15000" channel-group-id="user-api" mode="run">user</item><!-- 配置加载user-api模块  sleep 检查更新间隔 毫秒单位,channel-group-id指定组,mode=run 为运行模式 不在检查更新-->
-        <item sleep="15000" channel-group-id="user-load-web" mode="run">user</item><!-- 配置加载user模块 -->
+        <item sleep="15000" channel-group-id="user-api" mode="run">user</item><!-- 配置加载user-api服务中的user模块  sleep 检查更新间隔 毫秒单位,channel-group-id指定组,mode=run 为运行模式 不再检查更新-->
+        <item sleep="15000" channel-group-id="user-load-web" mode="run">user</item><!-- 配置加载user-load-web服务中的user模块  sleep 检查更新间隔 毫秒单位,channel-group-id指定组,mode=run 为运行模式 不再检查更新-->
     </loads-on>
 
-</config>d
+</config>
 ```
+
+### 12. aop使用方式
+
+dawdler的aop支持采用aspjectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
+
+适用范围：aop支持web端的Controller,HandlerInterceptor,WebContextListener,api接口(Service接口)这四种类型的切入.
+
+示例(拦截Controller)：
+
+注意: 以下两个文件都需要在web端创建
+
+1、创建META-INF\aop.xml
+
+```xml
+<aspectj>
+  <aspects>
+    <aspect name="com.anywide.yyg.user.controller.UserControllerAspect"/>
+  </aspects>
+</aspectj>
+```
+
+2、创建com.anywide.yyg.user.controller.UserControllerAspect
+
+```java
+@Aspect
+public class UserControllerAspect {
+
+ @Pointcut("execution(*  com.anywide.yyg.user.controller..UserController.list(..))")
+ public void list() {
+ }
+
+ @Around("list()")
+ public Object logAround(ProceedingJoinPoint pjp) throws Throwable {
+  System.out.println(pjp.getSignature().getName() + ":" + pjp.getTarget());
+  Object o = null;
+  try {
+   o = pjp.proceed();
+  } catch (Throwable t) {
+   throw t;
+  }
+  Object[] args = pjp.getArgs();
+  System.out.println(o+":\t" + args);
+  return o;
+ }
+
+}
+```
+
+或直接通过Around拦截无须Pointcut
+
+```java
+@Aspect
+public class UserControllerAspect {
+ 
+ @Around("execution(*  com.anywide.yyg.user.controller..UserController.list(..))")
+ public Object logAround(ProceedingJoinPoint pjp) throws Throwable {
+  System.out.println(pjp.getSignature().getName() + ":" + pjp.getTarget());
+  Object o = null;
+  try {
+   o = pjp.proceed();
+  } catch (Throwable t) {
+   throw t;
+  }
+  Object[] args = pjp.getArgs();
+  System.out.println(o+":\t" + args);
+  return o;
+ }
+
+}
+```
+
+拦截api接口(Service接口)的示例,请参考[分布式事务拦截注解的实现](../dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/com/anywide/dawdler/distributed/transaction/aspetct/DistributedTransactionAspect.java),拦截api定义的DistributedTransaction注解.
