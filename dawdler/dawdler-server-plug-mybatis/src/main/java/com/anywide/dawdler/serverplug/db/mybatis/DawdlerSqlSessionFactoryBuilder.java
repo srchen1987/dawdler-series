@@ -334,7 +334,9 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 					throw new IOException("Failed to parse mapping resource: ", e);
 				} finally {
 					ErrorContext.instance().reset();
-					input.close();
+					if(input != null) {
+						input.close();
+					}
 				}
 
 				if (logger.isDebugEnabled()) {

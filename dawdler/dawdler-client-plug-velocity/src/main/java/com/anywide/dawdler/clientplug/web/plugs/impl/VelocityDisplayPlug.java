@@ -149,9 +149,8 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 			}
 			String ae = request.getHeader("accept-encoding");
 			if (ae != null && ae.indexOf("gzip") != -1) {
-				OutputStreamWriter ow = new OutputStreamWriter(new GZIPOutputStream(response.getOutputStream()),
-						StandardCharsets.UTF_8);
-				out = new PrintWriter(ow);
+				out = new PrintWriter(new OutputStreamWriter(new GZIPOutputStream(response.getOutputStream()),
+						StandardCharsets.UTF_8));
 				response.setHeader("Content-Encoding", "gzip");
 			} else {
 				out = response.getWriter();

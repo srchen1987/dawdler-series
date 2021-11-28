@@ -5,7 +5,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<dawdler.build.version>0.0.2-RELEASES</dawdler.build.version>
-		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
+		<ch.qos.logback.version>1.2.7</ch.qos.logback.version>
 		<org.ow2.asm.version>7.1</org.ow2.asm.version>
 		<jaxen.version>1.2.0</jaxen.version>
 		<org.dom4j.version>2.1.3</org.dom4j.version>

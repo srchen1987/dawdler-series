@@ -25,8 +25,8 @@ import java.lang.annotation.Target;
 @Target({ ElementType.METHOD })
 /**
  *
- * @Title RemoteService.java
- * @Description 标注一个类是远程提供服务的注解
+ * @Title RemoteServiceAssistant.java
+ * @Description 为服务的方法做特定的异步,超时时间,模糊匹配,负载均衡方式的设置.
  * @author jackson.song
  * @date 2015年4月26日
  * @version V1.0
