@@ -78,8 +78,9 @@ public class LocalCircuitBreaker implements CircuitBreaker {
 				totalCount += metric.totalCount();
 				failCount += metric.failCount();
 			}
-			if (totalCount < requestVolumeThreshold)
+			if (totalCount < requestVolumeThreshold || totalCount == 0) {
 				return;
+			}
 			if ((double) failCount / (double) totalCount >= errorThresholdPercentage
 					&& state.compareAndSet(State.CLOSE, State.OPEN))
 				circuitBreakerState.resetStartTime();
