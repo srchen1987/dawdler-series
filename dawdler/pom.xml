@@ -33,6 +33,7 @@
 		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>7.15.0</elasticsearch.version>
+		<pinpoint.version>2.3.1</pinpoint.version>
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
@@ -355,6 +356,12 @@
 			<artifactId>elasticsearch-rest-high-level-client</artifactId>
 			<version>${elasticsearch.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.navercorp.pinpoint</groupId>
+			<artifactId>pinpoint-bootstrap-core</artifactId>
+			<version>${pinpoint.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -404,6 +411,7 @@
 		<module>dawdler-distributed-transaction</module>
 		<module>dawdler-services-starter</module>
 		<module>dawdler-es-plug</module>
+		<module>dawdler-pinpoint-plug</module>
 	</modules>
 
 
