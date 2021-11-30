@@ -44,6 +44,15 @@ public class ServiceFactory {
 	private static Logger logger = LoggerFactory.getLogger(ServiceFactory.class);
 	private static final ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> proxyObjects = new ConcurrentHashMap<>();
 
+	public static <T> T getService(final Class<T> delegate) {
+		RemoteService remoteService = delegate.getAnnotation(RemoteService.class);
+		if (remoteService == null) {
+			throw new NotSetRemoteServiceException("not found @RemoteService on " + delegate.getName());
+		}
+		String groupName = remoteService.value();
+		return getService(delegate, groupName, remoteService.loadBalance());
+	}
+
 	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance,
 			ClassLoader classLoader) {
 		if (classLoader == null)
@@ -92,8 +101,8 @@ public class ServiceFactory {
 				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
 				RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
-				if(remoteService == null) {
-					throw new NotSetRemoteServiceException("not found @RemoteService on "+serviceClass.getName());
+				if (remoteService == null) {
+					throw new NotSetRemoteServiceException("not found @RemoteService on " + serviceClass.getName());
 				}
 				String groupName = remoteService.value();
 				try {
@@ -138,9 +147,9 @@ public class ServiceFactory {
 				throws Throwable {
 			boolean async = false;
 			RemoteServiceAssistant remoteServiceAssistant = method.getAnnotation(RemoteServiceAssistant.class);
-			if(remoteServiceAssistant != null) {
+			if (remoteServiceAssistant != null) {
 				fuzzy = remoteServiceAssistant.fuzzy();
-				timeout= remoteServiceAssistant.timeout();
+				timeout = remoteServiceAssistant.timeout();
 				loadBalance = remoteServiceAssistant.loadBalance();
 				async = remoteServiceAssistant.async();
 			}

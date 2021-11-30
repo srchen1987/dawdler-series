@@ -90,7 +90,7 @@ public static void main(String[] args) throws Exception {
  }
 ```
 
-#### 7.2 api调用
+#### 7.2 interface proxy 调用方式
 
 ```java
 public static void main(String[] args) throws Exception {
