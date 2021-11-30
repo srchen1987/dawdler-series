@@ -39,7 +39,7 @@ dawdler-client 客户端核心代码,过滤器,服务发现,连接池,动态代�
 
 ```java
 public static void main(String[] args) throws Exception {
-  Transaction tr = TransactionProvider.getTransaction("user");
+  Transaction tr = TransactionProvider.getTransaction("simple-service");//simple-servic为服务名
   tr.setServiceName("com.anywide.dawdler.demo.service.HelloService");//接口全名
   tr.setMethod("say");//方法名
   tr.addString("jackson");//参数 String类型并传值 Transaction有一系列传参方法 具体查看Transaction
@@ -54,7 +54,17 @@ public static void main(String[] args) throws Exception {
 ### 4. interface proxy 调用方式
 
 ```java
- HelloService hs = ServiceFactory.getService(HelloService.class, "user");
+@RemoteService("simple-service")
+public interface HelloService {
+
+ public String say(String text);
+ 
+ public List<Message> responseList(Map<String, Object> data);
+}
+```
+
+```java
+ HelloService hs = ServiceFactory.getService(HelloService.class);
  String response = hs.say("jackson");
 ```
 
@@ -93,17 +103,21 @@ public static void main(String[] args) throws Exception {
 #### 7.2 interface proxy 调用方式
 
 ```java
-public static void main(String[] args) throws Exception {
-  Transaction tr = TransactionProvider.getTransaction("user");
-  tr.setServiceName("com.anywide.dawdler.demo.service.HelloService");//接口全名
-  tr.setMethod("say");//方法名
-  tr.addString("jackson");//参数 String类型并传值 Transaction有一系列传参方法 具体查看Transaction
-  tr.setAsync(true);//设置为异步执行
-  Object obj = tr.executeResult();//异步执行拿不到结果 返回的是null
+@RemoteService("simple-service")
+public interface HelloService {
 
-  obj = AsyncInvokeFutureHolder.getContext().getInvokeFuture().getResult();//获取异步执行结果
-  System.out.println(obj);
-  
-  ConnectionPool.shutdown(); 
- }
+ @RemoteServiceAssistant(async = true)//指定为异步
+ public String say(String text);
+ 
+ public List<Message> responseList(Map<String, Object> data);
+}
+```
+
+```java
+  HelloService hs = ServiceFactory.getService(HelloService.class);
+  hs.say("hello");
+  InvokeFuture<String> future = AsyncInvokeFutureHolder.getContext().getInvokeFuture();
+  System.out.println(future.getResult());
+  ConnectionPool.shutdown(); HelloService hs = ServiceFactory.getService(HelloService.class);
+  String response = hs.say("jackson");
 ```
