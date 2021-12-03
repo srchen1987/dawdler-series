@@ -111,6 +111,10 @@ public class ServiceRoot {
 		initWorkPool(dawdlerServerContext.getServerConfig().getServer().getMaxThreads());
 		File deployFileRoot = getDeploys();
 		File[] deployFiles = deployFileRoot.listFiles();
+		if(deployFiles == null) {
+			System.err.println("deploys not found, startup failed!");
+			return;
+		}
 		long start = JVMTimeProvider.currentTimeMillis();
 		if (deployFiles.length > 0) {
 			ExecutorService executor = Executors.newCachedThreadPool();
@@ -139,7 +143,7 @@ public class ServiceRoot {
 							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
 						} catch (Throwable e) {
 							logger.error("", e);
-							System.out.println(deployName + " startup failed!");
+							System.err.println(deployName + " startup failed!");
 							Service service = services.remove(deployName);
 							service.prepareStop();
 							service.stop();
