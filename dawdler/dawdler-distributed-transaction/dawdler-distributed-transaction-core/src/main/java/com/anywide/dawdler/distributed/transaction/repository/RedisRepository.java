@@ -48,7 +48,7 @@ import redis.clients.jedis.util.Pool;
 public class RedisRepository extends TransactionRepository {
 	private static final Logger logger = LoggerFactory.getLogger(RedisRepository.class);
 	public static String redisFileName = "distributed-transaction-redis";
-	private int expireTime = 24 * 60 * 60 * 3;
+	private long expireTime = 24 * 60 * 60 * 3;
 	private int compensateLater = 60;
 	private Pool<Jedis> pool;
 
@@ -61,7 +61,7 @@ public class RedisRepository extends TransactionRepository {
 		serializer = SerializeDecider.decide((byte) 2);
 		try {
 			Properties ps = PropertiesUtil.loadProperties("distributed-transaction");
-			expireTime = PropertiesUtil.getIfNullReturnDefaultValueInt("expireTime", expireTime, ps);
+			expireTime = PropertiesUtil.getIfNullReturnDefaultValueLong("expireTime", expireTime, ps);
 			compensateLater = PropertiesUtil.getIfNullReturnDefaultValueInt("compensateLater", compensateLater, ps);
 		} catch (IOException e) {
 			logger.info(
@@ -97,7 +97,9 @@ public class RedisRepository extends TransactionRepository {
 				Map<byte[], byte[]> map = jedis.hgetAll(transaction.getGlobalTxId().getBytes());
 				if (map != null) {
 					map.put(transaction.getBranchTxId().getBytes(), data);
-					jedis.hmset((PREFIX + transaction.getGlobalTxId()).getBytes(), map);
+					byte[] globalKey = (PREFIX + transaction.getGlobalTxId()).getBytes();
+					jedis.hmset(globalKey, map);
+					jedis.expire(globalKey, expireTime);
 					return 1;
 				}
 				return 0;
@@ -159,7 +161,9 @@ public class RedisRepository extends TransactionRepository {
 					map.put(context.getBranchTxId().getBytes(), bs);
 				}
 				if (!map.isEmpty()) {
-					jedis.hmset((PREFIX + globalTxId).getBytes(), map);
+					byte[] globalKey = (PREFIX + globalTxId).getBytes();
+					jedis.hmset(globalKey, map);
+					jedis.expire(globalKey, expireTime);
 				}
 				return 1;
 			}
