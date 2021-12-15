@@ -21,7 +21,7 @@
 		<velocity.version>2.3</velocity.version>
 		<jedis.version>3.7.0</jedis.version>
 		<rabbitmq.version>5.12.0</rabbitmq.version>
-		<caffeine.version>3.0.4</caffeine.version>
+		<caffeine.version>2.9.3</caffeine.version>
 		<mysql.version>8.0.21</mysql.version>
 		<jsoup.version>1.14.2</jsoup.version>
 		<ognl.version>3.2.20</ognl.version>
@@ -403,9 +403,9 @@
 		<module>dawdler-redis-plug</module>
 		<module>dawdler-rabbitmq-plug</module>
 		<module>dawdler-distributed-transaction</module>
-		<module>dawdler-services-starter</module>
 		<module>dawdler-es-plug</module>
 		<module>dawdler-pinpoint-plug</module>
+		<module>dawdler-services-dependencies</module>
 	</modules>
 
 
