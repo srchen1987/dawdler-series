@@ -94,7 +94,7 @@ public class DataSourceParser {
 
 	private static String captureName(String str) {
 		char[] cs = str.toCharArray();
-		cs[0] -= 32;
+		cs[0] = Character.toLowerCase(cs[0]);
 		return String.valueOf(cs);
 	}
 }

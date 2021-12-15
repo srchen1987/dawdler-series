@@ -7,8 +7,9 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.0.2-RELEASES</version>
 	</parent>
-	<artifactId>dawdler-services-starter</artifactId>
+	<artifactId>dawdler-services-dependencies</artifactId>
 	<packaging>pom</packaging>
+	<dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
@@ -46,6 +47,7 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-core</artifactId>
 			<scope>provided</scope>
+			<version>${dawdler.build.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
@@ -57,6 +59,31 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server</artifactId>
 			<scope>provided</scope>
+			<version>${dawdler.build.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+			<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-util</artifactId>
+			<scope>provided</scope>
+			<version>${dawdler.build.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+			<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-load-bean</artifactId>
+			<scope>provided</scope>
+			<version>${dawdler.build.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
@@ -77,6 +104,7 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server-plug</artifactId>
+			<version>${dawdler.build.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
@@ -88,6 +116,7 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server-plug-db</artifactId>
+			<version>${dawdler.build.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
@@ -99,6 +128,7 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server-plug-mybatis</artifactId>
+			<version>${dawdler.build.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
@@ -110,6 +140,7 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server-plug-dao</artifactId>
+			<version>${dawdler.build.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
@@ -121,6 +152,7 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-load-bean</artifactId>
+			<version>${dawdler.build.version}</version>
 			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
@@ -141,6 +173,6 @@
 			<version>${ch.qos.logback.version}</version>
 			<scope>provided</scope>
 		</dependency>
-
 	</dependencies>
+	</dependencyManagement>
 </project>
