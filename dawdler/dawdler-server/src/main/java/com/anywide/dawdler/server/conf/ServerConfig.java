@@ -165,6 +165,8 @@ public class ServerConfig {
 		private int tcpShutdownPort = 19527;
 		private String shutdownWhiteList = "127.0.0.1,localhost";
 		private int maxThreads = 200;
+		private int queueCapacity = 1024*64;
+		private long keepAliveMilliseconds = 0;
 
 		public String getHost() {
 			return host;
@@ -244,6 +246,22 @@ public class ServerConfig {
 
 		public void setMaxThreads(int maxThreads) {
 			this.maxThreads = maxThreads;
+		}
+		
+		public int getQueueCapacity() {
+			return queueCapacity;
+		}
+
+		public void setQueueCapacity(int queueCapacity) {
+			this.queueCapacity = queueCapacity;
+		}
+
+		public long getKeepAliveMilliseconds() {
+			return keepAliveMilliseconds;
+		}
+
+		public void setKeepAliveMilliseconds(long keepAliveMilliseconds) {
+			this.keepAliveMilliseconds = keepAliveMilliseconds;
 		}
 	}
 }
