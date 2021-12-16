@@ -53,14 +53,16 @@ public class ReadConnectionHolder {
 
 	void released() throws SQLException {
 		this.referenceCount--;
-		if (!this.isOpen() && this.connection != null) {
+		if (!this.isOpen()) {
 			LocalConnectionFactory.removeReadConnection();
-			try {
-				this.connection.close();
-			} catch (SQLException e) {
-				throw e;
-			} finally {
-				this.connection = null;
+			if(this.connection != null) {
+				try {
+					this.connection.close();
+				} catch (SQLException e) {
+					throw e;
+				} finally {
+					this.connection = null;
+				}
 			}
 		}
 	}

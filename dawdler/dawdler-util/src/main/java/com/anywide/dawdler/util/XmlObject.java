@@ -306,6 +306,17 @@ public final class XmlObject {
 			return defaultValue;
 		}
 	}
+	
+	public static long getElementAttribute2Long(Element element, String attribute, long defaultValue) {
+		Attribute attr = element.attribute(attribute);
+		if (attr == null)
+			return defaultValue;
+		try {
+			return Long.parseLong(attr.getStringValue());
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
 
 	public static boolean getElementAttribute2Boolean(Element element, String attribute, boolean defaultValue) {
 		Attribute attr = element.attribute(attribute);
