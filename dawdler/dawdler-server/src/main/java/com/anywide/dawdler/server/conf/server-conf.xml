@@ -14,10 +14,10 @@
 	<server host="0.0.0.0" tcp-port="9527"
 		shutdownWhiteList="127.0.0.1,localhost" tcp-shutdownPort="19530"
 		tcp-backlog="200" tcp-sendBuffer="163840" tcp-receiveBuffer="163840"
-		tcp-keepAlive="false" tcp-noDelay="false" maxThreads="200">
+		tcp-keepAlive="false" tcp-noDelay="false" maxThreads="200" queueCapacity="65536" keepAliveMilliseconds="0">
 	</server>
 	<!-- tcp-port服务器启动端口号， shutdownWhiteList允许关闭服务的白名单， tcp-shutdownPort关闭服务器的端口号 
-		maxThreads 处理业务线程池的大小，其他为tcp的配置 -->
+		maxThreads 处理业务线程池的大小 默认200，queueCapacity 线程池队列大小 默认65536，keepAliveMilliseconds 线程池中空闲线程等待工作的超时时间 默认0，其他为tcp的配置 -->
 	<global-auth>
 		<user username="global_user" password="global_password" />
 		<user username="global_user_1" password="global_password" />
