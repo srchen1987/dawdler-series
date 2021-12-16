@@ -19,7 +19,7 @@ package com.anywide.dawdler.server.conf;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Boolean;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Int;
-
+import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Long;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -104,6 +104,8 @@ public class ServerConfigParser {
 		server.setShutdownWhiteList(getElementAttribute(serverEle, "shutdownWhiteList", server.getShutdownWhiteList()));
 		server.setTcpShutdownPort(getElementAttribute2Int(serverEle, "tcp-shutdownPort", server.getTcpShutdownPort()));
 		server.setMaxThreads(getElementAttribute2Int(serverEle, "maxThreads", server.getMaxThreads()));
+		server.setQueueCapacity(getElementAttribute2Int(serverEle, "queueCapacity", server.getQueueCapacity()));
+		server.setKeepAliveMilliseconds(getElementAttribute2Long(serverEle, "keepAliveMilliseconds", server.getKeepAliveMilliseconds()));
 	}
 
 	public static void loadGlobalAuth(Element globalAuthEle) {

@@ -37,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
-import com.anywide.dawdler.core.thread.DefaultThreadFactory;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
@@ -59,7 +58,7 @@ public class ServiceRoot {
 	private static final Map<String, Service> services = new ConcurrentHashMap<>();
 	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
 	private static final String DAWDLER_LIB_PATH = "lib";
-	private ExecutorService executor;
+	private DataProcessWorkerPool dataProcessWorkerPool;
 
 	public static Service getService(String path) {
 		Service service = services.get(path);
@@ -91,27 +90,28 @@ public class ServiceRoot {
 		return PathUtils.getRecursionLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH));
 	}
 
-	private void initWorkPool(int nThreads) {
-		executor = Executors.newFixedThreadPool(nThreads, new DefaultThreadFactory(DataProcessWorkerPool.class));
+	private void initWorkPool(int nThreads, int queueCapacity, long keepAliveMilliseconds) {
+		dataProcessWorkerPool = new DataProcessWorkerPool(nThreads, queueCapacity, keepAliveMilliseconds);
 	}
 
 	public void shutdownWorkPool() {
-		executor.shutdown();
+		dataProcessWorkerPool.shutdown();
 	}
 
 	public void shutdownWorkPoolNow() {
-		executor.shutdownNow();
+		dataProcessWorkerPool.shutdownNow();
 	}
 
 	public void execute(Runnable runnable) {
-		executor.execute(runnable);
+		dataProcessWorkerPool.execute(runnable);
 	}
 
 	public void initApplication(DawdlerServerContext dawdlerServerContext) {
-		initWorkPool(dawdlerServerContext.getServerConfig().getServer().getMaxThreads());
+		Server server = dawdlerServerContext.getServerConfig().getServer();
+		initWorkPool(server.getMaxThreads(), server.getQueueCapacity(), server.getKeepAliveMilliseconds());
 		File deployFileRoot = getDeploys();
 		File[] deployFiles = deployFileRoot.listFiles();
-		if(deployFiles == null) {
+		if (deployFiles == null) {
 			System.err.println("deploys not found, startup failed!");
 			return;
 		}
@@ -127,7 +127,6 @@ public class ServiceRoot {
 				}
 			}
 
-			Server server = dawdlerServerContext.getServerConfig().getServer();
 			List<DeployData> deployDataList = new ArrayList<>();
 			for (File deployFile : deployFiles) {
 				if (deployFile.isDirectory()) {

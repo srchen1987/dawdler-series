@@ -17,7 +17,9 @@
 package com.anywide.dawdler.core.thread;
 
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author jackson.song
@@ -28,15 +30,18 @@ import java.util.concurrent.Executors;
  * @email suxuan696@gmail.com
  */
 public class DataProcessWorkerPool {
-	private static final DataProcessWorkerPool processWorkerPool = new DataProcessWorkerPool();
 	private final ExecutorService executor;
 
-	private DataProcessWorkerPool() {
-		executor = Executors.newFixedThreadPool(200, new DefaultThreadFactory(DataProcessWorkerPool.class));// FIXME
-	}
+	public DataProcessWorkerPool(int nThreads, int queueCapacity, long keepAliveMilliseconds) {
+		if (queueCapacity <= 0) {
+			queueCapacity = Integer.MAX_VALUE;
+		}
 
-	public static DataProcessWorkerPool getInstance() {
-		return processWorkerPool;
+		if (keepAliveMilliseconds < 0) {
+			keepAliveMilliseconds = 0;
+		}
+		executor = new ThreadPoolExecutor(nThreads, nThreads, keepAliveMilliseconds, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>(queueCapacity), new DefaultThreadFactory("dataProcessWorkerPool#"));
 	}
 
 	public void execute(Runnable command) {
