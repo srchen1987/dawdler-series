@@ -50,7 +50,7 @@ public class RWSplittingDataSourceManager {
 	private final Map<String, MappingDecision> packages = new HashMap<>();
 
 	public RWSplittingDataSourceManager() throws Exception {
-		init();
+			init();
 	}
 
 	public void init() throws Exception {

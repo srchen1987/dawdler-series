@@ -42,7 +42,7 @@ public class PlugInit {
 			dm = new RWSplittingDataSourceManager();
 			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX, dm);
 			dawdlerContext.setAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX, new TransactionServiceExecutor());
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			logger.error("", e);
 		}
 
