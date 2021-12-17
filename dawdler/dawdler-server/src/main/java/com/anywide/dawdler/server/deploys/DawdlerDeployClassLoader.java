@@ -22,7 +22,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.AccessControlContext;
 import java.security.AccessController;
 import java.security.CodeSigner;
 import java.security.CodeSource;
@@ -52,14 +51,12 @@ import sun.misc.URLClassPath;
 public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerDeployClassLoader.class);
 	private final URLClassPath ucp;
-	private final AccessControlContext acc;
 	private DawdlerContext dawdlerContext;
 	private final WeakHashMap<String, URL> urlCache = new WeakHashMap<>();
 
 	public DawdlerDeployClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
-		this.acc = AccessController.getContext();
-		ucp = new URLClassPath(urls, acc);
+		ucp = new URLClassPath(urls);
 	}
 
 	public static DawdlerDeployClassLoader createLoader(ClassLoader parent, URL... urls) {
