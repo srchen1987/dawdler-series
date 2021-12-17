@@ -137,7 +137,7 @@ public class LoadCore implements Runnable {
 				if (ClientPlugClassLoader.getRemoteClass((host + "-" + className)) == null) {
 					needLoad.add(className + CLASSP_REFIX);
 				}
-			}
+			} 
 			loadClass(needLoad.toArray(new String[0]), false);
 		} catch (DocumentException | IOException e) {
 			logger.error("", e);

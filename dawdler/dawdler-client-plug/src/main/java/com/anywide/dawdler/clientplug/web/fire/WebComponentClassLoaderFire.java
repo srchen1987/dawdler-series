@@ -39,6 +39,8 @@ import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
+import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -72,7 +74,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 				WebContextListenerProvider.addWebContextListener(listener);
 				ServiceFactory.injectRemoteService(clazz, listener, clazz.getClassLoader());
 				WebContextListenerProvider.order();
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (Throwable e) {
 				logger.error("", e);
 			}
 		}
