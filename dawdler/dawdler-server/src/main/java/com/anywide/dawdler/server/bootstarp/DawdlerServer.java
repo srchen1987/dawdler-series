@@ -71,7 +71,7 @@ public class DawdlerServer {
 		serverChannel = AsynchronousServerSocketChannel.open();
 		String addressString = NetworkUtil.getInetAddress(host);
 		if (addressString == null) {
-			throw new UnknownHostException("server-conf.xml server host :  " + server.getHost());
+			throw new UnknownHostException("server-conf.xml server host :  " + host);
 		}
 		server.setHost(addressString);
 		dawdlerServerContext.initApplication();
