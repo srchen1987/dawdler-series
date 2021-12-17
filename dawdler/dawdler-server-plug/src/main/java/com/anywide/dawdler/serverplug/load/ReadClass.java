@@ -48,9 +48,8 @@ import com.anywide.dawdler.util.XmlObject;
 public class ReadClass {
 	private static final Logger logger = LoggerFactory.getLogger(ReadClass.class);
 	private static final Pattern classPattern = Pattern.compile("(.*)\\.class$");
-
+	private static String path = new File(DawdlerTool.getcurrentPath()).getPath()+File.separator;
 	public static XmlObject read(String host) {
-		String path = DawdlerTool.getcurrentPath();
 		try {
 			XmlObject xml = new XmlObject(XmlConfig.getRemoteLoad());
 			List<Node> hosts = xml.selectNodes("/hosts/host[@name='" + host + "']/package");
@@ -87,7 +86,7 @@ public class ReadClass {
 			if (match.find()) {
 				File f = new File(file.getPath() + File.separator + s);
 				Element item = hostele.addElement("item");
-				item.addAttribute("checkname", fs.getAbsolutePath().replace(DawdlerTool.getcurrentPath(), ""));
+				item.addAttribute("checkname", fs.getAbsolutePath().replace(path, ""));
 				item.addAttribute("update", "" + f.lastModified());
 			}
 		}
