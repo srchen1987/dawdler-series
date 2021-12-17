@@ -54,11 +54,7 @@ public class DawdlerTool {
 	}
 
 	public static URL getcurrentURL() {
-		try {
-			return new URL("file:/" + getcurrentPath());
-		} catch (MalformedURLException e) {
-		}
-		return null;
+			return Thread.currentThread().getContextClassLoader().getResource("");
 	}
 
 	public static String getEnv(String key) {
