@@ -204,7 +204,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 						return null;
 					}
 				}
-			}, acc);
+			});
 		} catch (java.security.PrivilegedActionException pae) {
 			throw (ClassNotFoundException) pae.getException();
 		}
