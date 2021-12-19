@@ -39,8 +39,6 @@ import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
-import ch.qos.logback.core.recovery.ResilientSyslogOutputStream;
-
 /**
  * @author jackson.song
  * @version V1.0
