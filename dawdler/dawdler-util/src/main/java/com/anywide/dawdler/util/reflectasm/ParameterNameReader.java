@@ -91,7 +91,6 @@ public class ParameterNameReader {
 			methodsParameterNames.put(method, findLocalVars(methodNode, parameterCount));
 		}
 		parameterNamesCache.put(clazz, methodsParameterNames);
-		System.out.println(parameterNamesCache);
 	}
 
 	public static Map<Method, String[]> getParameterNames(Class<?> clazz) {
