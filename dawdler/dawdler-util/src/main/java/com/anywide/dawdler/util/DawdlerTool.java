@@ -17,16 +17,10 @@
 package com.anywide.dawdler.util;
 
 import java.io.UnsupportedEncodingException;
-import java.lang.management.CompilationMXBean;
-import java.lang.management.GarbageCollectorMXBean;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
-import java.lang.management.MemoryPoolMXBean;
-import java.lang.management.MemoryUsage;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
-import java.lang.management.ThreadMXBean;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.security.MessageDigest;
@@ -54,7 +48,7 @@ public class DawdlerTool {
 	}
 
 	public static URL getcurrentURL() {
-			return Thread.currentThread().getContextClassLoader().getResource("");
+		return Thread.currentThread().getContextClassLoader().getResource("");
 	}
 
 	public static String getEnv(String key) {
