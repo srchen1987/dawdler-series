@@ -306,7 +306,7 @@ public final class XmlObject {
 			return defaultValue;
 		}
 	}
-	
+
 	public static long getElementAttribute2Long(Element element, String attribute, long defaultValue) {
 		Attribute attr = element.attribute(attribute);
 		if (attr == null)
