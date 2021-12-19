@@ -17,12 +17,10 @@
 package com.anywide.dawdler.util.reflectasm;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -34,8 +32,6 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.LocalVariableNode;
 import org.objectweb.asm.tree.MethodNode;
-
-import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
@@ -153,12 +149,5 @@ public class ParameterNameReader {
 		}
 		return parameterNames;
 	}
-	public static void main(String[] args) throws IOException {
-		File file = new File("/home/srchen/github/dawdler-series/dawdler/dawdler-util/target/classes/com/anywide/dawdler/util/XmlObject.class");
-		byte[] bytes = Files.readAllBytes(file.toPath());
-		loadAllDeclaredMethodsParameterNames(XmlObject.class, bytes);
-		parameterNamesCache.get(XmlObject.class);
-	}
-
 	
 }
