@@ -16,12 +16,11 @@
  */
 package com.anywide.dawdler.util.reflectasm;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,22 +44,6 @@ public class ParameterNameReader {
 
 	private static final Map<Class<?>, Map<Method, String[]>> parameterNamesCache = new ConcurrentHashMap<>(64);
 
-	public static String[] getMethodParameterNames(Method method) throws IOException {
-		boolean statics = Modifier.isStatic(method.getModifiers());
-		String name = method.getName();
-		String desc = Type.getMethodDescriptor(method);
-		Class<?> clazz = method.getDeclaringClass();
-		ClassReader classReader = null;
-		try (InputStream input = clazz.getClassLoader()
-				.getResourceAsStream(clazz.getName().replace(".", File.separator) + ".class")) {
-			classReader = new ClassReader(input);
-		}
-		ClassNode classNode = new ClassNode();
-		classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
-		MethodNode methodNode = findMethod(classNode, name, desc);
-		return findLocalVars(methodNode, statics, method.getParameterCount());
-	}
-
 	/**
 	 * 
 	 * <p>
@@ -73,7 +56,7 @@ public class ParameterNameReader {
 	 *         <p>
 	 *         Description:
 	 *         Controller初始化时会加载此类，所以不需要考虑线程安全,其他场景使用需要考虑线程安全，防止多次调用影响性能，瞬间增加io和系统负载
-	 *         初始化所有本类的方法 不考虑 bridge、static、syn 、private、 父类的方法
+	 *         初始化所有本类的方法 不考虑 bridge、static、syn 、private、varArgs、abstract 及其父类的方法
 	 *         </p>
 	 * @param clazz
 	 * @throws IOException
@@ -94,14 +77,21 @@ public class ParameterNameReader {
 
 		for (Method method : methods) {
 			boolean statics = Modifier.isStatic(method.getModifiers());
+			if (statics || method.isBridge() || method.isVarArgs() || Modifier.isPrivate(method.getModifiers())
+					|| Modifier.isSynchronized(method.getModifiers()) || Modifier.isAbstract(method.getModifiers())) {
+				continue;
+			}
+			int parameterCount = method.getParameterCount();
+			if (parameterCount == 0) {
+				continue;
+			}
 			String name = method.getName();
 			String desc = Type.getMethodDescriptor(method);
 			MethodNode methodNode = findMethod(classNode, name, desc);
-			int parameterCount = method.getParameterCount();
-			if (parameterCount > 0)
-				methodsParameterNames.put(method, findLocalVars(methodNode, statics, parameterCount));
+			methodsParameterNames.put(method, findLocalVars(methodNode, parameterCount));
 		}
 		parameterNamesCache.put(clazz, methodsParameterNames);
+		System.out.println(parameterNamesCache);
 	}
 
 	public static Map<Method, String[]> getParameterNames(Class<?> clazz) {
@@ -122,32 +112,30 @@ public class ParameterNameReader {
 		return null;
 	}
 
-	public static String[] findLocalVars(MethodNode methodNode, boolean statics, int parameterCount) {
+	public static String[] findLocalVars(MethodNode methodNode, /* boolean statics, */ int parameterCount) {
 		List<LocalVariableNode> localVariableNodes = methodNode.localVariables;
 		if (localVariableNodes.isEmpty())
 			return null;
-		String[] parameterNames = null;
-		if (statics) {
-			parameterNames = new String[parameterCount];
-		} else {
-			parameterNames = new String[parameterCount];
-		}
+		String[] parameterNames = new String[parameterCount];
+		Comparator<LocalVariableNode> indexComparator = (o1, o2) -> o1.index - o2.index;
+		Collections.sort(localVariableNodes, indexComparator);
 		for (LocalVariableNode variableNode : localVariableNodes) {
 			int index = variableNode.index;
 			String name = variableNode.name;
-			if (statics) {
-				if (index == parameterCount-1)
-					return parameterNames;
-				parameterNames[index] = name;
-			} else {
-				if (index == parameterCount)
-					return parameterNames;
-				if (index == 0)
-					continue;// skip this
-				parameterNames[index - 1] = name;
+//			if (statics) {
+//				if (index == parameterCount - 1)
+//					return parameterNames;
+//				parameterNames[index] = name;
+//			} else {
+			if (index == parameterCount) {
+				return parameterNames;
+			} else if (index == 0) {
+				continue;// skip this
 			}
+			parameterNames[index - 1] = name;
+//			}
 		}
 		return parameterNames;
 	}
-	
+
 }
