@@ -103,11 +103,13 @@ public class RWSplittingDataSourceManager {
 			return dataSource;
 		try {
 			dataSource = LocalConnectionFactory.getDataSourceInDawdler(id);
-			dataSources.put(id, dataSource);
-			return dataSource;
+			if(dataSource != null) {
+				dataSources.put(id, dataSource);
+				return dataSource;
+			}
 		} catch (NamingException e) {
-			return null;
 		}
+		throw new NullPointerException("not found dataSource : "+id);
 	}
 
 	public MappingDecision getMappingDecision(String packageName) {
