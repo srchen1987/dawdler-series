@@ -17,6 +17,7 @@
 package com.anywide.dawdler.core.net.buffer;
 
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -47,11 +48,11 @@ public class PoolBuffer {
 
 	private PoolBuffer(int capacity) {
 		ByteBufferPooledFactory factory = new ByteBufferPooledFactory(capacity);
-		GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+		GenericObjectPoolConfig<ByteBuffer> poolConfig = new GenericObjectPoolConfig<>();
 		poolConfig.setMinIdle(1);
 		poolConfig.setMinIdle(4);
-		poolConfig.setMaxTotal(24);
-		poolConfig.setMinEvictableIdleTimeMillis(180000);
+		poolConfig.setMaxTotal(32);
+		poolConfig.setSoftMinEvictableIdleTime(Duration.ofMillis(180000));
 		objectPool = new GenericObjectPool<ByteBuffer>(factory, poolConfig);
 	}
 
