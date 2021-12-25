@@ -60,8 +60,9 @@ public class ClientClassLoader extends URLClassLoader {
 		if (security != null) {
 			security.checkCreateClassLoader();
 		}
-		ucp = new URLClassPath(urls);
 		acc = AccessController.getContext();
+		ucp = new URLClassPath(urls);
+		
 	}
 
 	public ClientClassLoader(URL[] urls) {
@@ -70,8 +71,8 @@ public class ClientClassLoader extends URLClassLoader {
 		if (security != null) {
 			security.checkCreateClassLoader();
 		}
-		ucp = new URLClassPath(urls);
 		acc = AccessController.getContext();
+		ucp = new URLClassPath(urls);
 	}
 
 	public static ClientClassLoader newInstance(final URL[] urls, final java.lang.ClassLoader parent) {
@@ -85,7 +86,7 @@ public class ClientClassLoader extends URLClassLoader {
 	@Override
 	protected Class<?> findClass(final String name) throws ClassNotFoundException {
 		try {
-			return (Class) AccessController.doPrivileged((PrivilegedExceptionAction) () -> {
+			return (Class<?>) AccessController.doPrivileged((PrivilegedExceptionAction<?>) () -> {
 				String path = name.replace('.', '/').concat(".class");
 				Resource res = ucp.getResource(path, false);
 				if (res != null) {
@@ -103,7 +104,7 @@ public class ClientClassLoader extends URLClassLoader {
 		}
 	}
 
-	public Class defineClass(String name, Resource res) throws IOException {
+	public Class<?> defineClass(String name, Resource res) throws IOException {
 		int i = name.lastIndexOf('.');
 		URL url = res.getCodeSourceURL();
 		if (i != -1) {
