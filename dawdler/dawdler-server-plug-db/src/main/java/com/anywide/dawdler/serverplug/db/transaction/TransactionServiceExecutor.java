@@ -88,7 +88,6 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 						throw new TransactionRequiredException(object.getClass().getPackage().getName()+" transaction needs to be set.");
 					}
 					readStatus = new JdbcReadConnectionStatus(dbt);
-					logger.info("synReadObj_start"+requestBean.getServiceName()+"#"+methodName+":"+Thread.currentThread().getName()+":"+synReadObj);
 					if (dbt.readConfig() == READ_CONFIG.idem) {
 						if (synReadObj == null) {
 							synReadObj = new SynReadConnectionObject(mappingDecision, dbt);
