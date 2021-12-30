@@ -79,7 +79,6 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 				ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 				if (cp != null)
 					cp.doChange(gid, action, provider);
-//			}
 			}
 		});
 		curatorCache.start();

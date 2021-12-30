@@ -192,10 +192,12 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 					}
 				}
 				ReadConnectionHolder readConnectionHolder = readStatus.getOldConn();
+				synReadObj.released();
+				LocalConnectionFactory.removeReadConnection();
 				if (readConnectionHolder != null) {
 					synReadObj.setReadConnectionHolder(readConnectionHolder);
 				}
-				synReadObj.released();
+				
 			}
 		}
 	}
