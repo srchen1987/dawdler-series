@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.core.net.aio.session;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -35,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.core.handler.IoHandler;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.BufferFactory;
+import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.core.thread.InvokeFuture;
 import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
@@ -42,7 +42,6 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
 
-import sun.nio.ch.DirectBuffer;
 
 /**
  * @author jackson.song
@@ -69,8 +68,8 @@ public abstract class AbstractSocketSession {
 	protected volatile long lastWriteTime;
 	protected Timeout readerIdleTimeout;
 	protected Timeout writerIdleTimeout;
-	protected ByteBuffer readBuffer;
-	protected ByteBuffer writeBuffer;
+	protected DawdlerByteBuffer readBuffer;
+	protected DawdlerByteBuffer writeBuffer;
 	protected int dataLength;
 	protected int packageSize;
 	protected int alreadyRead;
@@ -89,14 +88,14 @@ public abstract class AbstractSocketSession {
 	private boolean authored;
 	private SessionState state = SessionState.RECEIVE;
 
-	public AbstractSocketSession(AsynchronousSocketChannel channel, boolean init) throws IOException {
+	public AbstractSocketSession(AsynchronousSocketChannel channel, boolean init) throws Exception {
 		this.channel = channel;
 		if (init) {
 			init();
 		}
 	}
 
-	public AbstractSocketSession(AsynchronousSocketChannel channel) throws IOException {
+	public AbstractSocketSession(AsynchronousSocketChannel channel) throws Exception {
 		this(channel, true);
 	}
 
@@ -124,7 +123,7 @@ public abstract class AbstractSocketSession {
 		this.futures = futures;
 	}
 
-	public ByteBuffer getWriteBuffer() {
+	public DawdlerByteBuffer getWriteBuffer() {
 		return writeBuffer;
 	}
 
@@ -138,7 +137,7 @@ public abstract class AbstractSocketSession {
 		return sessionInitLatch;
 	}
 
-	public void init() throws IOException {
+	public void init() throws Exception {
 		remoteAddress = channel.getRemoteAddress();
 		localAddress = channel.getLocalAddress();
 		describe = "local:" + localAddress + " remote:" + remoteAddress + " hashCode/" + hashCode();
@@ -155,11 +154,8 @@ public abstract class AbstractSocketSession {
 		return localAddress;
 	}
 
-	public void clean(final ByteBuffer byteBuffer) {
-		if (byteBuffer.isDirect()) {
-			((DirectBuffer) byteBuffer).cleaner().clean();
-		} else
-			byteBuffer.clear();
+	public void clean(final DawdlerByteBuffer byteBuffer) {
+		byteBuffer.close();
 	}
 
 	public abstract void close();
@@ -236,7 +232,7 @@ public abstract class AbstractSocketSession {
 		buffer.clear();
 	}
 
-	public ByteBuffer getReadBuffer() {
+	public DawdlerByteBuffer getReadBuffer() {
 		return readBuffer;
 	}
 
@@ -305,7 +301,7 @@ public abstract class AbstractSocketSession {
 
 	public void write(ByteBuffer obj) {
 		setLastWriteTime(JVMTimeProvider.currentTimeMillis());
-		synchronized (channel) {
+		synchronized (this) {
 			try {
 				while (obj.hasRemaining()) {
 					Future<Integer> future = channel.write(obj);

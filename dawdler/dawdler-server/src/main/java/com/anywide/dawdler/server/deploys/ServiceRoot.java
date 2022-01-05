@@ -37,6 +37,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
+import com.anywide.dawdler.server.conf.ServerConfig;
+import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
@@ -53,9 +55,9 @@ import com.anywide.dawdler.util.JVMTimeProvider;
  * @email suxuan696@gmail.com
  */
 public class ServiceRoot {
-	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
 	private static final Logger logger = LoggerFactory.getLogger(ServiceRoot.class);
 	private static final Map<String, Service> services = new ConcurrentHashMap<>();
+	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
 	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
 	private static final String DAWDLER_LIB_PATH = "lib";
 	private DataProcessWorkerPool dataProcessWorkerPool;
@@ -69,25 +71,26 @@ public class ServiceRoot {
 		return service;
 	}
 
-	public ClassLoader createServerClassLoader() {
+	public ClassLoader createServerClassLoader(URL binPath) {
 		try {
-			return DawdlerClassLoader.createLoader(Thread.currentThread().getContextClassLoader(), getLibURL());
+			return DawdlerClassLoader.createLoader(binPath, Thread.currentThread().getContextClassLoader(),
+					getLibURL());
 		} catch (MalformedURLException e) {
 			logger.error("", e);
 			return null;
 		}
 	}
 
-	private String getEnv(String key) {
-		return DawdlerTool.getEnv(key);
+	private String getProperty(String key) {
+		return DawdlerTool.getProperty(key);
 	}
 
 	private File getDeploys() {
-		return new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
+		return new File(getProperty(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
 	}
 
 	private URL[] getLibURL() throws MalformedURLException {
-		return PathUtils.getRecursionLibURL(new File(getEnv(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH));
+		return PathUtils.getRecursionLibURL(new File(getProperty(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH));
 	}
 
 	private void initWorkPool(int nThreads, int queueCapacity, long keepAliveMilliseconds) {
@@ -107,7 +110,9 @@ public class ServiceRoot {
 	}
 
 	public void initApplication(DawdlerServerContext dawdlerServerContext) {
-		Server server = dawdlerServerContext.getServerConfig().getServer();
+		ServerConfig serverConfig = dawdlerServerContext.getServerConfig();
+		Server server = serverConfig.getServer();
+		Scanner scanner = serverConfig.getScanner();
 		initWorkPool(server.getMaxThreads(), server.getQueueCapacity(), server.getKeepAliveMilliseconds());
 		File deployFileRoot = getDeploys();
 		File[] deployFiles = deployFileRoot.listFiles();
@@ -118,7 +123,7 @@ public class ServiceRoot {
 		long start = JVMTimeProvider.currentTimeMillis();
 		if (deployFiles.length > 0) {
 			ExecutorService executor = Executors.newCachedThreadPool();
-			ClassLoader classLoader = createServerClassLoader();
+			ClassLoader classLoader = createServerClassLoader(serverConfig.getBinPath());
 			if (classLoader != null) {
 				try {
 					DataSourceNamingInit.init(classLoader);
@@ -134,7 +139,8 @@ public class ServiceRoot {
 					Callable<Void> call = (() -> {
 						try {
 							long serviceStart = JVMTimeProvider.currentTimeMillis();
-							Service service = new ServiceBase(deployFile, server.getHost(), server.getTcpPort(),
+							Service service = new ServiceBase(serverConfig.getBinPath(), scanner,
+									serverConfig.getAntPathMatcher(), deployFile, server.getHost(), server.getTcpPort(),
 									classLoader);
 							services.put(deployName, service);
 							service.start();

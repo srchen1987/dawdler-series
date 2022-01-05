@@ -37,10 +37,8 @@ public class PlugInit {
 	private static final Logger logger = LoggerFactory.getLogger(PlugInit.class);
 
 	public PlugInit(DawdlerContext dawdlerContext) {
-		RWSplittingDataSourceManager dm;
 		try {
-			dm = new RWSplittingDataSourceManager();
-			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX, dm);
+			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX, new RWSplittingDataSourceManager(dawdlerContext));
 			dawdlerContext.setAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX, new TransactionServiceExecutor());
 		} catch (Throwable e) {
 			logger.error("", e);
