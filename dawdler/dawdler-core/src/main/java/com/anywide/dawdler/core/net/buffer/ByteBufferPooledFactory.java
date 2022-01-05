@@ -16,13 +16,10 @@
  */
 package com.anywide.dawdler.core.net.buffer;
 
-import java.nio.ByteBuffer;
-
 import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 
-import sun.nio.ch.DirectBuffer;
 
 /**
  * @author jackson.song
@@ -32,7 +29,7 @@ import sun.nio.ch.DirectBuffer;
  * @date 2015年3月14日
  * @email suxuan696@gmail.com
  */
-public class ByteBufferPooledFactory implements PooledObjectFactory<ByteBuffer> {
+public class ByteBufferPooledFactory implements PooledObjectFactory<DawdlerByteBuffer> {
 	private final int capacity;
 
 	public ByteBufferPooledFactory(int capacity) {
@@ -40,31 +37,28 @@ public class ByteBufferPooledFactory implements PooledObjectFactory<ByteBuffer> 
 	}
 
 	@Override
-	public PooledObject<ByteBuffer> makeObject() throws Exception {
-		return new DefaultPooledObject<ByteBuffer>(BufferFactory.createDirectBuffer(capacity));
+	public PooledObject<DawdlerByteBuffer> makeObject() throws Exception {
+		return new DefaultPooledObject<DawdlerByteBuffer>(BufferFactory.createDirectBuffer(capacity));
 	}
 
 	@Override
-	public void destroyObject(PooledObject<ByteBuffer> p) throws Exception {
-		ByteBuffer byteBuffer = p.getObject();
-		if (byteBuffer.isDirect())
-			((DirectBuffer) byteBuffer).cleaner().clean();
-		else
-			byteBuffer.clear();
+	public void destroyObject(PooledObject<DawdlerByteBuffer> p) throws Exception {
+		DawdlerByteBuffer DawdlerByteBuffer = p.getObject();
+		DawdlerByteBuffer.close();
 	}
 
 	@Override
-	public boolean validateObject(PooledObject<ByteBuffer> p) {
+	public boolean validateObject(PooledObject<DawdlerByteBuffer> p) {
 		return true;
 	}
 
 	@Override
-	public void activateObject(PooledObject<ByteBuffer> p) throws Exception {
+	public void activateObject(PooledObject<DawdlerByteBuffer> p) throws Exception {
 
 	}
 
 	@Override
-	public void passivateObject(PooledObject<ByteBuffer> p) throws Exception {
+	public void passivateObject(PooledObject<DawdlerByteBuffer> p) throws Exception {
 
 	}
 
