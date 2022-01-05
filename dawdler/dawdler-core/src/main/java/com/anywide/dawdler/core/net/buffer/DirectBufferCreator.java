@@ -16,7 +16,14 @@
  */
 package com.anywide.dawdler.core.net.buffer;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import sun.misc.Unsafe;
 
 /**
  * @author jackson.song
@@ -27,8 +34,33 @@ import java.nio.ByteBuffer;
  * @email suxuan696@gmail.com
  */
 public class DirectBufferCreator implements BufferCreator {
-	@Override
-	public ByteBuffer createByteBuffer(int capacity) {
-		return ByteBuffer.allocateDirect(capacity);
+	private static final Logger logger = LoggerFactory.getLogger(DirectBufferCreator.class);
+	private static Unsafe unsafe;
+	private static Constructor<?> bufferConstructor;
+	static {
+		try {
+			unsafe = Unsafe.getUnsafe();
+			Class<?> bufferClass = Class.forName("java.nio.DirectByteBuffer");
+			bufferConstructor = bufferClass.getDeclaredConstructor(long.class, int.class);
+			bufferConstructor.setAccessible(true);
+		} catch (Exception e) {
+			logger.error("", e);
+		}
 	}
+	
+	public static DawdlerByteBuffer createByteBufferByUnsafe(int capacity) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+		long addr = unsafe.allocateMemory(capacity);
+		ByteBuffer buffer = (ByteBuffer) bufferConstructor.newInstance(addr, capacity);
+		DawdlerByteBuffer dawdlerByteBuffer = new DawdlerByteBuffer(buffer);
+		dawdlerByteBuffer.setAddr(addr);
+		return dawdlerByteBuffer;
+	}
+	public static void freeMemory(long addr) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		unsafe.freeMemory(addr);
+	}
+	@Override
+	public DawdlerByteBuffer createByteBuffer(int capacity) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+		return createByteBufferByUnsafe(capacity);
+	}
+	
 }
