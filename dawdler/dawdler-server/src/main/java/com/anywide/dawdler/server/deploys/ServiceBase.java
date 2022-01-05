@@ -17,15 +17,20 @@
 package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.ProtectionDomain;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.dom4j.DocumentException;
+import org.dom4j.Element;
+import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,6 +41,7 @@ import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.server.bean.ServicesBean;
+import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.filter.DawdlerFilter;
 import com.anywide.dawdler.server.filter.FilterProvider;
@@ -46,7 +52,11 @@ import com.anywide.dawdler.server.serivce.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
+import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
+import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
+import com.anywide.dawdler.util.spring.antpath.StringUtils;
 
 /**
  * @author jackson.song
@@ -58,7 +68,7 @@ import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
  */
 public class ServiceBase implements Service {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceBase.class);
-	public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutor_prefix";
+	public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutorPrefix";
 	public static final String ASPECT_SUPPORT_OBJ = "aspectSupportObj";// aspect 支持
 	public static final String ASPECT_SUPPORT_METHOD = "aspectSupportMethod";
 	private static final String CLASSES_PATH = "classes";
@@ -72,17 +82,26 @@ public class ServiceBase implements Service {
 	private final FilterProvider filterProvider = new FilterProvider();
 	private ServiceExecutor serviceExecutor = defaultServiceExecutor;
 	private final static int WAIT_TIME_MILLIS = 1000;
+	private final Scanner scanner;
+	private final DeployScanner deployScanner;
+	private AntPathMatcher antPathMatcher;
 
-	public ServiceBase(File deploy, String host, int port, ClassLoader parent) throws MalformedURLException {
+	public ServiceBase(URL binPath, Scanner scanner, AntPathMatcher antPathMatcher, File deploy, String host, int port,
+			ClassLoader parent) throws MalformedURLException {
+		this.scanner = scanner;
+		this.deployScanner = new DeployScanner();
+		this.antPathMatcher = antPathMatcher;
 		this.deploy = deploy;
-		classLoader = DawdlerDeployClassLoader.createLoader(parent, getClassLoaderURL());
+		classLoader = DawdlerDeployClassLoader.createLoader(binPath, parent, getClassLoaderURL());
+		Thread.currentThread().setContextClassLoader(classLoader);
 		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
 				host, port, servicesManager);
 		classLoader.setDawdlerContext(dawdlerContext);
-		Thread.currentThread().setContextClassLoader(classLoader);
+		dawdlerContext.setServicesConfig(loadXML());
+		dawdlerContext.setAntPathMatcher(antPathMatcher);
 		try {
 			Class<?> clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
-			Object obj = clazz.newInstance();
+			Object obj = clazz.getDeclaredConstructor().newInstance();
 			Method initializeMethod = clazz.getMethod("initialize");
 			initializeMethod.invoke(obj);
 			Method preProcessMethod = clazz.getMethod("preProcess", String.class, byte[].class, ClassLoader.class,
@@ -129,8 +148,20 @@ public class ServiceBase implements Service {
 		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
 		if (definedServiceExecutor != null)
 			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
+
+		Element root = dawdlerContext.getServicesConfig().getRoot();
+
+		List<Node> packagesInClasses = root.selectNodes("scanner/packages-in-classes/package-path");
+		for (Node node : packagesInClasses) {
+			deployScanner.splitAndAddPathInClasses(node.getText().trim());
+		}
+		List<Node> packagesInJars = root.selectNodes("scanner/packages-in-jar/package-path");
+		for (Node node : packagesInJars) {
+			deployScanner.splitAndAddPathInJar(node.getText().trim());
+		}
+
 		Set<Class<?>> classes;
-		classes = DeployClassesScanner.getClassesInPath(deploy);
+		classes = DeployClassesScanner.getClassesInPath(scanner, deployScanner, deploy);
 		Set<Class<?>> serviceClasses = new HashSet<>();
 		for (Class<?> c : classes) {
 			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
@@ -250,7 +281,8 @@ public class ServiceBase implements Service {
 	private void injectService(Object service) {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			com.anywide.dawdler.core.annotation.Service serviceAnnotation = field.getAnnotation(com.anywide.dawdler.core.annotation.Service.class);
+			com.anywide.dawdler.core.annotation.Service serviceAnnotation = field
+					.getAnnotation(com.anywide.dawdler.core.annotation.Service.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
@@ -261,8 +293,9 @@ public class ServiceBase implements Service {
 							obj = ServiceFactory.getService(serviceClass, serviceExecutor, dawdlerContext);
 						} else {
 							RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
-							if(remoteService == null) {
-								throw new NotSetRemoteServiceException("not found @RemoteService on "+serviceClass.getName());
+							if (remoteService == null) {
+								throw new NotSetRemoteServiceException(
+										"not found @RemoteService on " + serviceClass.getName());
 							}
 							Class<?> serviceFactoryClass = classLoader
 									.loadClass("com.anywide.dawdler.client.ServiceFactory");
@@ -295,5 +328,82 @@ public class ServiceBase implements Service {
 		} catch (Exception e) {
 			// ignore
 		}
+	}
+
+	private XmlObject loadXML() {
+		try {
+			String configPath;
+			File file;
+			String activeProfile = System.getProperty("dawdler.profiles.active");
+			String prefix = "services-config";
+			String subfix = ".xml";
+			configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+			file = new File(DawdlerTool.getcurrentPath() + configPath);
+			if (!file.isFile()) {
+				configPath = prefix + subfix;
+				file = new File(DawdlerTool.getcurrentPath() + configPath);
+			}
+			if (!file.isFile()) {
+				logger.error("not found services-config.xml");
+			}
+			return XmlObject.loadClassPathXML(configPath);
+		} catch (DocumentException | IOException e) {
+			logger.error("", e);
+		}
+		return null;
+	}
+
+	public class DeployScanner {
+		private Set<String> packagePathInJar = new LinkedHashSet<String>();
+		private Set<String> packageAntPathInJar = new LinkedHashSet<String>();
+		private Set<String> packagePathInClasses = new LinkedHashSet<String>();
+		private Set<String> packageAntPathInClasses = new LinkedHashSet<String>();
+
+		public void splitAndAddPathInJar(String packagePath) {
+			if (!StringUtils.hasLength(packagePath)) {
+				return;
+			}
+			if (antPathMatcher.isPattern(packagePath)) {
+				this.packageAntPathInJar.add(packagePath);
+			} else {
+				this.packagePathInJar.add(packagePath);
+			}
+		}
+
+		public void splitAndAddPathInClasses(String packagePath) {
+			if (!StringUtils.hasLength(packagePath)) {
+				return;
+			}
+			if (antPathMatcher.isPattern(packagePath)) {
+				this.packageAntPathInClasses.add(packagePath);
+			} else {
+				this.packagePathInClasses.add(packagePath);
+			}
+		}
+
+		public boolean matchInClasses(String packagePath) {
+			if (packagePathInClasses.contains(packagePath)) {
+				return true;
+			}
+			for (String antPath : packageAntPathInClasses) {
+				if (antPathMatcher.match(antPath, packagePath)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public boolean matchInJars(String packagePath) {
+			if (packagePathInJar.contains(packagePath)) {
+				return true;
+			}
+			for (String antPath : packageAntPathInJar) {
+				if (antPathMatcher.match(antPath, packagePath)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
 	}
 }

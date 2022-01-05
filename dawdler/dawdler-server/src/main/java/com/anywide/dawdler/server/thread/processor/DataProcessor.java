@@ -29,6 +29,7 @@ import com.anywide.dawdler.core.compression.strategy.CompressionWrapper;
 import com.anywide.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
 import com.anywide.dawdler.core.handler.IoHandler;
 import com.anywide.dawdler.core.handler.IoHandlerFactory;
+import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.Serializer;
 import com.anywide.dawdler.core.thread.InvokeFuture;
@@ -133,7 +134,6 @@ public class DataProcessor implements Runnable {
 			} else {
 				logger.warn(socketSession.getRemoteAddress() + " auth failed!");
 			}
-
 			data = serializer.serialize(authResponse);
 			write();
 		} else
@@ -145,28 +145,34 @@ public class DataProcessor implements Runnable {
 		CompressionWrapper compressionWrapper = ThresholdCompressionStrategy.staticSingle().compress(data);
 		data = compressionWrapper.getBuffer();
 		synchronized (socketSession) {
-			ByteBuffer bf = socketSession.getWriteBuffer();
+			if(socketSession.isClose()) {
+				return;
+			}
+			DawdlerByteBuffer dawdlerByteBuffer = socketSession.getWriteBuffer();
+			ByteBuffer buffer = dawdlerByteBuffer.getByteBuffer();
 			int size = data.length + 1;
 			int capacity = size + 4;
-			PoolBuffer pb = null;
+			PoolBuffer pool = null;
 			try {
 				if (capacity > SocketSession.CAPACITY) {
-					pb = PoolBuffer.selectPool(capacity);
-					if (pb == null) {
-						bf = ByteBuffer.allocate(capacity);
+					pool = PoolBuffer.selectPool(capacity);
+					if (pool == null) {
+						buffer = ByteBuffer.allocate(capacity);
 						logger.warn("The serialized object is too large.\t size :" + capacity);
-					} else
-						bf = pb.getByteBuffer();
+					} else {
+						dawdlerByteBuffer = pool.getByteBuffer();
+						buffer = dawdlerByteBuffer.getByteBuffer();
+					}
 				}
-				bf.putInt(size);
-				bf.put((byte) (compressionWrapper.isCompressed() ? headData | 1 : headData));
-				bf.put(data);
-				bf.flip();
-				socketSession.write(bf);
+				buffer.putInt(size);
+				buffer.put((byte) (compressionWrapper.isCompressed() ? headData | 1 : headData));
+				buffer.put(data);
+				buffer.flip();
+				socketSession.write(buffer);
 			} finally {
-				bf.clear();
-				if (pb != null) {
-					pb.release(bf);
+				buffer.clear();
+				if (pool != null) {
+					pool.release(dawdlerByteBuffer);
 				}
 			}
 		}

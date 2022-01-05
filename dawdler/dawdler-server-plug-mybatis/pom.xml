@@ -19,10 +19,5 @@
 			<groupId>ognl</groupId>
 			<artifactId>ognl</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 </project> 

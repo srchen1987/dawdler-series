@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.client.net.aio.handler;
 
-import java.io.IOException;
 import java.nio.channels.CompletionHandler;
 
 import org.slf4j.Logger;
@@ -49,7 +48,7 @@ public class ConnectorHandler implements CompletionHandler<Void, SocketSession> 
 				ClientConfigParser.getClientConfig().getCertificatePath());
 		try {
 			session.init();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			session.close(false);
 			logger.error("", e);
 			return;
