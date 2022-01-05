@@ -26,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
+import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
 import com.anywide.dawdler.util.JVMTimeProvider;
 
 /**
@@ -50,7 +51,8 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 		}
 		session.setLastReadTime(JVMTimeProvider.currentTimeMillis());
 		if (result > 0) {
-			ByteBuffer buffer = session.getReadBuffer();
+			DawdlerByteBuffer dawdlerBuffer = session.getReadBuffer();
+			ByteBuffer buffer = dawdlerBuffer.getByteBuffer();
 			if (session.isReceived()) {
 				if (session.isNeedNext() ? buffer.remaining() <= HEADER_FIELD_LENGTH
 						: buffer.position() <= HEADER_FIELD_LENGTH) {
@@ -167,9 +169,9 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 		AsynchronousSocketChannel channel = session.getChannel();
 		if (!session.isClose()) {
 			if (session.isReceived())
-				channel.read(session.getReadBuffer(), session, this);
+				channel.read(session.getReadBuffer().getByteBuffer(), session, this);
 			else
-				channel.read(session.getReadBuffer(), 5000, TimeUnit.MILLISECONDS, session, this);
+				channel.read(session.getReadBuffer().getByteBuffer(), 5000, TimeUnit.MILLISECONDS, session, this);
 		}
 	}
 
