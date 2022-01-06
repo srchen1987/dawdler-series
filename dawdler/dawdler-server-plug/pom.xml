@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>0.0.3-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug</artifactId>
 	<name>dawdler-server-plug</name>
@@ -23,7 +23,7 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-client</artifactId>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-load-bean</artifactId>
 		</dependency>

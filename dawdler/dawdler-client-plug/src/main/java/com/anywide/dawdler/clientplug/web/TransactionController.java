@@ -17,17 +17,18 @@
 package com.anywide.dawdler.clientplug.web;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.anywide.dawdler.clientplug.web.handler.ViewControllerContext;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import com.anywide.dawdler.clientplug.web.upload.UploadFile;
 import com.anywide.dawdler.util.ClassUtil;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author jackson.song
@@ -86,13 +87,14 @@ public abstract class TransactionController {
 		getViewForward().setForwardAndRedirectPath(forwardAndRedirectPath);
 	}
 
-	public <T> T paramClass(Class<T> classes) {
-		Field[] fields = classes.getDeclaredFields();
+	public <T> T paramClass(Class<T> clazz) {
+		Field[] fields = clazz.getDeclaredFields();
 		Object value = null;
 		T instance;
 		try {
-			instance = classes.newInstance();
-		} catch (InstantiationException | IllegalAccessException e) {
+			instance = clazz.getDeclaredConstructor().newInstance();
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException e) {
 			return null;
 		}
 		for (Field field : fields) {

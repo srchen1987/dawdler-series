@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>0.0.3-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-core</artifactId>
 	<name>dawdler-core</name>

@@ -17,6 +17,7 @@
 package com.anywide.dawdler.clientplug.web.fire;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -68,7 +69,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	private void initListener(Class<?> clazz) {
 		if (WebContextListener.class.isAssignableFrom(clazz)) {
 			try {
-				WebContextListener listener = clazz.asSubclass(WebContextListener.class).newInstance();
+				WebContextListener listener = clazz.asSubclass(WebContextListener.class).getDeclaredConstructor().newInstance();
 				WebContextListenerProvider.addWebContextListener(listener);
 				ServiceFactory.injectRemoteService(clazz, listener, clazz.getClassLoader());
 				WebContextListenerProvider.order();
@@ -81,7 +82,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	private void initInterceptor(Class<?> clazz) {
 		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
 			try {
-				HandlerInterceptor interceptor = (HandlerInterceptor) clazz.newInstance();
+				HandlerInterceptor interceptor = (HandlerInterceptor) clazz.getDeclaredConstructor().newInstance();
 				List<OrderData<HandlerInterceptor>> interceptors = InterceptorProvider.getHandlerInterceptors();
 				for (OrderData<HandlerInterceptor> orderData : interceptors) {
 					if (orderData.getData().getClass() == clazz)
@@ -90,7 +91,8 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 				InterceptorProvider.addHandlerInterceptor(interceptor);
 				ServiceFactory.injectRemoteService(clazz, interceptor, clazz.getClassLoader());
 				InterceptorProvider.order();
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+					| SecurityException e) {
 				logger.error("", e);
 			}
 		}
@@ -102,9 +104,10 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
 			Object target;
 			try {
-				target = clazz.newInstance();
+				target = clazz.getDeclaredConstructor().newInstance();
 				ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+					| SecurityException e) {
 				logger.error("", e);
 				return;
 			}

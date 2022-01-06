@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.util;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 /**
  * @author jackson.song

@@ -24,18 +24,22 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
-import org.elasticsearch.client.RestHighLevelClient;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 
 /**
-*
-* @Title RestHighLevelClientFactory.java
-* @Description RestHighLevelClientFactory工厂
-* @author jackson.song
-* @date 2021年11月14日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
-public class RestHighLevelClientFactory {
+ *
+ * @Title RestHighLevelClientFactory.java
+ * @Description RestHighLevelClientFactory工厂
+ * @author jackson.song
+ * @date 2021年11月14日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
+public class EsClientFactory {
 	private String username;
 	private String password;
 	private String hosts;
@@ -43,7 +47,7 @@ public class RestHighLevelClientFactory {
 	private int connectTimeout;// 链接建立的超时时间
 	private int socketTimeout;// 响应超时时间
 
-	public RestHighLevelClientFactory(String username, String password, String hosts, int connectionRequestTimeout,
+	public EsClientFactory(String username, String password, String hosts, int connectionRequestTimeout,
 			int connectTimeout, int socketTimeout) {
 		this.username = username;
 		this.password = password;
@@ -53,21 +57,23 @@ public class RestHighLevelClientFactory {
 		this.socketTimeout = socketTimeout;
 	}
 
-	public RestHighLevelClient create() {
+	public ElasticsearchClient create() {
 		HttpHost[] httpHostArray = getHttpHosts();
 		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 		credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
-		RestClientBuilder builder = RestClient.builder(httpHostArray)
+		RestClient restClient = RestClient.builder(httpHostArray)
 				.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
 					@Override
 					public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
 						return requestConfigBuilder.setConnectTimeout(connectTimeout)
 								.setConnectionRequestTimeout(connectionRequestTimeout).setSocketTimeout(socketTimeout);
 					}
-				}).setHttpClientConfigCallback(
-						httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider));
-		return new RestHighLevelClient(builder);
-
+				})
+				.setHttpClientConfigCallback(
+						httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider))
+				.build();
+		ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+		return new ElasticsearchClient(transport);
 	}
 
 	private HttpHost[] getHttpHosts() {
