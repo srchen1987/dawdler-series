@@ -20,18 +20,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.ByteBuffer;
-import java.security.AccessControlContext;
-import java.security.AccessController;
 import java.security.CodeSigner;
 import java.security.CodeSource;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedExceptionAction;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
 
-import sun.misc.Resource;
-import sun.misc.URLClassPath;
+import jdk.internal.loader.Resource;
+import jdk.internal.loader.URLClassPath;
 
 /**
  * @author jackson.song
@@ -44,7 +40,6 @@ import sun.misc.URLClassPath;
 
 public class ClientClassLoader extends URLClassLoader {
 	private final URLClassPath ucp;
-	private AccessControlContext acc;
 
 	@Override
 	public URL getResource(String name) {
@@ -56,59 +51,40 @@ public class ClientClassLoader extends URLClassLoader {
 
 	public ClientClassLoader(URL[] urls, java.lang.ClassLoader parent) {
 		super(urls, parent);
-		SecurityManager security = System.getSecurityManager();
-		if (security != null) {
-			security.checkCreateClassLoader();
-		}
-		ucp = new URLClassPath(urls);
-		acc = AccessController.getContext();
+		ucp = new URLClassPath(urls, null, null);
 	}
 
 	public ClientClassLoader(URL[] urls) {
 		super(urls);
-		SecurityManager security = System.getSecurityManager();
-		if (security != null) {
-			security.checkCreateClassLoader();
-		}
-		ucp = new URLClassPath(urls);
-		acc = AccessController.getContext();
+		ucp = new URLClassPath(urls, null, null);
 	}
 
 	public static ClientClassLoader newInstance(final URL[] urls, final java.lang.ClassLoader parent) {
-		AccessControlContext acc = AccessController.getContext();
-		ClientClassLoader ucl = (ClientClassLoader) AccessController
-				.doPrivileged((PrivilegedAction) () -> new FactoryURLClassLoader(urls, parent));
-		ucl.acc = acc;
+		ClientClassLoader ucl = new FactoryURLClassLoader(urls, parent);
 		return ucl;
 	}
 
 	@Override
 	protected Class<?> findClass(final String name) throws ClassNotFoundException {
-		try {
-			return (Class) AccessController.doPrivileged((PrivilegedExceptionAction) () -> {
-				String path = name.replace('.', '/').concat(".class");
-				Resource res = ucp.getResource(path, false);
-				if (res != null) {
-					try {
-						return defineClass(name, res);
-					} catch (IOException e) {
-						throw new ClassNotFoundException(name, e);
-					}
-				} else {
-					throw new ClassNotFoundException(name);
-				}
-			}, acc);
-		} catch (java.security.PrivilegedActionException pae) {
-			throw (ClassNotFoundException) pae.getException();
+		String path = name.replace('.', '/').concat(".class");
+		Resource res = ucp.getResource(path, false);
+		if (res != null) {
+			try {
+				return defineClass(name, res);
+			} catch (IOException e) {
+				throw new ClassNotFoundException(name, e);
+			}
+		} else {
+			throw new ClassNotFoundException(name);
 		}
 	}
 
-	public Class defineClass(String name, Resource res) throws IOException {
+	public Class<?> defineClass(String name, Resource res) throws IOException {
 		int i = name.lastIndexOf('.');
 		URL url = res.getCodeSourceURL();
 		if (i != -1) {
 			String pkgname = name.substring(0, i);
-			Package pkg = getPackage(pkgname);
+			Package pkg = getDefinedPackage(pkgname);
 			Manifest man = res.getManifest();
 			if (pkg != null) {
 				if (pkg.isSealed()) {
@@ -164,7 +140,7 @@ public class ClientClassLoader extends URLClassLoader {
 		return defineClass(name, data, 0, data.length);
 	}
 
-	public void toResolveClass(Class c) {
+	public void toResolveClass(Class<?> c) {
 		resolveClass(c);
 	}
 
@@ -179,14 +155,7 @@ final class FactoryURLClassLoader extends ClientClassLoader {
 		super(urls);
 	}
 
-	public final Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		SecurityManager sm = System.getSecurityManager();
-		if (sm != null) {
-			int i = name.lastIndexOf('.');
-			if (i != -1) {
-				sm.checkPackageAccess(name.substring(0, i));
-			}
-		}
+	public final Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		return super.loadClass(name, resolve);
 	}
 }

@@ -8,7 +8,8 @@
 		<!-- <package name="com.anywide.shop.order.entity"/> -->
 
 		<!-- 逐个声明别名 -->
-		<typeAlias alias="Order" type="com.anywide.shop.order.entity.Order" />
+		<typeAlias alias="Order"
+			type="com.anywide.shop.order.entity.Order" />
 	</typeAliases>
 	<mappers>
 		<!-- 添加mapper -->

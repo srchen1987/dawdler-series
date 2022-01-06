@@ -24,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
-import com.anywide.dawdler.es.restclient.factory.RestHighLevelClientFactory;
+import com.anywide.dawdler.es.restclient.factory.EsClientFactory;
 import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
 import com.anywide.dawdler.util.PropertiesUtil;
 
@@ -87,7 +87,7 @@ public class ElasticSearchClientFactory {
 		config.setTestOnBorrow(testOnBorrow);
 		config.setTestOnCreate(testOnCreate);
 		config.setTestOnReturn(testOnReturn);
-		RestHighLevelClientFactory restHighLevelClientFactory = new RestHighLevelClientFactory(username, password,
+		EsClientFactory restHighLevelClientFactory = new EsClientFactory(username, password,
 				hosts, connectionRequestTimeout, connectTimeout, socketTimeout);
 		PooledEsClientFactory pooledConnectionFactory = new PooledEsClientFactory(restHighLevelClientFactory);
 		genericObjectPool = new GenericObjectPool<ElasticSearchClient>(pooledConnectionFactory, config);

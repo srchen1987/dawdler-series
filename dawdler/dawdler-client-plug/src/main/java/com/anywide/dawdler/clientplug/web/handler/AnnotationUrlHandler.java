@@ -19,15 +19,11 @@ package com.anywide.dawdler.clientplug.web.handler;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
@@ -35,6 +31,9 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.AntPathMatcher;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHandler;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author jackson.song
@@ -49,6 +48,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 
 	private static final ConcurrentHashMap<String, RequestUrlData> urlRules = new ConcurrentHashMap<>(64);
 	private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
+	public static final String MULTIPART = "multipart/";
 
 	public static RequestUrlData registMapping(String path, RequestUrlData data) {
 		boolean antPath = isAntPath(path);
@@ -95,7 +95,8 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			return true;
 		}
-		boolean multipart = ServletFileUpload.isMultipartContent(request);
+		String contentType = request.getContentType();
+		boolean multipart = contentType != null ? contentType.toLowerCase(Locale.ENGLISH).startsWith(MULTIPART) : false;
 		ViewForward viewForward = createViewForward();
 		String exceptionHandler = requestMapping.exceptionHandler();
 		ViewType viewType = requestMapping.viewType();

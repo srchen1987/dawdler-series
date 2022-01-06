@@ -62,9 +62,11 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public void destroy() {
+		System.out.println("destroy:### "+destroyed+":"+curatorCache);
 		if (destroyed.compareAndSet(false, true)) {
-			if (curatorCache != null)
+			if (curatorCache != null) {
 				curatorCache.close();
+			}
 			client.close();
 		}
 	}

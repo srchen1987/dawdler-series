@@ -20,6 +20,8 @@ import static com.anywide.dawdler.util.XmlObject.getElementAttribute;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Boolean;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Int;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Long;
+
+import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,8 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.server.conf.ServerConfig.KeyStore;
+import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
-import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 
 /**
@@ -45,35 +47,10 @@ import com.anywide.dawdler.util.XmlObject;
  */
 public class ServerConfigParser {
 	private static final Logger logger = LoggerFactory.getLogger(ServerConfigParser.class);
-	private static ServerConfig serverConfig = new ServerConfig();
+	private ServerConfig serverConfig = new ServerConfig();
 
-	static {
-		try {
-			XmlObject xmlo = new XmlObject(DawdlerTool.getcurrentPath() + "../conf/server-conf.xml");
-			Element root = xmlo.getRoot();
-
-			loadJarFile(root);
-
-			Element keyStoreEle = (Element) root.selectSingleNode("keyStore");
-			loadKeyStore(keyStoreEle);
-
-			Element serverEle = (Element) root.selectSingleNode("server");
-			loadServer(serverEle);
-
-			Element globalAuthEle = (Element) root.selectSingleNode("global-auth");
-			loadGlobalAuth(globalAuthEle);
-
-			Element moduleAuthEle = (Element) root.selectSingleNode("module-auth");
-			loadModuleAuth(moduleAuthEle);
-
-		} catch (Exception e) {
-			logger.error("", e);
-		}
-
-	}
-
-	public static void loadJarFile(Element root) {
-		List<Node> files = root.selectNodes("scanner/jarFile");
+	public void loadJarFile(Element root) {
+		List<Node> files = root.selectNodes("scanner/jar-files/jar-file");
 		Set<String> jarFiles = serverConfig.getScanner().getJarFiles();
 		for (Node node : files) {
 			String jarFile = node.getText().trim();
@@ -81,7 +58,16 @@ public class ServerConfigParser {
 		}
 	}
 
-	public static void loadKeyStore(Element keyStoreEle) {
+	public void loadPackagePath(Element root) {
+		List<Node> files = root.selectNodes("scanner/packages-in-jar/package-path");
+		Scanner scanner = serverConfig.getScanner();
+		for (Node node : files) {
+			String jarFile = node.getText().trim();
+			scanner.splitAndAddPathInJar(jarFile);
+		}
+	}
+
+	public void loadKeyStore(Element keyStoreEle) {
 		String keyStorePath = getElementAttribute(keyStoreEle, "keyStorePath");
 		String alias = getElementAttribute(keyStoreEle, "alias");
 		String password = getElementAttribute(keyStoreEle, "password");
@@ -91,7 +77,7 @@ public class ServerConfigParser {
 		keyStore.setPassword(password);
 	}
 
-	public static void loadServer(Element serverEle) {
+	public void loadServer(Element serverEle) {
 		Server server = serverConfig.getServer();
 		server.setHost(getElementAttribute(serverEle, "host", server.getHost()));
 		server.setTcpPort(getElementAttribute2Int(serverEle, "tcp-port", server.getTcpPort()));
@@ -105,10 +91,11 @@ public class ServerConfigParser {
 		server.setTcpShutdownPort(getElementAttribute2Int(serverEle, "tcp-shutdownPort", server.getTcpShutdownPort()));
 		server.setMaxThreads(getElementAttribute2Int(serverEle, "maxThreads", server.getMaxThreads()));
 		server.setQueueCapacity(getElementAttribute2Int(serverEle, "queueCapacity", server.getQueueCapacity()));
-		server.setKeepAliveMilliseconds(getElementAttribute2Long(serverEle, "keepAliveMilliseconds", server.getKeepAliveMilliseconds()));
+		server.setKeepAliveMilliseconds(
+				getElementAttribute2Long(serverEle, "keepAliveMilliseconds", server.getKeepAliveMilliseconds()));
 	}
 
-	public static void loadGlobalAuth(Element globalAuthEle) {
+	public void loadGlobalAuth(Element globalAuthEle) {
 		List<Node> globalUsers = globalAuthEle.selectNodes("user");
 		Map<String, String> globalAuth = serverConfig.getGlobalAuth();
 		for (Node globalUser : globalUsers) {
@@ -117,7 +104,7 @@ public class ServerConfigParser {
 		}
 	}
 
-	public static void loadModuleAuth(Element moduleAuthEle) {
+	public void loadModuleAuth(Element moduleAuthEle) {
 		Map<String, Map<String, String>> moduleAuth = serverConfig.getModuleAuth();
 		List<Node> modules = moduleAuthEle.selectNodes("module");
 		for (Node module : modules) {
@@ -138,7 +125,35 @@ public class ServerConfigParser {
 		}
 	}
 
-	public static ServerConfig getServerConfig() {
+	public ServerConfigParser(URL binPath) {
+		serverConfig = new ServerConfig();
+		serverConfig.setBinPath(binPath);
+		try {
+			XmlObject xmlo = new XmlObject(binPath.getPath() + "../conf/server-conf.xml");
+			Element root = xmlo.getRoot();
+
+			loadJarFile(root);
+
+			loadPackagePath(root);
+
+			Element keyStoreEle = (Element) root.selectSingleNode("keyStore");
+			loadKeyStore(keyStoreEle);
+
+			Element serverEle = (Element) root.selectSingleNode("server");
+			loadServer(serverEle);
+
+			Element globalAuthEle = (Element) root.selectSingleNode("global-auth");
+			loadGlobalAuth(globalAuthEle);
+
+			Element moduleAuthEle = (Element) root.selectSingleNode("module-auth");
+			loadModuleAuth(moduleAuthEle);
+
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+	}
+
+	public ServerConfig getServerConfig() {
 		return serverConfig;
 	}
 }
