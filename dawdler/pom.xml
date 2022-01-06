@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<dawdler.build.version>0.0.3-RELEASES</dawdler.build.version>
+		<dawdler.build.version>0.17.1-jdk17-RELEASES</dawdler.build.version>
 		<ch.qos.logback.version>1.3.0-alpha12</ch.qos.logback.version>
 		<org.ow2.asm.version>9.2</org.ow2.asm.version>
 		<jaxen.version>1.2.0</jaxen.version>
@@ -33,7 +33,7 @@
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>0.0.3-RELEASES</version>
+	<version>0.17.1-jdk17-RELEASES</version>
 	<name>dawdler</name>
 	<packaging>pom</packaging>
 	<dependencies>

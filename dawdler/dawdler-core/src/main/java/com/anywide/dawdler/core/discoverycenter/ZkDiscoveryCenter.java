@@ -57,12 +57,10 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 0);
 		client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
 		client.start();
-
 	}
 
 	@Override
 	public void destroy() {
-		System.out.println("destroy:### "+destroyed+":"+curatorCache);
 		if (destroyed.compareAndSet(false, true)) {
 			if (curatorCache != null) {
 				curatorCache.close();
