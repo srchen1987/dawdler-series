@@ -6,16 +6,15 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>0.0.3-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-session</artifactId>
 	<name>dawdler-client-plug-session</name>
 	<packaging>jar</packaging>
 	<dependencies>
-
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>

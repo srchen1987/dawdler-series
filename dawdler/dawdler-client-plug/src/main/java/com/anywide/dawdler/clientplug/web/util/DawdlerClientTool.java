@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.util;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @author jackson.song

@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <zk-host>localhost:2181</zk-host>
-    <certificatePath>key/dawdler.cer</certificatePath>
-    <server-channel-group channel-group-id="user-api"
-                          connection-num="1"
-                          sessionNum="4" serializer="2"
-                          user="global_user" password="global_password">
-    </server-channel-group>
-    
-        <server-channel-group channel-group-id="user-load-web"
-                          connection-num="1"
-                          sessionNum="4" serializer="2"
-                          user="global_user" password="global_password">
-    </server-channel-group>
-  
-    <loads-on>
-        <item sleep="15000" channel-group-id="user-api" mode="run">user-api</item>
-        <item sleep="15000" channel-group-id="user-load-web" mode="run">user-load-web</item>
-    </loads-on>
+	<zk-host>localhost:2181</zk-host>
+	<certificatePath>key/dawdler.cer</certificatePath>
+	<server-channel-group channel-group-id="user-api"
+		connection-num="1" sessionNum="4" serializer="2" user="global_user"
+		password="global_password">
+	</server-channel-group>
+
+	<server-channel-group
+		channel-group-id="user-load-web" connection-num="1" sessionNum="4"
+		serializer="2" user="global_user" password="global_password">
+	</server-channel-group>
+
+	<loads-on>
+		<item sleep="15000" channel-group-id="user-api" mode="run">user-api</item>
+		<item sleep="15000" channel-group-id="user-load-web" mode="run">user-load-web</item>
+	</loads-on>
 
 </config>

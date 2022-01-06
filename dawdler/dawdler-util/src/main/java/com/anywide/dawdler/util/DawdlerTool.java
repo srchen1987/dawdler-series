@@ -54,6 +54,10 @@ public class DawdlerTool {
 	public static String getEnv(String key) {
 		return System.getenv(key);
 	}
+	
+	public static String getProperty(String key) {
+		return System.getProperty(key);
+	}
 
 	public static String fnameToUpper(String fieldname) {
 		char c = fieldname.charAt(0);
@@ -118,7 +122,7 @@ public class DawdlerTool {
 		System.out.println("OS availableProcessors: " + operatingSystemMXBean.getAvailableProcessors());
 		System.out.println("OS name: " + operatingSystemMXBean.getName());
 		System.out.println("OS version: " + operatingSystemMXBean.getVersion());
-
+		System.out.println("JAVA version: "+System.getProperty("java.version"));
 		Runtime runtime = Runtime.getRuntime();
 		double freeMemory = (double) runtime.freeMemory();
 		double totalMemory = (double) runtime.totalMemory();
@@ -136,5 +140,4 @@ public class DawdlerTool {
 		System.out.println("ClassPath: " + runtimeMXBean.getClassPath());
 		System.out.println("LibraryPath: " + runtimeMXBean.getLibraryPath());
 	}
-
 }

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>0.0.3-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-es-plug</artifactId>
 	<dependencies>
@@ -18,8 +18,8 @@
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>elasticsearch-rest-high-level-client</artifactId>
+			<groupId>co.elastic.clients</groupId>
+			<artifactId>elasticsearch-java</artifactId>
 		</dependency>
 	</dependencies>
 </project>

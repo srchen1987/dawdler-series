@@ -16,10 +16,10 @@
  */
 package com.anywide.dawdler.clientplug.web.exception.handler;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author jackson.song

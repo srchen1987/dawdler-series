@@ -16,14 +16,15 @@
  */
 package com.anywide.dawdler.server.bootstarp;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.lang.management.ManagementFactory;
-import java.lang.management.MemoryMXBean;
+import java.net.MalformedURLException;
 import java.net.Socket;
+import java.net.URL;
 import java.net.UnknownHostException;
 
 import org.slf4j.Logger;
@@ -43,9 +44,18 @@ import com.anywide.dawdler.util.DawdlerTool;
  */
 public class Bootstrap {
 	public final static Logger logger = LoggerFactory.getLogger("system.out");
-	private static final ServerConfig serverConfig = ServerConfigParser.getServerConfig();
+	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
+	private static final String DAWDLER_BIN_PATH = "bin";
+
+	private static ServerConfig serverConfig;
+
+	private static void initServerConfig() throws MalformedURLException {
+		ServerConfigParser serverConfigParser = new ServerConfigParser(getBinURL());
+		serverConfig = serverConfigParser.getServerConfig();
+	}
 
 	public static void main(String[] args) throws IOException {
+		initServerConfig();
 		if (args != null && args.length > 0) {
 			String command = args[0].trim();
 			switch (command) {
@@ -119,4 +129,9 @@ public class Bootstrap {
 		System.out.println(logoAscii);
 		DawdlerTool.printServerBaseInformation();
 	}
+
+	private static URL getBinURL() throws MalformedURLException {
+		return new File(DawdlerTool.getProperty(DAWDLER_BASE_PATH), DAWDLER_BIN_PATH).toURI().toURL();
+	}
+
 }

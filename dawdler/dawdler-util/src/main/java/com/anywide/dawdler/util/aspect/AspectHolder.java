@@ -35,7 +35,7 @@ public class AspectHolder {
 		Class<?> clazz = null;
 		try {
 			clazz = Class.forName("org.aspectj.weaver.loadtime.Aj");
-			aj = clazz.newInstance();
+			aj = clazz.getDeclaredConstructor().newInstance();
 			Method initializeMethod = null;
 			initializeMethod = clazz.getMethod("initialize");
 			initializeMethod.invoke(aj);

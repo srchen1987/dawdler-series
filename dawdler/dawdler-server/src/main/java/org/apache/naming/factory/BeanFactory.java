@@ -107,10 +107,13 @@ public class BeanFactory implements ObjectFactory {
 	 * Create a new Bean instance.
 	 *
 	 * @param obj The reference object describing the Bean
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 * @throws IllegalArgumentException
 	 */
 	@Override
 	public Object getObjectInstance(Object obj, Name name, Context nameCtx, Hashtable<?, ?> environment)
-			throws NamingException {
+			throws NamingException, IllegalArgumentException, NoSuchMethodException, SecurityException {
 
 		if (obj instanceof ResourceRef) {
 
@@ -139,7 +142,7 @@ public class BeanFactory implements ObjectFactory {
 				BeanInfo bi = Introspector.getBeanInfo(beanClass);
 				PropertyDescriptor[] pda = bi.getPropertyDescriptors();
 
-				Object bean = beanClass.newInstance();
+				Object bean = beanClass.getDeclaredConstructor().newInstance();
 
 				/* Look for properties with explicitly configured setter */
 				RefAddr ra = ref.get("forceString");

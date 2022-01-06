@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-distributed-transaction</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>0.0.3-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-distributed-transaction-client</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>javax.servlet-api</artifactId>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
