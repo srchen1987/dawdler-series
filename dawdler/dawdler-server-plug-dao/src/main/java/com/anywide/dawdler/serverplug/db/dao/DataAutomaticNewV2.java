@@ -82,7 +82,7 @@ public class DataAutomaticNewV2 {
 			 * rsmd.getColumnCount(); isfirst=false; }
 			 */
 			try {
-				object = clazz.newInstance();
+				object = clazz.getDeclaredConstructor().newInstance();
 			} catch (Exception e) {
 				return list;
 			}

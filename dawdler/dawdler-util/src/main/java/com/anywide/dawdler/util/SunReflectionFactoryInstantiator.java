@@ -45,8 +45,8 @@ public class SunReflectionFactoryInstantiator {
 //		mungedConstructor.setAccessible(true);
 //		return (T) mungedConstructor.newInstance(null);
 //	}
-	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException,
+	public static <T> T newInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		return (T) type.newInstance();
+		return (T) clazz.getDeclaredConstructor().newInstance();
 	}
 }

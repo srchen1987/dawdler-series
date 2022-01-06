@@ -19,7 +19,6 @@ package com.anywide.dawdler.serverplug.db.transaction;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
-import javax.transaction.TransactionRequiredException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +34,7 @@ import com.anywide.dawdler.serverplug.db.annotation.DBTransaction.MODE;
 import com.anywide.dawdler.serverplug.db.annotation.DBTransaction.READ_CONFIG;
 import com.anywide.dawdler.serverplug.db.datasource.RWSplittingDataSourceManager;
 import com.anywide.dawdler.serverplug.db.datasource.RWSplittingDataSourceManager.MappingDecision;
+import com.anywide.dawdler.serverplug.db.exception.TransactionRequiredException;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.reflectasm.MethodAccess;
 
@@ -78,12 +78,12 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 		try {
 			if (dbt != null) {
 				DawdlerContext context = DawdlerContext.getDawdlerContext();
-				RWSplittingDataSourceManager dm = (RWSplittingDataSourceManager) context
+				RWSplittingDataSourceManager dataSourceManager = (RWSplittingDataSourceManager) context
 						.getAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX);
 				MODE mode = dbt.mode();
 				synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
-				if (dm != null) {
-					MappingDecision mappingDecision = dm.getMappingDecision(object.getClass().getPackage().getName());
+				if (dataSourceManager != null) {
+					MappingDecision mappingDecision = dataSourceManager.getMappingDecision(object.getClass().getPackage().getName());
 					if(mappingDecision == null) {
 						throw new TransactionRequiredException(object.getClass().getPackage().getName()+" transaction needs to be set.");
 					}
@@ -93,10 +93,10 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 							synReadObj = new SynReadConnectionObject(mappingDecision, dbt);
 							LocalConnectionFactory.setSynReadConnectionObject(synReadObj);
 							if (mode == MODE.forceReadOnWrite) {
-								ReadConnectionHolder readConnection = new ReadConnectionHolder(null);
-								readConnection.setUseWriteConnection(true);
-								synReadObj.setReadConnectionHolder(readConnection);
-								readStatus.setCurrentConn(readConnection);
+								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(null);
+								readConnectionHolder.setUseWriteConnection(true);
+								synReadObj.setReadConnectionHolder(readConnectionHolder);
+								readStatus.setCurrentConn(readConnectionHolder);
 							} else {
 								DataSource dataSource = mappingDecision.getReadDataSource(index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
@@ -117,10 +117,10 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 							synReadObj = new SynReadConnectionObject(mappingDecision, dbt);
 							LocalConnectionFactory.setSynReadConnectionObject(synReadObj);
 							if (mode == MODE.forceReadOnWrite) {
-								ReadConnectionHolder readConnection = new ReadConnectionHolder(null);
-								readConnection.setUseWriteConnection(true);
-								synReadObj.setReadConnectionHolder(readConnection);
-								readStatus.setCurrentConn(readConnection);
+								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(null);
+								readConnectionHolder.setUseWriteConnection(true);
+								synReadObj.setReadConnectionHolder(readConnectionHolder);
+								readStatus.setCurrentConn(readConnectionHolder);
 							} else {
 								DataSource dataSource = mappingDecision.getReadDataSource(index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
@@ -131,10 +131,10 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 						} else {
 							if (mode == MODE.forceReadOnWrite) {
 								readStatus.setOldConn(synReadObj.getReadConnectionHolder());
-								ReadConnectionHolder readConnection = new ReadConnectionHolder(null);
-								readConnection.setUseWriteConnection(true);
-								readStatus.setCurrentConn(readConnection);
-								synReadObj.setReadConnectionHolder(readConnection);
+								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(null);
+								readConnectionHolder.setUseWriteConnection(true);
+								readStatus.setCurrentConn(readConnectionHolder);
+								synReadObj.setReadConnectionHolder(readConnectionHolder);
 							} else {
 								if (synReadObj.getMappingDecision().equals(mappingDecision)
 										&& !synReadObj.getReadConnectionHolder().isUseWriteConnection()) {// 来自同一个数据源配置
@@ -192,10 +192,11 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 					}
 				}
 				ReadConnectionHolder readConnectionHolder = readStatus.getOldConn();
+				synReadObj.released();
+				LocalConnectionFactory.removeReadConnection();
 				if (readConnectionHolder != null) {
 					synReadObj.setReadConnectionHolder(readConnectionHolder);
 				}
-				synReadObj.released();
 			}
 		}
 	}

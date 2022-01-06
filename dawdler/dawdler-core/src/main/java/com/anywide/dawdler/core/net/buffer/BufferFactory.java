@@ -16,8 +16,6 @@
  */
 package com.anywide.dawdler.core.net.buffer;
 
-import java.nio.ByteBuffer;
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -30,11 +28,11 @@ public class BufferFactory {
 	private static final BufferCreator directBufferCreator = new DirectBufferCreator();
 	private static final BufferCreator heapBufferCreator = new HeapBufferCreator();
 
-	public static ByteBuffer createDirectBuffer(int capacity) {
+	public static DawdlerByteBuffer createDirectBuffer(int capacity) throws Exception {
 		return directBufferCreator.createByteBuffer(capacity);
 	}
 
-	public static ByteBuffer createdHeadBuffer(int capacity) {
+	public static DawdlerByteBuffer createdHeadBuffer(int capacity) throws Exception {
 		return heapBufferCreator.createByteBuffer(capacity);
 	}
 

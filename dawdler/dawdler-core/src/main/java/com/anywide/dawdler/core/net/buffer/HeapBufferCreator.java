@@ -28,8 +28,8 @@ import java.nio.ByteBuffer;
  */
 public class HeapBufferCreator implements BufferCreator {
 	@Override
-	public ByteBuffer createByteBuffer(int capacity) {
-		return ByteBuffer.allocate(capacity);
+	public DawdlerByteBuffer createByteBuffer(int capacity) {
+		return new DawdlerByteBuffer(ByteBuffer.allocate(capacity));
 	}
 
 }

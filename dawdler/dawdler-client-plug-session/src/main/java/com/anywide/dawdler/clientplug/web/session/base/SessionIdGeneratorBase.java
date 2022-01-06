@@ -31,7 +31,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @email suxuan696@gmail.com
  */
 public abstract class SessionIdGeneratorBase implements SessionIdGenerator {
-	private final Queue<SecureRandom> randoms = new ConcurrentLinkedQueue();
+	private final Queue<SecureRandom> randoms = new ConcurrentLinkedQueue<>();
 	private String secureRandomClass = null;
 	private String secureRandomAlgorithm = "SHA1PRNG";
 	private String secureRandomProvider = null;
@@ -105,7 +105,7 @@ public abstract class SessionIdGeneratorBase implements SessionIdGenerator {
 			try {
 				// Construct and seed a new random number generator
 				Class<?> clazz = Class.forName(secureRandomClass);
-				result = (SecureRandom) clazz.newInstance();
+				result = (SecureRandom) clazz.getDeclaredConstructor().newInstance();
 			} catch (Exception e) {
 			}
 		}

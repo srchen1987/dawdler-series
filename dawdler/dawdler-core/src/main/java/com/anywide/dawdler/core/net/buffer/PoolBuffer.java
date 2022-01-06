@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.core.net.buffer;
 
-import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,16 +43,16 @@ public class PoolBuffer {
 		addPool(1024 * 512);
 	}
 
-	private final GenericObjectPool<ByteBuffer> objectPool;
+	private final GenericObjectPool<DawdlerByteBuffer> objectPool;
 
 	private PoolBuffer(int capacity) {
 		ByteBufferPooledFactory factory = new ByteBufferPooledFactory(capacity);
-		GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+		GenericObjectPoolConfig<DawdlerByteBuffer> poolConfig = new GenericObjectPoolConfig<>();
 		poolConfig.setMinIdle(1);
 		poolConfig.setMinIdle(4);
-		poolConfig.setMaxTotal(24);
-		poolConfig.setMinEvictableIdleTimeMillis(180000);
-		objectPool = new GenericObjectPool<ByteBuffer>(factory, poolConfig);
+		poolConfig.setMaxTotal(32);
+		poolConfig.setSoftMinEvictableIdleTime(Duration.ofMillis(180000));
+		objectPool = new GenericObjectPool<DawdlerByteBuffer>(factory, poolConfig);
 	}
 
 	public static void addPool(int capacity) {
@@ -77,11 +77,11 @@ public class PoolBuffer {
 		return poolBuffers.get(key);
 	}
 
-	public ByteBuffer getByteBuffer() throws Exception {
+	public DawdlerByteBuffer getByteBuffer() throws Exception {
 		return objectPool.borrowObject();
 	}
 
-	public void release(ByteBuffer buffer) {
+	public void release(DawdlerByteBuffer buffer) {
 		objectPool.returnObject(buffer);
 	}
 

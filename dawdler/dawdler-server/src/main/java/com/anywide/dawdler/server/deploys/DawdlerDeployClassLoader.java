@@ -21,13 +21,9 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.AccessController;
 import java.security.CodeSigner;
 import java.security.CodeSource;
-import java.security.PrivilegedExceptionAction;
-import java.util.WeakHashMap;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
@@ -38,8 +34,9 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
 
-import sun.misc.Resource;
-import sun.misc.URLClassPath;
+import jdk.internal.loader.Resource;
+import jdk.internal.loader.URLClassPath;
+import jdk.internal.perf.PerfCounter;
 
 /**
  * @author jackson.song
@@ -53,15 +50,14 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerDeployClassLoader.class);
 	private final URLClassPath ucp;
 	private DawdlerContext dawdlerContext;
-	private final WeakHashMap<String, URL> urlCache = new WeakHashMap<>();
 
-	public DawdlerDeployClassLoader(URL[] urls, ClassLoader parent) {
-		super(urls, parent);
-		ucp = new URLClassPath(urls);
+	public DawdlerDeployClassLoader(URL binPath, URL[] urls, ClassLoader parent) {
+		super(urls, parent, binPath);
+		ucp = new URLClassPath(urls, null, null);
 	}
 
-	public static DawdlerDeployClassLoader createLoader(ClassLoader parent, URL... urls) {
-		return new DawdlerDeployClassLoader(urls, parent);
+	public static DawdlerDeployClassLoader createLoader(URL binPath, ClassLoader parent, URL... urls) {
+		return new DawdlerDeployClassLoader(binPath, urls, parent);
 	}
 
 	public DawdlerContext getDawdlerContext() {
@@ -90,7 +86,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			}
 		}
 		File file = new File(dawdlerContext.getDeployClassPath() + name);
-		if (file.exists())
+		if (file.exists()) {
 			try {
 				url = file.toURI().toURL();
 				urlCache.put(name, url);
@@ -99,6 +95,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 				logger.error("", e);
 				return null;
 			}
+		}
 		return super.getResource(name);
 	}
 
@@ -118,7 +115,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 		Object obj = dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_OBJ);
 		CodeSigner[] signers = res.getCodeSigners();
 		CodeSource cs = new CodeSource(url, signers);
-		sun.misc.PerfCounter.getReadClassBytesTime().addElapsedTimeFrom(t0);
+		PerfCounter.getReadClassBytesTime().addElapsedTimeFrom(t0);
 		if (codeBytes != null) {
 			if (obj != null) {
 				codeBytes.flip();
@@ -153,7 +150,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	}
 
 	private Package getAndVerifyPackage(String pkgname, Manifest man, URL url) {
-		Package pkg = getPackage(pkgname);
+		Package pkg = getDefinedPackage(pkgname);
 		if (pkg != null) {
 			if (pkg.isSealed()) {
 				if (!pkg.isSealed(url)) {
@@ -185,34 +182,21 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	}
 
 	public Class<?> findClassForDawdler(final String name) throws ClassNotFoundException {
-		final Class<?> result;
-		try {
-			result = AccessController.doPrivileged(new PrivilegedExceptionAction<Class<?>>() {
-				public Class<?> run() throws ClassNotFoundException {
-					String path = name.replace('.', '/').concat(".class");
-					Resource res = ucp.getResource(path, false);
-					if (res != null) {
-						try {
-							Class<?> clazz = findLoadedClass(name);
-							if (clazz != null)
-								return clazz;
-							clazz = defineClassForDawdler(name, res);
-							return clazz;
-						} catch (IOException e) {
-							throw new ClassNotFoundException(name, e);
-						}
-					} else {
-						return null;
-					}
-				}
-			});
-		} catch (java.security.PrivilegedActionException pae) {
-			throw (ClassNotFoundException) pae.getException();
-		}
-		if (result == null) {
+		String path = name.replace('.', '/').concat(".class");
+		Resource res = ucp.getResource(path, false);
+		if (res != null) {
+			try {
+				Class<?> clazz = findLoadedClass(name);
+				if (clazz != null)
+					return clazz;
+				clazz = defineClassForDawdler(name, res);
+				return clazz;
+			} catch (IOException e) {
+				throw new ClassNotFoundException(name, e);
+			}
+		} else {
 			throw new ClassNotFoundException(name);
 		}
-		return result;
 	}
 
 	public Class<?> loadClassFromBytes(String name, byte[] classData, Object obj, ClassLoader classLoader)

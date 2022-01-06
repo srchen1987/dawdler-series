@@ -17,8 +17,10 @@
 package com.anywide.dawdler.serverplug.db.datasource;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,10 +30,11 @@ import javax.sql.DataSource;
 import org.dom4j.Element;
 import org.dom4j.Node;
 
+import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFactory;
-import com.anywide.dawdler.serverplug.util.XmlConfig;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 
 /**
  * @author jackson.song
@@ -48,20 +51,22 @@ public class RWSplittingDataSourceManager {
 	private final Map<String, DataSource> dataSources = new HashMap<>();
 	private final Map<String, String> dataourceExpression = new HashMap<>();
 	private final Map<String, MappingDecision> packages = new HashMap<>();
-
-	public RWSplittingDataSourceManager() throws Exception {
-			init();
+	private final Map<String, MappingDecision> packagesAntPath = new LinkedHashMap<>();
+	private DawdlerContext dawdlerContext;
+	public RWSplittingDataSourceManager(DawdlerContext dawdlerContext) throws Exception {
+		this.dawdlerContext = dawdlerContext;
+		init();
 	}
 
 	public void init() throws Exception {
-		XmlObject xmlo = XmlConfig.getConfig();
+		XmlObject xmlo = dawdlerContext.getServicesConfig();
 		List<Node> dataSources = xmlo.selectNodes("/config/datasources/datasource");
 		for (Object dataSource : dataSources) {
 			Element ele = (Element) dataSource;
 			String id = ele.attributeValue("id");
 			String code = ele.attributeValue("code");
-			Class<?> c = Class.forName(code);
-			Object obj = c.newInstance();
+			Class<?> clazz = Class.forName(code);
+			Object obj = clazz.getDeclaredConstructor().newInstance();
 			List<Node> attrs = ele.selectNodes("attribute");
 			for (Node node : attrs) {
 				Element e = (Element) node;
@@ -92,7 +97,13 @@ public class RWSplittingDataSourceManager {
 			Element ele = (Element) decision;
 			String mapping = ele.attributeValue("mapping");
 			String latentExpression = ele.attributeValue("latent-expression");
-			packages.put(mapping, new MappingDecision(dataourceExpression.get(latentExpression)));
+			MappingDecision mappingDecision = new MappingDecision(dataourceExpression.get(latentExpression));
+			if(dawdlerContext.getAntPathMatcher().isPattern(mapping)) {
+				packagesAntPath.put(mapping, mappingDecision);
+			}else {
+				packages.put(mapping, mappingDecision);
+			}
+			
 		}
 
 	}
@@ -111,7 +122,19 @@ public class RWSplittingDataSourceManager {
 	}
 
 	public MappingDecision getMappingDecision(String packageName) {
-		return packages.get(packageName);
+		MappingDecision mappingDecision = packages.get(packageName);
+		if(mappingDecision == null) {
+			Set<String> keys = packagesAntPath.keySet();
+			AntPathMatcher antPathMatcher = dawdlerContext.getAntPathMatcher();
+			for(String key : keys) {
+				if(antPathMatcher.match(key, packageName)) {
+					mappingDecision = packagesAntPath.get(key);
+					packages.putIfAbsent(key, mappingDecision);//ignored concurrent access
+					break;
+				}
+			}
+		}
+		return mappingDecision;
 	}
 
 	public class MappingDecision {

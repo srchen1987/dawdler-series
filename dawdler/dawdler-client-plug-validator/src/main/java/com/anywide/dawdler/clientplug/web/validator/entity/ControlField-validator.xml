@@ -1,53 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <validator>
 
-    <validator-fields>
-        <validator-field name="username" explain="用户名" rules="notEmpty" globalrules="global"></validator-field>
-        <validator-field name="email" explain="邮箱" globalrules="global"></validator-field>
-        <validator-field name="phone" explain="电话" rules="phone"></validator-field>
-    </validator-fields>
+	<validator-fields>
+		<validator-field name="username" explain="用户名"
+			rules="notEmpty" globalrules="global"></validator-field>
+		<validator-field name="email" explain="邮箱"
+			globalrules="global"></validator-field>
+		<validator-field name="phone" explain="电话"
+			rules="phone"></validator-field>
+	</validator-fields>
 
-    <validator-fields-groups>
-
-
-        <validator-fields-group id="adduser">
-            <validator refgid="edituser"/>
-            <validator ref="username"/>
-        </validator-fields-group>
-
-        <validator-fields-group id="edituser">
-            <validator ref="email"/>
-            <validator refgid="edituserone"/>
-        </validator-fields-group>
-
-        <validator-fields-group id="edituserone">
-            <validator ref="phone"/>
-            <validator refgid="adduser"/>
-        </validator-fields-group>
+	<validator-fields-groups>
 
 
-    </validator-fields-groups>
+		<validator-fields-group id="adduser">
+			<validator refgid="edituser" />
+			<validator ref="username" />
+		</validator-fields-group>
+
+		<validator-fields-group id="edituser">
+			<validator ref="email" />
+			<validator refgid="edituserone" />
+		</validator-fields-group>
+
+		<validator-fields-group id="edituserone">
+			<validator ref="phone" />
+			<validator refgid="adduser" />
+		</validator-fields-group>
 
 
-    <global-validator>
-        <validator refgid="adduser"/>
-        <validator ref="email"/>
-    </global-validator>
+	</validator-fields-groups>
 
-    <validator-mappings>
 
-        <validator-mapping name="test.do" skip="test,email">
-            <validator ref="phone"/>
-            <validator refgid="adduser"/>
-        </validator-mapping>
+	<global-validator>
+		<validator refgid="adduser" />
+		<validator ref="email" />
+	</global-validator>
 
-    </validator-mappings>
+	<validator-mappings>
+
+		<validator-mapping name="test.do" skip="test,email">
+			<validator ref="phone" />
+			<validator refgid="adduser" />
+		</validator-mapping>
+
+	</validator-mappings>
 
 
 </validator>
 
-        <!--
-
-
-
-         -->
+<!-- -->
