@@ -65,7 +65,7 @@ public @interface DBTransaction {
 
 dawdler服务器支持jndi方式的数据源配置,部署在本服务器下所有服务都可以使用.参考[data-sources.xml说明](../dawdler-server/####22data-sources.xml说明)
 
-在services-configl.xml中本服务的数据源配置：
+在services-config.xml中本服务的数据源配置：
 
 ```xml
 <datasources>
