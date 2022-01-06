@@ -1,0 +1,46 @@
+import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
+import com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
+import com.anywide.dawdler.clientplug.web.bind.discoverer.impl.CompileParameterDiscoverer;
+import com.anywide.dawdler.clientplug.web.bind.discoverer.impl.LocalVariableTableParameterDiscoverer;
+import com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
+import com.anywide.dawdler.clientplug.web.bind.resolver.impl.AnnotationMethodArgumentResolver;
+import com.anywide.dawdler.clientplug.web.bind.resolver.impl.BasicsTypeMethodArgumentResolver;
+import com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletMethodArgumentResolver;
+import com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletUploadMethodArgumentResolver;
+import com.anywide.dawdler.clientplug.web.fire.WebComponentClassLoaderFire;
+import com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
+import com.anywide.dawdler.clientplug.web.plugs.impl.JsonDisplayPlug;
+import com.anywide.dawdler.clientplug.web.plugs.impl.JspDisplayPlug;
+
+module dawdler.client.plug {
+	exports com.anywide.dawdler.clientplug.annotation;
+	exports com.anywide.dawdler.clientplug.web.handler;
+	exports com.anywide.dawdler.clientplug.web.plugs;
+	exports com.anywide.dawdler.clientplug.load.classloader;
+	exports com.anywide.dawdler.clientplug.web;
+	exports com.anywide.dawdler.clientplug.web.interceptor;
+	exports com.anywide.dawdler.clientplug.web.listener;
+	uses RemoteClassLoaderFire;
+	uses com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
+	uses com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
+	uses com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
+	provides RemoteClassLoaderFire with WebComponentClassLoaderFire;
+	provides ParameterDiscoverer with CompileParameterDiscoverer,LocalVariableTableParameterDiscoverer;
+	provides MethodArgumentResolver with  AnnotationMethodArgumentResolver,BasicsTypeMethodArgumentResolver,ServletMethodArgumentResolver,ServletUploadMethodArgumentResolver;
+	provides DisplayPlug with JsonDisplayPlug,JspDisplayPlug;
+	requires java.base;
+	requires dawdler.util;
+	requires dawdler.core;
+	requires dawdler.serialization;
+	requires dawdler.client;
+	requires dawdler.load.bean;
+	requires curator.client;
+	requires curator.framework;
+	requires zookeeper;
+	requires curator.recipes;
+	requires dom4j;
+	requires org.slf4j;
+	requires dawdler.client.plug.validator;
+	requires jakarta.servlet;
+	requires dawdler.jakarta.fileupload;
+}
