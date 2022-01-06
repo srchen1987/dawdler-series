@@ -185,9 +185,9 @@ dawdler需要三方组件的支持,如下:
 
 | 软件 | 是否必须 | 备注 |
 | :-: | :-: | :-: |  
-| jdk-1.8 | √ | 建议使用openjdk1.8x |
+| jdk-17 | √ | 建议使用openjdk17 |
 | apache-zookeeper-3.6+ | √ | 注册中心 |
-| tomcat-8.5+ | x | web服务时需要 |
+| tomcat-10+ | x | web服务时需要 |
 | redis5x \| 6x | x | 缓存服务时需要 |
 | mysql5x \| 8x | x | 数据库服务时需要 |
 | elastic-seach 7x | x | es服务时需要 |
