@@ -70,13 +70,13 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 
 	public boolean handleUrl(String uriShort, String httpMethod, boolean isJson, HttpServletRequest request,
 			HttpServletResponse response) {
-		Set<Entry<String, RequestUrlData>> rules = urlRules.entrySet();
 		if (!isAntPath(uriShort)) {
 			RequestUrlData requestUrlData = urlRules.get(uriShort);
 			if (requestUrlData == null)
 				return false;
 			return handleUrl(requestUrlData, uriShort, httpMethod, isJson, null, request, response);
 		} else {
+			Set<Entry<String, RequestUrlData>> rules = anturlRules.entrySet();
 			for (Entry<String, RequestUrlData> entry : rules) {
 				Map<String, String> variables = new LinkedHashMap<>();
 				boolean matched = antPathMatcher.doMatch(entry.getKey(), uriShort, true, variables);
