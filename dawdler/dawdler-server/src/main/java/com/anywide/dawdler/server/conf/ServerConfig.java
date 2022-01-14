@@ -17,6 +17,7 @@
 package com.anywide.dawdler.server.conf;
 
 import java.io.File;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -26,6 +27,8 @@ import com.anywide.dawdler.server.deploys.ServiceRoot;
 import com.anywide.dawdler.util.CertificateOperator;
 import com.anywide.dawdler.util.CertificateOperator.KeyStoreConfig;
 import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
+import com.anywide.dawdler.util.spring.antpath.StringUtils;
 
 /**
  * @author jackson.song
@@ -36,19 +39,20 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @email suxuan696@gmail.com
  */
 public class ServerConfig {
-	public ServerConfig() {
-		this.scanner = new Scanner();
-		this.keyStore = new KeyStore();
-		this.server = new Server();
-	}
-
+	private URL binPath;
 	private Server server;
-
 	private KeyStore keyStore;
 	private Scanner scanner;
 	private Map<String, String> globalAuth = new HashMap<>();
 	private Map<String, Map<String, String>> moduleAuth = new HashMap<>();
 	private volatile CertificateOperator certificateOperator;
+	private AntPathMatcher antPathMatcher = new AntPathMatcher();
+
+	public ServerConfig() {
+		this.scanner = new Scanner();
+		this.keyStore = new KeyStore();
+		this.server = new Server();
+	}
 
 	public KeyStore getKeyStore() {
 		return keyStore;
@@ -109,13 +113,41 @@ public class ServerConfig {
 		return success;
 	}
 
+	public AntPathMatcher getAntPathMatcher() {
+		return antPathMatcher;
+	}
+
 	public class Scanner {
 		private Set<String> jarFiles = new LinkedHashSet<String>();
+		private Set<String> packagePathInJar = new LinkedHashSet<String>();
+		private Set<String> packageAntPathInJar = new LinkedHashSet<String>();
 
 		public Set<String> getJarFiles() {
 			return jarFiles;
 		}
 
+		public void splitAndAddPathInJar(String packagePath) {
+			if (!StringUtils.hasLength(packagePath)) {
+				return;
+			}
+			if (antPathMatcher.isPattern(packagePath)) {
+				this.packageAntPathInJar.add(packagePath);
+			} else {
+				this.packagePathInJar.add(packagePath);
+			}
+		}
+
+		public boolean matchInJars(String packagePath) {
+			if (packagePathInJar.contains(packagePath)) {
+				return true;
+			}
+			for (String antPath : packageAntPathInJar) {
+				if (antPathMatcher.match(antPath, packagePath)) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}
 
 	public class KeyStore {
@@ -127,8 +159,8 @@ public class ServerConfig {
 
 		public String getKeyStorePath() {
 			if (keyStorePath != null)
-				keyStorePath = keyStorePath.replace("${DAWDLER_BASE_PATH}",
-						DawdlerTool.getEnv(ServiceRoot.DAWDLER_BASE_PATH) + File.separator);
+				keyStorePath = keyStorePath.replace("${" + ServiceRoot.DAWDLER_BASE_PATH + "}",
+						DawdlerTool.getProperty(ServiceRoot.DAWDLER_BASE_PATH) + File.separator);
 			return keyStorePath;
 		}
 
@@ -165,7 +197,7 @@ public class ServerConfig {
 		private int tcpShutdownPort = 19527;
 		private String shutdownWhiteList = "127.0.0.1,localhost";
 		private int maxThreads = 200;
-		private int queueCapacity = 1024*64;
+		private int queueCapacity = 1024 * 64;
 		private long keepAliveMilliseconds = 0;
 
 		public String getHost() {
@@ -247,7 +279,7 @@ public class ServerConfig {
 		public void setMaxThreads(int maxThreads) {
 			this.maxThreads = maxThreads;
 		}
-		
+
 		public int getQueueCapacity() {
 			return queueCapacity;
 		}
@@ -263,5 +295,13 @@ public class ServerConfig {
 		public void setKeepAliveMilliseconds(long keepAliveMilliseconds) {
 			this.keepAliveMilliseconds = keepAliveMilliseconds;
 		}
+	}
+
+	public URL getBinPath() {
+		return binPath;
+	}
+
+	public void setBinPath(URL binPath) {
+		this.binPath = binPath;
 	}
 }

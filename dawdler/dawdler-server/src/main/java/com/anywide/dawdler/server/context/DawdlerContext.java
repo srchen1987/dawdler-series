@@ -28,6 +28,8 @@ import com.anywide.dawdler.server.serivce.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.TLS;
+import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 
 /**
  * @author jackson.song
@@ -47,7 +49,9 @@ public class DawdlerContext {
 	private final int port;
 	private final ServicesManager servicesManager;
 	private final Map<Object, Object> attributes = new HashMap<>();
-
+	private XmlObject servicesConfig;
+	private AntPathMatcher antPathMatcher;
+	
 	public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
 			String host, int port, ServicesManager servicesManager) {
 		this.classLoader = classLoader;
@@ -129,5 +133,21 @@ public class DawdlerContext {
 
 	public DawdlerServiceCreateProvider getDawdlerServiceCreateProvider() {
 		return servicesManager.getDawdlerServiceCreateProvider();
+	}
+
+	public void setServicesConfig(XmlObject servicesConfig) {
+		this.servicesConfig = servicesConfig;
+	}
+	
+	public XmlObject getServicesConfig() {
+		return servicesConfig;
+	}
+	
+	public void setAntPathMatcher(AntPathMatcher antPathMatcher) {
+		this.antPathMatcher = antPathMatcher;
+	}
+
+	public AntPathMatcher getAntPathMatcher() {
+		return antPathMatcher;
 	}
 }
