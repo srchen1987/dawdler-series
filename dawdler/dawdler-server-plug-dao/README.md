@@ -85,7 +85,7 @@ services-config.xml是服务端核心配置文件,包含了数据源定义,指�
 
 编写自定义的DAO继承SupperDAO即可，如UserDAO。
 
-在service层通过@Resource注入dao,即可使用注入的dao.
+在service层通过@Repository注入dao,即可使用注入的dao.
 
 示例：
 
@@ -102,7 +102,7 @@ public class UserDAO extends SuperDAO{
 ```java
 public class UserServiceImpl implements UserService{
 
- @Resource
+ @Repository
  UserDAO userDAO;
  
  @Override

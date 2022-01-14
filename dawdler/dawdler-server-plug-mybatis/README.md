@@ -53,14 +53,14 @@ services-config.xml是服务端核心配置文件，包含了数据源定义，�
 
 ### 4. 注入mapper
 
-在service层通过@Resource注入mapper，即可使用mapper.
+在service层通过@Repository注入mapper，即可使用mapper.
 
 示例：
 
 ```java
 public class OrderServiceImpl implements OrderService{
 
- @Resource
+ @Repository
  OrderMapper orderMapper;
  
  @Override

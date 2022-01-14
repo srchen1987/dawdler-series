@@ -14,28 +14,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.core.net.buffer;
+package com.anywide.dawdler.serverplug.db.annotation;
 
-import java.nio.ByteBuffer;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * @author jackson.song
- * @version V1.0
- * @Title BufferFactory.java
- * @Description Buffer工厂
- * @date 2015年3月14日
- * @email suxuan696@gmail.com
- */
-public class BufferFactory {
-	private static final BufferCreator directBufferCreator = new DirectBufferCreator();
-	private static final BufferCreator heapBufferCreator = new HeapBufferCreator();
-
-	public static DawdlerByteBuffer createDirectBuffer(int capacity) throws Exception {
-		return directBufferCreator.createByteBuffer(capacity);
-	}
-
-	public static DawdlerByteBuffer createdHeadBuffer(int capacity) throws Exception {
-		return heapBufferCreator.createByteBuffer(capacity);
-	}
+*
+* @Title Repository.java
+* @Description 代替Resource，注入dao或mapper的注解，jdk8之后移除了Resource注解
+* @author jackson.song
+* @date 2021年12月18日
+* @version V1.0
+* @email suxuan696@gmail.com
+*/
+@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)
+@java.lang.annotation.Inherited
+public @interface Repository {
 
 }
