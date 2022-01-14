@@ -31,9 +31,9 @@ import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles.RemoteFile;
-import com.anywide.dawdler.serverplug.util.XmlConfig;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 
@@ -51,8 +51,8 @@ public class ReadClass {
 	private static String path = new File(DawdlerTool.getcurrentPath()).getPath()+File.separator;
 	public static XmlObject read(String host) {
 		try {
-			XmlObject xml = new XmlObject(XmlConfig.getRemoteLoad());
-			List<Node> hosts = xml.selectNodes("/hosts/host[@name='" + host + "']/package");
+			XmlObject remoteLoadXml = new XmlObject(getRemoteLoad(DawdlerContext.getDawdlerContext().getServicesConfig()));
+			List<Node> hosts = remoteLoadXml.selectNodes("/hosts/host[@name='" + host + "']/package");
 			if (hosts == null || hosts.isEmpty())
 				return null;
 			XmlObject xmlo = new XmlObject();
@@ -75,6 +75,13 @@ public class ReadClass {
 			return null;
 		}
 
+	}
+	
+	public static String getRemoteLoad(XmlObject xmlo) {
+		Element ele = (Element) xmlo.getRoot().selectSingleNode("/config/remote-load");
+		if (ele == null)
+			throw new NullPointerException(xmlo.getFilepath() + "\tconfig/remote-load not found！");
+		return ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
 	}
 
 	private static void createXmlObjectByFile(Element hosts, File file, String pack, String host, boolean isbean) {

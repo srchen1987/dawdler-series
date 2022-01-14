@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.server.net.aio.session;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 
@@ -42,11 +41,11 @@ public class SocketSession extends AbstractSocketSession {
 	private DawdlerServerContext dawdlerServerContext;
 	private byte pathLength;
 
-	public SocketSession(AsynchronousSocketChannel channel) throws IOException {
+	public SocketSession(AsynchronousSocketChannel channel) throws Exception {
 		super(channel);
 	}
 
-	public SocketSession(AsynchronousSocketChannel channel, boolean init) throws IOException {
+	public SocketSession(AsynchronousSocketChannel channel, boolean init) throws Exception {
 		super(channel, init);
 	}
 
@@ -58,7 +57,7 @@ public class SocketSession extends AbstractSocketSession {
 		this.dawdlerServerContext = dawdlerServerContext;
 	}
 
-	public void close() {
+	public synchronized void close() {
 		if (close.compareAndSet(false, true)) {
 			if (ioHandler != null)
 				ioHandler.channelClose(this);
