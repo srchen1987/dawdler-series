@@ -19,7 +19,7 @@
 	
 	<decisions>
 		<decision mapping="com.anywide.demo" reference="test1" />
-		<decision mapping="com.anywide.service.user.impl" latent-expression="test1" />
+		<decision mapping="com.anywide.service.**.impl" latent-expression="test1" />
 	</decisions>
 	
 	<remote-load

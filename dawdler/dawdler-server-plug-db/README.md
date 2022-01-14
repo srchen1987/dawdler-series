@@ -63,9 +63,9 @@ public @interface DBTransaction {
 
 ### 3. 数据源配置
 
-dawdler服务器支持jndi方式的数据源配置,部署在本服务器下所有服务都可以使用.参考[]()
+dawdler服务器支持jndi方式的数据源配置,部署在本服务器下所有服务都可以使用.参考[data-sources.xml说明](../dawdler-server/####22data-sources.xml说明)
 
-在services-configlxml中本服务的数据源配置：
+在services-config.xml中本服务的数据源配置：
 
 ```xml
 <datasources>
@@ -106,6 +106,9 @@ dawdler支持读写分离的配置,由datasource-expression节点来进行配置
 ```xml
 <decisions>
   <decision mapping="com.anywide.yyg.user.service.impl" latent-expression="userDataSource" />
-  <!-- mapping为指定的包,指定的包下所有的service实现类都会采用latent-expression所配置的规则 -->
+  <!-- mapping为指定的包,指定的包下所有的service实现类都会采用latent-expression所配置的规则,优先级高于antpath匹配规则 -->
+  <decision mapping="com.anywide.yyg.**.service.impl" latent-expression="userDataSource" />
+  <!-- mapping支持antpath,被匹配到的包下所有的service实现类都会采用latent-expression所配置的规则,优先级没有直接指定非antpath的高 -->
+
 </decisions>
 ```

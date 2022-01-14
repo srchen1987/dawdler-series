@@ -16,8 +16,6 @@
  */
 package com.anywide.dawdler.core.net.buffer;
 
-import java.nio.ByteBuffer;
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -27,5 +25,5 @@ import java.nio.ByteBuffer;
  * @email suxuan696@gmail.com
  */
 public interface BufferCreator {
-	ByteBuffer createByteBuffer(int capacity);
+	DawdlerByteBuffer createByteBuffer(int capacity) throws Exception;
 }

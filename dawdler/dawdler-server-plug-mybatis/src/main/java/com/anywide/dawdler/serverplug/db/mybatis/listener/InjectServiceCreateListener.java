@@ -18,14 +18,13 @@ package com.anywide.dawdler.serverplug.db.mybatis.listener;
 
 import java.lang.reflect.Field;
 
-import javax.annotation.Resource;
-
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
+import com.anywide.dawdler.serverplug.db.annotation.Repository;
 import com.anywide.dawdler.serverplug.db.mybatis.SingleSqlSessionFactory;
 
 /**
@@ -48,7 +47,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 	private void inject(Object service, DawdlerContext dawdlerContext) {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			Resource resource = field.getAnnotation(Resource.class);
+			Repository resource = field.getAnnotation(Repository.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
