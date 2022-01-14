@@ -86,7 +86,7 @@ public abstract class AbstractUrlHandler {
 				HttpServletResponse response = viewForward.getResponse();
 				PrintWriter out = response.getWriter();
 				try {
-					if (ClassUtil.isSimpleValueType(result.getClass())) {
+					if (ClassUtil.isSimpleValueType(result.getClass()) || result.getClass() == String.class) {
 						response.setContentType(AbstractDisplayPlug.MIME_TYPE_TEXT_HTML);
 						out.print(result);
 						out.flush();
