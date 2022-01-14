@@ -23,11 +23,23 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
  <scanner>
-  <jarFile>dawdler-server-plug-0.0.2-RELEASES.jar</jarFile>
-  <jarFile>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jarFile>
-  <jarFile>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jarFile>
-  <jarFile>dawdler-config-serverside-0.0.2-RELEASES.jar</jarFile>
-  <!-- 扫描的插件包名 -->
+  <jar-files>
+   <jar-file>dawdler-server-plug-0.0.3-RELEASES.jar</jar-file>
+   <jar-file>dawdler-server-plug-dao-0.0.3-RELEASES.jar</jar-file>
+   <jar-file>dawdler-server-plug-mybatis-0.0.3-RELEASES.jar</jar-file>
+   <jar-file>dawdler-config-serverside-0.0.3-RELEASES.jar</jar-file>
+   <jar-file>dawdler-distributed-transaction-server-0.0.3-RELEASES.jar</jar-file>
+   <!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
+  </jar-files>
+  <packages-in-jar>
+   <package-path>com.anywide.dawdler.serverplug.listener</package-path>
+   <package-path>com.anywide.dawdler.serverplug.service</package-path>
+   <package-path>com.anywide.dawdler.serverplug.db.dao.listener</package-path>
+   <package-path>com.anywide.dawdler.serverplug.db.mybatis.listener</package-path>
+   <package-path>com.anywide.dawdler.conf.server.fire</package-path>
+   <package-path>com.anywide.dawdler.distributed.transaction.server.listener</package-path>
+   <!-- 需要扫描的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效.需要注意所有部署在此容器下的服务都会被扫描,如果需要单独服务配置请到具体服务的services-config.xml中配置对应的扫描器-->
+  </packages-in-jar>
  </scanner>
  <keyStore
   keyStorePath="${DAWDLER_BASE_PATH}/key/dawdler.keystore"
