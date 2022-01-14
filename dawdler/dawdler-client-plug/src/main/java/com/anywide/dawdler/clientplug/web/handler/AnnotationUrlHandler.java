@@ -70,7 +70,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 
 	public boolean handleUrl(String uriShort, String httpMethod, boolean isJson, HttpServletRequest request,
 			HttpServletResponse response) {
-		Set<Entry<String, RequestUrlData>> rules = urlRules.entrySet();
+		Set<Entry<String, RequestUrlData>> rules = anturlRules.entrySet();
 		if (!isAntPath(uriShort)) {
 			RequestUrlData requestUrlData = urlRules.get(uriShort);
 			if (requestUrlData == null)
