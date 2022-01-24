@@ -87,15 +87,15 @@ public class Refresher {
 	public static void setValue(Field field, Object target, Object value) {
 		if (value == null)
 			return;
-		if (value.getClass().isAssignableFrom(field.getClass())) {
+		Class<?> typeClass = field.getType();
+		if (typeClass.isAssignableFrom(value.getClass())) {
 			try {
 				field.set(target, value);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 			}
 			return;
 		}
-		Class<?> type = field.getType();
-		value = ClassUtil.convert(value, type);
+		value = ClassUtil.convert(value, typeClass);
 		if (value != null) {
 			field.setAccessible(true);
 			try {
