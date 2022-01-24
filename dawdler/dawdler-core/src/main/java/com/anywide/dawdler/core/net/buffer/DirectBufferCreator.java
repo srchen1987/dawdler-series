@@ -17,6 +17,7 @@
 package com.anywide.dawdler.core.net.buffer;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
@@ -39,7 +40,9 @@ public class DirectBufferCreator implements BufferCreator {
 	private static Constructor<?> bufferConstructor;
 	static {
 		try {
-			unsafe = Unsafe.getUnsafe();
+			Field field = Unsafe.class.getDeclaredField("theUnsafe");
+			field.setAccessible(true);
+			unsafe = (Unsafe) field.get(null);
 			Class<?> bufferClass = Class.forName("java.nio.DirectByteBuffer");
 			bufferConstructor = bufferClass.getDeclaredConstructor(long.class, int.class);
 			bufferConstructor.setAccessible(true);
@@ -62,5 +65,4 @@ public class DirectBufferCreator implements BufferCreator {
 	public DawdlerByteBuffer createByteBuffer(int capacity) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
 		return createByteBufferByUnsafe(capacity);
 	}
-	
 }

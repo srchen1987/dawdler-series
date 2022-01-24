@@ -46,6 +46,7 @@ public class JsonProcessUtil {
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;
 		}
 	}
