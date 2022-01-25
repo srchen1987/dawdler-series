@@ -16,8 +16,8 @@
  */
 package com.anywide.dawdler.conf.init;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.conf.client.ConfigClient;
 import com.anywide.dawdler.conf.client.factory.ConfigClientFactory;
+import com.anywide.dawdler.util.DawdlerTool;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 /**
@@ -45,20 +46,25 @@ public class ConfigInit {
 
 	public void init() {
 		initConfigClients();
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		String prefix = "dawdler-config";
+		String subfix = ".yml";
+		String config_path = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		File file = new File(DawdlerTool.getcurrentPath() + config_path);
+		if (!file.isFile()) {
+			config_path = prefix + subfix;
+			file = new File(DawdlerTool.getcurrentPath() + config_path);
+		}
+		if (!file.isFile()) {
+			logger.warn("not found " + config_path);
+		}
 		YAMLMapper yamlMapper = YAMLMapper.builder().build();
-		InputStream input = Thread.currentThread().getContextClassLoader().getResourceAsStream("dawdler-config.yml");
 		Map<String, Map<String, Object>> data = null;
 		try {
-			data = yamlMapper.readValue(input, HashMap.class);
+			data = yamlMapper.readValue(file, HashMap.class);
 		} catch (IOException e) {
 			logger.error("", e);
 			return;
-		} finally {
-			if (input != null)
-				try {
-					input.close();
-				} catch (IOException e) {
-				}
 		}
 		if (data != null) {
 			this.configClients = new ArrayList<>();
