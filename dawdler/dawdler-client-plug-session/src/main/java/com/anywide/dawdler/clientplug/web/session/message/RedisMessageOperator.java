@@ -55,6 +55,8 @@ public class RedisMessageOperator implements MessageOperator {
 	public String CHANNEL_EXPIRED = "__keyevent@database__:expired";
 	public String CHANNEL_DEL = "__keyevent@database__:del";
 	public Pool<Jedis> jedisPool;
+	private volatile boolean stop = false;
+	private Jedis jedis = null;
 
 	public RedisMessageOperator(Serializer serializer, SessionStore sessionStore,
 			AbstractDistributedSessionManager abstractDistributedSessionManager, Pool<Jedis> jedisPool) {
@@ -76,12 +78,11 @@ public class RedisMessageOperator implements MessageOperator {
 			jedis.configSet(parameter, "gxE");// 过期与删除
 		}
 	}
-
+	Thread thread = null;
 	@Override
 	public void listenExpireAndDelAndChange() {
-		Thread thread = new Thread(() -> {
-			while (true) {
-				Jedis jedis = null;
+		thread = new Thread(() -> {
+			while (!stop) {
 				try {
 					jedis = jedisPool.getResource();
 					config(jedis);
@@ -89,17 +90,18 @@ public class RedisMessageOperator implements MessageOperator {
 					CHANNEL_DEL = CHANNEL_DEL.replace("database", jedis.getDB() + "");
 					subscribe(jedis);
 				} catch (Exception e) {
-					logger.error("", e);
-					if (jedis != null)
+					abstractDistributedSessionManager.invalidateAll();
+					if (jedis != null) {
 						try {
 							jedis.close();
 						} catch (Exception e1) {
 						}
+					}
 					try {
-						Thread.sleep(500);
+						Thread.sleep(100);
 					} catch (InterruptedException e1) {
 					}
-					abstractDistributedSessionManager.invalidateAll();
+					
 				}
 			}
 		});
@@ -205,5 +207,16 @@ public class RedisMessageOperator implements MessageOperator {
 			}
 		}
 
+	}
+
+	@Override
+	public void stop() {
+		stop = true;
+		if (jedis != null) {
+			try {
+				jedis.close();
+			} catch (Exception e1) {
+			}
+		}
 	}
 }

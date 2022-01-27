@@ -38,9 +38,8 @@ public class KryoSerializer implements Serializer {
 			KryoLocal kryoLocal = new KryoLocal();
 			return kryoLocal;
 		}
-
 	};
-
+	
 	@Override
 	public Object deserialize(byte[] bytes) {
 		KryoLocal kryoLocal = kryos.get();
