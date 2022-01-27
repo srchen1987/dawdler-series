@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.load;
 
-import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
@@ -58,20 +57,15 @@ public class LoadListener implements ServletContextListener {
 	private final Map<LoadCore, Thread> threads = new ConcurrentHashMap<LoadCore, Thread>();
 
 	public void contextDestroyed(ServletContextEvent arg0) {
-		for (Iterator<Entry<LoadCore, Thread>> it = threads.entrySet().iterator(); it.hasNext();) {
-			Entry<LoadCore, Thread> entry = it.next();
-			entry.getKey().stop();
-			if (entry.getValue().isAlive()) {
-				if (logger.isDebugEnabled())
-					logger.debug("stop \t" + entry.getValue().getName() + "\tload");
-				entry.getValue().interrupt();
-			}
-			String filepath = DawdlerTool.getcurrentPath() + File.separator + entry.getKey().getHost() + ".xml";
-			File file = new File(filepath);
-			if (file.exists()) {
-				file.delete();
-			}
-		}
+//		for (Iterator<Entry<LoadCore, Thread>> it = threads.entrySet().iterator(); it.hasNext();) {
+//			Entry<LoadCore, Thread> entry = it.next();
+//			entry.getKey().stop();
+//			if (entry.getValue().isAlive()) {
+//				if (logger.isDebugEnabled())
+//					logger.debug("stop \t" + entry.getValue().getName() + "\tload");
+//				entry.getValue().interrupt();
+//			}
+//		}
 		try {
 			ConnectionPool.shutdown();
 		} catch (Exception e) {
