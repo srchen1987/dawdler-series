@@ -206,6 +206,7 @@ public class DawdlerSessionFilter implements Filter {
 
 	@Override
 	public void destroy() {
+		messageOperator.stop();
 		if (abstractDistributedSessionManager != null) {
 			abstractDistributedSessionManager.close();
 		}
