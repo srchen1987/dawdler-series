@@ -31,5 +31,7 @@ public interface MessageOperator {
 	void sendMessageToDel(String sessionKey, String attributeName);
 
 	void listenExpireAndDelAndChange();
+	
+	void stop();
 
 }
