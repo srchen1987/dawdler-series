@@ -126,7 +126,7 @@ public class ParameterNameReader {
 //					return parameterNames;
 //				parameterNames[index] = name;
 //			} else {
-			if (index == parameterCount) {
+			if (index -1 == parameterCount) {
 				return parameterNames;
 			} else if (index == 0) {
 				continue;// skip this

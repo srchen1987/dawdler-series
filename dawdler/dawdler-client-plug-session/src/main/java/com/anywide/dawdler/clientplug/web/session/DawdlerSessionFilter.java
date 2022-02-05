@@ -230,7 +230,13 @@ public class DawdlerSessionFilter implements Filter {
 		@Override
 		public HttpSession getSession(boolean create) {
 			if (session == null) {
-				String sessionKey = getCookieValue(request.getCookies(), cookieName);
+				String sessionKey;
+				String token = request.getParameter("token");
+				if (token != null) {
+					sessionKey = token;
+				} else {
+					sessionKey = getCookieValue(request.getCookies(), cookieName);
+				}
 				if (sessionKey != null) {
 					try {
 						session = sessionOperator.operationSession(sessionKey, maxInactiveInterval);
