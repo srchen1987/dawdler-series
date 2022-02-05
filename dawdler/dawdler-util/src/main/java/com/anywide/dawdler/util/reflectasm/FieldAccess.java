@@ -39,7 +39,7 @@ import static org.objectweb.asm.Opcodes.LRETURN;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.PUTFIELD;
 import static org.objectweb.asm.Opcodes.RETURN;
-import static org.objectweb.asm.Opcodes.V1_1;
+import static org.objectweb.asm.Opcodes.V1_8;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -109,7 +109,7 @@ public abstract class FieldAccess {
 					String classNameInternal = className.replace('.', '/');
 
 					ClassWriter cw = new ClassWriter(0);
-					cw.visit(V1_1, ACC_PUBLIC + ACC_SUPER, accessClassNameInternal, null,
+					cw.visit(V1_8, ACC_PUBLIC + ACC_SUPER, accessClassNameInternal, null,
 							"com/anywide/dawdler/util/reflectasm/FieldAccess", null);
 					insertConstructor(cw);
 					insertGetObject(cw, classNameInternal, fields);
