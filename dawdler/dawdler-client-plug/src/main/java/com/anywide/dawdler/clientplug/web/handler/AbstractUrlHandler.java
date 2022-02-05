@@ -74,14 +74,13 @@ public abstract class AbstractUrlHandler {
 
 	public abstract boolean handleUrl(String urishort, String method, boolean isJson, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException;
-
 	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,
 			boolean responseBody) throws Throwable {
 		try {
 			if (!preHandle(target, viewForward, requestMapping))
 				return true;
-
-			Object result = method.invoke(target, RequestMethodProcessor.process(target, viewForward, method));
+			Object[] args = RequestMethodProcessor.process(target, viewForward, method);
+			Object result = method.invoke(target, args);
 			if (responseBody && result != null) {
 				HttpServletResponse response = viewForward.getResponse();
 				PrintWriter out = response.getWriter();
