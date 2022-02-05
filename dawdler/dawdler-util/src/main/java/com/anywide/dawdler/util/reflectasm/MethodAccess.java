@@ -54,7 +54,7 @@ import org.objectweb.asm.Type;
  * @author jackson.song
  * @version V1.0
  * @Title MethodAccess.java
- * @Description asm的改进版 已升到asm支持jdk9
+ * @Description asm的改进版 已升到asm支持jdk17
  * @date 2012年5月16日
  * @email suxuan696@gmail.com
  */
