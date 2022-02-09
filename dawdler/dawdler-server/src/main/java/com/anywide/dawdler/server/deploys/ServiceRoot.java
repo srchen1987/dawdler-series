@@ -117,7 +117,7 @@ public class ServiceRoot {
 		File deployFileRoot = getDeploys();
 		File[] deployFiles = deployFileRoot.listFiles();
 		if (deployFiles == null) {
-			System.err.println("deploys not found, startup failed!");
+			System.err.println(deployFileRoot.getAbsolutePath()+" not found, startup failed!");
 			return;
 		}
 		long start = JVMTimeProvider.currentTimeMillis();
