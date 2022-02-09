@@ -111,7 +111,6 @@ public class WebValidateExecutor {
 				} else {
 					params = JsonProcessUtil.jsonToBean(request.getInputStream(), HashMap.class);
 				}
-				params = viewForward.paramMaps();
 			} else {
 				params = viewForward.paramMaps();
 			}
@@ -141,5 +140,7 @@ public class WebValidateExecutor {
 		}
 		return true;
 	}
+	
+	
 
 }
