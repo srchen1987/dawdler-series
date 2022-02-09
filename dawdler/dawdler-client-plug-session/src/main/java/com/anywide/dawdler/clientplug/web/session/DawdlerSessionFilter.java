@@ -232,7 +232,7 @@ public class DawdlerSessionFilter implements Filter {
 		public HttpSession getSession(boolean create) {
 			if (session == null) {
 				String sessionKey;
-				String token = request.getParameter("token");
+				String token = request.getHeader("token");
 				if (token != null) {
 					sessionKey = token;
 				} else {
