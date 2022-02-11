@@ -55,6 +55,9 @@ services-config.xml中的扫描器
 
 ```xml
 <scanner>
+ <loads>
+  <pre-load>com.anywide.shop.execute.AbstractOrderExecutor</pre-load><!-- 预先加载此类触发aop织入 -->
+ </loads>
  <packages-in-jar>
   <package-path>com.anywide.shop.**.service.impl</package-path>
  </packages-in-jar><!-- 需要扫描jar中的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效-->
@@ -69,6 +72,8 @@ services-config.xml中的扫描器
 
 另外使用in-jar 需要配合 [server-conf.xml中的扫描器使用](../dawdler-server/README.md####21server-conf.xml说明)，需要配置需要扫描的jar，一般这些jar都为
 dawdler系统需要扫描配置相关的组件,不建议将具体实现服务打jar包放入到lib包中,直接在项目工程中即可(classes下).
+
+pre-load为了解决先加载了子类而通过classpath加载父类未被aop织入的情况.
 
 注意：此扫描器只扫描本服务中的组件.
 
