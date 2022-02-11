@@ -158,11 +158,6 @@ public class ServiceBase implements Service {
 			classLoader.findClassForDawdler(node.getText().trim());
 		}
 		
-		try {
-			classLoader.findClassForDawdler("com.platform.yabo.server.quartz.job.executor.Lottery_Job_Executor");
-		}catch(Exception e) {
-		}
-		
 		List<Node> packagesInClasses = root.selectNodes("scanner/packages-in-classes/package-path");
 		for (Node node : packagesInClasses) {
 			deployScanner.splitAndAddPathInClasses(node.getText().trim());
