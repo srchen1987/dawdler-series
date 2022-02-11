@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<zk-host username="" password="">localhost:2181</zk-host>
+	<scanner>
+		<loads>
+			<pre-load>com.anywide.shop.execute.AbstractOrderExecutor</pre-load>
+		</loads>
+		<packages-in-jar>
+			<package-path>com.anywide.shop.**.service.impl</package-path>
+		</packages-in-jar><!-- 需要扫描jar中的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效 -->
+		<packages-in-classes>
+			<package-path>com.anywide.shop.listener</package-path>
+			<package-path>com.anywide.shop.**.service.impl</package-path>
+		</packages-in-classes><!-- 需要扫描classes下的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效 -->
+	</scanner>
 	<datasources>
 		<datasource id="read1"
 			code="com.mchange.v2.c3p0.ComboPooledDataSource">
@@ -12,18 +24,19 @@
 			<attribute name="password">anywide1948@0</attribute>
 		</datasource>
 	</datasources>
-	
+
 	<datasource-expressions>
-		<datasource-expression id="test1" latent-expression="write=[read1],read=[read1|read1]" />
+		<datasource-expression id="test1"
+			latent-expression="write=[read1],read=[read1|read1]" />
 	</datasource-expressions>
-	
+
 	<decisions>
 		<decision mapping="com.anywide.demo" reference="test1" />
-		<decision mapping="com.anywide.service.**.impl" latent-expression="test1" />
+		<decision mapping="com.anywide.service.**.impl"
+			latent-expression="test1" />
 	</decisions>
-	
-	<remote-load
-		package="${classpath}/load-config.xml"></remote-load>
+
+	<remote-load package="${classpath}/load-config.xml"></remote-load>
 	<mybatis>
 		<mappers>
 			<mapper>classpath*:com/anywide/*/dao/xml/*Mapper.xml</mapper>

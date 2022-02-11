@@ -65,6 +65,7 @@ public class DistributedTransactionAspect {
 
 	@Around("compensableService()")
 	public Object interceptCompensableMethod(ProceedingJoinPoint pjp) throws Throwable {
+		System.out.println("interceptCompensableMethod:"+pjp);
 		MethodSignature methodSignature = (MethodSignature) pjp.getSignature();
 		Method method = methodSignature.getMethod();
 		DistributedTransaction dt = method.getAnnotation(DistributedTransaction.class);
