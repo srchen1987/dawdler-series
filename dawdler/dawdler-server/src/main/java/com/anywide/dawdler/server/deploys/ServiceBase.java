@@ -150,6 +150,12 @@ public class ServiceBase implements Service {
 			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
 
 		Element root = dawdlerContext.getServicesConfig().getRoot();
+		
+		List<Node> preLoadClasses = root.selectNodes("scanner/loads/pre-load");
+		
+		for (Node node : preLoadClasses) {
+			classLoader.findClassForDawdler(node.getText().trim());
+		}
 
 		List<Node> packagesInClasses = root.selectNodes("scanner/packages-in-classes/package-path");
 		for (Node node : packagesInClasses) {
