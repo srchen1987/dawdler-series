@@ -115,6 +115,7 @@ public class DataAutomaticNewV2 {
 		dataTypes.put("TIME", new Class[] { java.sql.Time.class, String.class });
 		dataTypes.put("YEAR", new Class[] { java.sql.Date.class, String.class });
 		dataTypes.put("VARCHAR", new Class[] { String.class });
+		dataTypes.put("TEXT", new Class[] { String.class });
 
 		dataTypes.put("BINARY", byteclass);
 		dataTypes.put("TINYBLOB", byteclass);
