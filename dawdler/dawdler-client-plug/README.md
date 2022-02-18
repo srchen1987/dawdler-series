@@ -471,4 +471,4 @@ public class UserControllerAspect {
 }
 ```
 
-拦截api接口(Service接口)的示例,请参考[分布式事务拦截注解的实现](../dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/com/anywide/dawdler/distributed/transaction/aspetct/DistributedTransactionAspect.java),拦截api定义的DistributedTransaction注解.
+拦截api接口(Service接口)的示例,请参考[分布式事务拦截注解的实现](../dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/com/anywide/dawdler/distributed/transaction/aspect/DistributedTransactionAspect.java),拦截api定义的DistributedTransaction注解.
