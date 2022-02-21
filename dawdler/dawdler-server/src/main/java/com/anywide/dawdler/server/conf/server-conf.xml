@@ -2,16 +2,25 @@
 <config>
 	<scanner>
 		<jar-files>
-			<jar-file>dawdler-server-plug-0.0.3-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-dao-0.0.3-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-mybatis-0.0.3-RELEASES.jar</jar-file>
-			<jar-file>dawdler-config-serverside-0.0.3-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-17.0.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-dao-17.0.1-jdk17-RELEASES.jar
+			</jar-file>
+			<jar-file>dawdler-server-plug-mybatis-17.0.1-jdk17-RELEASES.jar
+			</jar-file>
+			<jar-file>dawdler-config-serverside-17.0.1-jdk17-RELEASES.jar
+			</jar-file>
+			<jar-file>dawdler-distributed-transaction-server-17.0.1-jdk17-RELEASES.jar
+			</jar-file>
 		</jar-files>
+
 		<packages-in-jar>
 			<package-path>com.anywide.dawdler.serverplug.listener</package-path>
-			<package-path>com.anywide.dawdler.serverplug.service</package-path>
-			<package-path>com.anywide.dawdler.serverplug.db.dao.listener</package-path>
-			<package-path>com.anywide.dawdler.serverplug.db.mybatis.listener</package-path>
+			<package-path>com.anywide.dawdler.serverplug.service.impl
+			</package-path>
+			<package-path>com.anywide.dawdler.serverplug.db.dao.listener
+			</package-path>
+			<package-path>com.anywide.dawdler.serverplug.db.mybatis.listener
+			</package-path>
 		</packages-in-jar>
 	</scanner>
 	<keyStore
