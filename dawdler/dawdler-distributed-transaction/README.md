@@ -61,7 +61,7 @@ api层定义接口
 
 ```java
 //订单服务的接口定义
-@RemoteService
+@RemoteService("distributed-transaction-order-service")
 public interface OrderService {
 
  @DistributedTransaction(action = "order",sponsor = false)//标识为分布式事务的参与者
@@ -79,7 +79,7 @@ api层定义接口
 
 ```java
 //用户服务的接口定义
-@RemoteService
+@RemoteService("distributed-transaction-user-service")
 public interface UserService {
  @DistributedTransaction(action = "user",sponsor = false)//标识为分布式事务的参与者
  public Map<String, Object> tryPayment(Integer userId,BigDecimal amount);
@@ -97,7 +97,7 @@ api层定义接口
 
 ```java
 //商品库存服务的接口定义
-@RemoteService
+@RemoteService("distributed-transaction-product-service")
 public interface ProductService {
 
  @DistributedTransaction(action = "product",sponsor = false)//标识为分布式事务的参与者
@@ -115,13 +115,13 @@ web端将发起者声明在web接口中(分布式事务框架也支持将发起�
 
 @RequestMapping(value = "/order")
 public class OrderController extends TransactionController {
- @RemoteService(group="distributed-transaction-user-service")
+ @Service
  UserService userService;//注入用户服务
 
- @RemoteService(group="distributed-transaction-order-service")
+ @Service
  OrderService orderService;//注入订单服务
 
- @RemoteService(group="distributed-transaction-product-service")
+ @Service
  ProductService productService;//注入商品库存服务
  
  
@@ -184,7 +184,7 @@ Processor是分布式事务参与者的处理器.
 
 ```java
 public class UserCompensator extends DistributedTransactionCustomProcessor {
- @RemoteService(group="distributed-transaction-user-service")//注入用户服务
+ @Service //注入用户服务
  UserService userService;
  public UserCompensator() {
   super("user");//定义Processor的别名,DistributedTransaction注解中的action与其对应
@@ -201,7 +201,7 @@ public class UserCompensator extends DistributedTransactionCustomProcessor {
 
 ```java
 public class ProductCompensator extends DistributedTransactionCustomProcessor {
- @RemoteService(group="distributed-transaction-product-service")
+ @Service
  ProductService productService;
  public ProductCompensator() {
   super("product");
@@ -218,7 +218,7 @@ public class ProductCompensator extends DistributedTransactionCustomProcessor {
 
 ```java
 public class OrderCompensator extends DistributedTransactionCustomProcessor {
- @RemoteService(group="distributed-transaction-order-service")
+ @Service
  OrderService orderService;
  public OrderCompensator() {
   super("order");
