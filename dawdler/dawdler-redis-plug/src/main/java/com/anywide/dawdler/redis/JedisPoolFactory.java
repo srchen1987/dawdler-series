@@ -47,6 +47,7 @@ public final class JedisPoolFactory {
 		Pool<Jedis> jedisPool = null;
 		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		String auth = ps.getProperty("auth");
+		String userName = ps.getProperty("userName");
 		int database = PropertiesUtil.getIfNullReturnDefaultValueInt("database", 0, ps);
 //		
 		int minIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle", JedisPoolConfig.DEFAULT_MIN_IDLE,
@@ -78,11 +79,20 @@ public final class JedisPoolFactory {
 		if (masterName != null && sentinels != null) {
 			String[] sentinelsArray = sentinels.split(",");
 			Set<String> sentinelsSet = Arrays.stream(sentinelsArray).collect(Collectors.toSet());
-			jedisPool = new JedisSentinelPool(masterName, sentinelsSet, poolConfig, timeout, auth, database);
+			if (userName != null) {
+				jedisPool = new JedisSentinelPool(masterName, sentinelsSet, poolConfig, timeout, userName, auth,
+						database);
+			} else {
+				jedisPool = new JedisSentinelPool(masterName, sentinelsSet, poolConfig, timeout, auth, database);
+			}
 		} else {
 			String addr = ps.getProperty("addr");
 			int port = PropertiesUtil.getIfNullReturnDefaultValueInt("port", 5672, ps);
-			jedisPool = new JedisPool(poolConfig, addr, port, timeout, auth, database);
+			if (userName != null) {
+				jedisPool = new JedisPool(poolConfig, addr, port, timeout, userName, auth, database);
+			} else {
+				jedisPool = new JedisPool(poolConfig, addr, port, timeout, auth, database);
+			}
 		}
 		return jedisPool;
 
