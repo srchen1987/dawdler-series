@@ -75,7 +75,7 @@ public class PooledConnectionFactory extends BasePooledObjectFactory<Connection>
 
 		AutorecoveringConnection con = (AutorecoveringConnection) connectionFactory.newConnection();
 		con.addShutdownListener((shutdownSignalException) -> {
-			logger.error("amqp connection shutdown:" + shutdownSignalException.getMessage());
+//			logger.error("amqp connection shutdown:" + shutdownSignalException.getMessage());
 			try {
 				genericObjectPool.invalidateObject((Connection) shutdownSignalException.getReference());
 			} catch (Exception e) {
