@@ -22,6 +22,7 @@ addr=127.0.0.1 #单机ip
 port=6379 #单机端口
 ######################
 
+userName=redis_user #redis6之后支持设置用户名,如果不需要注释掉此项
 auth=password #密码
 max_active=20 #最大连接数
 max_idle=8 #最大空闲数
