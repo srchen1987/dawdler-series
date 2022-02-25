@@ -74,9 +74,10 @@ public class MessageConsumer {
 				executor.execute(() -> {
 					String action = dt.getAction();
 					Object obj = DistributedTransactionCustomProcessor.getProcessor(action);
+					if(obj == null)
+						throw new NullPointerException("not found processor "+action+" !");
 					String branchTxId = dt.getBranchTxId();
-					DistributedTransactionCustomProcessor dp = (DistributedTransactionCustomProcessor) obj;
-					boolean result = dp.process(dt, status);
+					boolean result = ((DistributedTransactionCustomProcessor) obj).process(dt, status);
 					if (logger.isDebugEnabled())
 						logger.debug("compensate_result: globalTxId:{} branchId:{} action:{} status:{} result:{}",
 								dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
