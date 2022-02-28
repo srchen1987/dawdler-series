@@ -87,12 +87,12 @@ public class ConsulConfigClient implements ConfigClient {
 			} else {
 				client = new ConsulClient(host, port);
 			}
+			if (watchKeys != null)
+					executor = Executors.newFixedThreadPool(watchKeys.size());
 		} catch (Throwable e) {
 			logger.error("", e);
 		}
 		
-		if (watchKeys != null)
-			executor = Executors.newFixedThreadPool(watchKeys.size());
 	}
 
 	@Override
