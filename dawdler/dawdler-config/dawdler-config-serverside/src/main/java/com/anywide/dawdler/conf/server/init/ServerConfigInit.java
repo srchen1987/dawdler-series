@@ -36,9 +36,12 @@ public class ServerConfigInit {
 
 	private static ConfigInit configInit = new ConfigInit();
 
+	public static void prepareInit() {
+		configInit.init();
+	}
+	
 	public static void init(List<OrderData<DawdlerServiceListener>> dawdlerServiceListeners,
 			List<OrderData<DawdlerFilter>> dawdlerFilters) throws Exception {
-		configInit.init();
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {
 			Refresher.refreshAllConfig(orderData.getData());
 		}
