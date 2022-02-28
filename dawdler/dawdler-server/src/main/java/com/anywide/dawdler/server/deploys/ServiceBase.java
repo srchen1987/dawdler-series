@@ -85,6 +85,7 @@ public class ServiceBase implements Service {
 	private final Scanner scanner;
 	private final DeployScanner deployScanner;
 	private AntPathMatcher antPathMatcher;
+	private Class<?> configInitClass;
 
 	public ServiceBase(URL binPath, Scanner scanner, AntPathMatcher antPathMatcher, File deploy, String host, int port,
 			ClassLoader parent) throws MalformedURLException {
@@ -145,7 +146,7 @@ public class ServiceBase implements Service {
 	public void start() throws Exception {
 		initPlug("com.anywide.dawdler.serverplug.init.PlugInit");
 		initPlug("com.anywide.dawdler.serverplug.db.init.PlugInit");
-		
+		loadConfModuleAndPrepareInit();
 		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
 		if (definedServiceExecutor != null)
 			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
@@ -215,7 +216,7 @@ public class ServiceBase implements Service {
 			injectService(data.getData());
 		}
 
-		loadConfModuleAndExecuteStaticMethod("init");
+		executeStaticMethod("init");
 
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
 			ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
@@ -273,7 +274,7 @@ public class ServiceBase implements Service {
 		}
 		servicesManager.clear();
 
-		loadConfModuleAndExecuteStaticMethod("destroy");
+		executeStaticMethod("destroy");
 	}
 
 	public DawdlerContext getDawdlerContext() {
@@ -320,20 +321,29 @@ public class ServiceBase implements Service {
 		}
 	}
 
-	private void loadConfModuleAndExecuteStaticMethod(String methodName) {
+	private void loadConfModuleAndPrepareInit() {
 		try {
-			Class<?> configInitClass = classLoader.loadClass("com.anywide.dawdler.conf.server.init.ServerConfigInit");
-			Method method;
-			if (methodName.equals("init")) {
-				method = configInitClass.getMethod(methodName, List.class, List.class);
-				method.invoke(null, dawdlerListenerProvider.getListeners(), filterProvider.getFilters());
-			} else {
-				method = configInitClass.getMethod(methodName);
-				method.invoke(null);
-			}
-
+			configInitClass = classLoader.loadClass("com.anywide.dawdler.conf.server.init.ServerConfigInit");
+			executeStaticMethod("prepareInit");
 		} catch (Exception e) {
-			// ignore
+			//ignore
+		}
+	}
+	private void executeStaticMethod(String methodName) {
+		if(configInitClass != null) {
+			try {
+				Method method;
+				if (methodName.equals("init")) {
+					method = configInitClass.getMethod(methodName, List.class, List.class);
+					method.invoke(null, dawdlerListenerProvider.getListeners(), filterProvider.getFilters());
+				} else {
+					method = configInitClass.getMethod(methodName);
+					method.invoke(null);
+				}
+
+			} catch (Exception e) {
+				// ignore
+			}
 		}
 	}
 
