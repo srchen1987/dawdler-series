@@ -81,13 +81,17 @@ public class ConsulConfigClient implements ConfigClient {
 		separator = (String) conf.get("separator");
 		token = (String) conf.get("token");
 		waitTime = Integer.parseInt(conf.get("wait-time").toString());
-		if (config != null) {
-			client = new ConsulClient(host, port, config);
-		} else {
-			client = new ConsulClient(host, port);
+		try {
+			if (config != null) {
+				client = new ConsulClient(host, port, config);
+			} else {
+				client = new ConsulClient(host, port);
+			}
+			if (watchKeys != null)
+					executor = Executors.newFixedThreadPool(watchKeys.size());
+		} catch (Throwable e) {
+			logger.error("", e);
 		}
-		if (watchKeys != null)
-			executor = Executors.newFixedThreadPool(watchKeys.size());
 	}
 
 	@Override
