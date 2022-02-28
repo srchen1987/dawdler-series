@@ -198,6 +198,14 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			throw new ClassNotFoundException(name);
 		}
 	}
+	
+	public Class<?> findClassForDawdler(final String name, boolean resolve) throws ClassNotFoundException {
+		Class<?> clazz = findClassForDawdler(name);
+		if(resolve) {
+			resolveClass(clazz);
+		}
+		return clazz;
+	}
 
 	public Class<?> loadClassFromBytes(String name, byte[] classData, Object obj, ClassLoader classLoader)
 			throws ClassNotFoundException {
@@ -208,7 +216,6 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			logger.error("", e);
 		}
 		Class<?> clazz = defineClass(name, classData, 0, classData.length);
-//		resolveClass(clazz);
 		return clazz;
 	}
 
