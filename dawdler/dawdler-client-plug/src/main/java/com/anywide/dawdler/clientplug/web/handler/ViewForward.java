@@ -91,7 +91,7 @@ public class ViewForward {
 		return invokeException;
 	}
 
-	void setInvokeException(Throwable invokeException) {
+	public void setInvokeException(Throwable invokeException) {
 		this.invokeException = invokeException;
 	}
 

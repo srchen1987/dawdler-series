@@ -67,7 +67,7 @@ public class ViewFilter implements Filter {
 			boolean status = annotationUrlHander.handleUrl(uriShort, method, isJson, request, response);
 			if (!status)
 				chain.doFilter(request, response);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			throw new ServletException(e);
 		}
 	}
