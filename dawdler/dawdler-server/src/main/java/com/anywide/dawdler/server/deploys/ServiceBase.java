@@ -324,11 +324,12 @@ public class ServiceBase implements Service {
 	private void loadConfModuleAndPrepareInit() {
 		try {
 			configInitClass = classLoader.loadClass("com.anywide.dawdler.conf.server.init.ServerConfigInit");
-			executeStaticMethod("prepareInit");
 		} catch (Exception e) {
 			//ignore
 		}
+		executeStaticMethod("prepareInit");
 	}
+	
 	private void executeStaticMethod(String methodName) {
 		if(configInitClass != null) {
 			try {
@@ -341,8 +342,8 @@ public class ServiceBase implements Service {
 					method.invoke(null);
 				}
 
-			} catch (Exception e) {
-				// ignore
+			} catch (Throwable e) {
+				logger.error("", e);
 			}
 		}
 	}
