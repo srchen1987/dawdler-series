@@ -100,18 +100,9 @@ public abstract class AbstractUrlHandler {
 				return true;
 			}
 			postHandle(target, viewForward, requestMapping, viewForward.getInvokeException());
-		} catch (Throwable e) {
-			viewForward.setInvokeException(e);
+			DisplaySwitcher.switchDisplay(viewForward);
 		}
-		try {
-			if (viewForward.getInvokeException() == null) {
-				DisplaySwitcher.switchDisplay(viewForward);
-			} else {
-				throw viewForward.getInvokeException();
-			}
-		} catch (Throwable e) {
-			throw e;
-		} finally {
+		finally {
 			afterCompletion(target, viewForward, requestMapping, viewForward.getInvokeException());
 		}
 		return true;
