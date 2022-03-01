@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import com.anywide.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.util.JsonProcessUtil;
 
@@ -52,13 +53,7 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 		response.setContentType(MIME_TYPE_JSON);
 		String json = null;
 		if (wf.getInvokeException() != null) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			Map<String, String> data = new HashMap<String, String>();
-			data.put("msg", "Internal Server Error!");
-			json = JsonProcessUtil.beanToJson(data);
-			if (json != null)
-				print(response, json);
-			return;
+			wf.setStatus(ResponseType.ERROR);
 		}
 		switch (wf.getStatus()) {
 		case SUCCESS: {
