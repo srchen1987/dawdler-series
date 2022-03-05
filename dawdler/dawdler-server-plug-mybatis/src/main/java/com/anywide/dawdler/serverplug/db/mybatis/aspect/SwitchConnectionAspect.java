@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.TLS;
 @Aspect
 public class SwitchConnectionAspect {
 
-	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.select*(..))")
+	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(..)) && args(String,Object,org.apache.ibatis.session.RowBounds)")
 	public Object select(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getReadConnection());
@@ -47,19 +47,7 @@ public class SwitchConnectionAspect {
 		}
 	}
 
-	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.insert(..))")
-	public Object insert(ProceedingJoinPoint pjp) throws Throwable {
-		try {
-			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
-			return pjp.proceed();
-		} catch (Throwable t) {
-			throw t;
-		} finally {
-			TLS.remove(DawdlerMybatisTransaction.CURRENT_CONNECTION);
-		}
-	}
-
-	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.update(..))")
+	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.update(..)) && args(String,Object)")
 	public Object update(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
@@ -71,16 +59,5 @@ public class SwitchConnectionAspect {
 		}
 	}
 
-	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.delete(..))")
-	public Object delete(ProceedingJoinPoint pjp) throws Throwable {
-		try {
-			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
-			return pjp.proceed();
-		} catch (Throwable t) {
-			throw t;
-		} finally {
-			TLS.remove(DawdlerMybatisTransaction.CURRENT_CONNECTION);
-		}
-	}
 
 }
