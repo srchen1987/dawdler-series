@@ -125,11 +125,11 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 			else
 				return true;
 		} catch (Throwable e) {
-			HttpExceptionHandler httpExceptionHandler = null;
+			viewForward.setInvokeException(e);
 			if (exceptionHandler.isEmpty()) {
 				exceptionHandler = viewType.toString();
 			}
-			httpExceptionHandler = HttpExceptionHolder.getHttpExceptionHandler(exceptionHandler);
+			HttpExceptionHandler httpExceptionHandler = HttpExceptionHolder.getHttpExceptionHandler(exceptionHandler);
 			if (httpExceptionHandler == null)
 				httpExceptionHandler = HttpExceptionHolder.getJsonHttpExceptionHandler();
 			httpExceptionHandler.handle(request, response, viewForward, e);
