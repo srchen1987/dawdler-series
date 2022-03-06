@@ -116,7 +116,7 @@ public class ConsulConfigClient implements ConfigClient {
 								flushCache(watchKey);
 							}
 						}
-					} catch (Exception e) {
+					} catch (Throwable e) {
 						logger.error("", e);
 						try {
 							Thread.sleep(1000);
