@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
-import com.anywide.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -66,10 +65,6 @@ public class HttpExceptionHolder {
 		@Override
 		public void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward,
 				Throwable ex) {
-			logger.error("", ex);// 如果不想输出这个，可以注册自己的handler，也可以注释源码
-			response.setStatus(500);
-			viewForward.setStatus(ResponseType.ERROR);
-			viewForward.putData("success", false);
 			DisplaySwitcher.switchDisplay(viewForward);
 		}
 	}
