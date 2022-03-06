@@ -72,21 +72,22 @@ public abstract class AbstractUrlHandler {
 		}
 	}
 
+
 	public abstract boolean handleUrl(String urishort, String method, boolean isJson, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException;
-
+	
 	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,
 			boolean responseBody) throws Throwable {
 		try {
 			if (!preHandle(target, viewForward, requestMapping))
 				return true;
-
-			Object result = method.invoke(target, RequestMethodProcessor.process(target, viewForward, method));
+			Object[] args = RequestMethodProcessor.process(target, viewForward, method);
+			Object result = method.invoke(target, args);
 			if (responseBody && result != null) {
 				HttpServletResponse response = viewForward.getResponse();
 				PrintWriter out = response.getWriter();
 				try {
-					if (ClassUtil.isSimpleValueType(result.getClass()) || result.getClass() == String.class) {
+					if (ClassUtil.isSimpleValueType(result.getClass())|| result.getClass() == String.class) {
 						response.setContentType(AbstractDisplayPlug.MIME_TYPE_TEXT_HTML);
 						out.print(result);
 						out.flush();
@@ -101,18 +102,9 @@ public abstract class AbstractUrlHandler {
 				return true;
 			}
 			postHandle(target, viewForward, requestMapping, viewForward.getInvokeException());
-		} catch (Throwable e) {
-			viewForward.setInvokeException(e);
+			DisplaySwitcher.switchDisplay(viewForward);
 		}
-		try {
-			if (viewForward.getInvokeException() == null) {
-				DisplaySwitcher.switchDisplay(viewForward);
-			} else {
-				throw viewForward.getInvokeException();
-			}
-		} catch (Throwable e) {
-			throw e;
-		} finally {
+		finally {
 			afterCompletion(target, viewForward, requestMapping, viewForward.getInvokeException());
 		}
 		return true;
