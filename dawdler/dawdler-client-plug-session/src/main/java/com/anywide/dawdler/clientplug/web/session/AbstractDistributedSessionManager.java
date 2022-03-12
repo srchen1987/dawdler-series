@@ -51,5 +51,9 @@ public abstract class AbstractDistributedSessionManager {
 	public abstract void addSession(String sessionKey, DawdlerHttpSession dawdlerHttpSession);
 
 	public abstract void invalidateAll();
+	
+	public abstract void addIpToBlacklist(String ip);
+	
+	public abstract boolean getIpBlack(String ip);
 
 }
