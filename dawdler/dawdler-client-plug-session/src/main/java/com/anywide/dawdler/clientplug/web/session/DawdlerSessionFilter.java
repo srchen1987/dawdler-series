@@ -62,11 +62,18 @@ import redis.clients.jedis.util.Pool;
 public class DawdlerSessionFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);
 	public static String cookieName = "_dawdler_key";
+	public static String tokenName = "token";
+	public static boolean suportHead;
+	public static boolean suportParam;
 	public static String domain;
 	public static String path = "/";
-	public static boolean secure;
+	private static boolean secure;
 	private static int maxInactiveInterval;
 	private static int maxSize;
+	private static boolean defense;
+	private static int ipMaxInactiveInterval;
+	private static int ipMaxSize;
+	private static int ipLimit;
 //	private static int synFlushInterval = 0;
 
 	static {
@@ -99,10 +106,22 @@ public class DawdlerSessionFilter implements Filter {
 				path = pathString;
 			}
 			cookieName = ps.getProperty("cookieName");
+			
+			String tokenString = ps.getProperty("tokenName");
+			if (tokenString != null && !tokenString.trim().equals("")) {
+				tokenName = tokenString;
+			}
+			suportHead = PropertiesUtil.getIfNullReturnDefaultValueBoolean("suportHead", false, ps);
+			suportParam = PropertiesUtil.getIfNullReturnDefaultValueBoolean("suportParam", false, ps);
 			secure = PropertiesUtil.getIfNullReturnDefaultValueBoolean("secure", false, ps);
 			maxInactiveInterval = PropertiesUtil.getIfNullReturnDefaultValueInt("maxInactiveInterval", 1800, ps);
 			maxSize = PropertiesUtil.getIfNullReturnDefaultValueInt("maxSize", 65525, ps);
 
+			defense = PropertiesUtil.getIfNullReturnDefaultValueBoolean("defense", false, ps);
+			ipMaxInactiveInterval = PropertiesUtil.getIfNullReturnDefaultValueInt("ipMaxInactiveInterval", 1800, ps);
+			ipMaxSize = PropertiesUtil.getIfNullReturnDefaultValueInt("ipMaxSize", 65525, ps);
+			ipLimit = PropertiesUtil.getIfNullReturnDefaultValueInt("ipLimit", 8, ps);
+			
 //			String synchFlushIntervalString = ps.getProperty("synchFlushInterval");
 //			if (synchFlushIntervalString != null) {
 //				try {
@@ -144,7 +163,7 @@ public class DawdlerSessionFilter implements Filter {
 			throw new ServletException(e);
 		}
 		servletContext = filterConfig.getServletContext();
-		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize);
+		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize, defense, ipMaxInactiveInterval,ipMaxSize);
 		Object listener = servletContext
 				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTPSESSION_LISTENER);
 		if (listener instanceof HttpSessionListener) {
@@ -172,7 +191,12 @@ public class DawdlerSessionFilter implements Filter {
 			DawdlerHttpSession session = (DawdlerHttpSession) httpRequest.getSession(false);
 			if (session != null) {
 				try {
-					sessionStore.saveSession(session);
+					if(defense) {
+						sessionStore.saveSession(session,  getOnlineIp(httpRequest), abstractDistributedSessionManager, defense, ipLimit, ipMaxInactiveInterval);
+					}
+					else {
+						sessionStore.saveSession(session);
+					}
 				} catch (Exception e) {
 					logger.error("", e);
 				}
@@ -231,7 +255,12 @@ public class DawdlerSessionFilter implements Filter {
 		public HttpSession getSession(boolean create) {
 			if (session == null) {
 				String sessionKey;
-				String token = request.getParameter("token");
+				String token = null;
+				if(suportHead) {
+					token = request.getHeader(tokenName);
+				}else if(suportParam) {
+					token = request.getParameter(tokenName);
+				}
 				if (token != null) {
 					sessionKey = token;
 				} else {
@@ -280,5 +309,25 @@ public class DawdlerSessionFilter implements Filter {
 			cookie.setSecure(secure);
 			response.addCookie(cookie);
 		}
+	}
+	
+	private static String getOnlineIp(HttpServletRequest request) {
+		String forward_header = request.getHeader("X-Forwarded-For");
+		String ip = request.getHeader("X-Real-IP");
+		if ((forward_header != null) && (!forward_header.trim().equals(""))) {
+			String[] forward_headers = forward_header.split(",");
+			String[] arrayOfString1;
+			int j = (arrayOfString1 = forward_headers).length;
+			for (int i = 0; i < j; i++) {
+				String s = arrayOfString1[i];
+				if (!s.trim().equalsIgnoreCase("unknown")) {
+					return s;
+				}
+			}
+		}
+		if (ip == null || "".equals(ip)) {
+			ip = request.getRemoteAddr();
+		}
+		return ip;
 	}
 }
