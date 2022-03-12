@@ -33,11 +33,15 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 public class DistributedCaffeineSessionManager extends AbstractDistributedSessionManager {
 	private final int maxInactiveInterval;
 	LoadingCache<String, DawdlerHttpSession> sessions;
-
-	public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize) {
+	LoadingCache<String, Boolean> ipBlacklist;
+	public DistributedCaffeineSessionManager(int maxInactiveInterval, int maxSize, boolean defense,int ipMaxInactiveInterval, int ipMaxSize) {
 		this.maxInactiveInterval = maxInactiveInterval;
 		sessions = Caffeine.newBuilder().maximumSize(maxSize).expireAfterAccess(maxInactiveInterval, TimeUnit.SECONDS)
 				.build(this::createExpensiveGraph);
+		if(defense) {
+			ipBlacklist = Caffeine.newBuilder().maximumSize(maxSize).expireAfterWrite(maxInactiveInterval, TimeUnit.SECONDS)
+					.build(this::createipBlacklist);
+		}
 	}
 
 	public DawdlerHttpSession getSession(String sessionKey) {
@@ -48,6 +52,10 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 		return maxInactiveInterval;
 	}
 
+	private Boolean createipBlacklist(String key) {
+		return null;
+	}
+	
 	private DawdlerHttpSession createExpensiveGraph(String key) {
 		return null;
 	}
@@ -82,5 +90,14 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 	@Override
 	public void invalidateAll() {
 		sessions.invalidateAll();
+	}
+	
+	
+	public void addIpToBlacklist(String ip) {
+		ipBlacklist.put(ip, true);
+	}
+	
+	public boolean getIpBlack(String ip) {
+		return ipBlacklist.get(ip) != null;
 	}
 }
