@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.clientplug.web.session.AbstractDistributedSessionManager;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.anywide.dawdler.clientplug.web.session.message.RedisMessageOperator;
 import com.anywide.dawdler.core.serializer.Serializer;
@@ -44,6 +45,7 @@ import redis.clients.jedis.util.Pool;
  */
 public class RedisSessionStore implements SessionStore {
 	public final static String SESSIONKEY_PREFIX = "session:";
+	public final static String IP_PREFIX = "ip:";
 	private static final Logger logger = LoggerFactory.getLogger(RedisSessionStore.class);
 	private final Pool<Jedis> jedisPool;
 	private final Serializer serializer;
@@ -187,6 +189,58 @@ public class RedisSessionStore implements SessionStore {
 			jedis.del(SESSIONKEY_PREFIX + attr);
 			return null;
 		}
+	}
+
+	@Override
+	public void saveSession(DawdlerHttpSession session, String ip, AbstractDistributedSessionManager sessionManager,
+			boolean defense, int ipLimit, int ipMaxInactiveInterval) throws Exception {
+		Jedis jedis = null;
+		try {
+			jedis = jedisPool.getResource();
+			String id = SESSIONKEY_PREFIX + session.getId();
+			Pipeline pipeline = jedis.pipelined();
+			Map<String, Object> attributesAddNew = session.getAttributesAddNew();
+			boolean add = !attributesAddNew.isEmpty();
+			if (add) {
+				Map<byte[], byte[]> addData = new HashMap<byte[], byte[]>();
+				attributesAddNew.forEach((k, v) -> {
+					try {
+						addData.put(k.getBytes(), serializer.serialize(v));
+					} catch (Exception e) {
+						logger.error("", e);
+					}
+				});
+				pipeline.hmset(id.getBytes(), addData);
+			}
+
+			List<String> removeKeys = session.getAttributesRemoveNewKeys();
+			boolean del = !removeKeys.isEmpty();
+			if (del) {
+				pipeline.hdel(id, removeKeys.toArray(new String[0]));
+			}
+			if (add || del) {
+				pipeline.publish(RedisMessageOperator.CHANNEL_ATTRIBUTE_CHANGE_RELOAD,
+						id + "$" + session.getSessionSign());
+			}
+			String ipKey = IP_PREFIX + ip;
+			Response<Long> ipCount = pipeline.incr(ipKey);
+			pipeline.expire(ipKey, ipMaxInactiveInterval);
+			Response<Long> exist = pipeline.expire(id, session.getMaxInactiveInterval() - 5);
+			if (pipeline != null) {
+				pipeline.close();
+			}
+			if (exist.get() == 0) {
+				session.invalidate();
+			}
+			if (ipCount.get() > ipLimit) {
+				sessionManager.addIpToBlacklist(ip);
+			}
+		} finally {
+			if (jedis != null) {
+				jedis.close();
+			}
+		}
+
 	}
 
 }

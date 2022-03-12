@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.web.session.store;
 
 import java.util.Map;
 
+import com.anywide.dawdler.clientplug.web.session.AbstractDistributedSessionManager;
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 
 /**
@@ -29,6 +30,9 @@ import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 public interface SessionStore {
 
 	void saveSession(DawdlerHttpSession session) throws Exception;
+
+	void saveSession(DawdlerHttpSession session, String ip, AbstractDistributedSessionManager sessionManager,
+			boolean defense, int ipLimit, int ipMaxInactiveInterval) throws Exception;
 
 	Map<byte[], byte[]> getAttributes(String sessionKey) throws Exception;
 
