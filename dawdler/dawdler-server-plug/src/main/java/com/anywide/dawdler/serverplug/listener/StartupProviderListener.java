@@ -27,7 +27,7 @@ import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.listener.DawdlerServiceListener;
-import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
+import com.anywide.dawdler.util.HashedWheelTimer;
 import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
@@ -38,6 +38,7 @@ public class StartupProviderListener implements DawdlerServiceListener {
 	private DiscoveryCenter discoveryCenter;
 	private Timeout timeout;
 	private long checkTime = 5000;
+	private HashedWheelTimer hashedWheelTimer;
 
 	@Override
 	public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
@@ -59,7 +60,8 @@ public class StartupProviderListener implements DawdlerServiceListener {
 			}
 
 			dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
-			timeout = HashedWheelTimerSingleCreator.getHashedWheelTimer()
+			hashedWheelTimer = new HashedWheelTimer();
+			timeout = hashedWheelTimer
 					.newTimeout(new ProviderTimeoutTask(path, value), checkTime, TimeUnit.MILLISECONDS);
 
 		} else {
@@ -75,7 +77,7 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		}
 		if(timeout != null)
 			timeout.cancel();
-		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
+		hashedWheelTimer.stop();
 		JVMTimeProvider.stop();
 	}
 
