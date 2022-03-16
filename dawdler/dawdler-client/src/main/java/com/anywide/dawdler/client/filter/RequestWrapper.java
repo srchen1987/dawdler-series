@@ -60,11 +60,6 @@ public class RequestWrapper extends RequestBean {
 	}
 
 	@Override
-	public String getPath() {
-		return request.getPath();
-	}
-
-	@Override
 	public long getSeq() {
 		return request.getSeq();
 	}
