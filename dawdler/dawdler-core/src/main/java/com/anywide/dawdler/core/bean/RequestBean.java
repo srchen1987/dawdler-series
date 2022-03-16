@@ -35,7 +35,6 @@ public class RequestBean implements Serializable {
 	private String methodName;
 	private Class<?>[] types;
 	private Object[] args;
-	private String path;
 	private boolean fuzzy;
 	private Map<String, Object> attachments;
 	private boolean async;
@@ -54,14 +53,6 @@ public class RequestBean implements Serializable {
 
 	public void setFuzzy(boolean fuzzy) {
 		this.fuzzy = fuzzy;
-	}
-
-	public String getPath() {
-		return path;
-	}
-
-	public void setPath(String path) {
-		this.path = path;
 	}
 
 	public long getSeq() {
