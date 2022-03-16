@@ -64,6 +64,10 @@ public class HashedWheelTimer implements Timer {
 	final Thread workerThread;
 	final AtomicInteger workerState = new AtomicInteger(); // 0 - init, 1 - started, 2 - shut down
 
+	public AtomicInteger getWorkerState() {
+		return workerState;
+	}
+
 	final long tickDuration;
 	final Set<HashedWheelTimeout>[] wheel;
 	final int mask;
