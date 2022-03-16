@@ -52,10 +52,6 @@ public class RequestWrapper extends RequestBean {
 		return request.isFuzzy();
 	}
 
-	@Override
-	public String getPath() {
-		return request.getPath();
-	}
 
 	@Override
 	public long getSeq() {
