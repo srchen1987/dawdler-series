@@ -43,7 +43,6 @@ import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
  * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
-
 public class ConnectionPool {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 	private static final ConcurrentHashMap<String, ConnectionPool> groups = new ConcurrentHashMap<>();
