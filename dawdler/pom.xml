@@ -1,6 +1,4 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +30,7 @@
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>7.15.0</elasticsearch.version>
 		<pinpoint.version>2.3.1</pinpoint.version>
+		<qdox.version>2.0.1</qdox.version>
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
@@ -340,16 +339,21 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-			<groupId>org.elasticsearch.client</groupId>
-			<artifactId>elasticsearch-rest-high-level-client</artifactId>
-			<version>${elasticsearch.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.navercorp.pinpoint</groupId>
-			<artifactId>pinpoint-bootstrap-core</artifactId>
-			<version>${pinpoint.version}</version>
-			<scope>provided</scope>
-		</dependency>
+				<groupId>org.elasticsearch.client</groupId>
+				<artifactId>elasticsearch-rest-high-level-client</artifactId>
+				<version>${elasticsearch.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.navercorp.pinpoint</groupId>
+				<artifactId>pinpoint-bootstrap-core</artifactId>
+				<version>${pinpoint.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.qdox</groupId>
+				<artifactId>qdox</artifactId>
+				<version>${qdox.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -400,6 +404,7 @@
 		<module>dawdler-es-plug</module>
 		<module>dawdler-pinpoint-plug</module>
 		<module>dawdler-services-dependencies</module>
+		<module>dawdler-client-api-generator</module>
 	</modules>
 
 
