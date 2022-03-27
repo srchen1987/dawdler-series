@@ -1,0 +1,12 @@
+version: 1.0
+title: "演示服务"
+description: "用于演示的文档"
+contact:
+ - "suxuan696@gmail.com"
+ - "121616325@qq.com"
+swagger: "2.0"
+host: "localhost"
+basePath: "/"
+scanPath:
+ - "/home/srchen/github/api-demo"
+outPath: "/home/srchen/github/api-demo/demo-api.json"
