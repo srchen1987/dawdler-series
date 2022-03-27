@@ -70,13 +70,13 @@ public class MethodParser {
 
 	private static Map<String, String> requestMethodCache = new HashMap<String, String>() {
 		{
-			put("RequestMethod.GET", "get");
-			put("RequestMethod.POST", "post");
-			put("RequestMethod.HEAD", "head");
-			put("RequestMethod.PUT", "put");
-			put("RequestMethod.DELETE", "delete");
-			put("RequestMethod.OPTIONS", "options");
-			put("RequestMethod.TRACE", "trace");
+			put("GET", "get");
+			put("POST", "post");
+			put("HEAD", "head");
+			put("PUT", "put");
+			put("DELETE", "delete");
+			put("OPTIONS", "options");
+			put("TRACE", "trace");
 		}
 	};
 
@@ -102,11 +102,11 @@ public class MethodParser {
 							httpMethods.add(requestMethod.name().toLowerCase());
 						}
 					} else if (annotationMethodObj.getClass() == String.class) {
-						httpMethods.add(requestMethodCache.get(annotationMethodObj));
+						httpMethods.add(requestMethodCache.get(getHttpMethod(annotationMethodObj.toString())));
 					} else if (annotationMethodObj.getClass() == LinkedList.class) {
 						List<String> httpMethodList = (List<String>) annotationMethodObj;
 						for (String httpMethod : httpMethodList) {
-							httpMethods.add(requestMethodCache.get(httpMethod));
+							httpMethods.add(requestMethodCache.get(getHttpMethod(httpMethod)));
 						}
 					}
 				}
@@ -339,6 +339,17 @@ public class MethodParser {
 		response.put("403", RESPONSE_403);
 		response.put("404", RESPONSE_404);
 		return response;
+	}
+	
+	public static String getHttpMethod(String method) {
+		if(method == null) {
+			return null;
+		}
+		int index =  method.lastIndexOf(".");
+		if(index == -1) {
+			return method;
+		}
+		return method.substring(index+1, method.length());
 	}
 
 }
