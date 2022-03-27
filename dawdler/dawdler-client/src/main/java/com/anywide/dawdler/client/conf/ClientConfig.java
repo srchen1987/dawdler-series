@@ -25,7 +25,7 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @author jackson.song
  * @version V1.0
  * @Title ClientConfig.java
- * @Description xstream映射的一个配置类
+ * @Description 配置类
  * @date 2015年3月16日
  * @email suxuan696@gmail.com
  */
@@ -81,8 +81,6 @@ public class ClientConfig {
 
 	public class ServerChannelGroup {
 		private String groupId;
-
-		private String path;
 
 		private int connectionNum;
 

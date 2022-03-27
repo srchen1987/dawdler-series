@@ -17,7 +17,7 @@ webmvc,使用上基本与springmvc一致.提供远程加载组件的客户端,�
 
 编写一个Controller继承com.anywide.dawdler.clientplug.web.TransactionController或在类上加入注解@Controller.
 
-由于TransactionController是历史原因所以保留了这个类,里面提供了很多便捷的param系列的方法.
+TransactionController由于历史原因所以保留了这个类,里面提供了很多便捷的param系列的方法,目前不推荐使用.
 
 #### 2.2 创建API
 
