@@ -11,49 +11,49 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-client-plug</artifactId>
 			<exclusions>
-			<exclusion>
-			<artifactId>*</artifactId>
-			<groupId>*</groupId>
-			</exclusion>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 			<exclusions>
-			<exclusion>
-				<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-tree</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-			</exclusion>
-			
-			<exclusion>
-				<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-			</exclusion>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.ow2.asm</groupId>
+					<artifactId>asm-tree</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.aspectj</groupId>
+					<artifactId>aspectjrt</artifactId>
+				</exclusion>
+
+				<exclusion>
+					<groupId>org.aspectj</groupId>
+					<artifactId>aspectjweaver</artifactId>
+				</exclusion>
 				<exclusion>
 					<groupId>jaxen</groupId>
-			<artifactId>jaxen</artifactId>
-			</exclusion>
-			<exclusion>
-					<groupId>org.dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			</exclusion>
-			<exclusion>
-				<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-access</artifactId>
-			</exclusion>
+					<artifactId>jaxen</artifactId>
+				</exclusion>
 				<exclusion>
-				<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			</exclusion>
+					<groupId>org.dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-access</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>ch.qos.logback</groupId>
+					<artifactId>logback-classic</artifactId>
+				</exclusion>
 			</exclusions>
 		</dependency>
 		<dependency>
@@ -64,7 +64,7 @@
 			<groupId>com.thoughtworks.qdox</groupId>
 			<artifactId>qdox</artifactId>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-access</artifactId>
 			<version>${ch.qos.logback.version}</version>
@@ -78,30 +78,30 @@
 		</dependency>
 	</dependencies>
 	<build>
-		 <plugins>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <appendAssemblyId>false</appendAssemblyId>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.anywide.dawdler.client.api.generator.MainGenerator</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>assembly</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<archive>
+						<manifest>
+							<mainClass>com.anywide.dawdler.client.api.generator.MainGenerator</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>assembly</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
 </project>
