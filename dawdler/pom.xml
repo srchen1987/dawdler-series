@@ -30,6 +30,7 @@
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>7.16.0</elasticsearch.version>
 		<pinpoint.version>2.3.1</pinpoint.version>
+		<qdox.version>2.0.1</qdox.version>
 	</properties>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
@@ -362,6 +363,11 @@
 				<artifactId>pinpoint-bootstrap-core</artifactId>
 				<version>${pinpoint.version}</version>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.qdox</groupId>
+				<artifactId>qdox</artifactId>
+				<version>${qdox.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -77,7 +77,9 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		}
 		if(timeout != null)
 			timeout.cancel();
-		hashedWheelTimer.stop();
+		if(hashedWheelTimer != null) {
+			hashedWheelTimer.stop();
+		}
 		JVMTimeProvider.stop();
 	}
 
