@@ -13,7 +13,7 @@
 		<zookeeper.version>3.7.0</zookeeper.version>
 		<cglib.version>3.3.0</cglib.version>
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
-		<jackson-core.version>2.12.0-rc2</jackson-core.version>
+		<jackson-core.version>2.13.2.1</jackson-core.version>
 		<velocity.version>2.3</velocity.version>
 		<jedis.version>4.1.1</jedis.version>
 		<rabbitmq.version>5.14.0</rabbitmq.version>
@@ -26,7 +26,7 @@
 		<slf4j.version>2.0.0-alpha5</slf4j.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
 		<commons-io.version>2.2</commons-io.version>
-		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
+		<jackson-dataformat-yaml.version>2.13.2</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>7.16.0</elasticsearch.version>
 		<pinpoint.version>2.3.1</pinpoint.version>
