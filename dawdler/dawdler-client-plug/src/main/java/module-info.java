@@ -20,6 +20,7 @@ module dawdler.client.plug {
 	exports com.anywide.dawdler.clientplug.web;
 	exports com.anywide.dawdler.clientplug.web.interceptor;
 	exports com.anywide.dawdler.clientplug.web.listener;
+	exports com.anywide.dawdler.clientplug.web.upload;
 	uses RemoteClassLoaderFire;
 	uses com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 	uses com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
