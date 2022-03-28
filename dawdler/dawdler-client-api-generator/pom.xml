@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-api-generator</artifactId>
 	<dependencies>
@@ -65,7 +65,7 @@
 			<artifactId>qdox</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>ch.qos.logback</groupId>
+		<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-access</artifactId>
 			<version>${ch.qos.logback.version}</version>
 			<scope>test</scope>
