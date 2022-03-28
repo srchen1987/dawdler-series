@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-client-api-generator 是基于java源码doc生成兼容swagger-ui的json工具.
+dawdler-client-api-generator 是基于java源码doc生成兼容swagger-ui的OpenAPI 3.0的json工具,对源代码零侵入,上手简单,生成效率高,使用非常方便.
 
 ### 1. pom中引入依赖
 
