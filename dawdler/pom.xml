@@ -14,7 +14,7 @@
 		<cglib-nodep.version>3.3.0</cglib-nodep.version>
 		<cglib.version>3.3.0</cglib.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
-		<jackson-core.version>2.12.0-rc2</jackson-core.version>
+		<jackson-core.version>2.13.2.1</jackson-core.version>
 		<commons-fileupload.version>1.4</commons-fileupload.version>
 		<velocity.version>2.3</velocity.version>
 		<jedis.version>4.1.1</jedis.version>
@@ -26,7 +26,7 @@
 		<aspectjrt.version>1.9.6</aspectjrt.version>
 		<javassist.version>3.23.1-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
-		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
+		<jackson-dataformat-yaml.version>2.13.2</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>7.15.0</elasticsearch.version>
 		<pinpoint.version>2.3.1</pinpoint.version>
