@@ -82,11 +82,13 @@ public class MethodParser {
 
 	public static void generateMethodParamCode(Map<String, Object> rootMap, Map<String, Object> pathMap,
 			Map<String, ClassStruct> classStructs, Map<String, Object> definitionsMap, JavaClass javaClass,
-			String parentPath) {
+			JavaAnnotation requsetMappingAnnotation) {
 		List<JavaMethod> methods = javaClass.getMethods();
 		for (JavaMethod method : methods) {
 			List<JavaAnnotation> methodAnnotations = method.getAnnotations();
-			String requsetMapping = parentPath == null ? "" : parentPath;
+			String[] requsetClassMappingArray = AnnotationUtils.getAnnotationStringArrayValue(requsetMappingAnnotation,
+					"value");
+			String[] requsetMappingArray = null;
 			List<String> httpMethods = new ArrayList<>(8);
 			boolean responseBody = false;
 			boolean requestBody = false;
@@ -95,7 +97,7 @@ public class MethodParser {
 					responseBody = true;
 				}
 				if (RequestMapping.class.getName().equals(annotation.getType().getBinaryName())) {
-					requsetMapping = AnnotationUtils.getAnnotationStringValue(annotation, "value");
+					requsetMappingArray = AnnotationUtils.getAnnotationStringArrayValue(annotation, "value");
 					Object annotationMethodObj = AnnotationUtils.getAnnotationObjectValue(annotation, "method");
 					if (annotationMethodObj == null) {
 						for (RequestMethod requestMethod : RequestMethod.values()) {
@@ -240,7 +242,19 @@ public class MethodParser {
 				elements.put("operationId", method.getName() + "Using" + httpMethod.toUpperCase());
 				httpMethodMap.put(httpMethod, elements);
 			}
-			pathMap.put(requsetMapping, httpMethodMap);
+			if (requsetMappingArray != null) {
+				for (String mapping : requsetMappingArray) {
+					if (requsetClassMappingArray != null) {
+						for (String classMapping : requsetClassMappingArray) {
+							pathMap.put(classMapping + mapping, httpMethodMap);
+						}
+					} else {
+						pathMap.put(mapping, httpMethodMap);
+					}
+
+				}
+			}
+
 		}
 	}
 
@@ -340,16 +354,16 @@ public class MethodParser {
 		response.put("404", RESPONSE_404);
 		return response;
 	}
-	
+
 	public static String getHttpMethod(String method) {
-		if(method == null) {
+		if (method == null) {
 			return null;
 		}
-		int index =  method.lastIndexOf(".");
-		if(index == -1) {
+		int index = method.lastIndexOf(".");
+		if (index == -1) {
 			return method;
 		}
-		return method.substring(index+1, method.length());
+		return method.substring(index + 1, method.length());
 	}
 
 }
