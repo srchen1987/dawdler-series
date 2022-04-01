@@ -29,6 +29,8 @@ import com.thoughtworks.qdox.model.expression.AnnotationValue;
  */
 public class AnnotationUtils {
 	public static String getAnnotationStringValue(JavaAnnotation javaAnnotation, String name) {
+		if (javaAnnotation == null)
+			return null;
 		AnnotationValue annotationValue = javaAnnotation.getProperty(name);
 		if (annotationValue == null)
 			return null;
@@ -44,6 +46,8 @@ public class AnnotationUtils {
 	}
 
 	public static Object getAnnotationObjectValue(JavaAnnotation javaAnnotation, String name) {
+		if (javaAnnotation == null)
+			return null;
 		AnnotationValue annotationValue = javaAnnotation.getProperty(name);
 		if (annotationValue == null)
 			return null;
