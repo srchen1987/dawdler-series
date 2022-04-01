@@ -127,11 +127,8 @@ public class WebApiGenerator {
 				data.setName(javaClass.getBinaryName());
 				data.setDescription(describe);
 				controllers.add(data);
-				String path = null;
-				if (requsetMappingAnnotation != null) {
-					path = AnnotationUtils.getAnnotationStringValue(requsetMappingAnnotation, "value");
-				}
-				MethodParser.generateMethodParamCode(rootMap, pathMap, classStructs, definitionsMap, javaClass, path);
+				MethodParser.generateMethodParamCode(rootMap, pathMap, classStructs, definitionsMap, javaClass,
+						requsetMappingAnnotation);
 			}
 
 		}
