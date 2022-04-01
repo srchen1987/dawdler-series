@@ -72,6 +72,14 @@ public class FieldParser {
 			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes) {
 		String typeName = fieldJavaType.getBinaryName();
 		String genericFullyQualifiedName = fieldJavaType.getGenericFullyQualifiedName();
+		if (ClassTypeUtil.isArray(typeName)) {
+			DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType)fieldJavaType;
+			List<JavaType> dtList = dt.getActualTypeArguments();
+			if (!dtList.isEmpty()) {
+				typeName = dtList.get(0).getBinaryName();
+				genericFullyQualifiedName =  dtList.get(0).getGenericFullyQualifiedName();
+			}
+		}
 		if (!definitionsMap.containsKey(typeName)) {
 			TypeData typeData = TypesConverter.getType(typeName);
 			if (typeData == null) {
