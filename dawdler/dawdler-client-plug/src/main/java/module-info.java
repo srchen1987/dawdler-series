@@ -44,4 +44,5 @@ module dawdler.client.plug {
 	requires dawdler.client.plug.validator;
 	requires jakarta.servlet;
 	requires dawdler.jakarta.fileupload;
+	requires com.fasterxml.jackson.annotation;
 }
