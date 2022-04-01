@@ -28,9 +28,13 @@ import java.io.Serializable;
  */
 public class Page implements Serializable {
 	private static final long serialVersionUID = 7024911260241474159L;
+	/** 当前页 **/
 	private int pageOn;
+	/** 总行数 **/
 	private int rowCount;
+	/** 总页数 **/
 	private int pageCount;
+	/** 每页显示行数 **/
 	private int row;
 	private int start;
 	private int end;

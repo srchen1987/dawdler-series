@@ -127,7 +127,11 @@ public class MethodParser {
 						parameterData.setName(parameterList.get(0));
 					} else if (parameterList.size() == 2) {
 						parameterData.setName(parameterList.get(0));
-						parameterData.setDescription(parameterList.get(1));
+						StringBuffer sb = new StringBuffer();
+						for(int i = 1;i<parameterList.size();i++) {
+							sb.append(parameterList.get(i)+" ");
+						}
+						parameterData.setDescription(sb.toString());
 					}
 					params.put(parameterData.getName(), parameterData);
 				}
