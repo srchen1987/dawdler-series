@@ -53,9 +53,9 @@ public class SecurityPlus {
 		SecurityPlus sp = cachePlug.get(key);
 		if (sp == null) {
 			sp = new SecurityPlus(key);
-			SecurityPlus temp = cachePlug.putIfAbsent(key, sp);
-			if (temp != null)
-				return temp;
+			SecurityPlus pre = cachePlug.putIfAbsent(key, sp);
+			if (pre != null)
+				return pre;
 		}
 		return sp;
 	}
