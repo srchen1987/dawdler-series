@@ -26,7 +26,7 @@
 		<slf4j.version>2.0.0-alpha5</slf4j.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
 		<commons-io.version>2.2</commons-io.version>
-		<jackson-dataformat-yaml.version>2.13.2</jackson-dataformat-yaml.version>
+		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>7.16.0</elasticsearch.version>
 		<pinpoint.version>2.3.1</pinpoint.version>
@@ -349,14 +349,11 @@
 				<version>${elasticsearch.version}</version>
 			</dependency>
 			<dependency>
-<<<<<<< HEAD
 				<groupId>co.elastic.clients</groupId>
 				<artifactId>elasticsearch-java</artifactId>
 				<version>${elasticsearch.version}</version>
 			</dependency>
 			<dependency>
-=======
->>>>>>> 0.0.2-RELEASES
 				<groupId>com.navercorp.pinpoint</groupId>
 				<artifactId>pinpoint-bootstrap-core</artifactId>
 				<version>${pinpoint.version}</version>
@@ -433,11 +430,8 @@
 		<module>dawdler-es-plug</module>
 		<module>dawdler-pinpoint-plug</module>
 		<module>dawdler-services-dependencies</module>
-<<<<<<< HEAD
 		<module>dawdler-jakarta-fileupload</module>
-=======
 		<module>dawdler-client-api-generator</module>
->>>>>>> 0.0.2-RELEASES
 	</modules>
 
 
