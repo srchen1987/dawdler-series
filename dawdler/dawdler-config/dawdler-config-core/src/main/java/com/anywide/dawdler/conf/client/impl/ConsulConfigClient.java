@@ -92,6 +92,7 @@ public class ConsulConfigClient implements ConfigClient {
 		} catch (Throwable e) {
 			logger.error("", e);
 		}
+		
 	}
 
 	@Override

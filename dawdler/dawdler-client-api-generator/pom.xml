@@ -65,7 +65,11 @@
 			<artifactId>qdox</artifactId>
 		</dependency>
 		<dependency>
+<<<<<<< HEAD
 		<groupId>ch.qos.logback</groupId>
+=======
+			<groupId>ch.qos.logback</groupId>
+>>>>>>> 0.0.2-RELEASES
 			<artifactId>logback-access</artifactId>
 			<version>${ch.qos.logback.version}</version>
 			<scope>test</scope>

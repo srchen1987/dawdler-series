@@ -82,14 +82,15 @@ public class ClientConfigParser {
 					int serializer = getElementAttribute2Int(serverChannelGroupEle, "serializer", 2);
 					String user = getElementAttribute(serverChannelGroupEle, "user");
 					String password = getElementAttribute(serverChannelGroupEle, "password");
-
+					String host = getElementAttribute(serverChannelGroupEle, "host");
+					
 					serverChannelGroup.setGroupId(groupId);
 					serverChannelGroup.setConnectionNum(connectionNum);
 					serverChannelGroup.setSessionNum(sessionNum);
 					serverChannelGroup.setSerializer(serializer);
 					serverChannelGroup.setUser(user);
 					serverChannelGroup.setPassword(password);
-
+					serverChannelGroup.setHost(host);
 					config.getServerChannelGroups().add(serverChannelGroup);
 				}
 			} catch (Exception e) {
