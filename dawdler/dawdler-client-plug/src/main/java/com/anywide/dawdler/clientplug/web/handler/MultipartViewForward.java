@@ -48,9 +48,9 @@ public class MultipartViewForward extends ViewForward {
 	private static final Logger logger = LoggerFactory.getLogger(MultipartViewForward.class);
 	private static final DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
 
-	static {
-		diskFileItemFactory.setSizeThreshold(1024 * 1024);
-	}
+//	static {
+//		diskFileItemFactory.setSizeThreshold(1024 * 1024 * 10);
+//	}
 
 	private final Map<String, List<String>> params = new HashMap<>();
 	private final Map<String, List<UploadFile>> fileParams = new HashMap<>();

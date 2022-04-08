@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.web.bind.resolver.impl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.util.Map;
 
 import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
@@ -39,7 +40,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	public boolean isSupport(RequestParamFieldData requestParamFieldData) {
 		Class<?> type = requestParamFieldData.getType();
 		if (ClassUtil.isSimpleValueType(type) || String.class == type || String[].class == type
-				|| Map.class.isAssignableFrom(type))
+				|| Map.class.isAssignableFrom(type) || matchType(type))
 			return true;
 
 		return false;
@@ -62,27 +63,44 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			return ClassUtil.convertArray(viewForward.paramValues(paramName), type);
 		} else if (Map.class.isAssignableFrom(type)) {
 			return viewForward.paramMaps();
-		} else if (type.getClassLoader() != null) {
-			Object instance = SunReflectionFactoryInstantiator.newInstance(type);
-			Field[] fields = type.getDeclaredFields();
-			for (Field filed : fields) {
-				filed.setAccessible(true);
-				String typeName = type.getName();
-				if (String.class == type) {
-					filed.set(instance, viewForward.paramString(typeName));
-				} else if (ClassUtil.isSimpleValueType(type)) {
-					filed.set(instance, ClassUtil.convert(viewForward.paramString(typeName), type));
-				} else if (String[].class == type) {
-					filed.set(instance, viewForward.paramValues(typeName));
-				} else if (ClassUtil.isSimpleArrayType(type)) {
-					filed.set(instance, ClassUtil.convertArray(viewForward.paramValues(typeName), type));
-				}
-			}
-			return instance;
 		} else {
-			return null;
+			return setFiled(type, viewForward, null);
 		}
 
+	}
+
+	public boolean matchType(Class<?> type) {
+		return !(type.getPackage().getName().startsWith("java.") || type.isInterface() || type.isEnum()
+				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
+	}
+
+	public Object setFiled(Class<?> type, ViewForward viewForward, Object instance)
+			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
+		if (!matchType(type) || type.isArray()) {
+			return instance;
+		}
+		if (instance == null) {
+			instance = SunReflectionFactoryInstantiator.newInstance(type);
+		}
+		Field[] fields = type.getDeclaredFields();
+		for (Field filed : fields) {
+			filed.setAccessible(true);
+			String typeName = filed.getName();
+			Class<?> filedType = filed.getType();
+			if (String.class == filedType) {
+				filed.set(instance, viewForward.paramString(typeName));
+			} else if (ClassUtil.isSimpleValueType(filedType)) {
+				filed.set(instance, ClassUtil.convert(viewForward.paramString(typeName), filedType));
+			} else if (String[].class == filedType) {
+				filed.set(instance, viewForward.paramValues(typeName));
+			} else if (ClassUtil.isSimpleArrayType(filedType)) {
+				filed.set(instance, ClassUtil.convertArray(viewForward.paramValues(typeName), filedType));
+			} else {
+				filed.set(instance, setFiled(filedType, viewForward, null));
+			}
+		}
+		return instance;
 	}
 
 }
