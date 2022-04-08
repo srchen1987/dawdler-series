@@ -17,7 +17,6 @@
 package com.anywide.dawdler.clientplug.web.handler;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,13 +36,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
-import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 import com.anywide.dawdler.clientplug.web.validator.ValidateParser;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
 import com.anywide.dawdler.clientplug.web.validator.webbind.ValidateResourceLoader;
-import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import com.anywide.dawdler.util.JsonProcessUtil;
 
 /**
@@ -59,14 +56,10 @@ public class WebValidateExecutor {
 	private static final Logger logger = LoggerFactory.getLogger(WebValidateExecutor.class);
 	private static final Map<Class<?>, ControlValidator> validators = new ConcurrentHashMap<>();
 
-	public static boolean validate(HttpServletRequest request, HttpServletResponse response, boolean isJson,
-			Object controller) throws IOException {
-		if (!(controller instanceof TransactionController)) {
-			return true;
-		}
-		ViewForward viewForward = ViewControllerContext.getViewForward();
+	public static boolean validate(HttpServletRequest request, HttpServletResponse response,
+			Map<String, String> variables, Object controller, ViewForward viewForward) throws IOException {
 		RequestMapping requestMapping = viewForward.getRequestMapping();
-		Map<String, Serializable> errors = new HashMap<>();
+		Map<String, String> errors = new HashMap<>();
 		Class<?> clazz = controller.getClass();
 		ControlValidator cv = validators.get(clazz);
 		if (cv == null) {
@@ -77,9 +70,14 @@ public class WebValidateExecutor {
 			if (preCv != null)
 				cv = preCv;
 		}
-		String uri = viewForward.getUriShort();
-		if (!cv.isValidate() || uri == null)
-			return true;
+		String uri = null;
+		String antPath = viewForward.getAntPath();
+		if (antPath != null) {
+			uri = antPath;
+		} else {
+			uri = viewForward.getUriShort();
+		}
+
 		Map<String, ControlField> rules = cv.getMappings().get(uri);
 		if (rules == null)
 			rules = cv.getGlobalControlFields();
@@ -103,17 +101,8 @@ public class WebValidateExecutor {
 				System.out.println(sb.toString());
 				System.out.println("######################################");
 			}
-			Map params = null;
-			if (isJson) {
-				if (request.getClass() == BodyReaderHttpServletRequestWrapper.class) {
-					BodyReaderHttpServletRequestWrapper requestWrapper = (BodyReaderHttpServletRequestWrapper) request;
-					params = JsonProcessUtil.jsonToBean(requestWrapper.getBody(), HashMap.class);
-				} else {
-					params = JsonProcessUtil.jsonToBean(request.getInputStream(), HashMap.class);
-				}
-			} else {
-				params = viewForward.paramMaps();
-			}
+			Map params = viewForward.paramMaps();
+			params.putAll(variables);
 			Set<Entry<String, ControlField>> rulesSet = rules.entrySet();
 			for (Entry<String, ControlField> entry : rulesSet) {
 				String key = entry.getKey();
@@ -140,7 +129,10 @@ public class WebValidateExecutor {
 		}
 		return true;
 	}
-	
-	
+
+	// 必须在调用validate方法之后才能使用 为验证@RequestBody使用
+	public static ControlValidator getControlValidator(Class<?> controllerClass) {
+		return validators.get(controllerClass);
+	}
 
 }

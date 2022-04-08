@@ -14,48 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.result;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+package com.anywide.dawdler.clientplug.web.validator.exception;
 
 /**
  * @author jackson.song
  * @version V1.0
- * @Title BaseResult.java
- * @Description 返回vo的包装类
- * @date 2021年3月5日
+ * @Title ValidationException.java
+ * @Description 验证失败异常
+ * @date 2022年3月22日
  * @email suxuan696@gmail.com
  */
-public class BaseResult<T> {
-
-	private T data;
-
-	@JsonInclude(Include.NON_NULL)
-	private Boolean success;
-
-	public BaseResult(T data) {
-		this.data = data;
+public class ValidationException extends RuntimeException {
+	private static final long serialVersionUID = 2059492442768881097L;
+	private String fieldName;
+	private String error;
+	public ValidationException(String fieldName, String error) {
+		this.fieldName = fieldName;
+		this.error = error;
+	}
+	public String getFieldName() {
+		return fieldName;
 	}
 
-	public BaseResult(T data, boolean success) {
-		this.data = data;
-		this.success = success;
+	public String getError() {
+		return error;
 	}
 
-	public T getData() {
-		return data;
-	}
-
-	public void setData(T data) {
-		this.data = data;
-	}
-
-	public Boolean getSuccess() {
-		return success;
-	}
-
-	public void setSuccess(Boolean success) {
-		this.success = success;
-	}
 }

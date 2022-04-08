@@ -17,7 +17,10 @@
 package com.anywide.dawdler.clientplug.web.bind.resolver.impl;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -31,7 +34,12 @@ import com.anywide.dawdler.clientplug.annotation.RequestHeader;
 import com.anywide.dawdler.clientplug.annotation.SessionAttribute;
 import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import com.anywide.dawdler.clientplug.web.handler.WebValidateExecutor;
 import com.anywide.dawdler.clientplug.web.util.CookieUtil;
+import com.anywide.dawdler.clientplug.web.validator.ValidateParser;
+import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
+import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
+import com.anywide.dawdler.clientplug.web.validator.exception.ValidationException;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
@@ -70,13 +78,32 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					paramName = getParameterName(pathVariable.value(), requestParamFieldData);
 					return ClassUtil.convert(viewForward.getParamsVariable(paramName), type);
 				} else if (annotationClass == RequestBody.class) {
+					String uri = null;
+					String antPath = viewForward.getAntPath();
+					if(antPath != null) {
+						uri = antPath;
+					}else {
+						uri = viewForward.getUriShort();
+					}
+					ControlValidator controlValidator = WebValidateExecutor
+							.getControlValidator(viewForward.getTransactionController().getClass());
 					HttpServletRequest request = viewForward.getRequest();
+					Object target = null;
 					if (request.getClass() == BodyReaderHttpServletRequestWrapper.class) {
 						BodyReaderHttpServletRequestWrapper requestWrapper = (BodyReaderHttpServletRequestWrapper) request;
-						return JsonProcessUtil.jsonToBean(requestWrapper.getBody(), type);
+						target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(), type);
 					} else {
-						return JsonProcessUtil.jsonToBean(request.getInputStream(), type);
+						target = JsonProcessUtil.jsonToBean(request.getInputStream(), type);
 					}
+					if (controlValidator != null) {
+						if (controlValidator.getMappings().containsKey(uri)) {
+							Field[] fields = type.getDeclaredFields();
+							for (Field field : fields) {
+								validateField(field, controlValidator, target);
+							}
+						}
+					}
+					return target;
 				} else if (annotationClass == RequestAttribute.class) {
 					RequestAttribute requestAttribute = (RequestAttribute) annotation;
 					paramName = getParameterName(requestAttribute.value(), requestParamFieldData);
@@ -110,6 +137,56 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 			}
 		}
 		return null;
+	}
+
+	private void validateField(Field field, ControlValidator controlValidator, Object target)
+			throws IllegalArgumentException, IllegalAccessException {
+		Class<?> type = field.getType();
+		field.setAccessible(true);
+		Object value = field.get(target);
+		if (value != null) {
+			if (ClassUtil.isSimpleValueType(type)) {
+				value = value.toString();
+			} else if (ClassUtil.isSimpleArrayType(type)) {
+				value = ClassUtil.convertSimpleArrayToStringArray(value);
+			} else if (matchType(type)) {
+				Field[] innerFileds = type.getDeclaredFields();
+				for (Field innerFiled : innerFileds) {
+					validateField(innerFiled, controlValidator, value);
+				}
+			} else if (Collection.class.isAssignableFrom(type)) {
+				if (value != null) {
+					Collection<?> collection = (Collection<?>) value;
+					String[] array = new String[collection.size()];
+					int index = 0;
+					for (Object obj : collection) {
+						if (obj instanceof String) {
+							array[index] = (String) obj;
+						} else if (ClassUtil.isSimpleValueType(type)) {
+							array[index] = obj.toString();
+						} else if (matchType(obj.getClass())) {
+							Field[] innerFileds = obj.getClass().getDeclaredFields();
+							for (Field innerFiled : innerFileds) {
+								validateField(innerFiled, controlValidator, obj);
+							}
+						}
+						index++;
+					}
+				}
+			}
+		}
+		ControlField controlField = controlValidator.getControlFields().get(field.getName());
+		if (controlField != null) {
+			String error = ValidateParser.validate(controlField.getFieldExplain(), value, controlField.getRules());
+			if(error != null)
+				throw new ValidationException(field.getName(), error);
+		}
+
+	}
+
+	public boolean matchType(Class<?> type) {
+		return !(type.getPackage().getName().startsWith("java.") || type.isInterface() || type.isEnum()
+				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
 	}
 
 }
