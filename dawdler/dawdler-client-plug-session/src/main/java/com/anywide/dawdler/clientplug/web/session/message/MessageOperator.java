@@ -33,7 +33,5 @@ public interface MessageOperator {
 	void listenExpireAndDelAndChange();
 	
 	void stop();
-
-	void stop();
-
+	
 }

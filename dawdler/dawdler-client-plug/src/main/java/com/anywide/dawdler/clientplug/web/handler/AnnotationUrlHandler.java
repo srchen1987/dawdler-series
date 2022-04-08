@@ -93,7 +93,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 			return true;
 		}
 		String contentType = request.getContentType();
-		boolean multipart = contentType != null ? contentType.toLowerCase(Locale.ENGLISH).startsWith(MULTIPART) : false;
+		boolean multipart = contentType != null ? contentType.toLowerCase().startsWith(MULTIPART) : false;
 		ViewForward viewForward = createViewForward();
 		String exceptionHandler = requestMapping.exceptionHandler();
 		ViewType viewType = requestMapping.viewType();
