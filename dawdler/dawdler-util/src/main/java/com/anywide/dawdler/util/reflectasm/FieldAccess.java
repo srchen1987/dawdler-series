@@ -60,16 +60,16 @@ import org.objectweb.asm.Type;
  */
 public abstract class FieldAccess {
 	private String[] fieldNames;
-	private Class[] fieldTypes;
+	private Class<?>[] fieldTypes;
 	private Field[] fields;
 
-	static public FieldAccess get(Class type) {
+	static public FieldAccess get(Class<?> type) {
 		if (type.getSuperclass() == null)
 			throw new IllegalArgumentException(
 					"The type must not be the Object class, an interface, a primitive type, or void.");
 
 		ArrayList<Field> fields = new ArrayList<Field>();
-		Class nextClass = type;
+		Class<?> nextClass = type;
 		while (nextClass != Object.class) {
 			Field[] declaredFields = nextClass.getDeclaredFields();
 			for (int i = 0, n = declaredFields.length; i < n; i++) {
@@ -85,7 +85,7 @@ public abstract class FieldAccess {
 		}
 
 		String[] fieldNames = new String[fields.size()];
-		Class[] fieldTypes = new Class[fields.size()];
+		Class<?>[] fieldTypes = new Class[fields.size()];
 		for (int i = 0, n = fieldNames.length; i < n; i++) {
 			fieldNames[i] = fields.get(i).getName();
 			fieldTypes[i] = fields.get(i).getType();
@@ -95,7 +95,7 @@ public abstract class FieldAccess {
 		String accessClassName = className + "FieldAccess";
 		if (accessClassName.startsWith("java."))
 			accessClassName = "reflectasm." + accessClassName;
-		Class accessClass = null;
+		Class<?> accessClass = null;
 
 		AccessClassLoader loader = AccessClassLoader.get(type);
 		try {
@@ -137,7 +137,7 @@ public abstract class FieldAccess {
 			}
 		}
 		try {
-			FieldAccess access = (FieldAccess) accessClass.newInstance();
+			FieldAccess access = (FieldAccess) accessClass.getConstructor().newInstance();
 			access.fieldNames = fieldNames;
 			access.fieldTypes = fieldTypes;
 			access.fields = fields.toArray(new Field[fields.size()]);
@@ -151,7 +151,7 @@ public abstract class FieldAccess {
 		MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
 		mv.visitCode();
 		mv.visitVarInsn(ALOAD, 0);
-		mv.visitMethodInsn(INVOKESPECIAL, "com/anywide/dawdler/util/reflectasm/FieldAccess", "<init>", "()V");
+		mv.visitMethodInsn(INVOKESPECIAL, "com/anywide/dawdler/util/reflectasm/FieldAccess", "<init>", "()V", false);
 		mv.visitInsn(RETURN);
 		mv.visitMaxs(1, 1);
 		mv.visitEnd();
@@ -184,35 +184,35 @@ public abstract class FieldAccess {
 				switch (fieldType.getSort()) {
 				case Type.BOOLEAN:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Boolean");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Boolean", "booleanValue", "()Z", false);
 					break;
 				case Type.BYTE:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Byte");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Byte", "byteValue", "()B");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Byte", "byteValue", "()B", false);
 					break;
 				case Type.CHAR:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Character");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Character", "charValue", "()C");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Character", "charValue", "()C", false);
 					break;
 				case Type.SHORT:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Short");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Short", "shortValue", "()S");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Short", "shortValue", "()S", false);
 					break;
 				case Type.INT:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Integer");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Integer", "intValue", "()I", false);
 					break;
 				case Type.FLOAT:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Float");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Float", "floatValue", "()F");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Float", "floatValue", "()F", false);
 					break;
 				case Type.LONG:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Long");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Long", "longValue", "()J");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Long", "longValue", "()J", false);
 					break;
 				case Type.DOUBLE:
 					mv.visitTypeInsn(CHECKCAST, "java/lang/Double");
-					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D");
+					mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Double", "doubleValue", "()D", false);
 					break;
 				case Type.ARRAY:
 					mv.visitTypeInsn(CHECKCAST, fieldType.getDescriptor());
@@ -262,28 +262,28 @@ public abstract class FieldAccess {
 				Type fieldType = Type.getType(field.getType());
 				switch (fieldType.getSort()) {
 				case Type.BOOLEAN:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Boolean", "valueOf", "(Z)Ljava/lang/Boolean;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Boolean", "valueOf", "(Z)Ljava/lang/Boolean;", false);
 					break;
 				case Type.BYTE:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Byte", "valueOf", "(B)Ljava/lang/Byte;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Byte", "valueOf", "(B)Ljava/lang/Byte;", false);
 					break;
 				case Type.CHAR:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Character", "valueOf", "(C)Ljava/lang/Character;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Character", "valueOf", "(C)Ljava/lang/Character;", false);
 					break;
 				case Type.SHORT:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Short", "valueOf", "(S)Ljava/lang/Short;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Short", "valueOf", "(S)Ljava/lang/Short;", false);
 					break;
 				case Type.INT:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
 					break;
 				case Type.FLOAT:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Float", "valueOf", "(F)Ljava/lang/Float;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Float", "valueOf", "(F)Ljava/lang/Float;", false);
 					break;
 				case Type.LONG:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;", false);
 					break;
 				case Type.DOUBLE:
-					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;");
+					mv.visitMethodInsn(INVOKESTATIC, "java/lang/Double", "valueOf", "(D)Ljava/lang/Double;", false);
 					break;
 				}
 
@@ -538,11 +538,11 @@ public abstract class FieldAccess {
 		mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
 		mv.visitInsn(DUP);
 		mv.visitLdcInsn("Field not found: ");
-		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V");
+		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V", false);
 		mv.visitVarInsn(ILOAD, 2);
-		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;");
-		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
-		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V");
+		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;", false);
+		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V", false);
 		mv.visitInsn(ATHROW);
 		return mv;
 	}
@@ -553,11 +553,11 @@ public abstract class FieldAccess {
 		mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
 		mv.visitInsn(DUP);
 		mv.visitLdcInsn("Field not declared as " + fieldType + ": ");
-		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V");
+		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "(Ljava/lang/String;)V", false);
 		mv.visitVarInsn(ILOAD, 2);
-		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;");
-		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;");
-		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V");
+		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;", false);
+		mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+		mv.visitMethodInsn(INVOKESPECIAL, "java/lang/IllegalArgumentException", "<init>", "(Ljava/lang/String;)V", false);
 		mv.visitInsn(ATHROW);
 		return mv;
 	}
@@ -588,7 +588,7 @@ public abstract class FieldAccess {
 		return fieldNames;
 	}
 
-	public Class[] getFieldTypes() {
+	public Class<?>[] getFieldTypes() {
 		return fieldTypes;
 	}
 
