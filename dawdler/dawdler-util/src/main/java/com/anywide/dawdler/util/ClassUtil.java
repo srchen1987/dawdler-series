@@ -69,98 +69,115 @@ public class ClassUtil {
 			return null;
 		if (!type.isArray())
 			return null;
-		Object array = null;
+		Object result = null;
 		if (type == String[].class) {
 			return (T) value;
 		} else if (type == int[].class) {
-			array = new int[value.length];
+			int[] array = new int[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Integer.parseInt(value[i]));
+				array[i] = Integer.parseInt(value[i]);
 			}
+			result = array;
 		} else if (type == Integer[].class) {
-			array = new Integer[value.length];
+			Integer[] array = new Integer[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Integer.parseInt(value[i]));
+				array[i] = Integer.parseInt(value[i]);
 			}
+			result = array;
 		} else if (type == long[].class) {
-			array = new long[value.length];
+			long[] array = new long[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Long.parseLong(value[i]));
+				array[i] = Long.parseLong(value[i]);
 			}
+			result = array;
 		} else if (type == Long[].class) {
-			array = new Long[value.length];
+			Long[] array = new Long[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Long.parseLong(value[i]));
+				array[i] = Long.parseLong(value[i]);
 			}
+			result = array;
 		} else if (type == double[].class) {
-			array = new double[value.length];
+			double[] array = new double[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Double.parseDouble(value[i]));
+				array[i] = Double.parseDouble(value[i]);
 			}
+			result = array;
 		} else if (type == Double[].class) {
-			array = new Double[value.length];
+			Double[] array = new Double[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Double.parseDouble(value[i]));
+				array[i] = Double.parseDouble(value[i]);
 			}
+			result = array;
 		} else if (type == boolean[].class) {
-			array = new boolean[value.length];
+			boolean[] array = new boolean[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Boolean.parseBoolean(value[i]));
+				array[i] = Boolean.parseBoolean(value[i]);
 			}
+			result = array;
 		} else if (type == Boolean[].class) {
-			array = new Boolean[value.length];
+			Boolean[] array = new Boolean[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Boolean.parseBoolean(value[i]));
+				array[i] = Boolean.parseBoolean(value[i]);
 			}
+			result = array;
 		} else if (type == short[].class) {
-			array = new short[value.length];
+			short[] array = new short[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Short.parseShort(value[i]));
+				array[i] = Short.parseShort(value[i]);
 			}
+			result = array;
 		} else if (type == Short[].class) {
-			array = new Short[value.length];
+			Short[] array = new Short[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Short.parseShort(value[i]));
+				array[i] = Short.parseShort(value[i]);
 			}
+			result = array;
 		} else if (type == byte[].class) {
-			array = new byte[value.length];
+			byte[] array = new byte[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Byte.parseByte(value[i]));
+				array[i] = Byte.parseByte(value[i]);
 			}
+			result = array;
 		} else if (type == Byte[].class) {
-			array = new Byte[value.length];
+			Byte[] array = new Byte[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Byte.parseByte(value[i]));
+				array[i] = Byte.parseByte(value[i]);
 			}
+			result = array;
 		} else if (type == float[].class) {
-			array = new float[value.length];
+			float[] array = new float[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Float.parseFloat(value[i]));
+				array[i] = Float.parseFloat(value[i]);
 			}
+			result = array;
 		} else if (type == Float[].class) {
-			array = new Float[value.length];
+			Float[] array = new Float[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, Float.parseFloat(value[i]));
+				array[i] = Float.parseFloat(value[i]);
 			}
+			result = array;
 		} else if (type == char[].class) {
-			array = new char[value.length];
+			char[] array = new char[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, value[i].charAt(0));
+				array[i] = value[i].charAt(0);
 			}
+			result = array;
 		} else if (type == Character[].class) {
-			array = new Character[value.length];
+			Character[] array = new Character[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, value[i].charAt(0));
+				array[i] = value[i].charAt(0);
 			}
+			result = array;
 		} else if (type == BigDecimal[].class) {
-			array = new BigDecimal[value.length];
+			BigDecimal[] array = new BigDecimal[value.length];
 			for (int i = 0; i < value.length; i++) {
-				Array.set(array, i, new BigDecimal(value[i]));
+				array[i] = BigDecimal.valueOf(Double.parseDouble(value[i]));
 			}
+			result = array;
 		}
-		return (T) array;
+		return (T) result;
 	}
-
+	
 	public static <T extends Object> T convert(Object value, Class<T> type) {
 		if (value == null)
 			return null;
@@ -189,5 +206,133 @@ public class ClassUtil {
 		}
 		return (T) value;
 	}
+	
+	public static String[] convertSimpleArrayToStringArray(Object value) {
+		if (value == null || !value.getClass().isArray())
+			return null;
+		String[] result = null;
+		Class<?> type = value.getClass();
+		if (type == int[].class) {
+			int[] array = (int[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Integer[].class) {
+			Integer[] array = (Integer[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == long[].class) {
+			long[] array = (long[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Long[].class) {
+			Long[] array = (Long[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == double[].class) {
+			double[] array = (double[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Double[].class) {
+			Double[] array = (Double[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == boolean[].class) {
+			boolean[] array = (boolean[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Boolean[].class) {
+			Boolean[] array = (Boolean[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == short[].class) {
+			short[] array = (short[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Short[].class) {
+			Short[] array = (Short[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == byte[].class) {
+			byte[] array = (byte[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Byte[].class) {
+			Byte[] array = (Byte[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == float[].class) {
+			float[] array = (float[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Float[].class) {
+			Float[] array = (Float[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == char[].class) {
+			char[] array = (char[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == Character[].class) {
+			Character[] array = (Character[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		} else if (type == BigDecimal[].class) {
+			BigDecimal[] array = (BigDecimal[]) value;
+			result = new String[array.length];
+			for (int i = 0; i < array.length; i++) {
+				result[i] = String.valueOf(array[i]);
+			}
+			return result;
+		}
+		return result;
+	}	
 
 }

@@ -64,7 +64,7 @@ public class ViewFilter implements Filter {
 		if (isJson)
 			request = new BodyReaderHttpServletRequestWrapper(request);
 		try {
-			boolean status = annotationUrlHander.handleUrl(uriShort, method, isJson, request, response);
+			boolean status = annotationUrlHander.handleUrl(uriShort, method, request, response);
 			if (!status)
 				chain.doFilter(request, response);
 		} catch (Throwable e) {

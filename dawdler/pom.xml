@@ -209,11 +209,6 @@
 				<version>${javassist.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.logging.log4j</groupId>
-				<artifactId>log4j-core</artifactId>
-				<version>${log4j-core.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>ognl</groupId>
 				<artifactId>ognl</artifactId>
 				<version>${ognl.version}</version>
@@ -354,11 +349,14 @@
 				<version>${elasticsearch.version}</version>
 			</dependency>
 			<dependency>
+<<<<<<< HEAD
 				<groupId>co.elastic.clients</groupId>
 				<artifactId>elasticsearch-java</artifactId>
 				<version>${elasticsearch.version}</version>
 			</dependency>
 			<dependency>
+=======
+>>>>>>> 0.0.2-RELEASES
 				<groupId>com.navercorp.pinpoint</groupId>
 				<artifactId>pinpoint-bootstrap-core</artifactId>
 				<version>${pinpoint.version}</version>
@@ -435,7 +433,11 @@
 		<module>dawdler-es-plug</module>
 		<module>dawdler-pinpoint-plug</module>
 		<module>dawdler-services-dependencies</module>
+<<<<<<< HEAD
 		<module>dawdler-jakarta-fileupload</module>
+=======
+		<module>dawdler-client-api-generator</module>
+>>>>>>> 0.0.2-RELEASES
 	</modules>
 
 
