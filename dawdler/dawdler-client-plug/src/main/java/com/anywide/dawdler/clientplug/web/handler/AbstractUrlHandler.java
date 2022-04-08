@@ -72,8 +72,9 @@ public abstract class AbstractUrlHandler {
 		}
 	}
 
-	public abstract boolean handleUrl(String urishort, String method, boolean isJson, HttpServletRequest request,
+	public abstract boolean handleUrl(String urishort, String method, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException;
+
 	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,
 			boolean responseBody) throws Throwable {
 		try {
@@ -101,8 +102,7 @@ public abstract class AbstractUrlHandler {
 			}
 			postHandle(target, viewForward, requestMapping, viewForward.getInvokeException());
 			DisplaySwitcher.switchDisplay(viewForward);
-		}
-		finally {
+		} finally {
 			afterCompletion(target, viewForward, requestMapping, viewForward.getInvokeException());
 		}
 		return true;
