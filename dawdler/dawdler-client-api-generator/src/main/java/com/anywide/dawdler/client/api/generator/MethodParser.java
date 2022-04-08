@@ -52,6 +52,7 @@ import com.thoughtworks.qdox.model.JavaParameter;
 import com.thoughtworks.qdox.model.JavaParameterizedType;
 import com.thoughtworks.qdox.model.JavaType;
 import com.thoughtworks.qdox.model.JavaTypeVariable;
+import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 
 /**
@@ -149,17 +150,26 @@ public class MethodParser {
 					for (JavaAnnotation paramAnnotation : paramAnnotationList) {
 						String annotationName = paramAnnotation.getType().getFullyQualifiedName();
 						if (annotationName.equals(RequestParam.class.getName())) {
-							alias = (String) paramAnnotation.getProperty("value").accept(new EvaluatingVisitor());
+							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
+							if(annotationValue != null) {
+								alias = (String) annotationValue.accept(new EvaluatingVisitor());
+							}
 						}
 						if (annotationName.equals(PathVariable.class.getName())) {
 							in = "path";
-							alias = (String) paramAnnotation.getProperty("value").accept(new EvaluatingVisitor());
+							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
+							if(annotationValue != null) {
+								alias = (String) annotationValue.accept(new EvaluatingVisitor());
+							}
 						} else if (annotationName.equals(RequestBody.class.getName())) {
 							requestBody = true;
 							in = "body";
 						} else if (annotationName.equals(RequestHeader.class.getName())) {
 							in = "header";
-							alias = (String) paramAnnotation.getProperty("value").accept(new EvaluatingVisitor());
+							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
+							if(annotationValue != null) {
+								alias = (String) annotationValue.accept(new EvaluatingVisitor());
+							}
 						}
 					}
 				}
