@@ -50,7 +50,6 @@ public class ServletUploadMethodArgumentResolver extends AbstractMethodArgumentR
 				return files.toArray(new UploadFile[0]);
 			}
 			return null;
-			
 		}
 		return null;
 	}

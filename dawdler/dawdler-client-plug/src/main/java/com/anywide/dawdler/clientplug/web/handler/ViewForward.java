@@ -48,6 +48,7 @@ public class ViewForward {
 	private Throwable invokeException;
 	private RequestUrlData requestUrlData;
 	private String uriShort;
+	private String antPath;
 
 	public ViewForward(HttpServletRequest request, HttpServletResponse response) {
 		this.request = request;
@@ -60,6 +61,14 @@ public class ViewForward {
 
 	void setUriShort(String uriShort) {
 		this.uriShort = uriShort;
+	}
+
+	public String getAntPath() {
+		return antPath;
+	}
+
+	public void setAntPath(String antPath) {
+		this.antPath = antPath;
 	}
 
 	void setRequestUrlData(RequestUrlData requestUrlData) {

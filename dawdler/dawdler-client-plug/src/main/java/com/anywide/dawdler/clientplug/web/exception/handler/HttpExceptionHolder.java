@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
-import com.anywide.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
 
 /**
