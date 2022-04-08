@@ -77,7 +77,9 @@ public class RedisMessageOperator implements MessageOperator {
 			jedis.configSet(parameter, "gxE");// 过期与删除
 		}
 	}
+
 	Thread thread = null;
+
 	@Override
 	public void listenExpireAndDelAndChange() {
 		thread = new Thread(() -> {
@@ -100,7 +102,6 @@ public class RedisMessageOperator implements MessageOperator {
 						Thread.sleep(100);
 					} catch (InterruptedException e1) {
 					}
-					
 				}
 			}
 		});
@@ -214,7 +215,7 @@ public class RedisMessageOperator implements MessageOperator {
 		if (jedis != null) {
 			try {
 				jedis.close();
-			} catch (Exception e1) {
+			} catch (Exception e) {
 			}
 		}
 	}

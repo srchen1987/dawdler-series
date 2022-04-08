@@ -60,10 +60,11 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 				while (attrs.hasMoreElements()) {
 					String key = attrs.nextElement();
 					Object obj = request.getAttribute(key);
-					wf.getData().put(key, obj);
+					wf.putData(key, obj);
 				}
 			}
-			json = JsonProcessUtil.beanToJson(wf.getData());
+			if(wf.getData() != null)
+				json = JsonProcessUtil.beanToJson(wf.getData());
 			break;
 		}
 		case ERROR: {

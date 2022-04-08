@@ -31,7 +31,6 @@ import java.util.Map;
 import com.anywide.dawdler.client.api.generator.conf.OpenApiConfig;
 import com.anywide.dawdler.client.api.generator.data.ClassStruct;
 import com.anywide.dawdler.client.api.generator.data.ControllerData;
-import com.anywide.dawdler.client.api.generator.util.AnnotationUtils;
 import com.anywide.dawdler.clientplug.annotation.Controller;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.util.JsonProcessUtil;

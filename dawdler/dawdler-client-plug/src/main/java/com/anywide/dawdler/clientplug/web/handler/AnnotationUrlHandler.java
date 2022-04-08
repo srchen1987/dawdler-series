@@ -17,9 +17,8 @@
 package com.anywide.dawdler.clientplug.web.handler;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -31,6 +30,8 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.AntPathMatcher;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHandler;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
+import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
+import com.anywide.dawdler.clientplug.web.validator.exception.ValidationException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -68,27 +69,23 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		}
 	}
 
-	public boolean handleUrl(String uriShort, String httpMethod, boolean isJson, HttpServletRequest request,
+	public boolean handleUrl(String uriShort, String httpMethod, HttpServletRequest request,
 			HttpServletResponse response) {
+		RequestUrlData requestUrlData = urlRules.get(uriShort);
+		if (requestUrlData != null)
+			return handleUrl(requestUrlData, uriShort, null, httpMethod, null, request, response);
 		Set<Entry<String, RequestUrlData>> rules = anturlRules.entrySet();
-		if (!isAntPath(uriShort)) {
-			RequestUrlData requestUrlData = urlRules.get(uriShort);
-			if (requestUrlData == null)
-				return false;
-			return handleUrl(requestUrlData, uriShort, httpMethod, isJson, null, request, response);
-		} else {
-			for (Entry<String, RequestUrlData> entry : rules) {
-				Map<String, String> variables = new LinkedHashMap<>();
-				boolean matched = antPathMatcher.doMatch(entry.getKey(), uriShort, true, variables);
-				if (matched) {
-					return handleUrl(entry.getValue(), uriShort, httpMethod, isJson, variables, request, response);
-				}
+		Map<String, String> variables = new HashMap<>();
+		for (Entry<String, RequestUrlData> entry : rules) {
+			boolean matched = antPathMatcher.doMatch(entry.getKey(), uriShort, true, variables);
+			if (matched) {
+				return handleUrl(entry.getValue(), uriShort, entry.getKey(), httpMethod, variables, request, response);
 			}
-			return false;
 		}
+		return false;
 	}
 
-	private boolean handleUrl(RequestUrlData requestUrlData, String uriShort, String httpMethod, boolean isJson,
+	private boolean handleUrl(RequestUrlData requestUrlData, String uriShort, String antPath, String httpMethod,
 			Map<String, String> variables, HttpServletRequest request, HttpServletResponse response) {
 		RequestMapping requestMapping = requestUrlData.getRequestMapping();
 		if (!validateHttpMethods(requestMapping, httpMethod)) {
@@ -109,6 +106,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		viewForward.setParamsVariable(variables);
 		viewForward.setRequestUrlData(requestUrlData);
 		viewForward.setUriShort(uriShort);
+		viewForward.setAntPath(antPath);
 		ViewControllerContext.setViewForward(viewForward);
 		boolean responseBody = requestUrlData.getResponseBody() != null;
 		Object targetController = requestUrlData.getTarget();
@@ -120,10 +118,25 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 				MultipartViewForward mwf = (MultipartViewForward) viewForward;
 				mwf.parse(uploadSizeMax, uploadPerSizeMax);
 			}
-			if (WebValidateExecutor.validate(request, response, isJson, targetController))
-				return invokeMethod(targetController, method, requestMapping, viewForward, responseBody);
-			else
-				return true;
+			if (WebValidateExecutor.validate(request, response, variables, targetController, viewForward)) {
+				try {
+					return invokeMethod(targetController, method, requestMapping, viewForward, responseBody);
+				} catch (ValidationException e) {
+					Map<String, String> errors = new HashMap<>();
+					errors.put(e.getFieldName(), e.getError());
+					if (requestMapping != null && requestMapping.input() != null
+							&& !requestMapping.input().trim().equals("")) {
+						request.setAttribute(WebValidateExecutor.VALIDATE_ERROR, errors);
+						request.getRequestDispatcher(requestMapping.input()).forward(request, response);
+					} else {
+						viewForward.putData(WebValidateExecutor.VALIDATE_ERROR, errors);
+						PlugFactory.getDisplayPlug("json").display(viewForward);
+					}
+					return true;
+				}
+
+			}
+			return true;
 		} catch (Throwable e) {
 			viewForward.setInvokeException(e);
 			if (exceptionHandler.isEmpty()) {

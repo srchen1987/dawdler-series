@@ -77,8 +77,6 @@ public class DawdlerSessionFilter implements Filter {
 //	private static int synFlushInterval = 0;
 
 	static {
-//		String filePath = DawdlerTool.getcurrentPath() + "identityConfig.properties";
-//		File file = new File(filePath);
 		Properties ps = null;
 		try {
 			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties("identityConfig");

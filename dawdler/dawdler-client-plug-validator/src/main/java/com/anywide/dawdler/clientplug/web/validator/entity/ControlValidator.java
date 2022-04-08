@@ -28,7 +28,6 @@ import java.util.Map;
  * @email suxuan696@gmail.com
  */
 public class ControlValidator {
-	private boolean validate;
 	private Map<String, ControlField> controlFields;
 	private Map<String, Map<String, ControlField>> fieldGroups;
 	private Map<String, ControlField> globalControlFields;
@@ -62,11 +61,4 @@ public class ControlValidator {
 		this.controlFields = controlFields;
 	}
 
-	public boolean isValidate() {
-		return validate;
-	}
-
-	public void setValidate(boolean validate) {
-		this.validate = validate;
-	}
 }

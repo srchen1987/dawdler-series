@@ -158,7 +158,6 @@ public class ServiceBase implements Service {
 		for (Node node : preLoadClasses) {
 			classLoader.findClassForDawdler(node.getText().trim());
 		}
-
 		List<Node> packagesInClasses = root.selectNodes("scanner/packages-in-classes/package-path");
 		for (Node node : packagesInClasses) {
 			deployScanner.splitAndAddPathInClasses(node.getText().trim());
