@@ -71,7 +71,6 @@ public class LoadListener implements ServletContextListener {
 		}
 		loadConfModuleAndExecuteStaticMethod("destroy");
 		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
-		JVMTimeProvider.stop();
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
@@ -110,9 +109,9 @@ public class LoadListener implements ServletContextListener {
 		WebContextListenerProvider.listenerRun(true, arg0.getServletContext());
 		EnumSet<DispatcherType> dispatcherType = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
 				DispatcherType.ERROR, DispatcherType.INCLUDE);
-		Class sessionClass;
+		
 		try {
-			sessionClass = Class.forName("com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter");
+			Class sessionClass = Class.forName("com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter");
 			arg0.getServletContext().addFilter(sessionClass.getSimpleName(), sessionClass)
 					.addMappingForUrlPatterns(dispatcherType, true, "/*");
 		} catch (ClassNotFoundException e) {
@@ -123,7 +122,7 @@ public class LoadListener implements ServletContextListener {
 
 	private void loadConfModuleAndExecuteStaticMethod(String methodName) {
 		try {
-			Class configInitClass = Class.forName("com.anywide.dawdler.conf.client.init.ClientConfigInit");
+			Class<?> configInitClass = Class.forName("com.anywide.dawdler.conf.client.init.ClientConfigInit");
 			Method method = configInitClass.getMethod(methodName);
 			method.invoke(null);
 		} catch (Exception e) {

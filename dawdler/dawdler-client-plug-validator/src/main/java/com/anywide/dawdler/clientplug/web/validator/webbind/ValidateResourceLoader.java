@@ -109,7 +109,6 @@ public class ValidateResourceLoader {
 
 	private static ControlValidator loadRules(InputStream input) throws DocumentException, IOException {
 		ControlValidator cv = new ControlValidator();
-		cv.setValidate(true);
 		XmlObject xml = new XmlObject(input);
 		parserFields(xml, cv);
 		parserFieldsGroups(xml, cv);
@@ -191,17 +190,17 @@ public class ValidateResourceLoader {
 						String refgid = vele.attributeValue("refgid");
 						String ref = vele.attributeValue("ref");
 						if (refgid != null) {
-							Map<String, ControlField> map = cv.getFieldGroups().get(refgid);
-							if (map != null)
-								mappings.putAll(map);
+							Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
+							if (fieldGroup != null)
+								mappings.putAll(fieldGroup);
 						}
 						if (ref != null) {
-							ControlField confield = cv.getControlFields().get(ref);
-							if (confield == null) {
-								confield = globalFields.get(ref);
+							ControlField controlField = cv.getControlFields().get(ref);
+							if (controlField == null) {
+								controlField = globalFields.get(ref);
 							}
-							if (confield != null)
-								mappings.put(confield.getFieldName(), confield);
+							if (controlField != null)
+								mappings.put(controlField.getFieldName(), controlField);
 							else
 								logger.warn("can't find " + ref + " in fields!");
 						}

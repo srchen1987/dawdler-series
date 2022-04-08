@@ -14,26 +14,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.session.message;
+package com.anywide.dawdler.clientplug.web.validator.exception;
 
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MessageOperator.java
- * @Description 消息操作者
- * @date 2016年6月16日
+ * @Title ValidationException.java
+ * @Description 验证失败异常
+ * @date 2022年3月22日
  * @email suxuan696@gmail.com
  */
-public interface MessageOperator {
+public class ValidationException extends RuntimeException {
+	private static final long serialVersionUID = 2059492442768881097L;
+	private String fieldName;
+	private String error;
+	public ValidationException(String fieldName, String error) {
+		this.fieldName = fieldName;
+		this.error = error;
+	}
+	public String getFieldName() {
+		return fieldName;
+	}
 
-	void sendMessageToSet(String sessionKey, String attributeName, Object attributeValue);
-
-	void sendMessageToDel(String sessionKey, String attributeName);
-
-	void listenExpireAndDelAndChange();
-	
-	void stop();
-
-	void stop();
+	public String getError() {
+		return error;
+	}
 
 }

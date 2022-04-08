@@ -16,6 +16,8 @@
  */
 package com.anywide.dawdler.clientplug.web.bind.resolver.impl;
 
+import java.util.List;
+
 import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.upload.UploadFile;
@@ -43,7 +45,11 @@ public class ServletUploadMethodArgumentResolver extends AbstractMethodArgumentR
 		if (UploadFile.class == type) {
 			return viewForward.paramFile(paramName);
 		} else if (UploadFile[].class == type) {
-			return viewForward.paramFiles(paramName).toArray(new UploadFile[0]);
+			List<UploadFile> files = viewForward.paramFiles(paramName);
+			if(files != null) {
+				return files.toArray(new UploadFile[0]);
+			}
+			return null;
 		}
 		return null;
 	}
