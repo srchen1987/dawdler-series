@@ -174,7 +174,7 @@ public class DawdlerConnection {
 			try {
 				client = AsynchronousSocketChannel.open(asynchronousChannelGroup);
 				// config(client);
-				socketSession = new SocketSession(client, false);
+				socketSession = new SocketSession(client);
 				socketSession.setGroupName(getGroupName());
 				socketSession.setDawdlerConnection(this);
 				socketSession.setRemoteAddress(address);
