@@ -87,18 +87,15 @@ public abstract class AbstractSocketSession {
 	private String groupName;
 	private boolean authored;
 	private SessionState state = SessionState.RECEIVE;
-
-	public AbstractSocketSession(AsynchronousSocketChannel channel, boolean init) throws Exception {
+	private boolean server;
+	public AbstractSocketSession(AsynchronousSocketChannel channel, boolean server) throws Exception {
 		this.channel = channel;
-		if (init) {
+		if (server) {
+			this.server = server;
 			init();
 		}
 	}
-
-	public AbstractSocketSession(AsynchronousSocketChannel channel) throws Exception {
-		this(channel, true);
-	}
-
+	
 	public boolean isAuthored() {
 		return authored;
 	}
@@ -316,6 +313,10 @@ public abstract class AbstractSocketSession {
 				// release buffer
 			}
 		}
+	}
+	
+	public boolean isServer() {
+		return server;
 	}
 
 	public Object getWriteLock() {
