@@ -19,17 +19,31 @@ package com.anywide.dawdler.core.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SessionCloseException.java
- * @Description session关闭异常
- * @date 2015年6月06日
+ * @Title IllegalConnectionException.java
+ * @Description 不合规连接异常
+ * @date 2022年4月8日
  * @email suxuan696@gmail.com
  */
-public class SessionCloseException extends Exception {
-	
-	private static final long serialVersionUID = -2787083552593649797L;
+public class IllegalConnectionException extends RuntimeException {
 
-	public SessionCloseException(String msg) {
-		super(msg);
+	private static final long serialVersionUID = -2638144867099257710L;
+	
+	public IllegalConnectionException(String error, String ipAddress, int dataSize) {
+		super(error);
+		this.ipAddress = ipAddress;
+		this.dataSize = dataSize;
+	}
+	private String ipAddress;
+	
+	private int dataSize;
+
+	public String getIpAddress() {
+		return ipAddress;
 	}
 
+	public int getDataSize() {
+		return dataSize;
+	}
+
+	
 }

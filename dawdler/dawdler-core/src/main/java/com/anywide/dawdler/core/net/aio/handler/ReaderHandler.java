@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.core.net.aio.handler;
 
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
@@ -25,6 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.core.exception.IllegalConnectionException;
 import com.anywide.dawdler.core.net.aio.session.AbstractSocketSession;
 import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
 import com.anywide.dawdler.util.JVMTimeProvider;
@@ -41,6 +43,7 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 	private final static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
 	private static final int HEADER_FIELD_LENGTH = Integer.BYTES;
 	private final AtomicInteger INFERIOR_COUNT = new AtomicInteger();
+	private static final int authDataSize = 2048;
 
 	@Override
 	public void completed(Integer result, AbstractSocketSession session) {
@@ -70,6 +73,11 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 				if (!session.isNeedNext())
 					buffer.flip();
 				int dataLength = buffer.getInt();
+				InetSocketAddress inetAddress =  (InetSocketAddress) session.getRemoteAddress();
+				String ipAddress = inetAddress.getAddress().getHostAddress();
+				if(session.isServer() && !session.isAuthored() && dataLength>authDataSize) {
+					throw new IllegalConnectionException(ipAddress+" send auth data "+dataLength+"B > "+authDataSize+"B.", ipAddress, dataLength);
+				}
 				if (dataLength == 0) {
 					if (buffer.remaining() > 0) {
 						session.toReceiveState();
