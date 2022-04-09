@@ -42,11 +42,7 @@ public class SocketSession extends AbstractSocketSession {
 	private byte pathLength;
 
 	public SocketSession(AsynchronousSocketChannel channel) throws Exception {
-		super(channel);
-	}
-
-	public SocketSession(AsynchronousSocketChannel channel, boolean init) throws Exception {
-		super(channel, init);
+		super(channel, true);
 	}
 
 	public DawdlerServerContext getDawdlerServerContext() {
