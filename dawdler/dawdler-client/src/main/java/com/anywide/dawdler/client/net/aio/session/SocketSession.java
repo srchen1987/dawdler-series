@@ -48,8 +48,8 @@ public class SocketSession extends AbstractSocketSession {
 	private DawdlerConnection dawdlerConnection;
 	private ClassLoader classLoader;
 
-	public SocketSession(AsynchronousSocketChannel channel, boolean init) throws Exception {
-		super(channel, init);
+	public SocketSession(AsynchronousSocketChannel channel) throws Exception {
+		super(channel, false);
 	}
 
 	public String getUser() {
