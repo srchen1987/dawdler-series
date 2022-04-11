@@ -79,7 +79,6 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 						runSafeService.shutdownNow();
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				
 				client.close();
