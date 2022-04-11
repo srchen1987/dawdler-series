@@ -15,4 +15,5 @@ module dawdler.config.core {
 	requires com.fasterxml.jackson.databind;
 	requires com.fasterxml.jackson.dataformat.yaml;
 	requires consul.api;
+	requires dawdler.core;
 }
