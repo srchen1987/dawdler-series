@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import com.anywide.dawdler.conf.cache.ConfigDataCache.ConfigData;
 import com.anywide.dawdler.conf.cache.ConfigMappingDataCache;
 import com.anywide.dawdler.conf.cache.PathMappingTargetCache;
 import com.anywide.dawdler.conf.client.ConfigClient;
+import com.anywide.dawdler.core.thread.DefaultThreadFactory;
 import com.ecwid.consul.transport.TLSConfig;
 import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
@@ -87,8 +89,9 @@ public class ConsulConfigClient implements ConfigClient {
 			} else {
 				client = new ConsulClient(host, port);
 			}
-			if (watchKeys != null)
-					executor = Executors.newFixedThreadPool(watchKeys.size());
+			if (watchKeys != null) {
+				executor = Executors.newFixedThreadPool(watchKeys.size(), new DefaultThreadFactory("consul-watcher", true));
+			}
 		} catch (Throwable e) {
 			logger.error("", e);
 		}
@@ -107,7 +110,7 @@ public class ConsulConfigClient implements ConfigClient {
 							Response<List<String>> responseKeys = client.getKVKeysOnly(watchKey, separator, token,
 									new QueryParams(waitTime, index));
 							if (responseKeys == null) {
-								Thread.sleep(10000);
+								Thread.sleep(waitTime*1000);
 								logger.error("not found watchKey {} !", watchKey);
 								continue;
 							}
@@ -133,8 +136,17 @@ public class ConsulConfigClient implements ConfigClient {
 	@Override
 	public void stop() {
 		this.start = false;
-		if (executor != null)
-			executor.shutdown();
+		if (executor != null) {
+			List<Runnable> tasks = executor.shutdownNow();
+			for(Runnable task : tasks) {
+				System.out.println(task);
+			}
+			try {
+				executor.awaitTermination(waitTime, TimeUnit.SECONDS);
+			} catch (InterruptedException e) {
+			}
+		}
+			
 	}
 
 	@Override
