@@ -16,7 +16,9 @@
  */
 package com.anywide.dawdler.core.discoverycenter;
 
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.curator.RetryPolicy;
@@ -65,7 +67,19 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 			if (curatorCache != null) {
 				curatorCache.close();
 			}
-			client.close();
+			if(client != null) {
+				Field field;
+				try {
+					field = client.getClass().getDeclaredField("runSafeService");// 这是一个bug,目前已经提交了pr给apache 参考https://github.com/apache/curator/pull/415
+					field.setAccessible(true);
+					ExecutorService runSafeService = (ExecutorService) field.get(client);
+					if(runSafeService != null) {
+						runSafeService.shutdownNow();
+					}
+				} catch (Exception e) {
+				}
+				client.close();
+			}
 		}
 	}
 
