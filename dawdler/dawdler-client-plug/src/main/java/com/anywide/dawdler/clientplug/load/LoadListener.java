@@ -19,7 +19,9 @@ package com.anywide.dawdler.clientplug.load;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.EnumSet;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.DispatcherType;
@@ -36,6 +38,7 @@ import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.clientplug.load.classloader.ClientPlugClassLoader;
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
+import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.XmlObject;
@@ -55,22 +58,24 @@ public class LoadListener implements ServletContextListener {
 	private final Map<LoadCore, Thread> threads = new ConcurrentHashMap<LoadCore, Thread>();
 
 	public void contextDestroyed(ServletContextEvent arg0) {
-//		for (Iterator<Entry<LoadCore, Thread>> it = threads.entrySet().iterator(); it.hasNext();) {
-//			Entry<LoadCore, Thread> entry = it.next();
-//			entry.getKey().stop();
-//			if (entry.getValue().isAlive()) {
-//				if (logger.isDebugEnabled())
-//					logger.debug("stop \t" + entry.getValue().getName() + "\tload");
-//				entry.getValue().interrupt();
-//			}
-//		}
+		for (Iterator<Entry<LoadCore, Thread>> it = threads.entrySet().iterator(); it.hasNext();) {
+			Entry<LoadCore, Thread> entry = it.next();
+			entry.getKey().stop();
+			if (entry.getValue().isAlive()) {
+				if (logger.isDebugEnabled())
+					logger.debug("stop \t" + entry.getValue().getName() + "\tload");
+				entry.getValue().interrupt();
+			}
+		}
 		try {
 			ConnectionPool.shutdown();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
+		SerializeDecider.destroyed();
 		loadConfModuleAndExecuteStaticMethod("destroy");
 		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
+		JVMTimeProvider.stop();
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
@@ -103,9 +108,7 @@ public class LoadListener implements ServletContextListener {
 				threads.put(loadCore, thread);
 			}
 		}
-
 		loadConfModuleAndExecuteStaticMethod("init");
-
 		WebContextListenerProvider.listenerRun(true, arg0.getServletContext());
 		EnumSet<DispatcherType> dispatcherType = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
 				DispatcherType.ERROR, DispatcherType.INCLUDE);

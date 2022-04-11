@@ -16,6 +16,9 @@
  */
 package com.anywide.dawdler.core.serializer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
 import com.esotericsoftware.kryo.Kryo;
@@ -28,21 +31,35 @@ import com.esotericsoftware.kryo.io.UnsafeOutput;
  * @author jackson.song
  * @version V1.0
  * @Title KryoSerializer.java
- * @Description kroy实现的序列化 目前升级到新版本 4x
+ * @Description kryo实现的序列化 目前升级到新版本 4x
  * @date 2014年12月22日
  * @email suxuan696@gmail.com
  */
 public class KryoSerializer implements Serializer {
-	private static final ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
-		protected KryoLocal initialValue() {
-			KryoLocal kryoLocal = new KryoLocal();
+	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
+//	private static ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
+//		protected KryoLocal initialValue() {
+//			KryoLocal kryoLocal = new KryoLocal();
+//			return kryoLocal;
+//		}
+//	};
+	private KryoLocal initialValue() {
+		KryoLocal kryoLocal = new KryoLocal();
+		return kryoLocal;
+	}
+	public KryoLocal getKryoLocal() {
+		Thread thread = Thread.currentThread();
+		KryoLocal kryoLocal = kryos.get(thread);
+		if(kryoLocal != null) {
 			return kryoLocal;
 		}
-	};
-	
+		kryoLocal = initialValue();
+		kryos.put(thread, kryoLocal);
+		return kryoLocal;
+	}
 	@Override
 	public Object deserialize(byte[] bytes) {
-		KryoLocal kryoLocal = kryos.get();
+		KryoLocal kryoLocal = getKryoLocal();
 		Kryo kryo = kryoLocal.getKryo();
 		Input input = kryoLocal.input;
 		input.setBuffer(bytes);
@@ -51,7 +68,7 @@ public class KryoSerializer implements Serializer {
 
 	@Override
 	public byte[] serialize(Object object) throws Exception {
-		KryoLocal kryoLocal = kryos.get();
+		KryoLocal kryoLocal = getKryoLocal();
 		synchronized (kryoLocal) {
 			Kryo kryo = kryoLocal.kryo;
 			Output out = kryoLocal.out;
@@ -89,10 +106,22 @@ public class KryoSerializer implements Serializer {
 		public void setKryo(Kryo kryo) {
 			this.kryo = kryo;
 		}
+		public void close() {
+			input.close();
+			out.close();
+		}
 	}
 
 	@Override
 	public byte key() {
 		return 2;
+	}
+	
+	@Override
+	public void destroyed() {
+		kryos.forEach((k, v)->{
+			v.close();
+		});
+		kryos.clear();
 	}
 }
