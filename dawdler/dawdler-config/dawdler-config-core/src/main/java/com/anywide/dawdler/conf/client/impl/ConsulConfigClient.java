@@ -137,10 +137,7 @@ public class ConsulConfigClient implements ConfigClient {
 	public void stop() {
 		this.start = false;
 		if (executor != null) {
-			List<Runnable> tasks = executor.shutdownNow();
-			for(Runnable task : tasks) {
-				System.out.println(task);
-			}
+			executor.shutdownNow();
 			try {
 				executor.awaitTermination(waitTime, TimeUnit.SECONDS);
 			} catch (InterruptedException e) {
