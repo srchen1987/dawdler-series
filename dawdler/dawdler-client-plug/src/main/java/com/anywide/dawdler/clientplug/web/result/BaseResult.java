@@ -33,12 +33,20 @@ public class BaseResult<T> {
 
 	@JsonInclude(Include.NON_NULL)
 	private Boolean success;
+	
+	@JsonInclude(Include.NON_NULL)
+	private String message;
 
 	public BaseResult(T data) {
 		this.data = data;
 	}
 	public BaseResult(T data, boolean success) {
 		this.data = data;
+		this.success = success;
+	}
+	
+	public BaseResult(String message, boolean success) {
+		this.message = message;
 		this.success = success;
 	}
 
@@ -56,5 +64,13 @@ public class BaseResult<T> {
 
 	public void setSuccess(Boolean success) {
 		this.success = success;
+	}
+	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 }
