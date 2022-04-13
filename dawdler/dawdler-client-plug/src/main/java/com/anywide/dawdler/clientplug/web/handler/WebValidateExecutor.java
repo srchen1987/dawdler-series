@@ -102,7 +102,9 @@ public class WebValidateExecutor {
 				System.out.println("######################################");
 			}
 			Map params = viewForward.paramMaps();
-			params.putAll(variables);
+			if(variables != null) {
+				params.putAll(variables);
+			}
 			Set<Entry<String, ControlField>> rulesSet = rules.entrySet();
 			for (Entry<String, ControlField> entry : rulesSet) {
 				String key = entry.getKey();
