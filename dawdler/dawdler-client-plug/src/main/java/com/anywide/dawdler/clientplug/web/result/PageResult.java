@@ -17,6 +17,8 @@
 package com.anywide.dawdler.clientplug.web.result;
 
 import com.anywide.dawdler.serverplug.load.bean.Page;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * @author jackson.song
@@ -27,6 +29,8 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
  * @email suxuan696@gmail.com
  */
 public class PageResult<T> extends BaseResult<T> {
+	
+	@JsonInclude(Include.NON_NULL)
 	private Page page;
 
 	public PageResult(T data) {
