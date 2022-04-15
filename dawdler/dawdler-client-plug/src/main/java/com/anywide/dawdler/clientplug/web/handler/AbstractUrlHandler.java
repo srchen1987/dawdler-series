@@ -95,6 +95,7 @@ public abstract class AbstractUrlHandler {
 						JsonProcessUtil.beanToJson(out, result);
 						out.flush();
 					}
+					postHandle(target, viewForward, requestMapping, viewForward.getInvokeException());
 				} finally {
 					out.close();
 				}

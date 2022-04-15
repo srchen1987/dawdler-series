@@ -17,7 +17,7 @@ webmvc,使用上基本与springmvc一致.提供远程加载组件的客户端,�
 
 编写一个Controller继承com.anywide.dawdler.clientplug.web.TransactionController或在类上加入注解@Controller.
 
-TransactionController由于历史原因所以保留了这个类,里面提供了很多便捷的param系列的方法,目前不推荐使用.
+TransactionController由于历史原因所以保留了这个类,里面提供了很多便捷的param系列的方法,目前不推荐使用.文档生成器也不再支持TransactionController.
 
 #### 2.2 创建API
 
@@ -343,6 +343,8 @@ public long paramLong(String paramName, long value) {
 
 dawdler内部提供[JsonDisplayPlug](src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/JsonDisplayPlug.java),[JspDisplayPlug](src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/JspDisplayPlug.java),[VelocityDisplayPlug](../dawdler-client-plug-velocity/src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/VelocityDisplayPlug.java)三种视图插件,如果有其他需要,比如freemarker的需求可以实现DisplayPlug接口,通过SPI方式来进行扩展.可以参考系统内的三个插件.(普通开发人员一般无须扩展)
 
+注意: 如果方法标记了@ResponseBody 返回类型是基本数据类型或String类型或BigDecimal类型则直接输出类型为text/html;charset=UTF-8,其他类型会转换为json类型为application/json;charset=UTF-8.
+
 ### 10. 注入远程服务接口
 
 在Controller,WebContextListener,HandlerInterceptor中支持使用@RemoteService进行注入远程调用的服务接口.
@@ -352,17 +354,22 @@ dawdler内部提供[JsonDisplayPlug](src/main/java/com/anywide/dawdler/clientplu
 示例：
 
 ```java
+@Controller
 @RequestMapping(value="/user")
 public class UserController{
  
  @RemoteService(group="user-service")
  UserService userService;
 
-@RequestMapping(value="/list.html" ,viewType=ViewType.json)
- public void list(int pageOn) throws Exception{
+@RequestMapping(value="/list.html")
+@ResponseBody
+ public PageResult<User> list(int pageOn) throws Exception{
   int row = 20;
   Map<String, Object> result = userService.selectUserList(pageOn, row);
-  setData(result);
+  List<User> list = (List<User>)result.get("list");
+  Page page = result.get("page");
+  PageResult<User> pageResult = new PageResult<User>(list, page, true);
+  return pageResult;
  }
 
 }
