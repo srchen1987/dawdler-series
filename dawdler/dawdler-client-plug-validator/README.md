@@ -53,6 +53,11 @@ dawdler-client-plug-validator 是一个强大的前后端通用校验器,支持j
 
 在controller同级目录创建一个{controllerName}-validator.xml结尾的文件.
 
+验证器支持对 application/x-www-form-urlencoded、multipart/form-data、application/json(@RequestBody)、antPath中的@PathVariable变量进行校验.
+
+RequestBody的对象无需配置在validator-mapping,只要在validator-fields中有定义则会触发校验.
+
+
 示例 ：
 
 定义UserController.java,UserController-validator.xml.
@@ -105,7 +110,7 @@ UserController-validator.xml 内容：
     </validator-mappings>
     
     <global-validator><!-- 全局验证器, 本Controller下的任何请求方法全部验证 一般不常用 -->
-        <validator><!--  -->
+        <validator ref="userid"/><!-- 描述：全局验证的控件  @ref 引入validator-field中@name 就包含了此控件 @refgid 引入其它组（等于包含作用） -->
     </global-validator>
 </validator>
 ```
@@ -128,7 +133,9 @@ nm32=notEmpty&maxSize:32
 
 #### 3.2 global-validator.xml 说明
 
-用于定义全局验证规则的配置文件
+用于定义全局验证规则的配置文件,全局验证规则可以通过validator-fields-group来引用,也可以通过validator-mapping来引用.
+
+```xml
 
 示例：
 
@@ -147,12 +154,6 @@ nm32=notEmpty&maxSize:32
 username控件名的规则,使用了globalRules,nm32为validate-global-variable.properties定义的nm32.
 
 email控件名的规则,使用了globalRules,nm32为validate-global-variable.properties定义的nm32.
-
-#### 3.3 {controllerName}-validator.xml 说明
-
-全局验证配置文件,例如以下定义：
-
-以上就定义了一个username的规则,具体规则为notEmpty&maxSize:32,notEmpty不能为空,maxSize:32长度不能大于32个字符.
 
 ### 4. 后台自定义规则扩展
 
