@@ -28,7 +28,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * @email suxuan696@gmail.com
  */
 public class BaseResult<T> {
-
+	
+	@JsonInclude(Include.NON_NULL)
 	private T data;
 
 	@JsonInclude(Include.NON_NULL)
@@ -39,11 +40,7 @@ public class BaseResult<T> {
 
 	public BaseResult(T data) {
 		this.data = data;
-	}
-
-	public BaseResult(T data, boolean success) {
-		this.data = data;
-		this.success = success;
+		this.success = true;
 	}
 	
 	public BaseResult(String message, boolean success) {
