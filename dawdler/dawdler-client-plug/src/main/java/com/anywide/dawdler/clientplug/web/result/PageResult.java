@@ -22,7 +22,7 @@ public class PageResult<T> extends BaseResult<T> {
 	}
 
 	public PageResult(T data, Page page, boolean success) {
-		super(data, success);
+		super(data);
 		this.page = page;
 	}
 	public Page getPage() {
