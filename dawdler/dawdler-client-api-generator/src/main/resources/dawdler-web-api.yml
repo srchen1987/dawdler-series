@@ -2,8 +2,9 @@ version: 1.0
 title: "演示服务"
 description: "用于演示的文档"
 contact:
- - "suxuan696@gmail.com"
- - "121616325@qq.com"
+ name: srchen
+ email: "suxuan696@gmail.com"
+ url: "https://github.com/srchen1987"
 swagger: "2.0"
 host: "localhost"
 basePath: "/"

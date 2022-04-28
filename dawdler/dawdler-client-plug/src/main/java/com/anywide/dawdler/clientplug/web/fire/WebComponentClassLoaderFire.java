@@ -43,7 +43,7 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
  * @author jackson.song
  * @version V1.0
  * @Title WebComponentClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller service等
+ * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller 注入service
  * @date 2015年3月11日
  * @email suxuan696@gmail.com
  */
@@ -52,10 +52,10 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	private static final Logger logger = LoggerFactory.getLogger(WebComponentClassLoaderFire.class);
 
 	@Override
-	public void onLoadFire(Class<?> clazz, byte[] classCodes) {
-		initListener(clazz);
-		initInterceptor(clazz);
-		initMapping(clazz, classCodes);
+	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable{
+		initListener(clazz, target);
+		initInterceptor(clazz, target);
+		initMapping(clazz, target, classCodes);
 	}
 
 	@Override
@@ -65,10 +65,10 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 		WebContextListenerProvider.removeWebContextListener(clazz);
 	}
 
-	private void initListener(Class<?> clazz) {
+	private void initListener(Class<?> clazz, Object target) {
 		if (WebContextListener.class.isAssignableFrom(clazz)) {
 			try {
-				WebContextListener listener = clazz.asSubclass(WebContextListener.class).newInstance();
+				WebContextListener listener = (WebContextListener) target;
 				WebContextListenerProvider.addWebContextListener(listener);
 				ServiceFactory.injectRemoteService(clazz, listener, clazz.getClassLoader());
 				WebContextListenerProvider.order();
@@ -78,10 +78,9 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 		}
 	}
 
-	private void initInterceptor(Class<?> clazz) {
+	private void initInterceptor(Class<?> clazz, Object target) {
 		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
-			try {
-				HandlerInterceptor interceptor = (HandlerInterceptor) clazz.newInstance();
+				HandlerInterceptor interceptor = (HandlerInterceptor) target;
 				List<OrderData<HandlerInterceptor>> interceptors = InterceptorProvider.getHandlerInterceptors();
 				for (OrderData<HandlerInterceptor> orderData : interceptors) {
 					if (orderData.getData().getClass() == clazz)
@@ -90,24 +89,14 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 				InterceptorProvider.addHandlerInterceptor(interceptor);
 				ServiceFactory.injectRemoteService(clazz, interceptor, clazz.getClassLoader());
 				InterceptorProvider.order();
-			} catch (InstantiationException | IllegalAccessException e) {
-				logger.error("", e);
-			}
 		}
 	}
 
-	private void initMapping(Class<?> clazz, byte[] classCodes) {
+	private void initMapping(Class<?> clazz, Object target, byte[] classCodes) {
 		if (clazz.isInterface())
 			return;
 		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
-			Object target;
-			try {
-				target = clazz.newInstance();
-				ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
-			} catch (InstantiationException | IllegalAccessException e) {
-				logger.error("", e);
-				return;
-			}
+			ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
 			RequestMapping classRequestMapping = clazz.getAnnotation(RequestMapping.class);
 			if (classRequestMapping != null && classRequestMapping.value().length > 0) {
 				for (String classMapping : classRequestMapping.value()) {
@@ -153,7 +142,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	}
 
 	public void removeMapping(Class<?> clazz) {
-		if (TransactionController.class.isAssignableFrom(clazz)) {
+		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
 			RequestMapping classRequestMapping = clazz.getAnnotation(RequestMapping.class);
 			if (classRequestMapping != null && classRequestMapping.value().length > 0) {
 				for (String classMapping : classRequestMapping.value()) {
