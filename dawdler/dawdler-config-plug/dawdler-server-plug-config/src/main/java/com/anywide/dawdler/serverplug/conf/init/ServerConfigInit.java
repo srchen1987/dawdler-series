@@ -37,11 +37,10 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
  * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
-public class ServerConfigInit implements ComponentLifeCycle{
+public class ServerConfigInit implements ComponentLifeCycle {
 
 	private ConfigInit configInit = new ConfigInit();
 
-	
 	public void init(List<OrderData<DawdlerServiceListener>> dawdlerServiceListeners,
 			List<OrderData<DawdlerFilter>> dawdlerFilters) throws Exception {
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {
@@ -63,8 +62,9 @@ public class ServerConfigInit implements ComponentLifeCycle{
 		configInit.init();
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
 		FilterProvider filterProvider = (FilterProvider) dawdlerContext.getAttribute(ServiceBase.FILTER_PROVIDER);
-		DawdlerListenerProvider dawdlerListenerProvider = (DawdlerListenerProvider) dawdlerContext.getAttribute(ServiceBase.DAWDLER_LISTENER_PROVIDER);
-		init(dawdlerListenerProvider.getListeners(), filterProvider.getFilters());		
+		DawdlerListenerProvider dawdlerListenerProvider = (DawdlerListenerProvider) dawdlerContext
+				.getAttribute(ServiceBase.DAWDLER_LISTENER_PROVIDER);
+		init(dawdlerListenerProvider.getListeners(), filterProvider.getFilters());
 	}
 
 }

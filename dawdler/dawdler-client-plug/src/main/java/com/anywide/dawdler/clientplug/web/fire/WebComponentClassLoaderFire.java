@@ -52,7 +52,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	private static final Logger logger = LoggerFactory.getLogger(WebComponentClassLoaderFire.class);
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable{
+	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
 		initListener(clazz, target);
 		initInterceptor(clazz, target);
 		initMapping(clazz, target, classCodes);
@@ -80,15 +80,15 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 
 	private void initInterceptor(Class<?> clazz, Object target) {
 		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
-				HandlerInterceptor interceptor = (HandlerInterceptor) target;
-				List<OrderData<HandlerInterceptor>> interceptors = InterceptorProvider.getHandlerInterceptors();
-				for (OrderData<HandlerInterceptor> orderData : interceptors) {
-					if (orderData.getData().getClass() == clazz)
-						return;
-				}
-				InterceptorProvider.addHandlerInterceptor(interceptor);
-				ServiceFactory.injectRemoteService(clazz, interceptor, clazz.getClassLoader());
-				InterceptorProvider.order();
+			HandlerInterceptor interceptor = (HandlerInterceptor) target;
+			List<OrderData<HandlerInterceptor>> interceptors = InterceptorProvider.getHandlerInterceptors();
+			for (OrderData<HandlerInterceptor> orderData : interceptors) {
+				if (orderData.getData().getClass() == clazz)
+					return;
+			}
+			InterceptorProvider.addHandlerInterceptor(interceptor);
+			ServiceFactory.injectRemoteService(clazz, interceptor, clazz.getClassLoader());
+			InterceptorProvider.order();
 		}
 	}
 

@@ -22,14 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
-*
-* @Title DBTransaction.java
-* @Description 事务注解，应用于service方法中
-* @author jackson.song
-* @date 2012年9月27日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title DBTransaction.java
+ * @Description 事务注解，应用于service方法中
+ * @author jackson.song
+ * @date 2012年9月27日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
 @java.lang.annotation.Inherited

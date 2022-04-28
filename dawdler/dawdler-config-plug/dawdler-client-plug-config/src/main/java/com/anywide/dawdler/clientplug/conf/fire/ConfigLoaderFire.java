@@ -40,9 +40,9 @@ import com.anywide.dawdler.core.order.OrderData;
 public class ConfigLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable{
-			refreshMappingConfig(clazz);
-			refreshInterceptorConfig(clazz);
+	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
+		refreshMappingConfig(clazz);
+		refreshInterceptorConfig(clazz);
 	}
 
 	@Override

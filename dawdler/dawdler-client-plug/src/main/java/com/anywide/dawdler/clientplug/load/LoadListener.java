@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.load;
 
-import java.io.IOException;
 import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.List;
@@ -105,10 +104,14 @@ public class LoadListener implements ServletContextListener {
 			}
 			String channelGroupId = ele.attributeValue("channel-group-id");
 			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
-			loadCore.initWebComponent();
+			try {
+				loadCore.initWebComponent();
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
 			try {
 				loadCore.toCheck();
-			} catch (IOException e) {
+			} catch (Throwable e) {
 				logger.error("", e);
 			}
 			String mode = ele.attributeValue("mode");

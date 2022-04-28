@@ -36,7 +36,7 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
  * @Title Transaction.java
  * @Description 客户端调用服务器端的行为，不考虑异步
  * @date 2008年3月13日
- * @email suxuan696@gmail.com 
+ * @email suxuan696@gmail.com
  */
 public class Transaction {
 	private final List<Class<?>> types = new ArrayList<>();
@@ -72,7 +72,6 @@ public class Transaction {
 	public void setCircuitBreaker(CircuitBreaker circuitBreaker) {
 		this.circuitBreaker = circuitBreaker;
 	}
-
 
 	public boolean isAsync() {
 		return async;

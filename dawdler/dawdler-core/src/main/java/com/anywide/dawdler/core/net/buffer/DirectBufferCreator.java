@@ -50,19 +50,26 @@ public class DirectBufferCreator implements BufferCreator {
 			logger.error("", e);
 		}
 	}
-	
-	public static DawdlerByteBuffer createByteBufferByUnsafe(int capacity) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+
+	public static DawdlerByteBuffer createByteBufferByUnsafe(int capacity)
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, InstantiationException {
 		long addr = unsafe.allocateMemory(capacity);
 		ByteBuffer buffer = (ByteBuffer) bufferConstructor.newInstance(addr, capacity);
 		DawdlerByteBuffer dawdlerByteBuffer = new DawdlerByteBuffer(buffer);
 		dawdlerByteBuffer.setAddr(addr);
 		return dawdlerByteBuffer;
 	}
-	public static void freeMemory(long addr) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+
+	public static void freeMemory(long addr)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		unsafe.freeMemory(addr);
 	}
+
 	@Override
-	public DawdlerByteBuffer createByteBuffer(int capacity) throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException {
+	public DawdlerByteBuffer createByteBuffer(int capacity)
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, InstantiationException {
 		return createByteBufferByUnsafe(capacity);
 	}
 }

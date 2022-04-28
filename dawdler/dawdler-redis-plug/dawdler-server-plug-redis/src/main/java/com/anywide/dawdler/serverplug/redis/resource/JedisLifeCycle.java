@@ -36,16 +36,17 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
  * @date 2022年4月17日
  * @email suxuan696@gmail.com
  */
-public class JedisLifeCycle implements ComponentLifeCycle{
+public class JedisLifeCycle implements ComponentLifeCycle {
 
 	@Override
 	public void init() throws Throwable {
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
 		FilterProvider filterProvider = (FilterProvider) dawdlerContext.getAttribute(ServiceBase.FILTER_PROVIDER);
-		DawdlerListenerProvider dawdlerListenerProvider = (DawdlerListenerProvider) dawdlerContext.getAttribute(ServiceBase.DAWDLER_LISTENER_PROVIDER);
-		init(dawdlerListenerProvider.getListeners(), filterProvider.getFilters());		
+		DawdlerListenerProvider dawdlerListenerProvider = (DawdlerListenerProvider) dawdlerContext
+				.getAttribute(ServiceBase.DAWDLER_LISTENER_PROVIDER);
+		init(dawdlerListenerProvider.getListeners(), filterProvider.getFilters());
 	}
-	
+
 	public void init(List<OrderData<DawdlerServiceListener>> dawdlerServiceListeners,
 			List<OrderData<DawdlerFilter>> dawdlerFilters) throws Throwable {
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {

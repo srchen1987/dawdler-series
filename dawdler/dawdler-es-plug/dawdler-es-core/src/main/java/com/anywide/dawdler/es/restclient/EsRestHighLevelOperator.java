@@ -97,7 +97,8 @@ import org.elasticsearch.script.mustache.SearchTemplateResponse;
 /**
  *
  * @Title EsRestHighLevelOperator.java
- * @Description es restHighLevel客户端接口 es官方的RestHighLevelClient写的太一般,没有实现接口jdk动态代理不可用,cglib又无法代理final方法(内部大量final方法)
+ * @Description es restHighLevel客户端接口
+ *              es官方的RestHighLevelClient写的太一般,没有实现接口jdk动态代理不可用,cglib又无法代理final方法(内部大量final方法)
  * @author jackson.song
  * @date 2022年4月16日
  * @version V1.0
