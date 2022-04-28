@@ -34,7 +34,7 @@ import com.anywide.dawdler.es.restclient.EsRestHighLevelOperatorFactory;
  */
 @Order(1)
 public class EsClassLoaderFire implements RemoteClassLoaderFire {
-	
+
 	@Override
 	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
 		initListener(clazz, target);
@@ -46,26 +46,27 @@ public class EsClassLoaderFire implements RemoteClassLoaderFire {
 	public void onRemoveFire(Class<?> clazz) {
 	}
 
-	private void initListener(Class<?> clazz, Object target) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private void initListener(Class<?> clazz, Object target)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (WebContextListener.class.isAssignableFrom(clazz)) {
 			EsRestHighLevelOperatorFactory.initField(target, clazz);
 		}
 	}
 
-	private void initInterceptor(Class<?> clazz, Object target) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private void initInterceptor(Class<?> clazz, Object target)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
 			EsRestHighLevelOperatorFactory.initField(target, clazz);
 		}
 	}
 
-	private void initMapping(Class<?> clazz, Object target, byte[] classCodes) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private void initMapping(Class<?> clazz, Object target, byte[] classCodes)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (clazz.isInterface())
 			return;
 		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
 			EsRestHighLevelOperatorFactory.initField(target, clazz);
 		}
 	}
-
-	
 
 }

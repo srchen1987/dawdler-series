@@ -14,7 +14,7 @@ public class ComponentLifeCycleProvider {
 		ServiceLoader.load(ComponentLifeCycle.class).forEach(ComponentLifeCycleProvider::addLifeCycle);
 		OrderComparator.sort(componentLifeCycles);
 	}
-	
+
 	public static List<OrderData<ComponentLifeCycle>> getComponentlifecycles() {
 		return componentLifeCycles;
 	}
@@ -28,5 +28,5 @@ public class ComponentLifeCycleProvider {
 		}
 		componentLifeCycles.add(od);
 	}
-	
+
 }

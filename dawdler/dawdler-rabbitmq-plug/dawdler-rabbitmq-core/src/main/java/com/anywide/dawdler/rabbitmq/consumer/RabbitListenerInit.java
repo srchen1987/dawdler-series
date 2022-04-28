@@ -21,6 +21,7 @@ import com.rabbitmq.client.Envelope;
 public class RabbitListenerInit {
 	private static final Logger logger = LoggerFactory.getLogger(RabbitProviderFactory.class);
 	private static Map<String, Object> listenerCache = new ConcurrentHashMap<>();
+
 	public static void initRabbitListener(Object target, Class<?> clazz) {
 		Method[] methods = clazz.getDeclaredMethods();
 		for (Method method : methods) {

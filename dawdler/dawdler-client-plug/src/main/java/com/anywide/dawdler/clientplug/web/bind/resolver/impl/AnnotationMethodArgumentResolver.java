@@ -80,9 +80,9 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 				} else if (annotationClass == RequestBody.class) {
 					String uri = null;
 					String antPath = viewForward.getAntPath();
-					if(antPath != null) {
+					if (antPath != null) {
 						uri = antPath;
-					}else {
+					} else {
 						uri = viewForward.getUriShort();
 					}
 					ControlValidator controlValidator = WebValidateExecutor
@@ -178,7 +178,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 		ControlField controlField = controlValidator.getControlFields().get(field.getName());
 		if (controlField != null) {
 			String error = ValidateParser.validate(controlField.getFieldExplain(), value, controlField.getRules());
-			if(error != null)
+			if (error != null)
 				throw new ValidationException(field.getName(), error);
 		}
 

@@ -47,21 +47,24 @@ public class RabbitClassLoaderFire implements RemoteClassLoaderFire {
 	public void onRemoveFire(Class<?> clazz) {
 	}
 
-	private void initListener(Class<?> clazz, Object target) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private void initListener(Class<?> clazz, Object target)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (WebContextListener.class.isAssignableFrom(clazz)) {
 			RabbitProviderFactory.initField(target, clazz);
 			RabbitListenerInit.initRabbitListener(target, clazz);
 		}
 	}
 
-	private void initInterceptor(Class<?> clazz, Object target) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private void initInterceptor(Class<?> clazz, Object target)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
 			RabbitProviderFactory.initField(target, clazz);
 			RabbitListenerInit.initRabbitListener(target, clazz);
 		}
 	}
 
-	private void initMapping(Class<?> clazz, Object target, byte[] classCodes) throws IllegalArgumentException, IllegalAccessException, Exception {
+	private void initMapping(Class<?> clazz, Object target, byte[] classCodes)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (clazz.isInterface())
 			return;
 		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
@@ -69,7 +72,5 @@ public class RabbitClassLoaderFire implements RemoteClassLoaderFire {
 			RabbitListenerInit.initRabbitListener(target, clazz);
 		}
 	}
-
-	
 
 }

@@ -62,7 +62,7 @@ public class ClientClassLoader extends URLClassLoader {
 		}
 		acc = AccessController.getContext();
 		ucp = new URLClassPath(urls);
-		
+
 	}
 
 	public ClientClassLoader(URL[] urls) {

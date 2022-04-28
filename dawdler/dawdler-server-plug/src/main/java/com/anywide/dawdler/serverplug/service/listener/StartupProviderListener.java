@@ -42,7 +42,7 @@ public class StartupProviderListener implements DawdlerServiceListener {
 
 	@Override
 	public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
-		Element root =dawdlerContext.getServicesConfig().getRoot();
+		Element root = dawdlerContext.getServicesConfig().getRoot();
 		Element zkHost = (Element) root.selectSingleNode("zk-host");
 		if (zkHost != null) {
 			String username = zkHost.attributeValue("username");
@@ -61,8 +61,8 @@ public class StartupProviderListener implements DawdlerServiceListener {
 
 			dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
 			hashedWheelTimer = new HashedWheelTimer();
-			timeout = hashedWheelTimer
-					.newTimeout(new ProviderTimeoutTask(path, value), checkTime, TimeUnit.MILLISECONDS);
+			timeout = hashedWheelTimer.newTimeout(new ProviderTimeoutTask(path, value), checkTime,
+					TimeUnit.MILLISECONDS);
 
 		} else {
 			logger.error("not find discoveryServer config!");
@@ -75,9 +75,9 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
 		}
-		if(timeout != null)
+		if (timeout != null)
 			timeout.cancel();
-		if(hashedWheelTimer != null) {
+		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
 		}
 		JVMTimeProvider.stop();

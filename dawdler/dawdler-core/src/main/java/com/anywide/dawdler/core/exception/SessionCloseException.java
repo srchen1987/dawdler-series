@@ -25,7 +25,7 @@ package com.anywide.dawdler.core.exception;
  * @email suxuan696@gmail.com
  */
 public class SessionCloseException extends Exception {
-	
+
 	private static final long serialVersionUID = -2787083552593649797L;
 
 	public SessionCloseException(String msg) {

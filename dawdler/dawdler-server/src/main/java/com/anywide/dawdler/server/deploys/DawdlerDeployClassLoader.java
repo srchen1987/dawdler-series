@@ -34,9 +34,9 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
 
+import sun.misc.PerfCounter;
 import sun.misc.Resource;
 import sun.misc.URLClassPath;
-import sun.misc.PerfCounter;
 
 /**
  * @author jackson.song
@@ -198,10 +198,10 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			throw new ClassNotFoundException(name);
 		}
 	}
-	
+
 	public Class<?> findClassForDawdler(final String name, boolean resolve) throws ClassNotFoundException {
 		Class<?> clazz = findClassForDawdler(name);
-		if(resolve) {
+		if (resolve) {
 			resolveClass(clazz);
 		}
 		return clazz;

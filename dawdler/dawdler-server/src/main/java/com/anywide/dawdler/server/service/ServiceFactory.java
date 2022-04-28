@@ -47,7 +47,7 @@ public class ServiceFactory {
 	public static <T> T getService(final Class<T> delegate, ServiceExecutor serviceExecutor,
 			DawdlerContext dawdlerContext) {
 		String serviceName = getServiceName(delegate);
-		if (serviceName != null) { 
+		if (serviceName != null) {
 			ServicesBean servicesBean = dawdlerContext.getServicesBean(serviceName);
 			Object proxy = proxyObjects.get(delegate);
 			if (proxy == null) {

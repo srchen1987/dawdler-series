@@ -145,7 +145,7 @@ public class DataProcessor implements Runnable {
 		CompressionWrapper compressionWrapper = ThresholdCompressionStrategy.staticSingle().compress(data);
 		data = compressionWrapper.getBuffer();
 		synchronized (socketSession) {
-			if(socketSession.isClose()) {
+			if (socketSession.isClose()) {
 				return;
 			}
 			DawdlerByteBuffer dawdlerByteBuffer = socketSession.getWriteBuffer();
