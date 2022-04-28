@@ -47,9 +47,8 @@ public class ServiceFactory {
 	public static <T> T getService(final Class<T> delegate, ServiceExecutor serviceExecutor,
 			DawdlerContext dawdlerContext) {
 		String serviceName = getServiceName(delegate);
-		if (serviceName != null) {
-			ServicesBean servicesBean = new ServicesBean(serviceName, dawdlerContext.getService(serviceName),
-					dawdlerContext.getDawdlerServiceCreateProvider());
+		if (serviceName != null) { 
+			ServicesBean servicesBean = dawdlerContext.getServicesBean(serviceName);
 			Object proxy = proxyObjects.get(delegate);
 			if (proxy == null) {
 				proxy = createCglibDynamicProxy(delegate, servicesBean, serviceExecutor);

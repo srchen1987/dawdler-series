@@ -30,7 +30,7 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @email suxuan696@gmail.com
  */
 public interface Service {
-	void start() throws Exception;
+	void start() throws Throwable;
 
 	void stop();
 

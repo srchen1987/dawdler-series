@@ -49,9 +49,9 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 			Repository resource = field.getAnnotation(Repository.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
-				field.setAccessible(true);
 				try {
 					if (resource != null && SuperDAO.class.isAssignableFrom(serviceClass)) {
+						field.setAccessible(true);
 						field.set(service, DAOFactory.getInstance().getDAO(serviceClass));
 					}
 				} catch (Exception e) {
