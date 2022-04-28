@@ -21,18 +21,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+*
+* @Title ListenerConfig.java
+* @Description 监听器注解,用于DawdlerServiceListener
+* @author jackson.song
+* @date 2015年6月19日
+* @version V1.0
+* @email suxuan696@gmail.com
+*/
+
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.FIELD })
-/**
- *
- * @Title ListenerConfig.java
- * @Description 监听器注解,用于DawdlerServiceListener
- * @author jackson.song
- * @date 2015年6月19日
- * @version V1.0
- * @email suxuan696@gmail.com
- */
-
 public @interface ListenerConfig {
 	long delayMsec() default 0L;// delayTime 毫秒级
 

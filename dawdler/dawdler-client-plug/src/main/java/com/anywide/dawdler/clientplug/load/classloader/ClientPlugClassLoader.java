@@ -34,6 +34,10 @@ import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.clientplug.annotation.Controller;
+import com.anywide.dawdler.clientplug.web.TransactionController;
+import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
+import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.IOUtil;
 import com.anywide.dawdler.util.XmlObject;
@@ -85,8 +89,13 @@ public class ClientPlugClassLoader {
 			}
 			Class<?> clazz = defineClass(className, classBytes);
 			remoteClass.put(host.trim() + "-" + className, clazz);
-			for (OrderData<RemoteClassLoaderFire> rf : fireList) {
-				rf.getData().onLoadFire(clazz, classBytes);
+			if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)
+					|| WebContextListener.class.isAssignableFrom(clazz)
+					|| HandlerInterceptor.class.isAssignableFrom(clazz)) {
+				Object target = clazz.getConstructor().newInstance();
+				for (OrderData<RemoteClassLoaderFire> rf : fireList) {
+					rf.getData().onLoadFire(clazz, target, classBytes);
+				}
 			}
 		} catch (Exception e) {
 			logger.error("", e);

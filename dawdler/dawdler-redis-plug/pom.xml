@@ -7,6 +7,7 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.0.2-RELEASES</version>
 	</parent>
+	<packaging>pom</packaging>
 	<artifactId>dawdler-redis-plug</artifactId>
 	<dependencies>
 		<dependency>
@@ -15,7 +16,16 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
 	</dependencies>
+	<modules>
+		<module>dawdler-redis-core</module>
+		<module>dawdler-server-plug-redis</module>
+		<module>dawdler-client-plug-redis</module>
+	</modules>
 </project>
