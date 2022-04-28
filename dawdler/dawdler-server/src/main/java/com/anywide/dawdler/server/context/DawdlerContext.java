@@ -53,7 +53,7 @@ public class DawdlerContext {
 	private AntPathMatcher antPathMatcher;
 	
 	public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
-			String host, int port, ServicesManager servicesManager) {
+			String host, int port, ServicesManager servicesManager, AntPathMatcher antPathMatcher) {
 		this.classLoader = classLoader;
 		this.deployPath = deployPath + File.separator;
 		this.deployName = deployName;
@@ -61,6 +61,7 @@ public class DawdlerContext {
 		this.host = host;
 		this.port = port;
 		this.servicesManager = servicesManager;
+		this.antPathMatcher = antPathMatcher;
 	}
 
 	public static void remove() {
@@ -102,17 +103,21 @@ public class DawdlerContext {
 		return port;
 	}
 
-	public Object getService(String name) {
-		ServicesBean sb = servicesManager.getService(name);
+	public Object getService(String name) throws Throwable {
+		ServicesBean sb = getServicesBean(name);
 		return sb == null ? null : sb.getService();
 	}
+	
+	public ServicesBean getServicesBean(String name) {
+		return servicesManager.getService(name);
+	}
 
-	public <T> T getService(Class<T> type) {
+	public <T> T getService(Class<T> type) throws Throwable {
 		String name = ServiceFactory.getServiceName(type);
 		return (T) getService(name);
 	}
 
-	public <T> T getServiceProxy(Class<T> type) {
+	public <T> T getServiceProxy(Class<T> type) throws Throwable {
 		Object obj = getAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX);
 		if (obj != null)
 			return ServiceFactory.getService(type, (ServiceExecutor) obj, this);
@@ -143,10 +148,6 @@ public class DawdlerContext {
 		return servicesConfig;
 	}
 	
-	public void setAntPathMatcher(AntPathMatcher antPathMatcher) {
-		this.antPathMatcher = antPathMatcher;
-	}
-
 	public AntPathMatcher getAntPathMatcher() {
 		return antPathMatcher;
 	}

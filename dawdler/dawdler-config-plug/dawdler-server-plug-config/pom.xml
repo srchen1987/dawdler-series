@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>dawdler</groupId>
+		<artifactId>dawdler-config</artifactId>
+		<version>0.0.2-RELEASES</version>
+	</parent>
+	<artifactId>dawdler-server-plug-config</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-config-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-server</artifactId>
+		</dependency>
+	</dependencies>
+</project>

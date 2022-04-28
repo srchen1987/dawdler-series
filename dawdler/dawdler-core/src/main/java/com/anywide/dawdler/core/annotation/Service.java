@@ -21,17 +21,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+*
+* @Title Service.java
+* @Description 注入服务的注解
+* @author jackson.song
+* @date 2015年4月26日
+* @version V1.0
+* @email suxuan696@gmail.com
+*/
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
-/**
- *
- * @Title Service.java
- * @Description 注入服务的注解
- * @author jackson.song
- * @date 2015年4月26日
- * @version V1.0
- * @email suxuan696@gmail.com
- */
 public @interface Service {
 	boolean remote() default false;// 在服务端有效,标识是否是一个远程服务,一般不建议在服务端再次调用另一个服务,默认为否,调用本服务中的服务（适用事务传播）.
 }

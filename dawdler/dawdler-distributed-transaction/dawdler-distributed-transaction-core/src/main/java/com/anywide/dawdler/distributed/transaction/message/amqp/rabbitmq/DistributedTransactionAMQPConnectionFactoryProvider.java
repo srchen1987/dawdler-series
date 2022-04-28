@@ -16,8 +16,6 @@
  */
 package com.anywide.dawdler.distributed.transaction.message.amqp.rabbitmq;
 
-import java.io.IOException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +37,7 @@ public class DistributedTransactionAMQPConnectionFactoryProvider {
 	private DistributedTransactionAMQPConnectionFactoryProvider() {
 		try {
 			connectionFactory = AMQPConnectionFactory.getInstance("distributed-transaction-rabbitmq");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error("", e);
 		}
 	}

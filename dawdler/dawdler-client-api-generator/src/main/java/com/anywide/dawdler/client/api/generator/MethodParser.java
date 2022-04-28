@@ -252,24 +252,32 @@ public class MethodParser {
 				FieldParser.parserFields(returnType, classStructs, definitionsMap, javaTypes);
 				elements.put("responses", getResponse(returnType, definitionsMap));
 			}
-			for (String httpMethod : httpMethods) {
-				elements.put("operationId", method.getName() + "Using" + httpMethod.toUpperCase());
-				httpMethodMap.put(httpMethod, elements);
-			}
 			if (requsetMappingArray != null) {
 				for (String mapping : requsetMappingArray) {
 					if (requsetClassMappingArray != null) {
+						int i=0;
 						for (String classMapping : requsetClassMappingArray) {
-							pathMap.put(classMapping + mapping, httpMethodMap);
+							pathMap.put(classMapping + mapping, createHttpMethod(httpMethods, elements, method, i++));
 						}
 					} else {
-						pathMap.put(mapping, httpMethodMap);
+						pathMap.put(mapping, createHttpMethod(httpMethods, elements, method, null));
 					}
 
 				}
 			}
 
 		}
+	}
+	
+	private static Map<String, Object> createHttpMethod(List<String> httpMethods, Map<String, Object> elements, JavaMethod method,Integer index) {
+		Map<String, Object> httpMethodMap = new LinkedHashMap<>();
+		for (String httpMethod : httpMethods) {
+			Map<String, Object> elementsCopy = new LinkedHashMap<>();
+			elementsCopy.putAll(elements);
+			elementsCopy.put("operationId", method.getName() + "Using" + httpMethod.toUpperCase()+(index == null ? "":"_"+index));
+			httpMethodMap.put(httpMethod, elementsCopy);
+		}
+		return httpMethodMap;
 	}
 
 	public static void parseType(JavaType type, Map<String, ClassStruct> classStructs,

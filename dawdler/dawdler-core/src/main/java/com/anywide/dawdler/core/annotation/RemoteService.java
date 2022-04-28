@@ -21,17 +21,17 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+*
+* @Title RemoteService.java
+* @Description 标注一个类是远程提供服务的注解
+* @author jackson.song
+* @date 2015年4月26日
+* @version V1.0
+* @email suxuan696@gmail.com
+*/
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
-/**
- *
- * @Title RemoteService.java
- * @Description 标注一个类是远程提供服务的注解
- * @author jackson.song
- * @date 2015年4月26日
- * @version V1.0
- * @email suxuan696@gmail.com
- */
 public @interface RemoteService {
 	String value() default "";// 在调用端有效,指定服务端部署的服务名.
 
