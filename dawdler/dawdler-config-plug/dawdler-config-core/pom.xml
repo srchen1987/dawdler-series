@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>dawdler</groupId>
-		<artifactId>dawdler-config</artifactId>
+		<artifactId>dawdler-config-plug</artifactId>
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-config-core</artifactId>

@@ -28,10 +28,12 @@ public class ValidationException extends RuntimeException {
 	private static final long serialVersionUID = 2059492442768881097L;
 	private String fieldName;
 	private String error;
+
 	public ValidationException(String fieldName, String error) {
 		this.fieldName = fieldName;
 		this.error = error;
 	}
+
 	public String getFieldName() {
 		return fieldName;
 	}

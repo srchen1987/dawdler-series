@@ -114,11 +114,11 @@ public final class JedisPoolFactory {
 		}
 		return pools.get(fileName);
 	}
-	
+
 	public static void shutdownAll() {
-		if(stopped.compareAndSet(false, true)) {
-			pools.forEach((k,v)->{
-				if(!v.isClosed()) {
+		if (stopped.compareAndSet(false, true)) {
+			pools.forEach((k, v) -> {
+				if (!v.isClosed()) {
 					v.close();
 				}
 			});

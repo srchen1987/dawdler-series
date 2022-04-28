@@ -70,8 +70,6 @@ public class OpenApiConfig {
 		this.description = description;
 	}
 
-	 
-
 	public ContactData getContact() {
 		return contact;
 	}

@@ -49,7 +49,7 @@ public class JsonProcessUtil {
 			return null;
 		}
 	}
-	
+
 	public static byte[] beanToJsonByte(Object obj) {
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {

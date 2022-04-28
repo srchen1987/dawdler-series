@@ -36,7 +36,7 @@ import com.anywide.dawdler.core.order.OrderData;
  * @email suxuan696@gmail.com
  */
 @Order(1)
-public class ClientConfigInit implements ComponentLifeCycle{
+public class ClientConfigInit implements ComponentLifeCycle {
 
 	private ConfigInit configInit;
 
@@ -56,10 +56,10 @@ public class ClientConfigInit implements ComponentLifeCycle{
 	}
 
 	public void destroy() {
-		if(configInit != null) {
+		if (configInit != null) {
 			configInit.destroy();
 		}
-		
+
 	}
 
 }

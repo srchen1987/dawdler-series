@@ -90,12 +90,13 @@ public class ConsulConfigClient implements ConfigClient {
 				client = new ConsulClient(host, port);
 			}
 			if (watchKeys != null) {
-				executor = Executors.newFixedThreadPool(watchKeys.size(), new DefaultThreadFactory("consul-watcher", true));
+				executor = Executors.newFixedThreadPool(watchKeys.size(),
+						new DefaultThreadFactory("consul-watcher", true));
 			}
 		} catch (Throwable e) {
 			logger.error("", e);
 		}
-		
+
 	}
 
 	@Override
@@ -110,7 +111,7 @@ public class ConsulConfigClient implements ConfigClient {
 							Response<List<String>> responseKeys = client.getKVKeysOnly(watchKey, separator, token,
 									new QueryParams(waitTime, index));
 							if (responseKeys == null) {
-								Thread.sleep(waitTime*1000);
+								Thread.sleep(waitTime * 1000);
 								logger.error("not found watchKey {} !", watchKey);
 								continue;
 							}
@@ -143,7 +144,7 @@ public class ConsulConfigClient implements ConfigClient {
 			} catch (InterruptedException e) {
 			}
 		}
-			
+
 	}
 
 	@Override

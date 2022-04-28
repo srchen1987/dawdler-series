@@ -153,13 +153,13 @@ public class ServiceBase implements Service {
 			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
 
 		Element root = dawdlerContext.getServicesConfig().getRoot();
-		
+
 		List<Node> preLoadClasses = root.selectNodes("scanner/loads/pre-load");
-		
+
 		for (Node node : preLoadClasses) {
 			classLoader.findClassForDawdler(node.getText().trim());
 		}
-		
+
 		List<Node> packagesInClasses = root.selectNodes("scanner/packages-in-classes/package-path");
 		for (Node node : packagesInClasses) {
 			deployScanner.splitAndAddPathInClasses(node.getText().trim());
@@ -218,7 +218,7 @@ public class ServiceBase implements Service {
 		}
 		dawdlerContext.setAttribute(FILTER_PROVIDER, filterProvider);
 		dawdlerContext.setAttribute(DAWDLER_LISTENER_PROVIDER, dawdlerListenerProvider);
-		
+
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
@@ -228,7 +228,7 @@ public class ServiceBase implements Service {
 				logger.error("", e);
 			}
 		}
-		
+
 		dawdlerContext.removeAttribute(FILTER_PROVIDER);
 		dawdlerContext.removeAttribute(DAWDLER_LISTENER_PROVIDER);
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
@@ -285,7 +285,7 @@ public class ServiceBase implements Service {
 				}
 			}
 		}
-		
+
 		servicesManager.clear();
 
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
