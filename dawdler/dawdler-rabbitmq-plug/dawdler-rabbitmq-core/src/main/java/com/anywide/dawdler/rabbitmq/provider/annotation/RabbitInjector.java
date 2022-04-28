@@ -22,14 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
-*
-* @Title RabbitInjector.java
-* @Description 标注一个成员变量 注入RabbitProvider
-* @author jackson.song
-* @date 2022年4月15日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title RabbitInjector.java
+ * @Description 标注一个成员变量 注入RabbitProvider
+ * @author jackson.song
+ * @date 2022年4月15日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface RabbitInjector {

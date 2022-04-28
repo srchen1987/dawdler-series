@@ -16,25 +16,11 @@
  */
 package com.anywide.dawdler.rabbitmq.provider;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
-import com.anywide.dawdler.rabbitmq.consumer.Message;
-import com.anywide.dawdler.rabbitmq.consumer.annotation.RabbitListener;
 import com.anywide.dawdler.rabbitmq.provider.annotation.RabbitInjector;
-import com.rabbitmq.client.AMQP;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.DefaultConsumer;
-import com.rabbitmq.client.Envelope;
 
 /**
  *
@@ -47,6 +33,7 @@ import com.rabbitmq.client.Envelope;
  */
 public class RabbitProviderFactory {
 	private static Map<String, RabbitProvider> providers = new ConcurrentHashMap<>();
+
 	public static RabbitProvider getRabbitProvider(String fileName) throws Exception {
 		RabbitProvider provider = providers.get(fileName);
 		if (provider != null) {
@@ -60,21 +47,20 @@ public class RabbitProviderFactory {
 		}
 		return providers.get(fileName);
 	}
-	
-	public static void initField(Object target, Class<?> clazz) throws IllegalArgumentException, IllegalAccessException, Exception {
+
+	public static void initField(Object target, Class<?> clazz)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			RabbitInjector rabbitInjector = field.getAnnotation(RabbitInjector.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
-					if (rabbitInjector != null && RabbitProvider.class.isAssignableFrom(serviceClass)) {
-						field.setAccessible(true);
-						field.set(target, RabbitProviderFactory.getRabbitProvider(rabbitInjector.value()));
-					}
+				if (rabbitInjector != null && RabbitProvider.class.isAssignableFrom(serviceClass)) {
+					field.setAccessible(true);
+					field.set(target, RabbitProviderFactory.getRabbitProvider(rabbitInjector.value()));
+				}
 			}
 		}
 	}
-
-	
 
 }

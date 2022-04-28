@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.util;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.IdentityHashMap;
 import java.util.Map;
@@ -177,7 +176,7 @@ public class ClassUtil {
 		}
 		return (T) result;
 	}
-	
+
 	public static <T extends Object> T convert(Object value, Class<T> type) {
 		if (value == null)
 			return null;
@@ -206,7 +205,7 @@ public class ClassUtil {
 		}
 		return (T) value;
 	}
-	
+
 	public static String[] convertSimpleArrayToStringArray(Object value) {
 		if (value == null || !value.getClass().isArray())
 			return null;
@@ -333,6 +332,6 @@ public class ClassUtil {
 			return result;
 		}
 		return result;
-	}	
+	}
 
 }

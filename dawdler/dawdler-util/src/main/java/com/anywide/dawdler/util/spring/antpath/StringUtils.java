@@ -363,8 +363,6 @@ public abstract class StringUtils {
 		}
 	}
 
-
-
 	public static TimeZone parseTimeZoneString(String timeZoneString) {
 		TimeZone timeZone = TimeZone.getTimeZone(timeZoneString);
 		if ("GMT".equals(timeZone.getID()) && !timeZoneString.startsWith("GMT")) {

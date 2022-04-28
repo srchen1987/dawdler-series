@@ -73,7 +73,7 @@ public class ClientPlugClassLoader {
 		return remoteClass.get(key);
 	}
 
-	public void load(String host, String className, byte[] classBytes) {
+	public void load(String host, String className, byte[] classBytes) throws Throwable {
 		if (logger.isDebugEnabled()) {
 			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
 		}

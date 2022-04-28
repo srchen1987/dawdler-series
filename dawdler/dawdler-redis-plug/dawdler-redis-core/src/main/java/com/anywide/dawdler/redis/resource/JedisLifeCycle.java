@@ -27,7 +27,7 @@ import com.anywide.dawdler.redis.JedisPoolFactory;
  * @date 2022年4月17日
  * @email suxuan696@gmail.com
  */
-public class JedisLifeCycle implements ComponentLifeCycle{
+public class JedisLifeCycle implements ComponentLifeCycle {
 
 	@Override
 	public void init() {

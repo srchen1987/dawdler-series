@@ -88,7 +88,8 @@ public class RabbitProvider {
 	 * @Title: publishIfFaildRetry
 	 * @author jackson.song
 	 * @date 2022年4月15日
-	 * @Description 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况) (注意要在配置文件中开启confirmSelect=true)
+	 * @Description 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况)
+	 *              (注意要在配置文件中开启confirmSelect=true)
 	 * @param exchange
 	 * @param routingKey
 	 * @param props

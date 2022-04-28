@@ -22,14 +22,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
-*
-* @Title Service.java
-* @Description 注入服务的注解
-* @author jackson.song
-* @date 2015年4月26日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title Service.java
+ * @Description 注入服务的注解
+ * @author jackson.song
+ * @date 2015年4月26日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface Service {

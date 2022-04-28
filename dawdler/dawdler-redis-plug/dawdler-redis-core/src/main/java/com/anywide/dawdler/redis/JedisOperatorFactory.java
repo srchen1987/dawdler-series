@@ -59,6 +59,7 @@ public class JedisOperatorFactory {
 			}
 		}
 	}
+
 	private static Class<?>[] jedisOperatorClass = new Class[] { JedisOperator.class };
 
 	public static JedisOperator getJedisOperator(String fileName) throws Exception {
@@ -84,10 +85,10 @@ public class JedisOperatorFactory {
 			JedisInjector jedisInjector = field.getAnnotation(JedisInjector.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
-					if (jedisInjector != null && JedisOperator.class.isAssignableFrom(serviceClass)) {
-						field.setAccessible(true);
-						field.set(target, JedisOperatorFactory.getJedisOperator(jedisInjector.value()));
-					}
+				if (jedisInjector != null && JedisOperator.class.isAssignableFrom(serviceClass)) {
+					field.setAccessible(true);
+					field.set(target, JedisOperatorFactory.getJedisOperator(jedisInjector.value()));
+				}
 			}
 		}
 	}

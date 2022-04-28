@@ -53,9 +53,9 @@ public class SerializeDecider {
 	public static void addSerializer(Serializer serializer) {
 		register(serializer.key(), serializer);
 	}
-	
+
 	public static void destroyed() {
-		serializers.forEach((k,v)->{
+		serializers.forEach((k, v) -> {
 			v.destroyed();
 		});
 	}

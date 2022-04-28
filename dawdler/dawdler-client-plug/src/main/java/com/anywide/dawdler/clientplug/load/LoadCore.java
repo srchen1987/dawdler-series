@@ -79,7 +79,7 @@ public class LoadCore implements Runnable {
 		return CURRENT_PATH + channelGroupId + "-" + host + PREFIX;
 	}
 
-	public void toCheck() throws IOException {
+	public void toCheck() throws Throwable {
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
 		tr.setServiceName("com.anywide.dawdler.serverplug.service.CheckUpdate");
 		tr.setMethod("check");
@@ -122,7 +122,7 @@ public class LoadCore implements Runnable {
 		}
 	}
 
-	public void initWebComponent() {
+	public void initWebComponent() throws Throwable {
 		try {
 			String filepath = getLogFilePath();
 			File xmlFile = new File(filepath);
@@ -148,12 +148,12 @@ public class LoadCore implements Runnable {
 		return checkName.replace(File.separator, ".").substring(0, checkName.lastIndexOf("."));
 	}
 
-	private void initClassMap(XmlObject xmlo) throws IOException {
+	private void initClassMap(XmlObject xmlo) throws Throwable {
 		willLoad(xmlo, "api");
 		willLoad(xmlo, "component");
 	}
 
-	private void willLoad(XmlObject xmlo, String type) throws IOException {
+	private void willLoad(XmlObject xmlo, String type) throws Throwable {
 		List<Node> beanList = xmlo.selectNodes("/hosts/host[@type='" + type + "']/item");
 		String[] loadBeans = new String[beanList.size()];
 		int i = 0;
@@ -165,7 +165,7 @@ public class LoadCore implements Runnable {
 		loadClass(loadBeans, type.equals(TYPE_API));
 	}
 
-	private boolean willCheckAndLoad(XmlObject local, XmlObject remote, String type) throws IOException {
+	private boolean willCheckAndLoad(XmlObject local, XmlObject remote, String type) throws Throwable {
 		boolean isApi = type.equals(TYPE_API);
 		boolean remark = false;
 		List<String> allClass = new ArrayList<String>();
@@ -242,7 +242,8 @@ public class LoadCore implements Runnable {
 			}
 			try {
 				toCheck();
-			} catch (Exception e) {
+			} catch (Throwable e) {
+				logger.error("", e);
 			}
 		}
 
@@ -252,11 +253,11 @@ public class LoadCore implements Runnable {
 		this.start = false;
 	}
 
-	private boolean check(XmlObject local, XmlObject remote) throws IOException {
+	private boolean check(XmlObject local, XmlObject remote) throws Throwable {
 		return willCheckAndLoad(local, remote, TYPE_API) | willCheckAndLoad(local, remote, TYPE_COMPONENT);
 	}
 
-	private void loadClass(String[] classNames, boolean isApi) throws IOException {
+	private void loadClass(String[] classNames, boolean isApi) throws Throwable {
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
 		tr.setServiceName("com.anywide.dawdler.serverplug.service.DownloadFile");
 		tr.setMethod("download");
