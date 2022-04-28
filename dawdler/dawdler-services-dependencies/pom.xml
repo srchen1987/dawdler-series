@@ -35,7 +35,7 @@
 
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-config-serverside</artifactId>
+			<artifactId>dawdler-server-plug-config</artifactId>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>

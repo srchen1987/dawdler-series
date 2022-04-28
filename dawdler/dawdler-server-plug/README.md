@@ -68,7 +68,7 @@ services-config.xml中的扫描器
 </scanner>
 ```
 
-以上两个扫描器的区别在于in-jar中扫描的是部署服务的lib包下的jar中的java包，而in-classes下扫描的是部署服务的classes下的java包。
+以上两个扫描器的区别在于in-jar中扫描的是部署服务的lib包下的jar中的java包,而in-classes下扫描的是部署服务的classes下的java包.
 
 另外使用in-jar 需要配合 [server-conf.xml中的扫描器使用](../dawdler-server/README.md####21server-conf.xml说明)，需要配置需要扫描的jar，一般这些jar都为
 dawdler系统需要扫描配置相关的组件,不建议将具体实现服务打jar包放入到lib包中,直接在项目工程中即可(classes下).

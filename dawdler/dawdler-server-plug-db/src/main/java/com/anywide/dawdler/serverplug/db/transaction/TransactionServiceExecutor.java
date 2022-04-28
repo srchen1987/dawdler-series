@@ -51,12 +51,15 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 
 	@Override
 	public void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean) {
-		Object object = servicesBean.getService();
-		String methodName = requestBean.getMethodName();
-		long index = Math.abs(requestBean.getSeq());
 		MethodAccess methodAccess;
 		int methodIndex;
+		String methodName;
+		Object object;
+		long index;
 		try {
+			object = servicesBean.getService();
+			methodName = requestBean.getMethodName();
+			index = Math.abs(requestBean.getSeq());
 			methodAccess = ReflectionUtil.getMethodAccess(object);
 		} catch (Throwable e) {
 			logger.error("", e);
@@ -84,8 +87,9 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 				synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
 				if (dm != null) {
 					MappingDecision mappingDecision = dm.getMappingDecision(object.getClass().getPackage().getName());
-					if(mappingDecision == null) {
-						throw new TransactionRequiredException(object.getClass().getPackage().getName()+" transaction needs to be set.");
+					if (mappingDecision == null) {
+						throw new TransactionRequiredException(
+								object.getClass().getPackage().getName() + " transaction needs to be set.");
 					}
 					readStatus = new JdbcReadConnectionStatus(dbt);
 					if (dbt.readConfig() == READ_CONFIG.idem) {
@@ -109,8 +113,6 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 								synReadObj.getReadConnectionHolder().requested();
 							}
 							readStatus.setCurrentConn(synReadObj.getReadConnectionHolder());
-//							synReadObj.setMappingDecision(mappingDecision);
-//							synReadObj.setDBTransaction(dbt);
 						}
 					} else {
 						if (synReadObj == null) {
@@ -197,7 +199,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 				if (readConnectionHolder != null) {
 					synReadObj.setReadConnectionHolder(readConnectionHolder);
 				}
-				
+
 			}
 		}
 	}

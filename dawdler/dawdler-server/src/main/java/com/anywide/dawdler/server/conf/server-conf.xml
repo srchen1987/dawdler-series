@@ -5,7 +5,7 @@
 			<jar-file>dawdler-server-plug-0.0.2-RELEASES.jar</jar-file>
 			<jar-file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jar-file>
 			<jar-file>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-config-serverside-0.0.2-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-config-0.0.2-RELEASES.jar</jar-file>
 		</jar-files>
 		<packages-in-jar>
 			<package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
