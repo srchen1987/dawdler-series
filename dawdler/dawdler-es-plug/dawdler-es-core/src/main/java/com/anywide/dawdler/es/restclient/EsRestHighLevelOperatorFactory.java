@@ -90,19 +90,19 @@ public class EsRestHighLevelOperatorFactory {
 		}
 		return operator;
 	}
-	
-	public static void initField(Object target, Class<?> clazz) throws IllegalArgumentException, IllegalAccessException, Exception {
+
+	public static void initField(Object target, Class<?> clazz)
+			throws IllegalArgumentException, IllegalAccessException, Exception {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			EsRestHighLevelInjector esRestHighLevelInjector = field.getAnnotation(EsRestHighLevelInjector.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
-					if (esRestHighLevelInjector != null
-							&& EsRestHighLevelOperator.class.isAssignableFrom(serviceClass)) {
-						field.setAccessible(true);
-						field.set(target, EsRestHighLevelOperatorFactory
-								.getEsRestHighLevelOperator(esRestHighLevelInjector.value()));
-					}
+				if (esRestHighLevelInjector != null && EsRestHighLevelOperator.class.isAssignableFrom(serviceClass)) {
+					field.setAccessible(true);
+					field.set(target,
+							EsRestHighLevelOperatorFactory.getEsRestHighLevelOperator(esRestHighLevelInjector.value()));
+				}
 			}
 		}
 	}

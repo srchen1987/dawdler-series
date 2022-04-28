@@ -38,6 +38,4 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 		EsRestHighLevelOperatorFactory.initField(service, serviceType);
 	}
 
-
-
 }

@@ -27,14 +27,15 @@ package com.anywide.dawdler.core.exception;
 public class IllegalConnectionException extends RuntimeException {
 
 	private static final long serialVersionUID = -2638144867099257710L;
-	
+
 	public IllegalConnectionException(String error, String ipAddress, int dataSize) {
 		super(error);
 		this.ipAddress = ipAddress;
 		this.dataSize = dataSize;
 	}
+
 	private String ipAddress;
-	
+
 	private int dataSize;
 
 	public String getIpAddress() {
@@ -45,5 +46,4 @@ public class IllegalConnectionException extends RuntimeException {
 		return dataSize;
 	}
 
-	
 }

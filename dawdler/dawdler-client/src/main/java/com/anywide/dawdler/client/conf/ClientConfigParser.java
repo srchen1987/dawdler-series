@@ -83,7 +83,7 @@ public class ClientConfigParser {
 					String user = getElementAttribute(serverChannelGroupEle, "user");
 					String password = getElementAttribute(serverChannelGroupEle, "password");
 					String host = getElementAttribute(serverChannelGroupEle, "host");
-					
+
 					serverChannelGroup.setGroupId(groupId);
 					serverChannelGroup.setConnectionNum(connectionNum);
 					serverChannelGroup.setSessionNum(sessionNum);

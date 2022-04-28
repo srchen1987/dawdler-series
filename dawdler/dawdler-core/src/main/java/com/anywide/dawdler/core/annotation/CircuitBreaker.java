@@ -21,15 +21,16 @@ import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
 /**
-*
-* @Title CircuitBreaker.java
-* @Description 熔断器接口注解
-* @author jackson.song
-* @date 2018年3月10日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title CircuitBreaker.java
+ * @Description 熔断器接口注解
+ * @author jackson.song
+ * @date 2018年3月10日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 @Inherited
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.METHOD })

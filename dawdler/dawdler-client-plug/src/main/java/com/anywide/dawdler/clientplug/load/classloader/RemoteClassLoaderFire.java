@@ -25,7 +25,7 @@ package com.anywide.dawdler.clientplug.load.classloader;
  * @email suxuan696@gmail.com
  */
 public interface RemoteClassLoaderFire {
-	void onLoadFire(Class<?> clazz, Object target, byte[] classCodes)throws Throwable;
+	void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable;
 
 	void onRemoveFire(Class<?> clazz);
 }

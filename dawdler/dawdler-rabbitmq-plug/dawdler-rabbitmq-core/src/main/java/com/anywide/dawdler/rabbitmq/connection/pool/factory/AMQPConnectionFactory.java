@@ -167,7 +167,6 @@ public class AMQPConnectionFactory {
 		}
 	}
 
-
 	public int getChannelSize() {
 		return channelSize;
 	}

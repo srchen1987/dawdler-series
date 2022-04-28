@@ -43,6 +43,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 public class ConfigInit {
 	private static Logger logger = LoggerFactory.getLogger(ConfigInit.class);
 	List<ConfigClient> configClients = null;
+
 	public void init() {
 		initConfigClients();
 		String activeProfile = System.getProperty("dawdler.profiles.active");

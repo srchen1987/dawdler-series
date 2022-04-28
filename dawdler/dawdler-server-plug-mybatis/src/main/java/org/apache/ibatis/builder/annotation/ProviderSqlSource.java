@@ -100,8 +100,8 @@ public class ProviderSqlSource implements SqlSource {
 			if (candidateProviderMethodName.length() == 0
 					&& ProviderMethodResolver.class.isAssignableFrom(this.providerType)) {
 				candidateProviderMethod = ((ProviderMethodResolver) this.providerType.getDeclaredConstructor()
-						.newInstance()).resolveMethod(
-								new ProviderContext(mapperType, mapperMethod, configuration.getDatabaseId()));
+						.newInstance())
+						.resolveMethod(new ProviderContext(mapperType, mapperMethod, configuration.getDatabaseId()));
 			}
 			if (candidateProviderMethod == null) {
 				candidateProviderMethodName = candidateProviderMethodName.length() == 0 ? "provideSql"

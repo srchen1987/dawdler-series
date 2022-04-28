@@ -61,12 +61,12 @@ public class ServicesManager {
 	}
 
 	public void fireCreate(DawdlerContext dawdlerContext) throws Throwable {
-		for(Entry<String, ServicesBean> entry : services.entrySet()) {
+		for (Entry<String, ServicesBean> entry : services.entrySet()) {
 			ServicesBean servicesBean = entry.getValue();
-			if(servicesBean.isSingle()) {
+			if (servicesBean.isSingle()) {
 				servicesBean.fireCreate(dawdlerContext);
 			}
-			
+
 		}
 	}
 

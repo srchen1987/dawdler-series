@@ -36,7 +36,7 @@ import com.anywide.dawdler.redis.JedisOperatorFactory;
 public class JedisClassLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable{
+	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
 		initListener(clazz, target);
 		initInterceptor(clazz, target);
 		initMapping(clazz, target, classCodes);
@@ -65,5 +65,5 @@ public class JedisClassLoaderFire implements RemoteClassLoaderFire {
 			JedisOperatorFactory.initField(target, clazz);
 		}
 	}
-	 
+
 }

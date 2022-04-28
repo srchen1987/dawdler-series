@@ -51,7 +51,7 @@ public class DawdlerContext {
 	private final Map<Object, Object> attributes = new HashMap<>();
 	private XmlObject servicesConfig;
 	private AntPathMatcher antPathMatcher;
-	
+
 	public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
 			String host, int port, ServicesManager servicesManager, AntPathMatcher antPathMatcher) {
 		this.classLoader = classLoader;
@@ -107,7 +107,7 @@ public class DawdlerContext {
 		ServicesBean sb = getServicesBean(name);
 		return sb == null ? null : sb.getService();
 	}
-	
+
 	public ServicesBean getServicesBean(String name) {
 		return servicesManager.getService(name);
 	}
@@ -143,11 +143,11 @@ public class DawdlerContext {
 	public void setServicesConfig(XmlObject servicesConfig) {
 		this.servicesConfig = servicesConfig;
 	}
-	
+
 	public XmlObject getServicesConfig() {
 		return servicesConfig;
 	}
-	
+
 	public AntPathMatcher getAntPathMatcher() {
 		return antPathMatcher;
 	}

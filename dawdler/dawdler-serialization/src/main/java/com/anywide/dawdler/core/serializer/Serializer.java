@@ -30,7 +30,8 @@ public interface Serializer {
 	byte[] serialize(Object object) throws Exception;
 
 	byte key();
-	
-	default void destroyed() {}
+
+	default void destroyed() {
+	}
 
 }

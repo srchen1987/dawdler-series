@@ -64,13 +64,13 @@ public class ConnectionPool {
 					cp = new ConnectionPool();
 					cp.groupName = gid;
 					addGroup(gid, cp);
-					if(sg.getHost()!=null && !sg.getHost().equals("")) {
+					if (sg.getHost() != null && !sg.getHost().equals("")) {
 						cp.addConnection(gid, sg.getHost());
 					}
-					
+
 				}
 			}
-			if(connectString != null) {
+			if (connectString != null) {
 				discoveryCenter = new ZkDiscoveryCenterClient(connectString, clientConfig.getZkUsername(),
 						clientConfig.getZkPassword());
 			}
@@ -119,7 +119,7 @@ public class ConnectionPool {
 			c.close();
 		}
 		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
-		if(discoveryCenter != null) {
+		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
 		}
 		groups.clear();

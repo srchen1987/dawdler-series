@@ -41,10 +41,11 @@ public class RabbitLifeCycle implements ComponentLifeCycle {
 	public void init() throws Exception {
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
 		FilterProvider filterProvider = (FilterProvider) dawdlerContext.getAttribute(ServiceBase.FILTER_PROVIDER);
-		DawdlerListenerProvider dawdlerListenerProvider = (DawdlerListenerProvider) dawdlerContext.getAttribute(ServiceBase.DAWDLER_LISTENER_PROVIDER);
-		init(dawdlerListenerProvider.getListeners(), filterProvider.getFilters());		
+		DawdlerListenerProvider dawdlerListenerProvider = (DawdlerListenerProvider) dawdlerContext
+				.getAttribute(ServiceBase.DAWDLER_LISTENER_PROVIDER);
+		init(dawdlerListenerProvider.getListeners(), filterProvider.getFilters());
 	}
-	
+
 	public void init(List<OrderData<DawdlerServiceListener>> dawdlerServiceListeners,
 			List<OrderData<DawdlerFilter>> dawdlerFilters) throws Exception {
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {

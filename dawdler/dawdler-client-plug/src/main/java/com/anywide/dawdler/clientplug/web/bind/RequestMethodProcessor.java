@@ -93,7 +93,7 @@ public class RequestMethodProcessor {
 			if (parameterNames != null)
 				break;
 		}
-		if(parameterNames == null) {
+		if (parameterNames == null) {
 			return;
 		}
 		Parameter[] parameters = method.getParameters();
