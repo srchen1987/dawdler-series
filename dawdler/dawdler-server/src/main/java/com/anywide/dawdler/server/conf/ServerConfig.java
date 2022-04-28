@@ -143,7 +143,6 @@ public class ServerConfig {
 			}
 			for (String antPath : packageAntPathInJar) {
 				if (antPathMatcher.match(antPath, packagePath)) {
-					System.out.println(packagePath);
 					return true;
 				}
 			}
