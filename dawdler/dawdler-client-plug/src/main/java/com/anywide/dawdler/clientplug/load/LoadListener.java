@@ -16,10 +16,9 @@
  */
 package com.anywide.dawdler.clientplug.load;
 
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,6 +32,9 @@ import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.clientplug.load.classloader.ClientPlugClassLoader;
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycleProvider;
+import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.JVMTimeProvider;
@@ -67,15 +69,23 @@ public class LoadListener implements ServletContextListener {
 				entry.getValue().interrupt();
 			}
 		}
+		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
+			try {
+				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
+				liftCycle.getData().destroy();
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
+		}
+		SerializeDecider.destroyed();
+		JVMTimeProvider.stop();
 		try {
 			ConnectionPool.shutdown();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-		SerializeDecider.destroyed();
-		loadConfModuleAndExecuteStaticMethod("destroy");
-		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
-		JVMTimeProvider.stop();
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
@@ -94,10 +104,14 @@ public class LoadListener implements ServletContextListener {
 			}
 			String channelGroupId = ele.attributeValue("channel-group-id");
 			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
-			loadCore.initWebComponent();
+			try {
+				loadCore.initWebComponent();
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
 			try {
 				loadCore.toCheck();
-			} catch (IOException e) {
+			} catch (Throwable e) {
 				logger.error("", e);
 			}
 			String mode = ele.attributeValue("mode");
@@ -108,11 +122,20 @@ public class LoadListener implements ServletContextListener {
 				threads.put(loadCore, thread);
 			}
 		}
-		loadConfModuleAndExecuteStaticMethod("init");
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		for (int i = 0; i < lifeCycleList.size(); i++) {
+			try {
+				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
+				liftCycle.getData().init();
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
+		}
+
 		WebContextListenerProvider.listenerRun(true, arg0.getServletContext());
 		EnumSet<DispatcherType> dispatcherType = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
 				DispatcherType.ERROR, DispatcherType.INCLUDE);
-		
+
 		try {
 			Class sessionClass = Class.forName("com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter");
 			arg0.getServletContext().addFilter(sessionClass.getSimpleName(), sessionClass)
@@ -123,13 +146,13 @@ public class LoadListener implements ServletContextListener {
 				true, "/*");
 	}
 
-	private void loadConfModuleAndExecuteStaticMethod(String methodName) {
-		try {
-			Class<?> configInitClass = Class.forName("com.anywide.dawdler.conf.client.init.ClientConfigInit");
-			Method method = configInitClass.getMethod(methodName);
-			method.invoke(null);
-		} catch (Exception e) {
-			// ignore
-		}
-	}
+//	private void loadConfModuleAndExecuteStaticMethod(String methodName) {
+//		try {
+//			Class<?> configInitClass = Class.forName("com.anywide.dawdler.conf.client.init.ClientConfigInit");
+//			Method method = configInitClass.getMethod(methodName);
+//			method.invoke(null);
+//		} catch (Exception e) {
+//			// ignore
+//		}
+//	}
 }

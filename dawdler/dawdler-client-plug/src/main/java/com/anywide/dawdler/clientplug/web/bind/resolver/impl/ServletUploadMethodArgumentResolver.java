@@ -46,7 +46,7 @@ public class ServletUploadMethodArgumentResolver extends AbstractMethodArgumentR
 			return viewForward.paramFile(paramName);
 		} else if (UploadFile[].class == type) {
 			List<UploadFile> files = viewForward.paramFiles(paramName);
-			if(files != null) {
+			if (files != null) {
 				return files.toArray(new UploadFile[0]);
 			}
 			return null;

@@ -79,4 +79,12 @@ public class AesSecurityPlus {
 		return new String(decrypted);
 	}
 
+	public byte[] encryptByteArray(byte[] data) throws Exception {
+		return encipher.doFinal(data);
+	}
+
+	public byte[] decryptByteArray(byte[] data) throws Exception {
+		return decipher.doFinal(data);
+	}
+
 }

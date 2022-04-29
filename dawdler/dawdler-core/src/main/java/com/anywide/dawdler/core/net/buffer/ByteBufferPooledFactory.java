@@ -20,7 +20,6 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.PooledObjectFactory;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 
-
 /**
  * @author jackson.song
  * @version V1.0

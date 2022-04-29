@@ -53,7 +53,7 @@ public class DefaultServiceExecutor implements ServiceExecutor {
 			}
 			object = ReflectionUtil.invoke(methodAccess, object, methodIndex, requestBean.getArgs());
 			responseBean.setTarget(object);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			responseBean.setCause(new DawdlerOperateException(new RuntimeException(e.toString())));
 			logger.error("", e);
 		}

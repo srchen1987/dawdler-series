@@ -129,8 +129,8 @@ public class MethodParser {
 					} else if (parameterList.size() == 2) {
 						parameterData.setName(parameterList.get(0));
 						StringBuffer sb = new StringBuffer();
-						for(int i = 1;i<parameterList.size();i++) {
-							sb.append(parameterList.get(i)+" ");
+						for (int i = 1; i < parameterList.size(); i++) {
+							sb.append(parameterList.get(i) + " ");
 						}
 						parameterData.setDescription(sb.toString());
 					}
@@ -151,14 +151,14 @@ public class MethodParser {
 						String annotationName = paramAnnotation.getType().getFullyQualifiedName();
 						if (annotationName.equals(RequestParam.class.getName())) {
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
-							if(annotationValue != null) {
+							if (annotationValue != null) {
 								alias = (String) annotationValue.accept(new EvaluatingVisitor());
 							}
 						}
 						if (annotationName.equals(PathVariable.class.getName())) {
 							in = "path";
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
-							if(annotationValue != null) {
+							if (annotationValue != null) {
 								alias = (String) annotationValue.accept(new EvaluatingVisitor());
 							}
 						} else if (annotationName.equals(RequestBody.class.getName())) {
@@ -167,7 +167,7 @@ public class MethodParser {
 						} else if (annotationName.equals(RequestHeader.class.getName())) {
 							in = "header";
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
-							if(annotationValue != null) {
+							if (annotationValue != null) {
 								alias = (String) annotationValue.accept(new EvaluatingVisitor());
 							}
 						}
@@ -252,24 +252,34 @@ public class MethodParser {
 				FieldParser.parserFields(returnType, classStructs, definitionsMap, javaTypes);
 				elements.put("responses", getResponse(returnType, definitionsMap));
 			}
-			for (String httpMethod : httpMethods) {
-				elements.put("operationId", method.getName() + "Using" + httpMethod.toUpperCase());
-				httpMethodMap.put(httpMethod, elements);
-			}
 			if (requsetMappingArray != null) {
 				for (String mapping : requsetMappingArray) {
 					if (requsetClassMappingArray != null) {
+						int i = 0;
 						for (String classMapping : requsetClassMappingArray) {
-							pathMap.put(classMapping + mapping, httpMethodMap);
+							pathMap.put(classMapping + mapping, createHttpMethod(httpMethods, elements, method, i++));
 						}
 					} else {
-						pathMap.put(mapping, httpMethodMap);
+						pathMap.put(mapping, createHttpMethod(httpMethods, elements, method, null));
 					}
 
 				}
 			}
 
 		}
+	}
+
+	private static Map<String, Object> createHttpMethod(List<String> httpMethods, Map<String, Object> elements,
+			JavaMethod method, Integer index) {
+		Map<String, Object> httpMethodMap = new LinkedHashMap<>();
+		for (String httpMethod : httpMethods) {
+			Map<String, Object> elementsCopy = new LinkedHashMap<>();
+			elementsCopy.putAll(elements);
+			elementsCopy.put("operationId",
+					method.getName() + "Using" + httpMethod.toUpperCase() + (index == null ? "" : "_" + index));
+			httpMethodMap.put(httpMethod, elementsCopy);
+		}
+		return httpMethodMap;
 	}
 
 	public static void parseType(JavaType type, Map<String, ClassStruct> classStructs,

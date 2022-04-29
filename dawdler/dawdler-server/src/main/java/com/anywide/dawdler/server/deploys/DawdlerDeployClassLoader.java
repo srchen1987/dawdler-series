@@ -198,10 +198,10 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			throw new ClassNotFoundException(name);
 		}
 	}
-	
+
 	public Class<?> findClassForDawdler(final String name, boolean resolve) throws ClassNotFoundException {
 		Class<?> clazz = findClassForDawdler(name);
-		if(resolve) {
+		if (resolve) {
 			resolveClass(clazz);
 		}
 		return clazz;

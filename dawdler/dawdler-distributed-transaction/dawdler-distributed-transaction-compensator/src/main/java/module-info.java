@@ -7,8 +7,8 @@ module dawdler.distributed.transaction.compensator {
 	requires dawdler.distributed.transaction.api;
 	requires dawdler.util;
 	requires dawdler.client;
-	requires dawdler.rabbitmq.plug;
 	requires com.rabbitmq.client;
 	requires jakarta.servlet;
 	requires org.slf4j;
+	requires dawdler.rabbitmq.core;
 }

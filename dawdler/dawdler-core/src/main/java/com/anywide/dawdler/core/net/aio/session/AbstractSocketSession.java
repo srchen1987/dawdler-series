@@ -42,7 +42,6 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
 
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -88,6 +87,7 @@ public abstract class AbstractSocketSession {
 	private boolean authored;
 	private SessionState state = SessionState.RECEIVE;
 	private boolean server;
+
 	public AbstractSocketSession(AsynchronousSocketChannel channel, boolean server) throws Exception {
 		this.channel = channel;
 		if (server) {
@@ -95,7 +95,7 @@ public abstract class AbstractSocketSession {
 			init();
 		}
 	}
-	
+
 	public boolean isAuthored() {
 		return authored;
 	}
@@ -314,7 +314,7 @@ public abstract class AbstractSocketSession {
 			}
 		}
 	}
-	
+
 	public boolean isServer() {
 		return server;
 	}
