@@ -74,8 +74,8 @@ public class MessageConsumer {
 				executor.execute(() -> {
 					String action = dt.getAction();
 					Object obj = DistributedTransactionCustomProcessor.getProcessor(action);
-					if(obj == null)
-						throw new NullPointerException("not found processor "+action+" !");
+					if (obj == null)
+						throw new NullPointerException("not found processor " + action + " !");
 					String branchTxId = dt.getBranchTxId();
 					boolean result = ((DistributedTransactionCustomProcessor) obj).process(dt, status);
 					if (logger.isDebugEnabled())

@@ -22,10 +22,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Inherited
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.METHOD })
-
 /**
  *
  * @Title CircuitBreaker.java
@@ -35,6 +31,9 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @email suxuan696@gmail.com
  */
+@Inherited
+@Retention(value = RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE, ElementType.METHOD })
 public @interface CircuitBreaker {
 
 	/**

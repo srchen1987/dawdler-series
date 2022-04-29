@@ -14,6 +14,7 @@
 		<cglib.version>3.3.0</cglib.version>
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
 		<jackson-core.version>2.13.2</jackson-core.version>
+		<jackson-databind.version>2.13.2.2</jackson-databind.version>
 		<velocity.version>2.3</velocity.version>
 		<jedis.version>4.1.1</jedis.version>
 		<rabbitmq.version>5.14.0</rabbitmq.version>
@@ -155,7 +156,7 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>${jackson-core.version}</version>
+				<version>${jackson-databind.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-io</groupId>
@@ -280,12 +281,47 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-redis-plug</artifactId>
+				<artifactId>dawdler-redis-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-rabbitmq-plug</artifactId>
+				<artifactId>dawdler-server-plug-redis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-redis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-rabbitmq-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-rabbitmq</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-rabbitmq</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-es-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-es</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-es</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -296,16 +332,6 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-distributed-transaction-core</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>dawdler</groupId>
-				<artifactId>dawdler-distributed-transaction-server</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>dawdler</groupId>
-				<artifactId>dawdler-distributed-transaction-client</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -340,7 +366,7 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-config-serverside</artifactId>
+				<artifactId>dawdler-server-plug-config</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -423,7 +449,7 @@
 		<module>dawdler-circuit-breaker</module>
 		<module>dawdler-load-bean</module>
 		<module>dawdler-client-plug-velocity</module>
-		<module>dawdler-config</module>
+		<module>dawdler-config-plug</module>
 		<module>dawdler-redis-plug</module>
 		<module>dawdler-rabbitmq-plug</module>
 		<module>dawdler-distributed-transaction</module>

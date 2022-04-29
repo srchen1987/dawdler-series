@@ -10,7 +10,63 @@
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<packaging>pom</packaging>
 	<dependencyManagement>
-		<dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-config-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-config-core</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-server-plug-config</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
+			<scope>provided</scope>
+			<version>${dawdler.build.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-server</artifactId>
+			<scope>provided</scope>
+			<version>${dawdler.build.version}</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>*</artifactId>
+					<groupId>*</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-config-core</artifactId>

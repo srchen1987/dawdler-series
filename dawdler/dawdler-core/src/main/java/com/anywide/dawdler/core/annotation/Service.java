@@ -21,8 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target({ ElementType.FIELD })
 /**
  *
  * @Title Service.java
@@ -32,6 +30,8 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @email suxuan696@gmail.com
  */
+@Retention(value = RetentionPolicy.RUNTIME)
+@Target({ ElementType.FIELD })
 public @interface Service {
 	boolean remote() default false;// 在服务端有效,标识是否是一个远程服务,一般不建议在服务端再次调用另一个服务,默认为否,调用本服务中的服务（适用事务传播）.
 }

@@ -9,9 +9,9 @@ module dawdler.distributed.transaction.core {
 	requires dawdler.core;
 	requires dawdler.distributed.transaction.api;
 	requires dawdler.util;
-	requires dawdler.rabbitmq.plug;
+	requires dawdler.rabbitmq.core;
 	requires com.rabbitmq.client;
-	requires dawdler.redis.plug;
 	requires redis.clients.jedis;
 	requires dawdler.serialization;
+	requires dawdler.redis.core;
 }

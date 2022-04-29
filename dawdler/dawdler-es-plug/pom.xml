@@ -7,11 +7,16 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
+	<packaging>pom</packaging>
 	<artifactId>dawdler-es-plug</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-pool2</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
@@ -21,5 +26,14 @@
 			<groupId>co.elastic.clients</groupId>
 			<artifactId>elasticsearch-java</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+		</dependency>
 	</dependencies>
+	<modules>
+		<module>dawdler-es-core</module>
+		<module>dawdler-server-plug-es</module>
+		<module>dawdler-client-plug-es</module>
+	</modules>
 </project>

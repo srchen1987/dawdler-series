@@ -42,7 +42,8 @@ public class SingleSqlSessionFactory {
 	}
 
 	public List<Resource> getMapperLocations() throws IOException {
-		List<Node> mappers = DawdlerContext.getDawdlerContext().getServicesConfig().selectNodes("/config/mybatis/mappers/mapper");
+		List<Node> mappers = DawdlerContext.getDawdlerContext().getServicesConfig()
+				.selectNodes("/config/mybatis/mappers/mapper");
 		if (!mappers.isEmpty()) {
 			List<Resource> resourceList = new ArrayList<>();
 			for (Node Nodemapper : mappers) {

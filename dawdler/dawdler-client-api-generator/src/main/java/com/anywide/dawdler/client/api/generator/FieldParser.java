@@ -73,11 +73,11 @@ public class FieldParser {
 		String typeName = fieldJavaType.getBinaryName();
 		String genericFullyQualifiedName = fieldJavaType.getGenericFullyQualifiedName();
 		if (ClassTypeUtil.isArray(typeName)) {
-			DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType)fieldJavaType;
+			DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) fieldJavaType;
 			List<JavaType> dtList = dt.getActualTypeArguments();
 			if (!dtList.isEmpty()) {
 				typeName = dtList.get(0).getBinaryName();
-				genericFullyQualifiedName =  dtList.get(0).getGenericFullyQualifiedName();
+				genericFullyQualifiedName = dtList.get(0).getGenericFullyQualifiedName();
 			}
 		}
 		if (!definitionsMap.containsKey(typeName)) {
@@ -103,22 +103,22 @@ public class FieldParser {
 							String originalFiledTypeName = fieldTypeName;
 							String binaryName = javaField.getType().getBinaryName();
 							boolean array = false;
-							if(javaTypes != null) {
+							if (javaTypes != null) {
 								JavaType javaType = javaTypes.get(binaryName);
-								if(javaType != null) {
+								if (javaType != null) {
 									if (javaType != null) {
 										DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) javaType;
 										array = ClassTypeUtil.isArray(dt.getBinaryName());
 										List<JavaType> typeArguments = dt.getActualTypeArguments();
 										if (!typeArguments.isEmpty()) {
 											JavaType typeArgument = typeArguments.get(0);
-											if(typeArgument != null) {
+											if (typeArgument != null) {
 												originalFiledTypeName = typeArgument.getFullyQualifiedName();
 												binaryName = typeArgument.getBinaryName();
 												genericFullyQualifiedFieldName = typeArgument
 														.getGenericFullyQualifiedName();
 											}
-											
+
 										}
 									}
 								}
@@ -223,11 +223,10 @@ public class FieldParser {
 			}
 		}
 	}
-	
-	
+
 	public static List<JavaField> getAllFields(JavaClass javaClass) {
-		List<JavaField> javaFieldList =  javaClass.getFields();
-		while((javaClass.getSuperClass() != null && !javaClass.getSuperClass().getBinaryName().equals("Object"))) {
+		List<JavaField> javaFieldList = javaClass.getFields();
+		while ((javaClass.getSuperClass() != null && !javaClass.getSuperClass().getBinaryName().equals("Object"))) {
 			javaClass = javaClass.getSuperJavaClass();
 			javaFieldList.addAll(javaClass.getFields());
 		}

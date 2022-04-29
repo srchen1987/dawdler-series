@@ -20,8 +20,9 @@ version: 1.0
 title: "演示服务"
 description: "用于演示的文档"
 contact:
- - "suxuan696@gmail.com"
- - "121616325@qq.com"
+ name: "jackson.song"
+ email: "suxuan696@gmail.com"
+ url: "https://github.com/srchen1987"
 swagger: "2.0"
 host: "localhost"
 basePath: "/"
@@ -37,7 +38,7 @@ outPath: "/home/srchen/github/api-demo/demo-api.json"
 | version | 版本号 |
 | title | 标题 |
 | description | 描述 |
-| contact | 联系人(数组结构) |
+| contact | 联系人 相关信息|
 | swagger | swagger版本号 |
 | host | api地址,例如: 192.168.1.55:8080 |
 | basePath | web的basePath |
