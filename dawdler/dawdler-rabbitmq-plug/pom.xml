@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>dawdler</groupId>
@@ -9,26 +9,6 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>dawdler-rabbitmq-plug</artifactId>
-	<dependencies>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.rabbitmq</groupId>
-			<artifactId>amqp-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-pool2</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-util</artifactId>
-		</dependency>
-	</dependencies>
-
-
 	<modules>
 		<module>dawdler-rabbitmq-core</module>
 		<module>dawdler-server-plug-rabbitmq</module>

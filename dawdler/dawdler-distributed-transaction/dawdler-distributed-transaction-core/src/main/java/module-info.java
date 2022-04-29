@@ -14,4 +14,5 @@ module dawdler.distributed.transaction.core {
 	requires redis.clients.jedis;
 	requires dawdler.serialization;
 	requires dawdler.redis.core;
+	requires org.apache.commons.pool2;
 }

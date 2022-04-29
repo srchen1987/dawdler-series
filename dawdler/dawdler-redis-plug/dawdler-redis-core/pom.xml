@@ -6,4 +6,18 @@
     <version>0.17.1-jdk17-RELEASES</version>
   </parent>
   <artifactId>dawdler-redis-core</artifactId>
+	<dependencies>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-util</artifactId>
+		</dependency>
+	</dependencies>
 </project>

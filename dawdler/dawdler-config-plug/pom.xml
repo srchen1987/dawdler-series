@@ -9,29 +9,6 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>dawdler-config-plug</artifactId>
-	<dependencies>
-		<dependency>
-			<groupId>com.ecwid.consul</groupId>
-			<artifactId>consul-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-yaml</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-util</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-jexl3</artifactId>
-		</dependency>
-
-	</dependencies>
 	<modules>
 		<module>dawdler-config-core</module>
 		<module>dawdler-server-plug-config</module>
