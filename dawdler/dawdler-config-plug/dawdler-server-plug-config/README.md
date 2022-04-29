@@ -13,13 +13,13 @@
 
 ### 2. server端使用方式
 
-#### 2.1 server端支持注入的三种组件
+#### 2.1 dawdler服务端支持注入的三种组件
 
-在server端只有这两种组件可以使用配置中心
+1、 [DawdlerFilter服务过滤器](../../dawdler-server/README.md#4-dawdler服务过滤器)
 
-[dawdler服务器启动销毁监听器](../../dawdler-server/README.md#3-dawdler服务器启动销毁监听器)
+2、 [DawdlerServiceListener监听器](../../dawdler-server/README.md#3-dawdler服务器启动销毁监听器)
 
-[dawdler服务过滤器](../../dawdler-server/README.md#4-dawdler服务过滤器)
+3、 [@RemoteService注解的接口实现类](../../dawdler-core/README.md#2-RemoteService注解)
 
 #### 2.2 FieldConfig注解
 

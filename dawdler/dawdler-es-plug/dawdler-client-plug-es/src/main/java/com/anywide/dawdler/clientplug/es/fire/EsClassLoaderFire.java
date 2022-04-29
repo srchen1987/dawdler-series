@@ -22,13 +22,13 @@ import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.es.restclient.EsRestHighLevelOperatorFactory;
+import com.anywide.dawdler.es.restclient.EsOperatorFactory;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title EsClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入EsRestHighLevelOperator
+ * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入EsOperator
  * @date 2022年4月17日
  * @email suxuan696@gmail.com
  */
@@ -49,14 +49,14 @@ public class EsClassLoaderFire implements RemoteClassLoaderFire {
 	private void initListener(Class<?> clazz, Object target)
 			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (WebContextListener.class.isAssignableFrom(clazz)) {
-			EsRestHighLevelOperatorFactory.initField(target, clazz);
+			EsOperatorFactory.initField(target, clazz);
 		}
 	}
 
 	private void initInterceptor(Class<?> clazz, Object target)
 			throws IllegalArgumentException, IllegalAccessException, Exception {
 		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
-			EsRestHighLevelOperatorFactory.initField(target, clazz);
+			EsOperatorFactory.initField(target, clazz);
 		}
 	}
 
@@ -65,7 +65,7 @@ public class EsClassLoaderFire implements RemoteClassLoaderFire {
 		if (clazz.isInterface())
 			return;
 		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
-			EsRestHighLevelOperatorFactory.initField(target, clazz);
+			EsOperatorFactory.initField(target, clazz);
 		}
 	}
 
