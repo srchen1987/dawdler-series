@@ -22,12 +22,12 @@ module dawdler.client.plug {
 	exports com.anywide.dawdler.clientplug.web.listener;
 	exports com.anywide.dawdler.clientplug.web.upload;
 	uses RemoteClassLoaderFire;
-	uses com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
-	uses com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
-	uses com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
 	provides RemoteClassLoaderFire with WebComponentClassLoaderFire;
-	provides ParameterDiscoverer with CompileParameterDiscoverer,LocalVariableTableParameterDiscoverer;
+	uses com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 	provides MethodArgumentResolver with  AnnotationMethodArgumentResolver,BasicsTypeMethodArgumentResolver,ServletMethodArgumentResolver,ServletUploadMethodArgumentResolver;
+	uses com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
+	provides ParameterDiscoverer with CompileParameterDiscoverer,LocalVariableTableParameterDiscoverer;
+	uses com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
 	provides DisplayPlug with JsonDisplayPlug,JspDisplayPlug;
 	requires java.base;
 	requires dawdler.util;

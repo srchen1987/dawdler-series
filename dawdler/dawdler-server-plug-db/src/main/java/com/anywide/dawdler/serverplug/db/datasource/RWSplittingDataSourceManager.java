@@ -53,6 +53,7 @@ public class RWSplittingDataSourceManager {
 	private final Map<String, MappingDecision> packages = new HashMap<>();
 	private final Map<String, MappingDecision> packagesAntPath = new LinkedHashMap<>();
 	private DawdlerContext dawdlerContext;
+
 	public RWSplittingDataSourceManager(DawdlerContext dawdlerContext) throws Exception {
 		this.dawdlerContext = dawdlerContext;
 		init();
@@ -98,12 +99,12 @@ public class RWSplittingDataSourceManager {
 			String mapping = ele.attributeValue("mapping");
 			String latentExpression = ele.attributeValue("latent-expression");
 			MappingDecision mappingDecision = new MappingDecision(dataourceExpression.get(latentExpression));
-			if(dawdlerContext.getAntPathMatcher().isPattern(mapping)) {
+			if (dawdlerContext.getAntPathMatcher().isPattern(mapping)) {
 				packagesAntPath.put(mapping, mappingDecision);
-			}else {
+			} else {
 				packages.put(mapping, mappingDecision);
 			}
-			
+
 		}
 
 	}
@@ -123,13 +124,13 @@ public class RWSplittingDataSourceManager {
 
 	public MappingDecision getMappingDecision(String packageName) {
 		MappingDecision mappingDecision = packages.get(packageName);
-		if(mappingDecision == null) {
+		if (mappingDecision == null) {
 			Set<String> keys = packagesAntPath.keySet();
 			AntPathMatcher antPathMatcher = dawdlerContext.getAntPathMatcher();
-			for(String key : keys) {
-				if(antPathMatcher.match(key, packageName)) {
+			for (String key : keys) {
+				if (antPathMatcher.match(key, packageName)) {
 					mappingDecision = packagesAntPath.get(key);
-					packages.putIfAbsent(key, mappingDecision);//ignored concurrent access
+					packages.putIfAbsent(key, mappingDecision);// ignored concurrent access
 					break;
 				}
 			}

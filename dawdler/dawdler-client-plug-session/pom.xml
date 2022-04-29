@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-redis-plug</artifactId>
+			<artifactId>dawdler-redis-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>

@@ -16,6 +16,8 @@
  */
 package com.anywide.dawdler.client.api.generator.conf;
 
+import com.anywide.dawdler.client.api.generator.data.ContactData;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -28,7 +30,8 @@ public class OpenApiConfig {
 	private String version;
 	private String title;
 	private String description;
-	private String[] contact;
+//	private String[] contact;
+	private ContactData contact;
 	private String swagger;
 	private String host;
 	private String basePath;
@@ -67,11 +70,11 @@ public class OpenApiConfig {
 		this.description = description;
 	}
 
-	public String[] getContact() {
+	public ContactData getContact() {
 		return contact;
 	}
 
-	public void setContact(String[] contact) {
+	public void setContact(ContactData contact) {
 		this.contact = contact;
 	}
 

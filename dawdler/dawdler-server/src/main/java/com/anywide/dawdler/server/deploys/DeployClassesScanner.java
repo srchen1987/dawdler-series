@@ -41,6 +41,7 @@ import com.anywide.dawdler.server.deploys.ServiceBase.DeployScanner;
  */
 public class DeployClassesScanner {
 	private static final Logger logger = LoggerFactory.getLogger(DeployClassesScanner.class);
+
 	public static void findAndAddClassesInPackageByPath(Scanner scanner, DeployScanner deployScanner,
 			String packageName, String packagePath, final boolean recursive, Set<Class<?>> classes)
 			throws ClassNotFoundException {

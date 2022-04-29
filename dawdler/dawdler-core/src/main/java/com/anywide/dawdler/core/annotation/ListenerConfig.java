@@ -21,8 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.FIELD })
 /**
  *
  * @Title ListenerConfig.java
@@ -33,6 +31,8 @@ import java.lang.annotation.Target;
  * @email suxuan696@gmail.com
  */
 
+@Retention(value = RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE, ElementType.FIELD })
 public @interface ListenerConfig {
 	long delayMsec() default 0L;// delayTime 毫秒级
 

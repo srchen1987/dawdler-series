@@ -5,7 +5,7 @@ module dawdler.server {
 	exports com.anywide.dawdler.server.service.listener;
 	exports com.anywide.dawdler.server.bean;
 	exports com.anywide.dawdler.server.thread.processor;
-	exports com.anywide.dawdler.server.deploys to dawdler.server.plug.db;
+	exports com.anywide.dawdler.server.deploys to dawdler.server.plug.db,dawdler.server.plug.redis,dawdler.server.plug.config,dawdler.server.plug.rabbitmq,dawdler.server.plug.es;
 	exports com.anywide.dawdler.server.net.aio.session;
 	exports com.anywide.dawdler.server.conf to dawdler.server;
 

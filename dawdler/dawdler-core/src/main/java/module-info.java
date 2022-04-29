@@ -11,6 +11,7 @@ module dawdler.core {
 	exports com.anywide.dawdler.core.compression.strategy;
 	exports com.anywide.dawdler.core.annotation;
 	exports com.anywide.dawdler.core.net.aio.handler;
+	exports com.anywide.dawdler.core.component.resource;
 	opens com.anywide.dawdler.core.bean;
 	requires jdk.unsupported;
 	requires java.base;

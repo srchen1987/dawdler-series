@@ -21,9 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(ElementType.METHOD)
-@Retention(RetentionPolicy.RUNTIME)
-@java.lang.annotation.Inherited
 /**
  *
  * @Title DBTransaction.java
@@ -33,6 +30,9 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @email suxuan696@gmail.com
  */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@java.lang.annotation.Inherited
 public @interface DBTransaction {
 
 	MODE mode() default MODE.deferToConfig;

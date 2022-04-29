@@ -138,15 +138,15 @@ dawdler中需要序列化的类,dawdler内部使用.
 
 #### 18. [dawdler-rabbitmq-plug](dawdler/dawdler-rabbitmq-plug/README.md)
 
-rabbitmq连接池插件,通过pool2实现池.
+rabbitmq模块的支持,包含客户端,服务器端,rabbitmq核心模块.
 
 #### 19. [dawdler-redis-plug](dawdler/dawdler-redis-plug/README.md)
 
-redis池插件,通过jedis实现.
+dawdler-redis-plug redis模块的支持,包含客户端,服务器端,redis核心模块.
 
 #### 20. [dawdler-es-plug](dawdler/dawdler-es-plug/README.md)
 
-通过pool2对elasticsearch-rest-high-level-client进行封装实现的一套es连接池.  
+dawdler-es-plug es模块的支持,包含客户端,服务器端,es核心模块.
 
 #### 21. [dawdler-pinpoint-plug](dawdler/dawdler-pinpoint-plug/README.md)
 

@@ -73,7 +73,6 @@ public class Transaction {
 		this.circuitBreaker = circuitBreaker;
 	}
 
-
 	public boolean isAsync() {
 		return async;
 	}

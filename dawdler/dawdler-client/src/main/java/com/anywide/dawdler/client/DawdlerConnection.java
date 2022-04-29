@@ -376,7 +376,7 @@ public class DawdlerConnection {
 						dawdlerByteBuffer = poolBuffer.getByteBuffer();
 						byteBuffer = dawdlerByteBuffer.getByteBuffer();
 					}
-				}else {
+				} else {
 					byteBuffer = dawdlerByteBuffer.getByteBuffer();
 				}
 				byteBuffer.putInt(size);
@@ -419,7 +419,7 @@ public class DawdlerConnection {
 						dawdlerByteBuffer = poolBuffer.getByteBuffer();
 						byteBuffer = dawdlerByteBuffer.getByteBuffer();
 					}
-				}else {
+				} else {
 					byteBuffer = dawdlerByteBuffer.getByteBuffer();
 				}
 				byteBuffer.putInt(size);

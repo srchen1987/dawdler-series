@@ -21,8 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD })
 /**
  *
  * @Title RemoteServiceAssistant.java
@@ -32,6 +30,8 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @email suxuan696@gmail.com
  */
+@Retention(value = RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
 public @interface RemoteServiceAssistant {
 	boolean async() default false;// 在客户端有效,是否为异步执行.
 

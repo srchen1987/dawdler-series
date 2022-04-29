@@ -15,11 +15,11 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-rabbitmq-plug</artifactId>
+			<artifactId>dawdler-rabbitmq-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-redis-plug</artifactId>
+			<artifactId>dawdler-redis-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>

@@ -17,6 +17,7 @@
 package com.anywide.dawdler.server.service;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
@@ -59,11 +60,14 @@ public class ServicesManager {
 		return dawdlerServiceCreateProvider;
 	}
 
-	public void fireCreate(DawdlerContext dawdlerContext) {
-		services.forEach((k, v) -> {
-			if (v.isSingle())
-				v.fireCreate(dawdlerContext);
-		});
+	public void fireCreate(DawdlerContext dawdlerContext) throws Throwable {
+		for (Entry<String, ServicesBean> entry : services.entrySet()) {
+			ServicesBean servicesBean = entry.getValue();
+			if (servicesBean.isSingle()) {
+				servicesBean.fireCreate(dawdlerContext);
+			}
+
+		}
 	}
 
 	public ServicesBean getService(String name) {
