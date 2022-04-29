@@ -13,14 +13,14 @@ dawdler-client-plug-es 实现dawdler-client端注入功能.
 
 ### 2. 使用方式
 
-通过@EsRestHighLevelInjector注解标识全局变量为EsRestHighLevelOperator类型的变量即可.
+通过@EsInjector注解标识全局变量为EsOperator类型的变量即可.
 
 ```java
  @Controller
  public class UserController{
 
-    @EsRestHighLevelInjector("myEs")//myEs为配置文件的名称,不包含后缀properties
-    EsRestHighLevelOperator esRestHighLevelOperator;
+    @EsInjector("myEs")//myEs为配置文件的名称,不包含后缀properties
+    EsOperator esOperator;
 
     @RequestMapping(value = "/getUser", method = RequestMethod.GET)
     public User getUser(String userId) {
@@ -30,19 +30,14 @@ dawdler-client-plug-es 实现dawdler-client端注入功能.
         MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("name", "电冰箱");
         searchSourceBuilder.query(matchQueryBuilder);
         searchRequest.source(searchSourceBuilder);
-        SearchResponse response = esRestHighLevelOperator.search(searchRequest, RequestOptions.DEFAULT);//使用esRestHighLevelOperator对象
-        SearchHits hits = response.getHits();
-        Iterator<SearchHit> iterator = hits.iterator();
-        while (iterator.hasNext()) {
-            System.out.println("输出数据:" + iterator.next().getSourceAsString());
-        }
+        SearchResponse response = esOperator.search(searchRequest, Product.class);//使用esOperator对象
+        System.out.println(response);
         return null;
     }
  
  }
 
 ```
-
 #### 2.1 web端支持注入的三种组件
 
 1、 [web端controller](../../dawdler-client-plug/README.md#3-controller注解)
