@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
-import com.anywide.dawdler.es.restclient.factory.RestHighLevelClientFactory;
+import com.anywide.dawdler.es.restclient.factory.EsClientFactory;
 import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
 import com.anywide.dawdler.util.PropertiesUtil;
 
@@ -89,9 +89,9 @@ public class ElasticSearchClientFactory {
 		config.setTestOnBorrow(testOnBorrow);
 		config.setTestOnCreate(testOnCreate);
 		config.setTestOnReturn(testOnReturn);
-		RestHighLevelClientFactory restHighLevelClientFactory = new RestHighLevelClientFactory(username, password,
-				hosts, connectionRequestTimeout, connectTimeout, socketTimeout);
-		PooledEsClientFactory pooledConnectionFactory = new PooledEsClientFactory(restHighLevelClientFactory);
+		EsClientFactory esClientFactory = new EsClientFactory(username, password, hosts, connectionRequestTimeout,
+				connectTimeout, socketTimeout);
+		PooledEsClientFactory pooledConnectionFactory = new PooledEsClientFactory(esClientFactory);
 		genericObjectPool = new GenericObjectPool<ElasticSearchClient>(pooledConnectionFactory, config);
 		pooledConnectionFactory.setGenericObjectPool(genericObjectPool);
 	}
@@ -117,5 +117,4 @@ public class ElasticSearchClientFactory {
 			});
 		}
 	}
-
 }

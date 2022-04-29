@@ -21,8 +21,10 @@ import org.apache.commons.pool2.PooledObject;
 import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
-import com.anywide.dawdler.es.restclient.factory.RestHighLevelClientFactory;
+import com.anywide.dawdler.es.restclient.factory.EsClientFactory;
 import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
+
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 
 /**
  *
@@ -34,31 +36,31 @@ import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
  * @email suxuan696@gmail.com
  */
 public class PooledEsClientFactory extends BasePooledObjectFactory<ElasticSearchClient> {
-	private RestHighLevelClientFactory restHighLevelClientFactory;
+	private EsClientFactory esClientFactory;
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;
 
 	public void setGenericObjectPool(GenericObjectPool<ElasticSearchClient> genericObjectPool) {
 		this.genericObjectPool = genericObjectPool;
 	}
 
-	public PooledEsClientFactory(RestHighLevelClientFactory restHighLevelClientFactory) {
-		this.restHighLevelClientFactory = restHighLevelClientFactory;
+	public PooledEsClientFactory(EsClientFactory esClientFactory) {
+		this.esClientFactory = esClientFactory;
 	}
 
 	@Override
 	public ElasticSearchClient create() throws Exception {
-		return new ElasticSearchClient(restHighLevelClientFactory.create(), genericObjectPool);
+		return new ElasticSearchClient(esClientFactory.create(), genericObjectPool);
 	}
 
 	@Override
 	public void destroyObject(PooledObject<ElasticSearchClient> p) throws Exception {
-		p.getObject().getRestHighLevelClient().close();
+		p.getObject().getElasticsearchClient()._transport().close();
 	}
 
 	@Override
 	public boolean validateObject(PooledObject<ElasticSearchClient> p) {
 		ElasticSearchClient client = p.getObject();
-		return client.getRestHighLevelClient().getLowLevelClient().isRunning();
+		return ((RestClientTransport) client.getElasticsearchClient()._transport()).restClient().isRunning();
 	}
 
 	@Override

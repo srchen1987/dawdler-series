@@ -17,7 +17,7 @@
 package com.anywide.dawdler.serverplug.es.listener;
 
 import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.es.restclient.EsRestHighLevelOperatorFactory;
+import com.anywide.dawdler.es.restclient.EsOperatorFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
@@ -35,7 +35,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 	@Override
 	public void create(Object service, boolean single, DawdlerContext context) throws Throwable {
 		Class<?> serviceType = service.getClass();
-		EsRestHighLevelOperatorFactory.initField(service, serviceType);
+		EsOperatorFactory.initField(service, serviceType);
 	}
 
 }
