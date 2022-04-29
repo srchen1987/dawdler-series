@@ -24,13 +24,13 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EsRestHighLevelInjector.java
- * @Description 标注一个成员变量 注入EsRestHighLevelOperator
+ * @Title EsInjector.java
+ * @Description 标注一个成员变量 注入EsOperator
  * @date 2022年4月16日
  * @email suxuan696@gmail.com
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
-public @interface EsRestHighLevelInjector {
+public @interface EsInjector {
 	String value();
 }

@@ -20,7 +20,7 @@ import java.util.List;
 
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.order.OrderData;
-import com.anywide.dawdler.es.restclient.EsRestHighLevelOperatorFactory;
+import com.anywide.dawdler.es.restclient.EsOperatorFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.deploys.ServiceBase;
 import com.anywide.dawdler.server.filter.DawdlerFilter;
@@ -51,11 +51,11 @@ public class ElasticSearchLifeCycle implements ComponentLifeCycle {
 			List<OrderData<DawdlerFilter>> dawdlerFilters) throws Exception {
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {
 			DawdlerServiceListener dawdlerServiceListener = orderData.getData();
-			EsRestHighLevelOperatorFactory.initField(dawdlerServiceListener, dawdlerServiceListener.getClass());
+			EsOperatorFactory.initField(dawdlerServiceListener, dawdlerServiceListener.getClass());
 		}
 		for (OrderData<DawdlerFilter> orderData : dawdlerFilters) {
 			DawdlerFilter dawdlerFilter = orderData.getData();
-			EsRestHighLevelOperatorFactory.initField(dawdlerFilter, dawdlerFilter.getClass());
+			EsOperatorFactory.initField(dawdlerFilter, dawdlerFilter.getClass());
 		}
 	}
 

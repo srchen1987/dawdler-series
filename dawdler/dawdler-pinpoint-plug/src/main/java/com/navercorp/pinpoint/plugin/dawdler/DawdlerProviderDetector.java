@@ -25,7 +25,7 @@ import com.navercorp.pinpoint.common.util.CollectionUtils;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerPlugin.java
+ * @Title DawdlerProviderDetector.java
  * @Description dawdler服务提供者pinpoint探测器
  * @date 2021年4月03日
  * @email suxuan696@gmail.com

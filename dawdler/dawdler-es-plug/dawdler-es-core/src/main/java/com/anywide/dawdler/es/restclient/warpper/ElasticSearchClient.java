@@ -20,29 +20,30 @@ import java.io.Closeable;
 import java.io.IOException;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.elasticsearch.client.RestHighLevelClient;
+
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 /**
  *
  * @Title ElasticSearchClient.java
- * @Description ElasticSearchClient是RestHighLevelClient的包装类
+ * @Description ElasticSearchClient是ElasticsearchClient的包装类
  * @author jackson.song
  * @date 2021年11月14日
  * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class ElasticSearchClient implements Closeable {
-	private RestHighLevelClient restHighLevelClient;
+	private ElasticsearchClient elasticsearchClient;
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;
 
-	public ElasticSearchClient(RestHighLevelClient restHighLevelClient,
+	public ElasticSearchClient(ElasticsearchClient elasticsearchClient,
 			GenericObjectPool<ElasticSearchClient> genericObjectPool) {
-		this.restHighLevelClient = restHighLevelClient;
+		this.elasticsearchClient = elasticsearchClient;
 		this.genericObjectPool = genericObjectPool;
 	}
 
-	public RestHighLevelClient getRestHighLevelClient() {
-		return restHighLevelClient;
+	public ElasticsearchClient getElasticsearchClient() {
+		return elasticsearchClient;
 	}
 
 	@Override
