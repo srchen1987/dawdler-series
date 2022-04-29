@@ -91,9 +91,9 @@ public class ClientConfig {
 		private String user;
 
 		private String password;
-		
+
 		private String host;
-		
+
 		public String getUser() {
 			return user;
 		}
@@ -141,7 +141,7 @@ public class ClientConfig {
 		public void setSessionNum(int sessionNum) {
 			this.sessionNum = sessionNum;
 		}
-		
+
 		public String getHost() {
 			return host;
 		}
@@ -149,7 +149,6 @@ public class ClientConfig {
 		public void setHost(String host) {
 			this.host = host;
 		}
-
 
 		@Override
 		public String toString() {

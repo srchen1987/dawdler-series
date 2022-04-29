@@ -48,10 +48,12 @@ import com.anywide.dawdler.util.XmlObject;
 public class ReadClass {
 	private static final Logger logger = LoggerFactory.getLogger(ReadClass.class);
 	private static final Pattern classPattern = Pattern.compile("(.*)\\.class$");
-	private static String path = new File(DawdlerTool.getcurrentPath()).getPath()+File.separator;
+	private static String path = new File(DawdlerTool.getcurrentPath()).getPath() + File.separator;
+
 	public static XmlObject read(String host) {
 		try {
-			XmlObject remoteLoadXml = new XmlObject(getRemoteLoad(DawdlerContext.getDawdlerContext().getServicesConfig()));
+			XmlObject remoteLoadXml = new XmlObject(
+					getRemoteLoad(DawdlerContext.getDawdlerContext().getServicesConfig()));
 			List<Node> hosts = remoteLoadXml.selectNodes("/hosts/host[@name='" + host + "']/package");
 			if (hosts == null || hosts.isEmpty())
 				return null;
@@ -76,7 +78,7 @@ public class ReadClass {
 		}
 
 	}
-	
+
 	public static String getRemoteLoad(XmlObject xmlo) {
 		Element ele = (Element) xmlo.getRoot().selectSingleNode("/config/remote-load");
 		if (ele == null)

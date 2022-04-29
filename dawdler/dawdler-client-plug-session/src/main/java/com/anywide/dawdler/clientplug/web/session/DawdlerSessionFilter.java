@@ -104,7 +104,7 @@ public class DawdlerSessionFilter implements Filter {
 				path = pathString;
 			}
 			cookieName = ps.getProperty("cookieName");
-			
+
 			String tokenString = ps.getProperty("tokenName");
 			if (tokenString != null && !tokenString.trim().equals("")) {
 				tokenName = tokenString;
@@ -119,7 +119,7 @@ public class DawdlerSessionFilter implements Filter {
 			ipMaxInactiveInterval = PropertiesUtil.getIfNullReturnDefaultValueInt("ipMaxInactiveInterval", 1800, ps);
 			ipMaxSize = PropertiesUtil.getIfNullReturnDefaultValueInt("ipMaxSize", 65525, ps);
 			ipLimit = PropertiesUtil.getIfNullReturnDefaultValueInt("ipLimit", 8, ps);
-			
+
 //			String synchFlushIntervalString = ps.getProperty("synchFlushInterval");
 //			if (synchFlushIntervalString != null) {
 //				try {
@@ -161,7 +161,8 @@ public class DawdlerSessionFilter implements Filter {
 			throw new ServletException(e);
 		}
 		servletContext = filterConfig.getServletContext();
-		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize, defense, ipMaxInactiveInterval,ipMaxSize);
+		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize, defense,
+				ipMaxInactiveInterval, ipMaxSize);
 		Object listener = servletContext
 				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTPSESSION_LISTENER);
 		if (listener instanceof HttpSessionListener) {
@@ -189,10 +190,10 @@ public class DawdlerSessionFilter implements Filter {
 			DawdlerHttpSession session = (DawdlerHttpSession) httpRequest.getSession(false);
 			if (session != null) {
 				try {
-					if(defense) {
-						sessionStore.saveSession(session,  getOnlineIp(httpRequest), abstractDistributedSessionManager, defense, ipLimit, ipMaxInactiveInterval);
-					}
-					else {
+					if (defense) {
+						sessionStore.saveSession(session, getOnlineIp(httpRequest), abstractDistributedSessionManager,
+								defense, ipLimit, ipMaxInactiveInterval);
+					} else {
 						sessionStore.saveSession(session);
 					}
 				} catch (Exception e) {
@@ -254,9 +255,9 @@ public class DawdlerSessionFilter implements Filter {
 			if (session == null) {
 				String sessionKey;
 				String token = null;
-				if(suportHead) {
+				if (suportHead) {
 					token = request.getHeader(tokenName);
-				}else if(suportParam) {
+				} else if (suportParam) {
 					token = request.getParameter(tokenName);
 				}
 				if (token != null) {
@@ -308,7 +309,7 @@ public class DawdlerSessionFilter implements Filter {
 			response.addCookie(cookie);
 		}
 	}
-	
+
 	private static String getOnlineIp(HttpServletRequest request) {
 		String forward_header = request.getHeader("X-Forwarded-For");
 		String ip = request.getHeader("X-Real-IP");

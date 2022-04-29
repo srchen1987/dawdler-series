@@ -38,7 +38,8 @@ public class PlugInit {
 
 	public PlugInit(DawdlerContext dawdlerContext) {
 		try {
-			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX, new RWSplittingDataSourceManager(dawdlerContext));
+			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX,
+					new RWSplittingDataSourceManager(dawdlerContext));
 			dawdlerContext.setAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX, new TransactionServiceExecutor());
 		} catch (Throwable e) {
 			logger.error("", e);

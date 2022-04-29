@@ -51,12 +51,15 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 
 	@Override
 	public void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean) {
-		Object object = servicesBean.getService();
-		String methodName = requestBean.getMethodName();
-		long index = Math.abs(requestBean.getSeq());
 		MethodAccess methodAccess;
 		int methodIndex;
+		String methodName;
+		Object object;
+		long index;
 		try {
+			object = servicesBean.getService();
+			methodName = requestBean.getMethodName();
+			index = Math.abs(requestBean.getSeq());
 			methodAccess = ReflectionUtil.getMethodAccess(object);
 		} catch (Throwable e) {
 			logger.error("", e);
@@ -109,8 +112,6 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 								synReadObj.getReadConnectionHolder().requested();
 							}
 							readStatus.setCurrentConn(synReadObj.getReadConnectionHolder());
-//							synReadObj.setMappingDecision(mappingDecision);
-//							synReadObj.setDBTransaction(dbt);
 						}
 					} else {
 						if (synReadObj == null) {

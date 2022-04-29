@@ -51,15 +51,11 @@ public class ServicesBean {
 		this.dawdlerServiceCreateProvider = dawdlerServiceCreateProvider;
 	}
 
-	public ServicesBean(String name, Object service, DawdlerServiceCreateProvider dawdlerServiceCreateProvider) {
-		this(name, service, dawdlerServiceCreateProvider, true);
-	}
-
-	public void fireCreate(DawdlerContext dawdlerContext) {
+	public void fireCreate(DawdlerContext dawdlerContext) throws Throwable {
 		notify(service, dawdlerContext);
 	}
 
-	private void notify(Object service, DawdlerContext dawdlerContext) {
+	private void notify(Object service, DawdlerContext dawdlerContext) throws Throwable {
 		List<OrderData<DawdlerServiceCreateListener>> listeners = dawdlerServiceCreateProvider.getListeners();
 		for (OrderData<DawdlerServiceCreateListener> listener : listeners) {
 			listener.getData().create(service, single, dawdlerContext);
@@ -74,8 +70,8 @@ public class ServicesBean {
 		this.name = name;
 	}
 
-	public Object getService() {
-		if (!isSingle())
+	public Object getService() throws Throwable {
+		if (!isSingle()) {
 			try {
 				Object obj = SunReflectionFactoryInstantiator.newInstance(service.getClass());
 				notify(obj, DawdlerContext.getDawdlerContext());
@@ -84,7 +80,7 @@ public class ServicesBean {
 					| InvocationTargetException | SecurityException | NoSuchMethodException e) {
 				logger.error("", e);
 			}
-
+		}
 		return service;
 	}
 

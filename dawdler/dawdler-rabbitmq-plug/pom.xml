@@ -7,8 +7,13 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
+	<packaging>pom</packaging>
 	<artifactId>dawdler-rabbitmq-plug</artifactId>
 	<dependencies>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
 			<artifactId>amqp-client</artifactId>
@@ -24,4 +29,9 @@
 	</dependencies>
 
 
+	<modules>
+		<module>dawdler-rabbitmq-core</module>
+		<module>dawdler-server-plug-rabbitmq</module>
+		<module>dawdler-client-plug-rabbitmq</module>
+	</modules>
 </project>

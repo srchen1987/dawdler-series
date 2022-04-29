@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  * @email suxuan696@gmail.com
  */
 public class PageResult<T> extends BaseResult<T> {
-	
+
 	@JsonInclude(Include.NON_NULL)
 	private Page page;
 

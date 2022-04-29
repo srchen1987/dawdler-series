@@ -63,7 +63,7 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 					wf.putData(key, obj);
 				}
 			}
-			if(wf.getData() != null)
+			if (wf.getData() != null)
 				json = JsonProcessUtil.beanToJson(wf.getData());
 			break;
 		}

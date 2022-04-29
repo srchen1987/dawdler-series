@@ -37,6 +37,7 @@ import com.esotericsoftware.kryo.io.UnsafeOutput;
  */
 public class KryoSerializer implements Serializer {
 	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
+
 //	private static ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
 //		protected KryoLocal initialValue() {
 //			KryoLocal kryoLocal = new KryoLocal();
@@ -47,16 +48,18 @@ public class KryoSerializer implements Serializer {
 		KryoLocal kryoLocal = new KryoLocal();
 		return kryoLocal;
 	}
+
 	public KryoLocal getKryoLocal() {
 		Thread thread = Thread.currentThread();
 		KryoLocal kryoLocal = kryos.get(thread);
-		if(kryoLocal != null) {
+		if (kryoLocal != null) {
 			return kryoLocal;
 		}
 		kryoLocal = initialValue();
 		kryos.put(thread, kryoLocal);
 		return kryoLocal;
 	}
+
 	@Override
 	public Object deserialize(byte[] bytes) {
 		KryoLocal kryoLocal = getKryoLocal();
@@ -106,6 +109,7 @@ public class KryoSerializer implements Serializer {
 		public void setKryo(Kryo kryo) {
 			this.kryo = kryo;
 		}
+
 		public void close() {
 			input.close();
 			out.close();
@@ -116,10 +120,10 @@ public class KryoSerializer implements Serializer {
 	public byte key() {
 		return 2;
 	}
-	
+
 	@Override
 	public void destroyed() {
-		kryos.forEach((k, v)->{
+		kryos.forEach((k, v) -> {
 			v.close();
 		});
 		kryos.clear();

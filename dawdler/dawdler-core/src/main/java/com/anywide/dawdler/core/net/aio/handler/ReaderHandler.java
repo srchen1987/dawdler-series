@@ -73,10 +73,12 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 				if (!session.isNeedNext())
 					buffer.flip();
 				int dataLength = buffer.getInt();
-				InetSocketAddress inetAddress =  (InetSocketAddress) session.getRemoteAddress();
+				InetSocketAddress inetAddress = (InetSocketAddress) session.getRemoteAddress();
 				String ipAddress = inetAddress.getAddress().getHostAddress();
-				if(session.isServer() && !session.isAuthored() && dataLength>authDataSize) {
-					throw new IllegalConnectionException(ipAddress+" send auth data "+dataLength+"B > "+authDataSize+"B.", ipAddress, dataLength);
+				if (session.isServer() && !session.isAuthored() && dataLength > authDataSize) {
+					throw new IllegalConnectionException(
+							ipAddress + " send auth data " + dataLength + "B > " + authDataSize + "B.", ipAddress,
+							dataLength);
 				}
 				if (dataLength == 0) {
 					if (buffer.remaining() > 0) {

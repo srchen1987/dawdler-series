@@ -21,8 +21,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Retention(value = RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
 /**
  *
  * @Title RemoteService.java
@@ -32,6 +30,8 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @email suxuan696@gmail.com
  */
+@Retention(value = RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE })
 public @interface RemoteService {
 	
 	String value() default "";// 在调用端有效,指定服务端部署的服务名.

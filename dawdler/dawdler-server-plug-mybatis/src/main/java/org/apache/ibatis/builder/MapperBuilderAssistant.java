@@ -213,11 +213,11 @@ public class MapperBuilderAssistant extends BaseBuilder {
 
 		MappedStatement.Builder statementBuilder = new MappedStatement.Builder(configuration, id, sqlSource,
 				sqlCommandType).resource(resource).fetchSize(fetchSize).timeout(timeout).statementType(statementType)
-						.keyGenerator(keyGenerator).keyProperty(keyProperty).keyColumn(keyColumn).databaseId(databaseId)
-						.lang(lang).resultOrdered(resultOrdered).resultSets(resultSets)
-						.resultMaps(getStatementResultMaps(resultMap, resultType, id)).resultSetType(resultSetType)
-						.flushCacheRequired(valueOrDefault(flushCache, !isSelect))
-						.useCache(valueOrDefault(useCache, isSelect)).cache(currentCache);
+				.keyGenerator(keyGenerator).keyProperty(keyProperty).keyColumn(keyColumn).databaseId(databaseId)
+				.lang(lang).resultOrdered(resultOrdered).resultSets(resultSets)
+				.resultMaps(getStatementResultMaps(resultMap, resultType, id)).resultSetType(resultSetType)
+				.flushCacheRequired(valueOrDefault(flushCache, !isSelect)).useCache(valueOrDefault(useCache, isSelect))
+				.cache(currentCache);
 
 		ParameterMap statementParameterMap = getStatementParameterMap(parameterMap, parameterType, id);
 		if (statementParameterMap != null) {

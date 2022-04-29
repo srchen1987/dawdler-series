@@ -67,19 +67,22 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 			if (curatorCache != null) {
 				curatorCache.close();
 			}
-			if(client != null) {
+			if (client != null) {
 				Field field;
 				try {
-					field = client.getClass().getDeclaredField("runSafeService");// 这是一个bug,目前已经提交了pr给apache 参考https://github.com/apache/curator/pull/415
+					field = client.getClass().getDeclaredField("runSafeService");// 这是一个bug,目前已经提交了pr给apache
+																					// 参考https://github.com/apache/curator/pull/415
 					field.setAccessible(true);
 					ExecutorService runSafeService = (ExecutorService) field.get(client);
-					if(runSafeService != null) {
+					if (runSafeService != null) {
 						runSafeService.shutdownNow();
 					}
 				} catch (Exception e) {
 				}
+
 				client.close();
 			}
+
 		}
 	}
 
@@ -97,13 +100,13 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public boolean updateProvider(String path, String value) throws Exception {
-		client.setData().forPath(ROOT_PATH + "/"+ path, value.getBytes());
+		client.setData().forPath(ROOT_PATH + "/" + path, value.getBytes());
 		return true;
 	}
 
 	@Override
 	public boolean deleteProvider(String path, String value) throws Exception {
-		client.delete().forPath(ROOT_PATH + "/"+ path);
+		client.delete().forPath(ROOT_PATH + "/" + path);
 		return true;
 	}
 
