@@ -38,7 +38,7 @@ dawdler-server-plug-rabbitmq 实现dawdler-server端注入功能.
 
 ```
 
-可注入的范围:
+#### 2.1 dawdler服务端支持注入的三种组件
 
 1、 [DawdlerFilter服务过滤器](../../dawdler-server/README.md#4-dawdler服务过滤器)
 
