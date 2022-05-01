@@ -9,20 +9,6 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>dawdler-redis-plug</artifactId>
-	<dependencies>
-		<dependency>
-			<groupId>redis.clients</groupId>
-			<artifactId>jedis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-util</artifactId>
-		</dependency>
-	</dependencies>
 	<modules>
 		<module>dawdler-redis-core</module>
 		<module>dawdler-server-plug-redis</module>
