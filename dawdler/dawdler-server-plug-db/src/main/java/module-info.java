@@ -12,6 +12,4 @@ module dawdler.server.plug.db {
 	requires org.slf4j;
 	requires dom4j;
 	requires dawdler.server.plug;
-	
-	
 }
