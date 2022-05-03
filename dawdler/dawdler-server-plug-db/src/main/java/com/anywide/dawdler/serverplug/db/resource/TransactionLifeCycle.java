@@ -1,19 +1,14 @@
 package com.anywide.dawdler.serverplug.db.resource;
 
-import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.deploys.ServiceBase;
 import com.anywide.dawdler.serverplug.db.datasource.RWSplittingDataSourceManager;
-import com.anywide.dawdler.serverplug.db.init.PlugInit;
 import com.anywide.dawdler.serverplug.db.transaction.TransactionServiceExecutor;
-import com.anywide.dawdler.serverplug.load.LoadCore;
-import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
