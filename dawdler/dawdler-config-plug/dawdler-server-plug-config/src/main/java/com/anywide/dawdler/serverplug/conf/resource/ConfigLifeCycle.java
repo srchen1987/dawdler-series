@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.serverplug.conf.init;
+package com.anywide.dawdler.serverplug.conf.resource;
 
 import java.util.List;
 
@@ -32,14 +32,18 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServerConfigInit.java
+ * @Title ConfigLifeCycle.java
  * @Description 服务器端初始化与销毁
  * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
-public class ServerConfigInit implements ComponentLifeCycle {
+public class ConfigLifeCycle implements ComponentLifeCycle {
 
-	private ConfigInit configInit = new ConfigInit();
+	@Override
+	public void prepareInit() throws Throwable {
+		ConfigInit.getInstance().init();
+	}
+
 
 	public void init(List<OrderData<DawdlerServiceListener>> dawdlerServiceListeners,
 			List<OrderData<DawdlerFilter>> dawdlerFilters) throws Exception {
@@ -53,13 +57,11 @@ public class ServerConfigInit implements ComponentLifeCycle {
 	}
 
 	public void destroy() {
-		configInit.destroy();
+		ConfigInit.getInstance().destroy();
 	}
 
 	@Override
 	public void init() throws Exception {
-		configInit = new ConfigInit();
-		configInit.init();
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
 		FilterProvider filterProvider = (FilterProvider) dawdlerContext.getAttribute(ServiceBase.FILTER_PROVIDER);
 		DawdlerListenerProvider dawdlerListenerProvider = (DawdlerListenerProvider) dawdlerContext

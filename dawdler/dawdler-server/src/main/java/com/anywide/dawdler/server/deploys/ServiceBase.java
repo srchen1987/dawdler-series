@@ -89,6 +89,7 @@ public class ServiceBase implements Service {
 	private final Scanner scanner;
 	private final DeployScanner deployScanner;
 	private AntPathMatcher antPathMatcher;
+	List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
 
 	public ServiceBase(URL binPath, Scanner scanner, AntPathMatcher antPathMatcher, File deploy, String host, int port,
 			ClassLoader parent) throws MalformedURLException {
@@ -136,18 +137,16 @@ public class ServiceBase implements Service {
 		return classLoader.loadClass(className);
 	}
 
-	private void initPlug(String className) {
-		try {
-			Class<?> clazz = classLoader.loadClass(className);
-			clazz.getConstructor(DawdlerContext.class).newInstance(dawdlerContext);
-		} catch (Exception e) {
-		}
-	}
-
 	@Override
 	public void start() throws Throwable {
-		initPlug("com.anywide.dawdler.serverplug.init.PlugInit");
-		initPlug("com.anywide.dawdler.serverplug.db.init.PlugInit");
+		for (int i = 0; i < lifeCycleList.size(); i++) {
+			try {
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().prepareInit();
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+		}
 		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
 		if (definedServiceExecutor != null)
 			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
@@ -219,11 +218,10 @@ public class ServiceBase implements Service {
 		dawdlerContext.setAttribute(FILTER_PROVIDER, filterProvider);
 		dawdlerContext.setAttribute(DAWDLER_LISTENER_PROVIDER, dawdlerListenerProvider);
 
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
-				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
-				liftCycle.getData().init();
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().init();
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -288,7 +286,6 @@ public class ServiceBase implements Service {
 
 		servicesManager.clear();
 
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
 				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
