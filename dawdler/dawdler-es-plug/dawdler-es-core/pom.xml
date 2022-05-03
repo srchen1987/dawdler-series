@@ -3,11 +3,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-es-plug</artifactId>
-<<<<<<< HEAD
 		<version>0.17.1-jdk17-RELEASES</version>
-=======
-		<version>0.0.2-RELEASES</version>
->>>>>>> origin/0.0.2-RELEASES
 	</parent>
 	<artifactId>dawdler-es-core</artifactId>
 	<dependencies>
