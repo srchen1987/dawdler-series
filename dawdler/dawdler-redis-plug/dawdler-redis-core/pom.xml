@@ -1,5 +1,4 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-<<<<<<< HEAD
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>dawdler</groupId>
@@ -7,15 +6,6 @@
     <version>0.17.1-jdk17-RELEASES</version>
   </parent>
   <artifactId>dawdler-redis-core</artifactId>
-=======
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>dawdler</groupId>
-		<artifactId>dawdler-redis-plug</artifactId>
-		<version>0.0.2-RELEASES</version>
-	</parent>
-	<artifactId>dawdler-redis-core</artifactId>
->>>>>>> origin/0.0.2-RELEASES
 	<dependencies>
 		<dependency>
 			<groupId>redis.clients</groupId>
