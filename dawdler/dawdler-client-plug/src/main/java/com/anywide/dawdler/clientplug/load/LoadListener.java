@@ -73,8 +73,8 @@ public class LoadListener implements ServletContextListener {
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
-				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
-				liftCycle.getData().destroy();
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().destroy();
 			} catch (Throwable e) {
 				logger.error("", e);
 			}
@@ -89,6 +89,16 @@ public class LoadListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		for (int i = 0; i < lifeCycleList.size(); i++) {
+			try {
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().init();
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
+		}
+		
 		ClientPlugClassLoader classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getcurrentPath());
 		XmlObject xml = ClientConfigParser.getXmlObject();
 		for (Object o : xml.selectNodes("/config/loads-on/item")) {
@@ -122,11 +132,11 @@ public class LoadListener implements ServletContextListener {
 				threads.put(loadCore, thread);
 			}
 		}
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
-				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
-				liftCycle.getData().init();
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().init();
 			} catch (Throwable e) {
 				logger.error("", e);
 			}
