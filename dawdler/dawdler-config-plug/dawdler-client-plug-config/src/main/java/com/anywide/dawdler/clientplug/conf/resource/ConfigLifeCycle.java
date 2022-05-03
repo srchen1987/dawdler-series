@@ -14,33 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.serverplug.conf.listener;
+package com.anywide.dawdler.clientplug.conf.resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.anywide.dawdler.conf.Refresher;
 import com.anywide.dawdler.conf.init.ConfigInit;
-import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
+import com.anywide.dawdler.core.annotation.Order;
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigServiceCreateListener.java
- * @Description 监听服务器端服务创建的事件，注入配置信息
+ * @Title ConfigLifeCycle.java
+ * @Description client端配置中心初始化与销毁
  * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
-public class ConfigServiceCreateListener implements DawdlerServiceCreateListener {
-	private static Logger logger = LoggerFactory.getLogger(ConfigServiceCreateListener.class);
+@Order(1)
+public class ConfigLifeCycle implements ComponentLifeCycle {
+
 	@Override
-	public void create(Object service, boolean single, DawdlerContext context) {
-		try {
-			Refresher.refreshAllConfig(service, single);
-		} catch (Exception e) {
-			logger.error("", e);
-		}
+	public void prepareInit() throws Throwable {
+		ConfigInit.getInstance().init();
+	}
+
+	@Override
+	public void destroy() {
+		ConfigInit.getInstance().destroy();
 	}
 
 }
