@@ -16,17 +16,10 @@
  */
 package com.anywide.dawdler.clientplug.conf.fire;
 
-import java.util.List;
-
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.TransactionController;
-import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
-import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
-import com.anywide.dawdler.clientplug.web.interceptor.InterceptorProvider;
 import com.anywide.dawdler.conf.Refresher;
 import com.anywide.dawdler.conf.cache.PathMappingTargetCache;
 import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.core.order.OrderData;
 
 /**
  * @author jackson.song
@@ -41,46 +34,13 @@ public class ConfigLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
 	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
-		refreshMappingConfig(clazz);
-		refreshInterceptorConfig(clazz);
+		Refresher.refreshAllConfig(target);
 	}
-
+	
 	@Override
 	public void onRemoveFire(Class<?> clazz) {
-		removeMappingConfig(clazz);
-		removeInterceptorConfig(clazz);
+		PathMappingTargetCache.removeMappingByTargetClass(clazz);
 	}
 
-	private void refreshMappingConfig(Class<?> clazz) throws Exception {
-		for (Object transactionController : AnnotationUrlHandler.getTransactionControllers()) {
-			if (transactionController.getClass() == clazz) {
-				Refresher.refreshAllConfig(transactionController);
-				return;
-			}
-		}
-	}
-
-	public void removeMappingConfig(Class<?> clazz) {
-		if (TransactionController.class.isAssignableFrom(clazz)) {
-			PathMappingTargetCache.removeMappingByTargetClass(clazz);
-		}
-	}
-
-	private void refreshInterceptorConfig(Class<?> clazz) throws Exception {
-		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
-			List<OrderData<HandlerInterceptor>> interceptors = InterceptorProvider.getHandlerInterceptors();
-			for (OrderData<HandlerInterceptor> interceptor : interceptors) {
-				if (interceptor.getData().getClass() == clazz) {
-					Refresher.refreshAllConfig(interceptor.getData());
-				}
-			}
-		}
-	}
-
-	public void removeInterceptorConfig(Class<?> clazz) {
-		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
-			PathMappingTargetCache.removeMappingByTargetClass(clazz);
-		}
-	}
 
 }
