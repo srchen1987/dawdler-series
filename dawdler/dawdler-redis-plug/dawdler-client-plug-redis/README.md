@@ -32,10 +32,10 @@ dawdler-client-plug-redis 实现dawdler-client端注入功能.
 
 ```
 
-可注入的范围:
+#### 2.1 web端支持注入的三种组件
 
-1、 [Controller](../../dawdler-client-plug/README.md#2-1-创建Controller)
+1、 [web端controller](../../dawdler-client-plug/README.md#3-controller注解)
 
-2、 [HandlerInterceptor拦截器](../../dawdler-server/README.md#3-dawdler服务器启动销毁监听器)
+2、 [web端拦截器HandlerInterceptor](../../dawdler-client-plug/README.md#5-HandlerInterceptor-拦截器)
 
-3、 [WebContextListener监听器](../../dawdler-core/README.md#2-RemoteService注解)
+3、 [web端监听器WebContextListener](../../dawdler-client-plug/README.md#6-webcontextlistener-监听器)
