@@ -15,10 +15,7 @@
 		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
 		<jackson-core.version>2.13.2</jackson-core.version>
 		<jackson-databind.version>2.13.2.2</jackson-databind.version>
-<<<<<<< HEAD
-=======
 		<commons-fileupload.version>1.4</commons-fileupload.version>
->>>>>>> origin/0.0.2-RELEASES
 		<velocity.version>2.3</velocity.version>
 		<jedis.version>4.1.1</jedis.version>
 		<rabbitmq.version>5.14.0</rabbitmq.version>
