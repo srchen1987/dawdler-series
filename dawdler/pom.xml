@@ -375,11 +375,6 @@
 				<version>${elasticsearch.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>co.elastic.clients</groupId>
-				<artifactId>elasticsearch-java</artifactId>
-				<version>${elasticsearch.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>com.navercorp.pinpoint</groupId>
 				<artifactId>pinpoint-bootstrap-core</artifactId>
 				<version>${pinpoint.version}</version>
@@ -459,6 +454,4 @@
 		<module>dawdler-jakarta-fileupload</module>
 		<module>dawdler-client-api-generator</module>
 	</modules>
-
-
 </project>

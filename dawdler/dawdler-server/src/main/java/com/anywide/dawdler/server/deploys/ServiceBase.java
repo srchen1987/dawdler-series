@@ -89,8 +89,6 @@ public class ServiceBase implements Service {
 	private final Scanner scanner;
 	private final DeployScanner deployScanner;
 	private AntPathMatcher antPathMatcher;
-	List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
-
 	public ServiceBase(URL binPath, Scanner scanner, AntPathMatcher antPathMatcher, File deploy, String host, int port,
 			ClassLoader parent) throws MalformedURLException {
 		this.scanner = scanner;
@@ -139,6 +137,7 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void start() throws Throwable {
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
@@ -285,6 +284,7 @@ public class ServiceBase implements Service {
 
 		servicesManager.clear();
 
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
 				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
