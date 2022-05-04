@@ -392,7 +392,6 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>1.8</source>
 					<target>1.8</target>
-					<debug>true</debug>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -432,6 +431,4 @@
 		<module>dawdler-services-dependencies</module>
 		<module>dawdler-client-api-generator</module>
 	</modules>
-
-
 </project>
