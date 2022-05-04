@@ -93,7 +93,7 @@ public class LoadListener implements ServletContextListener {
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-				lifeCycle.getData().init();
+				lifeCycle.getData().prepareInit();
 			} catch (Throwable e) {
 				logger.error("", e);
 			}

@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.order.OrderData;
+import com.anywide.dawdler.rabbitmq.consumer.RabbitListenerInit;
 import com.anywide.dawdler.rabbitmq.provider.RabbitProviderFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.deploys.ServiceBase;
@@ -51,10 +52,12 @@ public class RabbitLifeCycle implements ComponentLifeCycle {
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {
 			DawdlerServiceListener dawdlerServiceListener = orderData.getData();
 			RabbitProviderFactory.initField(dawdlerServiceListener, dawdlerServiceListener.getClass());
+			RabbitListenerInit.initRabbitListener(dawdlerServiceListener, dawdlerServiceListener.getClass());
 		}
 		for (OrderData<DawdlerFilter> orderData : dawdlerFilters) {
 			DawdlerFilter dawdlerFilter = orderData.getData();
 			RabbitProviderFactory.initField(dawdlerFilter, dawdlerFilter.getClass());
+			RabbitListenerInit.initRabbitListener(dawdlerFilter, dawdlerFilter.getClass());
 		}
 	}
 
