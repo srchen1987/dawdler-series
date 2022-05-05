@@ -16,11 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.redis.fire;
 
-import com.anywide.dawdler.clientplug.annotation.Controller;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.TransactionController;
-import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
-import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.redis.JedisOperatorFactory;
 
@@ -37,33 +33,11 @@ public class JedisClassLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
 	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
-		initListener(clazz, target);
-		initInterceptor(clazz, target);
-		initMapping(clazz, target, classCodes);
+		JedisOperatorFactory.initField(target, clazz);
 	}
 
 	@Override
 	public void onRemoveFire(Class<?> clazz) {
-	}
-
-	private void initListener(Class<?> clazz, Object target) throws Throwable {
-		if (WebContextListener.class.isAssignableFrom(clazz)) {
-			JedisOperatorFactory.initField(target, clazz);
-		}
-	}
-
-	private void initInterceptor(Class<?> clazz, Object target) throws Throwable {
-		if (HandlerInterceptor.class.isAssignableFrom(clazz)) {
-			JedisOperatorFactory.initField(target, clazz);
-		}
-	}
-
-	private void initMapping(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
-		if (clazz.isInterface())
-			return;
-		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
-			JedisOperatorFactory.initField(target, clazz);
-		}
 	}
 
 }
