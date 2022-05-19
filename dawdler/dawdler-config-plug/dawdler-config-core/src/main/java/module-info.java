@@ -1,5 +1,7 @@
 import com.anywide.dawdler.conf.client.ConfigClient;
 import com.anywide.dawdler.conf.client.impl.ConsulConfigClient;
+import com.anywide.dawdler.conf.health.ConfigIndicator;
+import com.anywide.dawdler.core.health.HealthIndicator;
 
 module dawdler.config.core {
 	exports com.anywide.dawdler.conf;
@@ -7,6 +9,8 @@ module dawdler.config.core {
 	exports com.anywide.dawdler.conf.init;
 	uses ConfigClient;
 	provides ConfigClient with ConsulConfigClient;
+	uses HealthIndicator;
+	provides HealthIndicator with ConfigIndicator;
 	requires java.base;
 	requires dawdler.util;
 	requires org.slf4j;

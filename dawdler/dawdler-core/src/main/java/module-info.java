@@ -12,8 +12,11 @@ module dawdler.core {
 	exports com.anywide.dawdler.core.annotation;
 	exports com.anywide.dawdler.core.net.aio.handler;
 	exports com.anywide.dawdler.core.component.resource;
+	exports com.anywide.dawdler.core.health;
+	exports com.anywide.dawdler.core.httpserver;
 	opens com.anywide.dawdler.core.bean;
 	requires jdk.unsupported;
+	requires jdk.httpserver;
 	requires java.base;
 	requires dawdler.util;
 	requires dawdler.serialization;
