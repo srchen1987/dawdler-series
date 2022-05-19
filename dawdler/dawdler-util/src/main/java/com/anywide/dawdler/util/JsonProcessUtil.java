@@ -18,6 +18,7 @@ package com.anywide.dawdler.util;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -63,6 +64,12 @@ public class JsonProcessUtil {
 			throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		mapper.writeValue(writer, obj);
+	}
+	
+	public static void beanToJson(OutputStream out, Object obj)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		mapper.writeValue(out, obj);
 	}
 
 	public static <T> T jsonToBean(String json, Class<T> valueType) {

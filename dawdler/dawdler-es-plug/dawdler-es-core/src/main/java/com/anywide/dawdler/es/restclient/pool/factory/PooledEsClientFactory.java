@@ -28,11 +28,11 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title PooledEsClientFactory.java
  * @Description es客户端工厂,通过pool2实现
- * @author jackson.song
  * @date 2021年11月14日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class PooledEsClientFactory extends BasePooledObjectFactory<ElasticSearchClient> {

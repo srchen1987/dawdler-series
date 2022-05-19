@@ -70,7 +70,7 @@ public class LoadListener implements ServletContextListener {
 			}
 		}
 		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(arg0.getServletContext().getServletContextName()).getComponentLifeCycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
@@ -89,7 +89,7 @@ public class LoadListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(arg0.getServletContext().getServletContextName()).getComponentLifeCycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);

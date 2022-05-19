@@ -34,12 +34,12 @@ import com.rabbitmq.client.Envelope;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title AmqpConsumer.java
  * @Description Amqp消息消费者
  *              将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
- * @author jackson.song
  * @date 2021年4月17日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class AmqpConsumer extends MessageConsumer {

@@ -56,7 +56,11 @@ public class RWSplittingDataSourceManager {
 
 	public RWSplittingDataSourceManager(DawdlerContext dawdlerContext) throws Exception {
 		this.dawdlerContext = dawdlerContext;
-		init();
+		init(); 
+	}
+
+	public Map<String, DataSource> getDataSources() {
+		return dataSources;
 	}
 
 	public void init() throws Exception {
@@ -75,9 +79,13 @@ public class RWSplittingDataSourceManager {
 				String value = e.getText().trim();
 				try {
 					attributeName = captureName(attributeName);
-					ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
-				} catch (Exception ex) {
 					ReflectionUtil.invoke(obj, "set" + attributeName, value);
+				} catch (Exception ex) {
+					try {
+						ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
+					} catch (Exception exception) {
+						ReflectionUtil.invoke(obj, "set" + attributeName, Long.parseLong(value));
+					}
 				}
 
 			}

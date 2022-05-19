@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.anywide.dawdler.core.annotation.RemoteService;
+import com.anywide.dawdler.core.annotation.RemoteServiceAssistant;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.server.bean.ServicesBean;
@@ -110,10 +111,16 @@ public class ServiceFactory {
 
 		public Object intercept(Object object, Method method, Object[] objects, MethodProxy methodProxy)
 				throws Throwable {
+			boolean fuzzy = true;
+			RemoteServiceAssistant remoteServiceAssistant = method.getAnnotation(RemoteServiceAssistant.class);
+			if (remoteServiceAssistant != null) {
+				fuzzy = remoteServiceAssistant.fuzzy();
+			}
 			RequestBean requestBean = new RequestBean();
 			requestBean.setArgs(objects);
-			requestBean.setFuzzy(true);
+			requestBean.setFuzzy(fuzzy);
 			requestBean.setMethodName(method.getName());
+			requestBean.setTypes(method.getParameterTypes());
 			ResponseBean responseBean = new ResponseBean();
 			serviceExecutor.execute(requestBean, responseBean, servicesBean);
 			if (responseBean.getCause() != null)
