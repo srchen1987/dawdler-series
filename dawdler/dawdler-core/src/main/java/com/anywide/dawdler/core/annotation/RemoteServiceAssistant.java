@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RemoteServiceAssistant.java
  * @Description 为服务的方法做特定的异步,超时时间,模糊匹配,负载均衡方式的设置.
- * @author jackson.song
  * @date 2015年4月26日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)

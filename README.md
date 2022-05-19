@@ -8,7 +8,7 @@ dawdler-series 是一站式分布式应用、微服务架构的解决方案,其�
 
 小巧: 项目java源代码2万行,占用空间4.5M,最小依赖三方组件(个数不超过20个,大小在10M以内).
 
-高效: 启动运行速度快,一般一个服务大约在100ms到3s之间,多个服务如果部署在一个dawdler容器中是并行加载,启动时长为最长的那个服务的加载时间.
+高效: 启动运行速度快,一般一个服务大约在50ms到300ms之间,多个服务如果部署在一个dawdler容器中是并行加载,启动时长为最长的那个服务的加载时间.
 
 易扩展: 提供各种扩展接口与扩展方式.如: 负载均衡,配置中心,事务执行器,拦截器,监听器,服务创建监听器,序列化扩展,视图插件等.
 
@@ -116,9 +116,9 @@ dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现�
 
 熔断器,支持熔断配置,降级,采用时间滑动窗口方式统计.
 
-#### 13. [dawdler-config](dawdler/dawdler-config/README.md)
+#### 13. [dawdler-config-plug](dawdler/dawdler-config-plug/README.md)
 
-统一配置中心,clientside应用到web端,serverside应用到dawdler服务端.
+统一配置中心,支持扩展、注入.
 
 #### 14. [dawdler-distributed-transaction](dawdler/dawdler-distributed-transaction/README.md)
 

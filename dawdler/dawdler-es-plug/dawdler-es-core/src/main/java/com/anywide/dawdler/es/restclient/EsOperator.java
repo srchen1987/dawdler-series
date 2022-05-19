@@ -132,12 +132,12 @@ import co.elastic.clients.transport.endpoints.BooleanResponse;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title EsOperator.java
  * @Description es EsOperator客户端接口
  *              es官方的7.15之后RestHighLevelClient不再使用,采用ElasticsearchClient代替.
- * @author jackson.song
  * @date 2022年4月16日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public interface EsOperator {

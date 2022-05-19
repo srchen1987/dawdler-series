@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<scanner>
-<jar-files>
+		<jar-files>
 			<jar-file>dawdler-server-plug-0.0.2-RELEASES.jar</jar-file>
 			<jar-file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jar-file>
 			<jar-file>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jar-file>
 			<jar-file>dawdler-config-serverside-0.0.2-RELEASES.jar</jar-file>
 			<jar-file>dawdler-server-plug-rabbitmq-0.0.2-RELEASES.jar</jar-file>
 			<jar-file>dawdler-server-plug-redis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
+			<jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar
+			</jar-file>
 		</jar-files>
 		<packages-in-jar>
-			<package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
-			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
+			<package-path>com.anywide.dawdler.distributed.transaction.aspect
+			</package-path>
+			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect
+			</package-path>
 			<package-path>org.apache.ibatis.session.defaults</package-path>
-			<package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
-			<package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
+			<package-path>com.anywide.dawdler.serverplug.service.impl
+			</package-path>
+			<package-path>com.anywide.dawdler.serverplug.**.listener
+			</package-path>
 		</packages-in-jar>
 		<!-- 扫描的插件包名 -->
 	</scanner>
@@ -26,10 +31,12 @@
 	<server host="0.0.0.0" tcp-port="9527"
 		shutdownWhiteList="127.0.0.1,localhost" tcp-shutdownPort="19530"
 		tcp-backlog="200" tcp-sendBuffer="163840" tcp-receiveBuffer="163840"
-		tcp-keepAlive="false" tcp-noDelay="false" maxThreads="200" queueCapacity="65536" keepAliveMilliseconds="0">
+		tcp-keepAlive="false" tcp-noDelay="false" maxThreads="200"
+		queueCapacity="65536" keepAliveMilliseconds="0">
 	</server>
 	<!-- tcp-port服务器启动端口号， shutdownWhiteList允许关闭服务的白名单， tcp-shutdownPort关闭服务器的端口号 
-		maxThreads 处理业务线程池的大小 默认200，queueCapacity 线程池队列大小 默认65536，keepAliveMilliseconds 线程池中空闲线程等待工作的超时时间 默认0，其他为tcp的配置 -->
+		maxThreads 处理业务线程池的大小 默认200，queueCapacity 线程池队列大小 默认65536，keepAliveMilliseconds 
+		线程池中空闲线程等待工作的超时时间 默认0，其他为tcp的配置 -->
 	<global-auth>
 		<user username="global_user" password="global_password" />
 		<user username="global_user_1" password="global_password" />
@@ -45,4 +52,13 @@
 			<user username="order_user1" password="user1password" />
 		</module>
 	</module-auth><!-- 模块下的用户，只能调用指定模块 第一行为帐号 第二行为密码 -->
+
+	<health-check check="on" scheme="https" port="19001"
+		backlog="0" username="jackson" password="jackson.song">
+		<elasticSearch check="on" />
+		<jedis check="on" />
+		<rabbit check="on" />
+		<dataSource check="on" />
+		<config check="on" />
+	</health-check>
 </config>

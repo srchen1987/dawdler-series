@@ -31,17 +31,17 @@ import com.anywide.dawdler.util.PropertiesUtil;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title ElasticSearchClientFactory.java
  * @Description ElasticSearchClient多例工厂
- * @author jackson.song
  * @date 2021年11月14日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class ElasticSearchClientFactory {
 
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;
-	private static Map<String, ElasticSearchClientFactory> instances = new ConcurrentHashMap<>();
+	private final static Map<String, ElasticSearchClientFactory> instances = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 
 	public static ElasticSearchClientFactory getInstance(String fileName) throws IOException {
@@ -116,5 +116,9 @@ public class ElasticSearchClientFactory {
 				}
 			});
 		}
+	}
+	
+	public static Map<String, ElasticSearchClientFactory> getInstances(){
+		return instances;
 	}
 }

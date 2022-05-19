@@ -24,11 +24,11 @@ import com.anywide.dawdler.distributed.transaction.context.DistributedTransactio
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title TransactionRepository.java
  * @Description 存储方式抽象类
- * @author jackson.song
  * @date 2021年4月10日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public abstract class TransactionRepository {
