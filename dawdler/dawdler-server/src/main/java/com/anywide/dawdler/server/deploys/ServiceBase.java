@@ -41,9 +41,15 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycleProvider;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
+import com.anywide.dawdler.core.health.Health;
+import com.anywide.dawdler.core.health.HealthIndicatorProvider;
+import com.anywide.dawdler.core.health.HealthIndicator;
+import com.anywide.dawdler.core.health.ServiceHealth;
+import com.anywide.dawdler.core.health.Status;
 import com.anywide.dawdler.core.order.OrderData;
-import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.server.bean.ServicesBean;
+import com.anywide.dawdler.server.conf.ServerConfig;
+import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.filter.DawdlerFilter;
@@ -79,6 +85,7 @@ public class ServiceBase implements Service {
 	private static final String LIB_PATH = "lib";
 	private final DawdlerDeployClassLoader classLoader;
 	private final File deploy;
+	private final String deployName;
 	private final DawdlerContext dawdlerContext;
 	private final ServiceExecutor defaultServiceExecutor = new DefaultServiceExecutor();
 	private final DawdlerListenerProvider dawdlerListenerProvider = new DawdlerListenerProvider();
@@ -89,12 +96,21 @@ public class ServiceBase implements Service {
 	private final Scanner scanner;
 	private final DeployScanner deployScanner;
 	private AntPathMatcher antPathMatcher;
-	public ServiceBase(URL binPath, Scanner scanner, AntPathMatcher antPathMatcher, File deploy, String host, int port,
-			ClassLoader parent) throws MalformedURLException {
-		this.scanner = scanner;
+	private String status;
+	private Throwable cause;
+	private HealthCheck healthCheck;
+
+	public ServiceBase(ServerConfig serverConfig, File deploy, ClassLoader parent) throws MalformedURLException {
+		this.healthCheck = serverConfig.getHealthCheck();
+		URL binPath = serverConfig.getBinPath();
+		String host = serverConfig.getServer().getHost();
+		int port = serverConfig.getServer().getTcpPort();
+		this.scanner = serverConfig.getScanner();
 		this.deployScanner = new DeployScanner();
-		this.antPathMatcher = antPathMatcher;
+		this.antPathMatcher = serverConfig.getAntPathMatcher();
 		this.deploy = deploy;
+		this.deployName = deploy.getName();
+		this.status = Status.STARTING;
 		classLoader = DawdlerDeployClassLoader.createLoader(binPath, parent, getClassLoaderURL());
 		Thread.currentThread().setContextClassLoader(classLoader);
 		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
@@ -137,14 +153,10 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void start() throws Throwable {
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName).getComponentLifeCycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
-			try {
-				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-				lifeCycle.getData().prepareInit();
-			} catch (Exception e) {
-				logger.error("", e);
-			}
+			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+			lifeCycle.getData().prepareInit();
 		}
 		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
 		if (definedServiceExecutor != null)
@@ -203,6 +215,11 @@ public class ServiceBase implements Service {
 		}
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		servicesManager.fireCreate(dawdlerContext);
+
+		if (healthCheck.isCheck()) {
+			checkHealth();
+		}
+
 		dawdlerListenerProvider.order();
 		filterProvider.orderAndBuildChain();
 
@@ -217,12 +234,8 @@ public class ServiceBase implements Service {
 		dawdlerContext.setAttribute(DAWDLER_LISTENER_PROVIDER, dawdlerListenerProvider);
 
 		for (int i = 0; i < lifeCycleList.size(); i++) {
-			try {
-				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-				lifeCycle.getData().init();
-			} catch (Exception e) {
-				logger.error("", e);
-			}
+			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+			lifeCycle.getData().init();
 		}
 
 		dawdlerContext.removeAttribute(FILTER_PROVIDER);
@@ -239,13 +252,14 @@ public class ServiceBase implements Service {
 						try {
 							orderData.getData().contextInitialized(dawdlerContext);
 						} catch (Exception e) {
-							logger.error("", e);
+							throw new RuntimeException(e);
 						}
 					}
 				}).start();
 			} else {
 				orderData.getData().contextInitialized(dawdlerContext);
 			}
+
 		}
 	}
 
@@ -284,7 +298,7 @@ public class ServiceBase implements Service {
 
 		servicesManager.clear();
 
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getComponentlifecycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName).getComponentLifeCycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
 				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
@@ -293,7 +307,6 @@ public class ServiceBase implements Service {
 				logger.error("", e);
 			}
 		}
-		SerializeDecider.destroyed();
 	}
 
 	public DawdlerContext getDawdlerContext() {
@@ -415,5 +428,72 @@ public class ServiceBase implements Service {
 			return false;
 		}
 
+	}
+
+	private void checkHealth() throws Throwable {
+		getServiceHealth();
+		if (cause != null) {
+			throw cause;
+		}
+	}
+
+	@Override
+	public ServiceHealth getServiceHealth() {
+		if (status == Status.DOWN) {
+			ServiceHealth serviceHealth = new ServiceHealth(deployName);
+			serviceHealth.setStatus(status);
+			serviceHealth.addComponent("error", cause.getClass().getName() + ":" + cause.getMessage());
+			return serviceHealth;
+		}
+		Thread.currentThread().setContextClassLoader(classLoader);
+		ServiceHealth serviceHealth = new ServiceHealth(deployName);
+		serviceHealth.setStatus(Status.STARTING);
+		HealthIndicatorProvider healthChecker = HealthIndicatorProvider.getInstance(deployName);
+		List<OrderData<HealthIndicator>> healthIndicators = healthChecker.getHealthIndicators();
+		boolean down = false;
+		for (OrderData<HealthIndicator> orderData : healthIndicators) {
+			HealthIndicator healthIndicator = orderData.getData();
+			if (!healthCheck.componentCheck(healthIndicator.name())) {
+				continue;
+			}
+			Health.Builder builder = Health.up();
+			try {
+				builder.setName(healthIndicator.name());
+				Health componentHealth = healthIndicator.check(builder);
+				serviceHealth.addComponent(componentHealth);
+			} catch (Exception e) {
+				cause(e);
+				serviceHealth.addComponent(Health.down(e).setName(builder.getName()).build());
+				down = true;
+			}
+		}
+		String status;
+			if (down) {
+				status = Status.DOWN;
+			} else {
+				status = Status.UP;
+			}
+		serviceHealth.setStatus(status);
+		return serviceHealth;
+	}
+
+	@Override
+	public String getStatus() {
+		return status;
+	}
+
+	@Override
+	public Throwable getCause() {
+		return cause;
+	}
+
+	@Override
+	public void status(String status) {
+		this.status = status;
+	}
+
+	@Override
+	public void cause(Throwable cause) {
+		this.cause = cause;
 	}
 }

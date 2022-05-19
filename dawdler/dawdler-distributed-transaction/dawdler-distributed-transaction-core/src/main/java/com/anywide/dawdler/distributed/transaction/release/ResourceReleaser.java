@@ -29,11 +29,11 @@ import redis.clients.jedis.util.Pool;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title ResourceReleaser.java
  * @Description 资源释放者 释放redis rabbitmq
- * @author jackson.song
  * @date 2021年4月11日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class ResourceReleaser {

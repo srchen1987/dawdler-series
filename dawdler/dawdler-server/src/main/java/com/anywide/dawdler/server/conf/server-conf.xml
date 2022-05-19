@@ -12,11 +12,15 @@
 		</jar-files>
 
 		<packages-in-jar>
-			<package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
-			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
+			<package-path>com.anywide.dawdler.distributed.transaction.aspect
+			</package-path>
+			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect
+			</package-path>
 			<package-path>org.apache.ibatis.session.defaults</package-path>
-			<package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
-			<package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
+			<package-path>com.anywide.dawdler.serverplug.service.impl
+			</package-path>
+			<package-path>com.anywide.dawdler.serverplug.**.listener
+			</package-path>
 		</packages-in-jar>
 	</scanner>
 	<keyStore
@@ -47,4 +51,13 @@
 			<user username="order_user1" password="user1password" />
 		</module>
 	</module-auth><!-- 模块下的用户，只能调用指定模块 第一行为帐号 第二行为密码 -->
+
+	<health-check check="on" scheme="https" port="19001"
+		backlog="0" username="jackson" password="jackson.song">
+		<elasticSearch check="on" />
+		<jedis check="on" />
+		<rabbit check="on" />
+		<dataSource check="on" />
+		<config check="on" />
+	</health-check>
 </config>

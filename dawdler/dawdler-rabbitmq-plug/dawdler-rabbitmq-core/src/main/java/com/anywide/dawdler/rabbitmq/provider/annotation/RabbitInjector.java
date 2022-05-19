@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RabbitInjector.java
  * @Description 标注一个成员变量 注入RabbitProvider
- * @author jackson.song
  * @date 2022年4月15日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)

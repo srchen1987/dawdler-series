@@ -28,7 +28,6 @@ import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 import com.anywide.dawdler.util.HashedWheelTimer;
-import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
 
@@ -80,7 +79,6 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
 		}
-		JVMTimeProvider.stop();
 	}
 
 	public class ProviderTimeoutTask implements TimerTask {

@@ -29,7 +29,7 @@
 		<commons-io.version>2.2</commons-io.version>
 		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
-		<elasticsearch.version>7.16.0</elasticsearch.version>
+		<elasticsearch.version>8.2.0</elasticsearch.version>
 		<pinpoint.version>2.3.1</pinpoint.version>
 		<qdox.version>2.0.1</qdox.version>
 	</properties>

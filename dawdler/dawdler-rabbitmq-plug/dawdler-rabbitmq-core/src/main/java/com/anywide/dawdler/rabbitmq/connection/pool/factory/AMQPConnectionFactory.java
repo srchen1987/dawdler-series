@@ -32,18 +32,19 @@ import com.rabbitmq.client.ConnectionFactory;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title AMQPConnectionFactory.java
  * @Description AMQP连接多例工厂
- * @author jackson.song
  * @date 2021年4月11日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class AMQPConnectionFactory {
 	private GenericObjectPool<Connection> genericObjectPool;
-	private static Map<String, AMQPConnectionFactory> instances = new ConcurrentHashMap<>();
+	private final static Map<String, AMQPConnectionFactory> instances = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 	private int channelSize;
+
 	// 重试交换器
 	public final static String RABBIT_RETRY_EXCHANGE = "rabbit_retry_exchange";
 	// 重试队列（重试队列会设置过期时间，过期后会再次发送到正常工作队列中）
@@ -169,6 +170,10 @@ public class AMQPConnectionFactory {
 
 	public int getChannelSize() {
 		return channelSize;
+	}
+	
+	public static Map<String, AMQPConnectionFactory> getInstances() {
+		return instances;
 	}
 
 }
