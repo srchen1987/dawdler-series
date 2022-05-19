@@ -44,11 +44,11 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title DistributedTransactionAspect.java
  * @Description aop拦截器 根据事务注解来做事务处理
- * @author jackson.song
  * @date 2021年4月10日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Aspect

@@ -30,11 +30,11 @@ import com.anywide.dawdler.distributed.transaction.release.ResourceReleaser;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title WebListener2StartCompensator.java
  * @Description 补偿模块的监听器 启动初始化定时任务，销毁时释放资源
- * @author jackson.song
  * @date 2021年4月17日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @WebListener

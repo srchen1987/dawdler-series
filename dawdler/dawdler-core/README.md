@@ -62,3 +62,28 @@ public @interface RemoteServiceAssistant {
  String loadBalance() default "roundRobin";// 调用端有效,负载方式,此参数覆盖@RemoteService中的loadBalance().
 }
 ```
+
+### 5. ComponentLifeCycle 容器生命周期接口
+
+用于实现客户端/服务端容器,启动前/启动后/销毁的生命周期管理.
+
+```java
+public interface ComponentLifeCycle {
+
+	default public void prepareInit() throws Throwable {
+	};
+	
+	default public void init() throws Throwable {
+	};
+
+	default public void destroy() throws Throwable {
+	};
+
+}
+```
+
+在客户端(tomcat)中的顺序 prepareInit > WebContextListener > init
+
+在服务端(dawdler)中的顺序 prepareInit > init > DawdlerServiceListener
+
+具体实现可参考 redis、rabbitmq等组件相关实现该接口的类.

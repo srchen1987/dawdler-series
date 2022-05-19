@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title Order.java
  * @Description 排序注解
- * @author jackson.song
  * @date 2015年6月03日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)

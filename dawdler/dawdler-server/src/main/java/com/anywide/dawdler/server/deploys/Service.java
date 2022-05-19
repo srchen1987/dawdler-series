@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.server.deploys;
 
+import com.anywide.dawdler.core.health.ServiceHealth;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.filter.FilterProvider;
@@ -45,4 +46,14 @@ public interface Service {
 	ServiceExecutor getServiceExecutor();
 
 	FilterProvider getFilterProvider();
+	
+	public ServiceHealth getServiceHealth();
+	
+	public void status(String status);
+	
+	public void cause(Throwable throwable);
+	
+	public String getStatus();
+
+	public Throwable getCause();
 }

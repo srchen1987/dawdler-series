@@ -72,6 +72,14 @@ server-conf.xml 是dawdler服务器的核心配置文件.
    <user username="order_user1" password="user1password" />
   </module>
  </module-auth><!-- 模块下的用户,module中的name指定模块名,user节点中username属性第是用户名,password是密码 -->
+
+ <health-check check="on" scheme="https" port="19001" backlog="0" username="jackson" password="jackson.song">
+	<elasticSearch check="on" />
+	<jedis check="on" />
+	<rabbit check="on" />
+	<dataSource check="on" />
+	<config check="on" />
+ </health-check>
 </config>
 
 ```
@@ -97,7 +105,7 @@ shutdownWhiteList="127.0.0.1,localhost" shutdownWhiteList允许关闭服务的�
 
 tcp-shutdownPort="19530" 关闭服务的端口号
 
-tcp-backlog="200" 最大客户端等待队列
+tcp-backlog="200" 指定socket链接队列的长度
 
 tcp-sendBuffer="163840" TCP发送缓存区
 
@@ -117,6 +125,36 @@ maxThreads=200 处理业务线程池的大小
 ##### module-auth节点
 
  用户配置指定模块下的用户,module中的name指定模块名,user节点中username属性第是用户名,password是密码.
+
+##### health-check节点
+
+用于做健康检测的配置,可以为k8s的liveness,readiness提供该服务.如果设有带(Basic Authentication)的认证,请通过head头加入Authorization头信息.
+
+
+check="on" 为开启健康检测,off为关闭.关闭后不会开启http/https服务.
+
+scheme="http" 提供http服务,支持设为https,使用keyStore中的keystore为https证书.
+
+port="19001" 提供http/https 服务的端口号
+
+backlog="0"  指定socket链接队列的长度,默认为0,系统级限制.
+
+username="jackson" 用户名,未填写该属性则不开启认证模块.
+
+password="jackson.song" 密码,未填写该属性则不开启认证模块.
+
+以下为已支持健康检测的组件节点,check设为off或不填此节点则不会触发健康检测.
+
+elasticSearch es检测
+
+jedis redis检测
+
+rabbit rabbitmq检测
+
+dataSource 数据源检测
+
+config 配置中心检测
+
 
 #### 2.2 data-sources.xml说明
 
@@ -174,7 +212,9 @@ dawdler示例中采用keytool制作的证书,服务器端配置在server-conf文
 keytool制作的证书的命令如下：
 
 ```shell
-keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=jackson,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
+keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=jackson,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song
+
+keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
 ```
 
 ##### keytool命令说明

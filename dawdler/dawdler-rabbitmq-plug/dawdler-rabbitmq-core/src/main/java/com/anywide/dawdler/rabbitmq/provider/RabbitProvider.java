@@ -31,11 +31,11 @@ import com.rabbitmq.client.Connection;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RabbitProvider.java
  * @Description rabbitmq消息提供者
- * @author jackson.song
  * @date 2022年4月15日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class RabbitProvider {

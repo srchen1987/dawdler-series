@@ -54,7 +54,7 @@ public class Bootstrap {
 		serverConfig = serverConfigParser.getServerConfig();
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws Exception {
 		initServerConfig();
 		if (args != null && args.length > 0) {
 			String command = args[0].trim();

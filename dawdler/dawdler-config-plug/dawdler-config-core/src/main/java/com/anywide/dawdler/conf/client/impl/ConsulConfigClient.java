@@ -36,6 +36,7 @@ import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.agent.model.Self.Config;
 import com.ecwid.consul.v1.kv.model.GetValue;
 
 /**
@@ -168,6 +169,12 @@ public class ConsulConfigClient implements ConfigClient {
 			}
 		}
 		return responseValues.getConsulIndex();
+	}
+	
+	@Override
+	public String info() throws Exception{
+		Config config = client.getAgentSelf().getValue().getConfig();
+		return config.getNodeName()+"-"+config.getDatacenter()+"-"+ config.getVersion();
 	}
 
 }

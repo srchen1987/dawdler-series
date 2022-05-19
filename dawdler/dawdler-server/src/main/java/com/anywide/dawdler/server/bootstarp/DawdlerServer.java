@@ -60,7 +60,7 @@ public class DawdlerServer {
 	private final DawdlerServerContext dawdlerServerContext;
 	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
 
-	public DawdlerServer(ServerConfig serverConfig) throws IOException {
+	public DawdlerServer(ServerConfig serverConfig) throws Exception {
 		dawdlerServerContext = new DawdlerServerContext(serverConfig);
 		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(
 				Runtime.getRuntime().availableProcessors() * 2, dawdlerForkJoinWorkerThreadFactory, null, true));
@@ -71,7 +71,7 @@ public class DawdlerServer {
 		serverChannel = AsynchronousServerSocketChannel.open();
 		String addressString = NetworkUtil.getInetAddress(host);
 		if (addressString == null) {
-			throw new UnknownHostException("server-conf.xml server host :  " + host);
+			throw new UnknownHostException("server-conf.xml server host : " + host);
 		}
 		server.setHost(addressString);
 		dawdlerServerContext.initApplication();

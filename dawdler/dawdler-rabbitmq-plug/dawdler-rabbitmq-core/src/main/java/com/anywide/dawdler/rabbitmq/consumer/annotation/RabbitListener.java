@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RabbitListener.java
  * @Description 标注一个方法是否是rabbitmq的消费者 此方法格式固定为void methodName(Message message)
- * @author jackson.song
  * @date 2022年4月14日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)
