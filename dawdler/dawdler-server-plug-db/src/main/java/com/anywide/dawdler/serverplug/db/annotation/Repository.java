@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title Repository.java
  * @Description 代替Resource，注入dao或mapper的注解，jdk8之后移除了Resource注解
- * @author jackson.song
  * @date 2021年12月18日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Target(ElementType.FIELD)

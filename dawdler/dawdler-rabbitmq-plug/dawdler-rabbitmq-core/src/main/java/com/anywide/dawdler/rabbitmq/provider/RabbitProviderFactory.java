@@ -24,11 +24,11 @@ import com.anywide.dawdler.rabbitmq.provider.annotation.RabbitInjector;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RabbitProviderFactory.java
  * @Description rabbitmq消息提供者工厂
- * @author jackson.song
  * @date 2022年4月15日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class RabbitProviderFactory {

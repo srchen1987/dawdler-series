@@ -30,10 +30,6 @@ import com.anywide.dawdler.es.restclient.pool.factory.ElasticSearchClientFactory
 public class ElasticSearchLifeCycle implements ComponentLifeCycle {
 
 	@Override
-	public void init() {
-	}
-
-	@Override
 	public void destroy() {
 		ElasticSearchClientFactory.shutdownAll();
 	}

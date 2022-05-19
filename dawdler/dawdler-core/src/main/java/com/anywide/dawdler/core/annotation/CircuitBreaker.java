@@ -24,11 +24,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title CircuitBreaker.java
  * @Description 熔断器接口注解
- * @author jackson.song
  * @date 2018年3月10日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Inherited

@@ -32,11 +32,11 @@ import com.rabbitmq.client.impl.recovery.AutorecoveringConnection;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title PooledConnectionFactory.java
  * @Description 连接池工厂 通过pool2实现
- * @author jackson.song
  * @date 2021年4月11日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class PooledConnectionFactory extends BasePooledObjectFactory<Connection> {

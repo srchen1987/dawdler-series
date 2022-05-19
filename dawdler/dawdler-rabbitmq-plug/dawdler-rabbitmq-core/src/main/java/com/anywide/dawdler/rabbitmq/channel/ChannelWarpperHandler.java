@@ -30,11 +30,11 @@ import com.rabbitmq.client.Connection;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title ChannelWarpperHandler.java
  * @Description Channel动态代理类
- * @author jackson.song
  * @date 2021年4月11日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class ChannelWarpperHandler implements InvocationHandler {

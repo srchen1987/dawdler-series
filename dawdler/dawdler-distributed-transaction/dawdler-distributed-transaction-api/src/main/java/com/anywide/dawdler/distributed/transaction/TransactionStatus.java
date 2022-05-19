@@ -18,11 +18,11 @@ package com.anywide.dawdler.distributed.transaction;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title TransactionStatus.java
  * @Description 事务状态
- * @author jackson.song
  * @date 2021年4月10日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class TransactionStatus {

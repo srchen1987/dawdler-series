@@ -95,12 +95,12 @@ public class EsOperatorFactory {
 			throws IllegalArgumentException, IllegalAccessException, Exception {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
-			EsInjector esRestHighLevelInjector = field.getAnnotation(EsInjector.class);
+			EsInjector esInjector = field.getAnnotation(EsInjector.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
-				if (esRestHighLevelInjector != null && EsOperator.class.isAssignableFrom(serviceClass)) {
+				if (esInjector != null && EsOperator.class.isAssignableFrom(serviceClass)) {
 					field.setAccessible(true);
-					field.set(target, EsOperatorFactory.getEsRestHighLevelOperator(esRestHighLevelInjector.value()));
+					field.set(target, EsOperatorFactory.getEsRestHighLevelOperator(esInjector.value()));
 				}
 			}
 		}

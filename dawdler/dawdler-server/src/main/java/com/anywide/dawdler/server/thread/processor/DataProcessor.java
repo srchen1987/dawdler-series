@@ -36,7 +36,6 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.bootstarp.ServerConnectionManager;
 import com.anywide.dawdler.server.conf.ServerConfig;
-import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.deploys.Service;
 import com.anywide.dawdler.server.deploys.ServiceRoot;
 import com.anywide.dawdler.server.filter.RequestWrapper;
@@ -110,7 +109,6 @@ public class DataProcessor implements Runnable {
 					responseBean.setCause(new ClassNotFoundException(serviceName + " in path :( " + path + " )"));
 				}
 			} finally {
-				DawdlerContext.remove();
 				socketSession.getFutures().remove(requestBean.getSeq());
 			}
 			data = serializer.serialize(responseBean);
