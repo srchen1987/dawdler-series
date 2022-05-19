@@ -22,11 +22,11 @@ import java.util.UUID;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title DistributedTransactionContext.java
  * @Description 事务上下文
- * @author jackson.song
  * @date 2021年4月10日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class DistributedTransactionContext implements Serializable, Cloneable {

@@ -44,6 +44,10 @@ public class ConfigInit {
 	private static ConfigInit configInit = new ConfigInit();
 	private ConfigInit() {
 	}
+	
+	public List<ConfigClient> getConfigClients() {
+		return configClients;
+	}
 	public static ConfigInit getInstance() {
 		return configInit;
 	}

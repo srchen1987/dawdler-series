@@ -51,7 +51,7 @@ public class DawdlerServerContext {
 		this.asynchronousServerSocketChannel = asynchronousServerSocketChannel;
 	}
 
-	public void initApplication() {
+	public void initApplication() throws Exception {
 		serviceRoot.initApplication(this);
 	}
 

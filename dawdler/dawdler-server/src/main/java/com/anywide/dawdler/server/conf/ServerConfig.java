@@ -19,6 +19,7 @@ package com.anywide.dawdler.server.conf;
 import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +44,7 @@ public class ServerConfig {
 	private Server server;
 	private KeyStore keyStore;
 	private Scanner scanner;
+	private HealthCheck healthChecked = new HealthCheck();
 	private Map<String, String> globalAuth = new HashMap<>();
 	private Map<String, Map<String, String>> moduleAuth = new HashMap<>();
 	private volatile CertificateOperator certificateOperator;
@@ -304,4 +306,80 @@ public class ServerConfig {
 	public void setBinPath(URL binPath) {
 		this.binPath = binPath;
 	}
+
+	public class HealthCheck {
+		private boolean check;
+		private int port;
+		private String scheme;
+		private int backlog;
+		private String username;
+		private String password;
+		private Set<String> componentCheck;
+
+		public HealthCheck() {
+			componentCheck = new HashSet<>();
+		}
+
+		public boolean isCheck() {
+			return check;
+		}
+
+		public void setCheck(boolean check) {
+			this.check = check;
+		}
+
+		public void addComponentCheck(String componentName) {
+			componentCheck.add(componentName);
+		}
+
+		public boolean componentCheck(String componentName) {
+			return componentCheck.contains(componentName);
+		}
+
+		public int getPort() {
+			return port;
+		}
+
+		public void setPort(int port) {
+			this.port = port;
+		}
+
+		public String getScheme() {
+			return scheme;
+		}
+
+		public void setScheme(String scheme) {
+			this.scheme = scheme;
+		}
+
+		public int getBacklog() {
+			return backlog;
+		}
+
+		public void setBacklog(int backlog) {
+			this.backlog = backlog;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+		
+	}
+
+	public HealthCheck getHealthCheck() {
+		return healthChecked;
+	}
+
 }

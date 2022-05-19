@@ -32,6 +32,7 @@ import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.conf.ServerConfig.KeyStore;
 import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
@@ -125,6 +126,41 @@ public class ServerConfigParser {
 		}
 	}
 
+	public void loadModuleHealthCheck(Element healthCheckEle) {
+		if (healthCheckEle != null) {
+			String check = healthCheckEle.attributeValue("check");
+			if (check != null && check.trim().equals("on")) {
+				HealthCheck healthCheck = serverConfig.getHealthCheck();
+				healthCheck.setCheck(true);
+				
+				int port = Integer.parseInt(healthCheckEle.attributeValue("port"));
+				healthCheck.setPort(port);
+				
+				String scheme = healthCheckEle.attributeValue("scheme");
+				healthCheck.setScheme(scheme);
+				
+				int backlog = Integer.parseInt(healthCheckEle.attributeValue("port"));
+				healthCheck.setBacklog(backlog);
+				
+				if("https".equals(scheme)) {
+					String username = healthCheckEle.attributeValue("username");
+					healthCheck.setUsername(username);
+					String password = healthCheckEle.attributeValue("password");
+					healthCheck.setPassword(password);
+				}
+				
+				List<Element> componentElements = healthCheckEle.elements();
+				for (Element componentElement : componentElements) {
+					String componentCheck = componentElement.attributeValue("check");
+					if (componentCheck != null && componentCheck.trim().equals("on")) {
+						healthCheck.addComponentCheck(componentElement.getName());
+					}
+				}
+			}
+		}
+
+	}
+	
 	public ServerConfigParser(URL binPath) {
 		serverConfig = new ServerConfig();
 		serverConfig.setBinPath(binPath);
@@ -147,6 +183,9 @@ public class ServerConfigParser {
 
 			Element moduleAuthEle = (Element) root.selectSingleNode("module-auth");
 			loadModuleAuth(moduleAuthEle);
+
+			Element healthCheckEle = (Element) root.selectSingleNode("health-check");
+			loadModuleHealthCheck(healthCheckEle);
 
 		} catch (Exception e) {
 			logger.error("", e);
