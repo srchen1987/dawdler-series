@@ -21,11 +21,11 @@ import com.rabbitmq.client.Envelope;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title Message.java
  * @Description mq消费信息包装类
- * @author jackson.song
  * @date 2022年4月14日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class Message {

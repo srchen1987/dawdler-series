@@ -60,8 +60,8 @@ import org.objectweb.asm.Type;
  */
 public abstract class MethodAccess {
 	private String[] methodNames;
-	private Class[][] parameterTypes;
-	private Class[] returnTypes;
+	private Class<?>[][] parameterTypes;
+	private Class<?>[] returnTypes;
 	private Annotation[][] annotations;
 	private Parameter[][] parameters;
 
@@ -89,7 +89,7 @@ public abstract class MethodAccess {
 	 * @param type Must not be the Object class, an interface, a primitive type, or
 	 *             void.
 	 */
-	static public MethodAccess get(Class type) {
+	static public MethodAccess get(Class<?> type) {
 		if (type.getSuperclass() == null)
 			throw new IllegalArgumentException(
 					"The type must not be the Object class, an interface, a primitive type, or void.");
@@ -97,7 +97,7 @@ public abstract class MethodAccess {
 		ArrayList<Method> methods = new ArrayList<Method>();
 		boolean isInterface = type.isInterface();
 		if (!isInterface) {
-			Class nextClass = type;
+			Class<?> nextClass = type;
 			while (nextClass != Object.class) {
 				addDeclaredMethodsToList(nextClass, methods);
 				nextClass = nextClass.getSuperclass();
@@ -110,8 +110,8 @@ public abstract class MethodAccess {
 
 		int n = methods.size();
 		String[] methodNames = new String[n];
-		Class[][] parameterTypes = new Class[n][];
-		Class[] returnTypes = new Class[n];
+		Class<?>[][] parameterTypes = new Class<?>[n][];
+		Class<?>[] returnTypes = new Class<?>[n];
 		Annotation[][] annotations = new Annotation[n][0];
 		for (int i = 0; i < n; i++) {
 			Method method = methods.get(i);
@@ -125,7 +125,7 @@ public abstract class MethodAccess {
 		String accessClassName = className + "MethodAccess";
 		if (accessClassName.startsWith("java."))
 			accessClassName = "reflectasm." + accessClassName;
-		Class accessClass;
+		Class<?> accessClass;
 
 		AccessClassLoader loader = AccessClassLoader.get(type);
 		try {
@@ -181,8 +181,8 @@ public abstract class MethodAccess {
 								buffer.setLength(0);
 								buffer.append('(');
 
-								Class[] paramTypes = parameterTypes[i];
-								Class returnType = returnTypes[i];
+								Class<?>[] paramTypes = parameterTypes[i];
+								Class<?> returnType = returnTypes[i];
 								for (int paramIndex = 0; paramIndex < paramTypes.length; paramIndex++) {
 									mv.visitVarInsn(ALOAD, 3);
 									mv.visitIntInsn(BIPUSH, paramIndex);
@@ -328,7 +328,7 @@ public abstract class MethodAccess {
 		}
 	}
 
-	private static void addDeclaredMethodsToList(Class type, ArrayList<Method> methods) {
+	private static void addDeclaredMethodsToList(Class<?> type, ArrayList<Method> methods) {
 		Method[] declaredMethods = type.getDeclaredMethods();
 		for (int i = 0, n = declaredMethods.length; i < n; i++) {
 			Method method = declaredMethods[i];
@@ -339,9 +339,9 @@ public abstract class MethodAccess {
 		}
 	}
 
-	private static void recursiveAddInterfaceMethodsToList(Class interfaceType, ArrayList<Method> methods) {
+	private static void recursiveAddInterfaceMethodsToList(Class<?> interfaceType, ArrayList<Method> methods) {
 		addDeclaredMethodsToList(interfaceType, methods);
-		for (Class nextInterface : interfaceType.getInterfaces()) {
+		for (Class<?> nextInterface : interfaceType.getInterfaces()) {
 			recursiveAddInterfaceMethodsToList(nextInterface, methods);
 		}
 	}
@@ -368,7 +368,7 @@ public abstract class MethodAccess {
 	/**
 	 * Invokes the method with the specified name and the specified param types.
 	 */
-	public Object invoke(Object object, String methodName, Class[] paramTypes, Object... args) {
+	public Object invoke(Object object, String methodName, Class<?>[] paramTypes, Object... args) {
 		return invoke(object, getIndex(methodName, paramTypes), args);
 	}
 
@@ -394,7 +394,7 @@ public abstract class MethodAccess {
 	 * Returns the index of the first method with the specified name and param
 	 * types.
 	 */
-	public int getIndex(String methodName, Class... paramTypes) {
+	public int getIndex(String methodName, Class<?>... paramTypes) {
 		for (int i = 0, n = methodNames.length; i < n; i++)
 			if (methodNames[i].equals(methodName) && Arrays.equals(paramTypes, parameterTypes[i]))
 				return i;
@@ -420,11 +420,15 @@ public abstract class MethodAccess {
 		return methodNames;
 	}
 
-	public Class[][] getParameterTypes() {
+	public Class<?>[][] getParameterTypes() {
 		return parameterTypes;
 	}
 
-	public Class[] getReturnTypes() {
+	public Class<?>[] getReturnTypes() {
 		return returnTypes;
+	}
+	
+	public Class<?> getReturnType(int methodIndex) {
+		return returnTypes[methodIndex];
 	}
 }

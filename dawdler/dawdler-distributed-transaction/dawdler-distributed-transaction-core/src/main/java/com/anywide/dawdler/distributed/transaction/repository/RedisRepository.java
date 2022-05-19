@@ -38,11 +38,11 @@ import redis.clients.jedis.util.Pool;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RedisRepository.java
  * @Description 基于redis实现的存储方式
- * @author jackson.song
  * @date 2021年4月10日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class RedisRepository extends TransactionRepository {

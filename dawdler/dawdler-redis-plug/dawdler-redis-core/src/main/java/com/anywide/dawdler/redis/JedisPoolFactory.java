@@ -42,7 +42,8 @@ import redis.clients.jedis.util.Pool;
  * @email suxuan696@gmail.com
  */
 public final class JedisPoolFactory {
-	private static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
+	private final static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
+
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {
@@ -104,12 +105,10 @@ public final class JedisPoolFactory {
 		Pool<Jedis> pool = pools.get(fileName);
 		if (pool != null)
 			return pool;
-		if (pool == null) {
-			synchronized (pools) {
-				pool = pools.get(fileName);
-				if (pool == null) {
-					pools.put(fileName, createJedisPool(fileName));
-				}
+		synchronized (pools) {
+			pool = pools.get(fileName);
+			if (pool == null) {
+				pools.put(fileName, createJedisPool(fileName));
 			}
 		}
 		return pools.get(fileName);
@@ -123,6 +122,10 @@ public final class JedisPoolFactory {
 				}
 			});
 		}
+	}
+	
+	public static Map<String, Pool<Jedis>> getPools() {
+		return pools;
 	}
 
 }

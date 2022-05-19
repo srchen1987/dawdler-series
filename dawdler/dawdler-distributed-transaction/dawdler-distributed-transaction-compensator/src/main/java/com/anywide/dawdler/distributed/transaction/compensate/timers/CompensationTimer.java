@@ -35,11 +35,11 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title CompensationTimer.java
  * @Description 定时补偿器
- * @author jackson.song
  * @date 2021年4月17日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public class CompensationTimer implements Runnable {

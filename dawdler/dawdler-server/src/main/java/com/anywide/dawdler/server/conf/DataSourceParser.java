@@ -17,9 +17,13 @@
 package com.anywide.dawdler.server.conf;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import javax.sql.DataSource;
 
@@ -42,6 +46,7 @@ import com.anywide.dawdler.util.XmlObject;
  */
 public class DataSourceParser {
 	private static XmlObject dataourceConfig;
+	private static Map<String, DataSource> dataSources;
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceParser.class);
 	static {
 		File file = new File(DawdlerTool.getcurrentPath() + "../conf/data-sources.xml");
@@ -60,7 +65,7 @@ public class DataSourceParser {
 			xmlo = dataourceConfig;
 		if (xmlo == null)
 			return null;
-		Map<String, DataSource> dataSources = new HashMap<>();
+		dataSources = new HashMap<>();
 		List<Node> dataSourceList = xmlo.selectNodes("/config/datasources/datasource");
 		for (Object dataSource : dataSourceList) {
 			Element ele = (Element) dataSource;
@@ -80,9 +85,13 @@ public class DataSourceParser {
 				if (attributeName != null) {
 					try {
 						attributeName = captureName(attributeName);
-						ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
-					} catch (Exception ex) {
 						ReflectionUtil.invoke(obj, "set" + attributeName, value);
+					} catch (Exception ex) {
+						try {
+							ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
+						} catch (Exception exception) {
+							ReflectionUtil.invoke(obj, "set" + attributeName, Long.parseLong(value));
+						}
 					}
 				}
 			}
@@ -92,9 +101,14 @@ public class DataSourceParser {
 		return dataSources;
 	}
 
+	public static Map<String, DataSource> getDataSources() {
+		return dataSources;
+	}
+
 	private static String captureName(String str) {
 		char[] cs = str.toCharArray();
-		cs[0] = Character.toLowerCase(cs[0]);
+		cs[0] -= 32;
 		return String.valueOf(cs);
 	}
+
 }
