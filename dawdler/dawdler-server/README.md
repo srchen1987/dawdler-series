@@ -389,3 +389,19 @@ public class UserServiceAspect {
 ```
 
 dawdler-server-plug-mybatis中的读写分离也是基于aop实现的,请参考[通过aop切换数据库连接](../dawdler-server-plug-mybatis/src/main/java/com/anywide/dawdler/serverplug/db/mybatis/aspect/SwitchConnectionAspect.java).
+
+### 7. 健康检测
+
+dawdler服务端提供健康检测功能,uri为/status,参考[health-check节点](#health-check节点)配置.
+
+示例:
+
+https://192.168.43.137:19001/status
+
+返回:
+
+```json
+
+{"status":"UP","chain-service":{"status":"UP","rabbit":{"status":"UP"},"jedis":{"status":"UP"},"dataSource":{"status":"UP"}},"wallet-service":{"status":"UP","rabbit":{"rabbitmq":{"version":"3.9.10","status":"UP"},"status":"UP"},"jedis":{"jedis":{"version":"redis_version:6.2.1","status":"UP"},"status":"UP"},"elasticSearch":{"myEs":{"clusterName":"elasticsearch","numberOfNodes":1,"numberOfDataNodes":1,"activePrimaryShards":2,"activeShards":2,"relocatingShards":0,"initializingShards":0,"unassignedShards":0,"status":"UP"},"status":"UP"},"dataSource":{"write1":{"status":"UP"},"read1":{"status":"UP"},"status":"UP"},"config":{"consul":{"info":"fedora-dc1-1.12.0","status":"UP"},"status":"UP"}}}
+
+```
