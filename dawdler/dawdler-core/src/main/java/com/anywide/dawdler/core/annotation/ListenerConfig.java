@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title ListenerConfig.java
  * @Description 监听器注解,用于DawdlerServiceListener
- * @author jackson.song
  * @date 2015年6月19日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 

@@ -23,11 +23,11 @@ import java.lang.annotation.Target;
 
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RemoteService.java
  * @Description 标注一个类是远程提供服务的注解
- * @author jackson.song
  * @date 2015年4月26日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)
