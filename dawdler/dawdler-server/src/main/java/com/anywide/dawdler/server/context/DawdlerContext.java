@@ -40,7 +40,6 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
  * @email suxuan696@gmail.com
  */
 public class DawdlerContext {
-	private static final String DAWDLER_CONTEXT_PREFIX = "dawdler_context_prefix";
 	private final ClassLoader classLoader;
 	private final String deployPath;
 	private final String deployName;
@@ -64,19 +63,9 @@ public class DawdlerContext {
 		this.antPathMatcher = antPathMatcher;
 	}
 
-	public static void remove() {
-		TLS.remove(DAWDLER_CONTEXT_PREFIX);
-	}
-
 	public static DawdlerContext getDawdlerContext() {
-		DawdlerContext context = (DawdlerContext) TLS.get(DAWDLER_CONTEXT_PREFIX);
-		if (context == null)
-			context = ((DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader()).getDawdlerContext();
+		DawdlerContext context = ((DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader()).getDawdlerContext();
 		return context;
-	}
-
-	public static void setDawdlerContext(DawdlerContext dawdlerContext) {
-		TLS.set(DAWDLER_CONTEXT_PREFIX, dawdlerContext);
 	}
 
 	public ClassLoader getClassLoader() {

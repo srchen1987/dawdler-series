@@ -25,11 +25,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 /**
  *
+ * @author jackson.song
+ * @version V1.0
  * @Title RequestMapping.java
  * @Description http接口请求注解
- * @author jackson.song
  * @date 2007年4月17日
- * @version V1.0
  * @email suxuan696@gmail.com
  */
 public @interface RequestMapping {

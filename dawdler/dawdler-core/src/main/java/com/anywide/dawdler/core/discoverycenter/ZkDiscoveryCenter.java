@@ -38,7 +38,6 @@ import org.apache.zookeeper.CreateMode;
  */
 public class ZkDiscoveryCenter implements DiscoveryCenter {
 	protected static final String ROOT_PATH = "/dawdler";
-	// protected TreeCache treeCache = null;用CuratorCache替代了
 	protected CuratorCache curatorCache = null;
 	protected CuratorFramework client;
 	protected String connectString;
@@ -57,7 +56,12 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	public void init() {
 		// 连接时间 和重试次数
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 0);
-		client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
+		if(user != null && !user.trim().equals("") && password != null && !password.trim().equals("")) {
+			client = CuratorFrameworkFactory.builder().connectString(connectString).authorization(ROOT_PATH, (user+":"+password).getBytes()).retryPolicy(retryPolicy).build();
+		}else {
+			client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
+		}
+		
 		client.start();
 	}
 
@@ -71,7 +75,6 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 				Field field;
 				try {
 					field = client.getClass().getDeclaredField("runSafeService");// 这是一个bug,目前已经提交了pr给apache
-																					// 参考https://github.com/apache/curator/pull/415
 					field.setAccessible(true);
 					ExecutorService runSafeService = (ExecutorService) field.get(client);
 					if (runSafeService != null) {
@@ -79,7 +82,6 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 					}
 				} catch (Exception e) {
 				}
-
 				client.close();
 			}
 
