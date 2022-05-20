@@ -392,6 +392,10 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>1.8</source>
 					<target>1.8</target>
+					<compilerArguments>
+						<verbose />
+						<bootclasspath>${JAVA_HOME}/lib/rt.jar:${JAVA_HOME}/lib/jce.jar</bootclasspath>
+					</compilerArguments>
 				</configuration>
 			</plugin>
 			<plugin>
