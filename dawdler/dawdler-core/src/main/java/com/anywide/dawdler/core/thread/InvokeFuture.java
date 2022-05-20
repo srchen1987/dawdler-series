@@ -32,7 +32,7 @@ import com.anywide.dawdler.core.exception.DawdlerOperateException;
  * @version V1.0
  * @Title InvokeFuture.java
  * @Description 执行结果
- * @date 2015年4月03日
+ * @date 2015年4月3日
  * @email suxuan696@gmail.com
  */
 public class InvokeFuture<V> {

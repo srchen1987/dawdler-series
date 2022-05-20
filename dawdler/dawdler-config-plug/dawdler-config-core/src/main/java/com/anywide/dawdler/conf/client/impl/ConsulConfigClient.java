@@ -170,11 +170,11 @@ public class ConsulConfigClient implements ConfigClient {
 		}
 		return responseValues.getConsulIndex();
 	}
-	
+
 	@Override
-	public String info() throws Exception{
+	public String info() throws Exception {
 		Config config = client.getAgentSelf().getValue().getConfig();
-		return config.getNodeName()+"-"+config.getDatacenter()+"-"+ config.getVersion();
+		return config.getNodeName() + "-" + config.getDatacenter() + "-" + config.getVersion();
 	}
 
 }

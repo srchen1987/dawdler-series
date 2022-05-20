@@ -56,8 +56,9 @@ public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChan
 			readerHandler.process(socketSession);
 		} catch (Exception e) {
 			logger.error("", e);
-			if (socketSession != null)
+			if (socketSession != null) {
 				socketSession.close();
+			}
 		}
 		if (serverChannel.isOpen() && DawdlerServer.isStart()) {
 			serverChannel.accept(dawdlerServerContext, this);

@@ -24,7 +24,7 @@ import com.navercorp.pinpoint.common.trace.TraceMetadataSetupContext;
  * @version V1.0
  * @Title DawdlerTraceMetadataProvider.java
  * @Description pinpoint插件Metadata提供者,初始化配置
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public class DawdlerTraceMetadataProvider implements TraceMetadataProvider {

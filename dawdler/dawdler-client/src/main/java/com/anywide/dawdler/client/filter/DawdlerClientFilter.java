@@ -23,7 +23,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
  * @version V1.0
  * @Title DawdlerClientFilter.java
  * @Description dawdler客户端过滤器接口
- * @date 2015年4月06日
+ * @date 2015年4月6日
  * @email suxuan696@gmail.com
  */
 public interface DawdlerClientFilter {

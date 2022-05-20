@@ -36,7 +36,7 @@ import com.anywide.dawdler.util.spring.antpath.StringUtils;
  * @version V1.0
  * @Title ServerConfig.java
  * @Description 服务器配置类
- * @date 2015年4月04日
+ * @date 2015年4月4日
  * @email suxuan696@gmail.com
  */
 public class ServerConfig {
@@ -375,7 +375,7 @@ public class ServerConfig {
 		public void setPassword(String password) {
 			this.password = password;
 		}
-		
+
 	}
 
 	public HealthCheck getHealthCheck() {

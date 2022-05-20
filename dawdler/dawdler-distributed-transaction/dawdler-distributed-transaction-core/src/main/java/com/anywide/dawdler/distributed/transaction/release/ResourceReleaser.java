@@ -49,11 +49,13 @@ public class ResourceReleaser {
 			logger.error("", e);
 		}
 
-		if (connectionFactory != null)
+		if (connectionFactory != null) {
 			connectionFactory.close();
+		}
 
-		if (redisPool != null)
+		if (redisPool != null) {
 			redisPool.close();
+		}
 
 	}
 

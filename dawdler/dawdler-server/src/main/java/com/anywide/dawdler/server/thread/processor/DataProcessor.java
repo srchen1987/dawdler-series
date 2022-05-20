@@ -81,14 +81,17 @@ public class DataProcessor implements Runnable {
 	public void process() throws Exception {
 		String path = socketSession.getPath();
 		Service service = ServiceRoot.getService(path);
-		if (compress)
+		if (compress) {
 			data = ThresholdCompressionStrategy.staticSingle().decompress(data);
+		}
 		Object obj = serializer.deserialize(data);
-		if (ioHandler != null)
+		if (ioHandler != null) {
 			ioHandler.messageReceived(socketSession, obj);
+		}
 		if (obj instanceof RequestBean) {
-			if (!socketSession.isAuthored())
+			if (!socketSession.isAuthored()) {
 				throw new IllegalAccessException("unauthorized access ！");
+			}
 			RequestBean requestBean = (RequestBean) obj;
 			String serviceName = requestBean.getServiceName();
 			ServicesBean servicesBean = null;
@@ -126,16 +129,18 @@ public class DataProcessor implements Runnable {
 			if (success) {
 				authResponse.setSuccess(true);
 				socketSession.setAuthored(true);
-				if (ioHandler != null)
+				if (ioHandler != null) {
 					ioHandler.channelOpen(socketSession);
+				}
 				ServerConnectionManager.getInstance().addSession(socketSession);
 			} else {
 				logger.warn(socketSession.getRemoteAddress() + " auth failed!");
 			}
 			data = serializer.serialize(authResponse);
 			write();
-		} else
+		} else {
 			throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
+		}
 		data = null;
 	}
 

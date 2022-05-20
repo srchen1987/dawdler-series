@@ -40,8 +40,9 @@ public class RuleOperatorExecuter {
 
 	public static String invokeStringRuleOperator(String RULE_KEY, Object value) {
 		StringRuleOperator so = RuleOperatorProvider.getStringRules().get(RULE_KEY);
-		if (so == null)
+		if (so == null) {
 			return null;
+		}
 		return so.validate(value);
 	}
 

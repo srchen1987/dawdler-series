@@ -112,8 +112,9 @@ public class RedisSessionStore implements SessionStore {
 					session.setCreationTime((Long) obj);
 				} else if (key.equals(DawdlerHttpSession.LAST_ACCESSED_TIME_KEY)) {
 					session.setLastAccessedTime((Long) obj);
-				} else
+				} else {
 					attribute.put(key, obj);
+				}
 			} catch (Exception e) {
 				logger.error("", e);
 				session.getAttributesRemoveNewKeys().add(key);
@@ -177,8 +178,9 @@ public class RedisSessionStore implements SessionStore {
 			}
 			Response<Long> exist = pipeline.expire(id, session.getMaxInactiveInterval() - 5);
 			pipeline.close();
-			if (exist.get() == 0)
+			if (exist.get() == 0) {
 				session.invalidate();
+			}
 			return null;
 		}
 	}

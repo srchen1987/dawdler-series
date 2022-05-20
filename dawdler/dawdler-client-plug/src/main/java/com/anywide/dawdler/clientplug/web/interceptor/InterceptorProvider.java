@@ -49,8 +49,9 @@ public class InterceptorProvider {
 	}
 
 	public static void removeHandlerInterceptor(Class<?> handlerInterceptorClass) {
-		if (!HandlerInterceptor.class.isAssignableFrom(handlerInterceptorClass))
+		if (!HandlerInterceptor.class.isAssignableFrom(handlerInterceptorClass)) {
 			return;
+		}
 		for (OrderData<HandlerInterceptor> orderData : handlerInterceptors) {
 			if (orderData.getData().getClass() == handlerInterceptorClass) {
 				handlerInterceptors.remove(orderData);

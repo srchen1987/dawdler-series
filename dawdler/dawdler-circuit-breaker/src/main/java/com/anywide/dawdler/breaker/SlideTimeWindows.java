@@ -57,21 +57,23 @@ public class SlideTimeWindows {
 			long start = now - now % windowLengthInMs;
 			if (metrics == null) {
 				metrics = new MetricBase(start);
-				if (array.compareAndSet(index, null, metrics))
+				if (array.compareAndSet(index, null, metrics)) {
 					return metrics;
+				}
 				return array.get(index);
 			}
 
 			if (metrics.getStartTime() == start)
 				return metrics;
 			else {
-				if (lock.tryLock())
+				if (lock.tryLock()) {
 					try {
 						metrics.reset(start);
 						return metrics;
 					} finally {
 						lock.unlock();
 					}
+				}
 			}
 		}
 	}

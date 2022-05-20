@@ -56,8 +56,9 @@ public class AMQPConnectionFactory {
 
 	public static AMQPConnectionFactory getInstance(String fileName) throws Exception {
 		AMQPConnectionFactory connectionFactory = instances.get(fileName);
-		if (connectionFactory != null)
+		if (connectionFactory != null) {
 			return connectionFactory;
+		}
 		synchronized (instances) {
 			connectionFactory = instances.get(fileName);
 			if (connectionFactory == null) {
@@ -171,7 +172,7 @@ public class AMQPConnectionFactory {
 	public int getChannelSize() {
 		return channelSize;
 	}
-	
+
 	public static Map<String, AMQPConnectionFactory> getInstances() {
 		return instances;
 	}

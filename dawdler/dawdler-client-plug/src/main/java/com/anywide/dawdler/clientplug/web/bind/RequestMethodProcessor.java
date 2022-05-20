@@ -49,8 +49,9 @@ public class RequestMethodProcessor {
 
 	public static Object[] process(Object controller, ViewForward viewForward, Method method) throws Exception {
 		int parameterCount = method.getParameterCount();
-		if (parameterCount == 0)
+		if (parameterCount == 0) {
 			return null;
+		}
 		Class<?> controllerClass = controller.getClass();
 		List<RequestParamFieldData> requestParamFieldDataList = loadRequestParamFieldDataList(controllerClass, method);
 		Object[] args = new Object[parameterCount];
@@ -70,8 +71,9 @@ public class RequestMethodProcessor {
 			methodsCache = new ConcurrentHashMap<>();
 			Map<Method, List<RequestParamFieldData>> preMethodsCache = requestParamFieldDataCache
 					.putIfAbsent(controllerClass, methodsCache);
-			if (preMethodsCache != null)
+			if (preMethodsCache != null) {
 				methodsCache = preMethodsCache;
+			}
 		}
 		List<RequestParamFieldData> requestParamFieldDataList = methodsCache.get(method);
 		if (requestParamFieldDataList == null) {
@@ -79,8 +81,9 @@ public class RequestMethodProcessor {
 			loadRequestParamFieldData(method, requestParamFieldDataList);
 			List<RequestParamFieldData> preRequestParamFieldDataList = methodsCache.putIfAbsent(method,
 					requestParamFieldDataList);
-			if (preRequestParamFieldDataList != null)
+			if (preRequestParamFieldDataList != null) {
 				requestParamFieldDataList = preRequestParamFieldDataList;
+			}
 		}
 		return requestParamFieldDataList;
 	}
@@ -90,8 +93,9 @@ public class RequestMethodProcessor {
 		String[] parameterNames = null;
 		for (ParameterDiscoverer parameterDiscoverer : parameterDiscoverers) {
 			parameterNames = parameterDiscoverer.getParameterNames(method);
-			if (parameterNames != null)
+			if (parameterNames != null) {
 				break;
+			}
 		}
 		if (parameterNames == null) {
 			return;
@@ -116,16 +120,18 @@ public class RequestMethodProcessor {
 			resolverCache = new ConcurrentHashMap<>();
 			Map<RequestParamFieldData, MethodArgumentResolver> preCache = paramFieldMethodArgumentResolverCache
 					.putIfAbsent(controllerClass, resolverCache);
-			if (preCache != null)
+			if (preCache != null) {
 				resolverCache = preCache;
+			}
 		}
 		MethodArgumentResolver methodArgumentResolver = resolverCache.get(requestParamFieldData);
 		if (methodArgumentResolver == null) {
-			for (MethodArgumentResolver resolver : methodArgumentResolvers)
+			for (MethodArgumentResolver resolver : methodArgumentResolvers) {
 				if (resolver.isSupport(requestParamFieldData)) {
 					resolverCache.put(requestParamFieldData, resolver);
 					return resolver;
 				}
+			}
 		}
 		return methodArgumentResolver;
 	}

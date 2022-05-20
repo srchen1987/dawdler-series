@@ -45,7 +45,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title LoadCore.java
  * @Description 加载服务端类模版
- * @date 2007年9月05日
+ * @date 2007年9月5日
  * @email suxuan696@gmail.com
  */
 public class LoadCore implements Runnable {
@@ -57,7 +57,7 @@ public class LoadCore implements Runnable {
 	private static final String TYPE_API = "api";
 	private static final String TYPE_COMPONENT = "component";
 	static {
-		CURRENT_PATH = DawdlerTool.getcurrentPath();
+		CURRENT_PATH = DawdlerTool.getCurrentPath();
 	}
 
 	private final String host;
