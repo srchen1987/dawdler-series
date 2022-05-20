@@ -13,6 +13,7 @@ module dawdler.server {
 	requires dawdler.serialization;
 	requires dawdler.core;
 	requires java.base;
+	requires jdk.httpserver;
 	requires java.naming;
 	requires java.se;
 	requires org.slf4j;
