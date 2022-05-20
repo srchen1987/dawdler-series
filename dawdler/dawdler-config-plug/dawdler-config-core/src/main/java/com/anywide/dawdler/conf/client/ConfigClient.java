@@ -35,10 +35,10 @@ public interface ConfigClient {
 	void stop();
 
 	/**
-	* 用于做健康检测
+	 * 用于做健康检测
 	 */
 	String info() throws Exception;
-	
+
 	String type();
 
 }

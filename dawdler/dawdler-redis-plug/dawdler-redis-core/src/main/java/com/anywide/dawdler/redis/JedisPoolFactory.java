@@ -103,8 +103,9 @@ public final class JedisPoolFactory {
 
 	public static Pool<Jedis> getJedisPool(String fileName) throws Exception {
 		Pool<Jedis> pool = pools.get(fileName);
-		if (pool != null)
+		if (pool != null) {
 			return pool;
+		}
 		synchronized (pools) {
 			pool = pools.get(fileName);
 			if (pool == null) {
@@ -123,7 +124,7 @@ public final class JedisPoolFactory {
 			});
 		}
 	}
-	
+
 	public static Map<String, Pool<Jedis>> getPools() {
 		return pools;
 	}

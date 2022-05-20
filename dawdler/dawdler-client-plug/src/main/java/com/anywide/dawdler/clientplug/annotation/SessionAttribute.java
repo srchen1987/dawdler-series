@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @Title SessionAttribute.java
  * @Description 获取session值的注解
- * @date 2021年3月06日
+ * @date 2021年3月6日
  * @email suxuan696@gmail.com
  */
 @Target(ElementType.PARAMETER)

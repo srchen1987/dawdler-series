@@ -87,7 +87,6 @@ public class Health {
 		return status(Status.DOWN);
 	}
 
-
 	public static Builder status(String status) {
 		return new Builder(status);
 	}

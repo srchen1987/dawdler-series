@@ -50,16 +50,18 @@ public class CircuitBreakerFilter implements DawdlerClientFilter {
 		RequestWrapper rw = (RequestWrapper) request;
 
 		com.anywide.dawdler.core.annotation.CircuitBreaker cb = rw.getCircuitBreaker();
-		if (cb == null)
+		if (cb == null) {
 			return chain.doFilter(request);
+		}
 		String unique = "".equals(cb.breakerKey()) ? (request.getServiceName() + request.getMethodName())
 				: cb.breakerKey();
 		CircuitBreaker circuitBreaker = breakers.get(unique);
 		if (circuitBreaker == null) {
 			circuitBreaker = new LocalCircuitBreaker(cb);
 			CircuitBreaker pre = breakers.putIfAbsent(unique, circuitBreaker);
-			if (pre != null)
+			if (pre != null) {
 				circuitBreaker = pre;
+			}
 		}
 		CircuitBreakerState state = circuitBreaker.getState();
 		Metric metric = state.getStw().currentMetrics();

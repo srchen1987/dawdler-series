@@ -21,7 +21,7 @@ package com.anywide.dawdler.core.order;
  * @version V1.0
  * @Title Order.java
  * @Description 排序的接口
- * @date 2007年12月03日
+ * @date 2007年12月3日
  * @email suxuan696@gmail.com
  */
 public interface Order {

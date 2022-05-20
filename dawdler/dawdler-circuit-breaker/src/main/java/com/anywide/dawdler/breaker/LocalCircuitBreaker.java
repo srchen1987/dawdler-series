@@ -82,8 +82,9 @@ public class LocalCircuitBreaker implements CircuitBreaker {
 				return;
 			}
 			if ((double) failCount / (double) totalCount >= errorThresholdPercentage
-					&& state.compareAndSet(State.CLOSE, State.OPEN))
+					&& state.compareAndSet(State.CLOSE, State.OPEN)) {
 				circuitBreakerState.resetStartTime();
+			}
 		} else if (state.get() == State.HALF_OPEN && state.compareAndSet(State.HALF_OPEN, State.OPEN)) {
 			circuitBreakerState.resetStartTime();
 		}

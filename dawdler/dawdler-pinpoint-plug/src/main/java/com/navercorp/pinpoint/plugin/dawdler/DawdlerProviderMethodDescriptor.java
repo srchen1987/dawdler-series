@@ -25,7 +25,7 @@ import com.navercorp.pinpoint.common.trace.MethodType;
  * @version V1.0
  * @Title DawdlerProviderMethodDescriptor.java
  * @Description dawdler服务提供者方法描述器
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public class DawdlerProviderMethodDescriptor implements MethodDescriptor {

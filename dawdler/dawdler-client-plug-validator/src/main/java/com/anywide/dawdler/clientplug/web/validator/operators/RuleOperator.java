@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
  */
 public abstract class RuleOperator {
 	protected Pattern pattern;
-	protected String RULE_KEY;
+	protected String ruleKey;
 
 	public RuleOperator() {
 	}
@@ -38,7 +38,7 @@ public abstract class RuleOperator {
 		if (isRegex)
 			this.pattern = Pattern.compile(regex);
 		else {
-			this.RULE_KEY = regex;
+			this.ruleKey = regex;
 		}
 	}
 
@@ -50,12 +50,12 @@ public abstract class RuleOperator {
 		this.pattern = pattern;
 	}
 
-	public String getRULE_KEY() {
-		return RULE_KEY;
+	public String getRuleKey() {
+		return ruleKey;
 	}
 
-	public void setRULE_KEY(String RULE_KEY) {
-		this.RULE_KEY = RULE_KEY;
+	public void setRuleKey(String ruleKey) {
+		this.ruleKey = ruleKey;
 	}
 
 	public abstract String validate(Object value);

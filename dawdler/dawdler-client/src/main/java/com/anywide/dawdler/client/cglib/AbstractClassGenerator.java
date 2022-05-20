@@ -198,8 +198,9 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 	 * @param namingPolicy the custom policy, or null to use the default
 	 */
 	public void setNamingPolicy(NamingPolicy namingPolicy) {
-		if (namingPolicy == null)
+		if (namingPolicy == null) {
 			namingPolicy = DefaultNamingPolicy.INSTANCE;
+		}
 		this.namingPolicy = namingPolicy;
 	}
 

@@ -54,8 +54,9 @@ public class ServiceFactory {
 			if (proxy == null) {
 				proxy = createCglibDynamicProxy(delegate, servicesBean, serviceExecutor);
 				Object preProxy = proxyObjects.putIfAbsent(delegate, proxy);
-				if (preProxy != null)
+				if (preProxy != null) {
 					proxy = preProxy;
+				}
 			}
 			return (T) proxy;
 		}
@@ -72,8 +73,9 @@ public class ServiceFactory {
 
 	public static String getServiceName(Class<?> service) {
 		String serviceName = servicesName.get(service);
-		if (serviceName != null)
+		if (serviceName != null) {
 			return serviceName;
+		}
 		RemoteService remoteService = service.getAnnotation(RemoteService.class);
 		if (remoteService != null) {
 			serviceName = remoteService.serviceName();
@@ -123,8 +125,9 @@ public class ServiceFactory {
 			requestBean.setTypes(method.getParameterTypes());
 			ResponseBean responseBean = new ResponseBean();
 			serviceExecutor.execute(requestBean, responseBean, servicesBean);
-			if (responseBean.getCause() != null)
+			if (responseBean.getCause() != null) {
 				throw responseBean.getCause();
+			}
 			return responseBean.getTarget();
 		}
 	}

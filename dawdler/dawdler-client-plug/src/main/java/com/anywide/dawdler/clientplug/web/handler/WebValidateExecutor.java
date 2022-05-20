@@ -64,11 +64,13 @@ public class WebValidateExecutor {
 		ControlValidator cv = validators.get(clazz);
 		if (cv == null) {
 			cv = ValidateResourceLoader.getControlValidator(clazz);
-			if (cv == null)
+			if (cv == null) {
 				cv = new ControlValidator();
+			}
 			ControlValidator preCv = validators.putIfAbsent(clazz, cv);
-			if (preCv != null)
+			if (preCv != null) {
 				cv = preCv;
+			}
 		}
 		String uri = null;
 		String antPath = viewForward.getAntPath();
@@ -79,8 +81,9 @@ public class WebValidateExecutor {
 		}
 
 		Map<String, ControlField> rules = cv.getMappings().get(uri);
-		if (rules == null)
+		if (rules == null) {
 			rules = cv.getGlobalControlFields();
+		}
 		if (rules != null) {
 			if (requestMapping != null && requestMapping.generateValidator() && !rules.isEmpty()) {
 				StringBuffer sb = new StringBuffer("sir_validate.addRule(");
@@ -111,8 +114,9 @@ public class WebValidateExecutor {
 				ControlField cf = entry.getValue();
 				String error = ValidateParser.validate(cf.getFieldExplain(),
 						params != null ? params.get(cf.getFieldName()) : null, cf.getRules());
-				if (error != null)
+				if (error != null) {
 					errors.put(key, error);
+				}
 			}
 		}
 		if (!errors.isEmpty()) {
