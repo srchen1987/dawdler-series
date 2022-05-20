@@ -38,19 +38,24 @@ public class DAOFactory {
 		return daofactory;
 	}
 
-	public SuperDAO getDAO(Class<?> ckass) {
-		SuperDAO object = instances.get(ckass);
+	public SuperDAO getDAO(Class<?> clazz) {
+		SuperDAO object = instances.get(clazz);
 		if (object != null) {
 			return object;
 		}
-		try {
-			object = (SuperDAO) ckass.newInstance();
-		} catch (InstantiationException e) {
-			return null;
-		} catch (IllegalAccessException e) {
-			return null;
+		synchronized (instances) {
+			object = instances.get(clazz);
+			if (object == null) {
+				try {
+					object = (SuperDAO) clazz.newInstance();
+				} catch (InstantiationException e) {
+					return null;
+				} catch (IllegalAccessException e) {
+					return null;
+				}
+				instances.put(clazz, object);
+			}
 		}
-		instances.put(ckass, object);
 		return object;
 	}
 }
