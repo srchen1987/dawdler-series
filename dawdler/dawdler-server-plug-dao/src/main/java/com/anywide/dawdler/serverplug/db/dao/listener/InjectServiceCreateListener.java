@@ -32,7 +32,7 @@ import com.anywide.dawdler.serverplug.db.dao.SuperDAO;
  * @version V1.0
  * @Title InjectServiceCreateListener.java
  * @Description 监听器实现service和dao的注入
- * @date 2015年7月08日
+ * @date 2015年7月8日
  * @email suxuan696@gmail.com
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {

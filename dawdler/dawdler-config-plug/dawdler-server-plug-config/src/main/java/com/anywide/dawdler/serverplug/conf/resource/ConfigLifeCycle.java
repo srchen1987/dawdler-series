@@ -44,7 +44,6 @@ public class ConfigLifeCycle implements ComponentLifeCycle {
 		ConfigInit.getInstance().init();
 	}
 
-
 	public void init(List<OrderData<DawdlerServiceListener>> dawdlerServiceListeners,
 			List<OrderData<DawdlerFilter>> dawdlerFilters) throws Exception {
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {

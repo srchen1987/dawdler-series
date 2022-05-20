@@ -36,11 +36,10 @@ public class ConfigLoaderFire implements RemoteClassLoaderFire {
 	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
 		Refresher.refreshAllConfig(target);
 	}
-	
+
 	@Override
 	public void onRemoveFire(Class<?> clazz) {
 		PathMappingTargetCache.removeMappingByTargetClass(clazz);
 	}
-
 
 }

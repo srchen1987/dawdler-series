@@ -31,6 +31,14 @@ import com.anywide.dawdler.util.HashedWheelTimer;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
 
+/**
+ * @author jackson.song
+ * @version V1.0
+ * @Title StartupProviderListener.java
+ * @Description 监听器 启动后向注册中心注册服务
+ * @date 2016年2月8日
+ * @email suxuan696@gmail.com
+ */
 @Order(Integer.MAX_VALUE)
 public class StartupProviderListener implements DawdlerServiceListener {
 	private static final Logger logger = LoggerFactory.getLogger(StartupProviderListener.class);
@@ -48,8 +56,9 @@ public class StartupProviderListener implements DawdlerServiceListener {
 			String password = zkHost.attributeValue("password");
 			String url = zkHost.getTextTrim();
 			String channelGroup = dawdlerContext.getDeployName();
-			if ("".equals(url))
+			if ("".equals(url)) {
 				throw new NullPointerException("zk-host can't be null!");
+			}
 			discoveryCenter = new ZkDiscoveryCenter(url, username, password);
 			discoveryCenter.init();
 			String path = channelGroup + "/" + dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
@@ -74,8 +83,9 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
 		}
-		if (timeout != null)
+		if (timeout != null) {
 			timeout.cancel();
+		}
 		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
 		}

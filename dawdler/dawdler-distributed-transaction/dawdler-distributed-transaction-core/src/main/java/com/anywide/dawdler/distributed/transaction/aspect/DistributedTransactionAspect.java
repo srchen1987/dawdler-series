@@ -70,9 +70,10 @@ public class DistributedTransactionAspect {
 		DistributedTransaction dt = method.getAnnotation(DistributedTransaction.class);
 		DistributedTransactionContext dc = DistributedTransactionContext.getDistributedTransactionContext();
 		if (dt.sponsor()) {
-			if (dc != null)
+			if (dc != null) {
 				throw new IllegalStateException(
 						"This transaction have the sponsor # globalTxId:\t" + dc.getGlobalTxId());
+			}
 			String globalTxId = UUID.randomUUID().toString();
 			dc = new DistributedTransactionContext(globalTxId);
 			dc.init();
@@ -81,38 +82,44 @@ public class DistributedTransactionAspect {
 			dc.setAction(action);
 			Object obj = null;
 			try {
-				if (logger.isDebugEnabled())
+				if (logger.isDebugEnabled()) {
 					logger.debug("transaction proceed sponsor:{} action:{}", dc.getGlobalTxId(), action);
+				}
 				obj = pjp.proceed();
 			} catch (Throwable e) {
-				if (!dc.isIntervene())
+				if (!dc.isIntervene()) {
 					cancel(action, globalTxId);
-				if (logger.isDebugEnabled())
+				}
+				if (logger.isDebugEnabled()) {
 					logger.debug("transaction proceed exception sponsor:{} action:{} ", dc.getGlobalTxId(), action);
+				}
 				throw e;
 			} finally {
 				DistributedTransactionContext.setDistributedTransactionContext(null);
 			}
-			if (!dc.isIntervene())
+			if (!dc.isIntervene()) {
 				if (dc.isCancel()) {
 					try {
-						if (logger.isDebugEnabled())
+						if (logger.isDebugEnabled()) {
 							logger.debug("transaction proceed cancel sponsor:{} action:{} ", dc.getGlobalTxId(),
 									action);
+						}
 						cancel(action, globalTxId);
 					} catch (Throwable e) {
 						logger.error("distributed_transaction_cancel ", e);
 					}
 				} else {
 					try {
-						if (logger.isDebugEnabled())
+						if (logger.isDebugEnabled()) {
 							logger.debug("transaction proceed confirm sponsor:{} action:{} ", dc.getGlobalTxId(),
 									action);
+						}
 						confirm(action, globalTxId);
 					} catch (Throwable e) {
 						logger.error("distributed_transaction_confirm ", e);
 					}
 				}
+			}
 			return obj;
 		} else {
 			if (dc != null) {
@@ -137,30 +144,34 @@ public class DistributedTransactionAspect {
 					Throwable error = null;
 					boolean success = true;
 					try {
-						if (logger.isDebugEnabled())
+						if (logger.isDebugEnabled()) {
 							logger.debug("transaction proceed globalTxid:{} branchTxId:{} action:{} create to redis",
 									branchContext.getGlobalTxId(), branchContext.getBranchTxId(),
 									branchContext.getAction());
+						}
 						transactionRepository.create(branchContext);
 						TransactionInterceptInvoker invoker = TransactionInterceptInvokerHolder
 								.getTransactionInterceptInvoker();
-						if (invoker != null)
+						if (invoker != null) {
 							obj = invoker.invoke(pjp, dc);
-						else
+						} else {
 							obj = pjp.proceed();
+						}
 					} catch (Throwable e) {
 						error = e;
 						success = false;
 					}
 					if (!success) {
-						if (logger.isDebugEnabled())
+						if (logger.isDebugEnabled()) {
 							logger.debug(
 									"transaction proceed failed globalTxid:{} branchTxId:{} action:{} create to redis",
 									branchContext.getGlobalTxId(), branchContext.getBranchTxId(),
 									branchContext.getAction());
+						}
 						dc.setCancel(true);
-						if (error != null)
+						if (error != null) {
 							throw error;
+						}
 					}
 					return obj;
 				}

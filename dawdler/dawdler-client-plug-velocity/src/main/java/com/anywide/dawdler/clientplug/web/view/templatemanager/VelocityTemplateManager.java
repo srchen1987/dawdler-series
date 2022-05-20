@@ -37,8 +37,9 @@ public class VelocityTemplateManager implements TemplateManager {
 	}
 
 	public static synchronized VelocityTemplateManager getInstance() {
-		if (templateManager == null)
+		if (templateManager == null) {
 			templateManager = new VelocityTemplateManager();
+		}
 		return templateManager;
 	}
 

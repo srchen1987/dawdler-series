@@ -52,30 +52,35 @@ public class NetworkUtil {
 		Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
 		while (interfaces.hasMoreElements()) {
 			NetworkInterface nif = interfaces.nextElement();
-			if (nif == null || nif.isLoopback() || nif.isVirtual() || !nif.isUp())
+			if (nif == null || nif.isLoopback() || nif.isVirtual() || !nif.isUp()) {
 				continue;
+			}
 			interfacesList.add(nif);
 		}
 		return interfacesList;
 	}
 
 	public static String getInetAddress(String address) throws IOException {
-		if (address != null && (!address.equals(IPV4) && !address.equals(IPV6)))
+		if (address != null && (!address.equals(IPV4) && !address.equals(IPV6))) {
 			return address;
+		}
 		List<NetworkInterface> interfacesList = selectActiveNetworkInterfaces();
 		for (NetworkInterface networkInterface : interfacesList) {
 			Enumeration<InetAddress> inetAddress = networkInterface.getInetAddresses();
 			while (inetAddress.hasMoreElements()) {
 				InetAddress add = inetAddress.nextElement();
 				if (address == null) {
-					if (add.isReachable(200))
+					if (add.isReachable(200)) {
 						return add.getHostAddress();
-				} else if (address.equals(IPV6) && !(add instanceof Inet6Address))
+					}
+				} else if (address.equals(IPV6) && !(add instanceof Inet6Address)) {
 					continue;
-				else if (address.equals(IPV4) && !(add instanceof Inet4Address))
+				} else if (address.equals(IPV4) && !(add instanceof Inet4Address)) {
 					continue;
-				if (add.isReachable(200))
+				}
+				if (add.isReachable(200)) {
 					return add.getHostAddress();
+				}
 			}
 		}
 		return null;

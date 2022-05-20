@@ -55,8 +55,9 @@ public class SocketSession extends AbstractSocketSession {
 
 	public synchronized void close() {
 		if (close.compareAndSet(false, true)) {
-			if (ioHandler != null)
+			if (ioHandler != null) {
 				ioHandler.channelClose(this);
+			}
 			ServerConnectionManager.getInstance().removeSession(this);
 			if (writeBuffer != null) {
 				clean(writeBuffer);
@@ -90,8 +91,9 @@ public class SocketSession extends AbstractSocketSession {
 					appendData = new byte[dataLength];
 				}
 				super.appendData(data);
-				if (position > pathLength)
+				if (position > pathLength) {
 					swapPathByte();
+				}
 				return;
 			} else {
 				pathLength = data[0];
@@ -128,8 +130,9 @@ public class SocketSession extends AbstractSocketSession {
 		position -= size;
 		if (position == 0) {
 			appendData = new byte[dataLength];
-		} else
+		} else {
 			System.arraycopy(appendData, pathLength + 1, appendData, 0, appendData.length - pathLength - 1);
+		}
 	}
 
 	public void messageCompleted() {

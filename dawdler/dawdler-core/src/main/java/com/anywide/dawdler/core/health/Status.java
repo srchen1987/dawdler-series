@@ -32,4 +32,3 @@ public final class Status {
 	public static final String UP = "UP";
 	public static final String DOWN = "DOWN";
 }
-

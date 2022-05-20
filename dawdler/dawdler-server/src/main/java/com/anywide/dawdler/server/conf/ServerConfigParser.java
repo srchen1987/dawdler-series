@@ -43,7 +43,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title ServerConfigParser.java
  * @Description 服务器配置解析类 (抛弃老版本的xstream实现，通过dom4j改造)
- * @date 2015年4月04日
+ * @date 2015年4月4日
  * @email suxuan696@gmail.com
  */
 public class ServerConfigParser {
@@ -132,23 +132,23 @@ public class ServerConfigParser {
 			if (check != null && check.trim().equals("on")) {
 				HealthCheck healthCheck = serverConfig.getHealthCheck();
 				healthCheck.setCheck(true);
-				
+
 				int port = Integer.parseInt(healthCheckEle.attributeValue("port"));
 				healthCheck.setPort(port);
-				
+
 				String scheme = healthCheckEle.attributeValue("scheme");
 				healthCheck.setScheme(scheme);
-				
+
 				int backlog = Integer.parseInt(healthCheckEle.attributeValue("port"));
 				healthCheck.setBacklog(backlog);
-				
-				if("https".equals(scheme)) {
+
+				if ("https".equals(scheme)) {
 					String username = healthCheckEle.attributeValue("username");
 					healthCheck.setUsername(username);
 					String password = healthCheckEle.attributeValue("password");
 					healthCheck.setPassword(password);
 				}
-				
+
 				List<Element> componentElements = healthCheckEle.elements();
 				for (Element componentElement : componentElements) {
 					String componentCheck = componentElement.attributeValue("check");
@@ -160,7 +160,7 @@ public class ServerConfigParser {
 		}
 
 	}
-	
+
 	public ServerConfigParser(URL binPath) {
 		serverConfig = new ServerConfig();
 		serverConfig.setBinPath(binPath);

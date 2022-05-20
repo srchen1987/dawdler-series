@@ -24,7 +24,7 @@ import com.anywide.dawdler.core.bean.ResponseBean;
  * @version V1.0
  * @Title FilterChain.java
  * @Description 过滤器链
- * @date 2015年4月08日
+ * @date 2015年4月8日
  * @email suxuan696@gmail.com
  */
 public interface FilterChain {

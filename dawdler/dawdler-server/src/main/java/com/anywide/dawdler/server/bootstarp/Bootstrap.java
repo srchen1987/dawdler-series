@@ -39,7 +39,7 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @version V1.0
  * @Title Bootstrap.java
  * @Description dawdler服务器启动类
- * @date 2015年4月09日
+ * @date 2015年4月9日
  * @email suxuan696@gmail.com
  */
 public class Bootstrap {
