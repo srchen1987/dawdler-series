@@ -29,7 +29,7 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
  * @author jackson.song
  * @version V1.0
  * @Title SuperDAO.java
- * @Description TODO
+ * @Description dao基类
  * @date 2007年4月15日
  * @email suxuan696@gmail.com
  */
@@ -47,14 +47,16 @@ public class SuperDAO implements BaseData {
 	}
 
 	public Connection getReadConnection() throws SQLException {
-		if (con != null)
+		if (con != null) {
 			return con;
+		}
 		return LocalConnectionFactory.getReadConnection();
 	}
 
 	public Connection getWriteConnection() {
-		if (con != null)
+		if (con != null) {
 			return con;
+		}
 		return LocalConnectionFactory.getWriteConnection();
 	}
 
@@ -100,30 +102,37 @@ public class SuperDAO implements BaseData {
 
 	public <T> List<T> queryListPage(String countsql, String sql, int pageOn, int row, Class<T> c) throws SQLException {
 		int rowCount = queryCount(countsql);
-		if (pageOn <= 0)
+		if (pageOn <= 0) {
 			pageOn = 1;
-		if (row <= 0)
+		}
+		if (row <= 0) {
 			row = 1;
+		}
 		int pageCount = rowCount % row == 0 ? rowCount / row : rowCount / row + 1;
 		pageOn = pageOn < pageCount ? pageOn : pageCount;
-		if (rowCount == 0)
+		if (rowCount == 0) {
 			return new ArrayList<T>();
+		}
 		return basedata.queryList(sql + " limit " + ((pageOn - 1) * row) + "," + row, c);
 	}
 
 	public <T> List<T> queryListPagePrepare(String countsql, String sql, int pageOn, int row, Class<T> c,
 			Object... values) throws SQLException {
 		int rowCount = queryCountPrepare(countsql, values);
-		if (pageOn <= 0)
+		if (pageOn <= 0) {
 			pageOn = 1;
-		if (row <= 0)
+		}
+		if (row <= 0) {
 			row = 1;
+		}
 		int pageCount = rowCount % row == 0 ? rowCount / row : rowCount / row + 1;
 		pageOn = pageOn < pageCount ? pageOn : pageCount;
-		if (pageOn == 0)
+		if (pageOn == 0) {
 			pageOn = 1;
-		if (rowCount == 0)
+		}
+		if (rowCount == 0) {
 			return new ArrayList<T>();
+		}
 		return basedata.queryListPrepare(sql + " limit ?,? ", c, setPage(((pageOn - 1) * row), row, values));
 	}
 
@@ -132,8 +141,9 @@ public class SuperDAO implements BaseData {
 		page.setRow(row);
 		page.setPageOn(pageOn);
 		page.setRowCountAndCompute(queryCount(countsql));
-		if (page.getRowCount() == 0)
+		if (page.getRowCount() == 0) {
 			return new ArrayList<T>();
+		}
 		return basedata.queryList(sql + " limit " + ((page.getPageOn() - 1) * page.getRow()) + "," + page.getRow(), c);
 	}
 
@@ -142,8 +152,9 @@ public class SuperDAO implements BaseData {
 		page.setRow(row);
 		page.setPageOn(pageOn);
 		page.setRowCountAndCompute(queryCountPrepare(countsql, values));
-		if (page.getRowCount() == 0)
+		if (page.getRowCount() == 0) {
 			return new ArrayList<T>();
+		}
 		return basedata.queryListPrepare(sql + " limit ?,? ", c,
 				setPage(((page.getPageOn() - 1) * page.getRow()), page.getRow(), values));
 	}

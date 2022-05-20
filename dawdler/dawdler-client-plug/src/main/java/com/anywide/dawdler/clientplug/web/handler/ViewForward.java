@@ -161,10 +161,12 @@ public class ViewForward {
 	}
 
 	public void putData(String key, Object value) {
-		if (!createContext)
+		if (!createContext) {
 			createData();
-		if (!data.containsKey(key))
+		}
+		if (!data.containsKey(key)) {
 			data.put(key, value);
+		}
 	}
 
 	public Object removeData(String key) {
@@ -297,8 +299,9 @@ public class ViewForward {
 
 	public String paramString(String paramName, String defaultvalue) {
 		String value = getRequest().getParameter(paramName);
-		if (value == null)
+		if (value == null) {
 			return defaultvalue;
+		}
 		return value;
 	}
 
@@ -383,10 +386,12 @@ public class ViewForward {
 	}
 
 	public void release() {
-		if (data != null)
+		if (data != null) {
 			data.clear();
-		if (paramsVariable != null)
+		}
+		if (paramsVariable != null) {
 			paramsVariable.clear();
+		}
 	}
 
 	public enum ResponseType {

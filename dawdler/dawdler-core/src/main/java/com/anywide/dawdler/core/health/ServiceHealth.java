@@ -27,30 +27,31 @@ import java.util.Map;
  * @date 2022年5月3日
  * @email suxuan696@gmail.com
  */
-public class ServiceHealth{
+public class ServiceHealth {
 	private Map<String, Object> data = new LinkedHashMap<String, Object>();
-	
+
 	private String name;
 
 	public ServiceHealth(String name) {
 		this.name = name;
 	}
+
 	public void setStatus(String status) {
 		data.put("status", status);
 	}
-	
+
 	public void addComponent(Health health) {
 		data.put(health.getName(), health.getData());
 	}
-	
-	public void addComponent(String key,Object obj) {
+
+	public void addComponent(String key, Object obj) {
 		data.put(key, obj);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public String getStatus() {
 		return (String) data.get("status");
 	}

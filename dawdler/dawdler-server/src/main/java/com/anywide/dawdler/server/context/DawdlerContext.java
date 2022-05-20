@@ -27,7 +27,6 @@ import com.anywide.dawdler.server.service.ServiceFactory;
 import com.anywide.dawdler.server.service.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
-import com.anywide.dawdler.util.TLS;
 import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 
@@ -64,7 +63,8 @@ public class DawdlerContext {
 	}
 
 	public static DawdlerContext getDawdlerContext() {
-		DawdlerContext context = ((DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader()).getDawdlerContext();
+		DawdlerContext context = ((DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader())
+				.getDawdlerContext();
 		return context;
 	}
 

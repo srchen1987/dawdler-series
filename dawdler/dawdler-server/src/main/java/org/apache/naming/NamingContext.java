@@ -250,10 +250,12 @@ public class NamingContext implements Context {
 			return;
 		}
 
-		while ((!name.isEmpty()) && (name.get(0).length() == 0))
+		while ((!name.isEmpty()) && (name.get(0).length() == 0)) {
 			name = name.getSuffix(1);
-		if (name.isEmpty())
+		}
+		if (name.isEmpty()) {
 			throw new NamingException(sm.getString("namingContext.invalidName"));
+		}
 
 		NamingEntry entry = bindings.get(name.get(0));
 

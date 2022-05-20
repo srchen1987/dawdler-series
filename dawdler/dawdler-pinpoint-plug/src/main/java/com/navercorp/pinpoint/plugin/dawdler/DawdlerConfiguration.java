@@ -25,7 +25,7 @@ import com.navercorp.pinpoint.bootstrap.config.ProfilerConfig;
  * @version V1.0
  * @Title DawdlerServerInterceptor.java
  * @Description pinpoint中dawdler配置
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public class DawdlerConfiguration {

@@ -80,8 +80,9 @@ public class RequestParamFieldData {
 	}
 
 	public <T extends Annotation> T getAnnotation(Class<T> annotation) {
-		if (annotations == null)
+		if (annotations == null) {
 			return null;
+		}
 		for (int i = 0; i < annotations.length; i++) {
 			if (annotation == annotations[i].annotationType()) {
 				return (T) annotations[i];

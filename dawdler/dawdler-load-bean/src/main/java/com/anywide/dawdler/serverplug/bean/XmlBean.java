@@ -25,7 +25,7 @@ import org.dom4j.Document;
  * @version V1.0
  * @Title XmlBean.java
  * @Description 序列化传输的bean
- * @date 2007年3月05日
+ * @date 2007年3月5日
  * @email suxuan696@gmail.com
  */
 public class XmlBean implements Serializable {

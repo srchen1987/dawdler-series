@@ -14,7 +14,7 @@ public interface ComponentLifeCycle {
 
 	default public void prepareInit() throws Throwable {
 	};
-	
+
 	default public void init() throws Throwable {
 	};
 

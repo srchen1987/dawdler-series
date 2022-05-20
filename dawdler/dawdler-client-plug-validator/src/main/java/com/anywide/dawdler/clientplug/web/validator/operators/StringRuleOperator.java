@@ -33,10 +33,11 @@ import com.anywide.dawdler.clientplug.web.validator.ValidatorFactory;
  * @email suxuan696@gmail.com
  */
 public abstract class StringRuleOperator extends RuleOperator {
-	public StringRuleOperator(String RULE_KEY, String regex, String explain) {
-		super(RULE_KEY, false);
-		if (regex != null)
-			RegexRules.registerRule(RULE_KEY, Pattern.compile(regex), explain);
+	public StringRuleOperator(String ruleKey, String regex, String explain) {
+		super(ruleKey, false);
+		if (regex != null) {
+			RegexRules.registerRule(ruleKey, Pattern.compile(regex), explain);
+		}
 	}
 
 	@Override
@@ -45,31 +46,35 @@ public abstract class StringRuleOperator extends RuleOperator {
 	}
 
 	protected String validate(Object value, String errorMessage) {
-		if (value == null)
+		if (value == null) {
 			return null;
-		AbstractValidator validator = ValidatorFactory.getValidator(RULE_KEY);
-		if (validator == null)
+		}
+		AbstractValidator validator = ValidatorFactory.getValidator(ruleKey);
+		if (validator == null) {
 			return null;
+		}
 		boolean flag = true;
 		if (value instanceof String) {
 			flag = validator.validate(value.toString());
 		} else if (value instanceof String[]) {
 			String[] values = (String[]) value;
 			for (String v : values) {
-				if (v != null)
+				if (v != null) {
 					if (!validator.validate(v)) {
 						flag = false;
 						break;
 					}
+				}
 			}
 		} else if (value instanceof List) {
 			List values = (List) value;
 			for (Object o : values) {
-				if (o != null)
+				if (o != null) {
 					if (!validator.validate(o.toString())) {
 						flag = false;
 						break;
 					}
+				}
 			}
 		}
 		if (!flag) {

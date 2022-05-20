@@ -31,7 +31,7 @@ import org.apache.velocity.runtime.parser.node.Node;
  * @version V1.0
  * @Title XSSFilterDirect.java
  * @Description 自定义控件的指令 过滤xss
- * @date 2010年4月05日
+ * @date 2010年4月5日
  * @email suxuan696@gmail.com
  */
 public class XSSFilterDirect extends Directive {

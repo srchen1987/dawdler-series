@@ -37,8 +37,9 @@ public class NotEmptyRuleOperator extends StringRuleOperator {
 
 	@Override
 	public String validate(Object value) {
-		if (value == null)
+		if (value == null) {
 			return "不能为空!";
+		}
 		boolean flag = true;
 		if (value instanceof String) {
 			flag = !((String) value).trim().equals("");
@@ -67,8 +68,9 @@ public class NotEmptyRuleOperator extends StringRuleOperator {
 				}
 			}
 		}
-		if (!flag)
+		if (!flag) {
 			return "不能为空!";
+		}
 		return null;
 	}
 

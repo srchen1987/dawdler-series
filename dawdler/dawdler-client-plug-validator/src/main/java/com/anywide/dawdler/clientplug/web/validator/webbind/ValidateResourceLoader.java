@@ -56,7 +56,7 @@ public class ValidateResourceLoader {
 	static {
 		properties = ResourceBundle.getBundle("validate-global-variable");
 		try {
-			String globalPath = DawdlerTool.getcurrentPath() + "global-validator.xml";
+			String globalPath = DawdlerTool.getCurrentPath() + "global-validator.xml";
 			if (new File(globalPath).isFile()) {
 				try {
 					XmlObject xmlo = new XmlObject(globalPath);
@@ -70,10 +70,11 @@ public class ValidateResourceLoader {
 						if (globalRules != null) {
 							try {
 								String glpro = properties.getString(globalRules);
-								if (rules == null || rules.trim().equals(""))
+								if (rules == null || rules.trim().equals("")) {
 									rules = glpro;
-								else
+								} else {
 									rules += "&" + glpro;
+								}
 							} catch (Exception e) {
 								logger.warn("not find " + globalRules + " in global properties!");
 							}
@@ -127,18 +128,20 @@ public class ValidateResourceLoader {
 				String ref = ele.attributeValue("ref");
 				if (refgid != null) {
 					Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
-					if (fieldGroup != null)
+					if (fieldGroup != null) {
 						globals.putAll(fieldGroup);
+					}
 				}
 				if (ref != null) {
 					ControlField confield = cv.getControlFields().get(ref);
 					if (confield == null) {
 						confield = globalFields.get(ref);
 					}
-					if (confield != null)
+					if (confield != null) {
 						globals.put(confield.getFieldName(), confield);
-					else
+					} else {
 						logger.warn("can't find " + ref + " in fields!");
+					}
 				}
 			}
 			cv.setGlobalControlFields(globals);
@@ -159,10 +162,11 @@ public class ValidateResourceLoader {
 				if (globalRules != null) {
 					try {
 						String glpro = properties.getString(globalRules);
-						if (rules.equals(""))
+						if (rules.equals("")) {
 							rules = glpro;
-						else
+						} else {
 							rules += "&" + glpro;
+						}
 					} catch (Exception e) {
 						logger.warn("not find " + globalRules + " in global properties!");
 					}
@@ -191,18 +195,20 @@ public class ValidateResourceLoader {
 						String ref = vele.attributeValue("ref");
 						if (refgid != null) {
 							Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
-							if (fieldGroup != null)
+							if (fieldGroup != null) {
 								mappings.putAll(fieldGroup);
+							}
 						}
 						if (ref != null) {
 							ControlField controlField = cv.getControlFields().get(ref);
 							if (controlField == null) {
 								controlField = globalFields.get(ref);
 							}
-							if (controlField != null)
+							if (controlField != null) {
 								mappings.put(controlField.getFieldName(), controlField);
-							else
+							} else {
 								logger.warn("can't find " + ref + " in fields!");
+							}
 						}
 					}
 				}
@@ -278,12 +284,14 @@ public class ValidateResourceLoader {
 			logger.error("", "can't find gid = " + gid);
 			return;
 		}
-		if (additive == null)
+		if (additive == null) {
 			additive = group;
-		else
+		} else {
 			additive.putAll(group);
-		if (dependents == null || dependents.isEmpty())
+		}
+		if (dependents == null || dependents.isEmpty()) {
 			return;
+		}
 		Set<Entry<String, String>> entryset = dependents.entrySet();
 		for (Entry<String, String> entry : entryset) {
 			groupsOperation(entry.getKey(), groups, relation, locations, additive);

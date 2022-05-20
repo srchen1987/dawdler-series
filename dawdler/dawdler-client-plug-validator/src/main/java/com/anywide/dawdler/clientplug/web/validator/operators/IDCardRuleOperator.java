@@ -44,8 +44,9 @@ public class IDCardRuleOperator extends StringRuleOperator {
 
 	@Override
 	public String validate(Object value) {
-		if (value == null)
+		if (value == null) {
 			return null;
+		}
 		boolean flag = true;
 		if (value instanceof String) {
 			flag = isIDCard(value.toString());
@@ -74,8 +75,9 @@ public class IDCardRuleOperator extends StringRuleOperator {
 				}
 			}
 		}
-		if (!flag)
+		if (!flag) {
 			return "请输入正确的身份证号码!";
+		}
 		return null;
 	}
 

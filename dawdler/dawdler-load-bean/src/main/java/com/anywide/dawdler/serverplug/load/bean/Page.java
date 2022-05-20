@@ -23,7 +23,7 @@ import java.io.Serializable;
  * @version V1.0
  * @Title Page.java
  * @Description 可序列化的page类
- * @date 2007年4月05日
+ * @date 2007年4月5日
  * @email suxuan696@gmail.com
  */
 public class Page implements Serializable {
@@ -96,19 +96,24 @@ public class Page implements Serializable {
 	}
 
 	public void compute() {
-		if (rowCount <= 0)
+		if (rowCount <= 0) {
 			return;
-		if (row <= 0)
+		}
+		if (row <= 0) {
 			row = 10;
+		}
 		pageCount = rowCount % row == 0 ? rowCount / row : rowCount / row + 1;
-		if (pageOn > pageCount)
+		if (pageOn > pageCount) {
 			pageOn = pageCount;
-		if (pageOn < 1)
+		}
+		if (pageOn < 1) {
 			pageOn = 1;
+		}
 		start = (pageOn - 1) * row;
 		end = pageOn * row;
-		if (end > rowCount)
+		if (end > rowCount) {
 			end = rowCount;
+		}
 	}
 
 	public int getStart() {

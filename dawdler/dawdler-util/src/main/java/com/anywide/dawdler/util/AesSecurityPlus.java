@@ -31,7 +31,7 @@ import javax.crypto.spec.SecretKeySpec;
  * @version V1.0
  * @Title AesSecurityPlus.java
  * @Description AES加密解密工具类,替代DES
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public class AesSecurityPlus {
@@ -60,8 +60,9 @@ public class AesSecurityPlus {
 		if (sp == null) {
 			sp = new AesSecurityPlus(key);
 			AesSecurityPlus pre = cachePlug.putIfAbsent(key, sp);
-			if (pre != null)
+			if (pre != null) {
 				return pre;
+			}
 		}
 		return sp;
 	}
