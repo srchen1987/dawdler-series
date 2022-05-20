@@ -67,11 +67,13 @@ public class LocalConnectionFactory {
 
 	public static Connection getReadConnection() throws SQLException {
 		Connection con = localConnection.get().get(DBAction.READ);
-		if (con != null)
+		if (con != null) {
 			return con;
+		}
 		SynReadConnectionObject sb = LocalConnectionFactory.getSynReadConnectionObject();
-		if (sb == null)
+		if (sb == null) {
 			return null;
+		}
 		if (sb.getReadConnectionHolder().isUseWriteConnection()) {
 			con = getWriteConnection();
 			setReadConnection(con);
@@ -112,8 +114,9 @@ public class LocalConnectionFactory {
 		if (holder == null) {
 			holder = createConnectionHolder(dataSource);
 			WriteConnectionHolder preHolder = localMap.putIfAbsent(dataSource, holder);
-			if (preHolder != null)
+			if (preHolder != null) {
 				holder = preHolder;
+			}
 		}
 		return holder;
 	}
@@ -133,8 +136,9 @@ public class LocalConnectionFactory {
 		if (manager == null) {
 			manager = new JdbcTransactionManager(dataSource);
 			TransactionManager preManager = localManager.putIfAbsent(dataSource, manager);
-			if (preManager != null)
+			if (preManager != null) {
 				manager = preManager;
+			}
 		}
 		return manager;
 	}

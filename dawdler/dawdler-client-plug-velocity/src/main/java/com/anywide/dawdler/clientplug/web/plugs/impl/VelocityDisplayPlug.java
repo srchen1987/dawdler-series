@@ -121,8 +121,9 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 
 	private void mergeTemplate(HttpServletRequest request, HttpServletResponse response, String tpath, ViewForward wf)
 			throws IOException, ServletException {
-		if (tpath == null)
+		if (tpath == null) {
 			throw new ServletException("not set template!");
+		}
 		PrintWriter out = null;
 		try {
 			Template template;
@@ -200,10 +201,11 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		String templatePath = servletContext.getInitParameter("template-path");
 		VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
 		String path;
-		if (templatePath != null && !templatePath.trim().equals(""))
+		if (templatePath != null && !templatePath.trim().equals("")) {
 			path = servletContext.getRealPath("WEB-INF/" + templatePath);
-		else
+		} else {
 			path = servletContext.getRealPath("WEB-INF/template");
+		}
 
 		Properties ps = null;
 		try {

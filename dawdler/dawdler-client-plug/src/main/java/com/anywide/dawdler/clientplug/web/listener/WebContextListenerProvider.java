@@ -55,8 +55,9 @@ public class WebContextListenerProvider {
 	}
 
 	public static void removeWebContextListener(Class<?> webContextListenerClass) {
-		if (!WebContextListener.class.isAssignableFrom(webContextListenerClass))
+		if (!WebContextListener.class.isAssignableFrom(webContextListenerClass)) {
 			return;
+		}
 		for (OrderData<WebContextListener> orderData : webContextListeners) {
 			if (orderData.getData().getClass() == webContextListenerClass) {
 				webContextListeners.remove(orderData);

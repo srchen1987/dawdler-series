@@ -56,12 +56,13 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	public void init() {
 		// 连接时间 和重试次数
 		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 0);
-		if(user != null && !user.trim().equals("") && password != null && !password.trim().equals("")) {
-			client = CuratorFrameworkFactory.builder().connectString(connectString).authorization(ROOT_PATH, (user+":"+password).getBytes()).retryPolicy(retryPolicy).build();
-		}else {
+		if (user != null && !user.trim().equals("") && password != null && !password.trim().equals("")) {
+			client = CuratorFrameworkFactory.builder().connectString(connectString)
+					.authorization(ROOT_PATH, (user + ":" + password).getBytes()).retryPolicy(retryPolicy).build();
+		} else {
 			client = CuratorFrameworkFactory.newClient(connectString, retryPolicy);
 		}
-		
+
 		client.start();
 	}
 

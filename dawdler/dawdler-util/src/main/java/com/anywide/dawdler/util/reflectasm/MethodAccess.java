@@ -427,7 +427,7 @@ public abstract class MethodAccess {
 	public Class<?>[] getReturnTypes() {
 		return returnTypes;
 	}
-	
+
 	public Class<?> getReturnType(int methodIndex) {
 		return returnTypes[methodIndex];
 	}

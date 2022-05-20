@@ -121,11 +121,12 @@ public class CookieManager {
 			}
 			if (newVersion == 0 || CookieSupport.ALWAYS_ADD_EXPIRES) {
 				buf.append("; Expires=");
-				if (maxAge == 0)
+				if (maxAge == 0) {
 					buf.append(ancientDate);
-				else
+				} else {
 					OLD_COOKIE_FORMAT.get().format(new Date(JVMTimeProvider.currentTimeMillis() + maxAge * 1000L), buf,
 							new FieldPosition(0));
+				}
 			}
 		}
 		if (path != null) {
@@ -184,13 +185,15 @@ public class CookieManager {
 			if (c == '\\') {
 				b.append(c);
 				// ignore the character after an escape, just append it
-				if (++i >= endIndex)
+				if (++i >= endIndex) {
 					throw new IllegalArgumentException("Invalid escape character in cookie value.");
+				}
 				b.append(s.charAt(i));
-			} else if (c == '"')
+			} else if (c == '"') {
 				b.append('\\').append('"');
-			else
+			} else {
 				b.append(c);
+			}
 		}
 
 		return b.toString();

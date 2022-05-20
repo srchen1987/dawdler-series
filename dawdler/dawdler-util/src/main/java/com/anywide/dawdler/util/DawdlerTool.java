@@ -34,12 +34,12 @@ import java.util.List;
  * @version V1.0
  * @Title DawdlerTool.java
  * @Description 常用工具类
- * @date 2007年7月03日
+ * @date 2007年7月3日
  * @email suxuan696@gmail.com
  */
 public class DawdlerTool {
 
-	public static String getcurrentPath() {
+	public static String getCurrentPath() {
 		try {
 			return URLDecoder.decode(Thread.currentThread().getContextClassLoader().getResource("").getPath(), "utf-8");
 		} catch (UnsupportedEncodingException e) {
@@ -47,7 +47,7 @@ public class DawdlerTool {
 		return Thread.currentThread().getContextClassLoader().getResource("").getPath().replace("%20", " ");
 	}
 
-	public static URL getcurrentURL() {
+	public static URL getCurrentURL() {
 		return Thread.currentThread().getContextClassLoader().getResource("");
 	}
 

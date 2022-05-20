@@ -65,7 +65,7 @@ public class JsonProcessUtil {
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		mapper.writeValue(writer, obj);
 	}
-	
+
 	public static void beanToJson(OutputStream out, Object obj)
 			throws JsonGenerationException, JsonMappingException, IOException {
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();

@@ -82,8 +82,9 @@ public class ServiceRoot {
 
 	public static Service getService(String path) {
 		Service service = services.get(path);
-		if (service == null)
+		if (service == null) {
 			return null;
+		}
 		Thread.currentThread().setContextClassLoader(service.getDawdlerContext().getClassLoader());
 		return service;
 	}
@@ -130,7 +131,7 @@ public class ServiceRoot {
 		ServerConfig serverConfig = dawdlerServerContext.getServerConfig();
 		Server server = serverConfig.getServer();
 		boolean healthCheck = serverConfig.getHealthCheck().isCheck();
-		if(healthCheck) {
+		if (healthCheck) {
 			servicesHealth = new ConcurrentHashMap<>();
 		}
 		initWorkPool(server.getMaxThreads(), server.getQueueCapacity(), server.getKeepAliveMilliseconds());
@@ -152,7 +153,7 @@ public class ServiceRoot {
 				}
 			}
 
-			if(healthCheck) {
+			if (healthCheck) {
 				validateDataSource();
 			}
 			List<DeployData> deployDataList = new ArrayList<>();
@@ -162,10 +163,9 @@ public class ServiceRoot {
 					Callable<Void> call = (() -> {
 						try {
 							long serviceStart = JVMTimeProvider.currentTimeMillis();
-							Service service = new ServiceBase(serverConfig, deployFile,
-									classLoader);
+							Service service = new ServiceBase(serverConfig, deployFile, classLoader);
 							services.put(deployName, service);
-							if(healthCheck) {
+							if (healthCheck) {
 								servicesHealth.put(deployName, service);
 							}
 							service.start();
@@ -293,14 +293,14 @@ public class ServiceRoot {
 		Thread.currentThread().setContextClassLoader(bootClassLoader);
 		return serverHealth;
 	}
-	
-	private static boolean validateDataSource()throws Exception {
+
+	private static boolean validateDataSource() throws Exception {
 		Map<String, DataSource> datasources = DataSourceParser.getDataSources();
-		if(datasources == null) {
+		if (datasources == null) {
 			return true;
 		}
 		Set<Entry<String, DataSource>> entrySet = datasources.entrySet();
-		for(Entry<String, DataSource> entry : entrySet) {
+		for (Entry<String, DataSource> entry : entrySet) {
 			String key = entry.getKey();
 			DataSource dataSource = entry.getValue();
 			Connection con = null;
@@ -308,9 +308,9 @@ public class ServiceRoot {
 				con = dataSource.getConnection();
 				con.getAutoCommit();
 			} catch (Exception e) {
-				throw new Exception(key+":"+e.getMessage());
-			}finally {
-				if(con != null) {
+				throw new Exception(key + ":" + e.getMessage());
+			} finally {
+				if (con != null) {
 					try {
 						con.close();
 					} catch (SQLException e) {
@@ -320,6 +320,5 @@ public class ServiceRoot {
 		}
 		return true;
 	}
-	
-	
+
 }

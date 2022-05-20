@@ -38,10 +38,11 @@ public class DAOFactory {
 		return daofactory;
 	}
 
-	public SuperDAO getDAO(Class<?> clazz) {
-		SuperDAO object = instances.get(clazz);
-		if (object != null)
+	public SuperDAO getDAO(Class<?> ckass) {
+		SuperDAO object = instances.get(ckass);
+		if (object != null) {
 			return object;
+		}
 		try {
 			object = (SuperDAO) clazz.getDeclaredConstructor().newInstance();
 		} catch (Exception e) {

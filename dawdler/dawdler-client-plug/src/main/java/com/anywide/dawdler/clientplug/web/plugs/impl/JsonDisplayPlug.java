@@ -63,8 +63,9 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 					wf.putData(key, obj);
 				}
 			}
-			if (wf.getData() != null)
+			if (wf.getData() != null) {
 				json = JsonProcessUtil.beanToJson(wf.getData());
+			}
 			break;
 		}
 		case ERROR: {
@@ -78,8 +79,9 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 		case STOP:
 			return;
 		}
-		if (json != null)
+		if (json != null) {
 			print(response, json);
+		}
 	}
 
 	private void print(HttpServletResponse response, String message) {
@@ -91,8 +93,9 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 		} catch (Exception e) {
 			logger.error("", e);
 		} finally {
-			if (out != null)
+			if (out != null) {
 				out.close();
+			}
 		}
 	}
 

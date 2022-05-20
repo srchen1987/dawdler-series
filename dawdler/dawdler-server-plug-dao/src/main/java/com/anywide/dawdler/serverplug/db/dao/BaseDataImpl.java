@@ -55,14 +55,16 @@ public class BaseDataImpl implements BaseData {
 			return DataAutomaticNewV2.buildObject(c, rs);
 		} finally {
 			try {
-				if (st != null)
+				if (st != null) {
 					st.close();
+				}
 			} catch (Exception e) {
 			}
 
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -87,14 +89,16 @@ public class BaseDataImpl implements BaseData {
 			return DataAutomaticNewV2.buildObject(c, rs);
 		} finally {
 			try {
-				if (ps != null)
+				if (ps != null) {
 					ps.close();
+				}
 			} catch (Exception e) {
 			}
 
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -108,8 +112,9 @@ public class BaseDataImpl implements BaseData {
 			return st.executeUpdate(sql);
 		} finally {
 			try {
-				if (st != null)
+				if (st != null) {
 					st.close();
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -128,8 +133,9 @@ public class BaseDataImpl implements BaseData {
 			return i;
 		} finally {
 			try {
-				if (ps != null)
+				if (ps != null) {
 					ps.close();
+				}
 			} catch (Exception e) {
 			}
 
@@ -160,18 +166,21 @@ public class BaseDataImpl implements BaseData {
 			st = getReadStatement();
 			rs = st.executeQuery(sql);
 			int count = 0;
-			if (rs.next())
+			if (rs.next()) {
 				count = rs.getInt(1);
+			}
 			return count;
 		} finally {
 			try {
-				if (st != null)
+				if (st != null) {
 					st.close();
+				}
 			} catch (Exception e) {
 			}
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -196,18 +205,21 @@ public class BaseDataImpl implements BaseData {
 			}
 			rs = ps.executeQuery();
 			int count = 0;
-			if (rs.next())
+			if (rs.next()) {
 				count = rs.getInt(1);
+			}
 			return count;
 		} finally {
 			try {
-				if (ps != null)
+				if (ps != null) {
 					ps.close();
+				}
 			} catch (Exception e) {
 			}
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -234,13 +246,15 @@ public class BaseDataImpl implements BaseData {
 			}
 		} finally {
 			try {
-				if (ps != null)
+				if (ps != null) {
 					ps.close();
+				}
 			} catch (Exception e) {
 			}
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
+				}
 			} catch (Exception e) {
 			}
 
@@ -255,13 +269,15 @@ public class BaseDataImpl implements BaseData {
 			return DataAutomaticNewV2.buildMaps(rs);
 		} finally {
 			try {
-				if (st != null)
+				if (st != null) {
 					st.close();
+				}
 			} catch (Exception e) {
 			}
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -287,13 +303,15 @@ public class BaseDataImpl implements BaseData {
 			return DataAutomaticNewV2.buildMaps(rs);
 		} finally {
 			try {
-				if (ps != null)
+				if (ps != null) {
 					ps.close();
+				}
 			} catch (Exception e) {
 			}
 			try {
-				if (rs != null)
+				if (rs != null) {
 					rs.close();
+				}
 			} catch (Exception e) {
 			}
 		}
@@ -402,8 +420,9 @@ public class BaseDataImpl implements BaseData {
 
 	public static void applyTransactionTimeout(Statement statement) throws SQLException {
 		SynReadConnectionObject synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
-		if (synReadObj == null)
+		if (synReadObj == null) {
 			return;
+		}
 		Integer transactionTimeout = synReadObj.getDBTransaction().timeOut();
 		Integer queryTimeout = statement.getQueryTimeout();
 		if (queryTimeout == null || queryTimeout == 0 || transactionTimeout < queryTimeout) {

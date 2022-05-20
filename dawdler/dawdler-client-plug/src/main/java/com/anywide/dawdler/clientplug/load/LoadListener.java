@@ -50,7 +50,7 @@ import jakarta.servlet.annotation.WebListener;
  * @version V1.0
  * @Title LoadListener.java
  * @Description 加载模版类的监听器
- * @date 2007年5月08日
+ * @date 2007年5月8日
  * @email suxuan696@gmail.com
  */
 @WebListener
@@ -64,13 +64,15 @@ public class LoadListener implements ServletContextListener {
 			Entry<LoadCore, Thread> entry = it.next();
 			entry.getKey().stop();
 			if (entry.getValue().isAlive()) {
-				if (logger.isDebugEnabled())
+				if (logger.isDebugEnabled()) {
 					logger.debug("stop \t" + entry.getValue().getName() + "\tload");
+				}
 				entry.getValue().interrupt();
 			}
 		}
 		WebContextListenerProvider.listenerRun(false, arg0.getServletContext());
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(arg0.getServletContext().getServletContextName()).getComponentLifeCycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider
+				.getInstance(arg0.getServletContext().getServletContextName()).getComponentLifeCycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
@@ -89,7 +91,8 @@ public class LoadListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent arg0) {
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(arg0.getServletContext().getServletContextName()).getComponentLifeCycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider
+				.getInstance(arg0.getServletContext().getServletContextName()).getComponentLifeCycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
@@ -98,14 +101,15 @@ public class LoadListener implements ServletContextListener {
 				logger.error("", e);
 			}
 		}
-		
-		ClientPlugClassLoader classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getcurrentPath());
+
+		ClientPlugClassLoader classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getCurrentPath());
 		XmlObject xml = ClientConfigParser.getXmlObject();
 		for (Object o : xml.selectNodes("/config/loads-on/item")) {
 			Element ele = (Element) o;
 			String host = ele.getText();
-			if (logger.isDebugEnabled())
+			if (logger.isDebugEnabled()) {
 				logger.debug("starting load.....\t" + host + "\tmodule!");
+			}
 			if (ele.attribute("sleep") != null) {
 				try {
 					sleep = Long.parseLong(ele.attributeValue("sleep"));
@@ -132,7 +136,7 @@ public class LoadListener implements ServletContextListener {
 				threads.put(loadCore, thread);
 			}
 		}
-		
+
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);

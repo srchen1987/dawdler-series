@@ -103,10 +103,11 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 	@Override
 	public void init(ServletContext servletContext) {
 		String templatePath = servletContext.getInitParameter("template-path");
-		if (templatePath != null && !templatePath.trim().equals(""))
+		if (templatePath != null && !templatePath.trim().equals("")) {
 			path = "/WEB-INF/" + templatePath + "/";
-		else
+		} else {
 			path = "/WEB-INF/template/";
+		}
 
 	}
 

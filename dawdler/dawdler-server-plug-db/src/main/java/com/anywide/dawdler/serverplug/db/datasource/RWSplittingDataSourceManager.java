@@ -41,7 +41,7 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
  * @version V1.0
  * @Title RWSplittingDataSourceManager.java
  * @Description 读写分离的数据管理器
- * @date 2007年8月06日
+ * @date 2007年8月6日
  * @email suxuan696@gmail.com
  */
 public class RWSplittingDataSourceManager {
@@ -56,7 +56,7 @@ public class RWSplittingDataSourceManager {
 
 	public RWSplittingDataSourceManager(DawdlerContext dawdlerContext) throws Exception {
 		this.dawdlerContext = dawdlerContext;
-		init(); 
+		init();
 	}
 
 	public Map<String, DataSource> getDataSources() {
@@ -119,8 +119,9 @@ public class RWSplittingDataSourceManager {
 
 	public DataSource getDataSource(String id) {
 		DataSource dataSource = dataSources.get(id);
-		if (dataSource != null)
+		if (dataSource != null) {
 			return dataSource;
+		}
 		try {
 			dataSource = LocalConnectionFactory.getDataSourceInDawdler(id);
 			dataSources.put(id, dataSource);
@@ -185,8 +186,9 @@ public class RWSplittingDataSourceManager {
 		}
 
 		public String[] explainExpression(String expression) {
-			if (expression == null)
+			if (expression == null) {
 				return null;
+			}
 			Matcher mc = EXPRESSION.matcher(expression);
 			String[] rdstring = null;
 			if (mc.matches()) {
@@ -200,10 +202,12 @@ public class RWSplittingDataSourceManager {
 
 		@Override
 		public boolean equals(Object obj) {
-			if (obj == null)
+			if (obj == null) {
 				return false;
-			if (!(obj instanceof MappingDecision))
+			}
+			if (!(obj instanceof MappingDecision)) {
 				return false;
+			}
 			MappingDecision md = (MappingDecision) obj;
 			return originalReadExpression != null && (originalReadExpression.equals(md.originalReadExpression));
 		}
