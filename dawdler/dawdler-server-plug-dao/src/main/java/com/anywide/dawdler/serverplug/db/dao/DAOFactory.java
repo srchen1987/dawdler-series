@@ -40,8 +40,9 @@ public class DAOFactory {
 
 	public SuperDAO getDAO(Class<?> ckass) {
 		SuperDAO object = instances.get(ckass);
-		if (object != null)
+		if (object != null) {
 			return object;
+		}
 		try {
 			object = (SuperDAO) ckass.newInstance();
 		} catch (InstantiationException e) {

@@ -20,7 +20,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.conf.Refresher;
-import com.anywide.dawdler.conf.init.ConfigInit;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
@@ -34,6 +33,7 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
  */
 public class ConfigServiceCreateListener implements DawdlerServiceCreateListener {
 	private static Logger logger = LoggerFactory.getLogger(ConfigServiceCreateListener.class);
+
 	@Override
 	public void create(Object service, boolean single, DawdlerContext context) {
 		try {

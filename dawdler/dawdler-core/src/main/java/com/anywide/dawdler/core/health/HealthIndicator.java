@@ -16,11 +16,10 @@
  */
 package com.anywide.dawdler.core.health;
 
-
 public interface HealthIndicator {
-	
+
 	public String name();
-	
+
 	Health check(Health.Builder builder) throws Exception;
-	
+
 }

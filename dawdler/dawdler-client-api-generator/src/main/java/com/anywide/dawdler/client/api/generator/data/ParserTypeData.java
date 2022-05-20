@@ -51,8 +51,9 @@ public class ParserTypeData {
 			} else {
 				ClassStruct classStruct = classStructs.get(type);
 				if (classStruct != null) {
-					if (params != null)
+					if (params != null) {
 						params.remove(parameterData.getName());
+					}
 					FieldParser.parserFields(classStruct.getJavaClass(), classStructs, params, true);
 				}
 			}
@@ -61,7 +62,8 @@ public class ParserTypeData {
 //			tsv	Tab-separated values.	"foo\tbar\tbaz"
 //			pipes	Pipe-separated values.	foo|bar|baz
 //			multi	Multiple parameter instances rather than multiple values. This is only supported for the in: query and in: formData parameters.	foo=value&foo=another_value
-			parameterData.setCollectionFormat("multi");// only support multi
+// only support multi			
+			parameterData.setCollectionFormat("multi");
 			parameterData.setAllowEmptyValue(false);
 			parameterData.setItems(items);
 		} else {
@@ -70,8 +72,9 @@ public class ParserTypeData {
 				parameterData.setType(typeData.getType());
 				parameterData.setFormat(typeData.getFormat());
 			} else {
-				if (params != null)
+				if (params != null) {
 					params.remove(parameterData.getName());
+				}
 				ClassStruct classStruct = classStructs.get(typeName);
 				if (classStruct != null) {
 					FieldParser.parserFields(classStruct.getJavaClass(), classStructs, params, false);

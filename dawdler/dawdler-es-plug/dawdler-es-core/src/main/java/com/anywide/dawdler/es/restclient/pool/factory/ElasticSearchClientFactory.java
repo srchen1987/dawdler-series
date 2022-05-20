@@ -46,8 +46,9 @@ public class ElasticSearchClientFactory {
 
 	public static ElasticSearchClientFactory getInstance(String fileName) throws IOException {
 		ElasticSearchClientFactory connectionFactory = instances.get(fileName);
-		if (connectionFactory != null)
+		if (connectionFactory != null) {
 			return connectionFactory;
+		}
 		synchronized (instances) {
 			connectionFactory = instances.get(fileName);
 			if (connectionFactory == null) {
@@ -117,8 +118,8 @@ public class ElasticSearchClientFactory {
 			});
 		}
 	}
-	
-	public static Map<String, ElasticSearchClientFactory> getInstances(){
+
+	public static Map<String, ElasticSearchClientFactory> getInstances() {
 		return instances;
 	}
 }

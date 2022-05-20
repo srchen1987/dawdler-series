@@ -129,16 +129,10 @@ public final class CookieSupport {
 
 	}
 
-	// ----------------------------------------------------------------- Methods
-
-	// ------------------------------------------------------------- Constructor
 	private CookieSupport() {
 		// Utility class. Don't allow instances to be created.
 	}
 
-	/**
-	 * Returns true if the byte is a separator as defined by V0 of the cookie spec.
-	 */
 	public static final boolean isV0Separator(final char c) {
 		if (c < 0x20 || c >= 0x7f) {
 			if (c != 0x09) {
@@ -150,8 +144,9 @@ public final class CookieSupport {
 	}
 
 	public static boolean isV0Token(String value) {
-		if (value == null)
+		if (value == null) {
 			return false;
+		}
 
 		int i = 0;
 		int len = value.length();
@@ -164,8 +159,9 @@ public final class CookieSupport {
 		for (; i < len; i++) {
 			char c = value.charAt(i);
 
-			if (isV0Separator(c))
+			if (isV0Separator(c)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -187,8 +183,9 @@ public final class CookieSupport {
 	}
 
 	public static boolean isHttpToken(String value) {
-		if (value == null)
+		if (value == null) {
 			return false;
+		}
 
 		int i = 0;
 		int len = value.length();
@@ -201,15 +198,17 @@ public final class CookieSupport {
 		for (; i < len; i++) {
 			char c = value.charAt(i);
 
-			if (isHttpSeparator(c))
+			if (isHttpSeparator(c)) {
 				return true;
+			}
 		}
 		return false;
 	}
 
 	public static boolean alreadyQuoted(String value) {
-		if (value == null || value.length() < 2)
+		if (value == null || value.length() < 2) {
 			return false;
+		}
 		return (value.charAt(0) == '\"' && value.charAt(value.length() - 1) == '\"');
 	}
 }

@@ -37,6 +37,7 @@ import com.anywide.dawdler.core.order.OrderData;
 public class HealthIndicatorProvider {
 	private final List<OrderData<HealthIndicator>> indicators = new ArrayList<>();
 	private static Map<String, HealthIndicatorProvider> instances = new ConcurrentHashMap<>();
+
 	public static HealthIndicatorProvider getInstance(String serviceName) {
 		HealthIndicatorProvider healthChecker = instances.get(serviceName);
 		if (healthChecker != null)
@@ -66,5 +67,5 @@ public class HealthIndicatorProvider {
 	public List<OrderData<HealthIndicator>> getHealthIndicators() {
 		return indicators;
 	}
-	
+
 }

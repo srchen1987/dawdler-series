@@ -54,8 +54,9 @@ public abstract class Control {
 	protected String translation() {
 		String notEmpty = "";
 		if (tag.getValidateRule() != null) {
-			if (tag.getValidateRule().contains("notEmpty"))
+			if (tag.getValidateRule().contains("notEmpty")) {
 				notEmpty = "<font color=\"red\">*</font>";
+			}
 		}
 		return notEmpty + (tag.isAutoAddViewName() ? tag.getViewName() + (showcolon ? " : " : "  ") : "")
 				+ replaceContent()

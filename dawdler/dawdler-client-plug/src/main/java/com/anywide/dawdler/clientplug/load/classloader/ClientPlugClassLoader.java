@@ -64,8 +64,9 @@ public class ClientPlugClassLoader {
 	}
 
 	public synchronized static ClientPlugClassLoader newInstance(String path) {
-		if (classloader == null)
+		if (classloader == null) {
 			classloader = new ClientPlugClassLoader(path);
+		}
 		return classloader;
 	}
 

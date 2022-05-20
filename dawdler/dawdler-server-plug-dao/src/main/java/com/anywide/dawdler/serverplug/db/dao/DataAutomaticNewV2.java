@@ -53,7 +53,6 @@ public class DataAutomaticNewV2 {
 		while (rs.next()) {
 			Map<String, Object> map = new LinkedHashMap<String, Object>();
 			for (int j = 1; j <= numberOfColumns; j++) {
-				// String columnName = rsmd.getColumnName(j);
 				String columnName = rsmd.getColumnLabel(j);
 				Object obj = rs.getObject(columnName);
 				if (obj != null) {
@@ -133,8 +132,9 @@ public class DataAutomaticNewV2 {
 		if (methods == null) {
 			methods = new ConcurrentHashMap<String, Method>();
 			Map<String, Method> pre = cacheMethod.putIfAbsent(type, methods);
-			if (pre != null)
+			if (pre != null) {
 				methods = pre;
+			}
 		}
 		Method method = methods.get(setMethodName);
 		if (method == null) {

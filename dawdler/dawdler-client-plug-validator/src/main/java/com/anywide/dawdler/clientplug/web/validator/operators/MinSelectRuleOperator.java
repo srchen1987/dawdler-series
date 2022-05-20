@@ -42,14 +42,17 @@ public class MinSelectRuleOperator extends RegexRuleOperator {
 			return error;
 		}
 		if (value instanceof String) {
-			if (i > 1)
+			if (i > 1) {
 				return error;
+			}
 		} else if (value instanceof String[]) {
-			if (((String[]) value).length < i)
+			if (((String[]) value).length < i) {
 				return error;
+			}
 		} else if (value instanceof List) {
-			if (((List) value).size() < i)
+			if (((List) value).size() < i) {
 				return error;
+			}
 		}
 		return null;
 	}

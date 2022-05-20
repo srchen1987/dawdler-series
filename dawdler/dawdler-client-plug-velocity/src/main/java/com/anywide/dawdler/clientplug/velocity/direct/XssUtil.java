@@ -7,7 +7,7 @@ import org.jsoup.safety.Safelist;
  * @author jackson.song
  * @version V1.0
  * @Title XssUtil.java
- * @date 2010年4月05日
+ * @date 2010年4月5日
  * @email suxuan696@gmail.com
  */
 public class XssUtil {

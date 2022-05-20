@@ -49,8 +49,9 @@ public class ClientClassLoader extends URLClassLoader {
 	@Override
 	public URL getResource(String name) {
 		Resource resource = ucp.getResource(name);
-		if (resource != null)
+		if (resource != null) {
 			return resource.getURL();
+		}
 		return super.getResource(name);
 	}
 

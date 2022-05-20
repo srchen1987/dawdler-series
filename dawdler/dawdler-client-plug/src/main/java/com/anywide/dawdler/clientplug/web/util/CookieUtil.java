@@ -37,13 +37,15 @@ public class CookieUtil {
 	private static final String HTTPONLY = "HttpOnly";
 
 	public static Cookie getCookie(String cookie) {
-		if (cookie == null || cookie.trim().equals(""))
+		if (cookie == null || cookie.trim().equals("")) {
 			return null;
+		}
 		String[] cookies = cookie.split(";");
 		String nameAndValue = cookies[0];
 		String[] nameValue = nameAndValue.split("=");
-		if (nameValue.length != 2)
+		if (nameValue.length != 2) {
 			return null;
+		}
 		String cname = nameValue[0];
 		String cvalue = nameValue[1];
 		Cookie c = new Cookie(cname, cvalue);

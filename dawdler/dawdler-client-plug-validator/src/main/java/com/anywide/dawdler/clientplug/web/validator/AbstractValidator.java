@@ -39,10 +39,12 @@ public abstract class AbstractValidator {
 	}
 
 	public boolean validate(String value) {
-		if (value == null || value.trim().equals(""))
+		if (value == null || value.trim().equals("")) {
 			return true;
-		if (pattern == null)
+		}
+		if (pattern == null) {
 			return true;
+		}
 		return pattern.matcher(value).find();
 	}
 

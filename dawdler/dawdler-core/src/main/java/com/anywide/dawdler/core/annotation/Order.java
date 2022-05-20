@@ -27,7 +27,7 @@ import java.lang.annotation.Target;
  * @version V1.0
  * @Title Order.java
  * @Description 排序注解
- * @date 2015年6月03日
+ * @date 2015年6月3日
  * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)

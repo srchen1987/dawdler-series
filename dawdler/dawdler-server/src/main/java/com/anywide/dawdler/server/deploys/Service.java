@@ -46,13 +46,13 @@ public interface Service {
 	ServiceExecutor getServiceExecutor();
 
 	FilterProvider getFilterProvider();
-	
+
 	public ServiceHealth getServiceHealth();
-	
+
 	public void status(String status);
-	
+
 	public void cause(Throwable throwable);
-	
+
 	public String getStatus();
 
 	public Throwable getCause();

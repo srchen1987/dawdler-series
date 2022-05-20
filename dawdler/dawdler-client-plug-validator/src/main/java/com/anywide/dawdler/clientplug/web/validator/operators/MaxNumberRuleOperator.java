@@ -39,20 +39,24 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 		boolean flag = true;
 		double i = Double.parseDouble(matcher.group(1));
 		String error = "不能大于数字" + i + "!";
-		if (value == null)
+		if (value == null) {
 			return null;
+		}
 		if (value instanceof String) {
-			if (isEmpty(value.toString()))
+			if (isEmpty(value.toString())) {
 				return null;
+			}
 			Double v = null;
 			try {
 				v = Double.parseDouble((String) value);
 			} catch (Exception e) {
 			}
-			if (v == null)
+			if (v == null) {
 				return null;
-			if (v > i)
+			}
+			if (v > i) {
 				return error;
+			}
 		}
 		if (value instanceof String[]) {
 			String[] values = (String[]) value;
@@ -65,8 +69,9 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 					dv = Double.parseDouble(v);
 				} catch (Exception e) {
 				}
-				if (dv == null)
+				if (dv == null) {
 					continue;
+				}
 				if (dv > i) {
 					flag = false;
 					break;
@@ -84,16 +89,18 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 					dv = Double.parseDouble(o.toString());
 				} catch (Exception e) {
 				}
-				if (dv == null)
+				if (dv == null) {
 					continue;
+				}
 				if (dv > i) {
 					flag = false;
 					break;
 				}
 			}
 		}
-		if (!flag)
+		if (!flag) {
 			return error;
+		}
 		return null;
 	}
 
