@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.serverplug.db.dao;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
 /**
@@ -43,12 +44,17 @@ public class DAOFactory {
 		if (object != null) {
 			return object;
 		}
-		try {
-			object = (SuperDAO) clazz.getDeclaredConstructor().newInstance();
-		} catch (Exception e) {
-			return null;
+		synchronized (instances) {
+			object = instances.get(clazz);
+			if (object == null) {
+				try {
+					object = (SuperDAO) clazz.getConstructor().newInstance();
+				} catch (Exception e) {
+					return null;
+				}
+				instances.put(clazz, object);
+			}
 		}
-		instances.put(clazz, object);
 		return object;
 	}
 }
