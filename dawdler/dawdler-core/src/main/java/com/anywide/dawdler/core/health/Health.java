@@ -20,10 +20,6 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -34,10 +30,8 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class Health {
 
-	@JsonIgnore
 	private final String name;
 
-	@JsonInclude(Include.NON_EMPTY)
 	private final Map<String, Object> data;
 
 	protected Health(String name, Builder builder) {
