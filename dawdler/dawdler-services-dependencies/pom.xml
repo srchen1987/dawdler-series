@@ -24,17 +24,6 @@
 
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-config-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>*</artifactId>
-					<groupId>*</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server-plug-config</artifactId>
 			<exclusions>
 				<exclusion>
@@ -141,19 +130,6 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server-plug-dao</artifactId>
 			<version>${dawdler.build.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>*</artifactId>
-					<groupId>*</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-load-bean</artifactId>
-			<version>${dawdler.build.version}</version>
-			<scope>provided</scope>
 			<exclusions>
 				<exclusion>
 					<artifactId>*</artifactId>
