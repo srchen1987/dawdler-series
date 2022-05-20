@@ -24,7 +24,7 @@ import java.util.Map;
  * @version V1.0
  * @Title TLS.java
  * @Description TLS工具类
- * @date 2007年10月09日
+ * @date 2007年10月9日
  * @email suxuan696@gmail.com
  */
 public class TLS {

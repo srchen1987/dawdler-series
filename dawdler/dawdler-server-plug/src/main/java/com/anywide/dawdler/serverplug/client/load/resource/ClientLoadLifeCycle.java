@@ -39,7 +39,7 @@ public class ClientLoadLifeCycle implements ComponentLifeCycle {
 	@Override
 	public void prepareInit() throws Throwable {
 		Element loadApi = DawdlerContext.getDawdlerContext().getServicesConfig().selectSingleNode("/config/load-api");
-		if(loadApi != null) {
+		if (loadApi != null) {
 			XmlObject xml = ClientConfigParser.getXmlObject();
 			if (xml != null) {
 				for (Object o : xml.selectNodes("/config/loads-on/item")) {

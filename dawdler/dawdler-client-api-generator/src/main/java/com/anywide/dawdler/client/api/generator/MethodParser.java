@@ -114,8 +114,9 @@ public class MethodParser {
 					}
 				}
 			}
-			if (httpMethods.isEmpty())
+			if (httpMethods.isEmpty()) {
 				continue;
+			}
 
 			Map<String, MethodParameterData> params = new LinkedHashMap<>();
 			Map<String, MethodParameterData> methodParameterMap = new LinkedHashMap<>();
@@ -323,13 +324,14 @@ public class MethodParser {
 	private final static ResponseData RESPONSE_401 = new ResponseData("Unauthorized");
 	private final static ResponseData RESPONSE_403 = new ResponseData("Forbidden");
 	private final static ResponseData RESPONSE_404 = new ResponseData("Not Found");
+	private final static String BRACKET = "[]";
 
 	public static Map<String, Object> getResponse(JavaType returnType, Map<String, Object> definitionsMap) {
 		Map<String, Object> response = new LinkedHashMap<>();
 		SchemaData schema = new SchemaData();
 		String genericFullyQualifiedName = returnType.getGenericFullyQualifiedName();
 		boolean array = false;
-		if (genericFullyQualifiedName.endsWith("[]")) {
+		if (genericFullyQualifiedName.endsWith(BRACKET)) {
 			array = true;
 		}
 		String binaryName = returnType.getBinaryName();
@@ -365,7 +367,7 @@ public class MethodParser {
 			} else {
 				$ref = returnType.getGenericFullyQualifiedName();
 				if (definitionsMap.containsKey($ref)) {
-					schema.set$ref("#/definitions/" + $ref/* .replaceAll("<", "«").replaceAll(">","»") */);
+					schema.set$ref("#/definitions/" + $ref);
 				} else {
 					schema.setType("object");
 				}

@@ -43,8 +43,9 @@ public class PlugFactory {
 
 	public static DisplayPlug getDisplayPlug(String key) {
 		DisplayPlug displayPlug = displayPlugs.get(key);
-		if (displayPlug == null)
+		if (displayPlug == null) {
 			return getDisplayPlug(ViewType.json.toString());
+		}
 		return displayPlug;
 	}
 

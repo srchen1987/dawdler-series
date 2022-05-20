@@ -42,8 +42,8 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycleProvider;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.core.health.Health;
-import com.anywide.dawdler.core.health.HealthIndicatorProvider;
 import com.anywide.dawdler.core.health.HealthIndicator;
+import com.anywide.dawdler.core.health.HealthIndicatorProvider;
 import com.anywide.dawdler.core.health.ServiceHealth;
 import com.anywide.dawdler.core.health.Status;
 import com.anywide.dawdler.core.order.OrderData;
@@ -153,14 +153,16 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void start() throws Throwable {
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName).getComponentLifeCycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
+				.getComponentLifeCycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().prepareInit();
 		}
 		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
-		if (definedServiceExecutor != null)
+		if (definedServiceExecutor != null) {
 			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
+		}
 
 		Element root = dawdlerContext.getServicesConfig().getRoot();
 
@@ -201,8 +203,9 @@ public class ServiceBase implements Service {
 					DawdlerFilter filter = (DawdlerFilter) SunReflectionFactoryInstantiator.newInstance(c);
 					OrderData<DawdlerFilter> orderData = new OrderData<>();
 					orderData.setData(filter);
-					if (order != null)
+					if (order != null) {
 						orderData.setOrder(order.value());
+					}
 					filterProvider.addFilter(filter);
 				}
 
@@ -299,7 +302,8 @@ public class ServiceBase implements Service {
 
 		servicesManager.clear();
 
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName).getComponentLifeCycles();
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
+				.getComponentLifeCycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
 				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
@@ -344,8 +348,9 @@ public class ServiceBase implements Service {
 							String groupName = remoteService.value();
 							obj = method.invoke(null, serviceClass, groupName);
 						}
-						if (obj != null)
+						if (obj != null) {
 							field.set(service, obj);
+						}
 					}
 				} catch (Exception e) {
 					logger.error("", e);
@@ -362,10 +367,10 @@ public class ServiceBase implements Service {
 			String prefix = "services-config";
 			String subfix = ".xml";
 			configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-			file = new File(DawdlerTool.getcurrentPath() + configPath);
+			file = new File(DawdlerTool.getCurrentPath() + configPath);
 			if (!file.isFile()) {
 				configPath = prefix + subfix;
-				file = new File(DawdlerTool.getcurrentPath() + configPath);
+				file = new File(DawdlerTool.getCurrentPath() + configPath);
 			}
 			if (!file.isFile()) {
 				logger.error("not found services-config.xml");
@@ -469,11 +474,11 @@ public class ServiceBase implements Service {
 			}
 		}
 		String status;
-			if (down) {
-				status = Status.DOWN;
-			} else {
-				status = Status.UP;
-			}
+		if (down) {
+			status = Status.DOWN;
+		} else {
+			status = Status.UP;
+		}
 		serviceHealth.setStatus(status);
 		return serviceHealth;
 	}

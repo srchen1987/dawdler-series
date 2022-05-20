@@ -43,7 +43,7 @@ import com.anywide.dawdler.util.reflectasm.MethodAccess;
  * @version V1.0
  * @Title TransactionServiceExecutor.java
  * @Description 实现dawdler的执行器，将事务绑定到Service的执行过程中
- * @date 2015年10月09日
+ * @date 2015年10月9日
  * @email suxuan696@gmail.com
  */
 public class TransactionServiceExecutor implements ServiceExecutor {
@@ -157,7 +157,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 					}
 					synReadObj.requested();
 					try {
-						if (!(mode == MODE.readOnly) && mappingDecision != null) {
+						if (mode != MODE.readOnly && mappingDecision != null) {
 							DataSource dataSource = mappingDecision.getWriteDataSource(index);
 							manager = LocalConnectionFactory.getManager(dataSource);
 							tranStatus = manager.getTransaction(dbt);
@@ -205,7 +205,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 	}
 
 	public void doCommit(TransactionStatus tranStatus, TransactionManager manager) {
-		if (tranStatus != null)
+		if (tranStatus != null) {
 			if (!tranStatus.isCompleted()) {
 				try {
 					manager.commit(tranStatus);
@@ -213,6 +213,7 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 					logger.error("", e);
 				}
 			}
+		}
 	}
 
 	private boolean isNoRollBackFor(Class<? extends Throwable>[] noRollBackType, Throwable e) {

@@ -26,7 +26,7 @@ import java.util.Map;
  * @Title ClassUtil.java
  * @Package com.anywide.dawdler.util
  * @Description Class操作类
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public class ClassUtil {
@@ -64,10 +64,12 @@ public class ClassUtil {
 	}
 
 	public static <T extends Object> T convertArray(String[] value, Class<T> type) {
-		if (value == null || value.length == 0)
+		if (value == null || value.length == 0) {
 			return null;
-		if (!type.isArray())
+		}
+		if (!type.isArray()) {
 			return null;
+		}
 		Object result = null;
 		if (type == String[].class) {
 			return (T) value;
@@ -178,8 +180,9 @@ public class ClassUtil {
 	}
 
 	public static <T extends Object> T convert(Object value, Class<T> type) {
-		if (value == null)
+		if (value == null) {
 			return null;
+		}
 		if (type == String.class) {
 			value = value.toString();
 		} else if (type == int.class || type == Integer.class) {
@@ -207,8 +210,9 @@ public class ClassUtil {
 	}
 
 	public static String[] convertSimpleArrayToStringArray(Object value) {
-		if (value == null || !value.getClass().isArray())
+		if (value == null || !value.getClass().isArray()) {
 			return null;
+		}
 		String[] result = null;
 		Class<?> type = value.getClass();
 		if (type == int[].class) {

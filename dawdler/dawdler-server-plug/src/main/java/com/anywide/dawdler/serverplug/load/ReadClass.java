@@ -42,21 +42,22 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title ReadClass.java
  * @Description 读取服务端类模版
- * @date 2007年9月07日
+ * @date 2007年9月7日
  * @email suxuan696@gmail.com
  */
 public class ReadClass {
 	private static final Logger logger = LoggerFactory.getLogger(ReadClass.class);
 	private static final Pattern classPattern = Pattern.compile("(.*)\\.class$");
-	private static String path = new File(DawdlerTool.getcurrentPath()).getPath() + File.separator;
+	private static String path = new File(DawdlerTool.getCurrentPath()).getPath() + File.separator;
 
 	public static XmlObject read(String host) {
 		try {
 			XmlObject remoteLoadXml = new XmlObject(
 					getRemoteLoad(DawdlerContext.getDawdlerContext().getServicesConfig()));
 			List<Node> hosts = remoteLoadXml.selectNodes("/hosts/host[@name='" + host + "']/package");
-			if (hosts == null || hosts.isEmpty())
+			if (hosts == null || hosts.isEmpty()) {
 				return null;
+			}
 			XmlObject xmlo = new XmlObject();
 			xmlo.CreateRoot("hosts");
 			Element root = xmlo.getRoot();
@@ -66,9 +67,10 @@ public class ReadClass {
 				boolean isbean = type != null && type.trim().equals("api");
 				String pack = hostEle.getTextTrim().replace(".", File.separator);
 				File file = new File(path + pack);
-				if (!file.isDirectory())
+				if (!file.isDirectory()) {
 					throw new FileNotFoundException(
 							"not exist\t" + path + pack + "\t or " + path + pack + " is not directory!");
+				}
 				createXmlObjectByFile(root, file, pack, host, isbean);
 			}
 			return xmlo;
@@ -81,9 +83,10 @@ public class ReadClass {
 
 	public static String getRemoteLoad(XmlObject xmlo) {
 		Element ele = (Element) xmlo.getRoot().selectSingleNode("/config/remote-load");
-		if (ele == null)
+		if (ele == null) {
 			throw new NullPointerException(xmlo.getFilepath() + "\tconfig/remote-load not found！");
-		return ele.attributeValue("package").replace("${classpath}", DawdlerTool.getcurrentPath());
+		}
+		return ele.attributeValue("package").replace("${classpath}", DawdlerTool.getCurrentPath());
 	}
 
 	private static void createXmlObjectByFile(Element hosts, File file, String pack, String host, boolean isbean) {
@@ -104,7 +107,7 @@ public class ReadClass {
 	public static RemoteFiles operation(String[] filenames) throws FileNotFoundException {
 		RemoteFiles rfs = new RemoteFiles();
 		List<RemoteFile> files = new ArrayList<>();
-		String path = DawdlerTool.getcurrentPath();
+		String path = DawdlerTool.getCurrentPath();
 		for (String name : filenames) {
 			Matcher match = classPattern.matcher(name);
 			if (match.find()) {

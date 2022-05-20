@@ -51,12 +51,12 @@ public class ClientConfigParser {
 		String prefix = "client/client-conf";
 		String subfix = ".xml";
 		fileName = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		file = new File(DawdlerTool.getcurrentPath() + fileName);
+		file = new File(DawdlerTool.getCurrentPath() + fileName);
 		if (!file.isFile()) {
 			logger.error("not found " + fileName);
 		} else {
 			try {
-				xmlObject = new XmlObject(DawdlerTool.getcurrentPath() + fileName);
+				xmlObject = new XmlObject(DawdlerTool.getCurrentPath() + fileName);
 				Element root = xmlObject.getRoot();
 				config = new ClientConfig();
 				Element zkHost = (Element) root.selectSingleNode("zk-host");

@@ -40,7 +40,7 @@ public class PropertiesUtil {
 	}
 
 	public static Properties loadProperties(String fileName) throws IOException {
-		String path = DawdlerTool.getcurrentPath() + fileName + ".properties";
+		String path = DawdlerTool.getCurrentPath() + fileName + ".properties";
 		InputStream inStream = null;
 		try {
 			inStream = new FileInputStream(path);
@@ -48,8 +48,9 @@ public class PropertiesUtil {
 			ps.load(inStream);
 			return ps;
 		} finally {
-			if (inStream != null)
+			if (inStream != null) {
 				inStream.close();
+			}
 		}
 	}
 

@@ -13,7 +13,7 @@ import com.anywide.dawdler.core.order.OrderData;
 public class ComponentLifeCycleProvider {
 	private static Map<String, ComponentLifeCycleProvider> instances = new ConcurrentHashMap<>();
 	private final List<OrderData<ComponentLifeCycle>> componentLifeCycles = new ArrayList<>();
-	
+
 	public static ComponentLifeCycleProvider getInstance(String serviceName) {
 		ComponentLifeCycleProvider componentLifeCycleProvider = instances.get(serviceName);
 		if (componentLifeCycleProvider != null)

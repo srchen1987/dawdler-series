@@ -59,7 +59,8 @@ public class UploadFile {
 	}
 
 	public void delete() {
-		if (file != null)
+		if (file != null) {
 			file.delete();
+		}
 	}
 }

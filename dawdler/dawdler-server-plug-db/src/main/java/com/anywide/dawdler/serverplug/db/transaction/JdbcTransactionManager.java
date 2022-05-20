@@ -180,8 +180,9 @@ public class JdbcTransactionManager implements TransactionManager {
 		defStatus.setCompleted();
 		TransactionObject tranObj = defStatus.getTranConn();
 		Isolation transactionIsolation = tranObj.getOriIsolationLevel();
-		if (transactionIsolation != null)
+		if (transactionIsolation != null) {
 			tranObj.getHolder().getConnection().setTransactionIsolation(transactionIsolation.ordinal());
+		}
 		tranObj.getHolder().released();
 		tranObj.stopTransaction();
 		if (defStatus.isSuspend()) {
@@ -193,8 +194,9 @@ public class JdbcTransactionManager implements TransactionManager {
 
 	protected TransactionObject doGetConnection(final JdbcTransactionStatus defStatus) throws SQLException {
 		WriteConnectionHolder holder = LocalConnectionFactory.currentConnectionHolder(dataSource);
-		if (!holder.isOpen() || !holder.hasTransaction())
+		if (!holder.isOpen() || !holder.hasTransaction()) {
 			defStatus.markNewConnection();
+		}
 		holder.requested();
 		Connection con = holder.getConnection();
 		LocalConnectionFactory.setWriteConnection(con);

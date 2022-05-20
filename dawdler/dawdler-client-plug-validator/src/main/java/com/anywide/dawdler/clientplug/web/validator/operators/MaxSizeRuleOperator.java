@@ -39,13 +39,16 @@ public class MaxSizeRuleOperator extends RegexRuleOperator {
 		boolean flag = true;
 		int i = Integer.parseInt(matcher.group(1));
 		String error = "不能大于" + i + "个字符!";
-		if (value == null)
+		if (value == null) {
 			return null;
+		}
 		if (value instanceof String) {
-			if (isEmpty(value.toString()))
+			if (isEmpty(value.toString())) {
 				return null;
-			if (((String) value).trim().length() > i)
+			}
+			if (((String) value).trim().length() > i) {
 				return error;
+			}
 		}
 		if (value instanceof String[]) {
 			String[] values = (String[]) value;
@@ -70,8 +73,9 @@ public class MaxSizeRuleOperator extends RegexRuleOperator {
 				}
 			}
 		}
-		if (!flag)
+		if (!flag) {
 			return error;
+		}
 		return null;
 	}
 
