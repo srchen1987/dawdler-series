@@ -49,7 +49,7 @@ public class DawdlerHttpServer {
 	public DawdlerHttpServer(String host, String scheme, int port, int backlog, String username, String password,
 			String keyStorePath, String keyPassword) throws Exception {
 		InetSocketAddress address = new InetSocketAddress(host, port);
-		if(username != null && password != null) {
+		if (username != null && password != null) {
 			authenticator = new Auth("dawdler-realm", username, password);
 		}
 		if ("https".equals(scheme)) {
@@ -79,7 +79,7 @@ public class DawdlerHttpServer {
 
 	public void addPath(String path, HttpHandler httpHandler) {
 		HttpContext context = httpServer.createContext(path, httpHandler);
-		if(authenticator != null) {
+		if (authenticator != null) {
 			context.setAuthenticator(authenticator);
 		}
 	}

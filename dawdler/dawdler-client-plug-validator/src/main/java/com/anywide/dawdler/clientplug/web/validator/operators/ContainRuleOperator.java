@@ -41,19 +41,22 @@ public class ContainRuleOperator extends RegexRuleOperator {
 			return error;
 		}
 		if (value instanceof String) {
-			if (!validate(valueArray, value.toString()))
+			if (!validate(valueArray, value.toString())) {
 				return error;
+			}
 		} else if (value instanceof String[]) {
 			String[] valuesArrayTemp = (String[]) value;
 			for (String v : valuesArrayTemp) {
-				if (!validate(valueArray, v))
+				if (!validate(valueArray, v)) {
 					return error;
+				}
 			}
 		} else if (value instanceof List) {
 			List valuesArrayTemp = (List) value;
 			for (Object v : valuesArrayTemp) {
-				if (!validate(valueArray, v.toString()))
+				if (!validate(valueArray, v.toString())) {
 					return error;
+				}
 			}
 		}
 		return null;

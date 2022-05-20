@@ -34,14 +34,14 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 /**
-*
-* @Title RabbitListenerInit.java
-* @Description 初始化Listener
-* @author jackson.song
-* @date 2022年4月14日
-* @version V1.0
-* @email suxuan696@gmail.com
-*/
+ *
+ * @Title RabbitListenerInit.java
+ * @Description 初始化Listener
+ * @author jackson.song
+ * @date 2022年4月14日
+ * @version V1.0
+ * @email suxuan696@gmail.com
+ */
 public class RabbitListenerInit {
 	private static final Logger logger = LoggerFactory.getLogger(RabbitListenerInit.class);
 	private static Map<String, Object> listenerCache = new ConcurrentHashMap<>();

@@ -67,8 +67,9 @@ public class DeployClassesScanner {
 		for (File file : dirfiles) {
 			if (file.isDirectory()) {
 				String fileName = file.getName();
-				if (fileName.equals("classes"))
+				if (fileName.equals("classes")) {
 					fileName = "";
+				}
 				findAndAddClassesInPackageByPath(scanner, deployScanner,
 						packageName.equals("") ? fileName : (packageName + "." + file.getName()),
 						file.getAbsolutePath(), recursive, classes);

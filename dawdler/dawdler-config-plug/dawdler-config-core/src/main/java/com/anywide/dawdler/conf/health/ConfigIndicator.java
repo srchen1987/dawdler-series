@@ -44,7 +44,7 @@ public class ConfigIndicator implements HealthIndicator {
 	public Health check(Builder builder) throws Exception {
 		ConfigInit configInit = ConfigInit.getInstance();
 		List<ConfigClient> configClients = configInit.getConfigClients();
-		if(configClients != null) {
+		if (configClients != null) {
 			for (ConfigClient configClient : configClients) {
 				String key = configClient.type();
 				Builder childBuilder = Health.up();
@@ -58,7 +58,7 @@ public class ConfigIndicator implements HealthIndicator {
 			}
 		}
 		return builder.build();
-		
+
 	}
 
 }

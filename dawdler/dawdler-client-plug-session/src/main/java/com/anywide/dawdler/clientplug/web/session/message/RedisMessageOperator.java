@@ -125,8 +125,9 @@ public class RedisMessageOperator implements MessageOperator {
 		} catch (Exception e) {
 			logger.error("", e);
 		} finally {
-			if (jedis != null)
+			if (jedis != null) {
 				jedis.close();
+			}
 		}
 	}
 
@@ -141,8 +142,9 @@ public class RedisMessageOperator implements MessageOperator {
 		} catch (Exception e) {
 			logger.error("", e);
 		} finally {
-			if (jedis != null)
+			if (jedis != null) {
 				jedis.close();
+			}
 		}
 	}
 
@@ -153,8 +155,9 @@ public class RedisMessageOperator implements MessageOperator {
 
 		@Override
 		public void onMessage(String channel, String message) {
-			if (!message.startsWith(RedisSessionStore.SESSIONKEY_PREFIX))
+			if (!message.startsWith(RedisSessionStore.SESSIONKEY_PREFIX)) {
 				return;
+			}
 			boolean ischange = CHANNEL_ATTRIBUTE_CHANGE.equals(channel);
 			if (ischange || CHANNEL_ATTRIBUTE_CHANGE_DEL.equals(channel)) {
 				String[] data = splitMessage(message);
@@ -181,8 +184,9 @@ public class RedisMessageOperator implements MessageOperator {
 				DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionKey);
 				if (session != null) {
 					if (CHANNEL_ATTRIBUTE_CHANGE_RELOAD.equals(channel)) {
-						if (session.getSessionSign().equals(data[1]))
+						if (session.getSessionSign().equals(data[1])) {
 							return;
+						}
 						session.clear();
 						try {
 							SessionOperator.reloadAttributes(sessionStore.getAttributes(session.getId()), session,

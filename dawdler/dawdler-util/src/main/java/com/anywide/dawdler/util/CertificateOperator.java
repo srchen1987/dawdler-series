@@ -108,8 +108,9 @@ public class CertificateOperator {
 	}
 
 	public synchronized byte[] encrypt(byte[] data, KeyStoreConfig keyStore) throws Exception {
-		if (privateEncryptCipher != null)
+		if (privateEncryptCipher != null) {
 			return privateEncryptCipher.doFinal(data);
+		}
 		PrivateKey privateKey = getPrivateKey(keyStore);
 		return encrypt(data, privateKey);
 
@@ -123,8 +124,9 @@ public class CertificateOperator {
 	}
 
 	public synchronized byte[] encrypt(byte[] data) throws Exception {
-		if (publicEncryptCipher != null)
+		if (publicEncryptCipher != null) {
 			return publicEncryptCipher.doFinal(data);
+		}
 		PublicKey publicKey = getPublicKey();
 		return encrypt(data, publicKey);
 
@@ -139,8 +141,9 @@ public class CertificateOperator {
 	}
 
 	public synchronized byte[] decrypt(byte[] data, KeyStoreConfig keyStore) throws Exception {
-		if (privateDecryptCipher != null)
+		if (privateDecryptCipher != null) {
 			return privateDecryptCipher.doFinal(data);
+		}
 		PrivateKey privateKey = getPrivateKey(keyStore);
 		return decrypt(data, privateKey);
 	}
@@ -153,8 +156,9 @@ public class CertificateOperator {
 	}
 
 	public synchronized byte[] decrypt(byte[] data) throws Exception {
-		if (publicDecryptCipher != null)
+		if (publicDecryptCipher != null) {
 			return publicDecryptCipher.doFinal(data);
+		}
 		PublicKey publicKey = getPublicKey();
 		return decrypt(data, publicKey);
 	}

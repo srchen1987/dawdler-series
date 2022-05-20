@@ -38,14 +38,17 @@ public class MaxSelectRuleOperator extends RegexRuleOperator {
 	public String validate(Object value, Matcher matcher) {
 		int i = Integer.parseInt(matcher.group(1));
 		String error = "不能大于" + i + "项!";
-		if (value == null)
+		if (value == null) {
 			return null;
+		}
 		if (value instanceof String[]) {
-			if (((String[]) value).length > i)
+			if (((String[]) value).length > i) {
 				return error;
+			}
 		} else if (value instanceof List) {
-			if (((List) value).size() > i)
+			if (((List) value).size() > i) {
 				return error;
+			}
 		}
 		return null;
 	}

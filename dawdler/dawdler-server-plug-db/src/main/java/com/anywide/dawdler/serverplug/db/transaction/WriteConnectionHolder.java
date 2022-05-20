@@ -82,33 +82,38 @@ public class WriteConnectionHolder implements SavepointManager {
 
 	public boolean hasTransaction() throws SQLException {
 		Connection conn = this.getConnection();
-		if (conn == null)
+		if (conn == null) {
 			return false;
+		}
 		return !conn.getAutoCommit();
 	}
 
 	void setTransaction() throws SQLException {
 		Connection conn = getConnection();
-		if (conn != null && conn.getAutoCommit() == true)
+		if (conn != null && conn.getAutoCommit() == true) {
 			conn.setAutoCommit(false);
+		}
 	}
 
 	void cancelTransaction() throws SQLException {
 		Connection conn = this.getConnection();
-		if (conn != null && conn.getAutoCommit() == false)
+		if (conn != null && conn.getAutoCommit() == false) {
 			conn.setAutoCommit(true);
+		}
 	}
 
 	private void checkConn(final Connection conn) throws SQLException {
-		if (conn == null)
+		if (conn == null) {
 			throw new SQLException("Connection is null.");
+		}
 	}
 
 	public boolean supportsSavepoints() throws SQLException {
 		Connection conn = this.getConnection();
 		this.checkConn(conn);
-		if (this.savepointsSupported == null)
+		if (this.savepointsSupported == null) {
 			this.savepointsSupported = conn.getMetaData().supportsSavepoints();
+		}
 		return this.savepointsSupported;
 	}
 

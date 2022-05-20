@@ -71,7 +71,7 @@ public class ClientConfig {
 
 	public String getCertificatePath() {
 		if (certificatePath != null)
-			certificatePath = certificatePath.replace("${CLASSPATH}", DawdlerTool.getcurrentPath());
+			certificatePath = certificatePath.replace("${CLASSPATH}", DawdlerTool.getCurrentPath());
 		return certificatePath;
 	}
 

@@ -27,7 +27,7 @@ import com.navercorp.pinpoint.common.util.CollectionUtils;
  * @version V1.0
  * @Title DawdlerProviderDetector.java
  * @Description dawdler服务提供者pinpoint探测器
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public final class DawdlerProviderDetector {

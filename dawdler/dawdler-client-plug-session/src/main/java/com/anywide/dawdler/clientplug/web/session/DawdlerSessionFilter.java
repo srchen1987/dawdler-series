@@ -212,8 +212,9 @@ public class DawdlerSessionFilter implements Filter {
 	}
 
 	public String getCookieValue(Cookie[] cookies, String cookiename) {
-		if (cookies == null)
+		if (cookies == null) {
 			return null;
+		}
 		try {
 			for (int i = 0; i < cookies.length; i++) {
 				if (cookies[i].getName().equals(cookiename)) {

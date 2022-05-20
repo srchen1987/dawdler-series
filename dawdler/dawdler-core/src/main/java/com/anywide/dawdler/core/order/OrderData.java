@@ -21,7 +21,7 @@ package com.anywide.dawdler.core.order;
  * @version V1.0
  * @Title OrderData.java
  * @Description 存储Order具体类
- * @date 2007年12月03日
+ * @date 2007年12月3日
  * @email suxuan696@gmail.com
  */
 public class OrderData<T> implements Order {
