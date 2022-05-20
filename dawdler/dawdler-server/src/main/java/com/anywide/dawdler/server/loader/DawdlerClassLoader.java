@@ -31,7 +31,7 @@ import org.slf4j.LoggerFactory;
  * @version V1.0
  * @Title DawdlerClassLoader.java
  * @Description Dawdler类加载器
- * @date 2015年3月09日
+ * @date 2015年3月9日
  * @email suxuan696@gmail.com
  */
 public class DawdlerClassLoader extends URLClassLoader {
@@ -56,11 +56,13 @@ public class DawdlerClassLoader extends URLClassLoader {
 
 	@Override
 	public URL getResource(String name) {
-		if (name == null || name.trim().equals(""))
+		if (name == null || name.trim().equals("")) {
 			name = "/";
+		}
 		URL url = urlCache.get(name);
-		if (url != null)
+		if (url != null) {
 			return url;
+		}
 		if (name.equals("/")) {
 			urlCache.put(name, binPath);
 			return binPath;
@@ -72,7 +74,7 @@ public class DawdlerClassLoader extends URLClassLoader {
 			logger.error("", e);
 			return null;
 		}
-		if (file.exists())
+		if (file.exists()) {
 			try {
 				url = file.toURI().toURL();
 				urlCache.put(name, url);
@@ -81,6 +83,7 @@ public class DawdlerClassLoader extends URLClassLoader {
 				logger.error("", e);
 				return null;
 			}
+		}
 		return super.getResource(name);
 	}
 

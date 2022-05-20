@@ -42,15 +42,18 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
  */
 public class ConfigInit {
 	private static ConfigInit configInit = new ConfigInit();
+
 	private ConfigInit() {
 	}
-	
+
 	public List<ConfigClient> getConfigClients() {
 		return configClients;
 	}
+
 	public static ConfigInit getInstance() {
 		return configInit;
 	}
+
 	private static Logger logger = LoggerFactory.getLogger(ConfigInit.class);
 	List<ConfigClient> configClients = null;
 
@@ -60,10 +63,10 @@ public class ConfigInit {
 		String prefix = "dawdler-config";
 		String subfix = ".yml";
 		String config_path = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		File file = new File(DawdlerTool.getcurrentPath() + config_path);
+		File file = new File(DawdlerTool.getCurrentPath() + config_path);
 		if (!file.isFile()) {
 			config_path = prefix + subfix;
-			file = new File(DawdlerTool.getcurrentPath() + config_path);
+			file = new File(DawdlerTool.getCurrentPath() + config_path);
 		}
 		if (!file.isFile()) {
 			logger.warn("not found " + config_path);

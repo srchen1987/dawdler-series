@@ -25,7 +25,7 @@ import java.util.List;
  * @version V1.0
  * @Title OrderComparator.java
  * @Description 排序(升序)
- * @date 2007年12月03日
+ * @date 2007年12月3日
  * @email suxuan696@gmail.com
  */
 public class OrderComparator<T> implements Comparator<OrderData<T>> {

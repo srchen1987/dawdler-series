@@ -112,7 +112,7 @@ public final class XmlObject {
 	}
 
 	public static XmlObject loadClassPathXML(String filename) throws DocumentException, IOException {
-		return new XmlObject(DawdlerTool.getcurrentPath() + filename);
+		return new XmlObject(DawdlerTool.getCurrentPath() + filename);
 	}
 
 	public boolean isXmlfile() {
@@ -188,13 +188,14 @@ public final class XmlObject {
 		if (xpath.equals("/"))
 			throw new Exception("Can't remove Root!");
 		List<Node> list = selectNodes(xpath);
-		if (list != null)
+		if (list != null) {
 			for (Object o : list) {
 				Element el = (Element) o;
 				el.getParent().remove(el);
 			}
-		else
-			throw new Exception("NotDeFount Element!");
+		} else {
+			throw new Exception("not defount element!");
+		}
 	}
 
 	public String asXML() throws IOException {

@@ -49,7 +49,8 @@ public class DataSourceIndicator implements HealthIndicator {
 	@Override
 	public Health check(Builder builder) throws Exception {
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
-		RWSplittingDataSourceManager manager = (RWSplittingDataSourceManager) dawdlerContext.getAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX);
+		RWSplittingDataSourceManager manager = (RWSplittingDataSourceManager) dawdlerContext
+				.getAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX);
 		Map<String, DataSource> dataSources = manager.getDataSources();
 		Set<Map.Entry<String, DataSource>> entrySet = dataSources.entrySet();
 		for (Entry<String, DataSource> entry : entrySet) {
@@ -63,8 +64,8 @@ public class DataSourceIndicator implements HealthIndicator {
 				builder.withDetail(key, childBuilder.build().getData());
 			} catch (Exception e) {
 				throw e;
-			}finally {
-				if(con != null) {
+			} finally {
+				if (con != null) {
 					try {
 						con.close();
 					} catch (SQLException e) {

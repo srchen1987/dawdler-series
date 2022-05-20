@@ -36,13 +36,15 @@ public class ValidatorFactory {
 	public static AbstractValidator getValidator(String key) {
 		try {
 			AbstractValidator avalidator = validators.get(key);
-			if (avalidator != null)
+			if (avalidator != null) {
 				return avalidator;
+			}
 			avalidator = new AbstractValidator(key) {
 			};
 			AbstractValidator pre = validators.putIfAbsent(key, avalidator);
-			if (pre != null)
+			if (pre != null) {
 				avalidator = pre;
+			}
 			return avalidator;
 		} catch (Exception e) {
 			logger.error("", e);

@@ -29,28 +29,33 @@ import com.thoughtworks.qdox.model.expression.AnnotationValue;
  */
 public class AnnotationUtils {
 	public static String getAnnotationStringValue(JavaAnnotation javaAnnotation, String name) {
-		if (javaAnnotation == null)
+		if (javaAnnotation == null) {
 			return null;
+		}
 		AnnotationValue annotationValue = javaAnnotation.getProperty(name);
-		if (annotationValue == null)
+		if (annotationValue == null) {
 			return null;
+		}
 		return getAnnotationObjectValue(javaAnnotation, name).toString().replaceAll("'", "").replaceAll("\"", "")
 				.replaceAll(" ", "");
 	}
 
 	public static String[] getAnnotationStringArrayValue(JavaAnnotation javaAnnotation, String name) {
 		String value = getAnnotationStringValue(javaAnnotation, name);
-		if (value == null)
+		if (value == null) {
 			return null;
+		}
 		return value.replaceAll("\\[", "").replaceAll("\\]", "").split(",");
 	}
 
 	public static Object getAnnotationObjectValue(JavaAnnotation javaAnnotation, String name) {
-		if (javaAnnotation == null)
+		if (javaAnnotation == null) {
 			return null;
+		}
 		AnnotationValue annotationValue = javaAnnotation.getProperty(name);
-		if (annotationValue == null)
+		if (annotationValue == null) {
 			return null;
+		}
 		return annotationValue.getParameterValue();
 	}
 

@@ -32,7 +32,7 @@ import com.navercorp.pinpoint.plugin.dawdler.DawdlerConstants;
  * @version V1.0
  * @Title DawdlerClientInterceptor.java
  * @Description 基于pinpoint实现客户端拦截器
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public class DawdlerClientInterceptor implements AroundInterceptor {

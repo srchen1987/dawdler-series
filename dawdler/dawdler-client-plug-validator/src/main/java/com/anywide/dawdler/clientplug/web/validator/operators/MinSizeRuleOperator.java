@@ -43,10 +43,12 @@ public class MinSizeRuleOperator extends RegexRuleOperator {
 			return null;
 		}
 		if (value instanceof String) {
-			if (isEmpty(value.toString()))
+			if (isEmpty(value.toString())) {
 				return null;
-			if (((String) value).trim().length() < i)
+			}
+			if (((String) value).trim().length() < i) {
 				return error;
+			}
 		}
 		if (value instanceof String[]) {
 			String[] values = (String[]) value;
@@ -71,8 +73,9 @@ public class MinSizeRuleOperator extends RegexRuleOperator {
 				}
 			}
 		}
-		if (!flag)
+		if (!flag) {
 			return error;
+		}
 		return null;
 	}
 

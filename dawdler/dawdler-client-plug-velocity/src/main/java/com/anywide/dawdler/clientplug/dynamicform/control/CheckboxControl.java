@@ -49,10 +49,12 @@ public class CheckboxControl extends Control {
 			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
 					.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 					.replace(ControlContent.VIEWNAMEREPLACE, viewName));
-			if (css != null && !css.trim().equals(""))
+			if (css != null && !css.trim().equals("")) {
 				sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
-			if (validateRule != null && !validateRule.trim().equals(""))
+			}
+			if (validateRule != null && !validateRule.trim().equals("")) {
 				sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
+			}
 			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, i + ""));
 			if (value != null) {
 				for (String v : value.split(",")) {
@@ -61,8 +63,9 @@ public class CheckboxControl extends Control {
 					}
 				}
 			}
-			if (additional != null)
+			if (additional != null) {
 				sb.append(" " + additional);
+			}
 			sb.append(ControlContent.INPUTEND);
 			sb.append(showItem[i] + "   ");
 		}

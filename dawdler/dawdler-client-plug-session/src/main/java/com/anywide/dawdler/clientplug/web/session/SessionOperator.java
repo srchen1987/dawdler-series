@@ -71,8 +71,9 @@ public class SessionOperator {
 					session.setCreationTime((Long) obj);
 				} else if (key.equals(DawdlerHttpSession.LAST_ACCESSED_TIME_KEY)) {
 					session.setLastAccessedTime((Long) obj);
-				} else
+				} else {
 					attribute.put(key, obj);
+				}
 			} catch (Exception e) {
 				logger.error("", e);
 				session.getAttributesRemoveNewKeys().add(key);

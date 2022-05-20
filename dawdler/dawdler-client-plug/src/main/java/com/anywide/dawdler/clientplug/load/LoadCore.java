@@ -46,7 +46,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @version V1.0
  * @Title LoadCore.java
  * @Description 加载服务端类模版
- * @date 2007年9月05日
+ * @date 2007年9月5日
  * @email suxuan696@gmail.com
  */
 public class LoadCore implements Runnable {
@@ -58,7 +58,7 @@ public class LoadCore implements Runnable {
 	private static final String TYPE_API = "api";
 	private static final String TYPE_COMPONENT = "component";
 	static {
-		CURRENT_PATH = DawdlerTool.getcurrentPath();
+		CURRENT_PATH = DawdlerTool.getCurrentPath();
 	}
 
 	private final String host;
@@ -70,8 +70,9 @@ public class LoadCore implements Runnable {
 	public LoadCore(String host, long time, String channelGroupId, ClientPlugClassLoader classLoder) {
 		this.classLoder = classLoder;
 		this.host = host;
-		if (time > 1000)
+		if (time > 1000) {
 			this.time = time;
+		}
 		this.channelGroupId = channelGroupId;
 	}
 
@@ -90,8 +91,9 @@ public class LoadCore implements Runnable {
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-		if (xmlb == null)
+		if (xmlb == null) {
 			throw new NullPointerException("not found host " + host + "!");
+		}
 		XmlObject xmlo = new XmlObject(xmlb.getDocument());
 		String filepath = getLogFilePath();
 		File file = new File(filepath);
@@ -126,8 +128,9 @@ public class LoadCore implements Runnable {
 		try {
 			String filepath = getLogFilePath();
 			File xmlFile = new File(filepath);
-			if (!xmlFile.isFile())
+			if (!xmlFile.isFile()) {
 				return;
+			}
 			XmlObject xmlo = new XmlObject(filepath, false);
 			Set<String> needLoad = new LinkedHashSet<String>();
 			for (Object o : xmlo.selectNodes("/hosts/host[@type='component']/item")) {
@@ -182,8 +185,9 @@ public class LoadCore implements Runnable {
 				if (!ele.attributeValue("update").equals(remoteEle.attributeValue("update"))) {
 					remark = true;
 					needLoad.add(className + CLASSP_REFIX);
-					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
+					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null) {
 						this.classLoder.remove(host + "-" + className);
+					}
 				}
 			}
 		}
@@ -199,10 +203,12 @@ public class LoadCore implements Runnable {
 					loadCache.add(checkName);// set中添加进去
 					remark = true;
 					File file = new File(classFilePath + checkName);
-					if (file.exists())
+					if (file.exists()) {
 						file.delete();
-					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
+					}
+					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null) {
 						this.classLoder.remove(host + "-" + className);
+					}
 				}
 			}
 			List<Node> items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']");
@@ -215,18 +221,21 @@ public class LoadCore implements Runnable {
 					String className = toClassName(checkName);
 					needLoad.add(className + CLASSP_REFIX);
 					File file = new File(classFilePath + checkName);
-					if (file.exists())
+					if (file.exists()) {
 						file.delete();
-					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null)
+					}
+					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null) {
 						this.classLoder.remove(host + "-" + className);
+					}
 				}
 			}
 		}
 		String[] loadClasses = new String[needLoad.size()];
 		loadClasses = needLoad.toArray(loadClasses);
 		if (loadClasses != null && loadClasses.length > 0) {
-			if (!isApi)
+			if (!isApi) {
 				classLoder.updateLoad(CURRENT_PATH);
+			}
 
 			loadClass(loadClasses, isApi);
 		}
@@ -278,11 +287,13 @@ public class LoadCore implements Runnable {
 					String filePath = className.replace(".", File.separator);
 					File file = new File(CURRENT_PATH + filePath + CLASSP_REFIX);
 					File parentFile = new File(file.getParent());
-					if (file.exists())
+					if (file.exists()) {
 						file.delete();
+					}
 					if (!parentFile.exists()) {
-						if (!parentFile.mkdirs())
+						if (!parentFile.mkdirs()) {
 							throw new IOException("can't write file to" + parentFile.getPath());
+						}
 					}
 					FileOutputStream fo = null;
 					try {
@@ -294,8 +305,9 @@ public class LoadCore implements Runnable {
 						return;
 					} finally {
 						try {
-							if (fo != null)
+							if (fo != null) {
 								fo.close();
+							}
 						} catch (IOException e) {
 							logger.error("", e);
 						}
@@ -305,8 +317,9 @@ public class LoadCore implements Runnable {
 				}
 			}
 		}
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("load over \t" + host + "\tmodel !");
+		}
 	}
 
 	public String getHost() {

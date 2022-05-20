@@ -48,8 +48,9 @@ public class ValidateParser {
 		uniqueArrRules(validateRule, set);
 		for (String regex : set) {
 			String error = RuleOperatorExecuter.autoOperator(regex, value);
-			if (error != null)
+			if (error != null) {
 				return (viewName + error);
+			}
 		}
 		return null;
 	}

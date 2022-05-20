@@ -24,7 +24,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
  * @version V1.0
  * @Title MethodArgumentResolver.java
  * @Description 获取参数值的决策接口
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public interface MethodArgumentResolver {

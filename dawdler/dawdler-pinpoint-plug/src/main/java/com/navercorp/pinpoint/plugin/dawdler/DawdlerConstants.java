@@ -29,7 +29,7 @@ import com.navercorp.pinpoint.common.trace.ServiceTypeFactory;
  * @version V1.0
  * @Title DawdlerConstants.java
  * @Description pinpoint插件常量类
- * @date 2021年4月03日
+ * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */
 public final class DawdlerConstants {
