@@ -95,7 +95,7 @@ service->consul_client->consul_server
 #### 3.2 单机测试环境配置启动
 
 ```shell
-consul agent -dev -data-dir=/data/consul/data -server -bind=192.168.43.128 -client=0.0.0.0 -ui &
+consul agent -data-dir=/data/consul/data -server -bind=192.168.43.128 -client=0.0.0.0 -ui &
 ```
 
 dev:用于本地开发环境.

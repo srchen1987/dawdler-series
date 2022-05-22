@@ -7,6 +7,7 @@ module dawdler.config.core {
 	exports com.anywide.dawdler.conf;
 	exports com.anywide.dawdler.conf.cache;
 	exports com.anywide.dawdler.conf.init;
+	exports com.anywide.dawdler.conf.annotation;
 	uses ConfigClient;
 	provides ConfigClient with ConsulConfigClient;
 	uses HealthIndicator;

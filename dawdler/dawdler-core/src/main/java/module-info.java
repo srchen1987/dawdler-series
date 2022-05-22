@@ -1,3 +1,6 @@
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
+import com.anywide.dawdler.core.health.HealthIndicator;
+
 module dawdler.core {
 	exports com.anywide.dawdler.core.order;
 	exports com.anywide.dawdler.core.bean;
@@ -15,6 +18,8 @@ module dawdler.core {
 	exports com.anywide.dawdler.core.health;
 	exports com.anywide.dawdler.core.httpserver;
 	opens com.anywide.dawdler.core.bean;
+	uses HealthIndicator;
+	uses ComponentLifeCycle;
 	requires jdk.unsupported;
 	requires jdk.httpserver;
 	requires java.base;
