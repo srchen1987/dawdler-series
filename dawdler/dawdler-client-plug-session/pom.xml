@@ -12,7 +12,6 @@
 	<name>dawdler-client-plug-session</name>
 	<packaging>jar</packaging>
 	<dependencies>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>

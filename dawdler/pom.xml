@@ -3,6 +3,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<dawdler.build.version>0.0.2-RELEASES</dawdler.build.version>
+		<slf4j-api.version>1.7.32</slf4j-api.version>
 		<ch.qos.logback.version>1.2.7</ch.qos.logback.version>
 		<org.ow2.asm.version>7.1</org.ow2.asm.version>
 		<jaxen.version>1.2.0</jaxen.version>
@@ -39,6 +40,11 @@
 	<name>dawdler</name>
 	<packaging>pom</packaging>
 	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j-api.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-access</artifactId>
@@ -392,10 +398,6 @@
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>1.8</source>
 					<target>1.8</target>
-					<compilerArguments>
-						<verbose />
-						<bootclasspath>${JAVA_HOME}/lib/rt.jar:${JAVA_HOME}/lib/jce.jar</bootclasspath>
-					</compilerArguments>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -434,5 +436,6 @@
 		<module>dawdler-pinpoint-plug</module>
 		<module>dawdler-services-dependencies</module>
 		<module>dawdler-client-api-generator</module>
+		<module>dawdler-web-dependencies</module>
 	</modules>
 </project>
