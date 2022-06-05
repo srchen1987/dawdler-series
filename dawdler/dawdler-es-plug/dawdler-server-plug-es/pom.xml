@@ -6,6 +6,7 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug-es</artifactId>
+	<name>dawdler-server-plug-es</name>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

@@ -9,6 +9,7 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>dawdler-rabbitmq-plug</artifactId>
+	<name>dawdler-rabbitmq-plug</name>
 	<modules>
 		<module>dawdler-rabbitmq-core</module>
 		<module>dawdler-server-plug-rabbitmq</module>

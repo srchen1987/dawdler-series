@@ -9,6 +9,7 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>dawdler-distributed-transaction</artifactId>
+	<name>dawdler-distributed-transaction</name>
 	<modules>
 		<module>dawdler-distributed-transaction-core</module>
 		<module>dawdler-distributed-transaction-compensator</module>

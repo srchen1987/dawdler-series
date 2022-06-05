@@ -6,6 +6,7 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-rabbitmq</artifactId>
+	<name>dawdler-client-plug-rabbitmq</name>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
