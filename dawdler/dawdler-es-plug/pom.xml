@@ -9,6 +9,7 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>dawdler-es-plug</artifactId>
+	<name>dawdler-es-plug</name>
 	<modules>
 		<module>dawdler-es-core</module>
 		<module>dawdler-server-plug-es</module>
