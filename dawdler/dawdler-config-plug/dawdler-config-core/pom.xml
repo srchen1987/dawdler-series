@@ -6,6 +6,7 @@
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-config-core</artifactId>
+	<name>dawdler-config-core</name>
 	<dependencies>
 		<dependency>
 			<groupId>com.ecwid.consul</groupId>

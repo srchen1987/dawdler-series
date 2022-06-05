@@ -19,14 +19,14 @@
 		<jedis.version>4.1.1</jedis.version>
 		<rabbitmq.version>5.14.0</rabbitmq.version>
 		<caffeine.version>3.0.5</caffeine.version>
-		<mysql.version>8.0.21</mysql.version>
+		<mysql.version>8.0.29</mysql.version>
 		<jsoup.version>1.14.2</jsoup.version>
 		<ognl.version>3.2.20</ognl.version>
 		<aspectj.version>1.9.8.RC3</aspectj.version>
 		<javassist.version>3.28.0-GA</javassist.version>
 		<slf4j.version>2.0.0-alpha5</slf4j.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
-		<commons-io.version>2.2</commons-io.version>
+		<commons-io.version>2.11.0</commons-io.version>
 		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>8.2.0</elasticsearch.version>
@@ -453,5 +453,6 @@
 		<module>dawdler-services-dependencies</module>
 		<module>dawdler-jakarta-fileupload</module>
 		<module>dawdler-client-api-generator</module>
+		<module>dawdler-web-dependencies</module>
 	</modules>
 </project>

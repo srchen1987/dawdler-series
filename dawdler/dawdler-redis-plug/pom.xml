@@ -9,6 +9,7 @@
 	</parent>
 	<packaging>pom</packaging>
 	<artifactId>dawdler-redis-plug</artifactId>
+	<name>dawdler-redis-plug</name>
 	<modules>
 		<module>dawdler-redis-core</module>
 		<module>dawdler-server-plug-redis</module>

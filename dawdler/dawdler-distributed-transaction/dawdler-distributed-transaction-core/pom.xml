@@ -8,6 +8,7 @@
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-distributed-transaction-core</artifactId>
+	<name>dawdler-distributed-transaction-core</name>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

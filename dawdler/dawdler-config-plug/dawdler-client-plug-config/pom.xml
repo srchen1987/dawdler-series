@@ -8,6 +8,7 @@
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-config</artifactId>
+	<name>dawdler-client-plug-config</name>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
