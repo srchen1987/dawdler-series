@@ -25,13 +25,13 @@ server-conf.xml 是dawdler服务器的核心配置文件.
  <scanner>
   <jar-files>
 		<jar-files>
-			<jar-file>dawdler-server-plug-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-config-serverside-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-rabbitmq-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-redis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-0.17.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-dao-0.17.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-mybatis-0.17.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-config-serverside-0.17.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-rabbitmq-0.17.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug-redis-0.17.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-distributed-transaction-core-0.17.1-jdk17-RELEASES.jar</jar-file>
 		</jar-files>
    <!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
   </jar-files>
