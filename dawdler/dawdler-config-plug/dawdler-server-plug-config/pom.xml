@@ -8,6 +8,7 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug-config</artifactId>
+	<name>dawdler-server-plug-config</name>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
