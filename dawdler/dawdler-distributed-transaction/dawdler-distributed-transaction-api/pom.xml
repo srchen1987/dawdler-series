@@ -8,4 +8,5 @@
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-distributed-transaction-api</artifactId>
+	<name>dawdler-distributed-transaction-compensator</name>
 </project>

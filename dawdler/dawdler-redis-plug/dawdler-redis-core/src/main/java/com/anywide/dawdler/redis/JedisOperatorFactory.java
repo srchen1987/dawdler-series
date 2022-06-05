@@ -46,10 +46,14 @@ public class JedisOperatorFactory {
 			this.pool = pool;
 		}
 
-		// 不加入任何判断是否是基础方法 必定基础方法调用的比较少
+		// 不加入任何判断是否是基础方法 必定基础方法调用的比较少,调用getJedis 一定要手动调用close关闭.
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			Jedis jedis = pool.getResource();
+			String name = method.getName();
+			if(name.equals("getJedis")) {
+				return jedis;
+			}
 			try {
 				return method.invoke(jedis, args);
 			} finally {
