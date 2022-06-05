@@ -8,6 +8,7 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-pinpoint-plug</artifactId>
+	<name>dawdler-pinpoint-plug</name>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

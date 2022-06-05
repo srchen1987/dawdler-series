@@ -6,6 +6,7 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-rabbitmq-core</artifactId>
+	<name>dawdler-rabbitmq-core</name>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
