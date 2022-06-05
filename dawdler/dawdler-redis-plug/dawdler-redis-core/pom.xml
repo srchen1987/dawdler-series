@@ -6,6 +6,7 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-redis-core</artifactId>
+	<name>dawdler-redis-core</name>
 	<dependencies>
 		<dependency>
 			<groupId>redis.clients</groupId>
