@@ -18,6 +18,7 @@ package com.anywide.dawdler.redis;
 
 import java.io.Closeable;
 
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.commands.ClusterCommands;
 import redis.clients.jedis.commands.ControlBinaryCommands;
 import redis.clients.jedis.commands.ControlCommands;
@@ -41,4 +42,5 @@ public interface JedisOperator
 		extends ServerCommands, DatabaseCommands, JedisCommands, JedisBinaryCommands, ControlCommands,
 		ControlBinaryCommands, ClusterCommands, ModuleCommands, GenericControlCommands, SentinelCommands, Closeable {
 
+	Jedis getJedis();
 }
