@@ -92,7 +92,7 @@ public class LoadListener implements ServletContextListener {
 
 	public void contextInitialized(ServletContextEvent arg0) {
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider
-				.getInstance(arg0.getServletContext().getServletContextName()).getComponentLifeCycles();
+				.getInstance(arg0.getServletContext().getContextPath()).getComponentLifeCycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
