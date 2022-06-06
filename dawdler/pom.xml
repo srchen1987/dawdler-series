@@ -251,6 +251,11 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-mybatis-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-mybatis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
@@ -454,5 +459,6 @@
 		<module>dawdler-jakarta-fileupload</module>
 		<module>dawdler-client-api-generator</module>
 		<module>dawdler-web-dependencies</module>
+		<module>dawdler-mybatis-core</module>
 	</modules>
 </project>
