@@ -42,6 +42,14 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.serverplug.db.mybatis.session.DefaultSqlSessionFactory;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 
+/**
+ * @author jackson.song
+ * @version V1.0
+ * @Title DawdlerSqlSessionFactoryBuilder.java
+ * @Description dawdler实现session工厂构建器
+ * @date 2021年5月8日
+ * @email suxuan696@gmail.com
+ */
 public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 	private final static Logger logger = LoggerFactory.getLogger(DawdlerSqlSessionFactoryBuilder.class);
 
