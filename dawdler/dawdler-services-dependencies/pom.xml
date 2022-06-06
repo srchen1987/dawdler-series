@@ -84,6 +84,7 @@
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-mybatis-core</artifactId>
 				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
 				<exclusions>
 					<exclusion>
 						<artifactId>*</artifactId>
