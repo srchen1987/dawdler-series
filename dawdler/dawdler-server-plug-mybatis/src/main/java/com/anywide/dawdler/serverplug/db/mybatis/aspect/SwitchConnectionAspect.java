@@ -27,7 +27,7 @@ import com.anywide.dawdler.util.TLS;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectServiceCreateListener.java
+ * @Title SwitchConnectionAspect.java
  * @Description 通过aop切换数据库连接
  * @date 2021年5月8日
  * @email suxuan696@gmail.com
@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.TLS;
 @Aspect
 public class SwitchConnectionAspect {
 
-	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(..)) && args(String,Object,org.apache.ibatis.session.RowBounds)")
+	@Around("execution(*  com.anywide.dawdler.serverplug.db.mybatis.session.DefaultSqlSession.selectList(..)) && args(String,Object,org.apache.ibatis.session.RowBounds)")
 	public Object select(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getReadConnection());
@@ -47,7 +47,7 @@ public class SwitchConnectionAspect {
 		}
 	}
 
-	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.update(..)) && args(String,Object)")
+	@Around("execution(*  com.anywide.dawdler.serverplug.db.mybatis.session.DefaultSqlSession.update(..)) && args(String,Object)")
 	public Object update(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
