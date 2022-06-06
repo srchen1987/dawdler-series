@@ -48,7 +48,7 @@ public interface Executor {
 
 	void rollback(boolean required) throws SQLException;
 
-	Transaction getTransaction();
+	public Transaction getTransaction();
 
 	void close(boolean forceRollback);
 
