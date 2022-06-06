@@ -52,14 +52,6 @@ public class ReflectionUtil {
 		try {
 			result = methodAccess.invoke(object, methodIndex, args);
 		} catch (Throwable e) {
-			System.out.println(methodAccess.getMethodNames()[methodIndex] + ":index:" + methodIndex + ":" + object + ":"
-					+ methodAccess.getReturnType(methodIndex) + ":"
-					+ methodAccess.getReturnType(methodIndex).getClassLoader());
-			if (args != null) {
-				for (Object o : args) {
-					System.out.println(o.getClass() + ":" + o.getClass().getClassLoader() + ":" + o);
-				}
-			}
 			throw e;
 		}
 		return result;
