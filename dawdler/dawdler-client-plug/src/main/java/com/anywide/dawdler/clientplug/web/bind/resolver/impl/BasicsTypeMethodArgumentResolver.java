@@ -39,6 +39,9 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	@Override
 	public boolean isSupport(RequestParamFieldData requestParamFieldData) {
 		Class<?> type = requestParamFieldData.getType();
+		if ((Modifier.isFinal(type.getModifiers())) || Modifier.isStatic(type.getModifiers())) {
+			return false;
+		}
 		if (ClassUtil.isSimpleValueType(type) || String.class == type || String[].class == type
 				|| Map.class.isAssignableFrom(type) || matchType(type))
 			return true;
