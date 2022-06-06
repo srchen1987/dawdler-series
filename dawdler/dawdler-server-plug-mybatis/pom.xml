@@ -13,11 +13,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-server-plug-db</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>ognl</groupId>
-			<artifactId>ognl</artifactId>
+			<artifactId>dawdler-mybatis-core</artifactId>
 		</dependency>
 	</dependencies>
 </project> 
