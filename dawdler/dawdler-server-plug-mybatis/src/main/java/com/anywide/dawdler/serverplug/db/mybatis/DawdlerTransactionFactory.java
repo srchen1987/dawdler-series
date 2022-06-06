@@ -24,6 +24,14 @@ import org.apache.ibatis.session.TransactionIsolationLevel;
 import org.apache.ibatis.transaction.Transaction;
 import org.apache.ibatis.transaction.TransactionFactory;
 
+/**
+ * @author jackson.song
+ * @version V1.0
+ * @Title DawdlerTransactionFactory.java
+ * @Description dawdler实现session工厂
+ * @date 2021年5月8日
+ * @email suxuan696@gmail.com
+ */
 public class DawdlerTransactionFactory implements TransactionFactory {
 	DawdlerMybatisTransaction dawdlerTransaction = new DawdlerMybatisTransaction();
 
