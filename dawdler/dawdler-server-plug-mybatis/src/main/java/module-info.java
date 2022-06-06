@@ -12,4 +12,5 @@ module dawdler.server.plug.mybatis {
 	requires java.naming;
 	requires ognl;
 	requires dom4j;
+	requires dawdler.mybatis.core;
 }
