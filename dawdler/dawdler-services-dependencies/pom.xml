@@ -17,8 +17,8 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -29,8 +29,8 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -41,8 +41,8 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -53,8 +53,8 @@
 				<scope>provided</scope>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -64,8 +64,8 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -75,8 +75,8 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -84,11 +84,10 @@
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-mybatis-core</artifactId>
 				<version>${dawdler.build.version}</version>
-				<scope>provided</scope>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -96,12 +95,6 @@
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-mybatis</artifactId>
 				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>*</artifactId>
-						<groupId>*</groupId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
@@ -109,8 +102,8 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<artifactId>*</artifactId>
 						<groupId>*</groupId>
+						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -120,8 +113,8 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
+						<groupId>com.fasterxml.jackson.dataformat</groupId>
 						<artifactId>*</artifactId>
-						<groupId>*</groupId>
 					</exclusion>
 				</exclusions>
 			</dependency>
@@ -129,12 +122,6 @@
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-config</artifactId>
 				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<artifactId>*</artifactId>
-						<groupId>*</groupId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
