@@ -13,8 +13,8 @@
 			<artifactId>dawdler-client-plug</artifactId>
 			<exclusions>
 				<exclusion>
-					<artifactId>*</artifactId>
 					<groupId>*</groupId>
+					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
