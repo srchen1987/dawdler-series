@@ -23,26 +23,24 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
  <scanner>
-  <jar-files>
-		<jar-files>
-			<jar-file>dawdler-server-plug-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-config-serverside-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-rabbitmq-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-redis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
-		</jar-files>
-   <!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
-  </jar-files>
-  <packages-in-jar>
-		<packages-in-jar>
-			<package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
-			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
-			<package-path>org.apache.ibatis.session.defaults</package-path>
-			<package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
-			<package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
-		</packages-in-jar>
+	<jar-files>
+    <jar-file>dawdler-server-plug-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-server-plug-db-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-config-serverside-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-server-plug-rabbitmq-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-server-plug-redis-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-server-plug-es-0.0.2-RELEASES.jar</jar-file>
+    <jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
+	</jar-files>
+			<!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
+	<packages-in-jar>
+    <package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
+    <package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
+    <package-path>com.anywide.dawdler.serverplug.db.mybatis.session</package-path>
+    <package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
+    <package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
    <!-- 需要扫描的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效.需要注意所有部署在此容器下的服务都会被扫描,如果需要单独服务配置请到具体服务的services-config.xml中配置对应的扫描器-->
   </packages-in-jar>
  </scanner>
