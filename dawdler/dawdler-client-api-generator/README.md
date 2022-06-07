@@ -193,8 +193,6 @@ public class User {
 
 #### 6. 演示demo
 
-#### 6. 演示demo
-
 DemoController是Controller的一个例子.
 
 ```java
