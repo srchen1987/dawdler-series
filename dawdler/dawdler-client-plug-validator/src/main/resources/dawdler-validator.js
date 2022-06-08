@@ -2,7 +2,7 @@
  * date : 2007-2-25 11:05 author jackson.song
  */
 var isNullNoSkip = new Array("notEmpty", "maxSelect", "minSelect");
-var debug = false;
+var debug = true;
 var success_prefix = "";
 var success_suffix = "";
 var error_prefix = "";
