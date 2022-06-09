@@ -12,6 +12,7 @@
 			<jar-file>dawdler-server-plug-es-0.17.1-jdk17-RELEASES.jar</jar-file>
 			<jar-file>dawdler-distributed-transaction-core-0.17.1-jdk17-RELEASES.jar</jar-file>
 		</jar-files>
+			<!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
 		<packages-in-jar>
 			<package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
 			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
