@@ -16,9 +16,6 @@
  */
 package com.anywide.dawdler.serverplug.conf.listener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.conf.Refresher;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
@@ -32,15 +29,10 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
  * @email suxuan696@gmail.com
  */
 public class ConfigServiceCreateListener implements DawdlerServiceCreateListener {
-	private static Logger logger = LoggerFactory.getLogger(ConfigServiceCreateListener.class);
 
 	@Override
 	public void create(Object service, boolean single, DawdlerContext context) {
-		try {
-			Refresher.refreshAllConfig(service, single);
-		} catch (Exception e) {
-			logger.error("", e);
-		}
+		Refresher.refreshAllConfig(service, single);
 	}
 
 }

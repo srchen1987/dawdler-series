@@ -77,6 +77,7 @@ public class SingleSqlSessionFactory {
 			sessionBuilder.setMapperLocations(mapperLocations);
 		} catch (IOException e) {
 			logger.error("", e);
+			throw new RuntimeException(e);
 		}
 		SqlSessionFactory sqlSessionFactory;
 		try {
@@ -84,6 +85,7 @@ public class SingleSqlSessionFactory {
 			this.sqlSession = sqlSessionFactory.openSession();
 		} catch (Exception e) {
 			logger.error("", e);
+			throw new RuntimeException(e);
 		}
 	}
 
