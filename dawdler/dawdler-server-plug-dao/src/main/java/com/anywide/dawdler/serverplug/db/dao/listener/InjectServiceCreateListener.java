@@ -18,9 +18,6 @@ package com.anywide.dawdler.serverplug.db.dao.listener;
 
 import java.lang.reflect.Field;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.serverplug.db.annotation.Repository;
@@ -36,27 +33,20 @@ import com.anywide.dawdler.serverplug.db.dao.SuperDAO;
  * @email suxuan696@gmail.com
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
-	private static final Logger logger = LoggerFactory.getLogger(InjectServiceCreateListener.class);
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext dawdlerContext) {
+	public void create(Object service, boolean single, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
 		inject(service, dawdlerContext);
 	}
 
-	private void inject(Object service, DawdlerContext dawdlerContext) {
+	private void inject(Object service, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Repository resource = field.getAnnotation(Repository.class);
-			if (!field.getType().isPrimitive()) {
-				Class<?> serviceClass = field.getType();
-				try {
-					if (resource != null && SuperDAO.class.isAssignableFrom(serviceClass)) {
-						field.setAccessible(true);
-						field.set(service, DAOFactory.getInstance().getDAO(serviceClass));
-					}
-				} catch (Exception e) {
-					logger.error("", e);
-				}
+			Class<?> serviceClass = field.getType();
+			if (resource != null && SuperDAO.class.isAssignableFrom(serviceClass)) {
+				field.setAccessible(true);
+				field.set(service, DAOFactory.getInstance().getDAO(serviceClass));
 			}
 		}
 	}
