@@ -36,28 +36,21 @@ import com.anywide.dawdler.serverplug.db.mybatis.SingleSqlSessionFactory;
  * @email suxuan696@gmail.com
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
-	private static final Logger logger = LoggerFactory.getLogger(InjectServiceCreateListener.class);
 	private SqlSession sqlSession = SingleSqlSessionFactory.getInstance().getSqlSession();
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext dawdlerContext) {
+	public void create(Object service, boolean single, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
 		inject(service, dawdlerContext);
 	}
 
-	private void inject(Object service, DawdlerContext dawdlerContext) {
+	private void inject(Object service, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Repository resource = field.getAnnotation(Repository.class);
-			if (!field.getType().isPrimitive()) {
-				Class<?> serviceClass = field.getType();
-				try {
-					if (resource != null && serviceClass.isInterface()) {
-						field.setAccessible(true);
-						field.set(service, sqlSession.getMapper(serviceClass));
-					}
-				} catch (Exception e) {
-					logger.error("", e);
-				}
+			Class<?> serviceClass = field.getType();
+			if (resource != null && serviceClass.isInterface()) {
+				field.setAccessible(true);
+				field.set(service, sqlSession.getMapper(serviceClass));
 			}
 		}
 	}

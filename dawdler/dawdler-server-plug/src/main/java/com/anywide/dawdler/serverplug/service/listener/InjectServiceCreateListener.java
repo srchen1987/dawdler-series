@@ -44,23 +44,20 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Service serviceAnnotation = field.getAnnotation(Service.class);
-			if (!field.getType().isPrimitive()) {
-				Class<?> serviceClass = field.getType();
-				field.setAccessible(true);
-				if (serviceAnnotation != null) {
-					if (serviceAnnotation.remote()) {
-						RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
-						if (remoteService == null) {
-							throw new NotSetRemoteServiceException(
-									"not found @RemoteService on " + serviceClass.getName());
-						}
-						String groupName = remoteService.value();
-						field.set(service, ServiceFactory.getService(serviceClass, groupName,
-								remoteService.loadBalance(), dawdlerContext.getClassLoader()));
-					} else {
-						field.set(service, dawdlerContext.getServiceProxy(serviceClass));
+			Class<?> serviceClass = field.getType();
+			field.setAccessible(true);
+			if (serviceAnnotation != null) {
+				if (serviceAnnotation.remote()) {
+					RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
+					if (remoteService == null) {
+						throw new NotSetRemoteServiceException(
+								"not found @RemoteService on " + serviceClass.getName());
 					}
-
+					String groupName = remoteService.value();
+					field.set(service, ServiceFactory.getService(serviceClass, groupName,
+							remoteService.loadBalance(), dawdlerContext.getClassLoader()));
+				} else {
+					field.set(service, dawdlerContext.getServiceProxy(serviceClass));
 				}
 			}
 		}
