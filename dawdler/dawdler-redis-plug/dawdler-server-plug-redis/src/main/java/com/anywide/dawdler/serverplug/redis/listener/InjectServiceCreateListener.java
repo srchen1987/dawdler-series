@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.serverplug.redis.listener;
 
-import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.redis.JedisOperatorFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
@@ -29,7 +28,6 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
  * @date 2022年4月16日
  * @email suxuan696@gmail.com
  */
-@Order(1)
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 
 	@Override
