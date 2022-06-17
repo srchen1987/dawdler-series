@@ -173,7 +173,7 @@ public class ServiceRoot {
 							long serviceEnd = JVMTimeProvider.currentTimeMillis();
 							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
 						} catch (Throwable e) {
-							logger.error("", e);
+							logger.error(deployName, e);
 							System.err.println(deployName + " startup failed!");
 							Service service = services.remove(deployName);
 							service.status(Status.DOWN);
