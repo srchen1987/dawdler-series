@@ -1,4 +1,9 @@
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
+import com.anywide.dawdler.serverplug.client.load.resource.ClientLoadLifeCycle;
+
 module dawdler.server.plug {
+	uses ComponentLifeCycle;
+	provides ComponentLifeCycle with ClientLoadLifeCycle;
 	requires java.base;
 	requires dawdler.util;
 	requires dawdler.server;
