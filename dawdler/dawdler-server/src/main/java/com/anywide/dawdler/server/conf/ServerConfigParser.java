@@ -142,12 +142,10 @@ public class ServerConfigParser {
 				int backlog = Integer.parseInt(healthCheckEle.attributeValue("port"));
 				healthCheck.setBacklog(backlog);
 
-				if ("https".equals(scheme)) {
-					String username = healthCheckEle.attributeValue("username");
-					healthCheck.setUsername(username);
-					String password = healthCheckEle.attributeValue("password");
-					healthCheck.setPassword(password);
-				}
+				String username = healthCheckEle.attributeValue("username");
+				healthCheck.setUsername(username);
+				String password = healthCheckEle.attributeValue("password");
+				healthCheck.setPassword(password);
 
 				List<Element> componentElements = healthCheckEle.elements();
 				for (Element componentElement : componentElements) {
