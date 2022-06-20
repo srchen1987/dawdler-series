@@ -17,7 +17,6 @@
 package com.anywide.dawdler.conf;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.jexl3.JexlContext;
@@ -69,7 +68,7 @@ public class Refresher {
 			String path = config.path();
 			field.setAccessible(true);
 			if (!value.equals("")) {
-				Map<String, Object> mappingData = ConfigMappingDataCache.getMappingDataCache(path, HashMap.class);
+				Map<String, Object> mappingData = ConfigMappingDataCache.getMappingDataCache(path);
 				JexlContext context = new MapContext(mappingData);
 				Object obj = engine.createExpression(value).evaluate(context);
 				setValue(field, target, obj);

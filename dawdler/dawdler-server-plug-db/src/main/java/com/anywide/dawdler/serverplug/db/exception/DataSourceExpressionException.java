@@ -14,26 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.core.component.resource;
+package com.anywide.dawdler.serverplug.db.exception;
 
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ComponentLifeCycle.java
- * @Description 组件(redis,es,rabbitmq)生命周期接口 初始化与销毁,
- *              web端、dawdler服务器端会在容器初始化之前、销毁后调用
- * @date 2022年4月12日
+ * @Title DataSourceExpressionException.java
+ * @Description 表达式异常
+ * @date 2022年6月19日
  * @email suxuan696@gmail.com
  */
-public interface ComponentLifeCycle {
+public class DataSourceExpressionException extends Exception {
 
-	default public void prepareInit() throws Throwable {
-	};
-
-	default public void init() throws Throwable {
-	};
-
-	default public void destroy() throws Throwable {
-	};
+	private static final long serialVersionUID = 3052983943906141279L;
+	
+	public DataSourceExpressionException(String message) {
+		super(message);
+	}
 
 }
