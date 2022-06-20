@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.serverplug.db.datasource;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -31,6 +32,7 @@ import org.dom4j.Element;
 import org.dom4j.Node;
 
 import com.anywide.dawdler.server.context.DawdlerContext;
+import com.anywide.dawdler.serverplug.db.exception.DataSourceExpressionException;
 import com.anywide.dawdler.serverplug.db.transaction.LocalConnectionFactory;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.XmlObject;
@@ -49,10 +51,18 @@ public class RWSplittingDataSourceManager {
 	private static final Pattern EXPRESSION = Pattern
 			.compile("write=\\[(\\w+|(\\w+\\|\\w+)+)\\],read=\\[(\\w+|(\\w+\\|\\w+)+)\\]");
 	private final Map<String, DataSource> dataSources = new HashMap<>();
-	private final Map<String, String> dataourceExpression = new HashMap<>();
+	private final Map<String, String> dataSourceExpression = new HashMap<>();
 	private final Map<String, MappingDecision> packages = new HashMap<>();
 	private final Map<String, MappingDecision> packagesAntPath = new LinkedHashMap<>();
 	private DawdlerContext dawdlerContext;
+	private static boolean useConfig = false;
+	static {
+		try {
+			Class.forName("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
+			useConfig = true;
+		} catch (ClassNotFoundException e) {
+		}
+	}
 
 	public RWSplittingDataSourceManager(DawdlerContext dawdlerContext) throws Exception {
 		this.dawdlerContext = dawdlerContext;
@@ -67,30 +77,17 @@ public class RWSplittingDataSourceManager {
 		XmlObject xmlo = dawdlerContext.getServicesConfig();
 		List<Node> dataSources = xmlo.selectNodes("/config/datasources/datasource");
 		for (Object dataSource : dataSources) {
+			Map<String, Object> attributes = new HashMap<>();
 			Element ele = (Element) dataSource;
 			String id = ele.attributeValue("id");
-			String code = ele.attributeValue("code");
-			Class<?> clazz = Class.forName(code);
-			Object obj = clazz.getDeclaredConstructor().newInstance();
 			List<Node> attrs = ele.selectNodes("attribute");
 			for (Node node : attrs) {
 				Element e = (Element) node;
-				String attributeName = e.attributeValue("name");
+				String attributeName = e.attributeValue("name").trim();
 				String value = e.getText().trim();
-				try {
-					attributeName = captureName(attributeName);
-					ReflectionUtil.invoke(obj, "set" + attributeName, value);
-				} catch (Exception ex) {
-					try {
-						ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
-					} catch (Exception exception) {
-						ReflectionUtil.invoke(obj, "set" + attributeName, Long.parseLong(value));
-					}
-				}
-
+				attributes.put(attributeName, value);
 			}
-			DataSource ds = (DataSource) obj;
-			this.dataSources.put(id, ds);
+			initDataSources(id, attributes);
 		}
 
 		List<Node> dataourceExpressionList = xmlo.selectNodes("/config/datasource-expressions/datasource-expression");
@@ -98,7 +95,7 @@ public class RWSplittingDataSourceManager {
 			Element ele = (Element) dataourceExpression;
 			String id = ele.attributeValue("id");
 			String latentExpression = ele.attributeValue("latent-expression");
-			this.dataourceExpression.put(id, latentExpression);
+			this.dataSourceExpression.put(id, latentExpression);
 		}
 
 		List<Node> decisionList = xmlo.selectNodes("/config/decisions/decision");
@@ -106,15 +103,64 @@ public class RWSplittingDataSourceManager {
 			Element ele = (Element) decision;
 			String mapping = ele.attributeValue("mapping");
 			String latentExpression = ele.attributeValue("latent-expression");
-			MappingDecision mappingDecision = new MappingDecision(dataourceExpression.get(latentExpression));
+			MappingDecision mappingDecision = new MappingDecision(dataSourceExpression.get(latentExpression));
 			if (dawdlerContext.getAntPathMatcher().isPattern(mapping)) {
 				packagesAntPath.put(mapping, mappingDecision);
 			} else {
 				packages.put(mapping, mappingDecision);
 			}
-
+			if (mappingDecision.readExpression == null || mappingDecision.writeExpression == null) {
+				throw new DataSourceExpressionException(latentExpression + ":"
+						+ dataSourceExpression.get(latentExpression)
+						+ " can't be null or must conform to write=[writeDataSource],read=[readDataSource1|readDataSource2] !");
+			}
+			if (useConfig) {
+				for (String readDataSource : mappingDecision.readExpression) {
+					initDataSourcesFromConfigServer(readDataSource);
+				}
+				for (String writeDataSource : mappingDecision.writeExpression) {
+					initDataSourcesFromConfigServer(writeDataSource);
+				}
+			}
 		}
 
+	}
+
+	private void initDataSources(String id, Map<String, Object> attributes)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
+		if (dataSources.containsKey(id)) {
+			return;
+		}
+		String type = (String) attributes.remove("type");
+		if (type == null) {
+			throw new NullPointerException("dataSource attribute [type] can't be null!");
+		}
+		Class<?> clazz = Class.forName(type);
+		Object obj = clazz.getDeclaredConstructor().newInstance();
+
+		attributes.forEach((k, v) -> {
+			String attributeName = captureName(k);
+			try {
+				ReflectionUtil.invoke(obj, "set" + attributeName, v.toString());
+			} catch (Exception ex) {
+				try {
+					ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(v.toString()));
+				} catch (Exception exception) {
+					ReflectionUtil.invoke(obj, "set" + attributeName, Long.parseLong(v.toString()));
+				}
+			}
+		});
+
+		DataSource ds = (DataSource) obj;
+		dataSources.put(id, ds);
+	}
+
+	public void initDataSourcesFromConfigServer(String id) throws Exception {
+		Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache.getMappingDataCache(id);
+		if (attributes != null) {
+			initDataSources(id, attributes);
+		}
 	}
 
 	public DataSource getDataSource(String id) {
