@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
 	<datasources>
-		<datasource id="read1"
-			code="com.mchange.v2.c3p0.ComboPooledDataSource">
-			<attribute name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/new_schema?characterEncoding=utf8&amp;useSSL=false
-			</attribute>
+		<datasource id="read1">
+			<attribute name="type">com.zaxxer.hikari.HikariDataSource</attribute>
+			<attribute name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/new_schema?characterEncoding=utf8&amp;useSSL=false</attribute>
 			<attribute name="driverClass">com.mysql.cj.jdbc.Driver</attribute>
 			<attribute name="user">root</attribute>
 			<attribute name="password">12345678</attribute>
