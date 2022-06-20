@@ -27,10 +27,10 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- * NetworkUtil
  *
  * @author jackson.song
  * @version V1.0
+ * @Title NetworkUtil.java
  * @Description 网络接口的工具类
  * @date 2018年8月13日
  * @email suxuan696@gmail.com
