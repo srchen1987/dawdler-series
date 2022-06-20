@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.conf.cache;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -40,7 +41,7 @@ public class ConfigMappingDataCache {
 	}
 
 	public static <T> T getMappingDataCache(String path, Class<T> mappingClass)
-			throws JsonMappingException, JsonProcessingException {
+			throws Exception {
 		Map<Class<?>, Object> realObjMap = cache.get(path);
 		if (realObjMap == null) {
 			return loadAndParse(path, mappingClass);
@@ -51,6 +52,11 @@ public class ConfigMappingDataCache {
 			else
 				return (T) obj;
 		}
+	}
+	
+	public static Map<String, Object> getMappingDataCache(String path)
+			throws Exception{
+		return getMappingDataCache(path,LinkedHashMap.class);
 	}
 
 	public static <T> T loadAndParse(String path, Class<T> mappingClass)
