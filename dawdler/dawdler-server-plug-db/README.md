@@ -63,17 +63,16 @@ public @interface DBTransaction {
 
 ### 3. 数据源配置
 
-dawdler服务器支持jndi方式的数据源配置,部署在本服务器下所有服务都可以使用.参考[data-sources.xml说明](../dawdler-server/####22data-sources.xml说明)
+dawdler服务器支持jndi方式的数据源配置,部署在本服务器下所有服务都可以使用.参考[data-sources.xml说明](../dawdler-server/README.md#22-data-sources.xml说明)
 
 在services-config.xml中本服务的数据源配置：
 
 ```xml
 <datasources>
   <!-- 数据源配置 根据不同的数据库连接池进行配置即可 -->
-  <datasource id="userDataSource_write"  
-   code="com.mchange.v2.c3p0.ComboPooledDataSource"><!-- id 唯一标识 -->
-   <attribute name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/welife_community?characterEncoding=utf8&amp;useSSL=false
-   </attribute>
+  <datasource id="userDataSource_write"><!-- id 唯一标识 -->
+   <attribute name="type">com.zaxxer.hikari.HikariDataSource</attribute>
+   <attribute name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/welife_community?characterEncoding=utf8&amp;useSSL=false</attribute>
    <attribute name="driverClass">com.mysql.cj.jdbc.Driver</attribute>
    <attribute name="user">root</attribute>
    <attribute name="password"></attribute>
