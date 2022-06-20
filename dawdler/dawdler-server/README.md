@@ -156,7 +156,7 @@ config 配置中心检测
 
 #### 2.2 data-sources.xml说明
 
-dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的服务公用. datasources节点下可以有多个datasource节点,每个节点都是一个数据源配置,datasource中id属性是数据源的id,code属性是连接池的dataSource实现类.attribute节点中的属性name是连接池中的配置名,attribute节点的text为具体配置值.
+dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的服务公用. datasources节点下可以有多个datasource节点,每个节点都是一个数据源配置,datasource中id属性是数据源的id,type属性的节点内容是连接池的dataSource实现类.attribute节点中的属性name是连接池中的配置名,attribute节点的text为具体配置值.
 
 示例：
 
@@ -164,8 +164,8 @@ dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
  <datasources>
-  <datasource id="read1"
-   code="com.mchange.v2.c3p0.ComboPooledDataSource">
+  <datasource id="read1">
+   <attribute name="type">com.zaxxer.hikari.HikariDataSource</attribute>
    <attribute name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/new_schema?characterEncoding=utf8&amp;useSSL=false
    </attribute>
    <attribute name="driverClass">com.mysql.cj.jdbc.Driver</attribute>
