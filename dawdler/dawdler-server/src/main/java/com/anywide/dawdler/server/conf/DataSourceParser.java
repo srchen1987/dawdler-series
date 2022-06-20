@@ -17,6 +17,7 @@
 package com.anywide.dawdler.server.conf;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,8 @@ public class DataSourceParser {
 	}
 
 	public static Map<String, DataSource> getDataSource(XmlObject xmlo, ClassLoader classLoader)
-			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
 		if (xmlo == null)
 			xmlo = dataourceConfig;
 		if (xmlo == null)
@@ -64,37 +66,49 @@ public class DataSourceParser {
 		dataSources = new HashMap<>();
 		List<Node> dataSourceList = xmlo.selectNodes("/config/datasources/datasource");
 		for (Object dataSource : dataSourceList) {
+			Map<String, Object> attributes = new HashMap<>();
 			Element ele = (Element) dataSource;
 			String id = ele.attributeValue("id");
-			String code = ele.attributeValue("code");
-			Class<?> c = null;
-			if (classLoader != null)
-				c = classLoader.loadClass(code);
-			else
-				c = Class.forName(code);
-			Object obj = c.newInstance();
 			List<Node> attrs = ele.selectNodes("attribute");
 			for (Node node : attrs) {
 				Element e = (Element) node;
-				String attributeName = e.attributeValue("name");
+				String attributeName = e.attributeValue("name").trim();
 				String value = e.getText().trim();
-				if (attributeName != null) {
-					try {
-						attributeName = captureName(attributeName);
-						ReflectionUtil.invoke(obj, "set" + attributeName, value);
-					} catch (Exception ex) {
-						try {
-							ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(value));
-						} catch (Exception exception) {
-							ReflectionUtil.invoke(obj, "set" + attributeName, Long.parseLong(value));
-						}
-					}
-				}
+				attributes.put(attributeName, value);
 			}
-			DataSource ds = (DataSource) obj;
-			dataSources.put(id, ds);
+			initDataSources(id, attributes);
 		}
 		return dataSources;
+	}
+
+	private static void initDataSources(String id, Map<String, Object> attributes)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException {
+		if (dataSources.containsKey(id)) {
+			return;
+		}
+		String type = (String) attributes.remove("type");
+		if (type == null) {
+			throw new NullPointerException("dataSource attribute [type] can't be null!");
+		}
+		Class<?> clazz = Class.forName(type);
+		Object obj = clazz.getDeclaredConstructor().newInstance();
+
+		attributes.forEach((k, v) -> {
+			String attributeName = captureName(k);
+			try {
+				ReflectionUtil.invoke(obj, "set" + attributeName, v.toString());
+			} catch (Exception ex) {
+				try {
+					ReflectionUtil.invoke(obj, "set" + attributeName, Integer.parseInt(v.toString()));
+				} catch (Exception exception) {
+					ReflectionUtil.invoke(obj, "set" + attributeName, Long.parseLong(v.toString()));
+				}
+			}
+		});
+
+		DataSource ds = (DataSource) obj;
+		dataSources.put(id, ds);
 	}
 
 	public static Map<String, DataSource> getDataSources() {
