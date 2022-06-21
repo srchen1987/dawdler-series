@@ -18,6 +18,7 @@ package com.anywide.dawdler.redis;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,13 +43,38 @@ import redis.clients.jedis.util.Pool;
  * @email suxuan696@gmail.com
  */
 public final class JedisPoolFactory {
+	private static boolean useConfig = false;
+	static {
+		try {
+			Class.forName("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
+			useConfig = true;
+		} catch (ClassNotFoundException e) {
+		}
+	}
 	private final static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
 
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {
 		Pool<Jedis> jedisPool = null;
-		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+		Properties ps = null;
+		if(useConfig) {
+			try {
+				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+			} catch (Exception e) {
+				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache.getMappingDataCache(fileName);
+				if(attributes == null) {
+					throw e;
+				}
+				ps = new Properties();
+				Set<Entry<String, Object>> entrySet =  attributes.entrySet();
+				for (Entry<String, Object> entry : entrySet) {
+					ps.setProperty(entry.getKey(), entry.getValue().toString());
+				}
+			}
+		}else {
+			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+		}
 		String auth = ps.getProperty("auth");
 		String userName = ps.getProperty("userName");
 		int database = PropertiesUtil.getIfNullReturnDefaultValueInt("database", 0, ps);
