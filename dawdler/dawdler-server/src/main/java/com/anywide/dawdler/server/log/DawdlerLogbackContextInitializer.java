@@ -48,136 +48,139 @@ import ch.qos.logback.core.util.StatusListenerConfigHelper;
  */
 public class DawdlerLogbackContextInitializer {
 
+	final public static String AUTOCONFIG_FILE = "logback.xml";
+	final public static String TEST_AUTOCONFIG_FILE = "logback-test.xml";
 
-    final public static String AUTOCONFIG_FILE = "logback.xml";
-    final public static String TEST_AUTOCONFIG_FILE = "logback-test.xml";
+	final LoggerContext loggerContext;
 
-    final LoggerContext loggerContext;
+	public DawdlerLogbackContextInitializer(LoggerContext loggerContext) {
+		this.loggerContext = loggerContext;
+	}
 
-    public DawdlerLogbackContextInitializer(LoggerContext loggerContext) {
-        this.loggerContext = loggerContext;
-    }
+	public void configureByResource(URL url) throws JoranException {
+		if (url == null) {
+			throw new IllegalArgumentException("URL argument cannot be null");
+		}
+		final String urlString = url.toString();
+		if (urlString.endsWith("xml")) {
+			JoranConfigurator configurator = new JoranConfigurator();
+			configurator.setContext(loggerContext);
+			configurator.doConfigure(url);
+		} else {
+			throw new LogbackException(
+					"Unexpected filename extension of file [" + url.toString() + "]. Should be .xml");
+		}
+	}
 
-    public void configureByResource(URL url) throws JoranException {
-        if (url == null) {
-            throw new IllegalArgumentException("URL argument cannot be null");
-        }
-        final String urlString = url.toString();
-        if (urlString.endsWith("xml")) {
-            JoranConfigurator configurator = new JoranConfigurator();
-            configurator.setContext(loggerContext);
-            configurator.doConfigure(url);
-        } else {
-            throw new LogbackException("Unexpected filename extension of file [" + url.toString() + "]. Should be .xml");
-        }
-    }
+	void joranConfigureByResource(URL url) throws JoranException {
+		JoranConfigurator configurator = new JoranConfigurator();
+		configurator.setContext(loggerContext);
+		configurator.doConfigure(url);
+	}
 
-    void joranConfigureByResource(URL url) throws JoranException {
-        JoranConfigurator configurator = new JoranConfigurator();
-        configurator.setContext(loggerContext);
-        configurator.doConfigure(url);
-    }
+	private URL findConfigFileURLFromSystemProperties(ClassLoader classLoader, boolean updateStatus) {
+		String logbackConfigFile = OptionHelper.getSystemProperty(ClassicConstants.CONFIG_FILE_PROPERTY);
+		if (logbackConfigFile != null) {
+			URL result = null;
+			try {
+				result = new URL(logbackConfigFile);
+				return result;
+			} catch (MalformedURLException e) {
+				result = Loader.getResource(logbackConfigFile, classLoader);
+				if (result != null) {
+					return result;
+				}
+				File f = new File(logbackConfigFile);
+				if (f.exists() && f.isFile()) {
+					try {
+						result = f.toURI().toURL();
+						return result;
+					} catch (MalformedURLException e1) {
+					}
+				}
+			} finally {
+				if (updateStatus) {
+					statusOnResourceSearch(logbackConfigFile, classLoader, result);
+				}
+			}
+		}
+		return null;
+	}
 
-    private URL findConfigFileURLFromSystemProperties(ClassLoader classLoader, boolean updateStatus) {
-        String logbackConfigFile = OptionHelper.getSystemProperty(ClassicConstants.CONFIG_FILE_PROPERTY);
-        if (logbackConfigFile != null) {
-            URL result = null;
-            try {
-                result = new URL(logbackConfigFile);
-                return result;
-            } catch (MalformedURLException e) {
-                result = Loader.getResource(logbackConfigFile, classLoader);
-                if (result != null) {
-                    return result;
-                }
-                File f = new File(logbackConfigFile);
-                if (f.exists() && f.isFile()) {
-                    try {
-                        result = f.toURI().toURL();
-                        return result;
-                    } catch (MalformedURLException e1) {
-                    }
-                }
-            } finally {
-                if (updateStatus) {
-                    statusOnResourceSearch(logbackConfigFile, classLoader, result);
-                }
-            }
-        }
-        return null;
-    }
+	public URL findURLOfDefaultConfigurationFile(boolean updateStatus) {
+		ClassLoader myClassLoader = Thread.currentThread().getContextClassLoader();
+		URL url = findConfigFileURLFromSystemProperties(myClassLoader, updateStatus);
+		if (url != null) {
+			return url;
+		}
 
-    public URL findURLOfDefaultConfigurationFile(boolean updateStatus) {
-        ClassLoader myClassLoader = Thread.currentThread().getContextClassLoader();
-        URL url = findConfigFileURLFromSystemProperties(myClassLoader, updateStatus);
-        if (url != null) {
-            return url;
-        }
+		url = getResource(TEST_AUTOCONFIG_FILE, myClassLoader, updateStatus);
+		if (url != null) {
+			return url;
+		}
 
-        url = getResource(TEST_AUTOCONFIG_FILE, myClassLoader, updateStatus);
-        if (url != null) {
-            return url;
-        }
+		return getResource(AUTOCONFIG_FILE, myClassLoader, updateStatus);
+	}
 
-        return getResource(AUTOCONFIG_FILE, myClassLoader, updateStatus);
-    }
+	private URL getResource(String filename, ClassLoader myClassLoader, boolean updateStatus) {
+		URL url = Loader.getResource(filename, myClassLoader);
+		if (updateStatus) {
+			statusOnResourceSearch(filename, myClassLoader, url);
+		}
+		return url;
+	}
 
-    private URL getResource(String filename, ClassLoader myClassLoader, boolean updateStatus) {
-        URL url = Loader.getResource(filename, myClassLoader);
-        if (updateStatus) {
-            statusOnResourceSearch(filename, myClassLoader, url);
-        }
-        return url;
-    }
+	public void autoConfig() throws JoranException {
+		StatusListenerConfigHelper.installIfAsked(loggerContext);
+		URL url = findURLOfDefaultConfigurationFile(true);
+		if (url != null) {
+			configureByResource(url);
+		} else {
+			Configurator c = ClassicEnvUtil.loadFromServiceLoader(Configurator.class);
+			if (c != null) {
+				try {
+					c.setContext(loggerContext);
+					c.configure(loggerContext);
+				} catch (Exception e) {
+					throw new LogbackException(
+							String.format("Failed to initialize Configurator: %s using ServiceLoader",
+									c != null ? c.getClass().getCanonicalName() : "null"),
+							e);
+				}
+			} else {
+				BasicConfigurator basicConfigurator = new BasicConfigurator();
+				basicConfigurator.setContext(loggerContext);
+				basicConfigurator.configure(loggerContext);
+			}
+		}
+	}
 
-    public void autoConfig() throws JoranException {
-        StatusListenerConfigHelper.installIfAsked(loggerContext);
-        URL url = findURLOfDefaultConfigurationFile(true);
-        if (url != null) {
-            configureByResource(url);
-        } else {
-            Configurator c = ClassicEnvUtil.loadFromServiceLoader(Configurator.class);
-            if (c != null) {
-                try {
-                    c.setContext(loggerContext);
-                    c.configure(loggerContext);
-                } catch (Exception e) {
-                    throw new LogbackException(String.format("Failed to initialize Configurator: %s using ServiceLoader", c != null ? c.getClass()
-                                    .getCanonicalName() : "null"), e);
-                }
-            } else {
-                BasicConfigurator basicConfigurator = new BasicConfigurator();
-                basicConfigurator.setContext(loggerContext);
-                basicConfigurator.configure(loggerContext);
-            }
-        }
-    }
+	private void statusOnResourceSearch(String resourceName, ClassLoader classLoader, URL url) {
+		StatusManager sm = loggerContext.getStatusManager();
+		if (url == null) {
+			sm.add(new InfoStatus("Could NOT find resource [" + resourceName + "]", loggerContext));
+		} else {
+			sm.add(new InfoStatus("Found resource [" + resourceName + "] at [" + url.toString() + "]", loggerContext));
+//			multiplicityWarning(resourceName, classLoader);
+		}
+	}
 
-    private void statusOnResourceSearch(String resourceName, ClassLoader classLoader, URL url) {
-        StatusManager sm = loggerContext.getStatusManager();
-        if (url == null) {
-            sm.add(new InfoStatus("Could NOT find resource [" + resourceName + "]", loggerContext));
-        } else {
-            sm.add(new InfoStatus("Found resource [" + resourceName + "] at [" + url.toString() + "]", loggerContext));
-            multiplicityWarning(resourceName, classLoader);
-        }
-    }
-
-    private void multiplicityWarning(String resourceName, ClassLoader classLoader) {
-        Set<URL> urlSet = null;
-        StatusManager sm = loggerContext.getStatusManager();
-        try {
-            urlSet = Loader.getResources(resourceName, classLoader);
-        } catch (IOException e) {
-            sm.add(new ErrorStatus("Failed to get url list for resource [" + resourceName + "]", loggerContext, e));
-        }
-        if (urlSet != null && urlSet.size() > 1) {
-            sm.add(new WarnStatus("Resource [" + resourceName + "] occurs multiple times on the classpath.", loggerContext));
-            for (URL url : urlSet) {
-                sm.add(new WarnStatus("Resource [" + resourceName + "] occurs at [" + url.toString() + "]", loggerContext));
-            }
-        }
-    }
-
+//	private void multiplicityWarning(String resourceName, ClassLoader classLoader) {
+//		Set<URL> urlSet = null;
+//		StatusManager sm = loggerContext.getStatusManager();
+//		try {
+//			urlSet = Loader.getResources(resourceName, classLoader);
+//		} catch (IOException e) {
+//			sm.add(new ErrorStatus("Failed to get url list for resource [" + resourceName + "]", loggerContext, e));
+//		}
+//		if (urlSet != null && urlSet.size() > 1) {
+//			sm.add(new WarnStatus("Resource [" + resourceName + "] occurs multiple times on the classpath.",
+//					loggerContext));
+//			for (URL url : urlSet) {
+//				sm.add(new WarnStatus("Resource [" + resourceName + "] occurs at [" + url.toString() + "]",
+//						loggerContext));
+//			}
+//		}
+//	}
 
 }
