@@ -36,6 +36,14 @@ import javax.crypto.spec.SecretKeySpec;
  */
 public class AesSecurityPlus {
 	private static ConcurrentHashMap<String, AesSecurityPlus> cachePlug = new ConcurrentHashMap<>();
+	public static AesSecurityPlus DEFAULT_INSTANCE;
+	static {
+		try {
+			DEFAULT_INSTANCE = AesSecurityPlus.getInstance(AesSecurityPlus.class.getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	private Cipher encipher = null;
 	private Cipher decipher = null;
 

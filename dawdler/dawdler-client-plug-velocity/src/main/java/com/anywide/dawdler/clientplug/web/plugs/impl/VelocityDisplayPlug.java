@@ -210,7 +210,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		Properties ps = null;
 		try {
 			ps = PropertiesUtil.loadProperties("velocity");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			ps = new Properties();
 		}
 		ps.put("resource.loader.file.path", path);

@@ -1,5 +1,10 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	<groupId>dawdler</groupId>
+	<artifactId>dawdler</artifactId>
+	<version>0.17.1-jdk17-RELEASES</version>
+	<name>dawdler</name>
+	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<dawdler.build.version>0.17.1-jdk17-RELEASES</dawdler.build.version>
@@ -33,31 +38,38 @@
 		<pinpoint.version>2.3.1</pinpoint.version>
 		<qdox.version>2.0.1</qdox.version>
 	</properties>
-	<groupId>dawdler</groupId>
-	<artifactId>dawdler</artifactId>
-	<version>0.17.1-jdk17-RELEASES</version>
-	<name>dawdler</name>
-	<packaging>pom</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-access</artifactId>
-			<version>${ch.qos.logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${ch.qos.logback.version}</version>
 		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-access</artifactId>
+				<version>${ch.qos.logback.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+				<version>${ch.qos.logback.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
@@ -460,5 +472,6 @@
 		<module>dawdler-client-api-generator</module>
 		<module>dawdler-web-dependencies</module>
 		<module>dawdler-mybatis-core</module>
+		<module>dawdler-encrypt-generator</module>
 	</modules>
 </project>

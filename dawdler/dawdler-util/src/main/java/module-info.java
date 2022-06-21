@@ -12,4 +12,5 @@ module dawdler.util {
 	requires org.objectweb.asm.tree;
 	requires java.xml;
 	requires dom4j;
+	requires org.slf4j;
 }
