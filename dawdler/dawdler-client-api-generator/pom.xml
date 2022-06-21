@@ -34,7 +34,6 @@
 					<groupId>org.aspectj</groupId>
 					<artifactId>aspectjrt</artifactId>
 				</exclusion>
-
 				<exclusion>
 					<groupId>org.aspectj</groupId>
 					<artifactId>aspectjweaver</artifactId>
@@ -68,13 +67,11 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-access</artifactId>
-			<version>${ch.qos.logback.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>${ch.qos.logback.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
