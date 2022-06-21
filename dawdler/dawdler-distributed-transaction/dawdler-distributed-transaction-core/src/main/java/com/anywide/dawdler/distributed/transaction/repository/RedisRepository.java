@@ -63,7 +63,7 @@ public class RedisRepository extends TransactionRepository {
 			Properties ps = PropertiesUtil.loadProperties("distributed-transaction");
 			expireTime = PropertiesUtil.getIfNullReturnDefaultValueLong("expireTime", expireTime, ps);
 			compensateLater = PropertiesUtil.getIfNullReturnDefaultValueInt("compensateLater", compensateLater, ps);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.info(
 					"not found distributed-transaction.properties in classpath, use default set. expireTime={} seconds,compensateLater={} seconds.",
 					expireTime, compensateLater);
