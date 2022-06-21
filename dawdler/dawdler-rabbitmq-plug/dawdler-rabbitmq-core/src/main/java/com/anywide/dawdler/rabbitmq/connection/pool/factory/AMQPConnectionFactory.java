@@ -18,7 +18,9 @@ package com.anywide.dawdler.rabbitmq.connection.pool.factory;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -53,6 +55,15 @@ public class AMQPConnectionFactory {
 	public final static String RABBIT_FAIL_EXCHANGE = "rabbit_fail_exchange";
 	// 异常信息存储队列
 	private final static String RABBIT_FAIL_QUEUE = "rabbit_fail_queue";
+	
+	private static boolean useConfig = false;
+	static {
+		try {
+			Class.forName("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
+			useConfig = true;
+		} catch (ClassNotFoundException e) {
+		}
+	}
 
 	public static AMQPConnectionFactory getInstance(String fileName) throws Exception {
 		AMQPConnectionFactory connectionFactory = instances.get(fileName);
@@ -98,7 +109,25 @@ public class AMQPConnectionFactory {
 	}
 
 	public AMQPConnectionFactory(String fileName) throws Exception {
-		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+		Properties ps = null;
+		if(useConfig) {
+			try {
+				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+			} catch (Exception e) {
+				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache.getMappingDataCache(fileName);
+				if(attributes == null) {
+					throw e;
+				}
+				ps = new Properties();
+				Set<Entry<String, Object>> entrySet =  attributes.entrySet();
+				for (Entry<String, Object> entry : entrySet) {
+					ps.setProperty(entry.getKey(), entry.getValue().toString());
+				}
+			}
+		}else {
+			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+		}
+		
 		ConnectionFactory connectionFactory = new ConnectionFactory();
 		connectionFactory.setHost(ps.getProperty("host"));
 		connectionFactory.setPort(PropertiesUtil.getIfNullReturnDefaultValueInt("port", 5672, ps));
