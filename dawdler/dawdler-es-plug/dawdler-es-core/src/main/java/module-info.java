@@ -19,4 +19,5 @@ module dawdler.es.core {
 	requires org.apache.httpcomponents.httpasyncclient;
 	requires elasticsearch.java;
 	requires elasticsearch.rest.client;
+	requires dawdler.config.core;
 }
