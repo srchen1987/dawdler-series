@@ -62,10 +62,10 @@ public class ConfigMappingDataCache {
 	public static <T> T loadAndParse(String path, Class<T> mappingClass)
 			throws JsonMappingException, JsonProcessingException {
 		ConfigData configData = ConfigDataCache.getConfigData(path);
-		String content = null;
-		if (configData != null) {
-			content = configData.getContent();
+		if (configData == null) {
+			return null;
 		}
+		String content = configData.getContent();
 		if (content == null)
 			return null;
 		Map<Class<?>, Object> realObjMap = cache.get(path);
