@@ -29,11 +29,6 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.zip.GZIPOutputStream;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
@@ -47,6 +42,11 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
 import com.anywide.dawdler.util.PropertiesUtil;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * @author jackson.song
@@ -210,7 +210,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		Properties ps = null;
 		try {
 			ps = PropertiesUtil.loadProperties("velocity");
-		} catch (IOException e) {
+		} catch (Exception e) {
 			ps = new Properties();
 		}
 		ps.put("resource.loader.file.path", path);
