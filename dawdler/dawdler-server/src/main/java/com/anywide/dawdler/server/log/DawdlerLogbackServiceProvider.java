@@ -42,69 +42,67 @@ import ch.qos.logback.core.util.StatusPrinter;
  * @date 2022年6月11日
  * @email suxuan696@gmail.com
  */
-public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider{
+public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 
-    final static String NULL_CS_URL = CoreConstants.CODES_URL + "#null_CS";
+	final static String NULL_CS_URL = CoreConstants.CODES_URL + "#null_CS";
 
+	private IMarkerFactory markerFactory;
+	private MDCAdapter mdcAdapter;
 
-    private IMarkerFactory markerFactory;
-    private MDCAdapter mdcAdapter;
-    
-    private Map<ClassLoader,LoggerContext> instances = new HashMap<>();
-    
-    @Override
-    public void initialize() {
-    	markerFactory = new BasicMarkerFactory();
-    	mdcAdapter = new LogbackMDCAdapter();
-    }
-    
+	private Map<ClassLoader, LoggerContext> instances = new HashMap<>();
 
-    @Override
+	@Override
+	public void initialize() {
+		markerFactory = new BasicMarkerFactory();
+		mdcAdapter = new LogbackMDCAdapter();
+	}
 
-    public ILoggerFactory getLoggerFactory() {
-    	ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    	LoggerContext context = instances.get(classLoader);
-    	if(context != null) {
-    		return context;
-    	}
-    	synchronized (instances) {
-    		 context = instances.get(classLoader);
-        	if(context != null) {
-        		return context;
-        	}
-        	context = new LoggerContext();
-        	context.setName(CoreConstants.DEFAULT_CONTEXT_NAME);
-    		try {
-    			try {
-    				new DawdlerLogbackContextInitializer(context).autoConfig();
-    			} catch (JoranException je) {
-    				Util.report("Failed to auto configure default logger context", je);
-    			}
-    			if (!StatusUtil.contextHasStatusListener(context)) {
-    				StatusPrinter.printInCaseOfErrorsOrWarnings(context);
-    			}
-    		} catch (Exception t) { // see LOGBACK-1159
-    			Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
-    		}
-    		instances.put(classLoader, context);
-    		return context;
+	@Override
+
+	public ILoggerFactory getLoggerFactory() {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		LoggerContext context = instances.get(classLoader);
+		if (context != null) {
+			return context;
 		}
-    	
-    }
+		synchronized (instances) {
+			context = instances.get(classLoader);
+			if (context != null) {
+				return context;
+			}
+			context = new LoggerContext();
+			context.setName(CoreConstants.DEFAULT_CONTEXT_NAME);
+			try {
+				try {
+					new DawdlerLogbackContextInitializer(context).autoConfig();
+				} catch (JoranException je) {
+					Util.report("Failed to auto configure default logger context", je);
+				}
+				if (!StatusUtil.contextHasStatusListener(context)) {
+					StatusPrinter.printInCaseOfErrorsOrWarnings(context);
+				}
+			} catch (Exception t) { // see LOGBACK-1159
+				Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
+			}
+			instances.put(classLoader, context);
+			return context;
+		}
 
-    @Override
-    public IMarkerFactory getMarkerFactory() {
-    	return markerFactory;
-    }
+	}
 
-    @Override
-    public MDCAdapter getMDCAdapter() {
-        return mdcAdapter;
-    }
+	@Override
+	public IMarkerFactory getMarkerFactory() {
+		return markerFactory;
+	}
 
-    @Override
-    public String getRequestedApiVersion() {
-        return LogbackServiceProvider.REQUESTED_API_VERSION;
-    }
+	@Override
+	public MDCAdapter getMDCAdapter() {
+		return mdcAdapter;
+	}
+
+	@Override
+	public String getRequestedApiVersion() {
+		return LogbackServiceProvider.REQUESTED_API_VERSION;
+	}
 
 }
