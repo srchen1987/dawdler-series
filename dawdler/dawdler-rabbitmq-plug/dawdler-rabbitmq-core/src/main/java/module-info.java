@@ -19,4 +19,5 @@ module dawdler.rabbitmq.core{
 	requires dawdler.core;
 	requires org.apache.commons.pool2;
 	requires org.slf4j;
+	requires dawdler.config.core;
 }
