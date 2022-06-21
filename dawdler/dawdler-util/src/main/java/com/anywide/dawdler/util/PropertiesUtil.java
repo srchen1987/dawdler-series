@@ -19,7 +19,9 @@ package com.anywide.dawdler.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author jackson.song
@@ -63,22 +65,30 @@ public class PropertiesUtil {
 		return defaultValue;
 	}
 
-	public static Properties loadProperties(String fileName) throws IOException {
+	public static Properties loadProperties(String fileName) throws Exception {
 		String path = DawdlerTool.getCurrentPath() + fileName + ".properties";
 		InputStream inStream = null;
+		Properties ps = new Properties();
 		try {
 			inStream = new FileInputStream(path);
-			Properties ps = new Properties();
 			ps.load(inStream);
-			return ps;
 		} finally {
 			if (inStream != null) {
 				inStream.close();
 			}
 		}
+		if(ConfigContentDecryptor.useDecrypt()) {
+			Properties processedPs= new Properties();
+			Set<Entry<Object, Object>> entrySet = ps.entrySet();
+			for(Entry<Object, Object> entry : entrySet) {
+				processedPs.put(entry.getKey(), ConfigContentDecryptor.decryptAndReplaceTag(entry.getValue().toString()));
+			}
+			return processedPs;
+		}
+		return ps;
 	}
 
-	public static Properties loadActiveProfileProperties(String fileName) throws IOException {
+	public static Properties loadActiveProfileProperties(String fileName) throws Exception {
 		String activeProfile = System.getProperty("dawdler.profiles.active");
 		if(activeProfile != null) {
 			return loadProperties(fileName + "-" + activeProfile);
@@ -86,7 +96,7 @@ public class PropertiesUtil {
 		throw new IOException("dawdler.profiles.active not set!");
 	}
 
-	public static Properties loadActiveProfileIfNotExistUseDefaultProperties(String fileName) throws IOException {
+	public static Properties loadActiveProfileIfNotExistUseDefaultProperties(String fileName) throws Exception {
 		try {
 			return loadActiveProfileProperties(fileName);
 		} catch (Exception e) {
