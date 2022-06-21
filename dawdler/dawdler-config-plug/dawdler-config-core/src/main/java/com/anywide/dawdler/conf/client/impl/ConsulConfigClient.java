@@ -31,6 +31,7 @@ import com.anywide.dawdler.conf.cache.ConfigMappingDataCache;
 import com.anywide.dawdler.conf.cache.PathMappingTargetCache;
 import com.anywide.dawdler.conf.client.ConfigClient;
 import com.anywide.dawdler.core.thread.DefaultThreadFactory;
+import com.anywide.dawdler.util.ConfigContentDecryptor;
 import com.ecwid.consul.transport.TLSConfig;
 import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
@@ -163,6 +164,15 @@ public class ConsulConfigClient implements ConfigClient {
 			String value = getValue.getDecodedValue();
 			ConfigData configData = ConfigDataCache.getConfigData(key);
 			if (configData == null || configData.getVersion() != getValue.getModifyIndex()) {
+				if(ConfigContentDecryptor.useDecrypt()) {
+					System.out.println("useConfigContentDecryptor"+value);
+					try {
+						value = ConfigContentDecryptor.decryptAndReplaceTag(value);
+					} catch (Exception e) {
+						logger.error("", e);
+					}
+				}
+				System.out.println("endUseConfigContentDecryptor"+value);
 				ConfigDataCache.addConfigData(key, value, getValue.getModifyIndex());
 				ConfigMappingDataCache.removeMappingData(key);
 				PathMappingTargetCache.rebindAllByPath(key);
