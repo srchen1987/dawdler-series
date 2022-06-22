@@ -165,14 +165,12 @@ public class ConsulConfigClient implements ConfigClient {
 			ConfigData configData = ConfigDataCache.getConfigData(key);
 			if (configData == null || configData.getVersion() != getValue.getModifyIndex()) {
 				if(ConfigContentDecryptor.useDecrypt()) {
-					System.out.println("useConfigContentDecryptor"+value);
 					try {
 						value = ConfigContentDecryptor.decryptAndReplaceTag(value);
 					} catch (Exception e) {
 						logger.error("", e);
 					}
 				}
-				System.out.println("endUseConfigContentDecryptor"+value);
 				ConfigDataCache.addConfigData(key, value, getValue.getModifyIndex());
 				ConfigMappingDataCache.removeMappingData(key);
 				PathMappingTargetCache.rebindAllByPath(key);
