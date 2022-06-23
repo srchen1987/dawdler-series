@@ -59,14 +59,14 @@ public class ConfigContentDecryptor {
 		checkAesSecurityPlus(aesSecurityPlus);
 		Matcher matcher = pattern.matcher(content);
 		if (matcher.find()) {
-			content = matcher.replaceAll(t -> {
-				try {
-					return aesSecurityPlus.decrypt(t.group(1));
-				} catch (Exception e) {
-					logger.error("", e);
-				}
-				return null;
-			});
+			boolean result = false;
+			StringBuffer sb = new StringBuffer();
+			do {
+				matcher.appendReplacement(sb, aesSecurityPlus.decrypt(matcher.group(1)));
+				result = matcher.find();
+			} while (result);
+			matcher.appendTail(sb);
+			return sb.toString();
 		}
 		return content;
 	}
