@@ -58,8 +58,7 @@ public class ConfigContentDecryptor {
 	public static String decryptAndReplaceTag(String content) throws Exception {
 		checkAesSecurityPlus(aesSecurityPlus);
 		Matcher matcher = pattern.matcher(content);
-		if (matcher.find()) {
-			content = matcher.replaceAll(t -> {
+		return matcher.replaceAll(t -> {
 				try {
 					return aesSecurityPlus.decrypt(t.group(1));
 				} catch (Exception e) {
@@ -67,8 +66,6 @@ public class ConfigContentDecryptor {
 				}
 				return null;
 			});
-		}
-		return content;
 	}
 
 	public static String encrypt(String content) throws Exception {

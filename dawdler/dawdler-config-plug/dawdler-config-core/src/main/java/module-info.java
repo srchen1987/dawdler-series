@@ -13,6 +13,7 @@ module dawdler.config.core {
 	uses HealthIndicator;
 	provides HealthIndicator with ConfigIndicator;
 	requires java.base;
+	requires java.sql;
 	requires dawdler.util;
 	requires org.slf4j;
 	requires commons.jexl3;
