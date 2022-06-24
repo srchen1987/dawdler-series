@@ -79,7 +79,8 @@ public class ConnectionPool {
 		}
 
 	}
-
+	private ConnectionPool() {
+	}
 	public static void initConnection(String gid) {
 		ServerChannelGroup sg = serverChannelGroup.get(gid);
 		if (sg == null)
