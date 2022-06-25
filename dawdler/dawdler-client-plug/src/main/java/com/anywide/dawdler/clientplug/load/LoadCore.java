@@ -133,7 +133,7 @@ public class LoadCore implements Runnable {
 			}
 			XmlObject xmlo = new XmlObject(filepath, false);
 			Set<String> needLoad = new LinkedHashSet<String>();
-			for (Object o : xmlo.selectNodes("/hosts/host[@type='component']/item")) {
+			for (Object o : xmlo.selectNodes("/hosts/host[@type='"+TYPE_COMPONENT+"']/item")) {
 				Element ele = (Element) o;
 				String checkName = ele.attributeValue("checkname");
 				String className = toClassName(checkName);
@@ -152,8 +152,8 @@ public class LoadCore implements Runnable {
 	}
 
 	private void initClassMap(XmlObject xmlo) throws Throwable {
-		willLoad(xmlo, "api");
-		willLoad(xmlo, "component");
+		willLoad(xmlo, TYPE_API);
+		willLoad(xmlo, TYPE_COMPONENT);
 	}
 
 	private void willLoad(XmlObject xmlo, String type) throws Throwable {
@@ -172,12 +172,27 @@ public class LoadCore implements Runnable {
 		boolean isApi = type.equals(TYPE_API);
 		boolean remark = false;
 		List<String> allClass = new ArrayList<String>();
+		List<String> allLocalClass = new ArrayList<String>();
 		Set<String> needLoad = new LinkedHashSet<String>();
+		
+		List<Node> localItems = local.selectNodes("/hosts/host[@type='" + type + "']/item");
+		if(localItems.isEmpty()) {
+			List<Node> remoteItems = remote.selectNodes("/hosts/host[@type='" + type + "']/item");
+			remark = !remoteItems.isEmpty();
+			for (Object remoteItem : remoteItems) {
+				Element remoteEle = (Element) remoteItem;
+				String checkName = remoteEle.attributeValue("checkname");
+				String className = toClassName(checkName);
+				needLoad.add(className + CLASSP_REFIX);
+			}
+		}
 		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
-		for (Object item : local.selectNodes("/hosts/host[@type='" + type + "']/item")) {
+		for (Node item : localItems) {
 			Element ele = (Element) item;
+			String localCheckName = ele.attributeValue("checkname");
+			allLocalClass.add(toClassName(localCheckName));
 			for (Object remoteItem : remote.selectNodes(
-					"/hosts/host[@type='" + type + "']/item[@checkname='" + ele.attributeValue("checkname") + "']")) {
+					"/hosts/host[@type='" + type + "']/item[@checkname='" + localCheckName + "']")) {
 				Element remoteEle = (Element) remoteItem;
 				String checkName = remoteEle.attributeValue("checkname");
 				String className = toClassName(checkName);
@@ -193,6 +208,9 @@ public class LoadCore implements Runnable {
 		}
 		String classFilePath = CURRENT_PATH;
 		Set<String> loadCache = new LinkedHashSet<String>();
+		if(allClass.isEmpty()) {
+			allClass = allLocalClass;
+		}
 		for (String name : allClass) {// 循环客户端和服务器端都有的类
 			for (Object item : local
 					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
@@ -236,9 +254,12 @@ public class LoadCore implements Runnable {
 			if (!isApi) {
 				classLoder.updateLoad(CURRENT_PATH);
 			}
-
 			loadClass(loadClasses, isApi);
 		}
+		
+		allClass.clear();
+		allLocalClass.clear();
+		needLoad.clear();
 
 		return remark;
 	}
