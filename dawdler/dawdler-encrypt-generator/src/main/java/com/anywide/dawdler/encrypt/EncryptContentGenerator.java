@@ -36,7 +36,12 @@ public class EncryptContentGenerator {
 	public static final String DAWDLER_ENCRYP_FILE = "DAWDLER_ENCRYP_FILE";
 
 	public static void main(String[] args) throws Exception {
-		File file = new File(ConfigContentDecryptor.getDawdlerEncrypFilePath());
+		String path = ConfigContentDecryptor.getDawdlerEncrypFilePath();
+		if(path == null) {
+			generate();
+			return;
+		}
+		File file = new File(path);
 		if (file.exists()) {
 			if (args.length < 1) {
 				System.out.println("please type need encrypt content!");
@@ -46,15 +51,19 @@ public class EncryptContentGenerator {
 			System.out.println(content + " -> [" + ConfigContentDecryptor.encrypt(content) + "]");
 
 		} else {
-			AesSecurityPlus ap = AesSecurityPlus.DEFAULT_INSTANCE;
-			file = new File("dawdler.password");
-			System.out.println("generated file:[" + file.getAbsolutePath() + "]");
-			System.out.println("please set DAWDLER_ENCRYP_FILE=" + file.getAbsolutePath() + " to environment!");
-			try (OutputStream out = new FileOutputStream(file)) {
-				out.write(ap.encrypt(UUID.randomUUID().toString()).getBytes());
-				out.flush();
-			}
+			generate();
 		}
 	}
 
+	
+	private static void generate() throws Exception {
+		AesSecurityPlus ap = AesSecurityPlus.DEFAULT_INSTANCE;
+		File file = new File("dawdler.password");
+		System.out.println("generated file:[" + file.getAbsolutePath() + "]");
+		System.out.println("please set DAWDLER_ENCRYP_FILE=" + file.getAbsolutePath() + " to environment!");
+		try (OutputStream out = new FileOutputStream(file)) {
+			out.write(ap.encrypt(UUID.randomUUID().toString()).getBytes());
+			out.flush();
+		}
+	}
 }
