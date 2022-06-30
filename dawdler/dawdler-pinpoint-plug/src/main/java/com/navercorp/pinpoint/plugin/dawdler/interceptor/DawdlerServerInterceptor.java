@@ -16,6 +16,7 @@
  */
 package com.navercorp.pinpoint.plugin.dawdler.interceptor;
 
+import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.server.filter.RequestWrapper;
 import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
 import com.navercorp.pinpoint.bootstrap.context.SpanEventRecorder;
@@ -68,13 +69,12 @@ public class DawdlerServerInterceptor extends SpanRecursiveAroundInterceptor {
 		if (transactionId == null) {
 			return traceContext.newTraceObject();
 		}
-
+		
 		final long parentSpanID = parseLong((Long) request.getAttachment(DawdlerConstants.META_PARENT_SPAN_ID),
 				SpanId.NULL);
 		final long spanID = parseLong((Long) request.getAttachment(DawdlerConstants.META_SPAN_ID), SpanId.NULL);
 		final short flags = parseShort((Short) request.getAttachment(DawdlerConstants.META_FLAGS), (short) 0);
 		final TraceId traceId = traceContext.createTraceId(transactionId, parentSpanID, spanID, flags);
-
 		return traceContext.continueTraceObject(traceId);
 	}
 
@@ -115,10 +115,10 @@ public class DawdlerServerInterceptor extends SpanRecursiveAroundInterceptor {
 		recorder.recordServiceType(DawdlerConstants.DAWDLER_PROVIDER_SERVICE_NO_STATISTICS_TYPE);
 		recorder.recordApi(methodDescriptor);
 		recorder.recordAttribute(DawdlerConstants.DAWDLER_RPC_ANNOTATION_KEY,
-				request.getServiceName() + ":" + request.getMethodName() + ClassArraytoString(request.getTypes()));
+				request.getServiceName() + ":" + request.getMethodName() + classArraytoString(request.getTypes()));
 	}
 
-	public static String ClassArraytoString(Class[] a) {
+	public static String classArraytoString(Class[] a) {
 		if (a == null) {
 			return "()";
 		}
@@ -138,25 +138,34 @@ public class DawdlerServerInterceptor extends SpanRecursiveAroundInterceptor {
 	protected void doInAfterTrace(SpanEventRecorder recorder, Object target, Object[] args, Object result,
 			Throwable throwable) {
 		final RequestWrapper request = (RequestWrapper) args[0];
+		final ResponseBean response = (ResponseBean) args[1];
 		recorder.recordServiceType(DawdlerConstants.DAWDLER_PROVIDER_SERVICE_NO_STATISTICS_TYPE);
 		recorder.recordApi(methodDescriptor);
-		recorder.recordAttribute(DawdlerConstants.DAWDLER_ARGS_ANNOTATION_KEY, request.getArgs());
-		if (throwable == null) {
-			recorder.recordAttribute(DawdlerConstants.DAWDLER_RESULT_ANNOTATION_KEY, result);
+		if(request.getArgs() != null) {
+			StringBuilder argsContent = new StringBuilder();
+			for(Object obj : request.getArgs()) {
+				argsContent.append(obj);
+				argsContent.append(",");
+			}
+			argsContent.deleteCharAt(argsContent.length()-1);
+			recorder.recordAttribute(DawdlerConstants.DAWDLER_ARGS_ANNOTATION_KEY, argsContent);
+		}
+		if (response.getCause() == null) {
+			recorder.recordAttribute(DawdlerConstants.DAWDLER_RESULT_ANNOTATION_KEY, response.getTarget());
 		} else {
-			recorder.recordException(throwable);
+			recorder.recordException(response.getCause());
 		}
 	}
 
 	public Long parseLong(Long value, Long defaultValue) {
-		if (value == null) {
+		if (value != null) {
 			return value;
 		}
 		return defaultValue;
 	}
 
 	public Short parseShort(Short value, Short defaultValue) {
-		if (value == null) {
+		if (value != null) {
 			return value;
 		}
 		return defaultValue;
