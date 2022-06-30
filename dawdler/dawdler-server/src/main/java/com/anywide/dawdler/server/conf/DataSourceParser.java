@@ -42,14 +42,14 @@ import com.anywide.dawdler.util.XmlObject;
  * @email suxuan696@gmail.com
  */
 public class DataSourceParser {
-	private static XmlObject dataourceConfig;
+	private static XmlObject dataSourceConfig;
 	private static Map<String, DataSource> dataSources;
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceParser.class);
 	static {
 		File file = new File(DawdlerTool.getCurrentPath() + "../conf/data-sources.xml");
 		if (file.isFile()) {
 			try {
-				dataourceConfig = new XmlObject(file);
+				dataSourceConfig = new XmlObject(file);
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -60,7 +60,7 @@ public class DataSourceParser {
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
 		if (xmlo == null)
-			xmlo = dataourceConfig;
+			xmlo = dataSourceConfig;
 		if (xmlo == null)
 			return null;
 		dataSources = new HashMap<>();

@@ -174,7 +174,7 @@ public class LoadCore implements Runnable {
 		List<String> allClass = new ArrayList<String>();
 		List<String> allLocalClass = new ArrayList<String>();
 		Set<String> needLoad = new LinkedHashSet<String>();
-		// 这个for循环是为了从内存中移除 时间过期的Class对象 ,并把服务器端和客户端都有的类装入到一个list里做标记
+		
 		List<Node> localItems = local.selectNodes("/hosts/host[@type='" + type + "']/item");
 		if(localItems.isEmpty()) {
 			List<Node> remoteItems = remote.selectNodes("/hosts/host[@type='" + type + "']/item");

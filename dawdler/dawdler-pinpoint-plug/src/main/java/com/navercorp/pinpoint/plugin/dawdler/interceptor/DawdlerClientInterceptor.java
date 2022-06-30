@@ -17,6 +17,7 @@
 package com.navercorp.pinpoint.plugin.dawdler.interceptor;
 
 import com.anywide.dawdler.client.filter.RequestWrapper;
+import com.anywide.dawdler.core.rpc.context.RpcContext;
 import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
 import com.navercorp.pinpoint.bootstrap.context.SpanEventRecorder;
 import com.navercorp.pinpoint.bootstrap.context.Trace;
@@ -68,21 +69,20 @@ public class DawdlerClientInterceptor implements AroundInterceptor {
 
 			recorder.recordNextSpanId(nextId.getSpanId());
 
-			setAttachment(request, DawdlerConstants.META_TRANSACTION_ID, nextId.getTransactionId());
-			setAttachment(request, DawdlerConstants.META_SPAN_ID, Long.toString(nextId.getSpanId()));
-			setAttachment(request, DawdlerConstants.META_PARENT_SPAN_ID, Long.toString(nextId.getParentSpanId()));
-			setAttachment(request, DawdlerConstants.META_PARENT_APPLICATION_TYPE,
-					Short.toString(traceContext.getServerTypeCode()));
-			setAttachment(request, DawdlerConstants.META_PARENT_APPLICATION_NAME, traceContext.getApplicationName());
-			setAttachment(request, DawdlerConstants.META_FLAGS, Short.toString(nextId.getFlags()));
-			setAttachment(request, DawdlerConstants.META_HOST, request.getRemoteAddress().toString());
+			setAttachment(DawdlerConstants.META_TRANSACTION_ID, nextId.getTransactionId());
+			setAttachment(DawdlerConstants.META_SPAN_ID, nextId.getSpanId());
+			setAttachment(DawdlerConstants.META_PARENT_SPAN_ID, nextId.getParentSpanId());
+			setAttachment(DawdlerConstants.META_PARENT_APPLICATION_TYPE,traceContext.getServerTypeCode());
+			setAttachment(DawdlerConstants.META_PARENT_APPLICATION_NAME, traceContext.getApplicationName());
+			setAttachment(DawdlerConstants.META_FLAGS, nextId.getFlags());
+			setAttachment(DawdlerConstants.META_HOST, request.getRemoteAddress().toString());
 		} else {
-			setAttachment(request, DawdlerConstants.META_DO_NOT_TRACE, "1");
+			setAttachment(DawdlerConstants.META_DO_NOT_TRACE, "1");
 		}
 	}
 
-	private void setAttachment(RequestWrapper request, String name, String value) {
-		request.setAttachment(name, value);
+	private void setAttachment(String name, Object value) {
+		RpcContext.getContext().setAttachment(name, value);
 		if (isDebug) {
 			logger.debug("Set attachment {}={}", name, value);
 		}
