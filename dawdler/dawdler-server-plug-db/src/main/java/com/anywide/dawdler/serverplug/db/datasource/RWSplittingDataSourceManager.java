@@ -90,8 +90,8 @@ public class RWSplittingDataSourceManager {
 			initDataSources(id, attributes);
 		}
 
-		List<Node> dataourceExpressionList = xmlo.selectNodes("/config/datasource-expressions/datasource-expression");
-		for (Object dataourceExpression : dataourceExpressionList) {
+		List<Node> dataSourceExpressionList = xmlo.selectNodes("/config/datasource-expressions/datasource-expression");
+		for (Object dataourceExpression : dataSourceExpressionList) {
 			Element ele = (Element) dataourceExpression;
 			String id = ele.attributeValue("id");
 			String latentExpression = ele.attributeValue("latent-expression");

@@ -13,4 +13,5 @@ module dawdler.pinpoint.plug{
 	requires pinpoint.bootstrap.core;
 	requires pinpoint.commons;
 	requires dawdler.server;
+	requires dawdler.core;
 }
