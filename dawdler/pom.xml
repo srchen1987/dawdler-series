@@ -24,7 +24,7 @@
 		<jackson-databind.version>2.13.2.2</jackson-databind.version>
 		<commons-fileupload.version>1.4</commons-fileupload.version>
 		<velocity.version>2.3</velocity.version>
-		<jedis.version>4.1.1</jedis.version>
+		<jedis.version>4.2.2</jedis.version>
 		<rabbitmq.version>5.12.0</rabbitmq.version>
 		<caffeine.version>2.9.3</caffeine.version>
 		<mysql.version>8.0.29</mysql.version>
@@ -36,7 +36,7 @@
 		<jackson-dataformat-yaml.version>2.13.2</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>8.2.0</elasticsearch.version>
-		<pinpoint.version>2.3.1</pinpoint.version>
+		<pinpoint.version>2.4.0</pinpoint.version>
 		<qdox.version>2.0.1</qdox.version>
 	</properties>
 	<dependencies>
