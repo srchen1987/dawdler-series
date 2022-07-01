@@ -61,8 +61,8 @@ public class ControlDirect extends Directive {
 		 * (JspTagException e) { } return true; }
 		 */
 		Object object = node.value(arg0);
-		if (object instanceof ControlTag) {
-			arg1.write(ControlFactory.getControl((ControlTag) object).showView());
+		if (object instanceof ControlTag controlTag) {
+			arg1.write(ControlFactory.getControl(controlTag).showView());
 			return true;
 		}
 		int count = arg2.jjtGetNumChildren();
