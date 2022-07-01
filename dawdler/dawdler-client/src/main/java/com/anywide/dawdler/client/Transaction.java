@@ -166,9 +166,9 @@ public class Transaction {
 	}
 
 	public boolean execute() throws Exception {
-		Object obj = innerExecute(false);
-		if (obj instanceof Boolean)
-			return (Boolean) obj;
+		if (innerExecute(false) instanceof Boolean obj) {
+			return obj;
+		}
 		return true;
 	}
 

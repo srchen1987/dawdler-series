@@ -160,8 +160,8 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					String[] array = new String[collection.size()];
 					int index = 0;
 					for (Object obj : collection) {
-						if (obj instanceof String) {
-							array[index] = (String) obj;
+						if (obj instanceof String valueString) {
+							array[index] = valueString;
 						} else if (ClassUtil.isSimpleValueType(type)) {
 							array[index] = obj.toString();
 						} else if (matchType(obj.getClass())) {

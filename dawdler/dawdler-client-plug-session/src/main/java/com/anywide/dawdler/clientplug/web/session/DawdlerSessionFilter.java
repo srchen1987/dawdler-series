@@ -165,8 +165,8 @@ public class DawdlerSessionFilter implements Filter {
 				ipMaxInactiveInterval, ipMaxSize);
 		Object listener = servletContext
 				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTPSESSION_LISTENER);
-		if (listener instanceof HttpSessionListener) {
-			abstractDistributedSessionManager.setHttpSessionListener((HttpSessionListener) listener);
+		if (listener instanceof HttpSessionListener httpSessionListener) {
+			abstractDistributedSessionManager.setHttpSessionListener(httpSessionListener);
 		}
 
 		serializer = SerializeDecider.decide((byte) 2);// 默认为kroy 需要其他的可以自行扩展

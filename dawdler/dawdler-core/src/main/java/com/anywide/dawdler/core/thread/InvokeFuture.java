@@ -61,8 +61,8 @@ public class InvokeFuture<V> {
 
 		}
 		if (cause != null) {
-			if (cause instanceof DawdlerOperateException) {
-				throw ((RuntimeException) cause);
+			if (cause instanceof DawdlerOperateException dawdlerOperateException) {
+				throw dawdlerOperateException;
 			}
 			throw new DawdlerOperateException(cause);
 		}
@@ -87,8 +87,8 @@ public class InvokeFuture<V> {
 			}
 		}
 		if (cause != null) {
-			if (cause instanceof DawdlerOperateException) {
-				throw ((DawdlerOperateException) cause);
+			if (cause instanceof DawdlerOperateException dawdlerOperateException) {
+				throw dawdlerOperateException;
 			}
 			throw new DawdlerOperateException(cause);
 		}
