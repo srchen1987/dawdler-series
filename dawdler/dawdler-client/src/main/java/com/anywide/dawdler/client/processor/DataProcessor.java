@@ -56,8 +56,7 @@ public class DataProcessor {
 		Object obj = serializer.deserialize(data);
 		if (ioHandler != null)
 			ioHandler.messageReceived(socketSession, obj);
-		if (obj instanceof ResponseBean) {
-			ResponseBean response = (ResponseBean) obj;
+		if (obj instanceof ResponseBean response) {
 			long seq = response.getSeq();
 			InvokeFuture<Object> invoke = socketSession.getFutures().remove(seq);
 			if (response.getCause() != null)
@@ -65,8 +64,7 @@ public class DataProcessor {
 			else {
 				invoke.setResult(response.getTarget());
 			}
-		} else if (obj instanceof AuthResponseBean) {
-			AuthResponseBean authResponse = (AuthResponseBean) obj;
+		} else if (obj instanceof AuthResponseBean authResponse) {
 			if (authResponse.isSuccess()) {
 				List<SocketSession> sessions = new CopyOnWriteArrayList<>();
 				List<SocketSession> preSessions = socketSession.getDawdlerConnection().getSessionGroup()
