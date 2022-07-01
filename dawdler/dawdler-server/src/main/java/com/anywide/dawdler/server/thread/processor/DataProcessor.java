@@ -88,11 +88,10 @@ public class DataProcessor implements Runnable {
 		if (ioHandler != null) {
 			ioHandler.messageReceived(socketSession, obj);
 		}
-		if (obj instanceof RequestBean) {
+		if (obj instanceof RequestBean requestBean) {
 			if (!socketSession.isAuthored()) {
 				throw new IllegalAccessException("unauthorized access ！");
 			}
-			RequestBean requestBean = (RequestBean) obj;
 			String serviceName = requestBean.getServiceName();
 			ServicesBean servicesBean = null;
 			if (service != null) {
@@ -116,8 +115,7 @@ public class DataProcessor implements Runnable {
 			}
 			data = serializer.serialize(responseBean);
 			write();
-		} else if (obj instanceof AuthRequestBean) {
-			AuthRequestBean authRequest = (AuthRequestBean) obj;
+		} else if (obj instanceof AuthRequestBean authRequest) {
 			AuthResponseBean authResponse = new AuthResponseBean();
 			ServerConfig serverConfig = socketSession.getDawdlerServerContext().getServerConfig();
 			boolean success = false;
