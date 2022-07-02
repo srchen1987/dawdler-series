@@ -57,7 +57,6 @@ dawdler-client-plug-validator 是一个强大的前后端通用校验器,支持j
 
 RequestBody的对象无需配置在validator-mapping,只要在validator-fields中有定义则会触发校验.
 
-
 示例 ：
 
 定义UserController.java,UserController-validator.xml.
