@@ -47,7 +47,6 @@ RabbitInjector注解中的value传入fileName为配置文件名(不包含.proper
 
 [dawdler-client-plug-rabbitmq 实现dawdler-client端注入功能.](../dawdler-client-plug-rabbitmq/README.md)
 
-
 ### 4. RabbitListener注解
 
 用于标识一个方法监听指定队列的消息
@@ -65,42 +64,42 @@ RabbitInjector注解中的value传入fileName为配置文件名(不包含.proper
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })
 public @interface RabbitListener {
-	
-	/**
-	 * 指定rabbitmq的配置文件名
-	 */
-	String fileName();
-	
-	/**
-	 * 队列名
-	 */
-	String queueName();
-	
-	/**
-	 * 是否自动ack
-	 */
-	boolean autoAck() default true;
-	
-	/**
-	 * 是否重试
-	 */
-	boolean retry() default false;
-	
-	/**
-	 * 重试次数
-	 */
-	int retryCount() default 12;
-	
-	/**
-	 * 当前消费者个数 不能大于channel.size=16 #每个connection中的channel数量
-	 */
-	int concurrentConsumers() default 1;
-	
-	/**
-	 * prefetchCount来限制服务器端每次发送给每个消费者的消息数.
-	 */
-	int prefetchCount() default 1;
-	
+ 
+ /**
+  * 指定rabbitmq的配置文件名
+  */
+ String fileName();
+ 
+ /**
+  * 队列名
+  */
+ String queueName();
+ 
+ /**
+  * 是否自动ack
+  */
+ boolean autoAck() default true;
+ 
+ /**
+  * 是否重试
+  */
+ boolean retry() default false;
+ 
+ /**
+  * 重试次数
+  */
+ int retryCount() default 12;
+ 
+ /**
+  * 当前消费者个数 不能大于channel.size=16 #每个connection中的channel数量
+  */
+ int concurrentConsumers() default 1;
+ 
+ /**
+  * prefetchCount来限制服务器端每次发送给每个消费者的消息数.
+  */
+ int prefetchCount() default 1;
+ 
 }
 
 ```
@@ -110,101 +109,101 @@ public @interface RabbitListener {
 ```java
 //推送一条消息到队列 如: publish("", "queueName", null, "hello world".getBytes());
 public void publish(String exchange, String routingKey, BasicProperties props, byte[] body) throws Exception {
-		Connection con = null;
-		Channel channel = null;
-		try {
-			con = connectionFactory.getConnection();
-			channel = con.createChannel();
-			channel.basicPublish(exchange, routingKey, props, body);
-		} finally {
-			if (channel != null) {
-				channel.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
-	}
+  Connection con = null;
+  Channel channel = null;
+  try {
+   con = connectionFactory.getConnection();
+   channel = con.createChannel();
+   channel.basicPublish(exchange, routingKey, props, body);
+  } finally {
+   if (channel != null) {
+    channel.close();
+   }
+   if (con != null) {
+    con.close();
+   }
+  }
+ }
 //推送一条消息到队列传入listener自行处理confirm事件(注意要在配置文件中开启confirmSelect=true) 如: publish("", "queueName", null, "hello world".getBytes(),listener);
-	public void publish(String exchange, String routingKey, BasicProperties props, byte[] body,
-			ConfirmListener listener) throws Exception {
-		Connection con = null;
-		Channel channel = null;
-		try {
-			con = connectionFactory.getConnection();
-			channel = con.createChannel();
-			channel.basicPublish(exchange, routingKey, props, body);
-			channel.addConfirmListener(listener);
-		} finally {
-			if (channel != null) {
-				channel.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
-	}
+ public void publish(String exchange, String routingKey, BasicProperties props, byte[] body,
+   ConfirmListener listener) throws Exception {
+  Connection con = null;
+  Channel channel = null;
+  try {
+   con = connectionFactory.getConnection();
+   channel = con.createChannel();
+   channel.basicPublish(exchange, routingKey, props, body);
+   channel.addConfirmListener(listener);
+  } finally {
+   if (channel != null) {
+    channel.close();
+   }
+   if (con != null) {
+    con.close();
+   }
+  }
+ }
 
-	/**
-	 * 
-	 * @Title: publishIfFaildRetry
-	 * @author jackson.song
-	 * @date 2022年4月15日
-	 * @Description 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况) (注意要在配置文件中开启confirmSelect=true)
-	 * @param exchange
-	 * @param routingKey
-	 * @param props
-	 * @param body
-	 * @throws Exception
-	 *
-	 * 
-	 */
-	public void publishIfFaildRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
-			throws Exception {
-		Connection con = null;
-		Channel channel = null;
-		try {
-			con = connectionFactory.getConnection();
-			channel = con.createChannel();
-			long deliveryTag = channel.getNextPublishSeqNo();
-			channel.basicPublish(exchange, routingKey, props, body);
-			LocalCacheMessage message = new LocalCacheMessage(deliveryTag, exchange, routingKey, props, body);
-			localCacheMessages.put(deliveryTag, message);
-			ConfirmListener listener = new ConfirmListener() {
+ /**
+  * 
+  * @Title: publishIfFaildRetry
+  * @author jackson.song
+  * @date 2022年4月15日
+  * @Description 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况) (注意要在配置文件中开启confirmSelect=true)
+  * @param exchange
+  * @param routingKey
+  * @param props
+  * @param body
+  * @throws Exception
+  *
+  * 
+  */
+ public void publishIfFaildRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
+   throws Exception {
+  Connection con = null;
+  Channel channel = null;
+  try {
+   con = connectionFactory.getConnection();
+   channel = con.createChannel();
+   long deliveryTag = channel.getNextPublishSeqNo();
+   channel.basicPublish(exchange, routingKey, props, body);
+   LocalCacheMessage message = new LocalCacheMessage(deliveryTag, exchange, routingKey, props, body);
+   localCacheMessages.put(deliveryTag, message);
+   ConfirmListener listener = new ConfirmListener() {
 
-				@Override
-				public void handleNack(long deliveryTag, boolean multiple) throws IOException {
-					LocalCacheMessage message = localCacheMessages.get(deliveryTag);
-					if (message != null) {
-						try {
-							publishIfFaildRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
-									message.getBody());
-						} catch (Exception e) {
-							logger.error("", e);
-						}
-						localCacheMessages.remove(deliveryTag);
-					}
-				}
+    @Override
+    public void handleNack(long deliveryTag, boolean multiple) throws IOException {
+     LocalCacheMessage message = localCacheMessages.get(deliveryTag);
+     if (message != null) {
+      try {
+       publishIfFaildRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
+         message.getBody());
+      } catch (Exception e) {
+       logger.error("", e);
+      }
+      localCacheMessages.remove(deliveryTag);
+     }
+    }
 
-				@Override
-				public void handleAck(long deliveryTag, boolean multiple) throws IOException {
-					if (multiple) {
-						localCacheMessages.clear();
-					} else {
-						localCacheMessages.remove(deliveryTag);
-					}
-				}
-			};
-			channel.addConfirmListener(listener);
-		} finally {
-			if (channel != null) {
-				channel.close();
-			}
-			if (con != null) {
-				con.close();
-			}
-		}
-	}
+    @Override
+    public void handleAck(long deliveryTag, boolean multiple) throws IOException {
+     if (multiple) {
+      localCacheMessages.clear();
+     } else {
+      localCacheMessages.remove(deliveryTag);
+     }
+    }
+   };
+   channel.addConfirmListener(listener);
+  } finally {
+   if (channel != null) {
+    channel.close();
+   }
+   if (con != null) {
+    con.close();
+   }
+  }
+ }
 
 ```
 
@@ -224,4 +223,3 @@ public static AMQPConnectionFactory getInstance(String fileName);
 注意：AMQPConnectionFactory在客户端和服务器端中运行无需手动关闭,dawder会自动进行关闭相关资源.
 
 在非dawdler架构下使用需要调用 AMQPConnectionFactory.shutdownAll(); 释放资源.
-

@@ -65,7 +65,7 @@ wait-time:轮询超时长,单位秒数
 
 参考[consul downloads](https://www.consul.io/downloads) 即可完成安装.
 
-#### 3.1 consul在生产环境下的使用 
+#### 3.1 consul在生产环境下的使用
 
 Consul支持多DataCenter,数据中心可以通过Internet互联,为了提高通信效率,只有Server节点才加入跨数据中心的通信.
 
@@ -90,7 +90,6 @@ service->nginx(可以考虑多个nginx+lvs保证高可用)->(负载多个)consul
 服务注册(配置中心的client端也采用这种方式)调用关系如下：
 
 service->consul_client->consul_server
-
 
 #### 3.2 单机测试环境配置启动
 
@@ -138,6 +137,7 @@ n2    192.168.43.131:8301  alive   server  1.11.3  2         dc1  default    <al
 n3    192.168.43.130:8301  alive   server  1.11.3  2         dc1  default    <all>
 
 ```
+
 部分参数说明:
 
 server: 以server身份启动.默认是client
@@ -157,7 +157,6 @@ ui: 可以访问UI界面
 -config-dir指定配置文件夹,Consul会加载其中的所有文件
 
 -datacenter 指定数据中心名称,默认是dc1
-
 
 ### 4. FieldConfig注解
 

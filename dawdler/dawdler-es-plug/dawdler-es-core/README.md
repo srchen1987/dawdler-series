@@ -44,7 +44,6 @@ pool.testOnReturn=false #反还连接时是否验证连接有效 默认为false
 
 [dawdler-client-plug-es 实现dawdler-client端注入功能.](../dawdler-client-plug-es/README.md)
 
-
 ### 4. 非dawdler架构下的使用方式
 
 ```java
@@ -59,6 +58,7 @@ public ElasticSearchClientFactory(String fileName);
 //例如：传入fileName为myEs,则需要在项目的classPath中创建配置文件myEs.properties.
 
 ```
+
 注意：ElasticSearchClientFactory在客户端和服务器端中运行无需手动关闭,dawder会自动进行关闭相关资源.
 
 在非dawdler架构下使用需要调用 ElasticSearchClientFactory.shutdownAll(); 来释放资源.
@@ -69,6 +69,6 @@ public ElasticSearchClientFactory(String fileName);
 
 RestHighLevelClient类很多方法被设置成了final,特别是close这种方法,导致开发者无法应用cglib这种动态代理的模式来拦截close方法(因为没有实现接口更没办法应用jdk的动态代理来实现).如果想重写close方法就必须用warpper这种方式,又不能继承这个RestHighLevelClient,不伦不类这个词比较适合这种情况.
 
-2、7.15之后推荐使用elasticsearch-java 
+2、7.15之后推荐使用elasticsearch-java
 
 ElasticsearchClient类没有实现接口 无法通过jdk来做动态代理.
