@@ -23,7 +23,7 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
  <scanner>
-	<jar-files>
+ <jar-files>
     <jar-file>dawdler-server-plug-0.0.2-RELEASES.jar</jar-file>
     <jar-file>dawdler-server-plug-db-0.0.2-RELEASES.jar</jar-file>
     <jar-file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jar-file>
@@ -33,9 +33,9 @@ server-conf.xml 是dawdler服务器的核心配置文件.
     <jar-file>dawdler-server-plug-redis-0.0.2-RELEASES.jar</jar-file>
     <jar-file>dawdler-server-plug-es-0.0.2-RELEASES.jar</jar-file>
     <jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
-	</jar-files>
-			<!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
-	<packages-in-jar>
+ </jar-files>
+   <!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
+ <packages-in-jar>
     <package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
     <package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
     <package-path>com.anywide.dawdler.serverplug.db.mybatis.session</package-path>
@@ -72,11 +72,11 @@ server-conf.xml 是dawdler服务器的核心配置文件.
  </module-auth><!-- 模块下的用户,module中的name指定模块名,user节点中username属性第是用户名,password是密码 -->
 
  <health-check check="on" scheme="https" port="19001" backlog="0" username="jackson" password="jackson.song">
-	<elasticSearch check="on" />
-	<jedis check="on" />
-	<rabbit check="on" />
-	<dataSource check="on" />
-	<config check="on" />
+ <elasticSearch check="on" />
+ <jedis check="on" />
+ <rabbit check="on" />
+ <dataSource check="on" />
+ <config check="on" />
  </health-check>
 </config>
 
@@ -128,7 +128,6 @@ maxThreads=200 处理业务线程池的大小
 
 用于做健康检测的配置,可以为k8s的liveness,readiness提供该服务.如果设有带(Basic Authentication)的认证,请通过head头加入Authorization头信息.
 
-
 check="on" 为开启健康检测,off为关闭.关闭后不会开启http/https服务.
 
 scheme="http" 提供http服务,支持设为https,使用keyStore中的keystore为https证书.
@@ -152,7 +151,6 @@ rabbit rabbitmq检测
 dataSource 数据源检测
 
 config 配置中心检测
-
 
 #### 2.2 data-sources.xml说明
 
@@ -394,7 +392,7 @@ dawdler服务端提供健康检测功能,uri为/status,参考[health-check节点
 
 示例:
 
-https://192.168.43.137:19001/status
+<https://192.168.43.137:19001/status>
 
 返回:
 
