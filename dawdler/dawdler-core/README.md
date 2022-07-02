@@ -70,14 +70,14 @@ public @interface RemoteServiceAssistant {
 ```java
 public interface ComponentLifeCycle {
 
-	default public void prepareInit() throws Throwable {
-	};
-	
-	default public void init() throws Throwable {
-	};
+ default public void prepareInit() throws Throwable {
+ };
+ 
+ default public void init() throws Throwable {
+ };
 
-	default public void destroy() throws Throwable {
-	};
+ default public void destroy() throws Throwable {
+ };
 
 }
 ```

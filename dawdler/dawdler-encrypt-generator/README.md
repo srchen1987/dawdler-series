@@ -22,7 +22,6 @@ mvn install
 java -jar dawdler-encrypt-generator-0.0.2-RELEASES.jar
 ```
 
-
 运行后会生成加密用的密钥并存储在dawlder.password文件中.
 
 提醒如下：
@@ -31,8 +30,7 @@ generated file:[/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-gener
 
 please set DAWDLER_ENCRYP_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password to environment!
 
-
-linux中设置环境变量 
+linux中设置环境变量
 
 ```shell
 export DAWDLER_ENCRYP_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password
@@ -47,6 +45,7 @@ export DAWDLER_ENCRYP_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-en
 建议改变dawdler.password文件位置.
 
 如：
+
 ```shell
 mv /home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password /home/srchen/dawdler-server/dawdler.password
 ```
@@ -62,7 +61,7 @@ java -jar dawdler-encrypt-generator-0.0.2-RELEASES.jar 123456
 #123456为原始密码
 ```
 
-控制台输出 
+控制台输出
 
 123456 -> [%2FkVZfdVQAuyD%2FXUNqzSQGw%3D%3D]
 
@@ -83,6 +82,7 @@ max_wait=10000
 timeout=10000
 test_on_borrow=true 
 ```
+
 目前支持的模块有rabbitmq,redis,elasticSearch以及所有使用com.anywide.dawdler.util.PropertiesUtil来读取的自定义properties应用.
 
 #### 1.5 在配置中心中使用加密后的密码
@@ -96,4 +96,3 @@ password: ENC(hTGici8M3cMAvJ6wrEXnwQ%3D%3D)
 maximumPoolSize: 20
 minimumIdle: 0
 ```
-
