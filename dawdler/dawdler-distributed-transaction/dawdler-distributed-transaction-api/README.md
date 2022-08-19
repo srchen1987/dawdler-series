@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-distributed-transaction-api 分布式事务框架中公用的类与注解.
+分布式事务框架中公用的类与注解.
 
 ### 1. pom中引入依赖
 

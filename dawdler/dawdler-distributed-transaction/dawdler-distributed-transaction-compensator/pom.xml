@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dawdler-distributed-transaction-compensator</artifactId>
 	<name>dawdler-distributed-transaction-compensator</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

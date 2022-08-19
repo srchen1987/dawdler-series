@@ -53,8 +53,8 @@ public class RabbitListenerInit {
 			if (listener != null) {
 				String key = method.toGenericString();
 				Object object = listenerCache.get(key);
-				listenerCache.put(key, target);
 				if (object == null) {
+					listenerCache.put(key, target);
 					try {
 						AMQPConnectionFactory factory = AMQPConnectionFactory.getInstance(listener.fileName());
 						Connection con = factory.getConnection();

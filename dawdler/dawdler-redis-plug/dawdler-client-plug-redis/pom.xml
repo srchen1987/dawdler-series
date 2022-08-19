@@ -7,6 +7,7 @@
 	</parent>
 	<artifactId>dawdler-client-plug-redis</artifactId>
 	<name>dawdler-client-plug-redis</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

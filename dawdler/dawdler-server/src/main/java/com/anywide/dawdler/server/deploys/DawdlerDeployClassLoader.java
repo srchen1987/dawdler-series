@@ -113,25 +113,17 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 		DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 				.getContextClassLoader();
 		java.nio.ByteBuffer codeBytes = res.getByteBuffer();
-		Object obj = dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_OBJ);
 		CodeSigner[] signers = res.getCodeSigners();
 		CodeSource cs = new CodeSource(url, signers);
 		PerfCounter.getReadClassBytesTime().addElapsedTimeFrom(t0);
+		byte[] classData = null;
 		if (codeBytes != null) {
-			if (obj != null) {
-				codeBytes.flip();
-				byte[] classData = codeBytes.array();
-				return loadClassFromBytes(name, classData, obj, classLoader);
-			} else {
-				return defineClass(name, codeBytes, cs);
-			}
+			codeBytes.flip();
+			classData = codeBytes.array();
 		} else {
-			byte[] b = res.getBytes();
-			if (obj != null) {
-				return loadClassFromBytes(name, b, obj, classLoader);
-			}
-			return defineClass(name, b, 0, b.length, cs);
+			classData = res.getBytes();
 		}
+		return loadClassFromBytes(name, classData, classLoader, cs);
 	}
 
 	private void definePackageInternal(String pkgname, Manifest man, URL url) {
@@ -208,17 +200,20 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 		return clazz;
 	}
 
-	public Class<?> loadClassFromBytes(String name, byte[] classData, Object obj, ClassLoader classLoader)
+	public Class<?> loadClassFromBytes(String name, byte[] classData, ClassLoader classLoader, CodeSource cs)
 			throws ClassNotFoundException {
 		Method method = (Method) dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_METHOD);
-		try {
-			classData = (byte[]) method.invoke(obj, name, classData, classLoader, null);
-		} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			logger.error("", e);
+		Object aspectSupportObj = dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_OBJ);
+		if(aspectSupportObj != null) {
+			try {
+				classData = (byte[]) method.invoke(aspectSupportObj, name, classData, classLoader, null);
+			} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				logger.error("", e);
+			}
 		}
-		Class<?> clazz = defineClass(name, classData, 0, classData.length);
-		return clazz;
+		return defineClass(name, classData, 0, classData.length, cs);
 	}
+
 
 	@Override
 	public String toString() {

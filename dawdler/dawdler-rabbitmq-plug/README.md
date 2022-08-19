@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-rabbitmq-plug  rabbitmq模块的支持,包含客户端,服务器端,rabbitmq核心模块.
+rabbitmq模块的支持,包含客户端,服务器端,rabbitmq核心模块.
 
 ### 1. 子模块介绍
 
