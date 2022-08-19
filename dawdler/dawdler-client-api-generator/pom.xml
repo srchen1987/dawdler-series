@@ -7,6 +7,7 @@
 	</parent>
 	<artifactId>dawdler-client-api-generator</artifactId>
 	<name>dawdler-client-api-generator</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dawdler-pinpoint-plug</artifactId>
 	<name>dawdler-pinpoint-plug</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

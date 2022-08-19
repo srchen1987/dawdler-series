@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dawdler-distributed-transaction-core</artifactId>
 	<name>dawdler-distributed-transaction-core</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

@@ -10,6 +10,7 @@
 	</parent>
 	<artifactId>dawdler-server-plug-db</artifactId>
 	<name>dawdler-server-plug-db</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
