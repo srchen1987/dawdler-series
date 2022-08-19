@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-client-plug-session是一套高性能分布式session的实现模块.
+高性能分布式session的实现模块.
 
 ### 1. pom中引入依赖
 

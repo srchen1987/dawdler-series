@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-distributed-transaction 分布式事务模块的根模块.
+分布式事务模块的根模块.
 
 分布式事务架构原理
 

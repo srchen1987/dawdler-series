@@ -1,8 +1,8 @@
-# dawdler-redis-plug
+# dawdler-redis-core
 
 ## 模块介绍
 
-dawdler-redis-core redis插件,针对jedis进行封装,支持单机模式与哨兵模式.
+redis插件,对jedis进行封装,支持单机模式与哨兵模式.
 
 ### 1. pom中引入依赖
 

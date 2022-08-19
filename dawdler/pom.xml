@@ -8,8 +8,8 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<dawdler.build.version>0.0.2-RELEASES</dawdler.build.version>
-		<slf4j.version>2.0.0-alpha7</slf4j.version>
-		<ch.qos.logback.version>1.3.0-alpha16</ch.qos.logback.version>
+		<slf4j.version>1.7.36</slf4j.version>
+		<ch.qos.logback.version>1.2.11</ch.qos.logback.version>
 		<org.ow2.asm.version>7.1</org.ow2.asm.version>
 		<jaxen.version>1.2.0</jaxen.version>
 		<org.dom4j.version>2.1.3</org.dom4j.version>
@@ -38,6 +38,7 @@
 		<elasticsearch.version>8.2.0</elasticsearch.version>
 		<pinpoint.version>2.4.0</pinpoint.version>
 		<qdox.version>2.0.1</qdox.version>
+		<quartz.version>2.3.2</quartz.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -349,6 +350,16 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-schedule-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-schedule</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-distributed-transaction-api</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
@@ -403,6 +414,11 @@
 				<artifactId>qdox</artifactId>
 				<version>${qdox.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz</artifactId>
+				<version>${quartz.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -410,7 +426,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
+				<version>3.8.0</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>1.8</source>
@@ -456,5 +472,6 @@
 		<module>dawdler-web-dependencies</module>
 		<module>dawdler-mybatis-core</module>
 		<module>dawdler-encrypt-generator</module>
+		<module>dawdler-schedule-plug</module>
 	</modules>
 </project>
