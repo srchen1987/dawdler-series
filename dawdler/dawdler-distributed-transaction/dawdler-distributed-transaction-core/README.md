@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-distributed-transaction-core 分布式事务核心模块,提供事务注解和具体的实现.
+分布式事务核心模块,提供事务注解和具体的实现.
 
 ### 1. DistributedTransaction注解
 
