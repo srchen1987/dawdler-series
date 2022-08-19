@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-rabbitmq-core 提供通过pool2实现的连接池.
+提供通过pool2实现的rabbitmq连接池.
 
 ### 1. pom中引入依赖
 
