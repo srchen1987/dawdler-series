@@ -1,8 +1,8 @@
-# dawdler-client-plug-redis
+# dawdler-client-plug-rabbitmq
 
 ## 模块介绍
 
-dawdler-client-plug-rabbitmq 实现dawdler-client端注入功能.
+实现dawdler-client端注入RabbitProvider与RabbitListener注解的功能.
 
 ### 1. pom中引入依赖
 

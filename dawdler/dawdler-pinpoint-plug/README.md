@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-pinpoint-plug dawdler实现pinpoint链路追踪插件
+pinpoint链路追踪插件
 
 ### 1. 下载pinpoint相关资源
 

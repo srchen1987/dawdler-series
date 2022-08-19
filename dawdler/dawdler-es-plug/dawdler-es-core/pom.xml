@@ -7,6 +7,7 @@
 	</parent>
 	<artifactId>dawdler-es-core</artifactId>
 	<name>dawdler-es-core</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.commons</groupId>

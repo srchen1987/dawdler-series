@@ -10,6 +10,7 @@
 	</parent>
 	<artifactId>dawdler-server-plug-dao</artifactId>
 	<name>dawdler-server-plug-dao</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

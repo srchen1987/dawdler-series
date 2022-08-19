@@ -29,6 +29,14 @@ import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 
+/**
+ * @author jackson.song
+ * @version V1.0
+ * @Title RequestMethodProcessor.java
+ * @Description 方法处理器,通过spi加载对应的组件
+ * @date 2021年4月3日
+ * @email suxuan696@gmail.com
+ */
 public class RequestMethodProcessor {
 	private static List<MethodArgumentResolver> methodArgumentResolvers = new ArrayList<>();
 

@@ -9,4 +9,5 @@
 	</parent>
 	<artifactId>dawdler-distributed-transaction-api</artifactId>
 	<name>dawdler-distributed-transaction-compensator</name>
+	<packaging>jar</packaging>
 </project>
