@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dawdler-client-plug-config</artifactId>
 	<name>dawdler-client-plug-config</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

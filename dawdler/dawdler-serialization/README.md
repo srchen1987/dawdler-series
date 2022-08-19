@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-serialization 序列化模块
+序列化模块
 
 ### 1. pom中引入依赖
 

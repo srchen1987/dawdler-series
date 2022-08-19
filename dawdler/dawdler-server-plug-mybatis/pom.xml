@@ -10,6 +10,7 @@
 	</parent>
 	<artifactId>dawdler-server-plug-mybatis</artifactId>
 	<name>dawdler-server-plug-mybatis</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

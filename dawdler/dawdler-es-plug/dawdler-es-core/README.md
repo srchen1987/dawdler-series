@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-es-core es插件,通过pool2对elasticsearch-java进行封装实现的一套连接池.
+es插件,通过pool2对elasticsearch-java进行封装实现的一套连接池.
 
 ### 1. pom中引入依赖
 

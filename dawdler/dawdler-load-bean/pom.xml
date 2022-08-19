@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dawdler-load-bean</artifactId>
 	<name>dawdler-load-bean</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
