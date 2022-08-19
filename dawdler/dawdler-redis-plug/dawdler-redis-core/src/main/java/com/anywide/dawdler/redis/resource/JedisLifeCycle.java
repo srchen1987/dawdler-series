@@ -30,10 +30,6 @@ import com.anywide.dawdler.redis.JedisPoolFactory;
 public class JedisLifeCycle implements ComponentLifeCycle {
 
 	@Override
-	public void init() {
-	}
-
-	@Override
 	public void destroy() {
 		JedisPoolFactory.shutdownAll();
 	}

@@ -6,6 +6,8 @@
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-encrypt-generator</artifactId>
+	<name>dawdler-encrypt-generator</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

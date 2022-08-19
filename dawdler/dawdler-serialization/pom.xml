@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dawdler-serialization</artifactId>
 	<name>dawdler-serialization</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>com.esotericsoftware</groupId>

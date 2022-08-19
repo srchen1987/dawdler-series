@@ -9,6 +9,7 @@
 	</parent>
 	<artifactId>dawdler-client-plug-velocity</artifactId>
 	<name>dawdler-client-plug-velocity</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.velocity</groupId>

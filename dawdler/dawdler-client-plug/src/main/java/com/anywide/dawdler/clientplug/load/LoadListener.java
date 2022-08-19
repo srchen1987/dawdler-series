@@ -158,6 +158,16 @@ public class LoadListener implements ServletContextListener {
 		}
 		arg0.getServletContext().addFilter("ViewController", ViewFilter.class).addMappingForUrlPatterns(dispatcherType,
 				true, "/*");
+		
+		for (int i = 0; i < lifeCycleList.size(); i++) {
+			try {
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().afterInit();
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
+		}
+		
 	}
 
 //	private void loadConfModuleAndExecuteStaticMethod(String methodName) {

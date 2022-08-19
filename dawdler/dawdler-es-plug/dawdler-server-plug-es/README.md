@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-dawdler-server-plug-es 实现dawdler-server端注入功能.
+实现dawdler-server端注入EsOperator的功能.
 
 ### 1. pom中引入依赖
 

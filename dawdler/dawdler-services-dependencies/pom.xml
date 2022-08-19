@@ -124,6 +124,11 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-schedule</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
