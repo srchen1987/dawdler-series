@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-schedule-plug</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug-schedule</artifactId>
 	<name>dawdler-server-plug-schedule</name>
