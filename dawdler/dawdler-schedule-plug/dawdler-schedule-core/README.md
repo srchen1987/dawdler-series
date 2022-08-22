@@ -29,7 +29,7 @@ schedule模块的支持,包含客户端,服务器端,schedule核心模块.
 public @interface Schedule {
 
  /**
-  * 指定配置的schedule,未指定则采用默认配置(注意quartz默认为多线程)
+  * 指定配置的schedule,未指定则采用默认配置(注意quartz默认为多线程),如果指定则会在classpath下寻找对应的properties文件,如 设为single则会采用single.properties文件中的配置.
   */
  String fileName() default "";
  
@@ -37,6 +37,11 @@ public @interface Schedule {
   * quartz的cron表达式
   */
  String cron();
+
+ /**
+  * 是否并发执行
+  */
+ boolean concurrent() default true;
 
 }
 
