@@ -23,6 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.CronTrigger;
+import org.quartz.DisallowConcurrentExecution;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
@@ -65,9 +66,14 @@ public class ScheduleOperator {
 		});
 	}
 
-	public static void addJob(String fileName, String cron, Object target, Method method) throws SchedulerException {
+	public static void addJob(String fileName, String cron, boolean concurrent, Object target, Method method) throws SchedulerException {
 		Scheduler scheduler = SchedulerFactory.getInstance().getScheduler(fileName);
-		JobDetail jobDetail = JobBuilder.newJob(InnnerJob.class).build();
+		JobDetail jobDetail;
+		if(concurrent) {
+			jobDetail = JobBuilder.newJob(ConcurrentInnnerJob.class).build();
+		}else {
+			jobDetail = JobBuilder.newJob(InnnerJob.class).build();
+		}
 		jobDetail.getJobDataMap().put(TARGET, target);
 		jobDetail.getJobDataMap().put(TARGET_METHOD, method);
 		CronTrigger cronTrigger = TriggerBuilder.newTrigger().withSchedule(CronScheduleBuilder.cronSchedule(cron))
@@ -134,7 +140,23 @@ public class ScheduleOperator {
 
 	}
 
+	@DisallowConcurrentExecution
 	public static class InnnerJob implements Job {
+
+		@Override
+		public void execute(JobExecutionContext context) throws JobExecutionException {
+			JobDataMap dataMap = context.getJobDetail().getJobDataMap();
+			Method method = (Method) dataMap.get(TARGET_METHOD);
+			try {
+				method.invoke(dataMap.get(TARGET));
+			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				logger.error("", e);
+			}
+		}
+
+	}
+	
+	public static class ConcurrentInnnerJob implements Job {
 
 		@Override
 		public void execute(JobExecutionContext context) throws JobExecutionException {
