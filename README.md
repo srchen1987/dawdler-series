@@ -152,6 +152,10 @@ dawdler-es-plug es模块的支持,包含客户端,服务器端,es核心模块.
 
 dawdler实现pinpoint链路追踪插件.
 
+#### 22. [dawdler-schedule-plug](dawdler/dawdler-schedule-plug/README.md)
+
+基于quartz实现,schedule模块的支持,包含客户端,服务器端,schedule核心模块.
+
 ### dawdler-runtime介绍
 
 参考[dawdler-runtime](https://github.com/srchen1987/dawdler-runtime/blob/main/README.md)
