@@ -42,5 +42,11 @@ public @interface Schedule {
 	 * quartz的cron表达式
 	 */
 	String cron();
+	
+	/**
+	 * 是否并发执行
+	 */
+	boolean concurrent() default true;
+
 
 }
