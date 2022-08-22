@@ -48,7 +48,7 @@ public class ScheduleInit {
 				if (object == null) {
 					scheduleCache.put(key, target);
 					try {
-						ScheduleOperator.addJob(schedule.fileName(), schedule.cron(), target, method);
+						ScheduleOperator.addJob(schedule.fileName(), schedule.cron(), schedule.concurrent(), target, method);
 					} catch (Throwable e) {
 						logger.error("", e.getCause());
 					}
