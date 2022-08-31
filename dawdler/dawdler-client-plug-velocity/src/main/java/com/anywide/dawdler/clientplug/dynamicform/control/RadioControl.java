@@ -51,15 +51,20 @@ public class RadioControl extends Control {
 			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
 					.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 					.replace(ControlContent.VIEWNAMEREPLACE, viewName));
-			if (css != null && !css.trim().equals(""))
+			if (css != null && !css.trim().equals("")) {
 				sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
-			if (validateRule != null && !validateRule.trim().equals(""))
+			}
+			
+			if (validateRule != null && !validateRule.trim().equals("")) {
 				sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
+			}
+			
 			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, i + ""));
 			sb.append(value != null ? value.equals("" + i) ? ControlContent.CHECKED : ""
 					: (i == 0 && radioDefault) ? ControlContent.CHECKED : "");
-			if (additional != null)
+			if (additional != null) {
 				sb.append(" " + additional);
+			}
 			sb.append(ControlContent.INPUTEND);
 			sb.append(showitem[i] + "   ");
 		}

@@ -43,9 +43,9 @@ public @interface RequestMapping {
 
 	String input() default "";// 配置验证框架之后验证未通过的跳转路径，默认为空，返回json类型的错误提醒，如果配置会在request域下设置属性validate_error并forward到
 
-	long uploadSizeMax() default 0l;// 上传文件最大的限制,单位byte
+	long uploadSizeMax() default 0L;// 上传文件最大的限制,单位byte
 
-	long uploadPerSizeMax() default 0l;// 上传单个文件最大的限制,单位byte
+	long uploadPerSizeMax() default 0L;// 上传单个文件最大的限制,单位byte
 
 	String exceptionHandler() default "";// 异常处理者，系统内提供三种处理者json, jsp,
 											// velocity，会根据ViewType自动选择，如果有需要可以扩展，参考HttpExceptionHolder的register方法，可以在监听器启动时扩展，一般不会考虑扩展所以没采用SPI方式配置

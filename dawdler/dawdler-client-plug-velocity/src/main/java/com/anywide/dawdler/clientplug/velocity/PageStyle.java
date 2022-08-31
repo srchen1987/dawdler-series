@@ -75,23 +75,28 @@ public class PageStyle {
 		PageStyleContent pc = getPageStyle().getPageStyleContent(stylename);
 		int start = 1;
 		int end;
-		if (pageOn < 0)
+		if (pageOn < 0) {
 			pageOn = 1;
-		if (pagenumber > pageCount)
+		}
+		if (pagenumber > pageCount) {
 			pagenumber = pageCount;
-		if (pageOn > pageCount)
+		}
+		if (pageOn > pageCount) {
 			pageOn = pageCount;
+		}
 		int pagenumber2 = pagenumber / 2;// 取 pagenumber的一半
 		boolean sig = pagenumber % 2 == 0;// 取余是否为整数
 		if (pageOn > pagenumber2) {// 如果当前页大于了 pagenumber的一半
 			start = pageOn - pagenumber2;// 起始值 从 pageOn减去pagenumber2的数开始
-			if (sig)
+			if (sig){
 				start += 1;// 如果没有余数 起始值加一
+			}
 		}
 		if (pageOn + pagenumber2 > pageCount) {// 如果 当前页面加上pagenumber2大于了总页数
 			start -= (pageOn + pagenumber2) - pageCount;// 起始值减去 （当前页数加上pagenumber2） 减去 pageCount的值
-			if (start < 1)
+			if (start < 1) {
 				start = 1;// 起始值小于1则等于1
+			}
 			end = pageCount;// 结束值为 总页数
 		} else {
 			end = pageOn + pagenumber2;
@@ -112,13 +117,16 @@ public class PageStyle {
 			out.write(pc.getFirstpage(linkcontent, 1));
 			out.write(pc.getUppage(linkcontent, (pageOn - 1)));
 		}
-		if (pageCount > 1)
+		if (pageCount > 1) {
 			for (; start <= end; start++) {
-				if (start == pageOn)
+				if (start == pageOn) {
 					out.write(pc.getPageOn(pageOn));
-				else
+				}
+				else {
 					out.write(pc.getPages(linkcontent, start));
+				}
 			}
+		}
 		if (pageOn < pageCount) {
 			out.write(pc.getLastpage(linkcontent, (pageOn + 1)));
 			out.write(pc.getEndpage(linkcontent, pageCount));
@@ -148,11 +156,14 @@ public class PageStyle {
 	}
 
 	public PageStyleContent getPageStyleContent(String stylename) {
-		if (stylename == null)
+		if (stylename == null) {
 			return getPageStyleContentDefault();
+		}
 		PageStyleContent pc = stylecontents.get(stylename);
-		if (pc == null)
+		if (pc == null){
 			return getPageStyleContentDefault();
+		}
+			
 		return pc;
 	}
 
