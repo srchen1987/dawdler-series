@@ -16,10 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
-import java.util.List;
-
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.bind.RequestMethodProcessor;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
@@ -29,10 +25,15 @@ import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.List;
+
+
+
 
 /**
  * @author jackson.song
@@ -78,8 +79,9 @@ public abstract class AbstractUrlHandler {
 	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,
 			boolean responseBody) throws Throwable {
 		try {
-			if (!preHandle(target, viewForward, requestMapping))
+			if (!preHandle(target, viewForward, requestMapping)) {
 				return true;
+			}
 			Object[] args = RequestMethodProcessor.process(target, viewForward, method);
 			Object result = method.invoke(target, args);
 			if (responseBody && result != null) {

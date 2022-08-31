@@ -29,18 +29,18 @@ import java.util.ServiceLoader;
  * @email suxuan696@gmail.com
  */
 public class LoadBalanceFactory<T, K> {
-	private final static Map<String, LoadBalance> loadBalances = new HashMap<>();
+	private final static Map<String, LoadBalance> LOAD_BALANCES = new HashMap<>();
 	static {
 		ServiceLoader<LoadBalance> loader = ServiceLoader.load(LoadBalance.class);
 		loader.forEach(LoadBalanceFactory::addLoadBalance);
 	}
 
 	public static <T, K> LoadBalance<T, K> getLoadBalance(String name) {
-		LoadBalance<T, K> loadBalance = loadBalances.get(name);
+		LoadBalance<T, K> loadBalance = LOAD_BALANCES.get(name);
 		return loadBalance;
 	}
 
 	static void addLoadBalance(LoadBalance loadBalance) {
-		loadBalances.put(loadBalance.getName(), loadBalance);
+		LOAD_BALANCES.put(loadBalance.getName(), loadBalance);
 	}
 }

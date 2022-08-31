@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import net.sf.cglib.core.ReflectUtils;
 
 /*
  * Copyright 2004 The Apache Software Foundation
@@ -22,7 +23,6 @@ import java.util.Map;
  * limitations under the License.
  */
 
-import net.sf.cglib.core.ReflectUtils;
 
 /**
  * @version $Id: CallbackHelper.java,v 1.2 2004/06/24 21:15:20 herbyderby Exp $
@@ -38,14 +38,18 @@ abstract public class CallbackHelper implements CallbackFilter {
 		for (int i = 0, size = methods.size(); i < size; i++) {
 			Method method = (Method) methods.get(i);
 			Object callback = getCallback(method);
-			if (callback == null)
+			if (callback == null) {
 				throw new IllegalStateException("getCallback cannot return null");
+			}
 			boolean isCallback = callback instanceof Callback;
-			if (!(isCallback || (callback instanceof Class)))
+			if (!(isCallback || (callback instanceof Class))) {
 				throw new IllegalStateException("getCallback must return a Callback or a Class");
-			if (i > 0 && ((callbacks.get(i - 1) instanceof Callback) ^ isCallback))
+			}
+			if (i > 0 && ((callbacks.get(i - 1) instanceof Callback) ^ isCallback)){
 				throw new IllegalStateException(
-						"getCallback must return a Callback or a Class consistently for every Method");
+					"getCallback must return a Callback or a Class consistently for every Method");
+			}
+				
 			Integer index = (Integer) indexes.get(callback);
 			if (index == null) {
 				index = new Integer(callbacks.size());
@@ -79,14 +83,17 @@ abstract public class CallbackHelper implements CallbackFilter {
 		}
 	}
 
+ @Override
 	public int accept(Method method) {
 		return ((Integer) methodMap.get(method)).intValue();
 	}
 
+ @Override
 	public int hashCode() {
 		return methodMap.hashCode();
 	}
 
+ @Override
 	public boolean equals(Object o) {
 		if (o == null)
 			return false;
