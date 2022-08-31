@@ -42,7 +42,7 @@ import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
  */
 public class ServiceFactory {
 	private static Logger logger = LoggerFactory.getLogger(ServiceFactory.class);
-	private static final ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> proxyObjects = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<String, ConcurrentHashMap<Class<?>, Object>> PROXYOBJECTS = new ConcurrentHashMap<>();
 
 	public static <T> T getService(final Class<T> delegate) {
 		RemoteService remoteService = delegate.getAnnotation(RemoteService.class);
@@ -55,21 +55,25 @@ public class ServiceFactory {
 
 	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance,
 			ClassLoader classLoader) {
-		if (classLoader == null)
+		if (classLoader == null){
 			classLoader = Thread.currentThread().getContextClassLoader();
-		ConcurrentHashMap<Class<?>, Object> proxy = proxyObjects.get(groupName);
+		}
+		ConcurrentHashMap<Class<?>, Object> proxy = PROXYOBJECTS.get(groupName);
 		if (proxy == null) {
-			proxy = new ConcurrentHashMap<>();
-			ConcurrentHashMap<Class<?>, Object> preProxy = proxyObjects.putIfAbsent(groupName, proxy);
-			if (preProxy != null)
+			proxy = new ConcurrentHashMap<>(32);
+			ConcurrentHashMap<Class<?>, Object> preProxy = PROXYOBJECTS.putIfAbsent(groupName, proxy);
+			if (preProxy != null){
 				proxy = preProxy;
+			}
 		}
 		Object obj = proxy.get(delegate);
 		if (obj == null) {
 			obj = createCglibDynamicProxy(delegate, groupName, loadBalance, classLoader);
 			Object preObj = proxy.putIfAbsent(delegate, obj);
-			if (preObj != null)
+			if (preObj != null){
 				obj = preObj;
+			}
+				
 		}
 		return (T) obj;
 	}
@@ -92,8 +96,9 @@ public class ServiceFactory {
 	}
 
 	public static void injectRemoteService(Class<?> clazz, Object target, ClassLoader classLoader) {
-		if (classLoader == null)
+		if (classLoader == null){
 			classLoader = clazz.getClassLoader();
+		}
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			Service service = field.getAnnotation(Service.class);

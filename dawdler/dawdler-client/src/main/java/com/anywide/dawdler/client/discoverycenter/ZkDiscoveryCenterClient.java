@@ -72,13 +72,14 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 					gid = gidAndProvider[2];
 					provider = gidAndProvider[3];
 				}
-				if (gid == null)
+				if (gid == null){
 					return;
-
+				}
 				logger.info(gid + " " + action + " " + provider);
 				ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-				if (cp != null)
+				if (cp != null){
 					cp.doChange(gid, action, provider);
+				}
 			}
 		});
 		curatorCache.start();
