@@ -16,15 +16,15 @@
  */
 package com.anywide.dawdler.clientplug.web.bind.resolver.impl;
 
+import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
+import com.anywide.dawdler.clientplug.web.handler.ViewForward;
+import com.anywide.dawdler.util.ClassUtil;
+import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.Map;
 
-import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
-import com.anywide.dawdler.clientplug.web.handler.ViewForward;
-import com.anywide.dawdler.util.ClassUtil;
-import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 
 /**
  * @author jackson.song
@@ -40,9 +40,9 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	public boolean isSupport(RequestParamFieldData requestParamFieldData) {
 		Class<?> type = requestParamFieldData.getType();
 		if (ClassUtil.isSimpleValueType(type) || String.class == type || String[].class == type
-				|| Map.class.isAssignableFrom(type) || matchType(type))
-			return true;
-
+				|| Map.class.isAssignableFrom(type) || matchType(type)) {
+					return true;
+				 }
 		return false;
 
 	}

@@ -40,19 +40,25 @@ public class TextareaControl extends Control {
 		String validateRule = tag.getValidateRule();
 		String value = tag.getValue();
 		String additional = tag.getAdditional();
-		StringBuffer sb = new StringBuffer(128);
+		StringBuilder sb = new StringBuilder(128);
 		sb.append(ControlContent.TEXTAREASTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
 				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
-		if (css != null && !css.trim().equals(""))
+		if (css != null && !css.trim().equals("")){
 			sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
-		if (validateRule != null && !validateRule.trim().equals(""))
+		}
+			
+		if (validateRule != null && !validateRule.trim().equals("")){
 			sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
-		if (additional != null)
+		}
+			
+		if (additional != null){
 			sb.append(" " + additional);
+		}
 		sb.append(">");
-		if (value != null && !value.trim().equals(""))
+		if (value != null && !value.trim().equals("")){
 			sb.append(value);
+		}
 		sb.append(ControlContent.TEXTAREAOVER);
 		return sb.toString();
 	}

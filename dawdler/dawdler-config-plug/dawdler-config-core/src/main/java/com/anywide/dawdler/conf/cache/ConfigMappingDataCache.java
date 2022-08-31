@@ -16,14 +16,14 @@
  */
 package com.anywide.dawdler.conf.cache;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.anywide.dawdler.conf.cache.ConfigDataCache.ConfigData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 
 /**
  * @author jackson.song
@@ -47,10 +47,12 @@ public class ConfigMappingDataCache {
 			return loadAndParse(path, mappingClass);
 		} else {
 			Object obj = realObjMap.get(mappingClass);
-			if (obj == null)
+			if (obj == null) {
 				return loadAndParse(path, mappingClass);
-			else
+			}
+			else {
 				return (T) obj;
+			}
 		}
 	}
 	
@@ -66,14 +68,16 @@ public class ConfigMappingDataCache {
 			return null;
 		}
 		String content = configData.getContent();
-		if (content == null)
+		if (content == null) {
 			return null;
+		}
 		Map<Class<?>, Object> realObjMap = cache.get(path);
 		if (realObjMap == null) {
 			realObjMap = new ConcurrentHashMap<>();
 			Map<Class<?>, Object> pre = cache.putIfAbsent(path, realObjMap);
-			if (pre != null)
+			if (pre != null) {
 				realObjMap = pre;
+			}
 		}
 		YAMLMapper yamlMapper = YAMLMapper.builder().build();
 		Object obj = yamlMapper.readValue(content, mappingClass);
