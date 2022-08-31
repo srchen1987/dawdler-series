@@ -16,15 +16,15 @@
  */
 package com.anywide.dawdler.core.component.resource;
 
+import com.anywide.dawdler.core.annotation.Order;
+import com.anywide.dawdler.core.order.OrderComparator;
+import com.anywide.dawdler.core.order.OrderData;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.core.order.OrderComparator;
-import com.anywide.dawdler.core.order.OrderData;
 
 /**
  * @author jackson.song
@@ -40,8 +40,9 @@ public class ComponentLifeCycleProvider {
 
 	public static ComponentLifeCycleProvider getInstance(String serviceName) {
 		ComponentLifeCycleProvider componentLifeCycleProvider = instances.get(serviceName);
-		if (componentLifeCycleProvider != null)
+		if (componentLifeCycleProvider != null) {
 			return componentLifeCycleProvider;
+		}
 		synchronized (instances) {
 			componentLifeCycleProvider = instances.get(serviceName);
 			if (componentLifeCycleProvider == null) {

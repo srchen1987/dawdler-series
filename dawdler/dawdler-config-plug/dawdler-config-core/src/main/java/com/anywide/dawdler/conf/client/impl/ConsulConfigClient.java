@@ -40,6 +40,8 @@ import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Self.Config;
 import com.ecwid.consul.v1.kv.model.GetValue;
 
+
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -157,8 +159,9 @@ public class ConsulConfigClient implements ConfigClient {
 	public long flushCache(String watchKey) {
 		Response<List<GetValue>> responseValues = client.getKVValues(watchKey);
 		List<GetValue> getValues = responseValues.getValue();
-		if (getValues == null)
+		if (getValues == null) {
 			return -1;
+		}
 		for (GetValue getValue : getValues) {
 			String key = getValue.getKey();
 			String value = getValue.getDecodedValue();
