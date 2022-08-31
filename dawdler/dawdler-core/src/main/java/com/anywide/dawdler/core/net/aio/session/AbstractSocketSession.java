@@ -16,6 +16,16 @@
  */
 package com.anywide.dawdler.core.net.aio.session;
 
+import com.anywide.dawdler.core.handler.IoHandler;
+import com.anywide.dawdler.core.handler.IoHandlerFactory;
+import com.anywide.dawdler.core.net.buffer.BufferFactory;
+import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
+import com.anywide.dawdler.core.serializer.Serializer;
+import com.anywide.dawdler.core.thread.InvokeFuture;
+import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
+import com.anywide.dawdler.util.JVMTimeProvider;
+import com.anywide.dawdler.util.Timeout;
+import com.anywide.dawdler.util.TimerTask;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -31,16 +41,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.core.handler.IoHandler;
-import com.anywide.dawdler.core.handler.IoHandlerFactory;
-import com.anywide.dawdler.core.net.buffer.BufferFactory;
-import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
-import com.anywide.dawdler.core.serializer.Serializer;
-import com.anywide.dawdler.core.thread.InvokeFuture;
-import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
-import com.anywide.dawdler.util.JVMTimeProvider;
-import com.anywide.dawdler.util.Timeout;
-import com.anywide.dawdler.util.TimerTask;
+
 
 /**
  * @author jackson.song
@@ -342,14 +343,16 @@ public abstract class AbstractSocketSession {
 	private final class WriterIdleTimeoutTask implements TimerTask {
 		@Override
 		public void run(Timeout timeout) throws Exception {
-			if (timeout.isCancelled() || isClose())
+			if (timeout.isCancelled() || isClose()) {
 				return;
+			}
 			long currentTime = JVMTimeProvider.currentTimeMillis();
 			long lastWriteTime = AbstractSocketSession.this.lastWriteTime;
 			long nextDelay = writerIdleTimeMillis - (currentTime - lastWriteTime);
 			if (nextDelay <= 0) {
-				if (ioHandler != null)
+				if (ioHandler != null) {
 					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.WRITE);
+				}
 				AbstractSocketSession.this.writerIdleTimeout = timeout.timer().newTimeout(this, writerIdleTimeMillis,
 						TimeUnit.MILLISECONDS);
 				AbstractSocketSession.this.sentHeartbeat();
@@ -363,8 +366,9 @@ public abstract class AbstractSocketSession {
 	private final class ReaderIdleTimeoutTask implements TimerTask {
 		@Override
 		public void run(Timeout timeout) throws Exception {
-			if (timeout.isCancelled() || isClose())
+			if (timeout.isCancelled() || isClose()) {
 				return;
+			}
 			long currentTime = JVMTimeProvider.currentTimeMillis();
 			long lastReadTime = AbstractSocketSession.this.lastReadTime;
 			long nextDelay = readerIdleTimeMillis - (currentTime - lastReadTime);

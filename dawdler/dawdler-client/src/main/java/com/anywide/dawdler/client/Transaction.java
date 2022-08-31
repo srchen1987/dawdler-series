@@ -16,12 +16,6 @@
  */
 package com.anywide.dawdler.client;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import com.anywide.dawdler.client.cluster.LoadBalanceFactory;
 import com.anywide.dawdler.client.filter.FilterProvider;
 import com.anywide.dawdler.client.filter.RequestWrapper;
@@ -29,6 +23,12 @@ import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.annotation.CircuitBreaker;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.thread.InvokeFuture;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
 
 /**
  * @author jackson.song
@@ -166,8 +166,9 @@ public class Transaction {
 	}
 
 	public boolean execute() throws Exception {
-		if (innerExecute(false) instanceof Boolean obj) {
-			return obj;
+		Object obj = innerExecute(false);
+		if (obj instanceof Boolean){
+			return (Boolean) obj;
 		}
 		return true;
 	}
@@ -192,7 +193,7 @@ public class Transaction {
 
 	public void checkIfNullCreateAttachment() {
 		if (attachments == null) {
-			attachments = new HashMap<String, Object>();
+			attachments = new HashMap<String, Object>(8);
 		}
 	}
 
@@ -240,7 +241,9 @@ public class Transaction {
 	}
 
 	private void validate() {
-		if (serviceName == null || method == null)
+		if (serviceName == null || method == null){
 			throw new IllegalArgumentException("serviceName,method can't be null!");
+		}
+			
 	}
 }

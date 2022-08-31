@@ -45,8 +45,8 @@ import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
  */
 public class ConnectionPool {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
-	private static final ConcurrentHashMap<String, ConnectionPool> groups = new ConcurrentHashMap<>();
-	private static final Map<String, ServerChannelGroup> serverChannelGroup = new HashMap<>();
+	private static final ConcurrentHashMap<String, ConnectionPool> GROUPS = new ConcurrentHashMap<>();
+	private static final Map<String, ServerChannelGroup> SERVER_CHANNEL_GROUPS = new HashMap<>();
 	private static DiscoveryCenter discoveryCenter = null;
 	private volatile List<DawdlerConnection> connections = new CopyOnWriteArrayList<>();
 	private Semaphore semaphore = new Semaphore(0);
@@ -58,7 +58,7 @@ public class ConnectionPool {
 			List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
 			for (ServerChannelGroup sg : sgs) {
 				String gid = sg.getGroupId();
-				serverChannelGroup.put(gid, sg);
+				SERVER_CHANNEL_GROUPS.put(gid, sg);
 				ConnectionPool cp = getConnectionPool(gid);
 				if (cp == null) {
 					cp = new ConnectionPool();
@@ -82,19 +82,22 @@ public class ConnectionPool {
 	private ConnectionPool() {
 	}
 	public static void initConnection(String gid) {
-		ServerChannelGroup sg = serverChannelGroup.get(gid);
-		if (sg == null)
+		ServerChannelGroup sg = SERVER_CHANNEL_GROUPS.get(gid);
+		if (sg == null){
 			throw new NullPointerException("not configure " + gid + "!");
+		}
 		ConnectionPool cp = getConnectionPool(gid);
 		String user = sg.getUser();
 		String password = sg.getPassword();
 		int connectionNum = sg.getConnectionNum();
 		int serializer = sg.getSerializer();
 		int sessionNum = sg.getSessionNum();
-		if (connectionNum <= 0)
+		if (connectionNum <= 0){
 			connectionNum = 1;
-		if (sessionNum <= 0)
+		}
+		if (sessionNum <= 0){
 			sessionNum = 1;
+		}
 		for (int j = 0; j < connectionNum; j++) {
 			DawdlerConnection dc;
 			try {
@@ -107,23 +110,25 @@ public class ConnectionPool {
 	}
 
 	public static ConnectionPool getConnectionPool(String groupName) {
-		return groups.get(groupName);
+		return GROUPS.get(groupName);
 	}
 
 	public static ConnectionPool addGroup(String groupName, ConnectionPool cp) {
-		return groups.putIfAbsent(groupName, cp);
+		return GROUPS.putIfAbsent(groupName, cp);
 	}
 
-	// provider for web container call
+	/**
+	 *  provider for web container call
+	**/
 	public static void shutdown() throws Exception {
-		for (ConnectionPool c : groups.values()) {
+		for (ConnectionPool c : GROUPS.values()) {
 			c.close();
 		}
 		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
 		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
 		}
-		groups.clear();
+		GROUPS.clear();
 
 	}
 
@@ -138,8 +143,10 @@ public class ConnectionPool {
 	public List<DawdlerConnection> getConnections() {
 		if (connections.isEmpty()) {
 			try {
-				if (semaphore.tryAcquire(6000, TimeUnit.MILLISECONDS))
+				if (semaphore.tryAcquire(6000, TimeUnit.MILLISECONDS)){
 					return connections;
+				}
+					
 			} catch (InterruptedException e) {
 			}
 			throw new IllegalArgumentException("not find " + groupName + " provider!");
