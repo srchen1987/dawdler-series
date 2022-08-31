@@ -33,6 +33,8 @@ import org.apache.velocity.runtime.parser.node.Node;
 
 import com.anywide.dawdler.util.ToolEL;
 
+
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -84,25 +86,26 @@ public class TreeDirect extends Directive {
 			if (vs.length != 2)
 				throw new ParseErrorException(
 						"must like explain for example var=tempdata,parentname=id,childname=parendid,parentvalue=0,remark=- ");
-			if (vs[0].trim().equals("parentname")) {
+			String v = vs[0].trim();
+			if (v.equals("parentname")) {
 				parentname = vs[1];
 			}
-			if (vs[0].trim().equals("childname")) {
+			if (v.equals("childname")) {
 				childname = vs[1];
 			}
-			if (vs[0].trim().equals("parentvalue")) {
+			if (v.equals("parentvalue")) {
 				parentvalue = vs[1];
 			}
-			if (vs[0].trim().equals("remark")) {
+			if (v.equals("remark")) {
 				remark = vs[1];
 			}
-			if (vs[0].trim().equals("var")) {
+			if (v.equals("var")) {
 				var = vs[1];
 			}
-			if (vs[0].trim().equals("lastnode")) {
+			if (v.equals("lastnode")) {
 				lastnode = vs[1];
 			}
-			if (vs[0].trim().equals("index")) {
+			if (v.equals("index")) {
 				index = vs[1];
 			}
 		}
@@ -112,16 +115,16 @@ public class TreeDirect extends Directive {
 		if (childname == null) {
 			throw new ParseErrorException("childname can't null!");
 		}
-		if (childname == null) {
+		if (var == null) {
 			throw new ParseErrorException("var can't null!");
 		}
 		Map<String, List<Object>> map = new HashMap<>();
-		int currentnumber = 0;
 		for (Iterator it = item.iterator(); it.hasNext();) {
 			Object o = it.next();
 			Object ko = ToolEL.getBeanValue(o, childname);
-			if (ko == null)
+			if (ko == null){
 				throw new ParseErrorException("no find " + childname + " propertie in " + o.getClass().getName());
+			}
 			String key = ko.toString();
 			List value = map.get(key);
 			if (value == null) {
@@ -155,14 +158,16 @@ public class TreeDirect extends Directive {
 	private void createTree(Map<String, List<Object>> data, List targetdata, String parentname, String parentvalue,
 			String appendremark, String remark) {
 		List list = data.get(parentvalue);
-		if (list == null)
+		if (list == null){
 			return;
+		}
 		appendremark += remark;
 		for (Object o : list) {
 			Object key = ToolEL.getBeanValue(o, parentname);
 			boolean temp = false;
-			if (data.get(key) == null)
+			if (data.get(key) == null){
 				temp = true;
+			}
 			targetdata.add(new Object[] { appendremark, o, temp });
 			createTree(data, targetdata, parentname, key.toString(), appendremark, remark);
 		}

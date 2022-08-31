@@ -31,6 +31,7 @@ public class SelectControl extends Control {
 		super(tag);
 	}
 
+ @Override
 	protected String replaceContent() {
 		String controlName = tag.getControlName();
 		String controlType = tag.getControlType();
@@ -47,12 +48,15 @@ public class SelectControl extends Control {
 		sbt.append(ControlContent.SELECTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
 				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
-		if (css != null && !css.trim().equals(""))
+		if (css != null && !css.trim().equals("")) {
 			sbt.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
-		if (validateRule != null && !validateRule.trim().equals(""))
+		}
+		if (validateRule != null && !validateRule.trim().equals("")) {
 			sbt.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
-		if (additional != null)
+		}
+		if (additional != null) {
 			sbt.append(" " + additional);
+		}
 		sbt.append(">");
 		String[] showitem = showItems.split(",");
 		StringBuffer sb = new StringBuffer(150);
@@ -63,9 +67,6 @@ public class SelectControl extends Control {
 		for (int i = 0; i < showitem.length; i++) {
 			String optionstart = ControlContent.OPTIONSTART.replace(ControlContent.VALUEREPLACE, "" + i);
 			if (value == null) {
-//				if(i==0)
-//					optionstart = optionstart.replace(ControlContent.CHECKEDREPLACE,ControlContent.SELECTED);
-//				else
 				optionstart = optionstart.replace(ControlContent.CHECKEDREPLACE, "");
 			} else {
 				String[] values = value.split(",");

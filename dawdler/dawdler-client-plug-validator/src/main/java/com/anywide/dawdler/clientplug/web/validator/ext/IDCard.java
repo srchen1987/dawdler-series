@@ -34,44 +34,48 @@ import java.util.regex.Pattern;
  * @email suxuan696@gmail.com
  */
 public class IDCard {
-	private static final Map<String, String> hashtable = new HashMap<>();
+	private static final Map<String, String> HASHTABLE = new HashMap<>();
+	
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("[0-9]*");
+
+	private static final Pattern DATE_PATTERN = Pattern.compile("^((\\d{2}(([02468][048])|([13579][26]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])))))|(\\d{2}(([02468][1235679])|([13579][01345789]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\\s(((0?[0-9])|([1-2][0-3]))\\:([0-5]?[0-9])((\\s)|(\\:([0-5]?[0-9])))))?$");
 
 	static {
-		hashtable.put("11", "北京");
-		hashtable.put("12", "天津");
-		hashtable.put("13", "河北");
-		hashtable.put("14", "山西");
-		hashtable.put("15", "内蒙古");
-		hashtable.put("21", "辽宁");
-		hashtable.put("22", "吉林");
-		hashtable.put("23", "黑龙江");
-		hashtable.put("31", "上海");
-		hashtable.put("32", "江苏");
-		hashtable.put("33", "浙江");
-		hashtable.put("34", "安徽");
-		hashtable.put("35", "福建");
-		hashtable.put("36", "江西");
-		hashtable.put("37", "山东");
-		hashtable.put("41", "河南");
-		hashtable.put("42", "湖北");
-		hashtable.put("43", "湖南");
-		hashtable.put("44", "广东");
-		hashtable.put("45", "广西");
-		hashtable.put("46", "海南");
-		hashtable.put("50", "重庆");
-		hashtable.put("51", "四川");
-		hashtable.put("52", "贵州");
-		hashtable.put("53", "云南");
-		hashtable.put("54", "西藏");
-		hashtable.put("61", "陕西");
-		hashtable.put("62", "甘肃");
-		hashtable.put("63", "青海");
-		hashtable.put("64", "宁夏");
-		hashtable.put("65", "新疆");
-		hashtable.put("71", "台湾");
-		hashtable.put("81", "香港");
-		hashtable.put("82", "澳门");
-		hashtable.put("91", "国外");
+		HASHTABLE.put("11", "北京");
+		HASHTABLE.put("12", "天津");
+		HASHTABLE.put("13", "河北");
+		HASHTABLE.put("14", "山西");
+		HASHTABLE.put("15", "内蒙古");
+		HASHTABLE.put("21", "辽宁");
+		HASHTABLE.put("22", "吉林");
+		HASHTABLE.put("23", "黑龙江");
+		HASHTABLE.put("31", "上海");
+		HASHTABLE.put("32", "江苏");
+		HASHTABLE.put("33", "浙江");
+		HASHTABLE.put("34", "安徽");
+		HASHTABLE.put("35", "福建");
+		HASHTABLE.put("36", "江西");
+		HASHTABLE.put("37", "山东");
+		HASHTABLE.put("41", "河南");
+		HASHTABLE.put("42", "湖北");
+		HASHTABLE.put("43", "湖南");
+		HASHTABLE.put("44", "广东");
+		HASHTABLE.put("45", "广西");
+		HASHTABLE.put("46", "海南");
+		HASHTABLE.put("50", "重庆");
+		HASHTABLE.put("51", "四川");
+		HASHTABLE.put("52", "贵州");
+		HASHTABLE.put("53", "云南");
+		HASHTABLE.put("54", "西藏");
+		HASHTABLE.put("61", "陕西");
+		HASHTABLE.put("62", "甘肃");
+		HASHTABLE.put("63", "青海");
+		HASHTABLE.put("64", "宁夏");
+		HASHTABLE.put("65", "新疆");
+		HASHTABLE.put("71", "台湾");
+		HASHTABLE.put("81", "香港");
+		HASHTABLE.put("82", "澳门");
+		HASHTABLE.put("91", "国外");
 	}
 
 	/**
@@ -155,7 +159,7 @@ public class IDCard {
 		// =====================(end)=====================
 
 		// ================ 地区码时候有效 ================
-		if (hashtable.get(Ai.substring(0, 2)) == null) {
+		if (HASHTABLE.get(Ai.substring(0, 2)) == null) {
 //			errorInfo = "地区编码错误。";
 			return false;
 		}
@@ -190,8 +194,7 @@ public class IDCard {
 	 * @return
 	 */
 	private static boolean isNumeric(String str) {
-		Pattern pattern = Pattern.compile("[0-9]*");
-		Matcher isNum = pattern.matcher(str);
+		Matcher isNum = NUMBER_PATTERN.matcher(str);
 		return isNum.matches();
 		/*
 		 * 判断一个字符时候为数字 if(Character.isDigit(str.charAt(0))) { return true; } else {
@@ -207,9 +210,7 @@ public class IDCard {
 	 * @return
 	 */
 	public static boolean isDate(String strDate) {
-		Pattern pattern = Pattern.compile(
-				"^((\\d{2}(([02468][048])|([13579][26]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])))))|(\\d{2}(([02468][1235679])|([13579][01345789]))[\\-\\/\\s]?((((0?[13578])|(1[02]))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(3[01])))|(((0?[469])|(11))[\\-\\/\\s]?((0?[1-9])|([1-2][0-9])|(30)))|(0?2[\\-\\/\\s]?((0?[1-9])|(1[0-9])|(2[0-8]))))))(\\s(((0?[0-9])|([1-2][0-3]))\\:([0-5]?[0-9])((\\s)|(\\:([0-5]?[0-9])))))?$");
-		Matcher m = pattern.matcher(strDate);
+		Matcher m = DATE_PATTERN.matcher(strDate);
 		return m.matches();
 	}
 

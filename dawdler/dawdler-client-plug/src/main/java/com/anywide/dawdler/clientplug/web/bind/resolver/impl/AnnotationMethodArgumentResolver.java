@@ -16,14 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.bind.resolver.impl;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.List;
-
 import com.anywide.dawdler.clientplug.annotation.CookieValue;
 import com.anywide.dawdler.clientplug.annotation.PathVariable;
 import com.anywide.dawdler.clientplug.annotation.RequestAttribute;
@@ -41,8 +33,20 @@ import com.anywide.dawdler.clientplug.web.validator.exception.ValidationExceptio
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
-
 import jakarta.servlet.http.HttpServletRequest;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.List;
+
+
+
+
+
+
 
 /**
  * @author jackson.song
@@ -178,8 +182,9 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 		ControlField controlField = controlValidator.getControlFields().get(field.getName());
 		if (controlField != null) {
 			String error = ValidateParser.validate(controlField.getFieldExplain(), value, controlField.getRules());
-			if (error != null)
+			if (error != null) {
 				throw new ValidationException(field.getName(), error);
+			}
 		}
 
 	}

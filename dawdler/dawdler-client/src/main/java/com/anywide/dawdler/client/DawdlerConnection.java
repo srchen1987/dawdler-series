@@ -67,7 +67,7 @@ import com.anywide.dawdler.core.serializer.Serializer;
  * @email suxuan696@gmail.com
  */
 public class DawdlerConnection {
-	private static final ConnectorHandler connectorHandler = new ConnectorHandler();
+	private static final ConnectorHandler CONNECTOR_HANDLER = new ConnectorHandler();
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerConnection.class);
 	private final AtomicInteger TNUMBER = new AtomicInteger(0);
 	private final int sessionNum;
@@ -142,8 +142,9 @@ public class DawdlerConnection {
 	public void startReconnect() {
 		reconnectScheduled.scheduleWithFixedDelay(() -> {
 			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
-			if (disconnAddressList.isEmpty())
+			if (disconnAddressList.isEmpty()){
 				return;
+			}
 			try {
 				boolean activate = false;
 				for (final SocketAddress socketAddress : disconnAddressList) {
@@ -155,8 +156,10 @@ public class DawdlerConnection {
 					DawdlerConnection.this.connect(socketAddress, num);
 					activate = true;
 				}
-				if (activate)
+				if (activate){
 					DawdlerConnection.this.rebuildSessionGroup();
+				}
+					
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -183,11 +186,13 @@ public class DawdlerConnection {
 				socketSession.setPath(gid);
 			} catch (Exception e) {
 				logger.error("", e);
-				if (socketSession != null)
+				if (socketSession != null){
 					socketSession.close(false);
+				}
+					
 			}
 			if (client != null && socketSession != null) {
-				client.connect(address, socketSession, connectorHandler);
+				client.connect(address, socketSession, CONNECTOR_HANDLER);
 				try {
 					socketSession.getInitLatch().await(5, TimeUnit.SECONDS);
 				} catch (InterruptedException e) {
@@ -350,8 +355,9 @@ public class DawdlerConnection {
 	}
 
 	public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
-		if (ioHandler != null)
+		if (ioHandler != null){
 			ioHandler.messageSent(socketSession, obj);
+		}
 		socketSession.setClassLoader(Thread.currentThread().getContextClassLoader());
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] data = serializer.serialize(obj);
@@ -389,15 +395,19 @@ public class DawdlerConnection {
 				socketSession.write(byteBuffer);
 			} finally {
 				byteBuffer.clear();
-				if (poolBuffer != null)
+				if (poolBuffer != null){
 					poolBuffer.release(dawdlerByteBuffer);
+				}
+					
 			}
 		}
 	}
 
 	public void write(Object obj, SocketSession socketSession) throws Exception {
-		if (ioHandler != null)
+		if (ioHandler != null){
 			ioHandler.messageSent(socketSession, obj);
+		}
+			
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] data = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
@@ -430,8 +440,10 @@ public class DawdlerConnection {
 				socketSession.write(byteBuffer);
 			} finally {
 				byteBuffer.clear();
-				if (poolBuffer != null)
+				if (poolBuffer != null){
 					poolBuffer.release(dawdlerByteBuffer);
+				}
+					
 			}
 		}
 	}

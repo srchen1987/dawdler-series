@@ -16,14 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
@@ -32,9 +24,17 @@ import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHandler
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 import com.anywide.dawdler.clientplug.web.validator.exception.ValidationException;
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+
 
 /**
  * @author jackson.song
@@ -69,6 +69,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		}
 	}
 
+ @Override
 	public boolean handleUrl(String uriShort, String httpMethod, HttpServletRequest request,
 			HttpServletResponse response) {
 		RequestUrlData requestUrlData = urlRules.get(uriShort);
@@ -143,8 +144,9 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 				exceptionHandler = viewType.toString();
 			}
 			HttpExceptionHandler httpExceptionHandler = HttpExceptionHolder.getHttpExceptionHandler(exceptionHandler);
-			if (httpExceptionHandler == null)
+			if (httpExceptionHandler == null) {
 				httpExceptionHandler = HttpExceptionHolder.getJsonHttpExceptionHandler();
+			}
 			httpExceptionHandler.handle(request, response, viewForward, e);
 			return true;
 		} finally {
