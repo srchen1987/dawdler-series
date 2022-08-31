@@ -16,14 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
-import java.io.PrintWriter;
-import java.lang.reflect.Method;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.bind.RequestMethodProcessor;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
@@ -33,6 +25,14 @@ import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.List;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+
 
 /**
  * @author jackson.song
@@ -78,8 +78,9 @@ public abstract class AbstractUrlHandler {
 	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,
 			boolean responseBody) throws Throwable {
 		try {
-			if (!preHandle(target, viewForward, requestMapping))
+			if (!preHandle(target, viewForward, requestMapping)) {
 				return true;
+			}
 			Object[] args = RequestMethodProcessor.process(target, viewForward, method);
 			Object result = method.invoke(target, args);
 			if (responseBody && result != null) {

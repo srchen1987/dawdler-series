@@ -30,7 +30,6 @@ public class OpenApiConfig {
 	private String version;
 	private String title;
 	private String description;
-//	private String[] contact;
 	private ContactData contact;
 	private String swagger;
 	private String host;
