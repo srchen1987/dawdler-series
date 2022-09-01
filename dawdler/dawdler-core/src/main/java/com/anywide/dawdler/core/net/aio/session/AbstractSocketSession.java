@@ -16,16 +16,6 @@
  */
 package com.anywide.dawdler.core.net.aio.session;
 
-import com.anywide.dawdler.core.handler.IoHandler;
-import com.anywide.dawdler.core.handler.IoHandlerFactory;
-import com.anywide.dawdler.core.net.buffer.BufferFactory;
-import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
-import com.anywide.dawdler.core.serializer.Serializer;
-import com.anywide.dawdler.core.thread.InvokeFuture;
-import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
-import com.anywide.dawdler.util.JVMTimeProvider;
-import com.anywide.dawdler.util.Timeout;
-import com.anywide.dawdler.util.TimerTask;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
@@ -41,7 +31,16 @@ import java.util.concurrent.atomic.AtomicLong;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
+import com.anywide.dawdler.core.handler.IoHandler;
+import com.anywide.dawdler.core.handler.IoHandlerFactory;
+import com.anywide.dawdler.core.net.buffer.BufferFactory;
+import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
+import com.anywide.dawdler.core.serializer.Serializer;
+import com.anywide.dawdler.core.thread.InvokeFuture;
+import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
+import com.anywide.dawdler.util.JVMTimeProvider;
+import com.anywide.dawdler.util.Timeout;
+import com.anywide.dawdler.util.TimerTask;
 
 /**
  * @author jackson.song
@@ -54,8 +53,8 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractSocketSession {
 	public final static int CAPACITY = 1024 * 64;
 	private static final Logger logger = LoggerFactory.getLogger(AbstractSocketSession.class);
-	private static final long writerIdleTimeMillis = 8000;
-	private static final long readerIdleTimeMillis = writerIdleTimeMillis * 15;
+	private static final long WRITER_IDLE_TIMEMILLIS = 8000;
+	private static final long READER_IDLE_TIMEMILLIS = WRITER_IDLE_TIMEMILLIS * 15;
 	protected final AsynchronousSocketChannel channel;
 	private final Object writeLock = new Object();
 	private final CountDownLatch sessionInitLatch = new CountDownLatch(1);
@@ -143,9 +142,9 @@ public abstract class AbstractSocketSession {
 		readBuffer = BufferFactory.createDirectBuffer(CAPACITY);
 		writeBuffer = BufferFactory.createDirectBuffer(CAPACITY);
 		writerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new WriterIdleTimeoutTask(),
-				writerIdleTimeMillis, TimeUnit.MILLISECONDS);
+				WRITER_IDLE_TIMEMILLIS, TimeUnit.MILLISECONDS);
 		readerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new ReaderIdleTimeoutTask(),
-				readerIdleTimeMillis, TimeUnit.MILLISECONDS);
+				READER_IDLE_TIMEMILLIS, TimeUnit.MILLISECONDS);
 	}
 
 	public SocketAddress getLocalAddress() {
@@ -348,12 +347,12 @@ public abstract class AbstractSocketSession {
 			}
 			long currentTime = JVMTimeProvider.currentTimeMillis();
 			long lastWriteTime = AbstractSocketSession.this.lastWriteTime;
-			long nextDelay = writerIdleTimeMillis - (currentTime - lastWriteTime);
+			long nextDelay = WRITER_IDLE_TIMEMILLIS - (currentTime - lastWriteTime);
 			if (nextDelay <= 0) {
 				if (ioHandler != null) {
 					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.WRITE);
 				}
-				AbstractSocketSession.this.writerIdleTimeout = timeout.timer().newTimeout(this, writerIdleTimeMillis,
+				AbstractSocketSession.this.writerIdleTimeout = timeout.timer().newTimeout(this, WRITER_IDLE_TIMEMILLIS,
 						TimeUnit.MILLISECONDS);
 				AbstractSocketSession.this.sentHeartbeat();
 			} else {
@@ -371,12 +370,12 @@ public abstract class AbstractSocketSession {
 			}
 			long currentTime = JVMTimeProvider.currentTimeMillis();
 			long lastReadTime = AbstractSocketSession.this.lastReadTime;
-			long nextDelay = readerIdleTimeMillis - (currentTime - lastReadTime);
+			long nextDelay = READER_IDLE_TIMEMILLIS - (currentTime - lastReadTime);
 			if (nextDelay <= 0) {
 				if (ioHandler != null) {
 					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.READ);
 				}
-				AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, readerIdleTimeMillis,
+				AbstractSocketSession.this.readerIdleTimeout = timeout.timer().newTimeout(this, READER_IDLE_TIMEMILLIS,
 						TimeUnit.MILLISECONDS);
 				AbstractSocketSession.this.close();
 			} else {

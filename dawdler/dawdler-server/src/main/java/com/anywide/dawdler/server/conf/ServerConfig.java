@@ -100,8 +100,9 @@ public class ServerConfig {
 			if (moduleAuths != null) {
 				success = validate(moduleAuths, user, password);
 			}
-			if (!success)
+			if (!success) {
 				success = validate(globalAuth, user, password);
+			}
 		}
 		return success;
 	}
@@ -160,9 +161,10 @@ public class ServerConfig {
 		private String password;
 
 		public String getKeyStorePath() {
-			if (keyStorePath != null)
+			if (keyStorePath != null) {
 				keyStorePath = keyStorePath.replace("${" + ServiceRoot.DAWDLER_BASE_PATH + "}",
-						DawdlerTool.getProperty(ServiceRoot.DAWDLER_BASE_PATH) + File.separator);
+				DawdlerTool.getProperty(ServiceRoot.DAWDLER_BASE_PATH) + File.separator);
+			}
 			return keyStorePath;
 		}
 

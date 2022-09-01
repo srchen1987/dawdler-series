@@ -25,7 +25,8 @@ import com.anywide.dawdler.rabbitmq.provider.RabbitProviderFactory;
  * @author jackson.song
  * @version V1.0
  * @Title RabbitClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入RabbitProvider与RabbitListener标注的方法
+ * @Description 客户端加载类通知类，初始化各种监听器 拦截器
+ *              controller,注入RabbitProvider与RabbitListener标注的方法
  * @date 2022年4月15日
  * @email suxuan696@gmail.com
  */

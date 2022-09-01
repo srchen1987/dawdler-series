@@ -51,7 +51,7 @@ public class JedisOperatorFactory {
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 			Jedis jedis = pool.getResource();
 			String name = method.getName();
-			if(name.equals("getJedis")) {
+			if (name.equals("getJedis")) {
 				return jedis;
 			}
 			try {

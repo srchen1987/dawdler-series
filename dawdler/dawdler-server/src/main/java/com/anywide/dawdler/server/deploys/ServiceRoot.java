@@ -132,7 +132,7 @@ public class ServiceRoot {
 		Server server = serverConfig.getServer();
 		boolean healthCheck = serverConfig.getHealthCheck().isCheck();
 		if (healthCheck) {
-			servicesHealth = new ConcurrentHashMap<>();
+			servicesHealth = new ConcurrentHashMap<>(16);
 		}
 		initWorkPool(server.getMaxThreads(), server.getQueueCapacity(), server.getKeepAliveMilliseconds());
 		File deployFileRoot = getDeploys();

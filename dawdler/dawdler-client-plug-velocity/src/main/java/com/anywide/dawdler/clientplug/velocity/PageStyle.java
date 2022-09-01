@@ -35,18 +35,18 @@ public class PageStyle {
 	public static final String PAGECOUNTMARK = "(pageCount)";
 	public static final String CONTENTMARK = "~content_mark";
 
-	private static final Map<String, PageStyleContent> stylecontents = new HashMap<>();
-	private static final PageStyle pageStyle = new PageStyle();
+	private static final Map<String, PageStyleContent> STYLE_CONTENTS = new HashMap<>();
+	private static final PageStyle PAGE_STYLE = new PageStyle();
 
 	static {
-		PageStyleContent pcont = pageStyle.new PageStyleContent();
+		PageStyleContent pcont = PAGE_STYLE.new PageStyleContent();
 		pcont.setFirstpage("<a href=\"" + CONTENTMARK + "\">首页</a> ");
 		pcont.setUppage("<a href=\"" + CONTENTMARK + "\">上一页</a> ");
 		pcont.setPages("<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a> ");
 		pcont.setPageOn(PMARK + " ");
 		pcont.setLastpage("<a href=\"" + CONTENTMARK + "\">下一页</a> ");
 		pcont.setEndpage("<a href=\"" + CONTENTMARK + "\">尾页</a>");
-		stylecontents.put("default", pcont);
+		STYLE_CONTENTS.put("default", pcont);
 		export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
 				"<a class=\"prev\" href=\"" + CONTENTMARK + "\"></a>",
 				"<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a>",
@@ -67,7 +67,7 @@ public class PageStyle {
 	}
 
 	public static PageStyle getPageStyle() {
-		return pageStyle;
+		return PAGE_STYLE;
 	}
 
 	public static void printPage(int pageOn, int pageCount, int pagenumber, String linkcontent, String stylename,
@@ -88,7 +88,7 @@ public class PageStyle {
 		boolean sig = pagenumber % 2 == 0;// 取余是否为整数
 		if (pageOn > pagenumber2) {// 如果当前页大于了 pagenumber的一半
 			start = pageOn - pagenumber2;// 起始值 从 pageOn减去pagenumber2的数开始
-			if (sig){
+			if (sig) {
 				start += 1;// 如果没有余数 起始值加一
 			}
 		}
@@ -110,8 +110,9 @@ public class PageStyle {
 				end -= 1;
 			}
 
-			if (end > pageCount)
+			if (end > pageCount) {
 				end = pageCount;
+			}
 		}
 		if (pageOn > 1) {
 			out.write(pc.getFirstpage(linkcontent, 1));
@@ -121,8 +122,7 @@ public class PageStyle {
 			for (; start <= end; start++) {
 				if (start == pageOn) {
 					out.write(pc.getPageOn(pageOn));
-				}
-				else {
+				} else {
 					out.write(pc.getPages(linkcontent, start));
 				}
 			}
@@ -139,7 +139,7 @@ public class PageStyle {
 
 	public static void export(String prefix, String first, String up, String pages, String pageOn, String last,
 			String end, String stepPage) {
-		PageStyleContent pcont = pageStyle.new PageStyleContent();
+		PageStyleContent pcont = PAGE_STYLE.new PageStyleContent();
 		pcont.setFirstpage(first);
 		pcont.setUppage(up);
 		pcont.setPages(pages);
@@ -147,23 +147,23 @@ public class PageStyle {
 		pcont.setLastpage(last);
 		pcont.setEndpage(end);
 		pcont.setSteppage(stepPage);
-		stylecontents.put(prefix, pcont);
+		STYLE_CONTENTS.put(prefix, pcont);
 
 	}
 
 	public PageStyleContent getPageStyleContentDefault() {
-		return stylecontents.get("default");
+		return STYLE_CONTENTS.get("default");
 	}
 
 	public PageStyleContent getPageStyleContent(String stylename) {
 		if (stylename == null) {
 			return getPageStyleContentDefault();
 		}
-		PageStyleContent pc = stylecontents.get(stylename);
-		if (pc == null){
+		PageStyleContent pc = STYLE_CONTENTS.get(stylename);
+		if (pc == null) {
 			return getPageStyleContentDefault();
 		}
-			
+
 		return pc;
 	}
 

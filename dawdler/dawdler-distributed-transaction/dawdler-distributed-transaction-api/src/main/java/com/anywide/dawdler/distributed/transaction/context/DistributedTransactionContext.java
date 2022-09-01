@@ -34,11 +34,26 @@ public class DistributedTransactionContext implements Serializable, Cloneable {
 	private static final long serialVersionUID = 3067909020545794630L;
 	private String globalTxId;
 	private String branchTxId;
-	private boolean cancel = false;// 整个事务取消
-	private String status;// 状态 trying cancel confirm
-	private int addtime;// 添加时间
-	private String action;// 模块功能的简称
-	private int retryTime = 0;// 重试次数
+	/**
+	 * 整个事务取消
+	 */
+	private boolean cancel = false;
+	/**
+	 * 状态 trying cancel confirm
+	 */
+	private String status;
+	/**
+	 * 添加时间
+	 */
+	private int addtime;
+	/**
+	 * 模块功能的简称
+	 */
+	private String action;
+	/**
+	 * 重试次数
+	 */
+	private int retryTime = 0;
 	private Map<String, Object> data;
 	private final transient static ThreadLocal<DistributedTransactionContext> THREAD_LOCAL = new ThreadLocal<>();
 

@@ -19,8 +19,6 @@ package com.anywide.dawdler.serverplug.db.mybatis.listener;
 import java.lang.reflect.Field;
 
 import org.apache.ibatis.session.SqlSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
@@ -39,11 +37,13 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 	private SqlSession sqlSession = SingleSqlSessionFactory.getInstance().getSqlSession();
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
+	public void create(Object service, boolean single, DawdlerContext dawdlerContext)
+			throws IllegalArgumentException, IllegalAccessException {
 		inject(service, dawdlerContext);
 	}
 
-	private void inject(Object service, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
+	private void inject(Object service, DawdlerContext dawdlerContext)
+			throws IllegalArgumentException, IllegalAccessException {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Repository resource = field.getAnnotation(Repository.class);

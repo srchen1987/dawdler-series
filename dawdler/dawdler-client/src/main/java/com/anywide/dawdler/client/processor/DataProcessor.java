@@ -51,10 +51,11 @@ public class DataProcessor {
 	}
 
 	public void process() throws Exception {
-		if (compress)
+		if (compress) {
 			data = ThresholdCompressionStrategy.staticSingle().decompress(data);
+		}
 		Object obj = serializer.deserialize(data);
-		if (ioHandler != null)
+		if (ioHandler != null) {
 			ioHandler.messageReceived(socketSession, obj);
 		if (obj instanceof ResponseBean response) {
 			long seq = response.getSeq();
@@ -73,8 +74,9 @@ public class DataProcessor {
 					sessions = preSessions;
 				}
 				sessions.add(socketSession);
-				if (ioHandler != null)
+				if (ioHandler != null) {
 					ioHandler.channelOpen(socketSession);
+				}
 				socketSession.getDawdlerConnection().rebuildSessionGroup();
 				socketSession.getInitLatch().countDown();
 				if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
@@ -87,8 +89,9 @@ public class DataProcessor {
 				}
 				throw new IllegalAccessException("Invalid auth !");
 			}
-		} else
+		} else {
 			throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
+		}
 		data = null;
 	}
 

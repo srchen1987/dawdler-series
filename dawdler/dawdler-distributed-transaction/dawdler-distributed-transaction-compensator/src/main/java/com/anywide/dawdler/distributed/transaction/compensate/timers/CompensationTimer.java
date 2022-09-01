@@ -68,17 +68,17 @@ public class CompensationTimer implements Runnable {
 			List<DistributedTransactionContext> list = transactionRepository.findALLBySecondsLater();
 			for (DistributedTransactionContext dc : list) {
 				String trying = TransactionStatus.TRYING;
-				if (trying.equals(dc.getStatus()))
+				if (trying.equals(dc.getStatus())) {
 					continue;
-
-				Map<String, Object> data = new HashMap<>();
+				}
+				Map<String, Object> data = new HashMap<>(8);
 				data.put("status", dc.getStatus());
 				data.put("action", dc.getAction());
 				data.put("globalTxId", dc.getGlobalTxId());
 				String msg = JsonProcessUtil.beanToJson(data);
-				if (logger.isDebugEnabled())
+				if (logger.isDebugEnabled()) {
 					logger.debug("transaction compensate:{}", msg);
-
+				}
 				messageSender.sent(msg);
 			}
 		} catch (Exception e) {

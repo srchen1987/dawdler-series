@@ -37,7 +37,7 @@ public class EncryptContentGenerator {
 
 	public static void main(String[] args) throws Exception {
 		String path = ConfigContentDecryptor.getDawdlerEncrypFilePath();
-		if(path == null) {
+		if (path == null) {
 			generate();
 			return;
 		}
@@ -55,7 +55,6 @@ public class EncryptContentGenerator {
 		}
 	}
 
-	
 	private static void generate() throws Exception {
 		AesSecurityPlus ap = AesSecurityPlus.DEFAULT_INSTANCE;
 		File file = new File("dawdler.password");
