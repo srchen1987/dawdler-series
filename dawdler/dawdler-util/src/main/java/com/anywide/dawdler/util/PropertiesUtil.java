@@ -77,11 +77,12 @@ public class PropertiesUtil {
 				inStream.close();
 			}
 		}
-		if(ConfigContentDecryptor.useDecrypt()) {
-			Properties processedPs= new Properties();
+		if (ConfigContentDecryptor.useDecrypt()) {
+			Properties processedPs = new Properties();
 			Set<Entry<Object, Object>> entrySet = ps.entrySet();
-			for(Entry<Object, Object> entry : entrySet) {
-				processedPs.put(entry.getKey(), ConfigContentDecryptor.decryptAndReplaceTag(entry.getValue().toString()));
+			for (Entry<Object, Object> entry : entrySet) {
+				processedPs.put(entry.getKey(),
+						ConfigContentDecryptor.decryptAndReplaceTag(entry.getValue().toString()));
 			}
 			return processedPs;
 		}
@@ -90,7 +91,7 @@ public class PropertiesUtil {
 
 	public static Properties loadActiveProfileProperties(String fileName) throws Exception {
 		String activeProfile = System.getProperty("dawdler.profiles.active");
-		if(activeProfile != null) {
+		if (activeProfile != null) {
 			return loadProperties(fileName + "-" + activeProfile);
 		}
 		throw new IOException("dawdler.profiles.active not set!");
@@ -103,5 +104,5 @@ public class PropertiesUtil {
 			return loadProperties(fileName);
 		}
 	}
-	
+
 }

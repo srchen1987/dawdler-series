@@ -142,7 +142,7 @@ public class DawdlerConnection {
 	public void startReconnect() {
 		reconnectScheduled.scheduleWithFixedDelay(() -> {
 			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
-			if (disconnAddressList.isEmpty()){
+			if (disconnAddressList.isEmpty()) {
 				return;
 			}
 			try {
@@ -156,10 +156,10 @@ public class DawdlerConnection {
 					DawdlerConnection.this.connect(socketAddress, num);
 					activate = true;
 				}
-				if (activate){
+				if (activate) {
 					DawdlerConnection.this.rebuildSessionGroup();
 				}
-					
+
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -186,10 +186,10 @@ public class DawdlerConnection {
 				socketSession.setPath(gid);
 			} catch (Exception e) {
 				logger.error("", e);
-				if (socketSession != null){
+				if (socketSession != null) {
 					socketSession.close(false);
 				}
-					
+
 			}
 			if (client != null && socketSession != null) {
 				client.connect(address, socketSession, CONNECTOR_HANDLER);
@@ -355,7 +355,7 @@ public class DawdlerConnection {
 	}
 
 	public void writeFirst(String path, Object obj, SocketSession socketSession) throws Exception {
-		if (ioHandler != null){
+		if (ioHandler != null) {
 			ioHandler.messageSent(socketSession, obj);
 		}
 		socketSession.setClassLoader(Thread.currentThread().getContextClassLoader());
@@ -395,19 +395,19 @@ public class DawdlerConnection {
 				socketSession.write(byteBuffer);
 			} finally {
 				byteBuffer.clear();
-				if (poolBuffer != null){
+				if (poolBuffer != null) {
 					poolBuffer.release(dawdlerByteBuffer);
 				}
-					
+
 			}
 		}
 	}
 
 	public void write(Object obj, SocketSession socketSession) throws Exception {
-		if (ioHandler != null){
+		if (ioHandler != null) {
 			ioHandler.messageSent(socketSession, obj);
 		}
-			
+
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] data = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
@@ -440,10 +440,10 @@ public class DawdlerConnection {
 				socketSession.write(byteBuffer);
 			} finally {
 				byteBuffer.clear();
-				if (poolBuffer != null){
+				if (poolBuffer != null) {
 					poolBuffer.release(dawdlerByteBuffer);
 				}
-					
+
 			}
 		}
 	}

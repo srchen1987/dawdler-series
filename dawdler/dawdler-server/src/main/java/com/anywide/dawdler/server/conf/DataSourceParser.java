@@ -59,14 +59,16 @@ public class DataSourceParser {
 	public static Map<String, DataSource> getDataSource(XmlObject xmlo, ClassLoader classLoader)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
-		if (xmlo == null)
+		if (xmlo == null) {
 			xmlo = dataSourceConfig;
-		if (xmlo == null)
+		}
+		if (xmlo == null) {
 			return null;
-		dataSources = new HashMap<>();
+		}
+		dataSources = new HashMap<>(8);
 		List<Node> dataSourceList = xmlo.selectNodes("/config/datasources/datasource");
 		for (Object dataSource : dataSourceList) {
-			Map<String, Object> attributes = new HashMap<>();
+			Map<String, Object> attributes = new HashMap<>(16);
 			Element ele = (Element) dataSource;
 			String id = ele.attributeValue("id");
 			List<Node> attrs = ele.selectNodes("attribute");

@@ -17,10 +17,8 @@
 package com.anywide.dawdler.server.log;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Set;
 
 import ch.qos.logback.classic.BasicConfigurator;
 import ch.qos.logback.classic.ClassicConstants;
@@ -30,10 +28,8 @@ import ch.qos.logback.classic.spi.Configurator;
 import ch.qos.logback.classic.util.ClassicEnvUtil;
 import ch.qos.logback.core.LogbackException;
 import ch.qos.logback.core.joran.spi.JoranException;
-import ch.qos.logback.core.status.ErrorStatus;
 import ch.qos.logback.core.status.InfoStatus;
 import ch.qos.logback.core.status.StatusManager;
-import ch.qos.logback.core.status.WarnStatus;
 import ch.qos.logback.core.util.Loader;
 import ch.qos.logback.core.util.OptionHelper;
 import ch.qos.logback.core.util.StatusListenerConfigHelper;

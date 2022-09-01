@@ -39,8 +39,8 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @email suxuan696@gmail.com
  */
 public class DataAutomaticNewV2 {
-	private static final Map<String, Class<?>[]> dataTypes = new HashMap<String, Class<?>[]>(64);
-	private static final ConcurrentHashMap<Class<?>, Map<String, Method>> cacheMethod = new java.util.concurrent.ConcurrentHashMap<Class<?>, Map<String, Method>>();
+	private static final Map<String, Class<?>[]> DATA_TYPES = new HashMap<String, Class<?>[]>(64);
+	private static final ConcurrentHashMap<Class<?>, Map<String, Method>> CACHE_METHOD = new java.util.concurrent.ConcurrentHashMap<Class<?>, Map<String, Method>>();
 
 	static {
 		init();
@@ -98,47 +98,47 @@ public class DataAutomaticNewV2 {
 
 	private final static void init() {
 		Class<?>[] byteclass = new Class[] { byte[].class };
-		dataTypes.put("TINYINT", new Class[] { boolean.class, Boolean.class, short.class, Short.class });
-		dataTypes.put("MEDIUMINT", new Class[] { int.class, Integer.class });
-		dataTypes.put("INTEGER", new Class[] { int.class, Integer.class });
-		dataTypes.put("INT", new Class[] { int.class, Integer.class });
-		dataTypes.put("BIGINT", new Class[] { long.class, Long.class });
-		dataTypes.put("FLOAT", new Class[] { float.class, Float.class });
-		dataTypes.put("DOUBLE", new Class[] { double.class, Double.class });
-		dataTypes.put("DECIMAL", new Class[] { java.math.BigDecimal.class, double.class, Double.class });
-		dataTypes.put("BIT", new Class[] { boolean.class, Boolean.class, byte.class, Byte.class });
+		DATA_TYPES.put("TINYINT", new Class[] { boolean.class, Boolean.class, short.class, Short.class });
+		DATA_TYPES.put("MEDIUMINT", new Class[] { int.class, Integer.class });
+		DATA_TYPES.put("INTEGER", new Class[] { int.class, Integer.class });
+		DATA_TYPES.put("INT", new Class[] { int.class, Integer.class });
+		DATA_TYPES.put("BIGINT", new Class[] { long.class, Long.class });
+		DATA_TYPES.put("FLOAT", new Class[] { float.class, Float.class });
+		DATA_TYPES.put("DOUBLE", new Class[] { double.class, Double.class });
+		DATA_TYPES.put("DECIMAL", new Class[] { java.math.BigDecimal.class, double.class, Double.class });
+		DATA_TYPES.put("BIT", new Class[] { boolean.class, Boolean.class, byte.class, Byte.class });
 
-		dataTypes.put("DATE", new Class[] { java.sql.Date.class, String.class });
-		dataTypes.put("DATETIME", new Class[] { java.sql.Timestamp.class, String.class });
-		dataTypes.put("TIMESTAMP", new Class[] { java.sql.Timestamp.class, String.class });
-		dataTypes.put("TIME", new Class[] { java.sql.Time.class, String.class });
-		dataTypes.put("YEAR", new Class[] { java.sql.Date.class, String.class });
-		dataTypes.put("VARCHAR", new Class[] { String.class });
-		dataTypes.put("TEXT", new Class[] { String.class });
+		DATA_TYPES.put("DATE", new Class[] { java.sql.Date.class, String.class });
+		DATA_TYPES.put("DATETIME", new Class[] { java.sql.Timestamp.class, String.class });
+		DATA_TYPES.put("TIMESTAMP", new Class[] { java.sql.Timestamp.class, String.class });
+		DATA_TYPES.put("TIME", new Class[] { java.sql.Time.class, String.class });
+		DATA_TYPES.put("YEAR", new Class[] { java.sql.Date.class, String.class });
+		DATA_TYPES.put("VARCHAR", new Class[] { String.class });
+		DATA_TYPES.put("TEXT", new Class[] { String.class });
 
-		dataTypes.put("BINARY", byteclass);
-		dataTypes.put("TINYBLOB", byteclass);
-		dataTypes.put("BLOB", byteclass);
-		dataTypes.put("MEDIUMBLOB", byteclass);
-		dataTypes.put("LONGBLOB", byteclass);
-		dataTypes.put("VARBINARY", byteclass);
-		dataTypes.put("CHAR", new Class[] { String.class });
-		dataTypes.put("SMALLINT", new Class[] { short.class, Short.class, int.class, Integer.class });
+		DATA_TYPES.put("BINARY", byteclass);
+		DATA_TYPES.put("TINYBLOB", byteclass);
+		DATA_TYPES.put("BLOB", byteclass);
+		DATA_TYPES.put("MEDIUMBLOB", byteclass);
+		DATA_TYPES.put("LONGBLOB", byteclass);
+		DATA_TYPES.put("VARBINARY", byteclass);
+		DATA_TYPES.put("CHAR", new Class[] { String.class });
+		DATA_TYPES.put("SMALLINT", new Class[] { short.class, Short.class, int.class, Integer.class });
 	}
 
 	private final static void invoke(String columntypename, Class<?> type, String setMethodName, Object obj,
 			Object object) {
-		Map<String, Method> methods = cacheMethod.get(type);
+		Map<String, Method> methods = CACHE_METHOD.get(type);
 		if (methods == null) {
 			methods = new ConcurrentHashMap<String, Method>();
-			Map<String, Method> pre = cacheMethod.putIfAbsent(type, methods);
+			Map<String, Method> pre = CACHE_METHOD.putIfAbsent(type, methods);
 			if (pre != null) {
 				methods = pre;
 			}
 		}
 		Method method = methods.get(setMethodName);
 		if (method == null) {
-			Class<?>[] classtypes = dataTypes.get(columntypename);
+			Class<?>[] classtypes = DATA_TYPES.get(columntypename);
 			if (object != null && classtypes != null) {
 				for (Class<?> classtype : classtypes) {
 					try {

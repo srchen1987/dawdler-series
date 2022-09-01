@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.distributed.transaction.repository;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -75,7 +74,7 @@ public class RedisRepository extends TransactionRepository {
 	@Override
 	public int create(DistributedTransactionContext transaction) throws Exception {
 		byte[] data = serializer.serialize(transaction);
-		Map<byte[], byte[]> map = new HashMap<>();
+		Map<byte[], byte[]> map = new HashMap<>(8);
 		map.put(transaction.getBranchTxId().getBytes(), data);
 		return execute(pool, new JedisExecutor<Integer>() {
 			@Override
@@ -147,7 +146,7 @@ public class RedisRepository extends TransactionRepository {
 	@Override
 	public int updateDataByGlobalTxId(String globalTxId, Map<String, Object> data) throws Exception {
 		String status = (String) data.get("status");
-		Map<byte[], byte[]> map = new HashMap<>();
+		Map<byte[], byte[]> map = new HashMap<>(8);
 		return execute(pool, new JedisExecutor<Integer>() {
 			@Override
 			public Integer execute(Jedis jedis) throws Exception {

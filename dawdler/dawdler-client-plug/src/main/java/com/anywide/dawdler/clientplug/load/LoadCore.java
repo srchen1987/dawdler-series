@@ -133,7 +133,7 @@ public class LoadCore implements Runnable {
 			}
 			XmlObject xmlo = new XmlObject(filepath, false);
 			Set<String> needLoad = new LinkedHashSet<String>();
-			for (Object o : xmlo.selectNodes("/hosts/host[@type='"+TYPE_COMPONENT+"']/item")) {
+			for (Object o : xmlo.selectNodes("/hosts/host[@type='" + TYPE_COMPONENT + "']/item")) {
 				Element ele = (Element) o;
 				String checkName = ele.attributeValue("checkname");
 				String className = toClassName(checkName);
@@ -174,9 +174,9 @@ public class LoadCore implements Runnable {
 		List<String> allClass = new ArrayList<String>();
 		List<String> allLocalClass = new ArrayList<String>();
 		Set<String> needLoad = new LinkedHashSet<String>();
-		
+
 		List<Node> localItems = local.selectNodes("/hosts/host[@type='" + type + "']/item");
-		if(localItems.isEmpty()) {
+		if (localItems.isEmpty()) {
 			List<Node> remoteItems = remote.selectNodes("/hosts/host[@type='" + type + "']/item");
 			remark = !remoteItems.isEmpty();
 			for (Object remoteItem : remoteItems) {
@@ -191,8 +191,8 @@ public class LoadCore implements Runnable {
 			Element ele = (Element) item;
 			String localCheckName = ele.attributeValue("checkname");
 			allLocalClass.add(toClassName(localCheckName));
-			for (Object remoteItem : remote.selectNodes(
-					"/hosts/host[@type='" + type + "']/item[@checkname='" + localCheckName + "']")) {
+			for (Object remoteItem : remote
+					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + localCheckName + "']")) {
 				Element remoteEle = (Element) remoteItem;
 				String checkName = remoteEle.attributeValue("checkname");
 				String className = toClassName(checkName);
@@ -208,7 +208,7 @@ public class LoadCore implements Runnable {
 		}
 		String classFilePath = CURRENT_PATH;
 		Set<String> loadCache = new LinkedHashSet<String>();
-		if(allClass.isEmpty()) {
+		if (allClass.isEmpty()) {
 			allClass = allLocalClass;
 		}
 		for (String name : allClass) {// 循环客户端和服务器端都有的类
@@ -256,7 +256,7 @@ public class LoadCore implements Runnable {
 			}
 			loadClass(loadClasses, isApi);
 		}
-		
+
 		allClass.clear();
 		allLocalClass.clear();
 		needLoad.clear();

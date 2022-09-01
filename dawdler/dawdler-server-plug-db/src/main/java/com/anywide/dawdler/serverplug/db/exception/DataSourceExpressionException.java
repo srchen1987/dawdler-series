@@ -27,7 +27,7 @@ package com.anywide.dawdler.serverplug.db.exception;
 public class DataSourceExpressionException extends Exception {
 
 	private static final long serialVersionUID = 3052983943906141279L;
-	
+
 	public DataSourceExpressionException(String message) {
 		super(message);
 	}
