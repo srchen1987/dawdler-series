@@ -33,8 +33,6 @@ import org.apache.velocity.runtime.parser.node.Node;
 
 import com.anywide.dawdler.util.ToolEL;
 
-
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -122,7 +120,7 @@ public class TreeDirect extends Directive {
 		for (Iterator it = item.iterator(); it.hasNext();) {
 			Object o = it.next();
 			Object ko = ToolEL.getBeanValue(o, childname);
-			if (ko == null){
+			if (ko == null) {
 				throw new ParseErrorException("no find " + childname + " propertie in " + o.getClass().getName());
 			}
 			String key = ko.toString();
@@ -158,14 +156,14 @@ public class TreeDirect extends Directive {
 	private void createTree(Map<String, List<Object>> data, List targetdata, String parentname, String parentvalue,
 			String appendremark, String remark) {
 		List list = data.get(parentvalue);
-		if (list == null){
+		if (list == null) {
 			return;
 		}
 		appendremark += remark;
 		for (Object o : list) {
 			Object key = ToolEL.getBeanValue(o, parentname);
 			boolean temp = false;
-			if (data.get(key) == null){
+			if (data.get(key) == null) {
 				temp = true;
 			}
 			targetdata.add(new Object[] { appendremark, o, temp });

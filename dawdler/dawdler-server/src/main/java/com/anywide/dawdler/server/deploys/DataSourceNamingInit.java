@@ -44,7 +44,8 @@ public class DataSourceNamingInit {
 	private static final Logger logger = LoggerFactory.getLogger(DataSourceNamingInit.class);
 
 	public static void init(ClassLoader classLoader)
-			throws ClassNotFoundException, NamingException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+			throws ClassNotFoundException, NamingException, InstantiationException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		Object token = new Object();
 		Hashtable<String, Object> table = new Hashtable<>();
 		SelectorContext selectorContext = new SelectorContext(table, true);

@@ -46,7 +46,7 @@ public final class DawdlerProviderDetector {
 	public boolean detect() {
 		String bootstrapMainClass = MainClassCondition.INSTANCE.getValue();
 		boolean isExpectedMainClass = expectedMainClasses.contains(bootstrapMainClass);
-		if (isExpectedMainClass) { 
+		if (isExpectedMainClass) {
 			return true;
 		}
 		return false;

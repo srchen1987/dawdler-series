@@ -28,7 +28,7 @@ public class TransactionProvider {
 
 	public static Transaction getTransaction(String groupName) {
 		ConnectionPool cp = ConnectionPool.getConnectionPool(groupName);
-		if (cp == null){
+		if (cp == null) {
 			throw new IllegalArgumentException("not find " + groupName + " provider!");
 		}
 		return new Transaction(cp.getConnections());

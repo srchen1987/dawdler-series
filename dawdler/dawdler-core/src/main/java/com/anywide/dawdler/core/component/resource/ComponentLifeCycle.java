@@ -32,7 +32,7 @@ public interface ComponentLifeCycle {
 
 	default public void init() throws Throwable {
 	};
-	
+
 	default public void afterInit() throws Throwable {
 	};
 
