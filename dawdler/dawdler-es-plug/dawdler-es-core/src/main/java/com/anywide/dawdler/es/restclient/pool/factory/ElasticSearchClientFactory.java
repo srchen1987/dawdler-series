@@ -68,21 +68,22 @@ public class ElasticSearchClientFactory {
 
 	public ElasticSearchClientFactory(String fileName) throws Exception {
 		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
-		if(useConfig) {
+		if (useConfig) {
 			try {
 				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 			} catch (Exception e) {
-				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache.getMappingDataCache(fileName);
-				if(attributes == null) {
+				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache
+						.getMappingDataCache(fileName);
+				if (attributes == null) {
 					throw e;
 				}
 				ps = new Properties();
-				Set<Entry<String, Object>> entrySet =  attributes.entrySet();
+				Set<Entry<String, Object>> entrySet = attributes.entrySet();
 				for (Entry<String, Object> entry : entrySet) {
 					ps.setProperty(entry.getKey(), entry.getValue().toString());
 				}
 			}
-		}else {
+		} else {
 			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		}
 		String username = ps.getProperty("username", "");
