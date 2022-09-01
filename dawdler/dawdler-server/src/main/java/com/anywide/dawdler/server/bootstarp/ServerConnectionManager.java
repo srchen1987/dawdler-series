@@ -54,8 +54,9 @@ public class ServerConnectionManager {
 	public boolean hasTask() {
 		Collection<SocketSession> collection = connections.values();
 		for (SocketSession session : collection) {
-			if (!session.getFutures().isEmpty())
+			if (!session.getFutures().isEmpty()) {
 				return true;
+			}
 		}
 		return false;
 	}

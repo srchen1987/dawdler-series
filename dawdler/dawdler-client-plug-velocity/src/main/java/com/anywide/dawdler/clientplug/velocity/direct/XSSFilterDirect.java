@@ -51,8 +51,9 @@ public class XSSFilterDirect extends Directive {
 			throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
 		Node node = arg2.jjtGetChild(0);
 		Object object = node.value(arg0);
-		if (object == null)
+		if (object == null) {
 			return true;
+		}
 		arg1.write(XssUtil.filterScript(object.toString()));
 		arg1.flush();
 		return true;

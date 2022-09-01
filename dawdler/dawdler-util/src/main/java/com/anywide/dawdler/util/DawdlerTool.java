@@ -94,8 +94,8 @@ public class DawdlerTool {
 	}
 
 	public static String generateDigest(String idPassword) throws NoSuchAlgorithmException {
-		String parts[] = idPassword.split(":", 2);
-		byte digest[] = MessageDigest.getInstance("SHA1").digest(idPassword.getBytes());
+		String[] parts = idPassword.split(":", 2);
+		byte[] digest = MessageDigest.getInstance("SHA1").digest(idPassword.getBytes());
 		return parts[0] + ":" + new String(Base64.getEncoder().encode(digest));
 	}
 

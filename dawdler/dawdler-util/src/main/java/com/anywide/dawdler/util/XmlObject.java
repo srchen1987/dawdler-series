@@ -140,8 +140,9 @@ public final class XmlObject {
 			try {
 				inputStreamToXML(input);
 			} finally {
-				if (input != null)
+				if (input != null) {
 					input.close();
+				}
 			}
 		}
 		getXMLRoot();
@@ -164,8 +165,9 @@ public final class XmlObject {
 	}
 
 	public Element getRoot() throws NullPointerException {
-		if (this.root == null)
+		if (this.root == null) {
 			throw new NullPointerException("not found root!");
+		}
 		return this.root;
 	}
 
@@ -178,15 +180,18 @@ public final class XmlObject {
 	}
 
 	public Element selectSingleNode(String xpath) {
-		if (xpath.equals("/"))
+		if (xpath.equals("/")) {
 			return root;
-		else
+		}
+		else {
 			return (Element) root.selectSingleNode(xpath);
+		}
 	}
 
 	public void removeNode(String xpath) throws Exception {
-		if (xpath.equals("/"))
+		if (xpath.equals("/")) {
 			throw new Exception("Can't remove Root!");
+		}
 		List<Node> list = selectNodes(xpath);
 		if (list != null) {
 			for (Object o : list) {
@@ -270,8 +275,9 @@ public final class XmlObject {
 	}
 
 	public synchronized void saveXML() throws IOException, NullPointerException {
-		if (filepath == null || filepath.equals(""))
+		if (filepath == null || filepath.equals("")) {
 			throw new NullPointerException("not have created path to xml!");
+		}
 		OutputFormat format = OutputFormat.createPrettyPrint();
 		format.setEncoding("UTF-8");
 		format.setTrimText(true);
@@ -292,15 +298,17 @@ public final class XmlObject {
 
 	public static String getElementAttribute(Element element, String attribute, String defaultValue) {
 		Attribute attr = element.attribute(attribute);
-		if (attr == null)
+		if (attr == null) {
 			return defaultValue;
+		}
 		return attr.getStringValue();
 	}
 
 	public static int getElementAttribute2Int(Element element, String attribute, int defaultValue) {
 		Attribute attr = element.attribute(attribute);
-		if (attr == null)
+		if (attr == null) {
 			return defaultValue;
+		}
 		try {
 			return Integer.parseInt(attr.getStringValue());
 		} catch (NumberFormatException e) {
@@ -310,8 +318,9 @@ public final class XmlObject {
 
 	public static long getElementAttribute2Long(Element element, String attribute, long defaultValue) {
 		Attribute attr = element.attribute(attribute);
-		if (attr == null)
+		if (attr == null) {
 			return defaultValue;
+		}
 		try {
 			return Long.parseLong(attr.getStringValue());
 		} catch (NumberFormatException e) {
@@ -321,8 +330,9 @@ public final class XmlObject {
 
 	public static boolean getElementAttribute2Boolean(Element element, String attribute, boolean defaultValue) {
 		Attribute attr = element.attribute(attribute);
-		if (attr == null)
+		if (attr == null) {
 			return defaultValue;
+		}
 		try {
 			return Boolean.parseBoolean(attr.getStringValue());
 		} catch (NumberFormatException e) {

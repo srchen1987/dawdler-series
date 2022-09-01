@@ -40,8 +40,9 @@ public class HealthIndicatorProvider {
 
 	public static HealthIndicatorProvider getInstance(String serviceName) {
 		HealthIndicatorProvider healthChecker = instances.get(serviceName);
-		if (healthChecker != null)
+		if (healthChecker != null) {
 			return healthChecker;
+		}
 		synchronized (instances) {
 			healthChecker = instances.get(serviceName);
 			if (healthChecker == null) {
