@@ -68,19 +68,21 @@ public class ToolEL {
 	}
 
 	public static Object getBeanValue(Object o, String path) {
-		String tem[] = path.split("\\.");
+		String[] tem = path.split("\\.");
 		for (String s : tem) {
 			String[] pa = getData(s);
 			if (pa.length == 1) {
 				o = getValue(o, pa[0]);
-				if (o == null)
+				if (o == null) {
 					return null;
+				}
 			} else {
-				if (!pa[0].trim().equals("")) {
+				if (!"".equals(pa[0].trim())) {
 					o = getValue(o, pa[0]);
 				}
-				if (o == null)
+				if (o == null) {
 					return null;
+				}
 				int i = 0;
 				String key = null;
 				try {
@@ -201,8 +203,9 @@ public class ToolEL {
 						}
 						j++;
 					}
-					if (!b)
+					if (!b) {
 						o = null;
+					}
 					break;
 				}
 				case MAPTYPE:
@@ -220,8 +223,9 @@ public class ToolEL {
 							}
 							j++;
 						}
-						if (!b)
+						if (!b) {
 							o = null;
+						}
 					}
 					break;
 				default:
@@ -245,36 +249,49 @@ public class ToolEL {
 	}
 
 	private static int getType(Object o) {
-		Class type = o.getClass();
+		Class<?> type = o.getClass();
 		if (type.isArray()) {
-			if (type == String[].class)
+			if (type == String[].class) {
 				return STRINGTYPE;
-			if (type == byte[].class || type == Byte[].class)
+			}
+			if (type == byte[].class || type == Byte[].class) {
 				return BYTETYPE;
-			if (type == short[].class || type == Short[].class)
+			}
+			if (type == short[].class || type == Short[].class) {
 				return SHORTTYPE;
-			if (type == int[].class || type == Integer[].class)
+			}
+			if (type == int[].class || type == Integer[].class) {
 				return INTTYPE;
-			if (type == long[].class || type == Long[].class)
+			}
+			if (type == long[].class || type == Long[].class) {
 				return LONGTYPE;
-			if (type == float[].class || type == Float[].class)
+			}
+			if (type == float[].class || type == Float[].class) {
 				return FLOATTYPE;
-			if (type == double[].class || type == Double[].class)
+			}
+			if (type == double[].class || type == Double[].class) {
 				return DOUBLETYPE;
-			if (type == char[].class || type == Character[].class)
+			}
+			if (type == char[].class || type == Character[].class) {
 				return CHARTYPE;
-			if (type == boolean[].class || type == Boolean[].class)
+			}
+			if (type == boolean[].class || type == Boolean[].class) {
 				return BOOLEANTYPE;
+			}
 			return OBJECTTYPE;
 		}
-		if (o instanceof List)
+		if (o instanceof List) {
 			return LISTTYPE;
-		if (o instanceof Map)
+		}
+		if (o instanceof Map) {
 			return MAPTYPE;
-		if (o instanceof Set)
+		}
+		if (o instanceof Set) {
 			return SETYPE;
-		if (o instanceof Enumeration)
+		}
+		if (o instanceof Enumeration) {
 			return ENUETYPE;
+		}
 		return BASETYPE;
 	}
 }

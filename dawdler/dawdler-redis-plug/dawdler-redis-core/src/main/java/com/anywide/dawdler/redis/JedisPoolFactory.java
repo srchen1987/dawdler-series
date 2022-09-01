@@ -58,21 +58,22 @@ public final class JedisPoolFactory {
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {
 		Pool<Jedis> jedisPool = null;
 		Properties ps = null;
-		if(useConfig) {
+		if (useConfig) {
 			try {
 				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 			} catch (Exception e) {
-				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache.getMappingDataCache(fileName);
-				if(attributes == null) {
+				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache
+						.getMappingDataCache(fileName);
+				if (attributes == null) {
 					throw e;
 				}
 				ps = new Properties();
-				Set<Entry<String, Object>> entrySet =  attributes.entrySet();
+				Set<Entry<String, Object>> entrySet = attributes.entrySet();
 				for (Entry<String, Object> entry : entrySet) {
 					ps.setProperty(entry.getKey(), entry.getValue().toString());
 				}
 			}
-		}else {
+		} else {
 			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		}
 		String auth = ps.getProperty("auth");

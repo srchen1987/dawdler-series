@@ -218,7 +218,6 @@ public class MethodParser {
 				parameterData.setSchema(schema);
 			}
 			MethodParameterData[] methodParameters = methodParameterMap.values().toArray(new MethodParameterData[0]);
-			Map<String, Object> httpMethodMap = new LinkedHashMap<>();
 			Map<String, Object> elements = new LinkedHashMap<>();
 			elements.put("tags", new String[] { javaClass.getBinaryName() });
 			DocletTag descriptionTag = method.getTagByName("Description");
@@ -316,7 +315,7 @@ public class MethodParser {
 
 	public static List<JavaType> getActualTypeArguments(JavaType javaType) {
 		if (javaType == null) {
-			return Collections.EMPTY_LIST;
+			return Collections.emptyList();
 		}
 		return ((JavaParameterizedType) javaType).getActualTypeArguments();
 	}

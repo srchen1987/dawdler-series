@@ -61,8 +61,9 @@ public class PageDirect extends Directive {
 		if (pageObj != null) {
 			page = (Page) pageObj;
 		}
-		if (page == null)
+		if (page == null) {
 			throw new ParseErrorException("not set page in action !");
+		}
 		PageStyle.printPage(page.getPageOn(), page.getPageCount(), page.getPageNumber(), linkcontent, stylename, arg1);
 		return true;
 	}

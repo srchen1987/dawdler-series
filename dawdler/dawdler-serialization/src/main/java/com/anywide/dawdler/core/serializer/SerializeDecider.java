@@ -33,21 +33,21 @@ import org.slf4j.LoggerFactory;
  */
 public class SerializeDecider {
 	private static final Logger logger = LoggerFactory.getLogger(SerializeDecider.class);
-	private static final Map<Byte, Serializer> serializers = new ConcurrentHashMap<>();
+	private static final Map<Byte, Serializer> SERIALIZERS = new ConcurrentHashMap<>();
 	static {
 		ServiceLoader<Serializer> loader = ServiceLoader.load(Serializer.class);
 		loader.forEach(SerializeDecider::addSerializer);
 	}
 
 	public static void register(byte key, Serializer serializer) {
-		Serializer preSerializer = serializers.putIfAbsent(key, serializer);
+		Serializer preSerializer = SERIALIZERS.putIfAbsent(key, serializer);
 		if (preSerializer != null) {
 			logger.error(preSerializer.key() + " already exists in " + preSerializer.getClass().getName());
 		}
 	}
 
 	public static Serializer decide(byte key) {
-		return serializers.get(key);
+		return SERIALIZERS.get(key);
 	}
 
 	public static void addSerializer(Serializer serializer) {
@@ -55,7 +55,7 @@ public class SerializeDecider {
 	}
 
 	public static void destroyed() {
-		serializers.forEach((k, v) -> {
+		SERIALIZERS.forEach((k, v) -> {
 			v.destroyed();
 		});
 	}

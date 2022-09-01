@@ -49,40 +49,41 @@ public class ElasticSearchClientFactory {
 		}
 	}
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;
-	private final static Map<String, ElasticSearchClientFactory> instances = new ConcurrentHashMap<>();
+	private final static Map<String, ElasticSearchClientFactory> INSTANCES = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 
 	public static ElasticSearchClientFactory getInstance(String fileName) throws Exception {
-		ElasticSearchClientFactory connectionFactory = instances.get(fileName);
+		ElasticSearchClientFactory connectionFactory = INSTANCES.get(fileName);
 		if (connectionFactory != null) {
 			return connectionFactory;
 		}
-		synchronized (instances) {
-			connectionFactory = instances.get(fileName);
+		synchronized (INSTANCES) {
+			connectionFactory = INSTANCES.get(fileName);
 			if (connectionFactory == null) {
-				instances.put(fileName, new ElasticSearchClientFactory(fileName));
+				INSTANCES.put(fileName, new ElasticSearchClientFactory(fileName));
 			}
 		}
-		return instances.get(fileName);
+		return INSTANCES.get(fileName);
 	}
 
 	public ElasticSearchClientFactory(String fileName) throws Exception {
 		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
-		if(useConfig) {
+		if (useConfig) {
 			try {
 				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 			} catch (Exception e) {
-				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache.getMappingDataCache(fileName);
-				if(attributes == null) {
+				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache
+						.getMappingDataCache(fileName);
+				if (attributes == null) {
 					throw e;
 				}
 				ps = new Properties();
-				Set<Entry<String, Object>> entrySet =  attributes.entrySet();
+				Set<Entry<String, Object>> entrySet = attributes.entrySet();
 				for (Entry<String, Object> entry : entrySet) {
 					ps.setProperty(entry.getKey(), entry.getValue().toString());
 				}
 			}
-		}else {
+		} else {
 			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		}
 		String username = ps.getProperty("username", "");
@@ -136,7 +137,7 @@ public class ElasticSearchClientFactory {
 
 	public static void shutdownAll() {
 		if (stopped.compareAndSet(false, true)) {
-			instances.forEach((k, v) -> {
+			INSTANCES.forEach((k, v) -> {
 				if (!v.isClose()) {
 					v.close();
 				}
@@ -145,6 +146,6 @@ public class ElasticSearchClientFactory {
 	}
 
 	public static Map<String, ElasticSearchClientFactory> getInstances() {
-		return instances;
+		return INSTANCES;
 	}
 }

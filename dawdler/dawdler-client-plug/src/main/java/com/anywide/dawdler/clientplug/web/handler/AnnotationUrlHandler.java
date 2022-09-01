@@ -45,40 +45,40 @@ import java.util.concurrent.ConcurrentHashMap;
  * @email suxuan696@gmail.com
  */
 public class AnnotationUrlHandler extends AbstractUrlHandler {
-	private static final ConcurrentHashMap<String, RequestUrlData> anturlRules = new ConcurrentHashMap<>(32);
+	private static final ConcurrentHashMap<String, RequestUrlData> ANT_URL_RULES = new ConcurrentHashMap<>(64);
 
-	private static final ConcurrentHashMap<String, RequestUrlData> urlRules = new ConcurrentHashMap<>(64);
-	private static final AntPathMatcher antPathMatcher = new AntPathMatcher();
-	public static final String MULTIPART = "multipart/";
+	private static final ConcurrentHashMap<String, RequestUrlData> URL_RULES = new ConcurrentHashMap<>(128);
+	private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
 	public static RequestUrlData registMapping(String path, RequestUrlData data) {
 		boolean antPath = isAntPath(path);
 		if (antPath) {
-			return anturlRules.putIfAbsent(path, data);
+			return ANT_URL_RULES.putIfAbsent(path, data);
 		} else {
-			return urlRules.putIfAbsent(path, data);
+			return URL_RULES.putIfAbsent(path, data);
 		}
 	}
 
 	public static RequestUrlData removeMapping(String path) {
 		boolean antPath = isAntPath(path);
 		if (antPath) {
-			return anturlRules.remove(path);
+			return ANT_URL_RULES.remove(path);
 		} else {
-			return urlRules.remove(path);
+			return URL_RULES.remove(path);
 		}
 	}
 
- @Override
+	@Override
 	public boolean handleUrl(String uriShort, String httpMethod, HttpServletRequest request,
 			HttpServletResponse response) {
-		RequestUrlData requestUrlData = urlRules.get(uriShort);
-		if (requestUrlData != null)
+		RequestUrlData requestUrlData = URL_RULES.get(uriShort);
+		if (requestUrlData != null) {
 			return handleUrl(requestUrlData, uriShort, null, httpMethod, null, request, response);
-		Set<Entry<String, RequestUrlData>> rules = anturlRules.entrySet();
-		Map<String, String> variables = new HashMap<>();
+		}
+		Set<Entry<String, RequestUrlData>> rules = ANT_URL_RULES.entrySet();
+		Map<String, String> variables = new HashMap<>(8);
 		for (Entry<String, RequestUrlData> entry : rules) {
-			boolean matched = antPathMatcher.doMatch(entry.getKey(), uriShort, true, variables);
+			boolean matched = ANT_PATH_MATCHER.doMatch(entry.getKey(), uriShort, true, variables);
 			if (matched) {
 				return handleUrl(entry.getValue(), uriShort, entry.getKey(), httpMethod, variables, request, response);
 			}
@@ -101,8 +101,9 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		if (viewForward == null) {
 			if (multipart) {
 				viewForward = new MultipartViewForward(request, response);
-			} else
+			} else {
 				viewForward = new ViewForward(request, response);
+			}
 		}
 		viewForward.setParamsVariable(variables);
 		viewForward.setRequestUrlData(requestUrlData);
@@ -123,7 +124,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 				try {
 					return invokeMethod(targetController, method, requestMapping, viewForward, responseBody);
 				} catch (ValidationException e) {
-					Map<String, String> errors = new HashMap<>();
+					Map<String, String> errors = new HashMap<>(16);
 					errors.put(e.getFieldName(), e.getError());
 					if (requestMapping != null && requestMapping.input() != null
 							&& !requestMapping.input().trim().equals("")) {
@@ -158,8 +159,9 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 
 	private boolean validateHttpMethods(RequestMapping requestMapping, String httpMethod) {
 		RequestMethod[] requestMethods = requestMapping.method();
-		if (requestMethods.length == 0)
+		if (requestMethods.length == 0) {
 			return true;
+		}
 		for (RequestMethod requestMethod : requestMethods) {
 			if (requestMethod.equals(RequestMethod.valueOf(httpMethod))) {
 				return true;
@@ -174,11 +176,11 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 
 	public static Set<Object> getTransactionControllers() {
 		Set<Object> controllers = new HashSet<>(32);
-		urlRules.values().forEach(requestUrlData -> {
+		URL_RULES.values().forEach(requestUrlData -> {
 			controllers.add(requestUrlData.getTarget());
 		});
 
-		anturlRules.values().forEach(requestUrlData -> {
+		ANT_URL_RULES.values().forEach(requestUrlData -> {
 			controllers.add(requestUrlData.getTarget());
 		});
 		return controllers;

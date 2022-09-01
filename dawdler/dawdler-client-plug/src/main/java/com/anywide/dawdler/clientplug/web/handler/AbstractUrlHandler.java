@@ -16,6 +16,14 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.bind.RequestMethodProcessor;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
@@ -48,11 +56,13 @@ public abstract class AbstractUrlHandler {
 			.getHandlerInterceptors();
 
 	public boolean preHandle(Object target, ViewForward viewForward, RequestMapping requestMapping) throws Exception {
-		if (handlerInterceptors != null)
+		if (handlerInterceptors != null) {
 			for (OrderData<HandlerInterceptor> handlerInterceptor : handlerInterceptors) {
-				if (!handlerInterceptor.getData().preHandle(target, viewForward, requestMapping))
+				if (!handlerInterceptor.getData().preHandle(target, viewForward, requestMapping)) {
 					return false;
+				}
 			}
+		}
 		return true;
 	}
 
