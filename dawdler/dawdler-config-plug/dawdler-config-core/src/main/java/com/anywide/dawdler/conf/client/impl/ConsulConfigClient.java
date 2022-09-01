@@ -40,8 +40,6 @@ import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Self.Config;
 import com.ecwid.consul.v1.kv.model.GetValue;
 
-
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -167,7 +165,7 @@ public class ConsulConfigClient implements ConfigClient {
 			String value = getValue.getDecodedValue();
 			ConfigData configData = ConfigDataCache.getConfigData(key);
 			if (configData == null || configData.getVersion() != getValue.getModifyIndex()) {
-				if(ConfigContentDecryptor.useDecrypt()) {
+				if (ConfigContentDecryptor.useDecrypt()) {
 					try {
 						value = ConfigContentDecryptor.decryptAndReplaceTag(value);
 					} catch (Exception e) {

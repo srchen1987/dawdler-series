@@ -69,7 +69,7 @@ public class DawdlerServerInterceptor extends SpanRecursiveAroundInterceptor {
 		if (transactionId == null) {
 			return traceContext.newTraceObject();
 		}
-		
+
 		final long parentSpanID = parseLong((Long) request.getAttachment(DawdlerConstants.META_PARENT_SPAN_ID),
 				SpanId.NULL);
 		final long spanID = parseLong((Long) request.getAttachment(DawdlerConstants.META_SPAN_ID), SpanId.NULL);
@@ -141,13 +141,13 @@ public class DawdlerServerInterceptor extends SpanRecursiveAroundInterceptor {
 		final ResponseBean response = (ResponseBean) args[1];
 		recorder.recordServiceType(DawdlerConstants.DAWDLER_PROVIDER_SERVICE_NO_STATISTICS_TYPE);
 		recorder.recordApi(methodDescriptor);
-		if(request.getArgs() != null) {
+		if (request.getArgs() != null) {
 			StringBuilder argsContent = new StringBuilder();
-			for(Object obj : request.getArgs()) {
+			for (Object obj : request.getArgs()) {
 				argsContent.append(obj);
 				argsContent.append(",");
 			}
-			argsContent.deleteCharAt(argsContent.length()-1);
+			argsContent.deleteCharAt(argsContent.length() - 1);
 			recorder.recordAttribute(DawdlerConstants.DAWDLER_ARGS_ANNOTATION_KEY, argsContent);
 		}
 		if (response.getCause() == null) {

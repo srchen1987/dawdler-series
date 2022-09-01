@@ -54,11 +54,11 @@ public class RadioControl extends Control {
 			if (css != null && !css.trim().equals("")) {
 				sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
 			}
-			
+
 			if (validateRule != null && !validateRule.trim().equals("")) {
 				sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
 			}
-			
+
 			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, i + ""));
 			sb.append(value != null ? value.equals("" + i) ? ControlContent.CHECKED : ""
 					: (i == 0 && radioDefault) ? ControlContent.CHECKED : "");

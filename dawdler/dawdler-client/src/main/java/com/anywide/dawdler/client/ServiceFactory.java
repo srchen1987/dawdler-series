@@ -55,14 +55,14 @@ public class ServiceFactory {
 
 	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance,
 			ClassLoader classLoader) {
-		if (classLoader == null){
+		if (classLoader == null) {
 			classLoader = Thread.currentThread().getContextClassLoader();
 		}
 		ConcurrentHashMap<Class<?>, Object> proxy = PROXYOBJECTS.get(groupName);
 		if (proxy == null) {
 			proxy = new ConcurrentHashMap<>(32);
 			ConcurrentHashMap<Class<?>, Object> preProxy = PROXYOBJECTS.putIfAbsent(groupName, proxy);
-			if (preProxy != null){
+			if (preProxy != null) {
 				proxy = preProxy;
 			}
 		}
@@ -70,10 +70,10 @@ public class ServiceFactory {
 		if (obj == null) {
 			obj = createCglibDynamicProxy(delegate, groupName, loadBalance, classLoader);
 			Object preObj = proxy.putIfAbsent(delegate, obj);
-			if (preObj != null){
+			if (preObj != null) {
 				obj = preObj;
 			}
-				
+
 		}
 		return (T) obj;
 	}
@@ -96,7 +96,7 @@ public class ServiceFactory {
 	}
 
 	public static void injectRemoteService(Class<?> clazz, Object target, ClassLoader classLoader) {
-		if (classLoader == null){
+		if (classLoader == null) {
 			classLoader = clazz.getClassLoader();
 		}
 		Field[] fields = clazz.getDeclaredFields();

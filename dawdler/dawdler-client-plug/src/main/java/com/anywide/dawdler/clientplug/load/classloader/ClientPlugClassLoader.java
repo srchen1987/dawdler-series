@@ -127,8 +127,9 @@ public class ClientPlugClassLoader {
 			logger.error("", e);
 		} finally {
 			try {
-				if (oldUrlCL != null)
+				if (oldUrlCL != null) {
 					oldUrlCL.close();
+				}
 			} catch (IOException e) {
 			}
 		}
@@ -167,11 +168,12 @@ public class ClientPlugClassLoader {
 					} catch (DocumentException | IOException e) {
 						logger.error("", e);
 					} finally {
-						if (aopXmlInput != null)
+						if (aopXmlInput != null) {
 							try {
 								aopXmlInput.close();
 							} catch (IOException e) {
 							}
+						}
 					}
 				}
 			} catch (IOException e) {

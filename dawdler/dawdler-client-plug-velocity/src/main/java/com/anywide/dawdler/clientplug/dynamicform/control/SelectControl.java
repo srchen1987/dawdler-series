@@ -31,7 +31,7 @@ public class SelectControl extends Control {
 		super(tag);
 	}
 
- @Override
+	@Override
 	protected String replaceContent() {
 		String controlName = tag.getControlName();
 		String controlType = tag.getControlType();

@@ -44,16 +44,16 @@ public class TextControl extends Control {
 		sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
 				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
 				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
-		if (css != null && !css.trim().equals("")){
+		if (css != null && !css.trim().equals("")) {
 			sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
 		}
-		if (validateRule != null && !validateRule.trim().equals("")){
+		if (validateRule != null && !validateRule.trim().equals("")) {
 			sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
 		}
-		if (value != null && !value.trim().equals("")){
+		if (value != null && !value.trim().equals("")) {
 			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, value));
 		}
-		if (additional != null){
+		if (additional != null) {
 			sb.append(" " + additional);
 		}
 		sb.append(ControlContent.INPUTEND);

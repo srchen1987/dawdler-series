@@ -35,11 +35,13 @@ import com.anywide.dawdler.serverplug.db.dao.SuperDAO;
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
+	public void create(Object service, boolean single, DawdlerContext dawdlerContext)
+			throws IllegalArgumentException, IllegalAccessException {
 		inject(service, dawdlerContext);
 	}
 
-	private void inject(Object service, DawdlerContext dawdlerContext) throws IllegalArgumentException, IllegalAccessException {
+	private void inject(Object service, DawdlerContext dawdlerContext)
+			throws IllegalArgumentException, IllegalAccessException {
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Repository resource = field.getAnnotation(Repository.class);

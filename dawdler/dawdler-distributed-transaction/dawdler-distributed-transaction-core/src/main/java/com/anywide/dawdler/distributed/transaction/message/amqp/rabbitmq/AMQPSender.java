@@ -51,7 +51,7 @@ public class AMQPSender implements MessageSender {
 		try {
 			con = connectionFactory.getConnection();
 			channel = con.createChannel();
-			channel.basicPublish(exchange, queueName, null, msg.getBytes());
+			channel.basicPublish(exchange, QUEUE_NAME, null, msg.getBytes());
 		} catch (Exception e) {
 			logger.error("", e);
 		} finally {

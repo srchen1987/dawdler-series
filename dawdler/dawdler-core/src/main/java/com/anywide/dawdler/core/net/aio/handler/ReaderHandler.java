@@ -43,7 +43,8 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 	private final static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
 	private static final int HEADER_FIELD_LENGTH = Integer.BYTES;
 	private final AtomicInteger INFERIOR_COUNT = new AtomicInteger();
-	private static final int authDataSize = 2048;
+	private static final int AUTH_DATA_SIZE = 2048;
+	private static final int INFERIOR_COUNT_NUM = 10;
 
 	@Override
 	public void completed(Integer result, AbstractSocketSession session) {
@@ -70,14 +71,15 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 					return;
 				}
 				session.toConnectionState();
-				if (!session.isNeedNext())
+				if (!session.isNeedNext()) {
 					buffer.flip();
+				}
 				int dataLength = buffer.getInt();
 				InetSocketAddress inetAddress = (InetSocketAddress) session.getRemoteAddress();
 				String ipAddress = inetAddress.getAddress().getHostAddress();
-				if (session.isServer() && !session.isAuthored() && dataLength > authDataSize) {
+				if (session.isServer() && !session.isAuthored() && dataLength > AUTH_DATA_SIZE) {
 					throw new IllegalConnectionException(
-							ipAddress + " send auth data " + dataLength + "B > " + authDataSize + "B.", ipAddress,
+							ipAddress + " send auth data " + dataLength + "B > " + AUTH_DATA_SIZE + "B.", ipAddress,
 							dataLength);
 				}
 				if (dataLength == 0) {
@@ -160,7 +162,6 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 				}
 			}
 		} else {
-			int INFERIOR_COUNT_NUM = 10;
 			if (INFERIOR_COUNT.getAndIncrement() > INFERIOR_COUNT_NUM) {
 				session.close();
 				return;
@@ -178,10 +179,12 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 	public void process(AbstractSocketSession session) {
 		AsynchronousSocketChannel channel = session.getChannel();
 		if (!session.isClose()) {
-			if (session.isReceived())
+			if (session.isReceived()) {
 				channel.read(session.getReadBuffer().getByteBuffer(), session, this);
-			else
+			}
+			else {
 				channel.read(session.getReadBuffer().getByteBuffer(), 5000, TimeUnit.MILLISECONDS, session, this);
+			}
 		}
 	}
 

@@ -16,14 +16,14 @@
  */
 package com.anywide.dawdler.conf.cache;
 
-import com.anywide.dawdler.conf.cache.ConfigDataCache.ConfigData;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.anywide.dawdler.conf.cache.ConfigDataCache.ConfigData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 /**
  * @author jackson.song
@@ -40,8 +40,7 @@ public class ConfigMappingDataCache {
 		cache.remove(path);
 	}
 
-	public static <T> T getMappingDataCache(String path, Class<T> mappingClass)
-			throws Exception {
+	public static <T> T getMappingDataCache(String path, Class<T> mappingClass) throws Exception {
 		Map<Class<?>, Object> realObjMap = cache.get(path);
 		if (realObjMap == null) {
 			return loadAndParse(path, mappingClass);
@@ -49,16 +48,14 @@ public class ConfigMappingDataCache {
 			Object obj = realObjMap.get(mappingClass);
 			if (obj == null) {
 				return loadAndParse(path, mappingClass);
-			}
-			else {
+			} else {
 				return (T) obj;
 			}
 		}
 	}
-	
-	public static Map<String, Object> getMappingDataCache(String path)
-			throws Exception{
-		return getMappingDataCache(path,LinkedHashMap.class);
+
+	public static Map<String, Object> getMappingDataCache(String path) throws Exception {
+		return getMappingDataCache(path, LinkedHashMap.class);
 	}
 
 	public static <T> T loadAndParse(String path, Class<T> mappingClass)
