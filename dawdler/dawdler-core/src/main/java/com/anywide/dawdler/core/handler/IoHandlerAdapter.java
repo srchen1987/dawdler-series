@@ -46,17 +46,20 @@ public class IoHandlerAdapter implements IoHandler {
 	}
 
 	public void messageReceived(AbstractSocketSession socketSession, Object msg) {
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("messageReceived socketSession:{} msg:{}", socketSession, msg);
+		}
 	}
 
 	public void channelIdle(AbstractSocketSession socketSession, SessionIdleType idleType) {
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("channelIdle socketSession:{} idleType:{}", socketSession, idleType);
+		}
 	}
 
 	public void messageSent(AbstractSocketSession socketSession, Object msg) {
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("messageSent socketSession:{} msg:{}", socketSession, msg);
+		}
 	}
 }

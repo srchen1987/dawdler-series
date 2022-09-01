@@ -334,8 +334,9 @@ public class NamingContext implements Context {
 	@Override
 	public NamingEnumeration<NameClassPair> list(Name name) throws NamingException {
 		// Removing empty parts
-		while ((!name.isEmpty()) && (name.get(0).length() == 0))
+		while ((!name.isEmpty()) && (name.get(0).length() == 0)) {
 			name = name.getSuffix(1);
+		}
 		if (name.isEmpty()) {
 			return new NamingContextEnumeration(bindings.values().iterator());
 		}
@@ -381,8 +382,9 @@ public class NamingContext implements Context {
 	@Override
 	public NamingEnumeration<Binding> listBindings(Name name) throws NamingException {
 		// Removing empty parts
-		while ((!name.isEmpty()) && (name.get(0).length() == 0))
+		while ((!name.isEmpty()) && (name.get(0).length() == 0)) {
 			name = name.getSuffix(1);
+		}
 		if (name.isEmpty()) {
 			return new NamingContextBindingsEnumeration(bindings.values().iterator(), this);
 		}

@@ -62,10 +62,12 @@ public class MultipartViewForward extends ViewForward {
 	public void parse(long uploadSizeMax, long uploadPerSizeMax)
 			throws FileUploadException, UnsupportedEncodingException {
 		ServletFileUpload upload = new ServletFileUpload(diskFileItemFactory);
-		if (uploadSizeMax > 0)
+		if (uploadSizeMax > 0) {
 			upload.setSizeMax(uploadSizeMax);
-		if (uploadPerSizeMax > 0)
+		}
+		if (uploadPerSizeMax > 0) {
 			upload.setFileSizeMax(uploadPerSizeMax);
+		}
 		List<FileItem> fileItems;
 		fileItems = upload.parseRequest(request);
 		for (FileItem fileItem : fileItems) {
@@ -201,16 +203,18 @@ public class MultipartViewForward extends ViewForward {
 	@Override
 	public String paramString(String paramname) {
 		List<String> list = params.get(paramname);
-		if (list != null)
+		if (list != null) {
 			return list.get(0);
+		}
 		return null;
 	}
 
 	@Override
 	public String paramString(String paramname, String defaultvalue) {
 		String value = paramString(paramname);
-		if (value == null)
+		if (value == null) {
 			return defaultvalue;
+		}
 		return value;
 	}
 
@@ -271,14 +275,15 @@ public class MultipartViewForward extends ViewForward {
 	@Override
 	public String[] paramValues(String paramname) {
 		List<String> list = params.get(paramname);
-		if (list != null)
+		if (list != null) {
 			return list.toArray(new String[0]);
+		}
 		return null;
 	}
 
 	@Override
 	public Map<String, String[]> paramMaps() {
-		Map<String, String[]> map = new HashMap<>();
+		Map<String, String[]> map = new HashMap<>(32);
 		Set<Entry<String, List<String>>> set = params.entrySet();
 		for (Entry<String, List<String>> entry : set) {
 			List<String> list = entry.getValue();
@@ -297,8 +302,9 @@ public class MultipartViewForward extends ViewForward {
 	@Override
 	public UploadFile paramFile(String paramname) {
 		List<UploadFile> files = fileParams.get(paramname);
-		if (files != null)
+		if (files != null) {
 			return files.get(0);
+		}
 		return null;
 	}
 

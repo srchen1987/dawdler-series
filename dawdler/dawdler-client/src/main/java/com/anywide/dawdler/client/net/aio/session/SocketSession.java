@@ -90,10 +90,11 @@ public class SocketSession extends AbstractSocketSession {
 
 	public synchronized void close(boolean reconnect) {
 		if (close.compareAndSet(false, true)) {
-			if (ioHandler != null)
+			if (ioHandler != null) {
 				ioHandler.channelClose(this);
-			Collection<InvokeFuture<Object>> InvokeFuture = getFutures().values();
-			InvokeFuture.forEach(
+			}
+			Collection<InvokeFuture<Object>> invokeFuture = getFutures().values();
+			invokeFuture.forEach(
 					(future) -> future.setCause(new SessionCloseException("session closed. " + this.toString())));
 			Map<SocketAddress, List<SocketSession>> sessionGroup = dawdlerConnection.getSessionGroup();
 			if (remoteAddress != null) {
