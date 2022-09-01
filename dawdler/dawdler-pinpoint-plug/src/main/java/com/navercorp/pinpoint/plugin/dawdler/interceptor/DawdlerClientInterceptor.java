@@ -72,7 +72,7 @@ public class DawdlerClientInterceptor implements AroundInterceptor {
 			setAttachment(DawdlerConstants.META_TRANSACTION_ID, nextId.getTransactionId());
 			setAttachment(DawdlerConstants.META_SPAN_ID, nextId.getSpanId());
 			setAttachment(DawdlerConstants.META_PARENT_SPAN_ID, nextId.getParentSpanId());
-			setAttachment(DawdlerConstants.META_PARENT_APPLICATION_TYPE,traceContext.getServerTypeCode());
+			setAttachment(DawdlerConstants.META_PARENT_APPLICATION_TYPE, traceContext.getServerTypeCode());
 			setAttachment(DawdlerConstants.META_PARENT_APPLICATION_NAME, traceContext.getApplicationName());
 			setAttachment(DawdlerConstants.META_FLAGS, nextId.getFlags());
 			setAttachment(DawdlerConstants.META_HOST, request.getRemoteAddress().toString());

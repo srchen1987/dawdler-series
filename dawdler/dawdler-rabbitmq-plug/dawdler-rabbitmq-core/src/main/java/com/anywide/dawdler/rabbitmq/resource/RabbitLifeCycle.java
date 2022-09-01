@@ -28,7 +28,7 @@ import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactor
  * @email suxuan696@gmail.com
  */
 public class RabbitLifeCycle implements ComponentLifeCycle {
-	 
+
 	@Override
 	public void destroy() {
 		AMQPConnectionFactory.shutdownAll();

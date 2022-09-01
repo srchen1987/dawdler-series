@@ -37,16 +37,15 @@ public @interface Schedule {
 	 * 指定配置的schedule,未指定则采用默认配置(注意quartz默认为多线程)
 	 */
 	String fileName() default "";
-	
+
 	/**
 	 * quartz的cron表达式
 	 */
 	String cron();
-	
+
 	/**
 	 * 是否并发执行
 	 */
 	boolean concurrent() default true;
-
 
 }

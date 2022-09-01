@@ -88,7 +88,7 @@ public class PageStyle {
 		boolean sig = pagenumber % 2 == 0;// 取余是否为整数
 		if (pageOn > pagenumber2) {// 如果当前页大于了 pagenumber的一半
 			start = pageOn - pagenumber2;// 起始值 从 pageOn减去pagenumber2的数开始
-			if (sig){
+			if (sig) {
 				start += 1;// 如果没有余数 起始值加一
 			}
 		}
@@ -121,8 +121,7 @@ public class PageStyle {
 			for (; start <= end; start++) {
 				if (start == pageOn) {
 					out.write(pc.getPageOn(pageOn));
-				}
-				else {
+				} else {
 					out.write(pc.getPages(linkcontent, start));
 				}
 			}
@@ -160,10 +159,10 @@ public class PageStyle {
 			return getPageStyleContentDefault();
 		}
 		PageStyleContent pc = stylecontents.get(stylename);
-		if (pc == null){
+		if (pc == null) {
 			return getPageStyleContentDefault();
 		}
-			
+
 		return pc;
 	}
 
