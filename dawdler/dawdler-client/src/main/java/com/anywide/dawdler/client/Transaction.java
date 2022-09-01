@@ -167,7 +167,7 @@ public class Transaction {
 
 	public boolean execute() throws Exception {
 		Object obj = innerExecute(false);
-		if (obj instanceof Boolean){
+		if (obj instanceof Boolean) {
 			return (Boolean) obj;
 		}
 		return true;
@@ -241,9 +241,9 @@ public class Transaction {
 	}
 
 	private void validate() {
-		if (serviceName == null || method == null){
+		if (serviceName == null || method == null) {
 			throw new IllegalArgumentException("serviceName,method can't be null!");
 		}
-			
+
 	}
 }

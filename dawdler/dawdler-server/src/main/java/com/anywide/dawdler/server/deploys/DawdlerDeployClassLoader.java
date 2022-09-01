@@ -204,16 +204,16 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			throws ClassNotFoundException {
 		Method method = (Method) dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_METHOD);
 		Object aspectSupportObj = dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_OBJ);
-		if(aspectSupportObj != null) {
+		if (aspectSupportObj != null) {
 			try {
 				classData = (byte[]) method.invoke(aspectSupportObj, name, classData, classLoader, null);
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
 				logger.error("", e);
 			}
 		}
 		return defineClass(name, classData, 0, classData.length, cs);
 	}
-
 
 	@Override
 	public String toString() {
