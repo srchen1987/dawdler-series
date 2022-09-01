@@ -66,8 +66,9 @@ public class ReflectionUtil {
 		if (methodAccess == null) {
 			methodAccess = MethodAccess.get(objectClass);
 			MethodAccess preMethodAccess = methodAccessCache.putIfAbsent(objectClass, methodAccess);
-			if (preMethodAccess != null)
+			if (preMethodAccess != null) {
 				methodAccess = preMethodAccess;
+			}
 		}
 		return methodAccess;
 	}

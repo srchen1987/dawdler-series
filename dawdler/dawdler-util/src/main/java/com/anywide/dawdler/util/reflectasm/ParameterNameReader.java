@@ -42,7 +42,7 @@ import org.objectweb.asm.tree.MethodNode;
  */
 public class ParameterNameReader {
 
-	private static final Map<Class<?>, Map<Method, String[]>> parameterNamesCache = new ConcurrentHashMap<>(64);
+	private static final Map<Class<?>, Map<Method, String[]>> PARAMETER_NAMES_CACHE = new ConcurrentHashMap<>(64);
 
 	/**
 	 * 
@@ -64,17 +64,19 @@ public class ParameterNameReader {
 	 */
 	public static void loadAllDeclaredMethodsParameterNames(Class<?> clazz, byte[] classCodes) throws IOException {
 		Map<Method, String[]> methodsParameterNames = getParameterNames(clazz);
-		if (methodsParameterNames != null)
+		if (methodsParameterNames != null) {
 			return;
+		}
 		ClassReader classReader = new ClassReader(classCodes);
 		ClassNode classNode = new ClassNode();
 		classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
 		Method[] methods = clazz.getDeclaredMethods();
-		if (methods.length == 0)
+		if (methods.length == 0) {
 			methodsParameterNames = Collections.emptyMap();
-		else
+		}
+		else {
 			methodsParameterNames = new HashMap<>(32);
-
+		}
 		for (Method method : methods) {
 			boolean statics = Modifier.isStatic(method.getModifiers());
 			if (statics || method.isBridge() || method.isVarArgs() || Modifier.isPrivate(method.getModifiers())
@@ -90,15 +92,15 @@ public class ParameterNameReader {
 			MethodNode methodNode = findMethod(classNode, name, desc);
 			methodsParameterNames.put(method, findLocalVars(methodNode, parameterCount));
 		}
-		parameterNamesCache.put(clazz, methodsParameterNames);
+		PARAMETER_NAMES_CACHE.put(clazz, methodsParameterNames);
 	}
 
 	public static Map<Method, String[]> getParameterNames(Class<?> clazz) {
-		return parameterNamesCache.get(clazz);
+		return PARAMETER_NAMES_CACHE.get(clazz);
 	}
 
 	public static void removeParameterNames(Class<?> clazz) {
-		parameterNamesCache.remove(clazz);
+		PARAMETER_NAMES_CACHE.remove(clazz);
 	}
 
 	public static MethodNode findMethod(ClassNode cn, String name, String desc) {
@@ -113,8 +115,9 @@ public class ParameterNameReader {
 
 	public static String[] findLocalVars(MethodNode methodNode, /* boolean statics, */ int parameterCount) {
 		List<LocalVariableNode> localVariableNodes = methodNode.localVariables;
-		if (localVariableNodes.isEmpty())
+		if (localVariableNodes.isEmpty()) {
 			return null;
+		}
 		String[] parameterNames = new String[parameterCount];
 		Comparator<LocalVariableNode> indexComparator = (o1, o2) -> o1.index - o2.index;
 		Collections.sort(localVariableNodes, indexComparator);

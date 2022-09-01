@@ -131,10 +131,10 @@ public class DistributedTransactionAspect {
 					branchContext.setStatus(TransactionStatus.TRYING);
 					RpcContext.getContext().setAttachment(
 							DistributedTransactionContext.DISTRIBUTED_TRANSACTION_CONTEXT_KEY, branchContext);
-					Object args[] = pjp.getArgs();
+					Object[] args = pjp.getArgs();
 					Parameter[] parameters = method.getParameters();
 					if (args.length > 0) {
-						Map<String, Object> data = new HashMap<>();
+						Map<String, Object> data = new HashMap<>(16);
 						for (int i = 0; i < parameters.length; i++) {
 							data.put(parameters[i].getName(), args[i]);
 						}
@@ -189,7 +189,7 @@ public class DistributedTransactionAspect {
 	}
 
 	public void confirm(String action, String globalTxId) throws Exception {
-		Map<String, Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<>(8);
 		data.put("status", TransactionStatus.CONFIRM);
 		data.put("action", action);
 		data.put("globalTxId", globalTxId);
@@ -199,7 +199,7 @@ public class DistributedTransactionAspect {
 	}
 
 	public void cancel(String action, String globalTxId) throws Exception {
-		Map<String, Object> data = new HashMap<>();
+		Map<String, Object> data = new HashMap<>(8);
 		data.put("status", TransactionStatus.CANCEL);
 		data.put("action", action);
 		data.put("globalTxId", globalTxId);

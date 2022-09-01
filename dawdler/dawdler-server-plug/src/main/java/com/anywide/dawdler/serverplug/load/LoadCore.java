@@ -67,8 +67,9 @@ public class LoadCore implements Runnable {
 
 	public LoadCore(String host, long time, String channelGroupId) {
 		this.host = host;
-		if (time > 1000)
+		if (time > 1000) {
 			this.time = time;
+		}
 		this.channelGroupId = channelGroupId;
 	}
 
@@ -87,8 +88,9 @@ public class LoadCore implements Runnable {
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-		if (xmlb == null)
+		if (xmlb == null) {
 			throw new NullPointerException("not found host " + host + "!");
+		}
 		XmlObject xmlo = new XmlObject(xmlb.getDocument());
 		String filepath = getLogFilePath();
 		File file = new File(filepath);
@@ -140,7 +142,7 @@ public class LoadCore implements Runnable {
 	}
 
 	private boolean willCheckAndLoad(XmlObject local, XmlObject remote, String type) throws IOException {
-		boolean isApi = type.equals(TYPE_API);
+		boolean isApi = TYPE_API.equals(type);
 		boolean remark = false;
 		List<String> allClass = new ArrayList<String>();
 		Set<String> needLoad = new LinkedHashSet<String>();
@@ -161,17 +163,22 @@ public class LoadCore implements Runnable {
 		}
 		String classFilePath = CURRENT_PATH;
 		Set<String> loadCache = new LinkedHashSet<String>();
-		for (String name : allClass) {// 循环客户端和服务器端都有的类
+		// 循环客户端和服务器端都有的类
+		for (String name : allClass) {
+			// 查找本地文件在服务器端不存在的(去除这个names值以外的)
 			for (Object item : local
-					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
+					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']")) {
 				Element ele = (Element) item;
 				String checkName = ele.attributeValue("checkname");
-				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {// 如果list里面不包含并且set中也不包含
-					loadCache.add(checkName);// set中添加进去
+				// 如果list里面不包含并且set中也不包含
+				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {
+					// set中添加进去
+					loadCache.add(checkName);
 					remark = true;
 					File file = new File(classFilePath + checkName);
-					if (file.exists())
+					if (file.exists()) {
 						file.delete();
+					}
 				}
 			}
 			List<Node> items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']");
@@ -184,8 +191,9 @@ public class LoadCore implements Runnable {
 					String className = toClassName(checkName);
 					needLoad.add(className + CLASSP_REFIX);
 					File file = new File(classFilePath + checkName);
-					if (file.exists())
+					if (file.exists()) {
 						file.delete();
+					}
 				}
 			}
 		}
@@ -240,11 +248,13 @@ public class LoadCore implements Runnable {
 					String filePath = className.replace(".", File.separator);
 					File file = new File(CURRENT_PATH + filePath + CLASSP_REFIX);
 					File parentFile = new File(file.getParent());
-					if (file.exists())
+					if (file.exists()) {
 						file.delete();
+					}
 					if (!parentFile.exists()) {
-						if (!parentFile.mkdirs())
+						if (!parentFile.mkdirs()) {
 							throw new IOException("can't write file to" + parentFile.getPath());
+						}
 					}
 					FileOutputStream fo = null;
 					try {
@@ -256,8 +266,9 @@ public class LoadCore implements Runnable {
 						return;
 					} finally {
 						try {
-							if (fo != null)
+							if (fo != null) {
 								fo.close();
+							}
 						} catch (IOException e) {
 							logger.error("", e);
 						}
@@ -265,8 +276,9 @@ public class LoadCore implements Runnable {
 				}
 			}
 		}
-		if (logger.isDebugEnabled())
+		if (logger.isDebugEnabled()) {
 			logger.debug("load over \t" + host + "\tmodel !");
+		}
 	}
 
 	public String getHost() {

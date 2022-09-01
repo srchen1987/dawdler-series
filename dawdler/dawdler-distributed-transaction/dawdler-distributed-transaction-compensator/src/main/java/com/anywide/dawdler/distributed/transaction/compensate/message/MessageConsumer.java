@@ -74,13 +74,15 @@ public class MessageConsumer {
 				executor.execute(() -> {
 					String action = dt.getAction();
 					Object obj = DistributedTransactionCustomProcessor.getProcessor(action);
-					if (obj == null)
+					if (obj == null) {
 						throw new NullPointerException("not found processor " + action + " !");
+					}
 					String branchTxId = dt.getBranchTxId();
 					boolean result = ((DistributedTransactionCustomProcessor) obj).process(dt, status);
-					if (logger.isDebugEnabled())
+					if (logger.isDebugEnabled()) {
 						logger.debug("compensate_result: globalTxId:{} branchId:{} action:{} status:{} result:{}",
-								dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
+						dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
+					}
 					if (result) {
 						try {
 							transactionRepository.deleteByBranchTxId(globalTxId, branchTxId);

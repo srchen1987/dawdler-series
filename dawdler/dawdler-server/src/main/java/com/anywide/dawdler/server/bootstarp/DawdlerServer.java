@@ -95,10 +95,12 @@ public class DawdlerServer {
 	private void listenStop() {
 		int port = dawdlerServerContext.getServerConfig().getServer().getTcpShutdownPort();
 		String shutdownWhiteList = dawdlerServerContext.getServerConfig().getServer().getShutdownWhiteList();
-		if (shutdownWhiteList != null && shutdownWhiteList.trim().equals(""))
+		if (shutdownWhiteList != null && shutdownWhiteList.trim().equals("")) {
 			return;
-		if (shutdownWhiteList == null)
+		}
+		if (shutdownWhiteList == null) {
 			shutdownWhiteList = "127.0.0.1,localhost";
+		}
 		String[] shutdownWhiteListArray = shutdownWhiteList.split(",");
 		ServerSocket sk = null;
 		Socket socket = null;
@@ -112,8 +114,9 @@ public class DawdlerServer {
 					String hostAddress = socket.getInetAddress().getHostAddress();
 					boolean legal = false;
 					for (String s : shutdownWhiteListArray) {
-						if (legal = s.equals(hostAddress))
+						if (legal = s.equals(hostAddress)) {
 							break;
+						}
 					}
 					if (!legal) {
 						socket.close();

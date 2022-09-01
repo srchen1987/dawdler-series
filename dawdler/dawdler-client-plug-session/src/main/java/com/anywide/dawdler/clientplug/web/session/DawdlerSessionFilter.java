@@ -150,13 +150,13 @@ public class DawdlerSessionFilter implements Filter {
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
 	private Pool<Jedis> jedisPool;
-	private final static String sessionRedisFileName = "session-redis";
+	private final static String SESSION_REDIS_FILE_NAME = "session-redis";
 	private MessageOperator messageOperator;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		try {
-			jedisPool = JedisPoolFactory.getJedisPool(sessionRedisFileName);
+			jedisPool = JedisPoolFactory.getJedisPool(SESSION_REDIS_FILE_NAME);
 		} catch (Exception e) {
 			logger.error("", e);
 			throw new ServletException(e);

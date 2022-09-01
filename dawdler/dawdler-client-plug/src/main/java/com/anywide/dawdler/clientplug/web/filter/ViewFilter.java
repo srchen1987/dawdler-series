@@ -61,12 +61,14 @@ public class ViewFilter implements Filter {
 		String uriShort = uri.substring(uri.indexOf(contextPath) + contextPath.length() - 1);
 		String type = request.getHeader("Content-Type");
 		boolean isJson = type != null && type.contains("application/json");
-		if (isJson)
+		if (isJson) {
 			request = new BodyReaderHttpServletRequestWrapper(request);
+		}
 		try {
 			boolean status = annotationUrlHander.handleUrl(uriShort, method, request, response);
-			if (!status)
+			if (!status) {
 				chain.doFilter(request, response);
+			}
 		} catch (Throwable e) {
 			throw new ServletException(e);
 		}

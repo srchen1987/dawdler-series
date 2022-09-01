@@ -71,8 +71,9 @@ public class ConnectorHandler implements CompletionHandler<Void, SocketSession> 
 	@Override
 	public void failed(Throwable exc, SocketSession socketSession) {
 		socketSession.getInitLatch().countDown();
-		if (ioHandler != null)
+		if (ioHandler != null) {
 			ioHandler.exceptionCaught(socketSession, exc);
+		}
 		try {
 			socketSession.close();
 		} catch (Exception e) {
