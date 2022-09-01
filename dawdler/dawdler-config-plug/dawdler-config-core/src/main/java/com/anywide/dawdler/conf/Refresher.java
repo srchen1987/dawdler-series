@@ -42,7 +42,7 @@ import com.anywide.dawdler.util.ClassUtil;
 public class Refresher {
 	private static Logger logger = LoggerFactory.getLogger(Refresher.class);
 
-	private final static JexlEngine engine = new Engine();
+	private final static JexlEngine ENGINE = new Engine();
 
 	public static void refreshAllConfig(Object target, boolean addPathMapping) {
 		Class<?> clazz = target.getClass();
@@ -52,8 +52,9 @@ public class Refresher {
 			FieldConfig conf = field.getAnnotation(FieldConfig.class);
 			if (conf != null) {
 				refreshFieldConfig(target, field, conf);
-				if (addPathMapping)
+				if (addPathMapping) {
 					PathMappingTargetCache.addPathMappingTarget(conf.path(), target, field);
+				}
 			}
 		}
 	}
@@ -67,10 +68,10 @@ public class Refresher {
 			String value = config.value();
 			String path = config.path();
 			field.setAccessible(true);
-			if (!value.equals("")) {
+			if (!"".equals(value)) {
 				Map<String, Object> mappingData = ConfigMappingDataCache.getMappingDataCache(path);
 				JexlContext context = new MapContext(mappingData);
-				Object obj = engine.createExpression(value).evaluate(context);
+				Object obj = ENGINE.createExpression(value).evaluate(context);
 				setValue(field, target, obj);
 			} else {
 				Class<?> typeClass = field.getType();
@@ -84,8 +85,9 @@ public class Refresher {
 	}
 
 	public static void setValue(Field field, Object target, Object value) {
-		if (value == null)
+		if (value == null) {
 			return;
+		}
 		Class<?> typeClass = field.getType();
 		if (typeClass.isAssignableFrom(value.getClass())) {
 			try {

@@ -71,11 +71,13 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 
 	@Override
 	public URL getResource(String name) {
-		if (name == null || name.trim().equals(""))
+		if (name == null || name.trim().equals("")) {
 			name = "/";
+		}
 		URL url = urlCache.get(name);
-		if (url != null)
+		if (url != null) {
 			return url;
+		}
 		if (name.equals("/")) {
 			try {
 				url = new File(dawdlerContext.getDeployClassPath()).toURI().toURL();
@@ -180,8 +182,9 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 		if (res != null) {
 			try {
 				Class<?> clazz = findLoadedClass(name);
-				if (clazz != null)
+				if (clazz != null) {
 					return clazz;
+				}
 				clazz = defineClassForDawdler(name, res);
 				return clazz;
 			} catch (IOException e) {

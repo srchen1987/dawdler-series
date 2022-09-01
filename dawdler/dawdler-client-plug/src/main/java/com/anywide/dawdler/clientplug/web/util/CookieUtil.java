@@ -87,19 +87,22 @@ public class CookieUtil {
 	}
 
 	public static String getCookieValue(Cookie[] cookies, String name) {
-		if (cookies == null || cookies.length == 0)
+		if (cookies == null || cookies.length == 0) {
 			return null;
+		}
 		for (Cookie cookie : cookies) {
-			if (cookie.getName().equals(name))
+			if (cookie.getName().equals(name)) {
 				return cookie.getValue();
+			}
 		}
 		return null;
 	}
 
 	private static String[] splitValue(String value) {
 		String[] v = value.split("=");
-		if (v.length != 2)
+		if (v.length != 2) {
 			return null;
+		}
 		return v;
 	}
 }

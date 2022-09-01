@@ -83,8 +83,9 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 			HandlerInterceptor interceptor = (HandlerInterceptor) target;
 			List<OrderData<HandlerInterceptor>> interceptors = InterceptorProvider.getHandlerInterceptors();
 			for (OrderData<HandlerInterceptor> orderData : interceptors) {
-				if (orderData.getData().getClass() == clazz)
+				if (orderData.getData().getClass() == clazz) {
 					return;
+				}
 			}
 			InterceptorProvider.addHandlerInterceptor(interceptor);
 			ServiceFactory.injectRemoteService(clazz, interceptor, clazz.getClassLoader());
@@ -93,8 +94,9 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	}
 
 	private void initMapping(Class<?> clazz, Object target, byte[] classCodes) {
-		if (clazz.isInterface())
+		if (clazz.isInterface()) {
 			return;
+		}
 		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
 			ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
 			RequestMapping classRequestMapping = clazz.getAnnotation(RequestMapping.class);

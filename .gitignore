@@ -18,6 +18,7 @@
 #target fil
 target/
 
+bin/
 
 /target/
 .classpath

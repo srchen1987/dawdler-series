@@ -40,10 +40,11 @@ public class PathMappingTargetCache {
 	public static void addPathMappingTarget(String path, Object target, Field field) {
 		Map<Object, Set<Field>> fieldsMap = cache.get(path);
 		if (fieldsMap == null) {
-			fieldsMap = new ConcurrentHashMap<>();
+			fieldsMap = new ConcurrentHashMap<>(16);
 			Map<Object, Set<Field>> pre = cache.putIfAbsent(path, fieldsMap);
-			if (pre != null)
+			if (pre != null) {
 				fieldsMap = pre;
+			}
 			bindField(fieldsMap, target, field);
 		} else {
 			bindField(fieldsMap, target, field);
@@ -55,8 +56,9 @@ public class PathMappingTargetCache {
 		if (fields == null) {
 			fields = new CopyOnWriteArraySet<>();
 			Set<Field> preFields = fieldsMap.putIfAbsent(target, fields);
-			if (preFields != null)
+			if (preFields != null) {
 				fields = preFields;
+			}
 		}
 		fields.add(field);
 	}
