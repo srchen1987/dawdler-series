@@ -38,6 +38,5 @@ public class ScheduleLifeCycle implements ComponentLifeCycle {
 	public void destroy() throws Throwable {
 		ScheduleOperator.shutdown();
 	}
-	 
 
 }

@@ -48,7 +48,6 @@ import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
 import com.anywide.dawdler.util.PropertiesUtil;
 
-
 /**
  * @author jackson.song
  * @version V1.0

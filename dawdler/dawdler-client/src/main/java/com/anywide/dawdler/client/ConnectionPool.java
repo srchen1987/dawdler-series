@@ -79,11 +79,13 @@ public class ConnectionPool {
 		}
 
 	}
+
 	private ConnectionPool() {
 	}
+
 	public static void initConnection(String gid) {
 		ServerChannelGroup sg = SERVER_CHANNEL_GROUPS.get(gid);
-		if (sg == null){
+		if (sg == null) {
 			throw new NullPointerException("not configure " + gid + "!");
 		}
 		ConnectionPool cp = getConnectionPool(gid);
@@ -92,10 +94,10 @@ public class ConnectionPool {
 		int connectionNum = sg.getConnectionNum();
 		int serializer = sg.getSerializer();
 		int sessionNum = sg.getSessionNum();
-		if (connectionNum <= 0){
+		if (connectionNum <= 0) {
 			connectionNum = 1;
 		}
-		if (sessionNum <= 0){
+		if (sessionNum <= 0) {
 			sessionNum = 1;
 		}
 		for (int j = 0; j < connectionNum; j++) {
@@ -118,8 +120,8 @@ public class ConnectionPool {
 	}
 
 	/**
-	 *  provider for web container call
-	**/
+	 * provider for web container call
+	 **/
 	public static void shutdown() throws Exception {
 		for (ConnectionPool c : GROUPS.values()) {
 			c.close();
@@ -143,10 +145,10 @@ public class ConnectionPool {
 	public List<DawdlerConnection> getConnections() {
 		if (connections.isEmpty()) {
 			try {
-				if (semaphore.tryAcquire(6000, TimeUnit.MILLISECONDS)){
+				if (semaphore.tryAcquire(6000, TimeUnit.MILLISECONDS)) {
 					return connections;
 				}
-					
+
 			} catch (InterruptedException e) {
 			}
 			throw new IllegalArgumentException("not find " + groupName + " provider!");

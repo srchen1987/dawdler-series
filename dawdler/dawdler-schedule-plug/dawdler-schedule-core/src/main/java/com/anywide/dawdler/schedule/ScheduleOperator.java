@@ -66,12 +66,13 @@ public class ScheduleOperator {
 		});
 	}
 
-	public static void addJob(String fileName, String cron, boolean concurrent, Object target, Method method) throws SchedulerException {
+	public static void addJob(String fileName, String cron, boolean concurrent, Object target, Method method)
+			throws SchedulerException {
 		Scheduler scheduler = SchedulerFactory.getInstance().getScheduler(fileName);
 		JobDetail jobDetail;
-		if(concurrent) {
+		if (concurrent) {
 			jobDetail = JobBuilder.newJob(ConcurrentInnnerJob.class).build();
-		}else {
+		} else {
 			jobDetail = JobBuilder.newJob(InnnerJob.class).build();
 		}
 		jobDetail.getJobDataMap().put(TARGET, target);
@@ -117,7 +118,7 @@ public class ScheduleOperator {
 			}
 			org.quartz.SchedulerFactory factory = instances.get(fileName);
 			if (factory == null) {
-				factory = new StdSchedulerFactory(fileName+PREFIX);
+				factory = new StdSchedulerFactory(fileName + PREFIX);
 				org.quartz.SchedulerFactory pre = instances.putIfAbsent(fileName, factory);
 				if (pre != null) {
 					factory = pre;
@@ -155,7 +156,7 @@ public class ScheduleOperator {
 		}
 
 	}
-	
+
 	public static class ConcurrentInnnerJob implements Job {
 
 		@Override

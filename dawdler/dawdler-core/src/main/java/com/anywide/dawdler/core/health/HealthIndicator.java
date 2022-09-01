@@ -17,14 +17,14 @@
 package com.anywide.dawdler.core.health;
 
 /**
-*
-* @author jackson.song
-* @version V1.0
-* @Title HealthIndicator.java
-* @Description HealthIndicator 健康指示器接口
-* @date 2022年5月1日
-* @email suxuan696@gmail.com
-*/
+ *
+ * @author jackson.song
+ * @version V1.0
+ * @Title HealthIndicator.java
+ * @Description HealthIndicator 健康指示器接口
+ * @date 2022年5月1日
+ * @email suxuan696@gmail.com
+ */
 public interface HealthIndicator {
 
 	public String name();
