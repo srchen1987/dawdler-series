@@ -25,15 +25,15 @@ package com.anywide.dawdler.core.net.buffer;
  * @email suxuan696@gmail.com
  */
 public class BufferFactory {
-	private static final BufferCreator directBufferCreator = new DirectBufferCreator();
-	private static final BufferCreator heapBufferCreator = new HeapBufferCreator();
+	private static final BufferCreator DIRECT_BUFFER_CREATOR = new DirectBufferCreator();
+	private static final BufferCreator HEAP_BUFFER_CREATOR = new HeapBufferCreator();
 
 	public static DawdlerByteBuffer createDirectBuffer(int capacity) throws Exception {
-		return directBufferCreator.createByteBuffer(capacity);
+		return DIRECT_BUFFER_CREATOR.createByteBuffer(capacity);
 	}
 
 	public static DawdlerByteBuffer createdHeadBuffer(int capacity) throws Exception {
-		return heapBufferCreator.createByteBuffer(capacity);
+		return HEAP_BUFFER_CREATOR.createByteBuffer(capacity);
 	}
 
 }

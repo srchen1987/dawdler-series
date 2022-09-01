@@ -32,8 +32,8 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
  * @email suxuan696@gmail.com
  */
 public class PoolBuffer {
-	private static final ConcurrentHashMap<Integer, PoolBuffer> poolBuffers = new ConcurrentHashMap<>();
-	private static final TreeSet<Integer> order = new TreeSet<>();
+	private static final ConcurrentHashMap<Integer, PoolBuffer> POOL_BUFFERS = new ConcurrentHashMap<>();
+	private static final TreeSet<Integer> ORDER = new TreeSet<>();
 
 	static {
 		addPool(1024 * 32);
@@ -57,24 +57,27 @@ public class PoolBuffer {
 
 	public static void addPool(int capacity) {
 		PoolBuffer poolBuffer = new PoolBuffer(capacity);
-		PoolBuffer pre = poolBuffers.putIfAbsent(capacity, poolBuffer);
-		if (pre != null)
+		PoolBuffer pre = POOL_BUFFERS.putIfAbsent(capacity, poolBuffer);
+		if (pre != null) {
 			poolBuffer.close();
-		else
-			order.add(capacity);
+		}
+		else {
+			ORDER.add(capacity);
+		}
 	}
 
 	public static PoolBuffer selectPool(int capacity) {
 		int key = 0;
-		for (int num : order) {
+		for (int num : ORDER) {
 			if (num >= capacity) {
 				key = num;
 				break;
 			}
 		}
-		if (key == 0)
+		if (key == 0) {
 			return null;
-		return poolBuffers.get(key);
+		}
+		return POOL_BUFFERS.get(key);
 	}
 
 	public DawdlerByteBuffer getByteBuffer() throws Exception {

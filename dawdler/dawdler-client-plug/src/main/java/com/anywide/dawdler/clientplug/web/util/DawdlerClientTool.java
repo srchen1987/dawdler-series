@@ -33,8 +33,9 @@ public class DawdlerClientTool {
 		if (forward_header != null && !forward_header.trim().equals("")) {
 			String[] forward_headers = forward_header.split(",");
 			for (String s : forward_headers) {
-				if (!s.trim().equalsIgnoreCase("unknown"))
+				if (!s.trim().equalsIgnoreCase("unknown")) {
 					return s;
+				}
 			}
 		}
 		/*
@@ -44,8 +45,9 @@ public class DawdlerClientTool {
 		 * request.getHeader("WL-Proxy-Client-IP"); } if(isempty(ip) ||
 		 * "unknown".equalsIgnoreCase(ip)) { ip = request.getRemoteAddr(); }
 		 */
-		if (empty(ip))
+		if (empty(ip)) {
 			return request.getRemoteAddr();
+		}
 		return ip;
 	}
 

@@ -248,8 +248,9 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 				xmlConfigBuilder = new XMLConfigBuilder(input, null, this.configurationProperties);
 				configuration = xmlConfigBuilder.getConfiguration();
 			} finally {
-				if (input != null)
+				if (input != null) {
 					input.close();
+				}
 			}
 
 		} else {

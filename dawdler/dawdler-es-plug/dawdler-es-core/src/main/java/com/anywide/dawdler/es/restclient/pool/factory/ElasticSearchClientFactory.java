@@ -49,21 +49,21 @@ public class ElasticSearchClientFactory {
 		}
 	}
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;
-	private final static Map<String, ElasticSearchClientFactory> instances = new ConcurrentHashMap<>();
+	private final static Map<String, ElasticSearchClientFactory> INSTANCES = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 
 	public static ElasticSearchClientFactory getInstance(String fileName) throws Exception {
-		ElasticSearchClientFactory connectionFactory = instances.get(fileName);
+		ElasticSearchClientFactory connectionFactory = INSTANCES.get(fileName);
 		if (connectionFactory != null) {
 			return connectionFactory;
 		}
-		synchronized (instances) {
-			connectionFactory = instances.get(fileName);
+		synchronized (INSTANCES) {
+			connectionFactory = INSTANCES.get(fileName);
 			if (connectionFactory == null) {
-				instances.put(fileName, new ElasticSearchClientFactory(fileName));
+				INSTANCES.put(fileName, new ElasticSearchClientFactory(fileName));
 			}
 		}
-		return instances.get(fileName);
+		return INSTANCES.get(fileName);
 	}
 
 	public ElasticSearchClientFactory(String fileName) throws Exception {
@@ -137,7 +137,7 @@ public class ElasticSearchClientFactory {
 
 	public static void shutdownAll() {
 		if (stopped.compareAndSet(false, true)) {
-			instances.forEach((k, v) -> {
+			INSTANCES.forEach((k, v) -> {
 				if (!v.isClose()) {
 					v.close();
 				}
@@ -146,6 +146,6 @@ public class ElasticSearchClientFactory {
 	}
 
 	public static Map<String, ElasticSearchClientFactory> getInstances() {
-		return instances;
+		return INSTANCES;
 	}
 }

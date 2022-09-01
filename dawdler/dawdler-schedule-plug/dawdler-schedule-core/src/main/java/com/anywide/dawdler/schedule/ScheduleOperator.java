@@ -100,8 +100,8 @@ public class ScheduleOperator {
 	public static class SchedulerFactory {
 		private Scheduler scheduler;
 		private static final String PREFIX = ".properties";
-		private final static SchedulerFactory instance = new SchedulerFactory();
-		private Map<String, org.quartz.SchedulerFactory> instances = new ConcurrentHashMap<String, org.quartz.SchedulerFactory>();
+		private final static SchedulerFactory INSTANCE = new SchedulerFactory();
+		private Map<String, org.quartz.SchedulerFactory> INSTANCES = new ConcurrentHashMap<String, org.quartz.SchedulerFactory>(8);
 
 		private SchedulerFactory() {
 			org.quartz.SchedulerFactory schedulerFactory = new StdSchedulerFactory();
@@ -116,10 +116,10 @@ public class ScheduleOperator {
 			if ("".equals(fileName)) {
 				return scheduler;
 			}
-			org.quartz.SchedulerFactory factory = instances.get(fileName);
+			org.quartz.SchedulerFactory factory = INSTANCES.get(fileName);
 			if (factory == null) {
 				factory = new StdSchedulerFactory(fileName + PREFIX);
-				org.quartz.SchedulerFactory pre = instances.putIfAbsent(fileName, factory);
+				org.quartz.SchedulerFactory pre = INSTANCES.putIfAbsent(fileName, factory);
 				if (pre != null) {
 					factory = pre;
 				}
@@ -128,15 +128,15 @@ public class ScheduleOperator {
 		}
 
 		public Map<String, org.quartz.SchedulerFactory> getInstances() {
-			return instances;
+			return INSTANCES;
 		}
 
 		public void setInstances(Map<String, org.quartz.SchedulerFactory> instances) {
-			this.instances = instances;
+			this.INSTANCES = instances;
 		}
 
 		public static SchedulerFactory getInstance() {
-			return instance;
+			return INSTANCE;
 		}
 
 	}

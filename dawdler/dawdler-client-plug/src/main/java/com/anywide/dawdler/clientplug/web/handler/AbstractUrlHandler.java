@@ -47,11 +47,13 @@ public abstract class AbstractUrlHandler {
 			.getHandlerInterceptors();
 
 	public boolean preHandle(Object target, ViewForward viewForward, RequestMapping requestMapping) throws Exception {
-		if (handlerInterceptors != null)
+		if (handlerInterceptors != null) {
 			for (OrderData<HandlerInterceptor> handlerInterceptor : handlerInterceptors) {
-				if (!handlerInterceptor.getData().preHandle(target, viewForward, requestMapping))
+				if (!handlerInterceptor.getData().preHandle(target, viewForward, requestMapping)) {
 					return false;
+				}
 			}
+		}
 		return true;
 	}
 

@@ -12,18 +12,18 @@ import org.jsoup.safety.Safelist;
  */
 public class XssUtil {
 
-	private final static Safelist user_content_filter = Safelist.basic();
+	private final static Safelist USER_CONTENT_FILTER = Safelist.basic();
 
 	static {
-		user_content_filter.addTags("embed", "object", "td", "param", "span", "div", "p", "strong", "b", "font", "img",
+		USER_CONTENT_FILTER.addTags("embed", "object", "td", "param", "span", "div", "p", "strong", "b", "font", "img",
 				"tr", "li", "th", "ul", "br", "h1", "h2", "h3", "h4", "h5", "h6", "ol", "table", "tbody");
-		user_content_filter.addAttributes(":all", "style", "type", "class", "id", "name", "color", "src", "width",
+		USER_CONTENT_FILTER.addAttributes(":all", "style", "type", "class", "id", "name", "color", "src", "width",
 				"height");
-		user_content_filter.addAttributes("object", "width", "height", "classid", "codebase", "alert");
-		user_content_filter.addAttributes("param", "name", "value");
-		user_content_filter.addAttributes("embed", "src", "quality", "width", "height", "allowFullScreen",
+		USER_CONTENT_FILTER.addAttributes("object", "width", "height", "classid", "codebase", "alert");
+		USER_CONTENT_FILTER.addAttributes("param", "name", "value");
+		USER_CONTENT_FILTER.addAttributes("embed", "src", "quality", "width", "height", "allowFullScreen",
 				"allowScriptAccess", "flashvars", "name", "type", "pluginspage");
-		user_content_filter.addAttributes("a", "href");
+		USER_CONTENT_FILTER.addAttributes("a", "href");
 	}
 
 	// 只去除ipt事件或脚本 保留以上定义的
@@ -31,7 +31,7 @@ public class XssUtil {
 		if (value == null) {
 			return null;
 		}
-		return Jsoup.clean(value, user_content_filter);
+		return Jsoup.clean(value, USER_CONTENT_FILTER);
 	}
 
 	// 替换所有脚本 转换成&lt; &gt; 等等

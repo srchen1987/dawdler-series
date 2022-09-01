@@ -81,7 +81,7 @@ public class AmqpConsumer extends MessageConsumer {
 	}
 
 	public void consume() throws Exception {
-		channel.basicConsume(MessageSender.queueName, true, new DefaultConsumer(channel) {
+		channel.basicConsume(MessageSender.QUEUE_NAME, true, new DefaultConsumer(channel) {
 			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 					byte[] body) throws IOException {
 				consume(body);

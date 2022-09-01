@@ -108,8 +108,9 @@ public class DawdlerContext {
 
 	public <T> T getServiceProxy(Class<T> type) throws Throwable {
 		Object obj = getAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX);
-		if (obj != null)
+		if (obj != null) {
 			return ServiceFactory.getService(type, (ServiceExecutor) obj, this);
+		}
 		return getService(type);
 	}
 
