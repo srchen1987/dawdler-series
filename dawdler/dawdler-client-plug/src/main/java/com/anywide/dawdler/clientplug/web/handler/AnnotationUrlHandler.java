@@ -16,6 +16,16 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
@@ -24,15 +34,9 @@ import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHandler
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 import com.anywide.dawdler.clientplug.web.validator.exception.ValidationException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 
@@ -93,8 +97,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
 			return true;
 		}
-		String contentType = request.getContentType();
-		boolean multipart = contentType != null ? contentType.toLowerCase().startsWith(MULTIPART) : false;
+		boolean multipart = ServletFileUpload.isMultipartContent(request);
 		ViewForward viewForward = createViewForward();
 		String exceptionHandler = requestMapping.exceptionHandler();
 		ViewType viewType = requestMapping.viewType();
