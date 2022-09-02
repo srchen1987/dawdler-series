@@ -57,42 +57,42 @@ public class DataProcessor {
 		Object obj = serializer.deserialize(data);
 		if (ioHandler != null) {
 			ioHandler.messageReceived(socketSession, obj);
-		if (obj instanceof ResponseBean response) {
-			long seq = response.getSeq();
-			InvokeFuture<Object> invoke = socketSession.getFutures().remove(seq);
-			if (response.getCause() != null)
-				invoke.setCause(response.getCause());
-			else {
-				invoke.setResult(response.getTarget());
-			}
-		} else if (obj instanceof AuthResponseBean authResponse) {
-			if (authResponse.isSuccess()) {
-				List<SocketSession> sessions = new CopyOnWriteArrayList<>();
-				List<SocketSession> preSessions = socketSession.getDawdlerConnection().getSessionGroup()
-						.putIfAbsent(socketSession.getRemoteAddress(), sessions);
-				if (preSessions != null) {
-					sessions = preSessions;
+			if (obj instanceof ResponseBean response) {
+				long seq = response.getSeq();
+				InvokeFuture<Object> invoke = socketSession.getFutures().remove(seq);
+				if (response.getCause() != null)
+					invoke.setCause(response.getCause());
+				else {
+					invoke.setResult(response.getTarget());
 				}
-				sessions.add(socketSession);
-				if (ioHandler != null) {
-					ioHandler.channelOpen(socketSession);
-				}
-				socketSession.getDawdlerConnection().rebuildSessionGroup();
-				socketSession.getInitLatch().countDown();
-				if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
-					socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
+			} else if (obj instanceof AuthResponseBean authResponse) {
+				if (authResponse.isSuccess()) {
+					List<SocketSession> sessions = new CopyOnWriteArrayList<>();
+					List<SocketSession> preSessions = socketSession.getDawdlerConnection().getSessionGroup()
+							.putIfAbsent(socketSession.getRemoteAddress(), sessions);
+					if (preSessions != null) {
+						sessions = preSessions;
+					}
+					sessions.add(socketSession);
+					if (ioHandler != null) {
+						ioHandler.channelOpen(socketSession);
+					}
+					socketSession.getDawdlerConnection().rebuildSessionGroup();
+					socketSession.getInitLatch().countDown();
+					if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
+						socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
+					}
+				} else {
+					socketSession.getInitLatch().countDown();
+					if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
+						socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
+					}
+					throw new IllegalAccessException("Invalid auth !");
 				}
 			} else {
-				socketSession.getInitLatch().countDown();
-				if (socketSession.getDawdlerConnection().getComplete().compareAndSet(false, true)) {
-					socketSession.getDawdlerConnection().getSemaphore().release(Integer.MAX_VALUE);
-				}
-				throw new IllegalAccessException("Invalid auth !");
+				throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
 			}
-		} else {
-			throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
+			data = null;
 		}
-		data = null;
 	}
-
 }
