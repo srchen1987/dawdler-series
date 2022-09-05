@@ -19,6 +19,7 @@ package com.anywide.dawdler.server.log;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import ch.qos.logback.classic.BasicConfigurator;
 import ch.qos.logback.classic.ClassicConstants;
@@ -132,16 +133,19 @@ public class DawdlerLogbackContextInitializer {
 		if (url != null) {
 			configureByResource(url);
 		} else {
-			Configurator c = ClassicEnvUtil.loadFromServiceLoader(Configurator.class);
-			if (c != null) {
-				try {
-					c.setContext(loggerContext);
-					c.configure(loggerContext);
-				} catch (Exception e) {
-					throw new LogbackException(
-							String.format("Failed to initialize Configurator: %s using ServiceLoader",
-									c != null ? c.getClass().getCanonicalName() : "null"),
-							e);
+			List<Configurator> configurators = ClassicEnvUtil.loadFromServiceLoader(Configurator.class,
+					Thread.currentThread().getContextClassLoader());
+			if (configurators != null) {
+				for (Configurator c : configurators) {
+					try {
+						c.setContext(loggerContext);
+						c.configure(loggerContext);
+					} catch (Exception e) {
+						throw new LogbackException(
+								String.format("Failed to initialize Configurator: %s using ServiceLoader",
+										c != null ? c.getClass().getCanonicalName() : "null"),
+								e);
+					}
 				}
 			} else {
 				BasicConfigurator basicConfigurator = new BasicConfigurator();
