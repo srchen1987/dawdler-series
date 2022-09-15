@@ -37,6 +37,8 @@ public class ConfigContentDecryptor {
 	private static Pattern pattern = Pattern.compile("ENC\\((.+)\\)");
 	public static final String DAWDLER_ENCRYP_FILE = "DAWDLER_ENCRYP_FILE";
 	private static AesSecurityPlus aesSecurityPlus = null;
+	private static final String[] SPECIFIC_SYMBOL = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}",
+	"|" };
 
 	static {
 		try {
@@ -62,7 +64,7 @@ public class ConfigContentDecryptor {
 			boolean result = false;
 			StringBuffer sb = new StringBuffer();
 			do {
-				matcher.appendReplacement(sb, aesSecurityPlus.decrypt(matcher.group(1)));
+				matcher.appendReplacement(sb, aesSecurityPlus.decrypt(escapeExprSpecialWord(matcher.group(1))));
 				result = matcher.find();
 			} while (result);
 			matcher.appendTail(sb);
@@ -71,6 +73,15 @@ public class ConfigContentDecryptor {
 		return content;
 	}
 
+	public static String escapeExprSpecialWord(String word) {
+		for (String key : SPECIFIC_SYMBOL) {
+			if (word.contains(key)) {
+				word = word.replace(key, "\\" + key);
+			}
+		}
+		return word;
+	}
+	
 	public static String encrypt(String content) throws Exception {
 		checkAesSecurityPlus(aesSecurityPlus);
 		return aesSecurityPlus.encrypt(content);
