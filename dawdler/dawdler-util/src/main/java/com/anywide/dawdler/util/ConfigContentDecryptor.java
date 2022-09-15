@@ -64,7 +64,7 @@ public class ConfigContentDecryptor {
 			boolean result = false;
 			StringBuffer sb = new StringBuffer();
 			do {
-				matcher.appendReplacement(sb, aesSecurityPlus.decrypt(escapeExprSpecialWord(matcher.group(1))));
+				matcher.appendReplacement(sb, escapeExprSpecialWord(aesSecurityPlus.decrypt(matcher.group(1))));
 				result = matcher.find();
 			} while (result);
 			matcher.appendTail(sb);
