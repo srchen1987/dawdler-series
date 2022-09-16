@@ -54,7 +54,6 @@ public class ConfigContentDecryptor {
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-
 	}
 
 	public static String decryptAndReplaceTag(String content) throws Exception {
@@ -106,5 +105,5 @@ public class ConfigContentDecryptor {
 	public static String getDawdlerEncrypFilePath() {
 		return System.getenv(DAWDLER_ENCRYP_FILE);
 	}
-
+	
 }
