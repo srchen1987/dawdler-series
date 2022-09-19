@@ -64,9 +64,22 @@ public class ConsulConfigClient implements ConfigClient {
 	private int waitTime;
 	private volatile boolean start = true;
 	private static Logger logger = LoggerFactory.getLogger(ConsulConfigClient.class);
-
+	private Map<String, Object> conf;
 	@Override
 	public void init(Map<String, Object> conf) {
+		this.conf = conf;
+		watchKeys = (List<String>) conf.get("watch-keys");
+		separator = (String) conf.get("separator");
+		token = (String) conf.get("token");
+		waitTime = Integer.parseInt(conf.get("wait-time").toString());
+		initConsulClient();
+		if (watchKeys != null) {
+			executor = Executors.newFixedThreadPool(watchKeys.size(),
+					new DefaultThreadFactory("consul-watcher", true));
+		}
+	}
+	
+	private void initConsulClient() {
 		Object tlsConfig = conf.get("TLSConfig");
 		TLSConfig config = null;
 		if (tlsConfig != null && Map.class.isAssignableFrom(tlsConfig.getClass())) {
@@ -81,24 +94,11 @@ public class ConsulConfigClient implements ConfigClient {
 		}
 		String host = (String) conf.get("host");
 		Integer port = Integer.parseInt(conf.get("port").toString());
-		watchKeys = (List<String>) conf.get("watch-keys");
-		separator = (String) conf.get("separator");
-		token = (String) conf.get("token");
-		waitTime = Integer.parseInt(conf.get("wait-time").toString());
-		try {
-			if (config != null) {
-				client = new ConsulClient(host, port, config);
-			} else {
-				client = new ConsulClient(host, port);
-			}
-			if (watchKeys != null) {
-				executor = Executors.newFixedThreadPool(watchKeys.size(),
-						new DefaultThreadFactory("consul-watcher", true));
-			}
-		} catch (Throwable e) {
-			logger.error("", e);
+		if (config != null) {
+			client = new ConsulClient(host, port, config);
+		} else {
+			client = new ConsulClient(host, port);
 		}
-
 	}
 
 	@Override
@@ -130,6 +130,7 @@ public class ConsulConfigClient implements ConfigClient {
 						} catch (InterruptedException interruptedException) {
 							// ignore
 						}
+						initConsulClient();
 					}
 				});
 			}

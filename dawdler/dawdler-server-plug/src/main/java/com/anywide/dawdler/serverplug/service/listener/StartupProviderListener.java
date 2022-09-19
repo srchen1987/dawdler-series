@@ -61,7 +61,7 @@ public class StartupProviderListener implements DawdlerServiceListener {
 			}
 			discoveryCenter = new ZkDiscoveryCenter(url, username, password);
 			discoveryCenter.init();
-			String path = channelGroup + "/" + dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
+			String path = channelGroup;
 			String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
 			if (discoveryCenter.addProvider(path, value)) {
 				logger.info("add service {} on {}", channelGroup, value);
@@ -82,9 +82,6 @@ public class StartupProviderListener implements DawdlerServiceListener {
 	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
 		if (timeout != null) {
 			timeout.cancel();
-		}
-		if (discoveryCenter != null) {
-			discoveryCenter.destroy();
 		}
 		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
