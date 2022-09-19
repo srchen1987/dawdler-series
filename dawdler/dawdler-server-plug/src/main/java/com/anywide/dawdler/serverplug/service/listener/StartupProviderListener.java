@@ -83,11 +83,11 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		if (timeout != null) {
 			timeout.cancel();
 		}
-		if (discoveryCenter != null) {
-			discoveryCenter.destroy();
-		}
 		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
+		}
+		if (discoveryCenter != null) {
+			discoveryCenter.destroy();
 		}
 	}
 
