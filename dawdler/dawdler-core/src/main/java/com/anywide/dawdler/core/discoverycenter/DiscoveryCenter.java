@@ -22,8 +22,7 @@ import java.util.List;
  * @author jackson.song
  * @version V1.0
  * @Title DiscoveryCenter.java
- * @Description 代替 PropertiesCenter.java(已删除) 当年写的着急，先用zk实现
- *              不考虑扩展其他的，目前支持用这个接口来扩展
+ * @Description 注册中心接口，支持用这个接口来扩展不同的注册中心
  * @date 2018年8月13日
  * @email suxuan696@gmail.com
  */
@@ -37,9 +36,13 @@ public interface DiscoveryCenter {
 
 	boolean addProvider(String path, String value) throws Exception;
 
-	boolean updateProvider(String path, String value) throws Exception;
+	default boolean updateProvider(String path, String value) throws Exception {
+		return true;
+	}
 
-	boolean deleteProvider(String path, String value) throws Exception;
+	default boolean deleteProvider(String path, String value) throws Exception {
+		return true;
+	}
 
 	boolean isExist(String path) throws Exception;
 }
