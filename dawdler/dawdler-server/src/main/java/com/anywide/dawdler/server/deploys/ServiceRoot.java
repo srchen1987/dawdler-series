@@ -57,6 +57,7 @@ import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
 import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.JsonProcessUtil;
 import com.sun.net.httpserver.HttpExchange;
@@ -255,6 +256,7 @@ public class ServiceRoot {
 		}
 		SerializeDecider.destroyed();
 		JVMTimeProvider.stop();
+		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
 	}
 
 	public static class DeployData {
