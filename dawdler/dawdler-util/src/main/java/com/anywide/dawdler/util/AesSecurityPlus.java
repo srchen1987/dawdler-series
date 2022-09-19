@@ -76,7 +76,10 @@ public class AesSecurityPlus {
 	}
 
 	public String encrypt(String content) throws Exception {
-		byte[] encrypted = encipher.doFinal(content.getBytes());
+		byte[] encrypted = null;
+		synchronized (encipher) {
+			encrypted = encipher.doFinal(content.getBytes());
+		}
 		String baseString = Base64.getEncoder().encodeToString(encrypted);
 		return URLEncoder.encode(baseString, "UTF-8");
 	}
@@ -84,16 +87,22 @@ public class AesSecurityPlus {
 	public String decrypt(String content) throws Exception {
 		content = URLDecoder.decode(content, "UTF-8");
 		byte[] decrypted = Base64.getDecoder().decode(content.getBytes());
-		decrypted = decipher.doFinal(decrypted);
+		synchronized (decipher) {
+			decrypted = decipher.doFinal(decrypted);
+		}
 		return new String(decrypted);
 	}
 
 	public byte[] encryptByteArray(byte[] data) throws Exception {
-		return encipher.doFinal(data);
+		synchronized (encipher) {
+			return encipher.doFinal(data);
+		}
 	}
 
 	public byte[] decryptByteArray(byte[] data) throws Exception {
-		return decipher.doFinal(data);
+		synchronized (decipher) {
+			return decipher.doFinal(data);
+		}
 	}
 
 }
