@@ -86,6 +86,9 @@ public class StartupProviderListener implements DawdlerServiceListener {
 		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
 		}
+		if (discoveryCenter != null) {
+			discoveryCenter.destroy();
+		}
 	}
 
 	public class ProviderTimeoutTask implements TimerTask {
