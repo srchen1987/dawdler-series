@@ -115,7 +115,7 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 ```
 
-##### 4.1 dawdler-client-plug的注解
+##### 4.2 dawdler-client-plug的注解
 
 1. @Controller 标识一个类为Controller,只有此标识才会被扫描生成文档,用于类上.
 
@@ -131,7 +131,7 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 7. @ResponseBody 标识返回对象.
 
-##### 4.2 方法参数列表支持的对象类型(dawdler-client-plug中支持的对象)
+##### 4.3 方法参数列表支持的对象类型(dawdler-client-plug中支持的对象)
 
 1. UploadFile 用于上传文件时使用的对象,可以搭配@param来做注释.
 
