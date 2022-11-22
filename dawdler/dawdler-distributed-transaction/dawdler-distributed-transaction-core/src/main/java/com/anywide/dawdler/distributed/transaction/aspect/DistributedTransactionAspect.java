@@ -69,6 +69,9 @@ public class DistributedTransactionAspect {
 		Method method = methodSignature.getMethod();
 		DistributedTransaction dt = method.getAnnotation(DistributedTransaction.class);
 		DistributedTransactionContext dc = DistributedTransactionContext.getDistributedTransactionContext();
+		if (logger.isDebugEnabled()) {
+			logger.debug("transaction start method:{} action:{}", method.getName(), dt.action());
+		}
 		if (dt.sponsor()) {
 			if (dc != null) {
 				throw new IllegalStateException(

@@ -46,26 +46,30 @@ import redis.clients.jedis.util.Pool;
  */
 public class RedisRepository extends TransactionRepository {
 	private static final Logger logger = LoggerFactory.getLogger(RedisRepository.class);
-	public static String redisFileName = "distributed-transaction-redis";
+	public static final String REDIS_FILE_NAME = "distributed-transaction-redis";
+	private static final String TRANSACTION_CONFIG = "distributed-transaction";
 	private long expireTime = 24 * 60 * 60 * 3;
 	private int compensateLater = 60;
 	private Pool<Jedis> pool;
 
 	public RedisRepository() {
 		try {
-			pool = JedisPoolFactory.getJedisPool(redisFileName);
+			pool = JedisPoolFactory.getJedisPool(REDIS_FILE_NAME);
 		} catch (Exception e) {
 			logger.error("", e);
 		}
 		serializer = SerializeDecider.decide((byte) 2);
+		Properties ps = null;
 		try {
-			Properties ps = PropertiesUtil.loadProperties("distributed-transaction");
+			ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter(TRANSACTION_CONFIG);
+		} catch (Exception e) {
+			logger.warn(
+					"not found distributed-transaction.properties in classpath or unified configuration center, use default set. expireTime={} seconds,compensateLater={} seconds.",
+					expireTime, compensateLater);
+		}
+		if (ps != null) {
 			expireTime = PropertiesUtil.getIfNullReturnDefaultValueLong("expireTime", expireTime, ps);
 			compensateLater = PropertiesUtil.getIfNullReturnDefaultValueInt("compensateLater", compensateLater, ps);
-		} catch (Exception e) {
-			logger.info(
-					"not found distributed-transaction.properties in classpath, use default set. expireTime={} seconds,compensateLater={} seconds.",
-					expireTime, compensateLater);
 		}
 	}
 
