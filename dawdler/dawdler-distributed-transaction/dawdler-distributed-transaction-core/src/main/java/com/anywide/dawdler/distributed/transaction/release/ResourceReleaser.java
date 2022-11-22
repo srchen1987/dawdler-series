@@ -44,7 +44,7 @@ public class ResourceReleaser {
 				.getConnectionFactory();
 		Pool<Jedis> redisPool = null;
 		try {
-			redisPool = JedisPoolFactory.getJedisPool(RedisRepository.redisFileName);
+			redisPool = JedisPoolFactory.getJedisPool(RedisRepository.REDIS_FILE_NAME);
 		} catch (Exception e) {
 			logger.error("", e);
 		}

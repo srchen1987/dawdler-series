@@ -21,10 +21,5 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-server-plug-config</artifactId>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 </project>
