@@ -20,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -56,7 +57,9 @@ public class PropertiesUtil {
 				ps = new Properties();
 				Set<Entry<String, Object>> entrySet = attributes.entrySet();
 				for (Entry<String, Object> entry : entrySet) {
-					ps.setProperty(entry.getKey(), entry.getValue().toString());
+					if(entry.getValue() != null) {
+						ps.setProperty(entry.getKey(), entry.getValue().toString());
+					}
 				}
 			}
 		} else {
