@@ -35,8 +35,17 @@ public abstract class AbstractDisplayPlug implements DisplayPlug {
 	public static final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
 
 	protected void logException(ViewForward wf) {
-		if (wf.getInvokeException() != null) {
-			logger.error("", wf.getInvokeException());
+		Throwable ex = wf.getInvokeException();
+		if (ex != null) {
+			while(ex.getCause() != null) {
+				ex = ex.getCause();
+			}
+			
+			if(ex.getMessage() != null) {
+				logger.error(ex.getMessage());
+			}else {
+				logger.error("{}", ex);
+			}
 		}
 	}
 
