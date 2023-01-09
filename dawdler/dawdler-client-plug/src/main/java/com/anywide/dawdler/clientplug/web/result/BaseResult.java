@@ -47,6 +47,10 @@ public class BaseResult<T> {
 		this.message = message;
 		this.success = success;
 	}
+	
+	public BaseResult(boolean success) {
+		this.success = success;
+	}
 
 	public T getData() {
 		return data;
@@ -70,5 +74,9 @@ public class BaseResult<T> {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public static void main(String[] args) {
+		System.out.println("hello");
 	}
 }
