@@ -82,7 +82,20 @@ public class ConnectionPool {
 
 	private ConnectionPool() {
 	}
-
+	
+	public static void addServerChannelGroup(String gid, ServerChannelGroup serverChannelGroup) {
+		SERVER_CHANNEL_GROUPS.put(gid, serverChannelGroup);
+		ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
+		if(cp == null) {
+			cp = new ConnectionPool();
+			cp.groupName = gid;
+			addGroup(gid, cp);
+			if (serverChannelGroup.getHost() != null && !serverChannelGroup.getHost().equals("")) {
+				cp.addConnection(gid, serverChannelGroup.getHost());
+			}
+		}
+	}
+	
 	public static void initConnection(String gid) {
 		ServerChannelGroup sg = SERVER_CHANNEL_GROUPS.get(gid);
 		if (sg == null) {
