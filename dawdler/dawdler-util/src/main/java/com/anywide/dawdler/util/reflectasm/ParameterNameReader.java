@@ -73,8 +73,7 @@ public class ParameterNameReader {
 		Method[] methods = clazz.getDeclaredMethods();
 		if (methods.length == 0) {
 			methodsParameterNames = Collections.emptyMap();
-		}
-		else {
+		} else {
 			methodsParameterNames = new HashMap<>(32);
 		}
 		for (Method method : methods) {
