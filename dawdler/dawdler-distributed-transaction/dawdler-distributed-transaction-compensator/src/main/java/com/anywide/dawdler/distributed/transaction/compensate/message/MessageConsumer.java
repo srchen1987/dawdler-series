@@ -81,7 +81,7 @@ public class MessageConsumer {
 					boolean result = ((DistributedTransactionCustomProcessor) obj).process(dt, status);
 					if (logger.isDebugEnabled()) {
 						logger.debug("compensate_result: globalTxId:{} branchId:{} action:{} status:{} result:{}",
-						dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
+								dt.getGlobalTxId(), dt.getBranchTxId(), action, status, result);
 					}
 					if (result) {
 						try {

@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.reflectasm.MethodAccess;
  */
 public class ReflectionUtil {
 	private static ConcurrentHashMap<Class<?>, MethodAccess> methodAccessCache = new ConcurrentHashMap<>();
-	
+
 	public static Object invoke(Object object, String methodName, Object... args) {
 		if (object == null) {
 			throw new IllegalArgumentException("object can not be null.");

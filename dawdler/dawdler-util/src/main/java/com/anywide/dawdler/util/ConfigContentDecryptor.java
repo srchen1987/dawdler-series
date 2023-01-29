@@ -38,7 +38,7 @@ public class ConfigContentDecryptor {
 	public static final String DAWDLER_ENCRYP_FILE = "DAWDLER_ENCRYP_FILE";
 	private static AesSecurityPlus aesSecurityPlus = null;
 	private static final String[] SPECIFIC_SYMBOL = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}",
-	"|" };
+			"|" };
 
 	static {
 		try {
@@ -60,13 +60,13 @@ public class ConfigContentDecryptor {
 		checkAesSecurityPlus(aesSecurityPlus);
 		Matcher matcher = pattern.matcher(content);
 		return matcher.replaceAll(t -> {
-				try {
-					return escapeExprSpecialWord(aesSecurityPlus.decrypt(t.group(1)));
-				} catch (Exception e) {
-					logger.error("", e);
-				}
-				return null;
-			});
+			try {
+				return escapeExprSpecialWord(aesSecurityPlus.decrypt(t.group(1)));
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+			return null;
+		});
 	}
 
 	public static String escapeExprSpecialWord(String word) {
@@ -77,7 +77,7 @@ public class ConfigContentDecryptor {
 		}
 		return word;
 	}
-	
+
 	public static String encrypt(String content) throws Exception {
 		checkAesSecurityPlus(aesSecurityPlus);
 		return aesSecurityPlus.encrypt(content);
@@ -102,5 +102,5 @@ public class ConfigContentDecryptor {
 	public static String getDawdlerEncrypFilePath() {
 		return System.getenv(DAWDLER_ENCRYP_FILE);
 	}
-	
+
 }

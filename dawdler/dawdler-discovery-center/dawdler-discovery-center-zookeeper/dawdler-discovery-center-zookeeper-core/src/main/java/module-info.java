@@ -9,5 +9,6 @@ module dawdler.discovery.center.zookeeper.core {
 	requires zookeeper;
 	requires zookeeper.jute;
 	requires dawdler.discovery.center.core;
+
 	exports com.anywide.dawdler.core.discovery.zookeeper;
 }

@@ -7,7 +7,10 @@ module dawdler.serialization {
 	requires objenesis;
 	requires org.slf4j;
 	requires kryo;
+
 	exports com.anywide.dawdler.core.serializer;
+
 	uses Serializer;
-	provides Serializer with JDKDefaultSerializer,KryoSerializer;
+
+	provides Serializer with JDKDefaultSerializer, KryoSerializer;
 }

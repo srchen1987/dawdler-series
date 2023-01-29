@@ -7,6 +7,8 @@ module dawdler.circuit.breaker {
 	requires dawdler.client;
 	requires dawdler.core;
 	requires org.slf4j;
+
 	uses DawdlerClientFilter;
+
 	provides DawdlerClientFilter with CircuitBreakerFilter;
 }
