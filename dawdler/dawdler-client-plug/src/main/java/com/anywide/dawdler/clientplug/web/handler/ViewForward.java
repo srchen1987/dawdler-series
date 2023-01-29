@@ -385,6 +385,10 @@ public class ViewForward {
 		this.paramsVariable = paramsVariable;
 	}
 
+	public boolean isJsonIgnoreNull() {
+		return this.requestUrlData.getJsonIgnoreNull() != null;
+	}
+
 	public void release() {
 		if (data != null) {
 			data.clear();

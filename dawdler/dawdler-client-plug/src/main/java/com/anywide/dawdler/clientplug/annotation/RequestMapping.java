@@ -33,22 +33,46 @@ import java.lang.annotation.Target;
  * @email suxuan696@gmail.com
  */
 public @interface RequestMapping {
-	String[] value() default {};// path 支持antPath 只有value可以用到类上，以下其他只在方法上生效
 
-	RequestMethod[] method() default {};// 请求方法 POST GET以及其他
+	/**
+	 * path 支持antPath 只有value可以用到类上，以下其他只在方法上生效
+	 */
+	String[] value() default {};
 
-	ViewType viewType() default ViewType.json;// 响应的视图类型 支持json,jsp,velocity
+	/**
+	 * 请求方法 POST GET以及其他
+	 */
+	RequestMethod[] method() default {};
 
-	boolean generateValidator() default false;// 生成验证规则，根据后台的验证框架生成前端的表达式
+	/**
+	 * 响应的视图类型 支持json,jsp,velocity
+	 */
+	ViewType viewType() default ViewType.json;
 
-	String input() default "";// 配置验证框架之后验证未通过的跳转路径，默认为空，返回json类型的错误提醒，如果配置会在request域下设置属性validate_error并forward到
+	/**
+	 * 生成验证规则，根据后台的验证框架生成前端的表达式
+	 */
+	boolean generateValidator() default false;
 
-	long uploadSizeMax() default 0L;// 上传文件最大的限制,单位byte
+	/**
+	 * 配置验证框架之后验证未通过的跳转路径，默认为空，返回json类型的错误提醒，如果配置会在request域下设置属性validate_error并forward到
+	 */
+	String input() default "";
 
-	long uploadPerSizeMax() default 0L;// 上传单个文件最大的限制,单位byte
+	/**
+	 * 上传文件最大的限制,单位byte
+	 */
+	long uploadSizeMax() default 0L;
 
-	String exceptionHandler() default "";// 异常处理者，系统内提供三种处理者json, jsp,
-											// velocity，会根据ViewType自动选择，如果有需要可以扩展，参考HttpExceptionHolder的register方法，可以在监听器启动时扩展，一般不会考虑扩展所以没采用SPI方式配置
+	/**
+	 * 上传单个文件最大的限制,单位byte
+	 */
+	long uploadPerSizeMax() default 0L;
+
+	/**
+	 * 异常处理者，系统内提供三种处理者json、jsp、
+	 */
+	String exceptionHandler() default "";// velocity，会根据ViewType自动选择，如果有需要可以扩展，参考HttpExceptionHolder的register方法，可以在监听器启动时扩展，一般不会考虑扩展所以没采用SPI方式配置
 
 	enum ViewType {
 		json, jsp, velocity

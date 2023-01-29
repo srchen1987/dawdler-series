@@ -37,7 +37,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class AesSecurityPlus {
 	private static ConcurrentHashMap<String, AesSecurityPlus> cachePlug = new ConcurrentHashMap<>();
 	public static AesSecurityPlus DEFAULT_INSTANCE;
-	private static final String CHARSET="UTF-8"; 
+	private static final String CHARSET = "UTF-8";
 	static {
 		try {
 			DEFAULT_INSTANCE = AesSecurityPlus.getInstance(AesSecurityPlus.class.getName());
@@ -47,7 +47,7 @@ public class AesSecurityPlus {
 	}
 	private Cipher encipher = null;
 	private Cipher decipher = null;
-	
+
 	private SecretKeySpec skeySpec;
 	private IvParameterSpec iv;
 
@@ -110,5 +110,5 @@ public class AesSecurityPlus {
 			return decipher.doFinal(data);
 		}
 	}
-	
+
 }

@@ -65,6 +65,7 @@ public class ConsulConfigClient implements ConfigClient {
 	private volatile boolean start = true;
 	private static Logger logger = LoggerFactory.getLogger(ConsulConfigClient.class);
 	private Map<String, Object> conf;
+
 	@Override
 	public void init(Map<String, Object> conf) {
 		this.conf = conf;
@@ -74,11 +75,10 @@ public class ConsulConfigClient implements ConfigClient {
 		waitTime = Integer.parseInt(conf.get("wait-time").toString());
 		initConsulClient();
 		if (watchKeys != null) {
-			executor = Executors.newFixedThreadPool(watchKeys.size(),
-					new DefaultThreadFactory("consul-watcher", true));
+			executor = Executors.newFixedThreadPool(watchKeys.size(), new DefaultThreadFactory("consul-watcher", true));
 		}
 	}
-	
+
 	private void initConsulClient() {
 		Object tlsConfig = conf.get("TLSConfig");
 		TLSConfig config = null;
