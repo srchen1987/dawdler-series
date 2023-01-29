@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.client.discoverycenter;
+package com.anywide.dawdler.clientplug.discovery.zookeeper;
 
 import org.apache.curator.framework.recipes.cache.ChildData;
 import org.apache.curator.framework.recipes.cache.CuratorCache;
@@ -22,7 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ConnectionPool;
-import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
+import com.anywide.dawdler.core.discovery.zookeeper.ZkDiscoveryCenter;
 
 /**
  * @author jackson.song
@@ -32,21 +32,18 @@ import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
  * @date 2018年8月13日
  * @email suxuan696@gmail.com
  */
-public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
+public class ZkDiscoveryCenterClient {
 	private static final Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);
+	private ZkDiscoveryCenter zkDiscoveryCenter = null;
+	private CuratorCache curatorCache = null;
 
-	public ZkDiscoveryCenterClient(String connectString, String user, String password) {
-		super(connectString, user, password);
-		try {
-			initListener();
-		} catch (Exception e) {
-			logger.error("init listener failed", e);
-		}
+	public ZkDiscoveryCenterClient() throws Exception {
+		zkDiscoveryCenter = ZkDiscoveryCenter.getInstance();
+		initListener();
 	}
 
 	private void initListener() {
-		curatorCache = CuratorCache.builder(client, ROOT_PATH).build();
-
+		curatorCache = CuratorCache.builder(zkDiscoveryCenter.getClient(), zkDiscoveryCenter.getRootPath()).build();
 		curatorCache.listenable().addListener((type, oldData, data) -> {
 			String gid = null;
 			String provider = null;
@@ -83,6 +80,15 @@ public class ZkDiscoveryCenterClient extends ZkDiscoveryCenter {
 			}
 		});
 		curatorCache.start();
+	}
+
+	public void destroy() {
+		if (curatorCache != null) {
+			curatorCache.close();
+		}
+		if (zkDiscoveryCenter != null) {
+			zkDiscoveryCenter.destroy();
+		}
 	}
 
 }
