@@ -39,7 +39,6 @@ import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycleProvider;
-import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.core.health.Health;
 import com.anywide.dawdler.core.health.HealthIndicator;
@@ -92,7 +91,6 @@ public class ServiceBase implements Service {
 	private final ServicesManager servicesManager = new ServicesManager();
 	private final FilterProvider filterProvider = new FilterProvider();
 	private ServiceExecutor serviceExecutor = defaultServiceExecutor;
-	private final static int WAIT_TIME_MILLIS = 1000;
 	private final Scanner scanner;
 	private final DeployScanner deployScanner;
 	private AntPathMatcher antPathMatcher;
@@ -171,7 +169,6 @@ public class ServiceBase implements Service {
 		for (Node node : preLoadClasses) {
 			classLoader.findClassForDawdler(node.getText().trim());
 		}
-
 		List<Node> packagesInClasses = root.selectNodes("scanner/packages-in-classes/package-path");
 		for (Node node : packagesInClasses) {
 			deployScanner.splitAndAddPathInClasses(node.getText().trim());
@@ -220,10 +217,6 @@ public class ServiceBase implements Service {
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		servicesManager.fireCreate(dawdlerContext);
 
-		if (healthCheck.isCheck()) {
-			checkHealth();
-		}
-
 		dawdlerListenerProvider.order();
 		filterProvider.orderAndBuildChain();
 
@@ -240,6 +233,10 @@ public class ServiceBase implements Service {
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().init();
+		}
+
+		if (healthCheck.isCheck()) {
+			checkHealth();
 		}
 
 		dawdlerContext.removeAttribute(FILTER_PROVIDER);
@@ -280,18 +277,15 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void prepareStop() {
-		DiscoveryCenter discoveryCenter = (DiscoveryCenter) dawdlerContext.getAttribute(DiscoveryCenter.class);
-		if (discoveryCenter != null) {
+		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
+				.getComponentLifeCycles();
+		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
-				discoveryCenter.destroy();
-			} catch (Exception e) {
+				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
+				liftCycle.getData().prepareDestroy();
+			} catch (Throwable e) {
 				logger.error("", e);
 			}
-		}
-		try {
-			Thread.sleep(WAIT_TIME_MILLIS);
-		} catch (InterruptedException e) {
-			// ignore
 		}
 	}
 
@@ -306,15 +300,21 @@ public class ServiceBase implements Service {
 				}
 			}
 		}
-
 		servicesManager.clear();
-
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
 				.getComponentLifeCycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
 			try {
 				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
 				liftCycle.getData().destroy();
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
+		}
+		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
+			try {
+				OrderData<ComponentLifeCycle> liftCycle = lifeCycleList.get(i);
+				liftCycle.getData().afterDestroy();
 			} catch (Throwable e) {
 				logger.error("", e);
 			}

@@ -14,19 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.serverplug.service.listener;
+package com.anywide.dawdler.serverplug.discovery.zookeeper.resource;
 
 import java.util.concurrent.TimeUnit;
 
-import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.annotation.Order;
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
+import com.anywide.dawdler.core.discovery.zookeeper.ZkDiscoveryCenter;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
-import com.anywide.dawdler.core.discoverycenter.ZkDiscoveryCenter;
 import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 import com.anywide.dawdler.util.HashedWheelTimer;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
@@ -34,60 +33,49 @@ import com.anywide.dawdler.util.TimerTask;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title StartupProviderListener.java
- * @Description 监听器 启动后向注册中心注册服务
- * @date 2016年2月8日
+ * @Title ZookeeperLifeCycle.java
+ * @Description Zookeeper注册中心初始化与销毁
+ * @date 2022年9月30日
  * @email suxuan696@gmail.com
  */
 @Order(Integer.MAX_VALUE)
-public class StartupProviderListener implements DawdlerServiceListener {
-	private static final Logger logger = LoggerFactory.getLogger(StartupProviderListener.class);
+public class ZookeeperLifeCycle implements ComponentLifeCycle {
+	private static final Logger logger = LoggerFactory.getLogger(ZookeeperLifeCycle.class);
 	private DiscoveryCenter discoveryCenter;
 	private Timeout timeout;
 	private long checkTime = 5000;
+	private final static int WAIT_TIME_MILLIS = 1000;
 	private HashedWheelTimer hashedWheelTimer;
 
 	@Override
-	public void contextInitialized(DawdlerContext dawdlerContext) throws Exception {
-		Element root = dawdlerContext.getServicesConfig().getRoot();
-		Element zkHost = (Element) root.selectSingleNode("zk-host");
-		if (zkHost != null) {
-			String username = zkHost.attributeValue("username");
-			String password = zkHost.attributeValue("password");
-			String url = zkHost.getTextTrim();
-			String channelGroup = dawdlerContext.getDeployName();
-			if ("".equals(url)) {
-				throw new NullPointerException("zk-host can't be null!");
-			}
-			discoveryCenter = new ZkDiscoveryCenter(url, username, password);
-			discoveryCenter.init();
-			String path = channelGroup;
-			String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-			if (discoveryCenter.addProvider(path, value)) {
-				logger.info("add service {} on {}", channelGroup, value);
-			}
-
-			dawdlerContext.setAttribute(DiscoveryCenter.class, discoveryCenter);
-			hashedWheelTimer = new HashedWheelTimer();
-			timeout = hashedWheelTimer.newTimeout(new ProviderTimeoutTask(path, value), checkTime,
-					TimeUnit.MILLISECONDS);
-
-		} else {
-			logger.error("not find discoveryServer config!");
+	public void afterInit() throws Throwable {
+		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
+		String channelGroup = dawdlerContext.getDeployName();
+		discoveryCenter = ZkDiscoveryCenter.getInstance();
+		String path = channelGroup;
+		String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
+		if (discoveryCenter.addProvider(path, value)) {
+			logger.info("add service {} on {}", channelGroup, value);
 		}
-
+		hashedWheelTimer = new HashedWheelTimer();
+		timeout = hashedWheelTimer.newTimeout(new ProviderTimeoutTask(path, value), checkTime, TimeUnit.MILLISECONDS);
 	}
 
 	@Override
-	public void contextDestroyed(DawdlerContext dawdlerContext) throws Exception {
+	public void prepareDestroy() throws Throwable {
+		if (discoveryCenter != null) {
+			discoveryCenter.destroy();
+		}
+		try {
+			Thread.sleep(WAIT_TIME_MILLIS);
+		} catch (InterruptedException e) {
+			// ignore
+		}
 		if (timeout != null) {
 			timeout.cancel();
 		}
 		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
-		}
-		if (discoveryCenter != null) {
-			discoveryCenter.destroy();
 		}
 	}
 
@@ -109,8 +97,9 @@ public class StartupProviderListener implements DawdlerServiceListener {
 			} catch (Exception e) {
 				logger.error("", e);
 			}
-			StartupProviderListener.this.timeout = timeout.timer().newTimeout(this, checkTime, TimeUnit.MILLISECONDS);
+			ZookeeperLifeCycle.this.timeout = timeout.timer().newTimeout(this, checkTime, TimeUnit.MILLISECONDS);
 		}
 
 	}
+
 }

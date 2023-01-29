@@ -181,8 +181,7 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 		if (!session.isClose()) {
 			if (session.isReceived()) {
 				channel.read(session.getReadBuffer().getByteBuffer(), session, this);
-			}
-			else {
+			} else {
 				channel.read(session.getReadBuffer().getByteBuffer(), 5000, TimeUnit.MILLISECONDS, session, this);
 			}
 		}

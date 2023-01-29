@@ -83,7 +83,7 @@ public class TreeDirect extends Directive {
 			String[] vs = value.split("=");
 			if (vs.length != 2) {
 				throw new ParseErrorException(
-					"must like explain for example var=tempdata,parentname=id,childname=parendid,parentvalue=0,remark=- ");
+						"must like explain for example var=tempdata,parentname=id,childname=parendid,parentvalue=0,remark=- ");
 			}
 			String v = vs[0].trim();
 			if (v.equals("parentname")) {

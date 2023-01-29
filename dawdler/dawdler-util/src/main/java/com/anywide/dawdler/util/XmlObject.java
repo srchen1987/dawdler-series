@@ -182,8 +182,7 @@ public final class XmlObject {
 	public Element selectSingleNode(String xpath) {
 		if (xpath.equals("/")) {
 			return root;
-		}
-		else {
+		} else {
 			return (Element) root.selectSingleNode(xpath);
 		}
 	}

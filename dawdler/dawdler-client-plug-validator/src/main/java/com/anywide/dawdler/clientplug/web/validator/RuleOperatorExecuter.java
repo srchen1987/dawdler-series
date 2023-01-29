@@ -54,7 +54,7 @@ public class RuleOperatorExecuter {
 				return en.getValue().validate(value, matcher);
 			}
 		}
-		logger.warn("invalid rule {}",regex);
+		logger.warn("invalid rule {}", regex);
 		return null;
 	}
 
