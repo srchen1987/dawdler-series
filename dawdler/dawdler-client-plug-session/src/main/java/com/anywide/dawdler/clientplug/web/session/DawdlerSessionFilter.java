@@ -79,7 +79,7 @@ public class DawdlerSessionFilter implements Filter {
 	static {
 		Properties ps = null;
 		try {
-			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties("identityConfig");
+			ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter("identityConfig");
 		} catch (Exception e) {
 			logger.warn("use default identityConfig in dawdler-session jar!");
 		}

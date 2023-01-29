@@ -17,9 +17,7 @@
 package com.anywide.dawdler.es.restclient.pool.factory;
 
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -40,14 +38,6 @@ import com.anywide.dawdler.util.PropertiesUtil;
  * @email suxuan696@gmail.com
  */
 public class ElasticSearchClientFactory {
-	private static boolean useConfig = false;
-	static {
-		try {
-			Class.forName("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
-			useConfig = true;
-		} catch (ClassNotFoundException e) {
-		}
-	}
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;
 	private final static Map<String, ElasticSearchClientFactory> INSTANCES = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
@@ -67,25 +57,7 @@ public class ElasticSearchClientFactory {
 	}
 
 	public ElasticSearchClientFactory(String fileName) throws Exception {
-		Properties ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
-		if (useConfig) {
-			try {
-				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
-			} catch (Exception e) {
-				Map<String, Object> attributes = com.anywide.dawdler.conf.cache.ConfigMappingDataCache
-						.getMappingDataCache(fileName);
-				if (attributes == null) {
-					throw e;
-				}
-				ps = new Properties();
-				Set<Entry<String, Object>> entrySet = attributes.entrySet();
-				for (Entry<String, Object> entry : entrySet) {
-					ps.setProperty(entry.getKey(), entry.getValue().toString());
-				}
-			}
-		} else {
-			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
-		}
+		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter(fileName);
 		String username = ps.getProperty("username", "");
 		String password = ps.getProperty("password", "");
 		String hosts = ps.getProperty("hosts");

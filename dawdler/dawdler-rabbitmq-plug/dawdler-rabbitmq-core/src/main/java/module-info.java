@@ -4,6 +4,13 @@ import com.anywide.dawdler.rabbitmq.health.RabbitIndicator;
 import com.anywide.dawdler.rabbitmq.resource.RabbitLifeCycle;
 
 module dawdler.rabbitmq.core{
+	requires java.base;
+	requires dawdler.util;
+	requires com.rabbitmq.client;
+	requires dawdler.core;
+	requires org.apache.commons.pool2;
+	requires org.slf4j;
+	requires dawdler.config.core;
 	exports com.anywide.dawdler.rabbitmq.connection.pool.factory;
 	exports com.anywide.dawdler.rabbitmq.consumer;
 	exports com.anywide.dawdler.rabbitmq.consumer.annotation;
@@ -13,11 +20,4 @@ module dawdler.rabbitmq.core{
 	provides ComponentLifeCycle with RabbitLifeCycle;
 	uses HealthIndicator;
 	provides HealthIndicator with RabbitIndicator;
-	requires java.base;
-	requires dawdler.util;
-	requires com.rabbitmq.client;
-	requires dawdler.core;
-	requires org.apache.commons.pool2;
-	requires org.slf4j;
-	requires dawdler.config.core;
 }

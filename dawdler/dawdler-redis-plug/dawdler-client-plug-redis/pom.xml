@@ -17,5 +17,10 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-redis-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

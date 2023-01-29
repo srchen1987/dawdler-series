@@ -23,8 +23,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-server-plug-config</artifactId>
-			<scope>provided</scope>
+			<artifactId>dawdler-config-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>
