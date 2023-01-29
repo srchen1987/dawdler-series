@@ -6,4 +6,4 @@ module dawdler.server.plug.dao {
 	requires dawdler.load.bean;
 	requires org.slf4j;
 	requires java.sql;
-	}
+}

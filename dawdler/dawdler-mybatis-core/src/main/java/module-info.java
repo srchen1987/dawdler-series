@@ -1,13 +1,15 @@
 module dawdler.mybatis.core {
 	requires java.base;
-	requires java.sql;
+	requires transitive java.sql;
 	requires org.slf4j;
 	requires org.aspectj.runtime;
 	requires cglib;
 	requires javassist;
-	requires java.naming;
+	requires transitive java.naming;
 	requires ognl;
 	requires dom4j;
+	exports org.apache.ibatis.parsing;
+	exports org.apache.ibatis.builder;
 	exports org.apache.ibatis.binding;
 	exports org.apache.ibatis.cursor;
 	exports org.apache.ibatis.exceptions;

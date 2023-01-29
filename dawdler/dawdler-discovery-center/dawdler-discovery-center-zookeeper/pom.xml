@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>dawdler</groupId>
+		<artifactId>dawdler-discovery-center</artifactId>
+		<version>0.17.1-jdk17-RELEASES</version>
+	</parent>
+	<packaging>pom</packaging>
+	<artifactId>dawdler-discovery-center-zookeeper</artifactId>
+	<name>dawdler-discovery-center-zookeeper</name>
+	<modules>
+		<module>dawdler-discovery-center-zookeeper-core</module>
+		<module>dawdler-server-plug-discovery-center-zookeeper</module>
+		<module>dawdler-client-plug-discovery-center-zookeeper</module>
+	</modules>
+</project>

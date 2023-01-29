@@ -19,6 +19,8 @@ package com.anywide.dawdler.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
@@ -32,6 +34,39 @@ import java.util.Set;
  * @email suxuan696@gmail.com
  */
 public class PropertiesUtil {
+	private static Class<?> configMappingDataCacheClass = null;
+	static {
+		try {
+			configMappingDataCacheClass = Thread.currentThread().getContextClassLoader().loadClass("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
+		} catch (ClassNotFoundException e) {
+		}
+	}
+
+	public static Properties loadPropertiesIfNotExistLoadConfigCenter(String fileName) throws Exception {
+		Properties ps = null;
+		if (configMappingDataCacheClass != null) {
+			try {
+				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+			} catch (Exception e) {
+				Method method = configMappingDataCacheClass.getMethod("getMappingDataCache", String.class);
+				Map<String, Object> attributes = (Map<String, Object>) method.invoke(null, fileName);
+				if (attributes == null) {
+					throw e;
+				}
+				ps = new Properties();
+				Set<Entry<String, Object>> entrySet = attributes.entrySet();
+				for (Entry<String, Object> entry : entrySet) {
+					if(entry.getValue() != null) {
+						ps.setProperty(entry.getKey(), entry.getValue().toString());
+					}
+				}
+			}
+		} else {
+			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+		}
+		return ps;
+	}
+
 	public static int getIfNullReturnDefaultValueInt(String key, int defaultValue, Properties ps) {
 		Object value = ps.get(key);
 		if (value != null) {

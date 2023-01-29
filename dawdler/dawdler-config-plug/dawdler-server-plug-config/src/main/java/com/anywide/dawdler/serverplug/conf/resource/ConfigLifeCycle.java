@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.anywide.dawdler.conf.Refresher;
 import com.anywide.dawdler.conf.init.ConfigInit;
+import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.server.context.DawdlerContext;
@@ -37,6 +38,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
  * @date 2021年5月30日
  * @email suxuan696@gmail.com
  */
+@Order(1)
 public class ConfigLifeCycle implements ComponentLifeCycle {
 
 	@Override
