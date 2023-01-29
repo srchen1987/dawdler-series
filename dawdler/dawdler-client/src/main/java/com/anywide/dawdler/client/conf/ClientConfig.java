@@ -30,7 +30,7 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @email suxuan696@gmail.com
  */
 public class ClientConfig {
-	
+
 	public String certificatePath;
 
 	private List<ServerChannelGroup> serverChannelGroups;
