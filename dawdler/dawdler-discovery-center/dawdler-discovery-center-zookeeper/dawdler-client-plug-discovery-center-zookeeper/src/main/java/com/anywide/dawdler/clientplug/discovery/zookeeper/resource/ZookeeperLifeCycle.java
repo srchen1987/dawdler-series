@@ -37,19 +37,20 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 @Order(Integer.MAX_VALUE)
 public class ZookeeperLifeCycle implements ComponentLifeCycle {
 	private ZkDiscoveryCenterClient discoveryCenter = null;
+
 	@Override
 	public void prepareInit() throws Throwable {
-			ClientConfig clientConfig = ClientConfigParser.getClientConfig();
-			List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
-			for (ServerChannelGroup sg : sgs) {
-				String gid = sg.getGroupId();
-				ConnectionPool.addServerChannelGroup(gid, sg);
-			}
-				discoveryCenter = new ZkDiscoveryCenterClient();
+		ClientConfig clientConfig = ClientConfigParser.getClientConfig();
+		List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
+		for (ServerChannelGroup sg : sgs) {
+			String gid = sg.getGroupId();
+			ConnectionPool.addServerChannelGroup(gid, sg);
+		}
+		discoveryCenter = new ZkDiscoveryCenterClient();
 	}
 
 	@Override
-	public void destroy() throws Throwable{
+	public void destroy() throws Throwable {
 		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
 		}

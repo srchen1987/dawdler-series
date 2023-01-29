@@ -38,19 +38,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 public class JsonProcessUtil {
 	private static final ObjectMapper MAPPER = new ObjectMapper();
-	
+
 	private static final ObjectMapper NON_EMPTY_MAPPER = new ObjectMapper();
-	
+
 	static {
 		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		NON_EMPTY_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		NON_EMPTY_MAPPER.setSerializationInclusion(Include.NON_NULL);
-		
+
 	}
+
 	public static ObjectMapper getMapperInstance() {
 		return MAPPER;
 	}
-	
+
 	public static ObjectMapper getNonEmptyMapperInstance() {
 		return NON_EMPTY_MAPPER;
 	}
@@ -120,7 +121,7 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
-	
+
 	public static String ignoreNullBeanToJson(Object obj) {
 		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		try {

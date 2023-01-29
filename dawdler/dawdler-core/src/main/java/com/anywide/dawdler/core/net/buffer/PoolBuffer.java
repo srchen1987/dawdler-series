@@ -60,8 +60,7 @@ public class PoolBuffer {
 		PoolBuffer pre = POOL_BUFFERS.putIfAbsent(capacity, poolBuffer);
 		if (pre != null) {
 			poolBuffer.close();
-		}
-		else {
+		} else {
 			ORDER.add(capacity);
 		}
 	}
