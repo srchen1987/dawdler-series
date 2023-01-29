@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.web.handler;
 
 import java.lang.reflect.Method;
 
+import com.anywide.dawdler.clientplug.annotation.JsonIgnoreNull;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 
@@ -34,6 +35,7 @@ public class RequestUrlData {
 	private Object target;
 	private Method method;
 	private ResponseBody responseBody;
+	private JsonIgnoreNull jsonIgnoreNull;
 
 	public RequestMapping getRequestMapping() {
 		return requestMapping;
@@ -66,4 +68,13 @@ public class RequestUrlData {
 	public void setResponseBody(ResponseBody responseBody) {
 		this.responseBody = responseBody;
 	}
+
+	public JsonIgnoreNull getJsonIgnoreNull() {
+		return jsonIgnoreNull;
+	}
+
+	public void setJsonIgnoreNull(JsonIgnoreNull jsonIgnoreNull) {
+		this.jsonIgnoreNull = jsonIgnoreNull;
+	}
+	
 }
