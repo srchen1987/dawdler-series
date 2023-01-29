@@ -30,7 +30,7 @@
 		<mysql.version>8.0.29</mysql.version>
 		<jsoup.version>1.15.3</jsoup.version>
 		<ognl.version>3.2.20</ognl.version>
-		<aspectjrt.version>1.9.6</aspectjrt.version>
+		<aspectj.version>1.9.6</aspectj.version>
 		<javassist.version>3.23.1-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
 		<jackson-dataformat-yaml.version>2.13.2</jackson-dataformat-yaml.version>
@@ -216,12 +216,12 @@
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>
-				<version>${aspectjrt.version}</version>
+				<version>${aspectj.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
-				<version>${aspectjrt.version}</version>
+				<version>${aspectj.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.javassist</groupId>
@@ -355,6 +355,11 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-schedule</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-schedule</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
@@ -371,6 +376,31 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-distributed-transaction-compensator</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-discovery-center-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-discovery-center-zookeeper</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-discovery-center-zookeeper-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-discovery-center-zookeeper</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-discovery-center-zookeeper</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -473,5 +503,6 @@
 		<module>dawdler-mybatis-core</module>
 		<module>dawdler-encrypt-generator</module>
 		<module>dawdler-schedule-plug</module>
+		<module>dawdler-discovery-center</module>
 	</modules>
 </project>

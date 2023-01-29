@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -36,10 +37,22 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @email suxuan696@gmail.com
  */
 public class JsonProcessUtil {
-	private static final ObjectMapper mapper = new ObjectMapper();
-
+	private static final ObjectMapper MAPPER = new ObjectMapper();
+	
+	private static final ObjectMapper NON_EMPTY_MAPPER = new ObjectMapper();
+	
+	static {
+		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		NON_EMPTY_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		NON_EMPTY_MAPPER.setSerializationInclusion(Include.NON_NULL);
+		
+	}
 	public static ObjectMapper getMapperInstance() {
-		return mapper;
+		return MAPPER;
+	}
+	
+	public static ObjectMapper getNonEmptyMapperInstance() {
+		return NON_EMPTY_MAPPER;
 	}
 
 	public static String beanToJson(Object obj) {
@@ -75,8 +88,6 @@ public class JsonProcessUtil {
 	public static <T> T jsonToBean(String json, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
 		try {
 			obj = mapper.readValue(json, valueType);
 		} catch (JsonMappingException e) {
@@ -89,8 +100,6 @@ public class JsonProcessUtil {
 	public static <T> T jsonToBean(byte[] json, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
 		try {
 			obj = mapper.readValue(json, valueType);
 		} catch (JsonMappingException e) {
@@ -103,8 +112,72 @@ public class JsonProcessUtil {
 	public static <T> T jsonToBean(InputStream jsonStream, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
-		mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-//		mapper.disable(DeserializationConfig.Feature.AUTO_DETECT_SETTERS);
+		try {
+			obj = mapper.readValue(jsonStream, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+	
+	public static String ignoreNullBeanToJson(Object obj) {
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
+		try {
+			return mapper.writeValueAsString(obj);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static byte[] ignoreNullBeanToJsonByte(Object obj) {
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
+		try {
+			return mapper.writeValueAsBytes(obj);
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static void ignoreNullBeanToJson(Writer writer, Object obj)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
+		mapper.writeValue(writer, obj);
+	}
+
+	public static void ignoreNullBeanToJson(OutputStream out, Object obj)
+			throws JsonGenerationException, JsonMappingException, IOException {
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		mapper.writeValue(out, obj);
+	}
+
+	public static <T> T ignoreNullJsonToBean(String json, Class<T> valueType) {
+		T obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
+		try {
+			obj = mapper.readValue(json, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+
+	public static <T> T ignoreNullJsonToBean(byte[] json, Class<T> valueType) {
+		T obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
+		try {
+			obj = mapper.readValue(json, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+
+	public static <T> T ignoreNullJsonToBean(InputStream jsonStream, Class<T> valueType) {
+		T obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		try {
 			obj = mapper.readValue(jsonStream, valueType);
 		} catch (JsonMappingException e) {

@@ -59,18 +59,10 @@ public class ClientConfigParser {
 				xmlObject = new XmlObject(DawdlerTool.getCurrentPath() + fileName);
 				Element root = xmlObject.getRoot();
 				config = new ClientConfig();
-				Element zkHost = (Element) root.selectSingleNode("zk-host");
-				if (zkHost != null) {
-					config.setZkHost(zkHost.getTextTrim());
-					config.setZkUsername(zkHost.attributeValue("username"));
-					config.setZkPassword(zkHost.attributeValue("password"));
-				}
-
 				Node certificatePath = root.selectSingleNode("certificatePath");
 				if (certificatePath != null) {
 					config.setCertificatePath(certificatePath.getText());
 				}
-
 				List<Node> serverChannelGroupNode = root.selectNodes("server-channel-group");
 				for (Node node : serverChannelGroupNode) {
 					ServerChannelGroup serverChannelGroup = config.new ServerChannelGroup();

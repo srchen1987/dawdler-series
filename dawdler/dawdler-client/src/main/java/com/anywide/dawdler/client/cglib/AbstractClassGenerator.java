@@ -109,7 +109,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 			this.classLoader = new WeakReference<ClassLoader>(classLoader);
 			Function<AbstractClassGenerator, Object> load = new Function<AbstractClassGenerator, Object>() {
 				public Object apply(AbstractClassGenerator gen) {
-					Class klass = gen.generate(ClassLoaderData.this);
+					Class<?> klass = gen.generate(ClassLoaderData.this);
 					return gen.wrapCachedClass(klass);
 				}
 			};
@@ -138,7 +138,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 		}
 	}
 
-	protected T wrapCachedClass(Class klass) {
+	protected T wrapCachedClass(Class<?> klass) {
 		return (T) new WeakReference(klass);
 	}
 
@@ -330,8 +330,8 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 		}
 	}
 
-	protected Class generate(ClassLoaderData data) {
-		Class gen;
+	protected Class<?> generate(ClassLoaderData data) {
+		Class<?> gen;
 		Object save = CURRENT.get();
 		CURRENT.set(this);
 		try {
@@ -381,7 +381,7 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
 		}
 	}
 
-	abstract protected Object firstInstance(Class type) throws Exception;
+	abstract protected Object firstInstance(Class<?> type) throws Exception;
 
 	abstract protected Object nextInstance(Object instance) throws Exception;
 }

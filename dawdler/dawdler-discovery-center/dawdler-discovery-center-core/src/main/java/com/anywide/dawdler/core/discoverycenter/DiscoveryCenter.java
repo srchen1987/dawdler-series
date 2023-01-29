@@ -27,22 +27,44 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public interface DiscoveryCenter {
-
-	List<String> getServiceList(String path) throws Exception;
-
+	
+	/**
+	 * 初始化接口
+	 */
 	void init() throws Exception;
 
+	/**
+	 * 销毁接口
+	 */
 	void destroy() throws Exception;
+	
+	/**
+	 * 获取服务列表
+	 */
+	List<String> getServiceList(String path) throws Exception;
 
+	/**
+	 * 添加服务提供者
+	 */
 	boolean addProvider(String path, String value) throws Exception;
 
+	/**
+	 * 更新服务提供者
+	 */
 	default boolean updateProvider(String path, String value) throws Exception {
 		return true;
 	}
 
+
+	/**
+	 * 删除服务提供者
+	 */
 	default boolean deleteProvider(String path, String value) throws Exception {
 		return true;
 	}
 
+	/**
+	 * 判断是否存在
+	 */
 	boolean isExist(String path) throws Exception;
 }
