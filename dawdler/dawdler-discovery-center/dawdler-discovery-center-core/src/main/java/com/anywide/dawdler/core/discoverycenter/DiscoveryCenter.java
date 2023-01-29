@@ -27,7 +27,7 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public interface DiscoveryCenter {
-	
+
 	/**
 	 * 初始化接口
 	 */
@@ -37,7 +37,7 @@ public interface DiscoveryCenter {
 	 * 销毁接口
 	 */
 	void destroy() throws Exception;
-	
+
 	/**
 	 * 获取服务列表
 	 */
@@ -54,7 +54,6 @@ public interface DiscoveryCenter {
 	default boolean updateProvider(String path, String value) throws Exception {
 		return true;
 	}
-
 
 	/**
 	 * 删除服务提供者

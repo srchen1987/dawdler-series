@@ -33,12 +33,12 @@ import java.lang.annotation.Target;
  * @email suxuan696@gmail.com
  */
 public @interface RequestMapping {
-	
+
 	/**
-	 *path 支持antPath 只有value可以用到类上，以下其他只在方法上生效
+	 * path 支持antPath 只有value可以用到类上，以下其他只在方法上生效
 	 */
 	String[] value() default {};
-	
+
 	/**
 	 * 请求方法 POST GET以及其他
 	 */
@@ -58,7 +58,7 @@ public @interface RequestMapping {
 	 * 配置验证框架之后验证未通过的跳转路径，默认为空，返回json类型的错误提醒，如果配置会在request域下设置属性validate_error并forward到
 	 */
 	String input() default "";
-	
+
 	/**
 	 * 上传文件最大的限制,单位byte
 	 */
