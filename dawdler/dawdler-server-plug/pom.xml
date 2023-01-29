@@ -24,7 +24,7 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-client</artifactId>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-load-bean</artifactId>
 		</dependency>
