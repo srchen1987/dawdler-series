@@ -4,14 +4,6 @@ import com.anywide.dawdler.conf.health.ConfigIndicator;
 import com.anywide.dawdler.core.health.HealthIndicator;
 
 module dawdler.config.core {
-	exports com.anywide.dawdler.conf;
-	exports com.anywide.dawdler.conf.cache;
-	exports com.anywide.dawdler.conf.init;
-	exports com.anywide.dawdler.conf.annotation;
-	uses ConfigClient;
-	provides ConfigClient with ConsulConfigClient;
-	uses HealthIndicator;
-	provides HealthIndicator with ConfigIndicator;
 	requires java.base;
 	requires java.sql;
 	requires dawdler.util;
@@ -22,4 +14,12 @@ module dawdler.config.core {
 	requires com.fasterxml.jackson.dataformat.yaml;
 	requires consul.api;
 	requires dawdler.core;
+	exports com.anywide.dawdler.conf;
+	exports com.anywide.dawdler.conf.cache;
+	exports com.anywide.dawdler.conf.init;
+	exports com.anywide.dawdler.conf.annotation;
+	uses ConfigClient;
+	provides ConfigClient with ConsulConfigClient;
+	uses HealthIndicator;
+	provides HealthIndicator with ConfigIndicator;
 }

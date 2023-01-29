@@ -13,6 +13,18 @@ import com.anywide.dawdler.clientplug.web.plugs.impl.JsonDisplayPlug;
 import com.anywide.dawdler.clientplug.web.plugs.impl.JspDisplayPlug;
 
 module dawdler.client.plug {
+	requires java.base;
+	requires dawdler.util;
+	requires dawdler.core;
+	requires dawdler.serialization;
+	requires dawdler.client;
+	requires dawdler.load.bean;
+	requires dom4j;
+	requires org.slf4j;
+	requires transitive dawdler.client.plug.validator;
+	requires transitive jakarta.servlet;
+	requires dawdler.jakarta.fileupload;
+	requires com.fasterxml.jackson.annotation;
 	exports com.anywide.dawdler.clientplug.annotation;
 	exports com.anywide.dawdler.clientplug.web.handler;
 	exports com.anywide.dawdler.clientplug.web.plugs;
@@ -29,20 +41,4 @@ module dawdler.client.plug {
 	provides ParameterDiscoverer with CompileParameterDiscoverer,LocalVariableTableParameterDiscoverer;
 	uses com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
 	provides DisplayPlug with JsonDisplayPlug,JspDisplayPlug;
-	requires java.base;
-	requires dawdler.util;
-	requires dawdler.core;
-	requires dawdler.serialization;
-	requires dawdler.client;
-	requires dawdler.load.bean;
-	requires curator.client;
-	requires curator.framework;
-	requires zookeeper;
-	requires curator.recipes;
-	requires dom4j;
-	requires org.slf4j;
-	requires dawdler.client.plug.validator;
-	requires jakarta.servlet;
-	requires dawdler.jakarta.fileupload;
-	requires com.fasterxml.jackson.annotation;
 }

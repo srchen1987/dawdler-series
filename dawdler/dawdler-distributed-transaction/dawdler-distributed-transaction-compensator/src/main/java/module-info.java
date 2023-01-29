@@ -1,6 +1,4 @@
 module dawdler.distributed.transaction.compensator {
-	exports com.anywide.dawdler.distributed.transaction.compensate.process;
-	uses com.anywide.dawdler.distributed.transaction.compensate.process.DistributedTransactionCustomProcessor;
 	requires java.base;
 	requires dawdler.distributed.transaction.core;
 	requires dawdler.core;
@@ -11,4 +9,6 @@ module dawdler.distributed.transaction.compensator {
 	requires jakarta.servlet;
 	requires org.slf4j;
 	requires dawdler.rabbitmq.core;
+	exports com.anywide.dawdler.distributed.transaction.compensate.process;
+	uses com.anywide.dawdler.distributed.transaction.compensate.process.DistributedTransactionCustomProcessor;
 }

@@ -28,11 +28,7 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.client.conf.ClientConfig;
 import com.anywide.dawdler.client.conf.ClientConfig.ServerChannelGroup;
-import com.anywide.dawdler.client.conf.ClientConfigParser;
-import com.anywide.dawdler.client.discoverycenter.ZkDiscoveryCenterClient;
-import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 
 /**
@@ -47,38 +43,9 @@ public class ConnectionPool {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 	private static final ConcurrentHashMap<String, ConnectionPool> GROUPS = new ConcurrentHashMap<>();
 	private static final Map<String, ServerChannelGroup> SERVER_CHANNEL_GROUPS = new HashMap<>();
-	private static DiscoveryCenter discoveryCenter = null;
 	private volatile List<DawdlerConnection> connections = new CopyOnWriteArrayList<>();
 	private Semaphore semaphore = new Semaphore(0);
 	private String groupName;
-	static {
-		try {
-			ClientConfig clientConfig = ClientConfigParser.getClientConfig();
-			String connectString = clientConfig.getZkHost();
-			List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
-			for (ServerChannelGroup sg : sgs) {
-				String gid = sg.getGroupId();
-				SERVER_CHANNEL_GROUPS.put(gid, sg);
-				ConnectionPool cp = getConnectionPool(gid);
-				if (cp == null) {
-					cp = new ConnectionPool();
-					cp.groupName = gid;
-					addGroup(gid, cp);
-					if (sg.getHost() != null && !sg.getHost().equals("")) {
-						cp.addConnection(gid, sg.getHost());
-					}
-
-				}
-			}
-			if (connectString != null) {
-				discoveryCenter = new ZkDiscoveryCenterClient(connectString, clientConfig.getZkUsername(),
-						clientConfig.getZkPassword());
-			}
-		} catch (Exception e) {
-			logger.error("", e);
-		}
-
-	}
 
 	private ConnectionPool() {
 	}
@@ -140,9 +107,6 @@ public class ConnectionPool {
 			c.close();
 		}
 		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
-		if (discoveryCenter != null) {
-			discoveryCenter.destroy();
-		}
 		GROUPS.clear();
 
 	}
