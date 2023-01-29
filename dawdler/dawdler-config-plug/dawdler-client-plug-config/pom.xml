@@ -19,5 +19,10 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-client-plug</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>

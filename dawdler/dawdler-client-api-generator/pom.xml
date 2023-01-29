@@ -20,6 +20,16 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>jakarta.servlet</groupId>
+			<artifactId>jakarta.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-client-plug-validator</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 			<exclusions>
@@ -42,10 +52,6 @@
 				<exclusion>
 					<groupId>jaxen</groupId>
 					<artifactId>jaxen</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.dom4j</groupId>
-					<artifactId>dom4j</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>ch.qos.logback</groupId>
