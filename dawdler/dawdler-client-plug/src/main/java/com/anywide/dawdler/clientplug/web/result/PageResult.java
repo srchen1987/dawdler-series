@@ -37,7 +37,7 @@ public class PageResult<T> extends BaseResult<T> {
 		super(data);
 	}
 
-	public PageResult(T data, Page page, boolean success) {
+	public PageResult(T data, Page page) {
 		super(data);
 		this.page = page;
 	}

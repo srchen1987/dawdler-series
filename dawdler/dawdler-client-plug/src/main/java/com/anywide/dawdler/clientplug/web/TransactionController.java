@@ -86,12 +86,12 @@ public abstract class TransactionController {
 		getViewForward().setForwardAndRedirectPath(forwardAndRedirectPath);
 	}
 
-	public <T> T paramClass(Class<T> classes) {
-		Field[] fields = classes.getDeclaredFields();
+	public <T> T paramClass(Class<T> clazz) {
+		Field[] fields = clazz.getDeclaredFields();
 		Object value = null;
 		T instance;
 		try {
-			instance = classes.newInstance();
+			instance = clazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
 			return null;
 		}

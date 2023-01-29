@@ -33,7 +33,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @date 2022年4月30日
  * @email suxuan696@gmail.com
  */
-@Order(1)
+@Order(2)
 public class ClientLoadLifeCycle implements ComponentLifeCycle {
 
 	@Override

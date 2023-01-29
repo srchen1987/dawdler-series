@@ -101,7 +101,8 @@ public class ScheduleOperator {
 		private Scheduler scheduler;
 		private static final String PREFIX = ".properties";
 		private final static SchedulerFactory INSTANCE = new SchedulerFactory();
-		private Map<String, org.quartz.SchedulerFactory> INSTANCES = new ConcurrentHashMap<String, org.quartz.SchedulerFactory>(8);
+		private Map<String, org.quartz.SchedulerFactory> INSTANCES = new ConcurrentHashMap<String, org.quartz.SchedulerFactory>(
+				8);
 
 		private SchedulerFactory() {
 			org.quartz.SchedulerFactory schedulerFactory = new StdSchedulerFactory();

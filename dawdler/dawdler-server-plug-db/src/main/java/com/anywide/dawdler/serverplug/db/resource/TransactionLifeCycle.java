@@ -18,7 +18,7 @@ import com.anywide.dawdler.serverplug.db.transaction.TransactionServiceExecutor;
  * @date 2022年4月30日
  * @email suxuan696@gmail.com
  */
-@Order(1)
+@Order(2)
 public class TransactionLifeCycle implements ComponentLifeCycle {
 	private static final Logger logger = LoggerFactory.getLogger(TransactionLifeCycle.class);
 
