@@ -25,6 +25,7 @@ module dawdler.client.plug {
 	requires transitive jakarta.servlet;
 	requires dawdler.jakarta.fileupload;
 	requires com.fasterxml.jackson.annotation;
+
 	exports com.anywide.dawdler.clientplug.annotation;
 	exports com.anywide.dawdler.clientplug.web.handler;
 	exports com.anywide.dawdler.clientplug.web.plugs;
@@ -33,12 +34,21 @@ module dawdler.client.plug {
 	exports com.anywide.dawdler.clientplug.web.interceptor;
 	exports com.anywide.dawdler.clientplug.web.listener;
 	exports com.anywide.dawdler.clientplug.web.upload;
+
 	uses RemoteClassLoaderFire;
+
 	provides RemoteClassLoaderFire with WebComponentClassLoaderFire;
+
 	uses com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
-	provides MethodArgumentResolver with  AnnotationMethodArgumentResolver,BasicsTypeMethodArgumentResolver,ServletMethodArgumentResolver,ServletUploadMethodArgumentResolver;
+
+	provides MethodArgumentResolver with AnnotationMethodArgumentResolver, BasicsTypeMethodArgumentResolver,
+			ServletMethodArgumentResolver, ServletUploadMethodArgumentResolver;
+
 	uses com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
-	provides ParameterDiscoverer with CompileParameterDiscoverer,LocalVariableTableParameterDiscoverer;
+
+	provides ParameterDiscoverer with CompileParameterDiscoverer, LocalVariableTableParameterDiscoverer;
+
 	uses com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
-	provides DisplayPlug with JsonDisplayPlug,JspDisplayPlug;
+
+	provides DisplayPlug with JsonDisplayPlug, JspDisplayPlug;
 }

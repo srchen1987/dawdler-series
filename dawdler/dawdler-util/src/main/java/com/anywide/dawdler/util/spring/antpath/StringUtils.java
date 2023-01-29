@@ -532,7 +532,7 @@ public abstract class StringUtils {
 		}
 		return toStringArray(tokens);
 	}
-	
+
 	public static String[] commaDelimitedListToStringArray(String str) {
 		return delimitedListToStringArray(str, ",");
 	}
@@ -542,7 +542,7 @@ public abstract class StringUtils {
 		if (length == 0) {
 			return source;
 		}
-		if(charset == null) {
+		if (charset == null) {
 			throw new IllegalArgumentException("Charset must not be null");
 		}
 		ByteArrayOutputStream baos = new ByteArrayOutputStream(length);
@@ -561,25 +561,24 @@ public abstract class StringUtils {
 					baos.write((char) ((u << 4) + l));
 					i += 2;
 					changed = true;
-				}
-				else {
+				} else {
 					throw new IllegalArgumentException("Invalid encoded sequence \"" + source.substring(i) + "\"");
 				}
-			}
-			else {
+			} else {
 				baos.write(ch);
 			}
 		}
 		return (changed ? copyToString(baos, charset) : source);
 	}
+
 	public static final int BUFFER_SIZE = 4096;
+
 	public static String copyToString(ByteArrayOutputStream baos, Charset charset) {
 		try {
 			return baos.toString(charset.name());
-		}
-		catch (UnsupportedEncodingException ex) {
+		} catch (UnsupportedEncodingException ex) {
 			throw new IllegalArgumentException("Invalid charset name: " + charset, ex);
 		}
 	}
-	
+
 }

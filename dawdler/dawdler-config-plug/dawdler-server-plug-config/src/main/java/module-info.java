@@ -6,6 +6,8 @@ module dawdler.server.plug.config {
 	requires dawdler.core;
 	requires dawdler.server;
 	requires org.slf4j;
+
 	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with ConfigLifeCycle;
 }

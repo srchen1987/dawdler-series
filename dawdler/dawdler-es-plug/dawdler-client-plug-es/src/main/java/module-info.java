@@ -6,6 +6,8 @@ module dawdler.client.plug.es {
 	requires dawdler.core;
 	requires dawdler.client.plug;
 	requires dawdler.es.core;
+
 	uses RemoteClassLoaderFire;
+
 	provides RemoteClassLoaderFire with EsClassLoaderFire;
 }

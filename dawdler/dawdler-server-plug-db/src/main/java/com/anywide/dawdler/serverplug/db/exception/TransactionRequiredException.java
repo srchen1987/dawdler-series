@@ -24,9 +24,10 @@ package com.anywide.dawdler.serverplug.db.exception;
  * @date 2021年12月18日
  * @email suxuan696@gmail.com
  */
-public class TransactionRequiredException extends RuntimeException{
+public class TransactionRequiredException extends RuntimeException {
 
 	private static final long serialVersionUID = -883131451486676208L;
+
 	public TransactionRequiredException(String message) {
 		super(message);
 	}

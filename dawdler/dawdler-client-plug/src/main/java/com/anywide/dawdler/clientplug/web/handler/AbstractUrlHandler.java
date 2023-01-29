@@ -34,9 +34,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
-
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -79,7 +76,7 @@ public abstract class AbstractUrlHandler {
 
 	public abstract boolean handleUrl(String urishort, String method, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException;
-	
+
 	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,
 			boolean responseBody) throws Throwable {
 		try {

@@ -186,7 +186,7 @@ public class LoadCore implements Runnable {
 				needLoad.add(className + CLASSP_REFIX);
 			}
 		}
-		
+
 		for (Node item : localItems) {
 			Element ele = (Element) item;
 			String localCheckName = ele.attributeValue("checkname");

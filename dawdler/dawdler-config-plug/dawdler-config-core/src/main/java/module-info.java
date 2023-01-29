@@ -14,12 +14,17 @@ module dawdler.config.core {
 	requires com.fasterxml.jackson.dataformat.yaml;
 	requires consul.api;
 	requires dawdler.core;
+
 	exports com.anywide.dawdler.conf;
 	exports com.anywide.dawdler.conf.cache;
 	exports com.anywide.dawdler.conf.init;
 	exports com.anywide.dawdler.conf.annotation;
+
 	uses ConfigClient;
+
 	provides ConfigClient with ConsulConfigClient;
+
 	uses HealthIndicator;
+
 	provides HealthIndicator with ConfigIndicator;
 }

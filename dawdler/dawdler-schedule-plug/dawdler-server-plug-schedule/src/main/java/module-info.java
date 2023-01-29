@@ -1,4 +1,4 @@
-module dawdler.server.plug.schedule{
+module dawdler.server.plug.schedule {
 	requires java.base;
 	requires dawdler.core;
 	requires dawdler.schedule.core;

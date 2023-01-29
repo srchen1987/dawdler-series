@@ -86,9 +86,11 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 				MODE mode = dbt.mode();
 				synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
 				if (dataSourceManager != null) {
-					MappingDecision mappingDecision = dataSourceManager.getMappingDecision(object.getClass().getPackage().getName());
-					if(mappingDecision == null) {
-						throw new TransactionRequiredException(object.getClass().getPackage().getName()+" transaction needs to be set.");
+					MappingDecision mappingDecision = dataSourceManager
+							.getMappingDecision(object.getClass().getPackage().getName());
+					if (mappingDecision == null) {
+						throw new TransactionRequiredException(
+								object.getClass().getPackage().getName() + " transaction needs to be set.");
 					}
 					readStatus = new JdbcReadConnectionStatus(dbt);
 					if (dbt.readConfig() == READ_CONFIG.idem) {

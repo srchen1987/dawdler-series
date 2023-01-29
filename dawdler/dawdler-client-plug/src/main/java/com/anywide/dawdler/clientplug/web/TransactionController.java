@@ -93,8 +93,8 @@ public abstract class TransactionController {
 		T instance;
 		try {
 			instance = clazz.getDeclaredConstructor().newInstance();
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
 			return null;
 		}
 		for (Field field : fields) {
