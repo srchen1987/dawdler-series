@@ -8,6 +8,7 @@ module dawdler.util {
 	requires transitive java.xml;
 	requires transitive dom4j;
 	requires org.slf4j;
+
 	exports com.anywide.dawdler.util;
 	exports com.anywide.dawdler.util.aspect;
 	exports com.anywide.dawdler.util.reflectasm;

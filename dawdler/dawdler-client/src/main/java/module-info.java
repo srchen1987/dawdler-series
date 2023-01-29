@@ -11,11 +11,14 @@ module dawdler.client {
 	requires cglib;
 	requires org.slf4j;
 	requires dom4j;
+
 	exports com.anywide.dawdler.client;
 	exports com.anywide.dawdler.client.conf;
 	exports com.anywide.dawdler.client.filter;
 	exports com.anywide.dawdler.client.net.aio.session;
+
 	uses com.anywide.dawdler.client.cluster.LoadBalance;
 	uses com.anywide.dawdler.client.filter.DawdlerClientFilter;
-	provides LoadBalance with RandomLoadBalance,RoundRobinLoadBalance;
+
+	provides LoadBalance with RandomLoadBalance, RoundRobinLoadBalance;
 }

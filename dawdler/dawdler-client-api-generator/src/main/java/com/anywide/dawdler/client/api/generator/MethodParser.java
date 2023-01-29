@@ -379,6 +379,7 @@ public class MethodParser {
 		response.put("404", RESPONSE_404);
 		return response;
 	}
+
 	public static String getHttpMethod(String method) {
 		if (method == null) {
 			return null;

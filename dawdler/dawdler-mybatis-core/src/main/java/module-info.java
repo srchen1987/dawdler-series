@@ -8,6 +8,7 @@ module dawdler.mybatis.core {
 	requires transitive java.naming;
 	requires ognl;
 	requires dom4j;
+
 	exports org.apache.ibatis.parsing;
 	exports org.apache.ibatis.builder;
 	exports org.apache.ibatis.binding;

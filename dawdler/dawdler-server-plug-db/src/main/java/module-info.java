@@ -14,11 +14,16 @@ module dawdler.server.plug.db {
 	requires dom4j;
 	requires dawdler.server.plug;
 	requires dawdler.config.core;
+
 	exports com.anywide.dawdler.serverplug.db.annotation;
 	exports com.anywide.dawdler.serverplug.db.transaction;
 	exports com.anywide.dawdler.serverplug.db.datasource;
+
 	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with TransactionLifeCycle;
+
 	uses HealthIndicator;
+
 	provides HealthIndicator with DataSourceIndicator;
 }

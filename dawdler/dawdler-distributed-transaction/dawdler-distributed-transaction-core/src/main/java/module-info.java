@@ -11,6 +11,7 @@ module dawdler.distributed.transaction.core {
 	requires dawdler.serialization;
 	requires dawdler.redis.core;
 	requires org.apache.commons.pool2;
+
 	exports com.anywide.dawdler.distributed.transaction.release;
 	exports com.anywide.dawdler.distributed.transaction.message;
 	exports com.anywide.dawdler.distributed.transaction.message.amqp.rabbitmq;

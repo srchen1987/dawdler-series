@@ -7,6 +7,8 @@ module dawdler.server.plug.es {
 	requires dawdler.server.plug;
 	requires dawdler.es.core;
 	requires dawdler.server;
+
 	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with ElasticSearchLifeCycle;
 }

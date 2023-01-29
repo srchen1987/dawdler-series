@@ -15,9 +15,14 @@ module dawdler.es.core {
 	requires elasticsearch.java;
 	requires elasticsearch.rest.client;
 	requires dawdler.config.core;
+
 	exports com.anywide.dawdler.es.restclient;
+
 	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with ElasticSearchLifeCycle;
+
 	uses HealthIndicator;
+
 	provides HealthIndicator with EsIndicator;
 }

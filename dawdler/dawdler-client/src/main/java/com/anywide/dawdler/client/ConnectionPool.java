@@ -49,11 +49,11 @@ public class ConnectionPool {
 
 	private ConnectionPool() {
 	}
-	
+
 	public static void addServerChannelGroup(String gid, ServerChannelGroup serverChannelGroup) {
 		SERVER_CHANNEL_GROUPS.put(gid, serverChannelGroup);
 		ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-		if(cp == null) {
+		if (cp == null) {
 			cp = new ConnectionPool();
 			cp.groupName = gid;
 			addGroup(gid, cp);
@@ -62,7 +62,7 @@ public class ConnectionPool {
 			}
 		}
 	}
-	
+
 	public static void initConnection(String gid) {
 		ServerChannelGroup sg = SERVER_CHANNEL_GROUPS.get(gid);
 		if (sg == null) {

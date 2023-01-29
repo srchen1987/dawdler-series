@@ -9,6 +9,7 @@ module dawdler.core {
 	requires dawdler.serialization;
 	requires org.apache.commons.pool2;
 	requires org.slf4j;
+
 	exports com.anywide.dawdler.core.order;
 	exports com.anywide.dawdler.core.bean;
 	exports com.anywide.dawdler.core.thread;
@@ -23,7 +24,9 @@ module dawdler.core {
 	exports com.anywide.dawdler.core.component.resource;
 	exports com.anywide.dawdler.core.health;
 	exports com.anywide.dawdler.core.httpserver;
+
 	opens com.anywide.dawdler.core.bean;
+
 	uses HealthIndicator;
 	uses ComponentLifeCycle;
 }

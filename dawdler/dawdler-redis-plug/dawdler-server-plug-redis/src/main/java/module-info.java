@@ -7,6 +7,8 @@ module dawdler.server.plug.redis {
 	requires dawdler.server.plug;
 	requires dawdler.redis.core;
 	requires dawdler.server;
+
 	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with JedisLifeCycle;
 }

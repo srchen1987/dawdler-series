@@ -36,6 +36,7 @@ public class ZkDiscoveryCenterClient {
 	private static final Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);
 	private ZkDiscoveryCenter zkDiscoveryCenter = null;
 	private CuratorCache curatorCache = null;
+
 	public ZkDiscoveryCenterClient() throws Exception {
 		zkDiscoveryCenter = ZkDiscoveryCenter.getInstance();
 		initListener();
@@ -80,12 +81,12 @@ public class ZkDiscoveryCenterClient {
 		});
 		curatorCache.start();
 	}
-	
+
 	public void destroy() {
-		if(curatorCache != null) {
+		if (curatorCache != null) {
 			curatorCache.close();
 		}
-		if(zkDiscoveryCenter != null) {
+		if (zkDiscoveryCenter != null) {
 			zkDiscoveryCenter.destroy();
 		}
 	}
