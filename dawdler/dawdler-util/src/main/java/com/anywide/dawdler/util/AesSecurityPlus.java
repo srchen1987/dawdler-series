@@ -37,6 +37,7 @@ import javax.crypto.spec.SecretKeySpec;
 public class AesSecurityPlus {
 	private static ConcurrentHashMap<String, AesSecurityPlus> cachePlug = new ConcurrentHashMap<>();
 	public static AesSecurityPlus DEFAULT_INSTANCE;
+	private static final String CHARSET="UTF-8"; 
 	static {
 		try {
 			DEFAULT_INSTANCE = AesSecurityPlus.getInstance(AesSecurityPlus.class.getName());
@@ -46,15 +47,16 @@ public class AesSecurityPlus {
 	}
 	private Cipher encipher = null;
 	private Cipher decipher = null;
+	
+	private SecretKeySpec skeySpec;
+	private IvParameterSpec iv;
 
 	private AesSecurityPlus(String password) throws Exception {
-		byte[] raw = password.getBytes("utf-8");
-		SecretKeySpec skeySpec = new SecretKeySpec(raw, "AES");
+		byte[] raw = password.getBytes(CHARSET);
+		skeySpec = new SecretKeySpec(raw, "AES");
 		encipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 		decipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-		IvParameterSpec iv = new IvParameterSpec(password.getBytes());
-		encipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
-		decipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
+		iv = new IvParameterSpec(password.getBytes(CHARSET));
 	}
 
 	public static AesSecurityPlus getInstance(String key) throws Exception {
@@ -78,16 +80,18 @@ public class AesSecurityPlus {
 	public String encrypt(String content) throws Exception {
 		byte[] encrypted = null;
 		synchronized (encipher) {
-			encrypted = encipher.doFinal(content.getBytes());
+			encipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
+			encrypted = encipher.doFinal(content.getBytes(CHARSET));
 		}
 		String baseString = Base64.getEncoder().encodeToString(encrypted);
-		return URLEncoder.encode(baseString, "UTF-8");
+		return URLEncoder.encode(baseString, CHARSET);
 	}
 
 	public String decrypt(String content) throws Exception {
-		content = URLDecoder.decode(content, "UTF-8");
-		byte[] decrypted = Base64.getDecoder().decode(content.getBytes());
+		content = URLDecoder.decode(content, CHARSET);
+		byte[] decrypted = Base64.getDecoder().decode(content.getBytes(CHARSET));
 		synchronized (decipher) {
+			decipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 			decrypted = decipher.doFinal(decrypted);
 		}
 		return new String(decrypted);
@@ -95,12 +99,14 @@ public class AesSecurityPlus {
 
 	public byte[] encryptByteArray(byte[] data) throws Exception {
 		synchronized (encipher) {
+			encipher.init(Cipher.ENCRYPT_MODE, skeySpec, iv);
 			return encipher.doFinal(data);
 		}
 	}
 
 	public byte[] decryptByteArray(byte[] data) throws Exception {
 		synchronized (decipher) {
+			decipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 			return decipher.doFinal(data);
 		}
 	}
