@@ -30,39 +30,13 @@ import com.anywide.dawdler.util.DawdlerTool;
  * @email suxuan696@gmail.com
  */
 public class ClientConfig {
+	
 	public String certificatePath;
-	private String zkHost;
-	private String zkUsername;
-	private String zkPassword;
-
-	public String getZkUsername() {
-		return zkUsername;
-	}
-
-	public void setZkUsername(String zkUsername) {
-		this.zkUsername = zkUsername;
-	}
-
-	public String getZkPassword() {
-		return zkPassword;
-	}
-
-	public void setZkPassword(String zkPassword) {
-		this.zkPassword = zkPassword;
-	}
 
 	private List<ServerChannelGroup> serverChannelGroups;
 
 	public ClientConfig() {
 		serverChannelGroups = new ArrayList<>();
-	}
-
-	public String getZkHost() {
-		return zkHost;
-	}
-
-	public void setZkHost(String zkHost) {
-		this.zkHost = zkHost;
 	}
 
 	public List<ServerChannelGroup> getServerChannelGroups() {
