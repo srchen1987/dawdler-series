@@ -9,6 +9,8 @@ module dawdler.distributed.transaction.compensator {
 	requires jakarta.servlet;
 	requires org.slf4j;
 	requires dawdler.rabbitmq.core;
+
 	exports com.anywide.dawdler.distributed.transaction.compensate.process;
+
 	uses com.anywide.dawdler.distributed.transaction.compensate.process.DistributedTransactionCustomProcessor;
 }

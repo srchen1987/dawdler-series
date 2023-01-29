@@ -37,7 +37,8 @@ public class PropertiesUtil {
 	private static Class<?> configMappingDataCacheClass = null;
 	static {
 		try {
-			configMappingDataCacheClass = Thread.currentThread().getContextClassLoader().loadClass("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
+			configMappingDataCacheClass = Thread.currentThread().getContextClassLoader()
+					.loadClass("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
 		} catch (ClassNotFoundException e) {
 		}
 	}
@@ -56,7 +57,7 @@ public class PropertiesUtil {
 				ps = new Properties();
 				Set<Entry<String, Object>> entrySet = attributes.entrySet();
 				for (Entry<String, Object> entry : entrySet) {
-					if(entry.getValue() != null) {
+					if (entry.getValue() != null) {
 						ps.setProperty(entry.getKey(), entry.getValue().toString());
 					}
 				}

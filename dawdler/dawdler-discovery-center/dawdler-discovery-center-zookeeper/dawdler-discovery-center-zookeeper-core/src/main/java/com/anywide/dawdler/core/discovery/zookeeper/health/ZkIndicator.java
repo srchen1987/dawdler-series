@@ -42,7 +42,7 @@ public class ZkIndicator implements HealthIndicator {
 
 	@Override
 	public Health check(Builder builder) throws Exception {
-		ZkDiscoveryCenter zkDiscoveryCenter= ZkDiscoveryCenter.getInstance();
+		ZkDiscoveryCenter zkDiscoveryCenter = ZkDiscoveryCenter.getInstance();
 		String state = zkDiscoveryCenter.state();
 		int tryTime = 0;
 		while (!States.CONNECTED.toString().equals(state)) {

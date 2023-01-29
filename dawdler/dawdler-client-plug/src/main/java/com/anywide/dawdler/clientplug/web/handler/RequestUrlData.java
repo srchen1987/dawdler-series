@@ -76,5 +76,5 @@ public class RequestUrlData {
 	public void setJsonIgnoreNull(JsonIgnoreNull jsonIgnoreNull) {
 		this.jsonIgnoreNull = jsonIgnoreNull;
 	}
-	
+
 }

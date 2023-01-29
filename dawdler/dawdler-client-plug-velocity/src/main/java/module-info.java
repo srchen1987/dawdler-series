@@ -11,7 +11,9 @@ module dawdler.client.plug.velocity {
 	requires org.jsoup;
 	requires jakarta.servlet;
 	requires velocity.engine.core;
+
 	uses DisplayPlug;
+
 	provides DisplayPlug with VelocityDisplayPlug;
-	
+
 }

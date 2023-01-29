@@ -52,7 +52,7 @@ public final class JedisPoolFactory {
 		String auth = ps.getProperty("auth");
 		String userName = ps.getProperty("userName");
 		int database = PropertiesUtil.getIfNullReturnDefaultValueInt("database", 0, ps);
-		
+
 		int minIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle", JedisPoolConfig.DEFAULT_MIN_IDLE,
 				ps);
 		int maxIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxIdle", JedisPoolConfig.DEFAULT_MAX_IDLE,

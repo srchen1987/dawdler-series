@@ -7,8 +7,12 @@ module dawdler.client.plug.config {
 	requires dawdler.config.core;
 	requires dawdler.client.plug;
 	requires dawdler.core;
+
 	uses RemoteClassLoaderFire;
+
 	provides RemoteClassLoaderFire with ConfigLoaderFire;
+
 	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with ConfigLifeCycle;
 }

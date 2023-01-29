@@ -37,13 +37,13 @@ public abstract class AbstractDisplayPlug implements DisplayPlug {
 	protected void logException(ViewForward wf) {
 		Throwable ex = wf.getInvokeException();
 		if (ex != null) {
-			while(ex.getCause() != null) {
+			while (ex.getCause() != null) {
 				ex = ex.getCause();
 			}
-			
-			if(ex.getMessage() != null) {
+
+			if (ex.getMessage() != null) {
 				logger.error(ex.getMessage());
-			}else {
+			} else {
 				logger.error("{}", ex);
 			}
 		}

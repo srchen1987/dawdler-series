@@ -32,7 +32,7 @@
 		<javassist.version>3.28.0-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
 		<commons-io.version>2.11.0</commons-io.version>
-		<jackson-dataformat-yaml.version>2.12.0</jackson-dataformat-yaml.version>
+		<jackson-dataformat-yaml.version>2.13.2</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>8.2.0</elasticsearch.version>
 		<pinpoint.version>2.4.0</pinpoint.version>
@@ -390,6 +390,16 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-discovery-center-zookeeper-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-discovery-center-zookeeper</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-discovery-center-zookeeper</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>

@@ -167,7 +167,8 @@ public abstract class ConstructorAccess<T> {
 			mv.visitInsn(DUP);
 			mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "getClass", "()Ljava/lang/Class;", false);
 			mv.visitInsn(POP);
-			mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "(L" + enclosingClassNameInternal + ";)V", false);
+			mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "(L" + enclosingClassNameInternal + ";)V",
+					false);
 			mv.visitInsn(ARETURN);
 			mv.visitMaxs(4, 2);
 		} else {

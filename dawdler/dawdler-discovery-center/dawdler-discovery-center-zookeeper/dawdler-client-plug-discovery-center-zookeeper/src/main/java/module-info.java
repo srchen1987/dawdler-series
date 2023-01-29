@@ -9,6 +9,8 @@ module dawdler.client.plug.discovery.center.zookeeper {
 	requires curator.framework;
 	requires dawdler.discovery.center.zookeeper.core;
 	requires dawdler.discovery.center.core;
+
 	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with ZookeeperLifeCycle;
 }

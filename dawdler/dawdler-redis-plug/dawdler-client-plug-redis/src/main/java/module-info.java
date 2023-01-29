@@ -6,6 +6,8 @@ module dawdler.client.plug.redis {
 	requires dawdler.core;
 	requires dawdler.client.plug;
 	requires dawdler.redis.core;
+
 	uses RemoteClassLoaderFire;
+
 	provides RemoteClassLoaderFire with JedisClassLoaderFire;
 }

@@ -39,7 +39,6 @@ import com.anywide.dawdler.clientplug.web.listener.WebContextListenerProvider;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * @author jackson.song

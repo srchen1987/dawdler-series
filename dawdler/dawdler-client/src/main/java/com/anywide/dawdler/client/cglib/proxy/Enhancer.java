@@ -694,11 +694,11 @@ public class Enhancer extends AbstractClassGenerator {
 	public static void registerCallbacks(Class<?> generatedClass, Callback[] callbacks) {
 		setThreadCallbacks(generatedClass, callbacks);
 	}
-	
+
 	public static void registerStaticCallbacks(Class<?> generatedClass, Callback[] callbacks) {
 		setCallbacksHelper(generatedClass, callbacks, SET_STATIC_CALLBACKS_NAME);
 	}
-	
+
 	public static boolean isEnhanced(Class<?> type) {
 		try {
 			getCallbacksSetter(type, SET_THREAD_CALLBACKS_NAME);
@@ -800,7 +800,8 @@ public class Enhancer extends AbstractClassGenerator {
 	 * @param filter     the callback filter to use when generating a new class
 	 * @param callbacks  callback implementations to use for the enhanced object
 	 */
-	public static Object create(Class<?> superclass, Class<?>[] interfaces, CallbackFilter filter, Callback[] callbacks) {
+	public static Object create(Class<?> superclass, Class<?>[] interfaces, CallbackFilter filter,
+			Callback[] callbacks) {
 		Enhancer e = new Enhancer();
 		e.setSuperclass(superclass);
 		e.setInterfaces(interfaces);
