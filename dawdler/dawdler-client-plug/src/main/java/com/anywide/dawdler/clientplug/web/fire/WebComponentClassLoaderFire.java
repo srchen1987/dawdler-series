@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ServiceFactory;
 import com.anywide.dawdler.clientplug.annotation.Controller;
+import com.anywide.dawdler.clientplug.annotation.JsonIgnoreNull;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
@@ -127,6 +128,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 				requestUrlData.setRequestMapping(requestMapping);
 				requestUrlData.setTarget(target);
 				requestUrlData.setResponseBody(method.getAnnotation(ResponseBody.class));
+				requestUrlData.setJsonIgnoreNull(method.getAnnotation(JsonIgnoreNull.class));
 				for (String requestMappingPath : requestMapping.value()) {
 					try {
 						String mapping = prefix == null ? requestMappingPath : (prefix + requestMappingPath);

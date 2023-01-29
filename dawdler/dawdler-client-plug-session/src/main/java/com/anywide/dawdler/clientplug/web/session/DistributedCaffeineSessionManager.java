@@ -18,8 +18,6 @@ package com.anywide.dawdler.clientplug.web.session;
 
 import java.util.concurrent.TimeUnit;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-
 import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
@@ -56,11 +54,11 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 		return maxInactiveInterval;
 	}
 
-	private Boolean createipBlacklist(@NonNull String key) {
+	private Boolean createipBlacklist(String key) {
 		return null;
 	}
-
-	private DawdlerHttpSession createExpensiveGraph(@NonNull String key) {
+	
+	private DawdlerHttpSession createExpensiveGraph(String key) {
 		return null;
 	}
 

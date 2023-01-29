@@ -60,6 +60,18 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-serialization</artifactId>
+				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
@@ -84,12 +96,6 @@
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-mybatis-core</artifactId>
 				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
@@ -109,6 +115,11 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-discovery-center-zookeeper</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-config-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
@@ -125,6 +136,21 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-redis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-rabbitmq</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-es</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-schedule</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
@@ -137,6 +163,12 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-access</artifactId>
+				<version>${ch.qos.logback.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-core</artifactId>
 				<version>${ch.qos.logback.version}</version>
 				<scope>provided</scope>
 			</dependency>
