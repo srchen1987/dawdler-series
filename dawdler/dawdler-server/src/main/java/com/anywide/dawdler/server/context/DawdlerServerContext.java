@@ -58,11 +58,11 @@ public class DawdlerServerContext {
 	public void prepareDestroyedApplication() {
 		serviceRoot.prepareDestroyedApplication();
 	}
-	
+
 	public void destroyedApplication() {
 		serviceRoot.destroyedApplication();
 	}
-	
+
 	public void shutdownWorkPool() {
 		serviceRoot.shutdownWorkPool();
 	}

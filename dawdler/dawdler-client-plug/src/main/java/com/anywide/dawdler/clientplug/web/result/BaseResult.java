@@ -47,7 +47,7 @@ public class BaseResult<T> {
 		this.message = message;
 		this.success = success;
 	}
-	
+
 	public BaseResult(boolean success) {
 		this.success = success;
 	}
