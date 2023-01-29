@@ -263,14 +263,13 @@ public class ServiceBase implements Service {
 			} else {
 				orderData.getData().contextInitialized(dawdlerContext);
 			}
-
-			for (int i = 0; i < lifeCycleList.size(); i++) {
-				try {
-					OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-					lifeCycle.getData().afterInit();
-				} catch (Throwable e) {
-					logger.error("", e);
-				}
+		}
+		for (int i = 0; i < lifeCycleList.size(); i++) {
+			try {
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().afterInit();
+			} catch (Throwable e) {
+				logger.error("", e);
 			}
 		}
 	}

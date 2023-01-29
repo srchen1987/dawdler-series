@@ -171,6 +171,7 @@ public class ConsulConfigClient implements ConfigClient {
 						value = ConfigContentDecryptor.decryptAndReplaceTag(value);
 					} catch (Exception e) {
 						logger.error("", e);
+						continue;
 					}
 				}
 				ConfigDataCache.addConfigData(key, value, getValue.getModifyIndex());
