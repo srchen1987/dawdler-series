@@ -164,6 +164,9 @@ public class ConsulConfigClient implements ConfigClient {
 		for (GetValue getValue : getValues) {
 			String key = getValue.getKey();
 			String value = getValue.getDecodedValue();
+			if(value == null) {
+				continue;
+			}
 			ConfigData configData = ConfigDataCache.getConfigData(key);
 			if (configData == null || configData.getVersion() != getValue.getModifyIndex()) {
 				if (ConfigContentDecryptor.useDecrypt()) {
