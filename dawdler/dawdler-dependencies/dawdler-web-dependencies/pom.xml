@@ -2,10 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>dawdler</groupId>
-		<artifactId>dawdler</artifactId>
+		<artifactId>dawdler-dependencies</artifactId>
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-web-dependencies</artifactId>
+	<name>dawdler-web-dependencies</name>
+	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -72,6 +74,11 @@
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client-plug-discovery-center-zookeeper</artifactId>
 				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

@@ -50,13 +50,13 @@ import com.anywide.dawdler.util.XmlObject;
  * @email suxuan696@gmail.com
  */
 public class LoadCore implements Runnable {
-	private static final String PREFIX = ".dat";
 	private static final Logger logger = LoggerFactory.getLogger(LoadCore.class);
 	private static final Pattern CLASS_PATTERN = Pattern.compile("(.*)\\.class$");
 	private static final String CLASSP_REFIX = ".class";
 	private static final String CURRENT_PATH;
 	private static final String TYPE_API = "api";
 	private static final String TYPE_COMPONENT = "component";
+	private XmlObject xmlObjectPreCache;
 	static {
 		CURRENT_PATH = DawdlerTool.getCurrentPath();
 	}
@@ -76,9 +76,6 @@ public class LoadCore implements Runnable {
 		this.channelGroupId = channelGroupId;
 	}
 
-	public String getLogFilePath() {
-		return CURRENT_PATH + channelGroupId + "-" + host + PREFIX;
-	}
 
 	public void toCheck() throws Throwable {
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
@@ -95,28 +92,14 @@ public class LoadCore implements Runnable {
 			throw new NullPointerException("not found host " + host + "!");
 		}
 		XmlObject xmlo = new XmlObject(xmlb.getDocument());
-		String filepath = getLogFilePath();
-		File file = new File(filepath);
-		if (!file.exists()) {
-			xmlo.setFilepath(filepath);
-			try {
-				xmlo.setXmlfile(false);
-				xmlo.saveXML();
-			} catch (IOException e) {
-				logger.error("", e);
-			}
+		if (xmlObjectPreCache == null) {
+			xmlObjectPreCache = xmlo;
 			initClassMap(xmlo);
 		} else {
 			try {
-				XmlObject local = new XmlObject(filepath, false);
+				XmlObject local = xmlObjectPreCache;
 				if (check(local, xmlo)) {
-					xmlo.setFilepath(filepath);
-					try {
-						xmlo.setXmlfile(false);
-						xmlo.saveXML();
-					} catch (IOException e) {
-						logger.error("", e);
-					}
+					xmlObjectPreCache = xmlo;
 				}
 			} catch (DocumentException | IOException e) {
 				logger.error("", e);
@@ -124,28 +107,6 @@ public class LoadCore implements Runnable {
 		}
 	}
 
-	public void initWebComponent() throws Throwable {
-		try {
-			String filepath = getLogFilePath();
-			File xmlFile = new File(filepath);
-			if (!xmlFile.isFile()) {
-				return;
-			}
-			XmlObject xmlo = new XmlObject(filepath, false);
-			Set<String> needLoad = new LinkedHashSet<String>();
-			for (Object o : xmlo.selectNodes("/hosts/host[@type='" + TYPE_COMPONENT + "']/item")) {
-				Element ele = (Element) o;
-				String checkName = ele.attributeValue("checkname");
-				String className = toClassName(checkName);
-				if (ClientPlugClassLoader.getRemoteClass((host + "-" + className)) == null) {
-					needLoad.add(className + CLASSP_REFIX);
-				}
-			}
-			loadClass(needLoad.toArray(new String[0]), false);
-		} catch (DocumentException | IOException e) {
-			logger.error("", e);
-		}
-	}
 
 	private static String toClassName(String checkName) {
 		return checkName.replace(File.separator, ".").substring(0, checkName.lastIndexOf("."));
