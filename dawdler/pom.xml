@@ -33,6 +33,7 @@
 		<aspectj.version>1.9.6</aspectj.version>
 		<javassist.version>3.23.1-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
+		<commons-io.version>2.11.0</commons-io.version>
 		<jackson-dataformat-yaml.version>2.13.2</jackson-dataformat-yaml.version>
 		<consul-api.version>1.4.5</consul-api.version>
 		<elasticsearch.version>8.2.0</elasticsearch.version>
