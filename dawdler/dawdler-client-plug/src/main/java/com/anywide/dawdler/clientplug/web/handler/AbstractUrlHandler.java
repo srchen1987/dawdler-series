@@ -95,7 +95,11 @@ public abstract class AbstractUrlHandler {
 						out.flush();
 					} else {
 						response.setContentType(AbstractDisplayPlug.MIME_TYPE_JSON);
-						JsonProcessUtil.beanToJson(out, result);
+						if (viewForward.isJsonIgnoreNull()) {
+							JsonProcessUtil.ignoreNullBeanToJson(out, result);
+						} else {
+							JsonProcessUtil.beanToJson(out, result);
+						}
 						out.flush();
 					}
 					postHandle(target, viewForward, requestMapping, viewForward.getInvokeException());
