@@ -41,6 +41,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.XmlObject;
 
 import jakarta.servlet.DispatcherType;
+import jakarta.servlet.Filter;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
@@ -119,11 +120,6 @@ public class LoadListener implements ServletContextListener {
 			String channelGroupId = ele.attributeValue("channel-group-id");
 			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
 			try {
-				loadCore.initWebComponent();
-			} catch (Throwable e) {
-				logger.error("", e);
-			}
-			try {
 				loadCore.toCheck();
 			} catch (Throwable e) {
 				logger.error("", e);
@@ -151,8 +147,8 @@ public class LoadListener implements ServletContextListener {
 				DispatcherType.ERROR, DispatcherType.INCLUDE);
 
 		try {
-			Class sessionClass = Class.forName("com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter");
-			arg0.getServletContext().addFilter(sessionClass.getSimpleName(), sessionClass)
+			String filterName = "com.anywide.dawdler.clientplug.web.session.DawdlerSessionFilter";
+			arg0.getServletContext().addFilter(filterName, Class.forName(filterName).asSubclass(Filter.class))
 					.addMappingForUrlPatterns(dispatcherType, true, "/*");
 		} catch (ClassNotFoundException e) {
 		}
