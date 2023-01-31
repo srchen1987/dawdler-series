@@ -39,6 +39,7 @@
 		<pinpoint.version>2.4.0</pinpoint.version>
 		<qdox.version>2.0.1</qdox.version>
 		<quartz.version>2.3.2</quartz.version>
+		<gson.version>2.10</gson.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -497,12 +498,11 @@
 		<module>dawdler-distributed-transaction</module>
 		<module>dawdler-es-plug</module>
 		<module>dawdler-pinpoint-plug</module>
-		<module>dawdler-services-dependencies</module>
 		<module>dawdler-client-api-generator</module>
-		<module>dawdler-web-dependencies</module>
 		<module>dawdler-mybatis-core</module>
 		<module>dawdler-encrypt-generator</module>
 		<module>dawdler-schedule-plug</module>
 		<module>dawdler-discovery-center</module>
+		<module>dawdler-dependencies</module>
 	</modules>
 </project>
