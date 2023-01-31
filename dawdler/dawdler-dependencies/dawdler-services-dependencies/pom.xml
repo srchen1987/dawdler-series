@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>dawdler</groupId>
-		<artifactId>dawdler</artifactId>
+		<artifactId>dawdler-dependencies</artifactId>
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-services-dependencies</artifactId>
@@ -120,19 +120,30 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-config-core</artifactId>
-				<version>${dawdler.build.version}</version>
+				<artifactId>dawdler-discovery-center-zookeeper-core</artifactId>
 				<exclusions>
 					<exclusion>
-						<groupId>com.fasterxml.jackson.dataformat</groupId>
+						<groupId>*</groupId>
 						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
+				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-config</artifactId>
 				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-config-core</artifactId>
+				<version>${dawdler.build.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
@@ -185,6 +196,12 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
 				<version>${org.ow2.asm.version}</version>
@@ -205,6 +222,12 @@
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
 				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.google.code.gson</groupId>
+				<artifactId>gson</artifactId>
+				<scope>provided</scope>
+				<version>${gson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
