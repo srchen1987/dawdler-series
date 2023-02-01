@@ -40,6 +40,7 @@ import com.anywide.dawdler.util.PropertiesUtil;
  * @email suxuan696@gmail.com
  */
 public class ZkDiscoveryCenter implements DiscoveryCenter {
+
 	private final String ROOT_PATH = "/dawdler";
 	private CuratorFramework client;
 	private String connectString;
@@ -112,10 +113,16 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	}
 
 	@Override
+	public boolean deleteProvider(String path, String value) throws Exception {
+		 client.delete().deletingChildrenIfNeeded().forPath(ROOT_PATH + "/" + path + "/" + value);
+		 return true;
+	}
+	
+	@Override
 	public boolean isExist(String path) throws Exception {
 		return client.checkExists().forPath(ROOT_PATH + "/" + path) != null;
 	}
-
+	
 	public String state() throws Exception {
 		return client.getZookeeperClient().getZooKeeper().getState().toString();
 	}
