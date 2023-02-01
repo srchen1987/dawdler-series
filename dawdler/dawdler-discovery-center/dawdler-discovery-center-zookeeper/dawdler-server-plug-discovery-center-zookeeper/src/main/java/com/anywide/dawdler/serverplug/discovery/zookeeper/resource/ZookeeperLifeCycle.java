@@ -63,13 +63,14 @@ public class ZookeeperLifeCycle implements ComponentLifeCycle {
 
 	@Override
 	public void prepareDestroy() throws Throwable {
+		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
+		String channelGroup = dawdlerContext.getDeployName();
+		discoveryCenter = ZkDiscoveryCenter.getInstance();
+		String path = channelGroup;
+		String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
+		discoveryCenter.deleteProvider(path, value);
 		if (discoveryCenter != null) {
 			discoveryCenter.destroy();
-		}
-		try {
-			Thread.sleep(WAIT_TIME_MILLIS);
-		} catch (InterruptedException e) {
-			// ignore
 		}
 		if (timeout != null) {
 			timeout.cancel();

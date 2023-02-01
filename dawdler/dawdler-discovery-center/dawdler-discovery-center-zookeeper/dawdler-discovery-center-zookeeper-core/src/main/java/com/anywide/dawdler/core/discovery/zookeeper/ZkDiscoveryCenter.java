@@ -112,6 +112,12 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	}
 
 	@Override
+	public boolean deleteProvider(String path, String value) throws Exception {
+		 client.delete().deletingChildrenIfNeeded().forPath(ROOT_PATH + "/" + path + "/" + value);
+		 return true;
+	}
+
+	@Override
 	public boolean isExist(String path) throws Exception {
 		return client.checkExists().forPath(ROOT_PATH + "/" + path) != null;
 	}
