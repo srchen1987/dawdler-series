@@ -1,5 +1,9 @@
 # dawdler-series
 
+![version](https://img.shields.io/badge/dawdler--series-0.17.1--jdk17--RELEASES-brightgreen)&nbsp;
+[![License](https://img.shields.io/badge/license-apache2.0-green)](LICENSE)&nbsp;
+![jdk](https://img.shields.io/badge/jdk-17%2B-green)
+
 ## 项目介绍
 
 dawdler-series 是一站式分布式应用、微服务架构的解决方案,其特点简单、小巧、高效、易扩展.
@@ -156,6 +160,26 @@ dawdler实现pinpoint链路追踪插件.
 
 基于quartz实现,schedule模块的支持,包含客户端,服务器端,schedule核心模块.
 
+#### 23. [dawdler-discovery-center](dawdler/dawdler-discovery-center/README.md)
+
+注册中心的根模块,提供服务注册,服务下线,服务发现等功能.
+
+#### 24. [dawdler-encrypt-generator](dawdler/dawdler-encrypt-generator/README.md)
+
+用于生成properties与统一配置中心使用加密的密钥工具类.
+
+#### 25. [dawdler-dependencies](dawdler/dawdler-dependencies/README.md)
+
+构建项目时需要用的maven依赖声明.
+
+#### 26.  [dawdler-mybatis-core](dawdler/dawdler-mybatis-core/README.md)
+
+通过mybatis3.5.6进行改造,session变更为单例模式,支持读写分离,去除cache功能,一般不会单独使用,由dawdler-server-plug-mybatis依赖引入此模块即可.
+
+#### 27. [dawdler-client-api-generator](dawdler/dawdler-client-api-generator/README.md)
+
+基于java源码doc生成兼容swagger-ui的OpenAPI 3.0的json工具,对源代码零侵入,上手简单,生成效率高,使用非常方便.
+
 ### dawdler-runtime介绍
 
 参考[dawdler-runtime](https://github.com/srchen1987/dawdler-runtime/blob/main/README.md)
@@ -249,90 +273,6 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
     |   --user-web-api
     |   --order-web-api
     |   --product-web-api
-```
-
-#### 3. 快速入门实例
-
-以一个HelloService的服务调用过程来了解dawdler.
-
-1、定义服务接口与实体(dto或entity)
-
-```java
-//定义一个Message的dto
-public class Message implements Serializable {
- private static final long serialVersionUID = 4726982442137628060L;
- private int id;
- private String text;
-
- public int getId() {
-  return id;
- }
-
- public void setId(int id) {
-  this.id = id;
- }
-
- public String getText() {
-  return text;
- }
-
- public void setText(String text) {
-  this.text = text;
- }
-}
-```
-
-```java
-//定义一个Hello服务的接口
-@RemoteService("simple-service")
-public interface HelloService {
- 
- //@RemoteServiceAssistant(async = true)
- public String say(String text);
- 
- public List<Message> responseList(Map<String, Object> data);
-}
-```
-
-2、服务提供者
-
-```java
-public class HelloServiceImpl implements HelloService{
-
- @Override
- public String say(String text) {
-  System.out.println(new Date()+":"+text);
-  return "hi,"+text;
- }
-
- @Override
- public List<Message> responseList(Map<String, Object> data) {
-  System.out.println(data);
-  List<Message> list = new ArrayList<>();
-  Message message = new Message();
-  message.setId(1);
-  message.setText("text1");
-  list.add(message);
-  return list;
- }
-}
-```
-
-3、调用者
-
-```java
-public static void main(String[] args) {
-  HelloService hs = ServiceFactory.getService(HelloService.class);
-  Map<String, Object> param = new HashMap<>();
-  param.put("name", "jackson.song");
-  try {
-    List<Message> messageList = hs.responseList(param);
-    System.out.println(messageList);
-  } catch (Throwable e) {
-   System.out.println("exception:"+e.getMessage());
-  }
-  ConnectionPool.shutdown();//释放资源
-}
 ```
 
 更多实例请参考[dawdler-chapter](https://github.com/srchen1987/dawdler-chapter).
