@@ -16,6 +16,7 @@ module dawdler.config.core {
 	requires dawdler.core;
 
 	exports com.anywide.dawdler.conf;
+	exports com.anywide.dawdler.conf.client;
 	exports com.anywide.dawdler.conf.cache;
 	exports com.anywide.dawdler.conf.init;
 	exports com.anywide.dawdler.conf.annotation;
