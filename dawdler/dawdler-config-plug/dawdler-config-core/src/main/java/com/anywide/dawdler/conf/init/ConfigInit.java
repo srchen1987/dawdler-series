@@ -62,14 +62,14 @@ public class ConfigInit {
 		String activeProfile = System.getProperty("dawdler.profiles.active");
 		String prefix = "dawdler-config";
 		String subfix = ".yml";
-		String config_path = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		File file = new File(DawdlerTool.getCurrentPath() + config_path);
+		String configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		File file = new File(DawdlerTool.getCurrentPath() + configPath);
 		if (!file.isFile()) {
-			config_path = prefix + subfix;
-			file = new File(DawdlerTool.getCurrentPath() + config_path);
+			configPath = prefix + subfix;
+			file = new File(DawdlerTool.getCurrentPath() + configPath);
 		}
 		if (!file.isFile()) {
-			logger.warn("not found " + config_path);
+			logger.warn("not found " + configPath);
 		}
 		YAMLMapper yamlMapper = YAMLMapper.builder().build();
 		Map<String, Map<String, Object>> data = null;
