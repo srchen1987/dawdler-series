@@ -44,7 +44,6 @@ public class ZookeeperLifeCycle implements ComponentLifeCycle {
 	private DiscoveryCenter discoveryCenter;
 	private Timeout timeout;
 	private long checkTime = 5000;
-	private final static int WAIT_TIME_MILLIS = 1000;
 	private HashedWheelTimer hashedWheelTimer;
 
 	@Override
