@@ -1,4 +1,4 @@
-# dawdler-config
+# dawdler-config-plug
 
 ## 模块介绍
 
