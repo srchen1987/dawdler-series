@@ -6,6 +6,13 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-distributed-transaction-api</artifactId>
-	<name>dawdler-distributed-transaction-compensator</name>
+	<name>dawdler-distributed-transaction-api</name>
 	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
 </project>
