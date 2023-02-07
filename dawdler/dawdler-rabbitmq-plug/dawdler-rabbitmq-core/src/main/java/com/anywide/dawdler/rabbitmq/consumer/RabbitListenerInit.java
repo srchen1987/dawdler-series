@@ -68,7 +68,12 @@ public class RabbitListenerInit {
 								} catch (Throwable e) {
 									logger.error("", e.getCause());
 									if (listener.retry()) {
-										communalRetryMethod(message, channel, listener.retryCount());
+										communalRetryMethod(message, channel, listener.retryCount(),
+												listener.failedToDLQ());
+									} else if (listener.failedToDLQ()) {
+										String routingKey = message.getEnvelope().getRoutingKey();
+										channel.basicPublish(AMQPConnectionFactory.RABBIT_FAIL_EXCHANGE, routingKey,
+												(AMQP.BasicProperties) message.getProperties(), message.getBody());
 									}
 								}
 								if (!listener.autoAck()) {
@@ -86,14 +91,15 @@ public class RabbitListenerInit {
 
 	}
 
-	public static void communalRetryMethod(Message message, Channel channel, int retryCount) throws IOException {
+	public static void communalRetryMethod(Message message, Channel channel, int retryCount, boolean intoDLQ)
+			throws IOException {
 		// 获取该次消息的routingkey
 		String routingKey = message.getEnvelope().getRoutingKey();
 		if (getRetryCount(message) < retryCount) {
 			// 发送到重试队列中
 			channel.basicPublish(AMQPConnectionFactory.RABBIT_RETRY_EXCHANGE, routingKey,
 					(AMQP.BasicProperties) message.getProperties(), message.getBody());
-		} else {
+		} else if (intoDLQ) {
 			// 超过指定次数发送到失败队列
 			channel.basicPublish(AMQPConnectionFactory.RABBIT_FAIL_EXCHANGE, routingKey,
 					(AMQP.BasicProperties) message.getProperties(), message.getBody());
