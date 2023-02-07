@@ -55,6 +55,11 @@ public @interface RabbitListener {
 	boolean retry() default false;
 
 	/**
+	 * 失败后进入死信队列
+	 */
+	boolean failedToDLQ() default true;
+	
+	/**
 	 * 重试次数
 	 */
 	int retryCount() default 12;
