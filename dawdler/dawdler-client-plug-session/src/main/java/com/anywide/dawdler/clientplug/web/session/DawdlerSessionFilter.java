@@ -64,10 +64,10 @@ public class DawdlerSessionFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);
 	public static String cookieName = "_dawdler_key";
 	public static String tokenName = "token";
-	public static boolean suportHead;
-	public static boolean suportParam;
-	public static String domain;
-	public static String path = "/";
+	private static boolean suportHead;
+	private static boolean suportParam;
+	private static String domain;
+	private static String path = "/";
 	private static boolean secure;
 	private static int maxInactiveInterval;
 	private static int maxSize;
@@ -146,7 +146,6 @@ public class DawdlerSessionFilter implements Filter {
 	private final SessionIdGeneratorBase sessionIdGenerator = new StandardSessionIdGenerator();
 	AbstractDistributedSessionManager abstractDistributedSessionManager;
 	private ServletContext servletContext;
-	private Serializer serializer;
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
 	private Pool<Jedis> jedisPool;
@@ -170,7 +169,7 @@ public class DawdlerSessionFilter implements Filter {
 			abstractDistributedSessionManager.setHttpSessionListener((HttpSessionListener) listener);
 		}
 
-		serializer = SerializeDecider.decide((byte) 2);// 默认为kroy 需要其他的可以自行扩展
+		Serializer serializer = SerializeDecider.decide((byte) 2);// 默认为kroy 需要其他的可以自行扩展
 		sessionStore = new RedisSessionStore(jedisPool, serializer);
 		messageOperator = new RedisMessageOperator(serializer, sessionStore, abstractDistributedSessionManager,
 				jedisPool);
@@ -220,11 +219,9 @@ public class DawdlerSessionFilter implements Filter {
 			for (int i = 0; i < cookies.length; i++) {
 				if (cookies[i].getName().equals(cookiename)) {
 					return cookies[i].getValue();
-//					return URLDecoder.decode(cookies[i].getValue().trim(), "utf-8");
 				}
 			}
 		} catch (Exception e) {
-			return null;
 		}
 		return null;
 	}
