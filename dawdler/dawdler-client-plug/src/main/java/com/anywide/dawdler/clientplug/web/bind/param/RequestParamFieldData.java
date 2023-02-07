@@ -91,7 +91,7 @@ public class RequestParamFieldData {
 		return null;
 	}
 
-	public boolean hasAnnotation(Class annotation) {
+	public <T extends Annotation> boolean hasAnnotation(Class<T> annotation) {
 		return getAnnotation(annotation) != null;
 	}
 
