@@ -65,9 +65,6 @@ public final class XmlObject {
 	private boolean xmlFile = true;
 
 	{
-//		Map map = new HashMap();
-//		map.put("tx", "http://www.springframework.org/schema/tx");
-//		reader.getDocumentFactory().setXPathNamespaceURIs(map);
 		reader.setEncoding("utf-8");
 	}
 
