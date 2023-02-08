@@ -142,12 +142,7 @@ public class ConsulConfigClient implements ConfigClient {
 		this.start = false;
 		if (executor != null) {
 			executor.shutdownNow();
-			try {
-				executor.awaitTermination(waitTime, TimeUnit.SECONDS);
-			} catch (InterruptedException e) {
-			}
 		}
-
 	}
 
 	@Override
