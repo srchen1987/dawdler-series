@@ -34,6 +34,7 @@ import com.anywide.dawdler.client.api.generator.data.ControllerData;
 import com.anywide.dawdler.clientplug.annotation.Controller;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.util.JsonProcessUtil;
+import com.anywide.dawdler.util.YAMLMapperFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.DocletTag;
@@ -52,7 +53,7 @@ import com.thoughtworks.qdox.model.JavaSource;
 public class WebApiGenerator {
 
 	public static void generate(File file) throws IOException {
-		YAMLMapper yamlMapper = YAMLMapper.builder().build();
+		YAMLMapper yamlMapper = YAMLMapperFactory.getYAMLMapper();
 		OpenApiConfig openApi = yamlMapper.readValue(file, OpenApiConfig.class);
 		Map<String, ClassStruct> classStructs = new HashMap<>();
 		JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
