@@ -64,11 +64,10 @@ public class ZookeeperLifeCycle implements ComponentLifeCycle {
 	public void prepareDestroy() throws Throwable {
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
 		String channelGroup = dawdlerContext.getDeployName();
-		discoveryCenter = ZkDiscoveryCenter.getInstance();
 		String path = channelGroup;
 		String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-		discoveryCenter.deleteProvider(path, value);
 		if (discoveryCenter != null) {
+			discoveryCenter.deleteProvider(path, value);
 			discoveryCenter.destroy();
 		}
 		if (timeout != null) {
