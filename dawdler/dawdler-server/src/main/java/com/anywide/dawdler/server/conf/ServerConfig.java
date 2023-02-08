@@ -122,11 +122,23 @@ public class ServerConfig {
 
 	public class Scanner {
 		private Set<String> jarFiles = new LinkedHashSet<String>();
+		private Set<String> jarAntPathFiles = new LinkedHashSet<String>();
 		private Set<String> packagePathInJar = new LinkedHashSet<String>();
 		private Set<String> packageAntPathInJar = new LinkedHashSet<String>();
 
-		public Set<String> getJarFiles() {
-			return jarFiles;
+//		public Set<String> getJarFiles() {
+//			return jarFiles;
+//		}
+
+		public void splitAndAddJarFiles(String jarFilePath) {
+			if (!StringUtils.hasLength(jarFilePath)) {
+				return;
+			}
+			if (antPathMatcher.isPattern(jarFilePath)) {
+				this.jarAntPathFiles.add(jarFilePath);
+			} else {
+				this.jarFiles.add(jarFilePath);
+			}
 		}
 
 		public void splitAndAddPathInJar(String packagePath) {
@@ -141,7 +153,7 @@ public class ServerConfig {
 		}
 
 		public boolean matchInJars(String packagePath) {
-			if (packagePathInJar.contains(packagePath)) {
+			if (jarFiles.contains(packagePath)) {
 				return true;
 			}
 			for (String antPath : packageAntPathInJar) {
@@ -150,6 +162,22 @@ public class ServerConfig {
 				}
 			}
 			return false;
+		}
+
+		public boolean matchInJarFiles(String jarFilePath) {
+			if (packagePathInJar.contains(jarFilePath)) {
+				return true;
+			}
+			for (String antPath : jarAntPathFiles) {
+				if (antPathMatcher.match(antPath, jarFilePath)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public boolean emptyJar() {
+			return jarFiles.isEmpty() && jarAntPathFiles.isEmpty();
 		}
 	}
 
