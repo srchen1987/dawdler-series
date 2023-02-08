@@ -177,7 +177,6 @@ public class ServiceBase implements Service {
 		for (Node node : packagesInJars) {
 			deployScanner.splitAndAddPathInJar(node.getText().trim());
 		}
-
 		Set<Class<?>> classes;
 		classes = DeployClassesScanner.getClassesInPath(scanner, deployScanner, deploy);
 		Set<Class<?>> serviceClasses = new HashSet<>();
@@ -234,11 +233,9 @@ public class ServiceBase implements Service {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().init();
 		}
-
 		if (healthCheck.isCheck()) {
 			checkHealth();
 		}
-
 		dawdlerContext.removeAttribute(FILTER_PROVIDER);
 		dawdlerContext.removeAttribute(DAWDLER_LISTENER_PROVIDER);
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
@@ -261,6 +258,7 @@ public class ServiceBase implements Service {
 				orderData.getData().contextInitialized(dawdlerContext);
 			}
 		}
+
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			try {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
