@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -52,10 +51,10 @@ public class ServerConfigParser {
 
 	public void loadJarFile(Element root) {
 		List<Node> files = root.selectNodes("scanner/jar-files/jar-file");
-		Set<String> jarFiles = serverConfig.getScanner().getJarFiles();
+		Scanner scanner = serverConfig.getScanner();
 		for (Node node : files) {
 			String jarFile = node.getText().trim();
-			jarFiles.add(jarFile);
+			scanner.splitAndAddJarFiles(jarFile);
 		}
 	}
 
