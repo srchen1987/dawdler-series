@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.conf.client.ConfigClient;
 import com.anywide.dawdler.conf.client.factory.ConfigClientFactory;
 import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.YAMLMapperFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 
 /**
@@ -71,10 +72,10 @@ public class ConfigInit {
 		if (!file.isFile()) {
 			logger.warn("not found " + configPath);
 		}
-		YAMLMapper yamlMapper = YAMLMapper.builder().build();
+		YAMLMapper YAMLMapper= YAMLMapperFactory.getYAMLMapper();
 		Map<String, Map<String, Object>> data = null;
 		try {
-			data = yamlMapper.readValue(file, HashMap.class);
+			data = YAMLMapper.readValue(file, HashMap.class);
 		} catch (IOException e) {
 			logger.error("", e);
 			return;
