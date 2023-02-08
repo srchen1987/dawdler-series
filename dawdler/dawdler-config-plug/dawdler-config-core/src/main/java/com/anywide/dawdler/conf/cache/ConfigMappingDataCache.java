@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.anywide.dawdler.conf.cache.ConfigDataCache.ConfigData;
+import com.anywide.dawdler.util.YAMLMapperFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
@@ -76,7 +77,7 @@ public class ConfigMappingDataCache {
 				realObjMap = pre;
 			}
 		}
-		YAMLMapper yamlMapper = YAMLMapper.builder().build();
+		YAMLMapper yamlMapper = YAMLMapperFactory.getYAMLMapper();
 		Object obj = yamlMapper.readValue(content, mappingClass);
 		realObjMap.put(mappingClass, obj);
 		return (T) obj;
