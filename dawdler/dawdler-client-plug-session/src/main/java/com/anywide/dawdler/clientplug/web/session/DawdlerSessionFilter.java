@@ -62,8 +62,8 @@ import redis.clients.jedis.util.Pool;
  */
 public class DawdlerSessionFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);
-	public static String cookieName = "_dawdler_key";
-	public static String tokenName = "token";
+	private static String cookieName = "_dawdler_key";
+	private static String tokenName = "token";
 	private static boolean suportHead;
 	private static boolean suportParam;
 	private static String domain;
@@ -82,7 +82,7 @@ public class DawdlerSessionFilter implements Filter {
 		try {
 			ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter("identityConfig");
 		} catch (Exception e) {
-			logger.warn("use default identityConfig in dawdler-session jar!");
+			logger.warn("use default identityConfig in dawdler-client-plug-session jar!");
 		}
 		InputStream inStream = null;
 		if (ps == null) {
@@ -145,7 +145,6 @@ public class DawdlerSessionFilter implements Filter {
 
 	private final SessionIdGeneratorBase sessionIdGenerator = new StandardSessionIdGenerator();
 	AbstractDistributedSessionManager abstractDistributedSessionManager;
-	private ServletContext servletContext;
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
 	private Pool<Jedis> jedisPool;
@@ -160,7 +159,7 @@ public class DawdlerSessionFilter implements Filter {
 			logger.error("", e);
 			throw new ServletException(e);
 		}
-		servletContext = filterConfig.getServletContext();
+		ServletContext servletContext = filterConfig.getServletContext();
 		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize, defense,
 				ipMaxInactiveInterval, ipMaxSize);
 		Object listener = servletContext
@@ -310,10 +309,10 @@ public class DawdlerSessionFilter implements Filter {
 	}
 
 	private static String getOnlineIp(HttpServletRequest request) {
-		String forward_header = request.getHeader("X-Forwarded-For");
+		String forwardHeader = request.getHeader("X-Forwarded-For");
 		String ip = request.getHeader("X-Real-IP");
-		if ((forward_header != null) && (!forward_header.trim().equals(""))) {
-			String[] forward_headers = forward_header.split(",");
+		if ((forwardHeader != null) && (!forwardHeader.trim().equals(""))) {
+			String[] forward_headers = forwardHeader.split(",");
 			String[] arrayOfString1;
 			int j = (arrayOfString1 = forward_headers).length;
 			for (int i = 0; i < j; i++) {
