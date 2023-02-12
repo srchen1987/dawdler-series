@@ -16,7 +16,10 @@
 用于配置分布式会话的核心参数
 
 ```properties
-cookieName=_dawdler_key
+cookieName=_dawdler_key #sessionId存放的cookie名称
+tokenName=token #header或http请求参数中的sessionId名称,默认为token.
+suportHead=false #是否支持http header中传入tokenName定义的sessionId.
+suportParam=false #是否支持http 请求参数中传入tokenName定义的sessionId.
 domain= #cookie的域,一般无须填写默认即可
 path=/ #cookie中的path 默认为/
 secure=false #是否是https 如果是https此参数需要设置为true
@@ -31,3 +34,7 @@ ipLimit=8 #最大一个ip可以创建的session个数
 ### 3. session-redis.properties文件说明
 
 分布式session基于redis实现,redis客户端配置参考[dawdler-redis-plug](../dawdler-redis-plug/README.md#2-properties文件说明)
+
+### 4. 统一配置中心与多环境支持
+
+参考[统一配置中心与多环境支持](../../doc/dawdler-profiles.active-README.md)

@@ -18,7 +18,6 @@
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <zk-host>localhost:2181</zk-host><!-- zookeeeper的地址 目前只支持zk-->
     <certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath><!-- 身份验证 公钥路径 -->
     <server-channel-group channel-group-id="user"
                             connection-num="2"
