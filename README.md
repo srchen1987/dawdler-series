@@ -190,7 +190,7 @@ dawdler实现pinpoint链路追踪插件.
 
 ### 安装教程
 
-1. 下载[dawdler-runtime](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/17.0.1-RELEASES.zip)
+1. 下载[dawdler-runtime-jdk17](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/dawdler-runtime-jdk17.zip)
 
 2. 启动zookeeper.执行 `sh zkServer.sh start`  启动zookeeper.
 
