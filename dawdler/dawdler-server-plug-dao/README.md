@@ -65,22 +65,6 @@ insertPrepareGetKey与insertMapGetKey 方法会返回插入信息生成的主键
  int queryCountPrepare(String sql, Object... values) throws SQLException;
 ```
 
-### 3. services-config.xml中mybatis的配置文件说明
-
-services-config.xml是服务端核心配置文件,包含了数据源定义,指定目标包定义数据源,读写分离配置,服务端配置.
-
-本模块中涉及mybatis的配置在mybatis的子节点mapper的值中,支持antPath语法进行配置.
-
-示例：
-
-```xml
-<mybatis>
- <mappers>
-  <mapper>classpath*:com/anywide/shop/*/mapper/xml/*.xml</mapper>
- </mappers>
- </mybatis>
-```
-
 ### 3. 注入DAO
 
 编写自定义的DAO继承SupperDAO即可，如UserDAO。
@@ -118,4 +102,4 @@ public class UserServiceImpl implements UserService{
 
 底层是通过LocalConnectionFactory.getReadConnection()与LocalConnectionFactory.getWriteConnection()实现.
 
-关于配置读写分离可参考dawdler-server-plug-db模块的读写分离配置.
+关于配置读写分离可参考[dawdler-server-plug-db数据源规则配置](../dawdler-server-plug-db/README.md#4-数据源规则配置).
