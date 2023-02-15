@@ -143,6 +143,8 @@ public class MyTool extends VelocityToolBox{
 
 2、在resources下创建toolboxs.properties文件并配置,properties中的key为别名,value为类名.
 
+toolboxs.properties 支持多环境配置 参考[统一配置中心与多环境支持](../../doc/dawdler-profiles.active-README.md).
+
 ```properties
 myTool=com.anywide.yyg.user.velocity.tool.MyTool
 ```
