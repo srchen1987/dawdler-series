@@ -26,6 +26,8 @@
 
 配置不同类型的配置中心与相关配置,目前只支持consul,支持自定义扩展.
 
+dawdler-config.yml 支持多环境配置 参考[统一配置中心与多环境支持](../../doc/dawdler-profiles.active-README.md).
+
 ```yml
 consul:
  host: localhost
