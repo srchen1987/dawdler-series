@@ -34,6 +34,8 @@
 </config>
 ```
 
+client-conf.xml支持多环境配置 参考[统一配置中心与多环境支持](../../doc/dawdler-profiles.active-README.md).
+
 ### 3. api调用方式
 
 ```java
