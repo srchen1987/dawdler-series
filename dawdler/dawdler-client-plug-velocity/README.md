@@ -120,7 +120,7 @@ String templatePath = servletContext.getInitParameter("template-path");
 
 ### 5. VelocityToolBox的使用
 
-自定义指令比较麻烦,为了方便使用一些工具类的方法,提供了VelocityToolBox的扩展方法.
+自定义指令实现方式复杂,为了方便使用一些工具类的方法,提供了VelocityToolBox的扩展方法.
 
 使用方式：
 
@@ -142,6 +142,8 @@ public class MyTool extends VelocityToolBox{
 ```
 
 2、在resources下创建toolboxs.properties文件并配置,properties中的key为别名,value为类名.
+
+toolboxs.properties 支持多环境配置 参考[统一配置中心与多环境支持](../../doc/dawdler-profiles.active-README.md).
 
 ```properties
 myTool=com.anywide.yyg.user.velocity.tool.MyTool
