@@ -110,7 +110,7 @@ public class ServiceBase implements Service {
 		this.deployName = deploy.getName();
 		this.status = Status.STARTING;
 		classLoader = DawdlerDeployClassLoader.createLoader(binPath, parent, getClassLoaderURL());
-		Thread.currentThread().setContextClassLoader(classLoader);
+		resetContextClassLoader();
 		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
 				host, port, servicesManager, antPathMatcher);
 		classLoader.setDawdlerContext(dawdlerContext);
@@ -151,6 +151,7 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void start() throws Throwable {
+		resetContextClassLoader();
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
 				.getComponentLifeCycles();
 		for (int i = 0; i < lifeCycleList.size(); i++) {
@@ -277,6 +278,7 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void prepareStop() {
+		resetContextClassLoader();
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
 				.getComponentLifeCycles();
 		for (int i = lifeCycleList.size() - 1; i >= 0; i--) {
@@ -291,6 +293,7 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void stop() {
+		resetContextClassLoader();
 		if (dawdlerListenerProvider.getListeners() != null) {
 			for (int i = dawdlerListenerProvider.getListeners().size(); i > 0; i--) {
 				try {
@@ -388,6 +391,10 @@ public class ServiceBase implements Service {
 		}
 		return null;
 	}
+	
+	private void resetContextClassLoader() {
+		Thread.currentThread().setContextClassLoader(classLoader);
+	}
 
 	public class DeployScanner {
 		private Set<String> packagePathInJar = new LinkedHashSet<String>();
@@ -458,7 +465,7 @@ public class ServiceBase implements Service {
 			serviceHealth.addComponent("error", cause.getClass().getName() + ":" + cause.getMessage());
 			return serviceHealth;
 		}
-		Thread.currentThread().setContextClassLoader(classLoader);
+		resetContextClassLoader();
 		ServiceHealth serviceHealth = new ServiceHealth(deployName);
 		serviceHealth.setStatus(Status.STARTING);
 		HealthIndicatorProvider healthChecker = HealthIndicatorProvider.getInstance(deployName);
