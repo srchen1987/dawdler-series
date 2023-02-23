@@ -100,8 +100,8 @@ UserController-validator.xml 内容：
     <validator-mappings><!-- 验证器组 -->
         <validator-mapping name="/user/regist"><!-- 验证器 ＠name　请求的URI RequestMapping中定义的具体api地址,支持antPath.
         注意：如果类上有RequestMapping定义,需要将类上的RequestMapping中的value与方法上的RequestMapping中的value整合到一起.
-        @skip为跳过某些验证,支持跳过多个规则,可以用‘,’英文逗号隔开,里面写入的为validator-field的@name -->
-            <validator refgid="add" skip="age"/> <!-- 跳过了age验证 -->
+        @skip为跳过某些验证,支持跳过多个规则,可以用 , 英文逗号隔开,里面写入的为validator-field的@name -->
+            <validator refgid="add" skip="age,username"/> <!-- 跳过了age和username的验证 -->
         </validator-mapping>
         <validator-mapping name="/user/edit">
             <validator refgid="edit"/>
@@ -341,7 +341,7 @@ validateRule： 验证规则,可以用多个&组合到一起.
 
 alertFunction： 提示方法或提示组件的id. [参考alertFunction的例子](#622-alertfunction的示例)
 
-buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-buildFunction的示例)
+buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-buildfunction的示例)
 
 ##### 6.2.1 添加验证规则添加规则的示例
 
