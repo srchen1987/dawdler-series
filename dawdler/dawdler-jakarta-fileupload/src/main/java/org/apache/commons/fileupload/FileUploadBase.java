@@ -29,8 +29,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.MultipartStream.ItemInputStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.servlet.ServletRequestContext;
@@ -39,6 +37,8 @@ import org.apache.commons.fileupload.util.FileItemHeadersImpl;
 import org.apache.commons.fileupload.util.LimitedInputStream;
 import org.apache.commons.fileupload.util.Streams;
 import org.apache.commons.io.IOUtils;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>High level API for processing file uploads.</p>
