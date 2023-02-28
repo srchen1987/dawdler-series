@@ -14,25 +14,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.commons.fileupload.util.mime;
+package org.apache.commons.fileupload;
 
 /**
- * @since 1.3
+ * This exception is thrown if a request contains more files than the specified
+ * limit.
  */
-final class ParseException extends Exception {
+public class FileCountLimitExceededException extends FileUploadException {
+
+    private static final long serialVersionUID = 6904179610227521789L;
 
     /**
-     * The UID to use when serializing this instance.
+     * The limit that was exceeded.
      */
-    private static final long serialVersionUID = 5355281266579392077L;
+    private final long limit;
 
     /**
-     * Constructs a new exception with the specified detail message.
+     * Creates a new instance.
      *
-     * @param message the detail message.
+     * @param message The detail message
+     * @param limit The limit that was exceeded
      */
-    ParseException(String message) {
+    public FileCountLimitExceededException(final String message, final long limit) {
         super(message);
+        this.limit = limit;
     }
 
+    /**
+     * Retrieves the limit that was exceeded.
+     *
+     * @return The limit that was exceeded by the request
+     */
+    public long getLimit() {
+        return limit;
+    }
 }
