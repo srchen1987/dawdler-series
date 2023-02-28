@@ -341,7 +341,7 @@ validateRule： 验证规则,可以用多个&组合到一起.
 
 alertFunction： 提示方法或提示组件的id. [参考alertFunction的例子](#622-alertfunction的示例)
 
-buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-buildFunction的示例)
+buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-buildfunction的示例)
 
 ##### 6.2.1 添加验证规则添加规则的示例
 
