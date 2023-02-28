@@ -21,10 +21,10 @@ import static java.lang.String.format;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.UploadContext;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * <p>Provides access to the request information needed for a request made to
