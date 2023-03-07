@@ -23,7 +23,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -63,7 +65,6 @@ public final class XmlObject {
 	private String filepath;
 	private File file;
 	private boolean xmlFile = true;
-
 	{
 		reader.setEncoding("utf-8");
 	}
@@ -206,11 +207,10 @@ public final class XmlObject {
 		XMLWriter output = new XMLWriter(sw, format);
 		output.write(document);
 		return sw.getBuffer().toString();
-		// return document.asXML();
 	}
 
-	public XmlObject transformer(String xslcode) throws TransformerException, IOException, DocumentException {
-		return transformer(new StreamSource(new StringReader(xslcode)));
+	public XmlObject transformer(String xslCode) throws TransformerException, IOException, DocumentException {
+		return transformer(new StreamSource(new StringReader(xslCode)));
 	}
 
 	public XmlObject transformer(File file) throws TransformerException, IOException, DocumentException {
@@ -219,12 +219,11 @@ public final class XmlObject {
 
 	public XmlObject transformer(Source source) throws TransformerException, IOException, DocumentException {
 		transformer = factory.newTransformer(source);
-//		transformer = factory.newTransformer();
 		return transformer();
 	}
 
-	public String transformerToString(String xslcode) throws TransformerException, IOException, DocumentException {
-		transformer = factory.newTransformer(new StreamSource(new StringReader(xslcode)));
+	public String transformerToString(String xslCode) throws TransformerException, IOException, DocumentException {
+		transformer = factory.newTransformer(new StreamSource(new StringReader(xslCode)));
 		Source source = new DocumentSource(document);
 		StreamResult streamResult = new StreamResult();
 		StringWriter sw = new StringWriter();
@@ -248,6 +247,13 @@ public final class XmlObject {
 		DocumentResult result = new DocumentResult();
 		transformer.transform(source, result);
 		return new XmlObject(result.getDocument());
+	}
+
+	public void setDefaultNamespace(String prefix) {
+		String defaultNamespace = root.getNamespaceURI();
+		Map<String, String> xmlMap = new HashMap<>();
+		xmlMap.put(prefix, defaultNamespace);
+		reader.getDocumentFactory().setXPathNamespaceURIs(xmlMap);
 	}
 
 	private void getXMLRoot() {

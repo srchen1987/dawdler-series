@@ -158,7 +158,7 @@ public class ServerConfigParser {
 
 	}
 
-	public ServerConfigParser(URL binPath) {
+	public ServerConfigParser(URL binPath) throws Exception {
 		serverConfig = new ServerConfig();
 		serverConfig.setBinPath(binPath);
 		try {
@@ -186,6 +186,7 @@ public class ServerConfigParser {
 
 		} catch (Exception e) {
 			logger.error("", e);
+			throw e;
 		}
 	}
 
