@@ -2,14 +2,7 @@
 <config>
 	<scanner>
 		<jar-files>
-			<jar-file>dawdler-server-plug-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-db-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-dao-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-mybatis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-config-serverside-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-rabbitmq-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-redis-0.0.2-RELEASES.jar</jar-file>
-			<jar-file>dawdler-server-plug-es-0.0.2-RELEASES.jar</jar-file>
+			<jar-file>dawdler-server-plug*.jar</jar-file>
 			<jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
 		</jar-files>
 			<!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
