@@ -123,12 +123,9 @@ public class ServerConfig {
 	public class Scanner {
 		private Set<String> jarFiles = new LinkedHashSet<String>();
 		private Set<String> jarAntPathFiles = new LinkedHashSet<String>();
+		
 		private Set<String> packagePathInJar = new LinkedHashSet<String>();
 		private Set<String> packageAntPathInJar = new LinkedHashSet<String>();
-
-//		public Set<String> getJarFiles() {
-//			return jarFiles;
-//		}
 
 		public void splitAndAddJarFiles(String jarFilePath) {
 			if (!StringUtils.hasLength(jarFilePath)) {
@@ -153,7 +150,7 @@ public class ServerConfig {
 		}
 
 		public boolean matchInJars(String packagePath) {
-			if (jarFiles.contains(packagePath)) {
+			if (packagePathInJar.contains(packagePath)) {
 				return true;
 			}
 			for (String antPath : packageAntPathInJar) {
@@ -165,7 +162,7 @@ public class ServerConfig {
 		}
 
 		public boolean matchInJarFiles(String jarFilePath) {
-			if (packagePathInJar.contains(jarFilePath)) {
+			if (jarFiles.contains(jarFilePath)) {
 				return true;
 			}
 			for (String antPath : jarAntPathFiles) {

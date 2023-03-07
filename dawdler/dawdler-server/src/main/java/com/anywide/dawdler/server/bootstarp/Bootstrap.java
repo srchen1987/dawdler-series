@@ -49,7 +49,7 @@ public class Bootstrap {
 
 	private static ServerConfig serverConfig;
 
-	private static void initServerConfig() throws MalformedURLException {
+	private static void initServerConfig() throws Exception {
 		ServerConfigParser serverConfigParser = new ServerConfigParser(getBinURL());
 		serverConfig = serverConfigParser.getServerConfig();
 	}
