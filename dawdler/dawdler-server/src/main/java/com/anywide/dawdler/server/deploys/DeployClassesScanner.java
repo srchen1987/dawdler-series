@@ -49,22 +49,22 @@ public class DeployClassesScanner {
 		if (!dir.exists() || !dir.isDirectory()) {
 			return;
 		}
-		File[] dirfiles;
-		if (scanner.getJarFiles().isEmpty()) {
-			dirfiles = dir.listFiles(new FileFilter() {
+		File[] dirFiles;
+		if (scanner.emptyJar()) {
+			dirFiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
 					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"));
 				}
 			});
 		} else {
-			dirfiles = dir.listFiles(new FileFilter() {
+			dirFiles = dir.listFiles(new FileFilter() {
 				public boolean accept(File file) {
 					return (recursive && file.isDirectory()) || (file.getName().endsWith(".class"))
-							|| (file.getName().endsWith(".jar") && scanner.getJarFiles().contains(file.getName()));
+							|| (file.getName().endsWith(".jar") && scanner.matchInJarFiles(file.getName()));
 				}
 			});
 		}
-		for (File file : dirfiles) {
+		for (File file : dirFiles) {
 			if (file.isDirectory()) {
 				String fileName = file.getName();
 				if (fileName.equals("classes")) {

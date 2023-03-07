@@ -52,10 +52,10 @@ public class ServerConfigParser {
 
 	public void loadJarFile(Element root) {
 		List<Node> files = root.selectNodes("scanner/jar-files/jar-file");
-		Set<String> jarFiles = serverConfig.getScanner().getJarFiles();
+		Scanner scanner = serverConfig.getScanner();
 		for (Node node : files) {
 			String jarFile = node.getText().trim();
-			jarFiles.add(jarFile);
+			scanner.splitAndAddJarFiles(jarFile);
 		}
 	}
 
@@ -159,7 +159,7 @@ public class ServerConfigParser {
 
 	}
 
-	public ServerConfigParser(URL binPath) {
+	public ServerConfigParser(URL binPath) throws Exception {
 		serverConfig = new ServerConfig();
 		serverConfig.setBinPath(binPath);
 		try {
@@ -187,6 +187,7 @@ public class ServerConfigParser {
 
 		} catch (Exception e) {
 			logger.error("", e);
+			throw e;
 		}
 	}
 
