@@ -15,8 +15,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>commons-io</groupId><!--$NO-MVN-MAN-VER$-->
+			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.portlet</groupId>
+			<artifactId>portlet-api</artifactId>
 		</dependency>
 	</dependencies>
 </project>
