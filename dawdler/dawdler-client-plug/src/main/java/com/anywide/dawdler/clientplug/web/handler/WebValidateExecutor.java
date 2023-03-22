@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 import com.anywide.dawdler.clientplug.web.validator.ValidateParser;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
@@ -56,22 +57,27 @@ public class WebValidateExecutor {
 	private static final Logger logger = LoggerFactory.getLogger(WebValidateExecutor.class);
 	private static final Map<Class<?>, ControlValidator> validators = new ConcurrentHashMap<>();
 
+	public static ControlValidator loadControlValidator(Class<?> controllerClass) {
+		ControlValidator cv = validators.get(controllerClass);
+		if (cv == null) {
+			cv = ValidateResourceLoader.getControlValidator(controllerClass);
+			if (cv == null) {
+				cv = new ControlValidator();
+			}
+			ControlValidator preCv = validators.putIfAbsent(controllerClass, cv);
+			if (preCv != null) {
+				cv = preCv;
+			}
+		}
+		return cv;
+	}
+
 	public static boolean validate(HttpServletRequest request, HttpServletResponse response,
 			Map<String, String> variables, Object controller, ViewForward viewForward) throws IOException {
 		RequestMapping requestMapping = viewForward.getRequestMapping();
 		Map<String, String> errors = new HashMap<>();
 		Class<?> clazz = controller.getClass();
-		ControlValidator cv = validators.get(clazz);
-		if (cv == null) {
-			cv = ValidateResourceLoader.getControlValidator(clazz);
-			if (cv == null) {
-				cv = new ControlValidator();
-			}
-			ControlValidator preCv = validators.putIfAbsent(clazz, cv);
-			if (preCv != null) {
-				cv = preCv;
-			}
-		}
+		ControlValidator cv = loadControlValidator(clazz);
 		String uri = null;
 		String antPath = viewForward.getAntPath();
 		if (antPath != null) {
@@ -129,16 +135,15 @@ public class WebValidateExecutor {
 				}
 			} else {
 				viewForward.putData(VALIDATE_ERROR, errors);
-				PlugFactory.getDisplayPlug("json").display(viewForward);
+				PlugFactory.getDisplayPlug(ViewType.json.toString()).display(viewForward);
 			}
 			return false;
 		}
 		return true;
 	}
 
-	// 必须在调用validate方法之后才能使用 为验证@RequestBody使用
 	public static ControlValidator getControlValidator(Class<?> controllerClass) {
-		return validators.get(controllerClass);
+		return loadControlValidator(controllerClass);
 	}
 
 }
