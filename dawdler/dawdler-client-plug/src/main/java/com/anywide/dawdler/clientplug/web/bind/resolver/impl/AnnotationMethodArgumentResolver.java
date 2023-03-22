@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
@@ -33,6 +34,7 @@ import com.anywide.dawdler.clientplug.annotation.RequestBody;
 import com.anywide.dawdler.clientplug.annotation.RequestHeader;
 import com.anywide.dawdler.clientplug.annotation.SessionAttribute;
 import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
+import com.anywide.dawdler.clientplug.web.exception.ConvertException;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.handler.WebValidateExecutor;
 import com.anywide.dawdler.clientplug.web.util.CookieUtil;
@@ -73,7 +75,8 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 			String paramName = null;
 			for (Annotation annotation : annotations) {
 				Class<? extends Annotation> annotationClass = annotation.annotationType();
-				if (annotationClass == PathVariable.class) {
+				if (annotationClass == PathVariable.class
+						&& (type == String.class || ClassUtil.isSimpleValueType(type))) {
 					PathVariable pathVariable = (PathVariable) annotation;
 					paramName = getParameterName(pathVariable.value(), requestParamFieldData);
 					return ClassUtil.convert(viewForward.getParamsVariable(paramName), type);
@@ -124,15 +127,34 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					if (type == String.class) {
 						return viewForward.getRequest().getHeader(paramName);
 					} else if (type == String[].class) {
-						Enumeration<String> enums = viewForward.getRequest().getHeaders(paramName);
-						List<String> headers = new ArrayList<>();
-						if (enums != null) {
-							while (enums.hasMoreElements()) {
-								headers.add(enums.nextElement());
+						return getHeaders(viewForward.getRequest(), paramName);
+					} else if (ClassUtil.isSimpleValueType(type)) {
+						String value = viewForward.getRequest().getHeader(paramName);
+						try {
+							if (value == null && type.isPrimitive()) {
+								throw new ConvertException(
+										paramName + " value null can't convert " + type.getName() + "!");
 							}
+							return ClassUtil.convert(value, type);
+						} catch (Exception e) {
+							throw new ConvertException(
+									paramName + " value " + value + " can't convert " + type.getName() + "!");
 						}
-						return headers.toArray(new String[0]);
+					} else if (ClassUtil.isSimpleArrayType(type)) {
+						String[] values = getHeaders(viewForward.getRequest(), paramName);
+						Object result = null;
+						try {
+							result = ClassUtil.convertArray(values, type);
+						} catch (Exception e) {
+							throw new ConvertException(paramName + " value " + Arrays.toString(values)
+									+ " can't convert " + type.getName() + "!");
+						}
+						if (result == null && type.getComponentType().isPrimitive()) {
+							throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
+						}
+						return result;
 					}
+
 				}
 			}
 		}
@@ -161,7 +183,8 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					int index = 0;
 					for (Object obj : collection) {
 						if (obj instanceof String) {
-							array[index] = (String) obj;
+							String valueString = (String) obj;
+							array[index] = valueString;
 						} else if (ClassUtil.isSimpleValueType(type)) {
 							array[index] = obj.toString();
 						} else if (matchType(obj.getClass())) {
@@ -188,6 +211,17 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 	public boolean matchType(Class<?> type) {
 		return !(type.getPackage().getName().startsWith("java.") || type.isInterface() || type.isEnum()
 				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
+	}
+
+	public String[] getHeaders(HttpServletRequest request, String paramName) {
+		Enumeration<String> enums = request.getHeaders(paramName);
+		List<String> headers = new ArrayList<>();
+		if (enums != null) {
+			while (enums.hasMoreElements()) {
+				headers.add(enums.nextElement());
+			}
+		}
+		return headers.toArray(new String[0]);
 	}
 
 }
