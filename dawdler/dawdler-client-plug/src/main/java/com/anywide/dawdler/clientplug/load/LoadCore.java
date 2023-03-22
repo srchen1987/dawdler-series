@@ -76,7 +76,6 @@ public class LoadCore implements Runnable {
 		this.channelGroupId = channelGroupId;
 	}
 
-
 	public void toCheck() throws Throwable {
 		Transaction tr = TransactionProvider.getTransaction(channelGroupId);
 		tr.setServiceName("com.anywide.dawdler.serverplug.service.CheckUpdate");
@@ -106,7 +105,6 @@ public class LoadCore implements Runnable {
 			}
 		}
 	}
-
 
 	private static String toClassName(String checkName) {
 		return checkName.replace(File.separator, ".").substring(0, checkName.lastIndexOf("."));
