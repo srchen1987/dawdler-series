@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.handler;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -33,6 +34,7 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.AntPathMatcher;
+import com.anywide.dawdler.clientplug.web.exception.ConvertException;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHandler;
 import com.anywide.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
@@ -133,11 +135,16 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 						request.getRequestDispatcher(requestMapping.input()).forward(request, response);
 					} else {
 						viewForward.putData(WebValidateExecutor.VALIDATE_ERROR, errors);
-						PlugFactory.getDisplayPlug("json").display(viewForward);
+						PlugFactory.getDisplayPlug(ViewType.json.toString()).display(viewForward);
 					}
 					return true;
+				} catch (ConvertException e) {
+					response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+					PrintWriter out = response.getWriter();
+					out.write(e.getMessage());
+					out.flush();
+					out.close();
 				}
-
 			}
 			return true;
 		} catch (Throwable e) {
