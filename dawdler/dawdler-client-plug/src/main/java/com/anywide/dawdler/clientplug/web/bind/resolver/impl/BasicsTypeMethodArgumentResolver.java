@@ -19,9 +19,11 @@ package com.anywide.dawdler.clientplug.web.bind.resolver.impl;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Map;
 
 import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
+import com.anywide.dawdler.clientplug.web.exception.ConvertException;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
@@ -40,7 +42,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	public boolean isSupport(RequestParamFieldData requestParamFieldData) {
 		Class<?> type = requestParamFieldData.getType();
 		if (ClassUtil.isSimpleValueType(type) || String.class == type || String[].class == type
-				|| Map.class.isAssignableFrom(type) || matchType(type)) {
+				|| ClassUtil.isSimpleArrayType(type) || Map.class.isAssignableFrom(type) || matchType(type)) {
 			return true;
 		}
 		return false;
@@ -56,11 +58,30 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 		if (String.class == type) {
 			return viewForward.paramString(paramName);
 		} else if (ClassUtil.isSimpleValueType(type)) {
-			return ClassUtil.convert(viewForward.paramString(paramName), type);
+			String value = viewForward.paramString(paramName);
+			try {
+				if (value == null && type.isPrimitive()) {
+					throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
+				}
+				return ClassUtil.convert(value, type);
+			} catch (Exception e) {
+				throw new ConvertException(paramName + " value " + value + " can't convert " + type.getName() + "!");
+			}
 		} else if (String[].class == type) {
 			return viewForward.paramValues(paramName);
 		} else if (ClassUtil.isSimpleArrayType(type)) {
-			return ClassUtil.convertArray(viewForward.paramValues(paramName), type);
+			String[] values = viewForward.paramValues(paramName);
+			Object result = null;
+			try {
+				result = ClassUtil.convertArray(values, type);
+			} catch (Exception e) {
+				throw new ConvertException(
+						paramName + " value " + Arrays.toString(values) + " can't convert " + type.getName() + "!");
+			}
+			if (result == null && type.getComponentType().isPrimitive()) {
+				throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
+			}
+			return result;
 		} else if (Map.class.isAssignableFrom(type)) {
 			return viewForward.paramMaps();
 		} else {
@@ -70,7 +91,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	}
 
 	public boolean matchType(Class<?> type) {
-		return !(type.getPackage().getName().startsWith("java.") || type.isInterface() || type.isEnum()
+		return !(type.getPackageName().startsWith("java.") || type.isInterface() || type.isEnum()
 				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
 	}
 
@@ -94,11 +115,31 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			if (String.class == filedType) {
 				filed.set(instance, viewForward.paramString(typeName));
 			} else if (ClassUtil.isSimpleValueType(filedType)) {
-				filed.set(instance, ClassUtil.convert(viewForward.paramString(typeName), filedType));
+				String value = viewForward.paramString(typeName);
+				if (value == null && type.isPrimitive()) {
+					throw new ConvertException(typeName + " value null can't convert " + type.getName() + "!");
+				}
+				try {
+					filed.set(instance, ClassUtil.convert(value, filedType));
+				} catch (Exception e) {
+					throw new ConvertException(typeName + " value " + value + " can't convert " + type.getName() + "!");
+				}
+
 			} else if (String[].class == filedType) {
 				filed.set(instance, viewForward.paramValues(typeName));
 			} else if (ClassUtil.isSimpleArrayType(filedType)) {
-				filed.set(instance, ClassUtil.convertArray(viewForward.paramValues(typeName), filedType));
+				String[] values = viewForward.paramValues(typeName);
+				Object result = null;
+				try {
+					result = ClassUtil.convertArray(values, filedType);
+				} catch (Exception e) {
+					throw new ConvertException(
+							typeName + " value " + Arrays.toString(values) + " can't convert " + type.getName() + "!");
+				}
+				if (result == null && type.getComponentType().isPrimitive()) {
+					throw new ConvertException(typeName + " value null can't convert " + type.getName() + "!");
+				}
+				filed.set(instance, result);
 			} else {
 				filed.set(instance, setFiled(filedType, viewForward, null));
 			}
