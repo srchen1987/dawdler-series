@@ -39,7 +39,7 @@ public class ServletUploadMethodArgumentResolver extends AbstractMethodArgumentR
 	}
 
 	@Override
-	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward) {
+	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward, String uri) {
 		Class<?> type = requestParamFieldData.getType();
 		String paramName = getParameterName(requestParamFieldData);
 		if (UploadFile.class == type) {

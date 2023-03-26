@@ -53,7 +53,7 @@ import com.anywide.dawdler.util.JsonProcessUtil;
  * @email suxuan696@gmail.com
  */
 public class WebValidateExecutor {
-	public static final String VALIDATE_ERROR = "validate_error";// 验证错误
+	public static final String VALIDATE_ERROR = "validate_error";
 	private static final Logger logger = LoggerFactory.getLogger(WebValidateExecutor.class);
 	private static final Map<Class<?>, ControlValidator> validators = new ConcurrentHashMap<>();
 
@@ -86,9 +86,9 @@ public class WebValidateExecutor {
 			uri = viewForward.getUriShort();
 		}
 
-		Map<String, ControlField> rules = cv.getMappings().get(uri);
+		Map<String, ControlField> rules = cv.getParamFields(uri);
 		if (rules == null) {
-			rules = cv.getGlobalControlFields();
+			rules = cv.getParamGlobalFields();
 		}
 		if (rules != null) {
 			if (requestMapping != null && requestMapping.generateValidator() && !rules.isEmpty()) {
