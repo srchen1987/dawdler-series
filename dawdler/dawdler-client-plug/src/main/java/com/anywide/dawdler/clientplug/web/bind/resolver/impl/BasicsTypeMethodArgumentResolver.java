@@ -50,7 +50,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	}
 
 	@Override
-	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward)
+	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward, String uri)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		Class<?> type = requestParamFieldData.getType();
@@ -85,7 +85,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 		} else if (Map.class.isAssignableFrom(type)) {
 			return viewForward.paramMaps();
 		} else {
-			return setFiled(type, viewForward, null);
+			return setField(type, viewForward, null);
 		}
 
 	}
@@ -95,7 +95,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
 	}
 
-	public Object setFiled(Class<?> type, ViewForward viewForward, Object instance)
+	public Object setField(Class<?> type, ViewForward viewForward, Object instance)
 			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		if (!matchType(type) || type.isArray()) {
@@ -105,33 +105,33 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			instance = SunReflectionFactoryInstantiator.newInstance(type);
 		}
 		Field[] fields = type.getDeclaredFields();
-		for (Field filed : fields) {
-			if ((Modifier.isFinal(filed.getModifiers())) || Modifier.isStatic(filed.getModifiers())) {
+		for (Field field : fields) {
+			if ((Modifier.isFinal(field.getModifiers())) || Modifier.isStatic(field.getModifiers())) {
 				continue;
 			}
-			filed.setAccessible(true);
-			String typeName = filed.getName();
-			Class<?> filedType = filed.getType();
-			if (String.class == filedType) {
-				filed.set(instance, viewForward.paramString(typeName));
-			} else if (ClassUtil.isSimpleValueType(filedType)) {
+			field.setAccessible(true);
+			String typeName = field.getName();
+			Class<?> fieldType = field.getType();
+			if (String.class == fieldType) {
+				field.set(instance, viewForward.paramString(typeName));
+			} else if (ClassUtil.isSimpleValueType(fieldType)) {
 				String value = viewForward.paramString(typeName);
 				if (value == null && type.isPrimitive()) {
 					throw new ConvertException(typeName + " value null can't convert " + type.getName() + "!");
 				}
 				try {
-					filed.set(instance, ClassUtil.convert(value, filedType));
+					field.set(instance, ClassUtil.convert(value, fieldType));
 				} catch (Exception e) {
 					throw new ConvertException(typeName + " value " + value + " can't convert " + type.getName() + "!");
 				}
 
-			} else if (String[].class == filedType) {
-				filed.set(instance, viewForward.paramValues(typeName));
-			} else if (ClassUtil.isSimpleArrayType(filedType)) {
+			} else if (String[].class == fieldType) {
+				field.set(instance, viewForward.paramValues(typeName));
+			} else if (ClassUtil.isSimpleArrayType(fieldType)) {
 				String[] values = viewForward.paramValues(typeName);
 				Object result = null;
 				try {
-					result = ClassUtil.convertArray(values, filedType);
+					result = ClassUtil.convertArray(values, fieldType);
 				} catch (Exception e) {
 					throw new ConvertException(
 							typeName + " value " + Arrays.toString(values) + " can't convert " + type.getName() + "!");
@@ -139,9 +139,9 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 				if (result == null && type.getComponentType().isPrimitive()) {
 					throw new ConvertException(typeName + " value null can't convert " + type.getName() + "!");
 				}
-				filed.set(instance, result);
+				field.set(instance, result);
 			} else {
-				filed.set(instance, setFiled(filedType, viewForward, null));
+				field.set(instance, setField(fieldType, viewForward, null));
 			}
 		}
 		return instance;

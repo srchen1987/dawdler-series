@@ -188,6 +188,7 @@ public class DawdlerServer {
 
 	public void shutdownNow() throws IOException {
 		if (started.compareAndSet(true, false)) {
+			dawdlerServerContext.prepareDestroyedApplication();
 			dawdlerServerContext.destroyedApplication();
 			ServerConnectionManager.getInstance().closeNow();
 			dawdlerServerContext.shutdownWorkPoolNow();
