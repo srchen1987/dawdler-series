@@ -100,7 +100,7 @@ public class FieldParser {
 							String fieldTypeName = javaField.getType().getFullyQualifiedName();
 							String comment = javaField.getComment();
 							String genericFullyQualifiedFieldName = javaField.getType().getGenericFullyQualifiedName();
-							String originalFiledTypeName = fieldTypeName;
+							String originalFieldTypeName = fieldTypeName;
 							String binaryName = javaField.getType().getBinaryName();
 							boolean array = false;
 							if (javaTypes != null) {
@@ -113,7 +113,7 @@ public class FieldParser {
 										if (!typeArguments.isEmpty()) {
 											JavaType typeArgument = typeArguments.get(0);
 											if (typeArgument != null) {
-												originalFiledTypeName = typeArgument.getFullyQualifiedName();
+												originalFieldTypeName = typeArgument.getFullyQualifiedName();
 												binaryName = typeArgument.getBinaryName();
 												genericFullyQualifiedFieldName = typeArgument
 														.getGenericFullyQualifiedName();
@@ -124,26 +124,26 @@ public class FieldParser {
 								}
 							}
 							if (fieldTypeName.endsWith("[]")) {
-								originalFiledTypeName = fieldTypeName.substring(0, fieldTypeName.lastIndexOf("[]"));
+								originalFieldTypeName = fieldTypeName.substring(0, fieldTypeName.lastIndexOf("[]"));
 								array = true;
 							} else if (ClassTypeUtil.isArray(binaryName)) {
 								DefaultJavaField df = (DefaultJavaField) javaField;
 								DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) df.getType();
 								List<JavaType> dtList = dt.getActualTypeArguments();
 								if (!dtList.isEmpty()) {
-									originalFiledTypeName = dtList.get(0).getGenericFullyQualifiedName();
-									genericFullyQualifiedFieldName = originalFiledTypeName;
+									originalFieldTypeName = dtList.get(0).getGenericFullyQualifiedName();
+									genericFullyQualifiedFieldName = originalFieldTypeName;
 									array = true;
 								}
 							}
 							if (javaTypes != null) {
-								JavaType javaType = javaTypes.get(originalFiledTypeName);
+								JavaType javaType = javaTypes.get(originalFieldTypeName);
 								if (javaType != null) {
-									originalFiledTypeName = javaType.getFullyQualifiedName();
+									originalFieldTypeName = javaType.getFullyQualifiedName();
 									genericFullyQualifiedFieldName = javaType.getGenericFullyQualifiedName();
 								}
 							}
-							typeData = TypesConverter.getType(originalFiledTypeName);
+							typeData = TypesConverter.getType(originalFieldTypeName);
 							if (typeData != null) {
 								if (array) {
 									SchemaData schema = new SchemaData();
@@ -166,7 +166,7 @@ public class FieldParser {
 									propertiesMap.put(javaField.getName(), fieldparameterData);
 								}
 							} else {
-								if (ClassTypeUtil.isArray(originalFiledTypeName)) {
+								if (ClassTypeUtil.isArray(originalFieldTypeName)) {
 									JavaType javaType = javaTypes.get(binaryName);
 									array = true;
 									if (javaType != null) {
@@ -174,13 +174,13 @@ public class FieldParser {
 										List<JavaType> typeArguments = dt.getActualTypeArguments();
 										if (!typeArguments.isEmpty()) {
 											JavaType typeArgument = typeArguments.get(0);
-											originalFiledTypeName = typeArgument.getFullyQualifiedName();
+											originalFieldTypeName = typeArgument.getFullyQualifiedName();
 											genericFullyQualifiedFieldName = typeArgument
 													.getGenericFullyQualifiedName();
 										}
 									}
 								}
-								if (classStructs.get(originalFiledTypeName) != null) {
+								if (classStructs.get(originalFieldTypeName) != null) {
 									parserFields(javaField.getType(), classStructs, definitionsMap, null);
 									SchemaData schema = new SchemaData();
 									if (array) {
@@ -193,7 +193,7 @@ public class FieldParser {
 																					 * "«").replaceAll(">","»")
 																					 */);
 										} else {
-											items.set$ref("#/definitions/" + originalFiledTypeName);
+											items.set$ref("#/definitions/" + originalFieldTypeName);
 										}
 										schema.setItems(items);
 									} else {
