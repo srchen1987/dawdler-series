@@ -31,5 +31,5 @@ public interface MethodArgumentResolver {
 
 	boolean isSupport(RequestParamFieldData requestParamFieldData);
 
-	Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward) throws Exception;
+	Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward, String uri) throws Exception;
 }

@@ -60,6 +60,13 @@ public class RequestMethodProcessor {
 		if (parameterCount == 0) {
 			return null;
 		}
+		String uri = null;
+		String antPath = viewForward.getAntPath();
+		if (antPath != null) {
+			uri = antPath;
+		} else {
+			uri = viewForward.getUriShort();
+		}
 		Class<?> controllerClass = controller.getClass();
 		List<RequestParamFieldData> requestParamFieldDataList = loadRequestParamFieldDataList(controllerClass, method);
 		Object[] args = new Object[parameterCount];
@@ -67,7 +74,7 @@ public class RequestMethodProcessor {
 			MethodArgumentResolver methodArgumentResolver = matchResolver(controllerClass, requestParamFieldData);
 			if (methodArgumentResolver != null) {
 				args[requestParamFieldData.getIndex()] = methodArgumentResolver.resolveArgument(requestParamFieldData,
-						viewForward);
+						viewForward, uri);
 			}
 		}
 		return args;
