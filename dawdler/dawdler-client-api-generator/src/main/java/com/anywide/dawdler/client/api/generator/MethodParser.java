@@ -42,7 +42,6 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.annotation.RequestParam;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
-import com.thoughtworks.qdox.builder.impl.EvaluatingVisitor;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -70,6 +69,7 @@ public class MethodParser {
 	private static String[] jsonArray = { AbstractDisplayPlug.MIME_TYPE_JSON };
 
 	private static Map<String, String> requestMethodCache = new HashMap<String, String>() {
+		private static final long serialVersionUID = 8332918465511505167L;
 		{
 			put("GET", "get");
 			put("POST", "post");
@@ -96,7 +96,7 @@ public class MethodParser {
 			for (JavaAnnotation annotation : methodAnnotations) {
 				if (ResponseBody.class.getName().equals(annotation.getType().getBinaryName())) {
 					responseBody = true;
-				}
+				} 
 				if (RequestMapping.class.getName().equals(annotation.getType().getBinaryName())) {
 					requsetMappingArray = AnnotationUtils.getAnnotationStringArrayValue(annotation, "value");
 					Object annotationMethodObj = AnnotationUtils.getAnnotationObjectValue(annotation, "method");
@@ -153,14 +153,15 @@ public class MethodParser {
 						if (annotationName.equals(RequestParam.class.getName())) {
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
 							if (annotationValue != null) {
-								alias = (String) annotationValue.accept(new EvaluatingVisitor());
+								alias = (String) annotationValue.getParameterValue();
 							}
 						}
 						if (annotationName.equals(PathVariable.class.getName())) {
 							in = "path";
+							AnnotationUtils.getAnnotationStringValue(paramAnnotation, "value");
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
 							if (annotationValue != null) {
-								alias = (String) annotationValue.accept(new EvaluatingVisitor());
+								alias = (String) annotationValue.getParameterValue();
 							}
 						} else if (annotationName.equals(RequestBody.class.getName())) {
 							requestBody = true;
@@ -169,7 +170,7 @@ public class MethodParser {
 							in = "header";
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
 							if (annotationValue != null) {
-								alias = (String) annotationValue.accept(new EvaluatingVisitor());
+								alias = (String) annotationValue.getParameterValue();
 							}
 						}
 					}

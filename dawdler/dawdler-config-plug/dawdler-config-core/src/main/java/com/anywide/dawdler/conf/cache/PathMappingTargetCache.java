@@ -67,8 +67,8 @@ public class PathMappingTargetCache {
 		Map<Object, Set<Field>> pathMappingTargetMaps = cache.get(path);
 		if (pathMappingTargetMaps != null) {
 			pathMappingTargetMaps.forEach((k, v) -> {
-				v.forEach(filed -> {
-					Refresher.refreshFieldConfig(k, filed, filed.getAnnotation(FieldConfig.class));
+				v.forEach(field -> {
+					Refresher.refreshFieldConfig(k, field, field.getAnnotation(FieldConfig.class));
 				});
 			});
 		}

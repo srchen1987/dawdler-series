@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
+import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator.MappingFeildType;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 
@@ -119,13 +120,15 @@ public class ValidateResourceLoader {
 	}
 
 	private static void parserGlobal(XmlObject xml, ControlValidator cv) {
+		cv.initGlobalControlFieldsCache();
 		List<Node> globalList = xml.selectNodes("/validator/global-validator/validator");
 		if (globalList != null && !globalList.isEmpty()) {
-			Map<String, ControlField> globals = new LinkedHashMap<String, ControlField>();
 			for (Node node : globalList) {
+				Map<String, ControlField> globals = new LinkedHashMap<String, ControlField>();
 				Element ele = (Element) node;
 				String refgid = ele.attributeValue("refgid");
 				String ref = ele.attributeValue("ref");
+				String type = ele.attributeValue("type");
 				if (refgid != null) {
 					Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
 					if (fieldGroup != null) {
@@ -143,8 +146,9 @@ public class ValidateResourceLoader {
 						logger.warn("can't find " + ref + " in fields!");
 					}
 				}
+				cv.addGlobalControlFields(ControlValidator.getMappingFeildType(type), globals);
 			}
-			cv.setGlobalControlFields(globals);
+			
 		}
 	}
 
@@ -181,7 +185,7 @@ public class ValidateResourceLoader {
 		if (mappingList != null && !mappingList.isEmpty()) {
 			for (Node mappingNode : mappingList) {
 				Element ele = (Element) mappingNode;
-				Map<String, ControlField> mappings = new LinkedHashMap<String, ControlField>();
+				Map<MappingFeildType, Map<String, ControlField>> mappings = new LinkedHashMap<>();
 				if (cv.getGlobalControlFields() != null && !cv.getGlobalControlFields().isEmpty()) {
 					mappings.putAll(cv.getGlobalControlFields());
 				}
@@ -193,10 +197,17 @@ public class ValidateResourceLoader {
 						Element vele = (Element) node;
 						String refgid = vele.attributeValue("refgid");
 						String ref = vele.attributeValue("ref");
+						String type = vele.attributeValue("type");
+						MappingFeildType mappingFeildType = ControlValidator.getMappingFeildType(type);
 						if (refgid != null) {
 							Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
 							if (fieldGroup != null) {
-								mappings.putAll(fieldGroup);
+								 Map<String, ControlField> fields = mappings.get(mappingFeildType);
+								 if(fields != null) {
+									 fields.putAll(fieldGroup);
+								 }else {
+									 mappings.put(mappingFeildType, fieldGroup);
+								 }
 							}
 						}
 						if (ref != null) {
@@ -205,7 +216,12 @@ public class ValidateResourceLoader {
 								controlField = globalFields.get(ref);
 							}
 							if (controlField != null) {
-								mappings.put(controlField.getFieldName(), controlField);
+								Map<String, ControlField> fields = mappings.get(mappingFeildType);
+								if(fields == null) {
+									fields = new LinkedHashMap<>();
+								}
+								fields.put(controlField.getFieldName(), controlField);
+								mappings.put(mappingFeildType, fields);
 							} else {
 								logger.warn("can't find " + ref + " in fields!");
 							}
@@ -214,8 +230,10 @@ public class ValidateResourceLoader {
 				}
 				if (skip != null && !skip.trim().equals("")) {
 					String[] skips = skip.split(",");
-					for (String s : skips) {
-						mappings.remove(s);
+					for (String skipField : skips) {
+						mappings.forEach((k,v)->{
+							v.remove(skipField);
+						});
 					}
 				}
 				cv.getMappings().put(mname, mappings);
