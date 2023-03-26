@@ -17,6 +17,7 @@
 package com.anywide.dawdler.clientplug.web.validator.entity;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -30,13 +31,50 @@ import java.util.Map;
 public class ControlValidator {
 	private Map<String, ControlField> controlFields;
 	private Map<String, Map<String, ControlField>> fieldGroups;
-	private Map<String, ControlField> globalControlFields;
-	private final Map<String, Map<String, ControlField>> mappings = new HashMap<String, Map<String, ControlField>>();
-
-	public Map<String, Map<String, ControlField>> getMappings() {
+	private Map<MappingFeildType, Map<String, ControlField>> globalControlFieldsCache;
+	private final Map<String, Map<MappingFeildType, Map<String, ControlField>>> mappings = new HashMap<>();
+	public static enum MappingFeildType{
+		header,
+		body,
+		param,
+		path
+	}
+	
+	public static MappingFeildType getMappingFeildType(String type) {
+		if(type == null) {
+			return MappingFeildType.param;
+		}
+		return MappingFeildType.valueOf(type);
+	}
+	public Map<String, Map<MappingFeildType, Map<String, ControlField>>> getMappings() {
 		return mappings;
 	}
-
+	
+	private Map<String, ControlField> getMappingFields(MappingFeildType mappingFeildType, String uri) {
+		Map<MappingFeildType, Map<String, ControlField>> mapping = mappings.get(uri);
+		if(mapping != null) {
+			return mapping.get(mappingFeildType);
+		}
+		return null;
+	}
+	
+	
+	public Map<String, ControlField> getParamFields(String uri) {
+		return getMappingFields(MappingFeildType.param, uri);
+	}
+	
+	public Map<String, ControlField> getHeaderFields(String uri) {
+		return getMappingFields(MappingFeildType.header, uri);
+	}
+	
+	public Map<String, ControlField> getBodyFields(String uri) {
+		return getMappingFields(MappingFeildType.body, uri);
+	}
+	
+	public Map<String, ControlField> getPathVariableFields(String uri) {
+		return getMappingFields(MappingFeildType.path, uri);
+	}
+	
 	public Map<String, Map<String, ControlField>> getFieldGroups() {
 		return fieldGroups;
 	}
@@ -45,12 +83,28 @@ public class ControlValidator {
 		this.fieldGroups = fieldGroups;
 	}
 
-	public Map<String, ControlField> getGlobalControlFields() {
-		return globalControlFields;
+	public Map<MappingFeildType, Map<String, ControlField>> getGlobalControlFields() {
+		return globalControlFieldsCache;
+	}
+	
+	
+	public Map<String, ControlField> getParamGlobalFields() {
+		return  globalControlFieldsCache.get(MappingFeildType.param);
+	}
+	
+	public void initGlobalControlFieldsCache() {
+		if(globalControlFieldsCache == null) {
+			globalControlFieldsCache = new LinkedHashMap<>();
+		}
 	}
 
-	public void setGlobalControlFields(Map<String, ControlField> globalControlFields) {
-		this.globalControlFields = globalControlFields;
+	public void addGlobalControlFields(MappingFeildType mappingFeildType, Map<String, ControlField> globalControlFields) {
+		Map<String, ControlField> fieldMap = globalControlFieldsCache.get(mappingFeildType);
+		if(fieldMap == null) {
+			globalControlFieldsCache.put(mappingFeildType, globalControlFields);
+		}else {
+			fieldMap.putAll(globalControlFields);
+		}
 	}
 
 	public Map<String, ControlField> getControlFields() {
