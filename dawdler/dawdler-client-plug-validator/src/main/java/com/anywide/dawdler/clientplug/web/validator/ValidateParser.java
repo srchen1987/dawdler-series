@@ -23,6 +23,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.clientplug.web.validator.exception.ValidationException;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -53,6 +55,13 @@ public class ValidateParser {
 			}
 		}
 		return null;
+	}
+	
+	public static void validateIfFailedThrow(String viewName, Object value, String validateRule) {
+		String error = validate(viewName, value, validateRule);
+		if (error != null) {
+			throw new ValidationException(viewName, error);
+		}
 	}
 
 }
