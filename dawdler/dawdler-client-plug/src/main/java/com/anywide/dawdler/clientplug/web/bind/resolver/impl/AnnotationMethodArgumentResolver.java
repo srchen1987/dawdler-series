@@ -24,6 +24,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
 import com.anywide.dawdler.clientplug.annotation.CookieValue;
 import com.anywide.dawdler.clientplug.annotation.PathVariable;
@@ -39,7 +40,6 @@ import com.anywide.dawdler.clientplug.web.util.CookieUtil;
 import com.anywide.dawdler.clientplug.web.validator.ValidateParser;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
-import com.anywide.dawdler.clientplug.web.validator.exception.ValidationException;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
@@ -67,8 +67,10 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 	}
 
 	@Override
-	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward)
+	public Object resolveArgument(RequestParamFieldData requestParamFieldData, ViewForward viewForward, String uri)
 			throws Exception {
+		ControlValidator controlValidator = WebValidateExecutor
+				.getControlValidator(viewForward.getTransactionController().getClass());
 		Annotation[] annotations = requestParamFieldData.getAnnotations();
 		Class<?> type = requestParamFieldData.getType();
 		if (annotations != null) {
@@ -79,17 +81,26 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						&& (type == String.class || ClassUtil.isSimpleValueType(type))) {
 					PathVariable pathVariable = (PathVariable) annotation;
 					paramName = getParameterName(pathVariable.value(), requestParamFieldData);
-					return ClassUtil.convert(viewForward.getParamsVariable(paramName), type);
-				} else if (annotationClass == RequestBody.class) {
-					String uri = null;
-					String antPath = viewForward.getAntPath();
-					if (antPath != null) {
-						uri = antPath;
-					} else {
-						uri = viewForward.getUriShort();
+					String value = viewForward.getParamsVariable(paramName);
+					Map<String, ControlField> pathVariableFields = controlValidator.getPathVariableFields(uri);
+					if (pathVariableFields != null) {
+						ControlField controlField = pathVariableFields.get(paramName);
+						if (controlField != null) {
+							ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), value,
+									controlField.getRules());
+						}
 					}
-					ControlValidator controlValidator = WebValidateExecutor
-							.getControlValidator(viewForward.getTransactionController().getClass());
+					try {
+						if (value == null && type.isPrimitive()) {
+							throw new ConvertException(
+									paramName + " value null can't convert " + type.getName() + "!");
+						}
+						return ClassUtil.convert(value, type);
+					} catch (Exception e) {
+						throw new ConvertException(
+								paramName + " value " + value + " can't convert " + type.getName() + "!");
+					}
+				} else if (annotationClass == RequestBody.class) {
 					HttpServletRequest request = viewForward.getRequest();
 					Object target = null;
 					if (request.getClass() == BodyReaderHttpServletRequestWrapper.class) {
@@ -99,10 +110,11 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						target = JsonProcessUtil.jsonToBean(request.getInputStream(), type);
 					}
 					if (controlValidator != null) {
-						if (controlValidator.getMappings().containsKey(uri)) {
+						Map<String, ControlField> bodyFields = controlValidator.getBodyFields(uri);
+						if (bodyFields != null) {
 							Field[] fields = type.getDeclaredFields();
 							for (Field field : fields) {
-								validateField(field, controlValidator, target);
+								validateField(field, bodyFields, target);
 							}
 						}
 					}
@@ -124,12 +136,31 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 				} else if (annotationClass == RequestHeader.class) {
 					RequestHeader requestHeader = (RequestHeader) annotation;
 					paramName = getParameterName(requestHeader.value(), requestParamFieldData);
+					Map<String, ControlField> headerFields = controlValidator.getHeaderFields(uri);
+					ControlField controlField = null;
+					if (headerFields != null) {
+						controlField = headerFields.get(paramName);
+					}
 					if (type == String.class) {
-						return viewForward.getRequest().getHeader(paramName);
+						String value = viewForward.getRequest().getHeader(paramName);
+						if (controlField != null) {
+							ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), value,
+									controlField.getRules());
+						}
+						return value;
 					} else if (type == String[].class) {
-						return getHeaders(viewForward.getRequest(), paramName);
+						String[] values = getHeaders(viewForward.getRequest(), paramName);
+						if (controlField != null) {
+							ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), values,
+									controlField.getRules());
+						}
+						return values;
 					} else if (ClassUtil.isSimpleValueType(type)) {
 						String value = viewForward.getRequest().getHeader(paramName);
+						if (controlField != null) {
+							ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), value,
+									controlField.getRules());
+						}
 						try {
 							if (value == null && type.isPrimitive()) {
 								throw new ConvertException(
@@ -142,6 +173,10 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						}
 					} else if (ClassUtil.isSimpleArrayType(type)) {
 						String[] values = getHeaders(viewForward.getRequest(), paramName);
+						if (controlField != null) {
+							ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), values,
+									controlField.getRules());
+						}
 						Object result = null;
 						try {
 							result = ClassUtil.convertArray(values, type);
@@ -161,7 +196,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 		return null;
 	}
 
-	private void validateField(Field field, ControlValidator controlValidator, Object target)
+	private void validateField(Field field, Map<String, ControlField> bodyFields, Object target)
 			throws IllegalArgumentException, IllegalAccessException {
 		Class<?> type = field.getType();
 		field.setAccessible(true);
@@ -172,9 +207,9 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 			} else if (ClassUtil.isSimpleArrayType(type)) {
 				value = ClassUtil.convertSimpleArrayToStringArray(value);
 			} else if (matchType(type)) {
-				Field[] innerFileds = type.getDeclaredFields();
-				for (Field innerFiled : innerFileds) {
-					validateField(innerFiled, controlValidator, value);
+				Field[] innerFields = type.getDeclaredFields();
+				for (Field innerField : innerFields) {
+					validateField(innerField, bodyFields, value);
 				}
 			} else if (Collection.class.isAssignableFrom(type)) {
 				if (value != null) {
@@ -187,9 +222,9 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						} else if (ClassUtil.isSimpleValueType(type)) {
 							array[index] = obj.toString();
 						} else if (matchType(obj.getClass())) {
-							Field[] innerFileds = obj.getClass().getDeclaredFields();
-							for (Field innerFiled : innerFileds) {
-								validateField(innerFiled, controlValidator, obj);
+							Field[] innerFields = obj.getClass().getDeclaredFields();
+							for (Field innerField : innerFields) {
+								validateField(innerField, bodyFields, obj);
 							}
 						}
 						index++;
@@ -197,12 +232,9 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 				}
 			}
 		}
-		ControlField controlField = controlValidator.getControlFields().get(field.getName());
+		ControlField controlField = bodyFields.get(field.getName());
 		if (controlField != null) {
-			String error = ValidateParser.validate(controlField.getFieldExplain(), value, controlField.getRules());
-			if (error != null) {
-				throw new ValidationException(field.getName(), error);
-			}
+			ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), value, controlField.getRules());
 		}
 
 	}
