@@ -53,9 +53,7 @@
 
 在controller同级目录创建一个{controllerName}-validator.xml结尾的文件.
 
-验证器支持对 application/x-www-form-urlencoded、multipart/form-data、application/json(@RequestBody)、antPath中的@PathVariable变量进行校验.
-
-RequestBody的对象无需配置在validator-mapping,只要在validator-fields中有定义则会触发校验.
+验证器支持对 application/x-www-form-urlencoded、multipart/form-data、application/json(@RequestBody)、http-header(@RequestHeader)、antPath中的@PathVariable变量进行校验.
 
 示例 ：
 
@@ -69,7 +67,7 @@ UserController-validator.xml 内容：
     <validator-fields><!--定义控件信息的根节点--> 
         <validator-field name="userid" explain="用户Id">
             <![CDATA[notEmpty&positiveNumber]]>
-        </validator-field><!-- 控件信息节点,@name 控件名称 @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合 .<![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展)-->
+        </validator-field><!-- 控件信息节点,@name 控件名称 @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合 .<![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展) -->
         <validator-field name="username" explain="用户名">
             <![CDATA[notEmpty&maxSize:32]]>
         </validator-field>
@@ -78,6 +76,9 @@ UserController-validator.xml 内容：
         </validator-field>
         <validator-field name="age" explain="年龄">
             <![CDATA[positiveNumber]]>
+        </validator-field>
+        <validator-field name="platform" explain="平台">
+            <![CDATA[notEmpty&positiveNumber]]>
         </validator-field>
     </validator-fields>
 
@@ -98,18 +99,20 @@ UserController-validator.xml 内容：
         </validator-fields-group>
 
     <validator-mappings><!-- 验证器组 -->
-        <validator-mapping name="/user/regist"><!-- 验证器 ＠name　请求的URI RequestMapping中定义的具体api地址,支持antPath.
+        <validator-mapping name="/user/regist"><!-- 验证器 ＠name　请求的URI RequestMapping中定义的具体api地址.
         注意：如果类上有RequestMapping定义,需要将类上的RequestMapping中的value与方法上的RequestMapping中的value整合到一起.
         @skip为跳过某些验证,支持跳过多个规则,可以用 , 英文逗号隔开,里面写入的为validator-field的@name -->
             <validator refgid="add" skip="age,username"/> <!-- 跳过了age和username的验证 -->
         </validator-mapping>
         <validator-mapping name="/user/edit">
             <validator refgid="edit"/>
+            <validator ref="platform" type="header"/><!-- type为类型 支持 param(默认不填时为param 标准的http请求参数)、header(@RequestHeader)、body(@RequestBody)、path(@PathVariable). -->
         </validator-mapping>
     </validator-mappings>
     
     <global-validator><!-- 全局验证器, 本Controller下的任何请求方法全部验证 一般不常用 -->
         <validator ref="userid"/><!-- 描述：全局验证的控件  @ref 引入validator-field中@name 就包含了此控件 @refgid 引入其它组（等于包含作用） -->
+         <validator ref="platform" type="header"/><!-- type为类型 支持 param(默认不填时为param 标准的http请求参数)、header(@RequestHeader)、body(@RequestBody)、path(@PathVariable). -->
     </global-validator>
 </validator>
 ```
@@ -126,7 +129,7 @@ nm32=notEmpty&maxSize:32
 
 以上定义了全局的规则名字为nm32,规则为notEmpty不允许为空,maxSize:32最大长度不能大于32位字符.
 
-可以随意组装任何系统内提供的或扩展的规则通过&符号连接即可.
+可以随意组装任何系统内提供的或扩展的规则,通过&符号连接即可.
 
 使用globalRules属性来引用全局验证规则变量
 
