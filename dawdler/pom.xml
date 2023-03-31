@@ -21,7 +21,7 @@
 		<cglib.version>3.3.0</cglib.version>
 		<javax.servlet-api.version>3.1.0</javax.servlet-api.version>
 		<jackson-core.version>2.13.2</jackson-core.version>
-		<jackson-databind.version>2.13.4.1</jackson-databind.version>
+		<jackson-databind.version>2.13.4.2</jackson-databind.version>
 		<commons-fileupload.version>1.5</commons-fileupload.version>
 		<velocity.version>2.3</velocity.version>
 		<jedis.version>4.3.1</jedis.version>
