@@ -58,7 +58,6 @@ public class ControlValidator {
 		return null;
 	}
 	
-	
 	public Map<String, ControlField> getParamFields(String uri) {
 		return getMappingFields(MappingFeildType.param, uri);
 	}
@@ -87,9 +86,11 @@ public class ControlValidator {
 		return globalControlFieldsCache;
 	}
 	
-	
 	public Map<String, ControlField> getParamGlobalFields() {
-		return  globalControlFieldsCache.get(MappingFeildType.param);
+		if(globalControlFieldsCache == null) {
+			return null;
+		}
+		return globalControlFieldsCache.get(MappingFeildType.param);
 	}
 	
 	public void initGlobalControlFieldsCache() {
