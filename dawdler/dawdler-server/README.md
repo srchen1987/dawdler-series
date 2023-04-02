@@ -201,7 +201,7 @@ dawdler示例中采用keytool制作的证书,服务器端配置在server-conf文
 keytool制作的证书的命令如下：
 
 ```shell
-keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=jackson,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song
+keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=jackson,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass suxuan696@gmail.com
 
 keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
 ```
