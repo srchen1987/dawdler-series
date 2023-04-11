@@ -18,6 +18,7 @@ package com.anywide.dawdler.core.discovery.zookeeper;
 
 import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -35,13 +36,12 @@ import com.anywide.dawdler.util.PropertiesUtil;
  * @author jackson.song
  * @version V1.0
  * @Title ZkDiscoveryCenter.java
- * @Description 配置中心zk的实现
+ * @Description 注册中心zk的实现
  * @date 2018年8月13日
  * @email suxuan696@gmail.com
  */
 public class ZkDiscoveryCenter implements DiscoveryCenter {
 
-	private final String ROOT_PATH = "/dawdler";
 	private CuratorFramework client;
 	private String connectString;
 	private String user;
@@ -106,21 +106,25 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	}
 
 	@Override
-	public boolean addProvider(String path, String value) throws Exception {
+	public boolean addProvider(String path, String value, Map<String, Object> attributes) throws Exception {
 		client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL)
-				.forPath(ROOT_PATH + "/" + path + "/" + value, value.getBytes());
+				.forPath(getZkPath(path, value), value.getBytes());
 		return true;
 	}
 
 	@Override
 	public boolean deleteProvider(String path, String value) throws Exception {
-		 client.delete().deletingChildrenIfNeeded().forPath(ROOT_PATH + "/" + path + "/" + value);
+		 client.delete().deletingChildrenIfNeeded().forPath(getZkPath(path, value));
 		 return true;
 	}
 	
 	@Override
-	public boolean isExist(String path) throws Exception {
-		return client.checkExists().forPath(ROOT_PATH + "/" + path) != null;
+	public boolean isExist(String path, String value) throws Exception {
+		return client.checkExists().forPath(getZkPath(path, value)) != null;
+	}
+	
+	public String getZkPath(String path, String value) {
+		return ROOT_PATH + "/" + path + "/" + value;
 	}
 	
 	public String state() throws Exception {

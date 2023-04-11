@@ -5,9 +5,9 @@
 		<artifactId>dawdler-discovery-center</artifactId>
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
-	<packaging>pom</packaging>
 	<artifactId>dawdler-discovery-center-zookeeper</artifactId>
 	<name>dawdler-discovery-center-zookeeper</name>
+	<packaging>pom</packaging>
 	<modules>
 		<module>dawdler-discovery-center-zookeeper-core</module>
 		<module>dawdler-server-plug-discovery-center-zookeeper</module>
