@@ -27,7 +27,7 @@ module dawdler.server {
 			to dawdler.server.plug.db, dawdler.server.plug.redis, dawdler.server.plug.config,
 			dawdler.server.plug.rabbitmq, dawdler.server.plug.es, dawdler.server.plug.schedule;
 	exports com.anywide.dawdler.server.net.aio.session;
-	exports com.anywide.dawdler.server.conf to dawdler.server;
+	exports com.anywide.dawdler.server.conf;
 	exports org.apache.naming.factory;
 	exports org.apache.naming.java;
 	exports org.apache.naming;

@@ -17,6 +17,7 @@
 package com.anywide.dawdler.core.discoverycenter;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author jackson.song
@@ -27,6 +28,7 @@ import java.util.List;
  * @email suxuan696@gmail.com
  */
 public interface DiscoveryCenter {
+	final String ROOT_PATH = "/dawdler";
 
 	/**
 	 * 初始化接口
@@ -46,12 +48,12 @@ public interface DiscoveryCenter {
 	/**
 	 * 添加服务提供者
 	 */
-	boolean addProvider(String path, String value) throws Exception;
+	boolean addProvider(String path, String value, Map<String, Object> attributes) throws Exception;
 
 	/**
 	 * 更新服务提供者
 	 */
-	default boolean updateProvider(String path, String value) throws Exception {
+	default boolean updateProvider(String path, String value, Map<String, Object> attributes) throws Exception {
 		return true;
 	}
 
@@ -65,5 +67,5 @@ public interface DiscoveryCenter {
 	/**
 	 * 判断是否存在
 	 */
-	boolean isExist(String path) throws Exception;
+	boolean isExist(String path, String value) throws Exception;
 }
