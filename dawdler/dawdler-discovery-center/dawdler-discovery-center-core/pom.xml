@@ -6,6 +6,8 @@
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-discovery-center-core</artifactId>
+	<name>dawdler-discovery-center-core</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

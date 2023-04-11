@@ -53,7 +53,7 @@ public class ZookeeperLifeCycle implements ComponentLifeCycle {
 		discoveryCenter = ZkDiscoveryCenter.getInstance();
 		String path = channelGroup;
 		String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-		if (discoveryCenter.addProvider(path, value)) {
+		if (discoveryCenter.addProvider(path, value, null)) {
 			logger.info("add service {} on {}", channelGroup, value);
 		}
 		hashedWheelTimer = new HashedWheelTimer();
@@ -66,15 +66,15 @@ public class ZookeeperLifeCycle implements ComponentLifeCycle {
 		String channelGroup = dawdlerContext.getDeployName();
 		String path = channelGroup;
 		String value = dawdlerContext.getHost() + ":" + dawdlerContext.getPort();
-		if (discoveryCenter != null) {
-			discoveryCenter.deleteProvider(path, value);
-			discoveryCenter.destroy();
-		}
 		if (timeout != null) {
 			timeout.cancel();
 		}
 		if (hashedWheelTimer != null) {
 			hashedWheelTimer.stop();
+		}
+		if (discoveryCenter != null) {
+			discoveryCenter.deleteProvider(path, value);
+			discoveryCenter.destroy();
 		}
 	}
 
@@ -90,8 +90,8 @@ public class ZookeeperLifeCycle implements ComponentLifeCycle {
 		@Override
 		public void run(Timeout timeout) throws Exception {
 			try {
-				if (!discoveryCenter.isExist(path)) {
-					discoveryCenter.addProvider(path, value);
+				if (!discoveryCenter.isExist(path, value)) {
+					discoveryCenter.addProvider(path, value, null);
 				}
 			} catch (Exception e) {
 				logger.error("", e);
