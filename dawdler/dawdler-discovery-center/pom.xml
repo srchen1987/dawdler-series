@@ -5,9 +5,9 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.0.2-RELEASES</version>
 	</parent>
-	<packaging>pom</packaging>
 	<artifactId>dawdler-discovery-center</artifactId>
 	<name>dawdler-discovery-center</name>
+	<packaging>pom</packaging>
 	<modules>
 		<module>dawdler-discovery-center-zookeeper</module>
 		<module>dawdler-discovery-center-core</module>
