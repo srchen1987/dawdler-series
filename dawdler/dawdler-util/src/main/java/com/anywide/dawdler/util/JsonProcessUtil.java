@@ -32,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author jackson.song
  * @version V1.0
  * @Title JsonProcessUtil.java
- * @Description TODO
+ * @Description json工具类
  * @date 2010年3月28日
  * @email suxuan696@gmail.com
  */

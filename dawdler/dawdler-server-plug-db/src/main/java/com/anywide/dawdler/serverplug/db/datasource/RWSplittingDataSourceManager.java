@@ -49,7 +49,7 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 public class RWSplittingDataSourceManager {
 	public static final String DATASOURCE_MANAGER_PREFIX = "DATASOURCE_MANAGER_PREFIX";
 	private static final Pattern EXPRESSION = Pattern
-			.compile("write=\\[(\\w+|(\\w+\\|\\w+)+)\\],read=\\[(\\w+|(\\w+\\|\\w+)+)\\]");
+			.compile("write=\\[(.+)\\],read=\\[(.+)\\]");
 	private final Map<String, DataSource> dataSources = new HashMap<>();
 	private final Map<String, String> dataSourceExpression = new HashMap<>();
 	private final Map<String, MappingDecision> packages = new HashMap<>();
@@ -240,7 +240,7 @@ public class RWSplittingDataSourceManager {
 			if (mc.matches()) {
 				rdstring = new String[2];
 				rdstring[0] = mc.group(1);
-				rdstring[1] = mc.group(3);
+				rdstring[1] = mc.group(2);
 				return rdstring;
 			}
 			return null;

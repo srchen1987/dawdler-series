@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-zookeeper实现注册中心的根模块.
+zookeeper实现注册中心的根模块,客户端与服务器端配置参考[dawdler-discovery-center-zookeeper-core](dawdler-discovery-center-zookeeper-core/README.md)
 
 ### 1. dawdler-discovery-center-zookeeper-core
 
