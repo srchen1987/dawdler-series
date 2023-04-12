@@ -17,16 +17,21 @@
 package com.anywide.dawdler.server.context;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.dom4j.DocumentException;
+
 import com.anywide.dawdler.server.bean.ServicesBean;
+import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.deploys.DawdlerDeployClassLoader;
 import com.anywide.dawdler.server.deploys.ServiceBase;
 import com.anywide.dawdler.server.service.ServiceFactory;
 import com.anywide.dawdler.server.service.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
+import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 
@@ -49,9 +54,11 @@ public class DawdlerContext {
 	private final Map<Object, Object> attributes = new HashMap<>();
 	private XmlObject servicesConfig;
 	private AntPathMatcher antPathMatcher;
+	private HealthCheck healthCheck;
 
-	public DawdlerContext(ClassLoader classLoader, String deployName, String deployPath, String deployClassPath,
-			String host, int port, ServicesManager servicesManager, AntPathMatcher antPathMatcher) {
+	public DawdlerContext(DawdlerDeployClassLoader classLoader, String deployName, String deployPath,
+			String deployClassPath, String host, int port, ServicesManager servicesManager,
+			AntPathMatcher antPathMatcher, HealthCheck healthCheck) {
 		this.classLoader = classLoader;
 		this.deployPath = deployPath + File.separator;
 		this.deployName = deployName;
@@ -60,6 +67,7 @@ public class DawdlerContext {
 		this.port = port;
 		this.servicesManager = servicesManager;
 		this.antPathMatcher = antPathMatcher;
+		this.healthCheck = healthCheck;
 	}
 
 	public static DawdlerContext getDawdlerContext() {
@@ -130,8 +138,26 @@ public class DawdlerContext {
 		return servicesManager.getDawdlerServiceCreateProvider();
 	}
 
-	public void setServicesConfig(XmlObject servicesConfig) {
-		this.servicesConfig = servicesConfig;
+	public void initServicesConfig() throws Exception {
+		try {
+			String configPath;
+			File file;
+			String activeProfile = System.getProperty("dawdler.profiles.active");
+			String prefix = "services-config";
+			String subfix = ".xml";
+			configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+			file = new File(DawdlerTool.getCurrentPath() + configPath);
+			if (!file.isFile()) {
+				configPath = prefix + subfix;
+				file = new File(DawdlerTool.getCurrentPath() + configPath);
+			}
+			if (!file.isFile()) {
+				throw new IOException("not found " + getDeployClassPath() + " services-config.xml");
+			}
+			this.servicesConfig = XmlObject.loadClassPathXML(configPath);
+		} catch (DocumentException | IOException e) {
+			throw e;
+		}
 	}
 
 	public XmlObject getServicesConfig() {
@@ -141,4 +167,9 @@ public class DawdlerContext {
 	public AntPathMatcher getAntPathMatcher() {
 		return antPathMatcher;
 	}
+
+	public HealthCheck getHealthCheck() {
+		return healthCheck;
+	}
+	
 }

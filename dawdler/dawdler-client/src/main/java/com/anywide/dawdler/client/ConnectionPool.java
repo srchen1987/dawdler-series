@@ -47,6 +47,10 @@ public class ConnectionPool {
 	private Semaphore semaphore = new Semaphore(0);
 	private String groupName;
 
+	public static enum Action{
+		ACTION_ADD,
+		ACTION_DEL
+	} 
 	private ConnectionPool() {
 	}
 
@@ -158,13 +162,13 @@ public class ConnectionPool {
 		});
 	}
 
-	public void doChange(String gid, String action, String address) {
+	public void doChange(String gid, Action action, String address) {
 		switch (action) {
-		case "del": {
+		case ACTION_DEL: {
 			delConnection(address);
 			break;
 		}
-		case "add": {
+		case ACTION_ADD: {
 			addConnection(gid, address);
 			break;
 		}
