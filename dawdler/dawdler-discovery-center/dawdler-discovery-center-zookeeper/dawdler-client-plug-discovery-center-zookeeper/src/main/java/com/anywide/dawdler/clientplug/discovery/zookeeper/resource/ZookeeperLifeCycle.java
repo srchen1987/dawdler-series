@@ -41,6 +41,9 @@ public class ZookeeperLifeCycle implements ComponentLifeCycle {
 	@Override
 	public void prepareInit() throws Throwable {
 		ClientConfig clientConfig = ClientConfigParser.getClientConfig();
+		if(clientConfig == null) {
+			return ;
+		}
 		List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
 		for (ServerChannelGroup sg : sgs) {
 			String gid = sg.getGroupId();

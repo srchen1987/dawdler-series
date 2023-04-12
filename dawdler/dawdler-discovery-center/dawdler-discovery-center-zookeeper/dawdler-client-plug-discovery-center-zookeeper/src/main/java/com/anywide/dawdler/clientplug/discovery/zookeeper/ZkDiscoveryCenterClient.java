@@ -22,13 +22,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.client.ConnectionPool;
+import com.anywide.dawdler.client.ConnectionPool.Action;
 import com.anywide.dawdler.core.discovery.zookeeper.ZkDiscoveryCenter;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title ZkDiscoveryCenterClient.java
- * @Description 配置中心zk的实现
+ * @Description 注册中心zk监听器的客户端
  * @date 2018年8月13日
  * @email suxuan696@gmail.com
  */
@@ -47,16 +48,16 @@ public class ZkDiscoveryCenterClient {
 		curatorCache.listenable().addListener((type, oldData, data) -> {
 			String gid = null;
 			String provider = null;
-			String action = null;
+			Action action = null;
 			ChildData handleData = null;
 			switch (type) {
 			case NODE_CREATED: {
-				action = "add";
+				action = Action.ACTION_ADD;
 				handleData = data;
 				break;
 			}
 			case NODE_DELETED: {
-				action = "del";
+				action = Action.ACTION_DEL;
 				handleData = oldData;
 				break;
 			}

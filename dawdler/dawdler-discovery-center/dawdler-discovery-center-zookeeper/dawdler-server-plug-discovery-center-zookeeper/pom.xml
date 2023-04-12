@@ -6,6 +6,8 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug-discovery-center-zookeeper</artifactId>
+	<name>dawdler-server-plug-discovery-center-zookeeper</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

@@ -17,18 +17,21 @@
 package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.Node;
 import org.slf4j.Logger;
@@ -59,9 +62,7 @@ import com.anywide.dawdler.server.service.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
-import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
-import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 import com.anywide.dawdler.util.spring.antpath.StringUtils;
 
@@ -94,12 +95,16 @@ public class ServiceBase implements Service {
 	private final Scanner scanner;
 	private final DeployScanner deployScanner;
 	private AntPathMatcher antPathMatcher;
-	private String status;
+	private volatile String status;
 	private Throwable cause;
 	private HealthCheck healthCheck;
+	private ExecutorService healthCheckExecutor;
 
-	public ServiceBase(ServerConfig serverConfig, File deploy, ClassLoader parent) throws MalformedURLException {
+	public ServiceBase(ServerConfig serverConfig, File deploy, ClassLoader parent) throws Exception {
 		this.healthCheck = serverConfig.getHealthCheck();
+		if(healthCheck.isCheck()) {
+			 healthCheckExecutor = Executors.newCachedThreadPool();
+		}
 		URL binPath = serverConfig.getBinPath();
 		String host = serverConfig.getServer().getHost();
 		int port = serverConfig.getServer().getTcpPort();
@@ -112,9 +117,9 @@ public class ServiceBase implements Service {
 		classLoader = DawdlerDeployClassLoader.createLoader(binPath, parent, getClassLoaderURL());
 		resetContextClassLoader();
 		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
-				host, port, servicesManager, antPathMatcher);
+				host, port, servicesManager, antPathMatcher, healthCheck);
 		classLoader.setDawdlerContext(dawdlerContext);
-		dawdlerContext.setServicesConfig(loadXML());
+		dawdlerContext.initServicesConfig();
 		try {
 			Class<?> clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
 			Object obj = clazz.getDeclaredConstructor().newInstance();
@@ -178,7 +183,6 @@ public class ServiceBase implements Service {
 		for (Node node : packagesInJars) {
 			deployScanner.splitAndAddPathInJar(node.getText().trim());
 		}
-
 		Set<Class<?>> classes;
 		classes = DeployClassesScanner.getClassesInPath(scanner, deployScanner, deploy);
 		Set<Class<?>> serviceClasses = new HashSet<>();
@@ -235,11 +239,9 @@ public class ServiceBase implements Service {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().init();
 		}
-
 		if (healthCheck.isCheck()) {
 			checkHealth();
 		}
-
 		dawdlerContext.removeAttribute(FILTER_PROVIDER);
 		dawdlerContext.removeAttribute(DAWDLER_LISTENER_PROVIDER);
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
@@ -262,13 +264,10 @@ public class ServiceBase implements Service {
 				orderData.getData().contextInitialized(dawdlerContext);
 			}
 		}
+
 		for (int i = 0; i < lifeCycleList.size(); i++) {
-			try {
-				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-				lifeCycle.getData().afterInit();
-			} catch (Throwable e) {
-				logger.error("", e);
-			}
+			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+			lifeCycle.getData().afterInit();
 		}
 	}
 
@@ -293,6 +292,10 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void stop() {
+		status = Status.DOWN;
+		if(healthCheck.isCheck()) {
+			 healthCheckExecutor.shutdown();
+		}
 		resetContextClassLoader();
 		if (dawdlerListenerProvider.getListeners() != null) {
 			for (int i = dawdlerListenerProvider.getListeners().size(); i > 0; i--) {
@@ -369,28 +372,6 @@ public class ServiceBase implements Service {
 		}
 	}
 
-	private XmlObject loadXML() {
-		try {
-			String configPath;
-			File file;
-			String activeProfile = System.getProperty("dawdler.profiles.active");
-			String prefix = "services-config";
-			String subfix = ".xml";
-			configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-			file = new File(DawdlerTool.getCurrentPath() + configPath);
-			if (!file.isFile()) {
-				configPath = prefix + subfix;
-				file = new File(DawdlerTool.getCurrentPath() + configPath);
-			}
-			if (!file.isFile()) {
-				logger.error("not found services-config.xml");
-			}
-			return XmlObject.loadClassPathXML(configPath);
-		} catch (DocumentException | IOException e) {
-			logger.error("", e);
-		}
-		return null;
-	}
 	
 	private void resetContextClassLoader() {
 		Thread.currentThread().setContextClassLoader(classLoader);
@@ -470,28 +451,35 @@ public class ServiceBase implements Service {
 		serviceHealth.setStatus(Status.STARTING);
 		HealthIndicatorProvider healthChecker = HealthIndicatorProvider.getInstance(deployName);
 		List<OrderData<HealthIndicator>> healthIndicators = healthChecker.getHealthIndicators();
-		boolean down = false;
+		List<Future<Boolean>> checkResult = new ArrayList<>();
 		for (OrderData<HealthIndicator> orderData : healthIndicators) {
 			HealthIndicator healthIndicator = orderData.getData();
 			if (!healthCheck.componentCheck(healthIndicator.name())) {
 				continue;
 			}
-			Health.Builder builder = Health.up();
-			try {
-				builder.setName(healthIndicator.name());
-				Health componentHealth = healthIndicator.check(builder);
-				serviceHealth.addComponent(componentHealth);
-			} catch (Exception e) {
-				cause(e);
-				serviceHealth.addComponent(Health.down(e).setName(builder.getName()).build());
-				down = true;
-			}
+			java.util.concurrent.Callable<Boolean> call = (()->{
+				Health.Builder builder = Health.up();
+				try {
+					builder.setName(healthIndicator.name());
+					Health componentHealth = healthIndicator.check(builder);
+					serviceHealth.addComponent(componentHealth);
+				} catch (Exception e) {
+					cause(e);
+					serviceHealth.addComponent(Health.down(e).setName(builder.getName()).build());
+					return true;
+				}
+				return false;
+			});
+			checkResult.add(healthCheckExecutor.submit(call));
 		}
-		String status;
-		if (down) {
-			status = Status.DOWN;
-		} else {
-			status = Status.UP;
+		String status = Status.UP;
+		for(Future<Boolean> future : checkResult) {
+			try {
+				if(future.get()) {
+					status = Status.DOWN;
+				}
+			} catch (InterruptedException | ExecutionException e) {
+			}
 		}
 		serviceHealth.setStatus(status);
 		return serviceHealth;

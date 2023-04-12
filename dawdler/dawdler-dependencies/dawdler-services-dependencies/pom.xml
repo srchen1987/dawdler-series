@@ -134,6 +134,27 @@
 				</exclusions>
 				<version>${dawdler.build.version}</version>
 			</dependency>
+						<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-discovery-center-consul</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-discovery-center-consul</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-discovery-center-consul-core</artifactId>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
+				<version>${dawdler.build.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-config</artifactId>

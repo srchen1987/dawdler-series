@@ -351,11 +351,11 @@ public class ServerConfig {
 			return check;
 		}
 
-		public void setCheck(boolean check) {
+		void setCheck(boolean check) {
 			this.check = check;
 		}
 
-		public void addComponentCheck(String componentName) {
+		void addComponentCheck(String componentName) {
 			componentCheck.add(componentName);
 		}
 
@@ -367,7 +367,7 @@ public class ServerConfig {
 			return port;
 		}
 
-		public void setPort(int port) {
+		void setPort(int port) {
 			this.port = port;
 		}
 
@@ -375,7 +375,7 @@ public class ServerConfig {
 			return scheme;
 		}
 
-		public void setScheme(String scheme) {
+		void setScheme(String scheme) {
 			this.scheme = scheme;
 		}
 
@@ -383,7 +383,7 @@ public class ServerConfig {
 			return backlog;
 		}
 
-		public void setBacklog(int backlog) {
+		void setBacklog(int backlog) {
 			this.backlog = backlog;
 		}
 
@@ -391,7 +391,7 @@ public class ServerConfig {
 			return username;
 		}
 
-		public void setUsername(String username) {
+		void setUsername(String username) {
 			this.username = username;
 		}
 
@@ -399,7 +399,7 @@ public class ServerConfig {
 			return password;
 		}
 
-		public void setPassword(String password) {
+		void setPassword(String password) {
 			this.password = password;
 		}
 
