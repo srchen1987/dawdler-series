@@ -42,6 +42,7 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.annotation.RequestParam;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
+import com.thoughtworks.qdox.builder.impl.EvaluatingVisitor;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -67,6 +68,7 @@ public class MethodParser {
 	private static String[] allTypeArray = { "*/*" };
 	private static String[] textArray = { AbstractDisplayPlug.MIME_TYPE_TEXT_HTML };
 	private static String[] jsonArray = { AbstractDisplayPlug.MIME_TYPE_JSON };
+	private static EvaluatingVisitor evaluatingVisitor = new EvaluatingVisitor();
 
 	private static Map<String, String> requestMethodCache = new HashMap<String, String>() {
 		private static final long serialVersionUID = 8332918465511505167L;
@@ -152,26 +154,19 @@ public class MethodParser {
 						String annotationName = paramAnnotation.getType().getFullyQualifiedName();
 						if (annotationName.equals(RequestParam.class.getName())) {
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
-							if (annotationValue != null) {
-								alias = (String) annotationValue.getParameterValue();
-							}
+							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
 						}
 						if (annotationName.equals(PathVariable.class.getName())) {
 							in = "path";
-							AnnotationUtils.getAnnotationStringValue(paramAnnotation, "value");
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
-							if (annotationValue != null) {
-								alias = (String) annotationValue.getParameterValue();
-							}
+							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
 						} else if (annotationName.equals(RequestBody.class.getName())) {
 							requestBody = true;
 							in = "body";
 						} else if (annotationName.equals(RequestHeader.class.getName())) {
 							in = "header";
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
-							if (annotationValue != null) {
-								alias = (String) annotationValue.getParameterValue();
-							}
+							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
 						}
 					}
 				}
@@ -390,6 +385,41 @@ public class MethodParser {
 			return method;
 		}
 		return method.substring(index + 1, method.length());
+	}
+
+	public static String getAnnotationValue(AnnotationValue annotationValue, JavaClass javaClass,
+			Map<String, ClassStruct> classStructs) {
+		String value = null;
+		if (annotationValue != null) {
+			String parameterValue = (String) annotationValue.getParameterValue();
+			int index = parameterValue.lastIndexOf(".");
+			if (index > 0) {
+				String className = parameterValue.substring(0, index);
+				String fieldName = parameterValue.substring(index + 1, parameterValue.length());
+				String samePackageClassName = javaClass.getPackageName() + "." + className;
+				ClassStruct classStruct = classStructs.get(samePackageClassName);
+				if (classStruct == null) {
+					List<String> packages = classStructs.get(javaClass.getFullyQualifiedName()).getImportPackages();
+					for (String classPackage : packages) {
+						if (classPackage.endsWith(className)) {
+							classStruct = classStructs.get(samePackageClassName);
+							if (classStruct != null) {
+								break;
+							}
+						}
+					}
+				}
+				if (classStruct != null) {
+					value = classStruct.getJavaClass().getFieldByName(fieldName).getInitializationExpression()
+							.replaceAll("\"", "");
+				}
+			}
+			if (value == null) {
+				value = (String) annotationValue.accept(evaluatingVisitor);
+			}
+		}
+
+		return value;
 	}
 
 }
