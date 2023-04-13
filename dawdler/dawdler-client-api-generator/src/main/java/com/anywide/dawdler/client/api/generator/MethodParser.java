@@ -46,7 +46,6 @@ import com.thoughtworks.qdox.builder.impl.EvaluatingVisitor;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaGenericDeclaration;
 import com.thoughtworks.qdox.model.JavaMethod;
 import com.thoughtworks.qdox.model.JavaParameter;
@@ -411,8 +410,8 @@ public class MethodParser {
 					}
 				}
 				if (classStruct != null) {
-					JavaField jf = classStruct.getJavaClass().getFieldByName(fieldName);
-					value = jf.getInitializationExpression().replaceAll("\"", "");
+					value = classStruct.getJavaClass().getFieldByName(fieldName).getInitializationExpression()
+							.replaceAll("\"", "");
 				}
 			}
 			if (value == null) {
