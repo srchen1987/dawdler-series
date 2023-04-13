@@ -102,8 +102,8 @@ public class ServiceBase implements Service {
 
 	public ServiceBase(ServerConfig serverConfig, File deploy, ClassLoader parent) throws Exception {
 		this.healthCheck = serverConfig.getHealthCheck();
-		if(healthCheck.isCheck()) {
-			 healthCheckExecutor = Executors.newCachedThreadPool();
+		if (healthCheck.isCheck()) {
+			healthCheckExecutor = Executors.newCachedThreadPool();
 		}
 		URL binPath = serverConfig.getBinPath();
 		String host = serverConfig.getServer().getHost();
@@ -293,8 +293,8 @@ public class ServiceBase implements Service {
 	@Override
 	public void stop() {
 		status = Status.DOWN;
-		if(healthCheck.isCheck()) {
-			 healthCheckExecutor.shutdown();
+		if (healthCheck.isCheck()) {
+			healthCheckExecutor.shutdown();
 		}
 		resetContextClassLoader();
 		if (dawdlerListenerProvider.getListeners() != null) {
@@ -372,7 +372,6 @@ public class ServiceBase implements Service {
 		}
 	}
 
-	
 	private void resetContextClassLoader() {
 		Thread.currentThread().setContextClassLoader(classLoader);
 	}
@@ -457,7 +456,7 @@ public class ServiceBase implements Service {
 			if (!healthCheck.componentCheck(healthIndicator.name())) {
 				continue;
 			}
-			java.util.concurrent.Callable<Boolean> call = (()->{
+			java.util.concurrent.Callable<Boolean> call = (() -> {
 				Health.Builder builder = Health.up();
 				try {
 					builder.setName(healthIndicator.name());
@@ -473,9 +472,9 @@ public class ServiceBase implements Service {
 			checkResult.add(healthCheckExecutor.submit(call));
 		}
 		String status = Status.UP;
-		for(Future<Boolean> future : checkResult) {
+		for (Future<Boolean> future : checkResult) {
 			try {
-				if(future.get()) {
+				if (future.get()) {
 					status = Status.DOWN;
 				}
 			} catch (InterruptedException | ExecutionException e) {

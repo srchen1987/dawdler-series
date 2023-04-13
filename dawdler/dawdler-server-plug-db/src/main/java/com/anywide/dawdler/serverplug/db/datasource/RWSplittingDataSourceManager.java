@@ -48,8 +48,7 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
  */
 public class RWSplittingDataSourceManager {
 	public static final String DATASOURCE_MANAGER_PREFIX = "DATASOURCE_MANAGER_PREFIX";
-	private static final Pattern EXPRESSION = Pattern
-			.compile("write=\\[(.+)\\],read=\\[(.+)\\]");
+	private static final Pattern EXPRESSION = Pattern.compile("write=\\[(.+)\\],read=\\[(.+)\\]");
 	private final Map<String, DataSource> dataSources = new HashMap<>();
 	private final Map<String, String> dataSourceExpression = new HashMap<>();
 	private final Map<String, MappingDecision> packages = new HashMap<>();

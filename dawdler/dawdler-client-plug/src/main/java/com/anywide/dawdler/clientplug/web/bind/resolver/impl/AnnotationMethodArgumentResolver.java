@@ -42,7 +42,6 @@ import com.anywide.dawdler.clientplug.web.util.CookieUtil;
 import com.anywide.dawdler.clientplug.web.validator.ValidateParser;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
-import com.anywide.dawdler.clientplug.web.validator.exception.ValidationException;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
@@ -93,8 +92,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					}
 					try {
 						if (value == null && type.isPrimitive()) {
-							throw new ConvertException(
-									paramName + " value null can't convert " + type.getName() + "!");
+							throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
 						}
 						return ClassUtil.convert(value, type);
 					} catch (Exception e) {
@@ -219,7 +217,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					int index = 0;
 					for (Object obj : collection) {
 						if (obj instanceof String) {
-							array[index] = (String)obj;
+							array[index] = (String) obj;
 						} else if (ClassUtil.isSimpleValueType(type)) {
 							array[index] = obj.toString();
 						} else if (matchType(obj.getClass())) {
