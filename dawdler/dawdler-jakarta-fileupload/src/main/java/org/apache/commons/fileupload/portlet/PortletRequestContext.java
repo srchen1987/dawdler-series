@@ -27,106 +27,104 @@ import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.commons.fileupload.UploadContext;
 
 /**
- * <p>Provides access to the request information needed for a request made to
- * a portlet.</p>
+ * <p>
+ * Provides access to the request information needed for a request made to a
+ * portlet.
+ * </p>
  *
  * @since FileUpload 1.1
  */
 public class PortletRequestContext implements UploadContext {
 
-    // ----------------------------------------------------- Instance Variables
+	// ----------------------------------------------------- Instance Variables
 
-    /**
-     * The request for which the context is being provided.
-     */
-    private final ActionRequest request;
+	/**
+	 * The request for which the context is being provided.
+	 */
+	private final ActionRequest request;
 
+	// ----------------------------------------------------------- Constructors
 
-    // ----------------------------------------------------------- Constructors
+	/**
+	 * Construct a context for this request.
+	 *
+	 * @param request The request to which this context applies.
+	 */
+	public PortletRequestContext(ActionRequest request) {
+		this.request = request;
+	}
 
-    /**
-     * Construct a context for this request.
-     *
-     * @param request The request to which this context applies.
-     */
-    public PortletRequestContext(ActionRequest request) {
-        this.request = request;
-    }
+	// --------------------------------------------------------- Public Methods
 
+	/**
+	 * Retrieve the character encoding for the request.
+	 *
+	 * @return The character encoding for the request.
+	 */
+	@Override
+	public String getCharacterEncoding() {
+		return request.getCharacterEncoding();
+	}
 
-    // --------------------------------------------------------- Public Methods
+	/**
+	 * Retrieve the content type of the request.
+	 *
+	 * @return The content type of the request.
+	 */
+	@Override
+	public String getContentType() {
+		return request.getContentType();
+	}
 
-    /**
-     * Retrieve the character encoding for the request.
-     *
-     * @return The character encoding for the request.
-     */
-    @Override
-    public String getCharacterEncoding() {
-        return request.getCharacterEncoding();
-    }
+	/**
+	 * Retrieve the content length of the request.
+	 *
+	 * @return The content length of the request.
+	 * @deprecated 1.3 Use {@link #contentLength()} instead
+	 */
+	@Override
+	@Deprecated
+	public int getContentLength() {
+		return request.getContentLength();
+	}
 
-    /**
-     * Retrieve the content type of the request.
-     *
-     * @return The content type of the request.
-     */
-    @Override
-    public String getContentType() {
-        return request.getContentType();
-    }
+	/**
+	 * Retrieve the content length of the request.
+	 *
+	 * @return The content length of the request.
+	 * @since 1.3
+	 */
+	@Override
+	public long contentLength() {
+		long size;
+		try {
+			size = Long.parseLong(request.getProperty(FileUploadBase.CONTENT_LENGTH));
+		} catch (NumberFormatException e) {
+			size = request.getContentLength();
+		}
+		return size;
+	}
 
-    /**
-     * Retrieve the content length of the request.
-     *
-     * @return The content length of the request.
-     * @deprecated 1.3 Use {@link #contentLength()} instead
-     */
-    @Override
-    @Deprecated
-    public int getContentLength() {
-        return request.getContentLength();
-    }
+	/**
+	 * Retrieve the input stream for the request.
+	 *
+	 * @return The input stream for the request.
+	 *
+	 * @throws IOException if a problem occurs.
+	 */
+	@Override
+	public InputStream getInputStream() throws IOException {
+		return request.getPortletInputStream();
+	}
 
-    /**
-     * Retrieve the content length of the request.
-     *
-     * @return The content length of the request.
-     * @since 1.3
-     */
-    @Override
-    public long contentLength() {
-        long size;
-        try {
-            size = Long.parseLong(request.getProperty(FileUploadBase.CONTENT_LENGTH));
-        } catch (NumberFormatException e) {
-            size = request.getContentLength();
-        }
-        return size;
-    }
-
-    /**
-     * Retrieve the input stream for the request.
-     *
-     * @return The input stream for the request.
-     *
-     * @throws IOException if a problem occurs.
-     */
-    @Override
-    public InputStream getInputStream() throws IOException {
-        return request.getPortletInputStream();
-    }
-
-    /**
-     * Returns a string representation of this object.
-     *
-     * @return a string representation of this object.
-     */
-    @Override
-    public String toString() {
-        return format("ContentLength=%s, ContentType=%s",
-                      Long.valueOf(this.contentLength()),
-                      this.getContentType());
-    }
+	/**
+	 * Returns a string representation of this object.
+	 *
+	 * @return a string representation of this object.
+	 */
+	@Override
+	public String toString() {
+		return format("ContentLength=%s, ContentType=%s", Long.valueOf(this.contentLength()), this.getContentType());
+	}
 
 }

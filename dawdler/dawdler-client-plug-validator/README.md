@@ -188,7 +188,8 @@ public class NumberRuleOperator extends StringRuleOperator {
  public String toString() {
   return EXPLAIN;
  }
-
+ 
+}
 ```
 
 #### 4.2 正则类验证规则扩展

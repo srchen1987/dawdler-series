@@ -9,6 +9,6 @@ module dawdler.server.plug.discovery.center.zookeeper {
 	requires dawdler.core;
 	requires dawdler.util;
 	requires dawdler.discovery.center.core;
-	
+
 	provides ComponentLifeCycle with ZookeeperLifeCycle;
 }
