@@ -194,7 +194,7 @@ public class ServiceRoot {
 				} catch (InterruptedException | ExecutionException | TimeoutException e) {
 					System.out.println("server startup time out 3 minutes!");
 					Service service = services.remove(deployData.deployName);
-					if(service != null) {
+					if (service != null) {
 						service.prepareStop();
 						service.stop();
 					}
