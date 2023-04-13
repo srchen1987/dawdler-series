@@ -72,7 +72,7 @@ public class ConfigInit {
 		if (!file.isFile()) {
 			logger.warn("not found " + configPath);
 		}
-		YAMLMapper YAMLMapper= YAMLMapperFactory.getYAMLMapper();
+		YAMLMapper YAMLMapper = YAMLMapperFactory.getYAMLMapper();
 		Map<String, Map<String, Object>> data = null;
 		try {
 			data = YAMLMapper.readValue(file, HashMap.class);

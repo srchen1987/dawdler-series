@@ -42,7 +42,6 @@ import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.annotation.RequestParam;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
-import com.thoughtworks.qdox.builder.impl.EvaluatingVisitor;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
@@ -97,7 +96,7 @@ public class MethodParser {
 			for (JavaAnnotation annotation : methodAnnotations) {
 				if (ResponseBody.class.getName().equals(annotation.getType().getBinaryName())) {
 					responseBody = true;
-				} 
+				}
 				if (RequestMapping.class.getName().equals(annotation.getType().getBinaryName())) {
 					requsetMappingArray = AnnotationUtils.getAnnotationStringArrayValue(annotation, "value");
 					Object annotationMethodObj = AnnotationUtils.getAnnotationObjectValue(annotation, "method");

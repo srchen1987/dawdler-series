@@ -58,7 +58,7 @@ public @interface RabbitListener {
 	 * 失败后进入死信队列
 	 */
 	boolean failedToDLQ() default true;
-	
+
 	/**
 	 * 重试次数
 	 */
