@@ -28,7 +28,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
  */
 public class YAMLMapperFactory {
 	private final static YAMLMapper YAML_MAPPER = YAMLMapper.builder().build();
-	
+
 	public static YAMLMapper getYAMLMapper() {
 		return YAML_MAPPER;
 	}

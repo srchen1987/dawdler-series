@@ -107,26 +107,26 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public boolean addProvider(String path, String value, Map<String, Object> attributes) throws Exception {
-		client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL)
-				.forPath(getZkPath(path, value), value.getBytes());
+		client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).forPath(getZkPath(path, value),
+				value.getBytes());
 		return true;
 	}
 
 	@Override
 	public boolean deleteProvider(String path, String value) throws Exception {
-		 client.delete().deletingChildrenIfNeeded().forPath(getZkPath(path, value));
-		 return true;
+		client.delete().deletingChildrenIfNeeded().forPath(getZkPath(path, value));
+		return true;
 	}
-	
+
 	@Override
 	public boolean isExist(String path, String value) throws Exception {
 		return client.checkExists().forPath(getZkPath(path, value)) != null;
 	}
-	
+
 	public String getZkPath(String path, String value) {
 		return ROOT_PATH + "/" + path + "/" + value;
 	}
-	
+
 	public String state() throws Exception {
 		return client.getZookeeperClient().getZooKeeper().getState().toString();
 	}

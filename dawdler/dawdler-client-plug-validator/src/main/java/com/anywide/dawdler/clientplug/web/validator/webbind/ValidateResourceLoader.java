@@ -148,7 +148,7 @@ public class ValidateResourceLoader {
 				}
 				cv.addGlobalControlFields(ControlValidator.getMappingFeildType(type), globals);
 			}
-			
+
 		}
 	}
 
@@ -202,12 +202,12 @@ public class ValidateResourceLoader {
 						if (refgid != null) {
 							Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
 							if (fieldGroup != null) {
-								 Map<String, ControlField> fields = mappings.get(mappingFeildType);
-								 if(fields != null) {
-									 fields.putAll(fieldGroup);
-								 }else {
-									 mappings.put(mappingFeildType, fieldGroup);
-								 }
+								Map<String, ControlField> fields = mappings.get(mappingFeildType);
+								if (fields != null) {
+									fields.putAll(fieldGroup);
+								} else {
+									mappings.put(mappingFeildType, fieldGroup);
+								}
 							}
 						}
 						if (ref != null) {
@@ -217,7 +217,7 @@ public class ValidateResourceLoader {
 							}
 							if (controlField != null) {
 								Map<String, ControlField> fields = mappings.get(mappingFeildType);
-								if(fields == null) {
+								if (fields == null) {
 									fields = new LinkedHashMap<>();
 								}
 								fields.put(controlField.getFieldName(), controlField);
@@ -231,7 +231,7 @@ public class ValidateResourceLoader {
 				if (skip != null && !skip.trim().equals("")) {
 					String[] skips = skip.split(",");
 					for (String skipField : skips) {
-						mappings.forEach((k,v)->{
+						mappings.forEach((k, v) -> {
 							v.remove(skipField);
 						});
 					}
