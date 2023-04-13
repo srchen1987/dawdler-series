@@ -26,9 +26,10 @@
 | 配置文件 | 所属模块 | 所在位置 | 支持统一配置中心 | 支持加密 | 备注 |
 | :-: | :-: | :-: | :-: | :-: | :-: |
 | client-conf.xml | dawdler-client | web端{classPath}/client/ | 否 | 否 | web端请求配置 |
-| dawdler-config.yml | dawdler-config-core | web端与服务端{classPath}/ | 否 |  否 | 统一配置中心配置 |
+| dawdler-config.yml | dawdler-config-center | web端与服务端{classPath}/ | 否 |  否 | 统一配置中心配置 |
 | services-config.yml | dawdler-server | 服务端{classPath}/ | 否 |  否 | 服务相关配置 |
 | zookeeper.properties | dawdler-discovery-center-zookeeper-core | web端与服务端{classPath}/ | 是 |  是 | 基于zk实现注册中心配置 |
+| consul.properties | dawdler-discovery-center-consul-core | web端与服务端{classPath}/ | 是 |  是 | 基于consul实现注册中心配置 |
 | identityConfig.properties | dawdler-client-plug-session | web端{classPath}/ | 是 |  是 | session相关配置 |
 | distributed-transaction | dawdler-distributed-transaction-core | 分布式事务的web端与补偿器{classPath}/ | 是 |  是 | 分布式事务配置 |
 | distributed-transaction-redis | dawdler-distributed-transaction-core | 分布式事务的web端与补偿器{classPath}/ | 是 |  是 | 分布式事务redis配置 |
@@ -46,10 +47,10 @@ public class UserServiceImpl implements UserService {
 @EsInjector("myEs")
 EsOperator esOperator;
 
-@RabbitInjector("myRabbit-uat")
+@RabbitInjector("myRabbit")
 RabbitProvider rabbitProvider;
 
-@JedisInjector("myJedis-pro")
+@JedisInjector("myJedis")
 JedisOperator jedisOperator;
 
 }
