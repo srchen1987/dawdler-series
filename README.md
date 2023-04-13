@@ -120,7 +120,7 @@ dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现�
 
 熔断器,支持熔断配置,降级,采用时间滑动窗口方式统计.
 
-#### 13. [dawdler-config-plug](dawdler/dawdler-config-plug/README.md)
+#### 13. [dawdler-config-center](dawdler/dawdler-config-center/README.md)
 
 统一配置中心,支持扩展、注入.
 
@@ -162,7 +162,7 @@ dawdler实现pinpoint链路追踪插件.
 
 #### 23. [dawdler-discovery-center](dawdler/dawdler-discovery-center/README.md)
 
-注册中心的根模块,提供服务注册,服务下线,服务发现等功能.
+注册中心的根模块,提供服务注册,服务下线,服务发现等功能.目前提供zookeeper与consul的实现.
 
 #### 24. [dawdler-encrypt-generator](dawdler/dawdler-encrypt-generator/README.md)
 
@@ -188,7 +188,7 @@ dawdler实现pinpoint链路追踪插件.
 
 1. 下载[dawdler-runtime-jdk1.8](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/dawdler-runtime-jdk1.8.zip)
 
-2. 启动zookeeper.执行 `sh zkServer.sh start`  启动zookeeper.
+2. 启动注册中心,zookeeper执行 `sh zkServer.sh start`  启动zookeeper或启动consul.
 
 3. 进入dawdler的bin目录,通过 `sh dawdler.sh run` 启动(win环境`dawdler.bat` linux或mac环境`sh dawdler.sh`).
 
@@ -220,7 +220,7 @@ dawdler需要三方组件的支持,如下:
 | mysql5x \| 8x | x | 数据库服务时需要 |
 | elastic-seach 7x | x | es服务时需要 |
 | rabbitmq 3.8x | x | 消息服务时需要 |
-| consul 1.10.x | x | 统一配置中心时需要 |
+| consul 1.10.x | x | 统一配置中心或注册中心时需要 |
 
 #### 2. 项目结构说明(建议采用此规范定义项目结构)
 
