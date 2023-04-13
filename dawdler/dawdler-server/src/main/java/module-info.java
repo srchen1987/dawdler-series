@@ -24,10 +24,10 @@ module dawdler.server {
 	exports com.anywide.dawdler.server.bean;
 	exports com.anywide.dawdler.server.thread.processor;
 	exports com.anywide.dawdler.server.deploys
-			to dawdler.server.plug.db, dawdler.server.plug.redis, dawdler.server.plug.config,
+			to dawdler.server.plug.db, dawdler.server.plug.redis, dawdler.server.plug.config.center.consul,
 			dawdler.server.plug.rabbitmq, dawdler.server.plug.es, dawdler.server.plug.schedule;
 	exports com.anywide.dawdler.server.net.aio.session;
-	exports com.anywide.dawdler.server.conf;
+	exports com.anywide.dawdler.server.conf to dawdler.server, dawdler.server.plug.discovery.center.consul;
 	exports org.apache.naming.factory;
 	exports org.apache.naming.java;
 	exports org.apache.naming;

@@ -47,10 +47,10 @@ public class ConnectionPool {
 	private Semaphore semaphore = new Semaphore(0);
 	private String groupName;
 
-	public static enum Action{
-		ACTION_ADD,
-		ACTION_DEL
-	} 
+	public static enum Action {
+		ACTION_ADD, ACTION_DEL
+	}
+
 	private ConnectionPool() {
 	}
 
