@@ -10,7 +10,6 @@ module dawdler.rabbitmq.core {
 	requires dawdler.core;
 	requires org.apache.commons.pool2;
 	requires org.slf4j;
-	requires dawdler.config.core;
 
 	exports com.anywide.dawdler.rabbitmq.connection.pool.factory;
 	exports com.anywide.dawdler.rabbitmq.consumer;

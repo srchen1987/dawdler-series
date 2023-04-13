@@ -26,10 +26,6 @@
 			<artifactId>elasticsearch-java</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-config-core</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
 		</dependency>

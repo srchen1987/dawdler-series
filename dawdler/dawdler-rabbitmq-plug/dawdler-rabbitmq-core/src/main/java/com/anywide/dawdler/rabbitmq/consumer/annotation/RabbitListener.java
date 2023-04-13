@@ -53,7 +53,7 @@ public @interface RabbitListener {
 	 * 是否重试
 	 */
 	boolean retry() default false;
-	
+
 	/**
 	 * 失败后进入死信队列
 	 */

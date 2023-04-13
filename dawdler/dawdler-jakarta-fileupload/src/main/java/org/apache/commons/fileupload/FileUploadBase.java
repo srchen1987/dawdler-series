@@ -175,6 +175,12 @@ public abstract class FileUploadBase {
 	private long fileSizeMax = -1;
 
 	/**
+	 * The maximum permitted number of files that may be uploaded in a single
+	 * request. A value of -1 indicates no maximum.
+	 */
+	private long fileCountMax = -1;
+
+	/**
 	 * The content encoding to use when reading part headers.
 	 */
 	private String headerEncoding;
@@ -248,6 +254,24 @@ public abstract class FileUploadBase {
 	 */
 	public void setFileSizeMax(long fileSizeMax) {
 		this.fileSizeMax = fileSizeMax;
+	}
+
+	/**
+	 * Returns the maximum number of files allowed in a single request.
+	 *
+	 * @return The maximum number of files allowed in a single request.
+	 */
+	public long getFileCountMax() {
+		return fileCountMax;
+	}
+
+	/**
+	 * Sets the maximum number of files allowed per request.
+	 *
+	 * @param fileCountMax The new limit. {@code -1} means no limit.
+	 */
+	public void setFileCountMax(final long fileCountMax) {
+		this.fileCountMax = fileCountMax;
 	}
 
 	/**
@@ -339,10 +363,15 @@ public abstract class FileUploadBase {
 		try {
 			FileItemIterator iter = getItemIterator(ctx);
 			FileItemFactory fac = getFileItemFactory();
+			final byte[] buffer = new byte[Streams.DEFAULT_BUFFER_SIZE];
 			if (fac == null) {
 				throw new NullPointerException("No FileItemFactory has been set.");
 			}
 			while (iter.hasNext()) {
+				if (items.size() == fileCountMax) {
+					// The next item will exceed the limit.
+					throw new FileCountLimitExceededException(ATTACHMENT, getFileCountMax());
+				}
 				final FileItemStream item = iter.next();
 				// Don't use getName() here to prevent an InvalidFileNameException.
 				final String fileName = ((FileItemIteratorImpl.FileItemStreamImpl) item).name;
@@ -350,7 +379,7 @@ public abstract class FileUploadBase {
 						fileName);
 				items.add(fileItem);
 				try {
-					Streams.copy(item.openStream(), fileItem.getOutputStream(), true);
+					Streams.copy(item.openStream(), fileItem.getOutputStream(), true, buffer);
 				} catch (FileUploadIOException e) {
 					throw (FileUploadException) e.getCause();
 				} catch (IOException e) {

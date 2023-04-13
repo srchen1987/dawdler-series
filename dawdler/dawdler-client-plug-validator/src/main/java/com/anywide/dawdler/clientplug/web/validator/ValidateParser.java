@@ -56,7 +56,7 @@ public class ValidateParser {
 		}
 		return null;
 	}
-	
+
 	public static void validateIfFailedThrow(String viewName, Object value, String validateRule) {
 		String error = validate(viewName, value, validateRule);
 		if (error != null) {

@@ -36,7 +36,7 @@ import com.anywide.dawdler.util.TimerTask;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConsulLifeCycle
+ * @Title ConsulLifeCycle.java
  * @Description consul注册中心初始化与销毁
  * @date 2023年3月5日
  * @email suxuan696@gmail.com

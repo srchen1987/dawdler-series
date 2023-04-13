@@ -96,7 +96,7 @@ public class MethodParser {
 			for (JavaAnnotation annotation : methodAnnotations) {
 				if (ResponseBody.class.getName().equals(annotation.getType().getBinaryName())) {
 					responseBody = true;
-				} 
+				}
 				if (RequestMapping.class.getName().equals(annotation.getType().getBinaryName())) {
 					requsetMappingArray = AnnotationUtils.getAnnotationStringArrayValue(annotation, "value");
 					Object annotationMethodObj = AnnotationUtils.getAnnotationObjectValue(annotation, "method");
