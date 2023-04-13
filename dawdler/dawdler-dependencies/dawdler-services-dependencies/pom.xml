@@ -8,7 +8,7 @@
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<name>dawdler-services-dependencies</name>
 	<packaging>pom</packaging>
-	<dependencyManagement>
+		<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>dawdler</groupId>
@@ -134,7 +134,7 @@
 				</exclusions>
 				<version>${dawdler.build.version}</version>
 			</dependency>
-						<dependency>
+			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-discovery-center-consul</artifactId>
 				<version>${dawdler.build.version}</version>
@@ -156,13 +156,24 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+			<groupId>dawdler</groupId>
+				<artifactId>dawdler-config-center-core</artifactId>
+				<version>${dawdler.build.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-server-plug-config</artifactId>
+				<artifactId>dawdler-server-plug-config-center-consul</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-config-core</artifactId>
+				<artifactId>dawdler-config-center-consul-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
