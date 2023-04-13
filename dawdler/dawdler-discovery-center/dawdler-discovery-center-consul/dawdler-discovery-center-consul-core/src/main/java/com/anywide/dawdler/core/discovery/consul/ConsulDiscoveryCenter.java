@@ -30,6 +30,7 @@ import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.NewService;
 import com.ecwid.consul.v1.agent.model.NewService.Check;
+import com.ecwid.consul.v1.agent.model.Self.Config;
 import com.ecwid.consul.v1.catalog.CatalogServiceRequest;
 import com.ecwid.consul.v1.catalog.model.CatalogService;
 import com.ecwid.consul.v1.health.HealthChecksForServiceRequest;
@@ -38,7 +39,7 @@ import com.ecwid.consul.v1.health.model.Check.CheckStatus;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConsulDiscoveryCenter
+ * @Title ConsulDiscoveryCenter.java
  * @Description consul注册中心的实现的实现
  * @date 2023年3月4日
  * @email suxuan696@gmail.com
@@ -147,8 +148,9 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		return false;
 	}
 
-	public String state() throws Exception {
-		return "ok";
+	public String info() throws Exception {
+		Config config = client.getAgentSelf().getValue().getConfig();
+		return config.getNodeName() + "-" + config.getDatacenter() + "-" + config.getVersion();
 	}
 
 	public AtomicBoolean getDestroyed() {
