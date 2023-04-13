@@ -20,7 +20,7 @@ port=8500
 
 #### 1.2 统一配置中心
 
-统一配置中心请参考 [统一配置中心模块](../../../dawdler-config-plug/README.md)
+统一配置中心请参考 [统一配置中心模块](../../../dawdler-config-center/README.md)
 
 consul里面的path为 /consul
 

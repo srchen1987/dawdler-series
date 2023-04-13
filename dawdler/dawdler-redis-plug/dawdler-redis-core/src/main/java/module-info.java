@@ -10,7 +10,6 @@ module dawdler.redis.core {
 	requires org.slf4j;
 	requires org.apache.commons.pool2;
 	requires redis.clients.jedis;
-	requires dawdler.config.core;
 
 	exports com.anywide.dawdler.redis;
 

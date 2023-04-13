@@ -22,30 +22,30 @@ package org.apache.commons.fileupload;
  */
 public class FileCountLimitExceededException extends FileUploadException {
 
-    private static final long serialVersionUID = 6904179610227521789L;
+	private static final long serialVersionUID = 6904179610227521789L;
 
-    /**
-     * The limit that was exceeded.
-     */
-    private final long limit;
+	/**
+	 * The limit that was exceeded.
+	 */
+	private final long limit;
 
-    /**
-     * Creates a new instance.
-     *
-     * @param message The detail message
-     * @param limit The limit that was exceeded
-     */
-    public FileCountLimitExceededException(final String message, final long limit) {
-        super(message);
-        this.limit = limit;
-    }
+	/**
+	 * Creates a new instance.
+	 *
+	 * @param message The detail message
+	 * @param limit   The limit that was exceeded
+	 */
+	public FileCountLimitExceededException(final String message, final long limit) {
+		super(message);
+		this.limit = limit;
+	}
 
-    /**
-     * Retrieves the limit that was exceeded.
-     *
-     * @return The limit that was exceeded by the request
-     */
-    public long getLimit() {
-        return limit;
-    }
+	/**
+	 * Retrieves the limit that was exceeded.
+	 *
+	 * @return The limit that was exceeded by the request
+	 */
+	public long getLimit() {
+		return limit;
+	}
 }

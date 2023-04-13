@@ -13,7 +13,7 @@ module dawdler.server.plug.db {
 	requires org.slf4j;
 	requires dom4j;
 	requires dawdler.server.plug;
-	requires dawdler.config.core;
+	requires dawdler.config.center.core;
 
 	exports com.anywide.dawdler.serverplug.db.annotation;
 	exports com.anywide.dawdler.serverplug.db.transaction;

@@ -120,7 +120,7 @@ dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现�
 
 熔断器,支持熔断配置,降级,采用时间滑动窗口方式统计.
 
-#### 13. [dawdler-config-plug](dawdler/dawdler-config-plug/README.md)
+#### 13. [dawdler-config-center](dawdler/dawdler-config-center/README.md)
 
 统一配置中心,支持扩展、注入.
 

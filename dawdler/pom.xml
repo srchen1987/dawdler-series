@@ -1,4 +1,6 @@
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
@@ -441,7 +443,12 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-config-core</artifactId>
+				<artifactId>dawdler-config-center-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-config-center-consul-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -547,7 +554,7 @@
 		<module>dawdler-circuit-breaker</module>
 		<module>dawdler-load-bean</module>
 		<module>dawdler-client-plug-velocity</module>
-		<module>dawdler-config-plug</module>
+		<module>dawdler-config-center</module>
 		<module>dawdler-redis-plug</module>
 		<module>dawdler-rabbitmq-plug</module>
 		<module>dawdler-distributed-transaction</module>

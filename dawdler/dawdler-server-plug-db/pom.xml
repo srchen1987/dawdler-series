@@ -18,7 +18,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-server-plug-config</artifactId>
+			<artifactId>dawdler-config-center-core</artifactId>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

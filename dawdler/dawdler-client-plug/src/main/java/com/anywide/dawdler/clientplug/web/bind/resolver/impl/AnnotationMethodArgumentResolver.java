@@ -92,8 +92,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					}
 					try {
 						if (value == null && type.isPrimitive()) {
-							throw new ConvertException(
-									paramName + " value null can't convert " + type.getName() + "!");
+							throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
 						}
 						return ClassUtil.convert(value, type);
 					} catch (Exception e) {

@@ -123,7 +123,7 @@ public class ServerConfig {
 	public class Scanner {
 		private Set<String> jarFiles = new LinkedHashSet<String>();
 		private Set<String> jarAntPathFiles = new LinkedHashSet<String>();
-		
+
 		private Set<String> packagePathInJar = new LinkedHashSet<String>();
 		private Set<String> packageAntPathInJar = new LinkedHashSet<String>();
 

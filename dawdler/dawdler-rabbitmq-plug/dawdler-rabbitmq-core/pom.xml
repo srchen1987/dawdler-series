@@ -25,9 +25,5 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-config-core</artifactId>
-		</dependency>
 	</dependencies>
 </project>
