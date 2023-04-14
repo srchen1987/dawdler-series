@@ -11,7 +11,7 @@ module dawdler.server.plug.db {
 	requires transitive java.sql;
 	requires java.naming;
 	requires org.slf4j;
-	requires dom4j;
+	requires org.dom4j;
 	requires dawdler.server.plug;
 	requires dawdler.config.center.core;
 
