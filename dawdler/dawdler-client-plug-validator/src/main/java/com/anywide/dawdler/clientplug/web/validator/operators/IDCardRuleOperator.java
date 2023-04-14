@@ -62,18 +62,6 @@ public class IDCardRuleOperator extends StringRuleOperator {
 					break;
 				}
 			}
-		} else if (value instanceof List) {
-			List values = (List) value;
-			for (Object o : values) {
-				if (o == null) {
-					flag = false;
-					break;
-				}
-				if (!isIDCard(o.toString())) {
-					flag = false;
-					break;
-				}
-			}
 		}
 		if (!flag) {
 			return "请输入正确的身份证号码!";

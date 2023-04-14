@@ -123,7 +123,7 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 				MultipartViewForward mwf = (MultipartViewForward) viewForward;
 				mwf.parse(uploadSizeMax, uploadPerSizeMax);
 			}
-			if (WebValidateExecutor.validate(request, response, variables, targetController, viewForward)) {
+			if (WebValidateExecutor.validate(request, response, targetController, viewForward)) {
 				try {
 					return invokeMethod(targetController, method, requestMapping, viewForward, responseBody);
 				} catch (ValidationException e) {

@@ -61,17 +61,6 @@ public class MaxSizeRuleOperator extends RegexRuleOperator {
 					break;
 				}
 			}
-		} else if (value instanceof List) {
-			List values = (List) value;
-			for (Object o : values) {
-				if (isEmpty(o.toString())) {
-					continue;
-				}
-				if (o.toString().trim().length() > i) {
-					flag = false;
-					break;
-				}
-			}
 		}
 		if (!flag) {
 			return error;
