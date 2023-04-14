@@ -78,9 +78,9 @@ public class ConfigMappingDataCache {
 			}
 		}
 		YAMLMapper yamlMapper = YAMLMapperFactory.getYAMLMapper();
-		Object obj = yamlMapper.readValue(content, mappingClass);
+		T obj = yamlMapper.readValue(content, mappingClass);
 		realObjMap.put(mappingClass, obj);
-		return (T) obj;
+		return obj;
 	}
 
 }

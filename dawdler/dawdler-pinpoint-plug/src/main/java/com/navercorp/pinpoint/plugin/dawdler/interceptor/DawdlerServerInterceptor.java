@@ -118,7 +118,7 @@ public class DawdlerServerInterceptor extends SpanRecursiveAroundInterceptor {
 				request.getServiceName() + ":" + request.getMethodName() + classArraytoString(request.getTypes()));
 	}
 
-	public static String classArraytoString(Class[] a) {
+	public static String classArraytoString(Class<?>[] a) {
 		if (a == null) {
 			return "()";
 		}
