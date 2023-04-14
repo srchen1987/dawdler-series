@@ -11,7 +11,7 @@ module dawdler.server {
 	requires transitive java.naming;
 	requires java.se;
 	requires org.slf4j;
-	requires transitive dom4j;
+	requires transitive org.dom4j;
 	requires cglib;
 	requires ch.qos.logback.classic;
 	requires ch.qos.logback.core;

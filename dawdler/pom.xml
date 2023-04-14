@@ -14,7 +14,7 @@
 		<ch.qos.logback.version>1.4.5</ch.qos.logback.version>
 		<org.ow2.asm.version>9.2</org.ow2.asm.version>
 		<jaxen.version>1.2.0</jaxen.version>
-		<org.dom4j.version>2.1.3</org.dom4j.version>
+		<org.dom4j.version>2.1.4</org.dom4j.version>
 		<commons-pool2.version>2.10.0</commons-pool2.version>
 		<kryo.version>4.0.2</kryo.version>
 		<org.apache.curator.version>5.4.0</org.apache.curator.version>
@@ -27,7 +27,6 @@
 		<jedis.version>4.3.1</jedis.version>
 		<rabbitmq.version>5.14.0</rabbitmq.version>
 		<caffeine.version>3.0.5</caffeine.version>
-		<mysql.version>8.0.29</mysql.version>
 		<jsoup.version>1.15.3</jsoup.version>
 		<ognl.version>3.2.20</ognl.version>
 		<aspectj.version>1.9.19</aspectj.version>
@@ -185,11 +184,6 @@
 				<groupId>org.apache.velocity</groupId>
 				<artifactId>velocity-engine-core</artifactId>
 				<version>${velocity.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${mysql.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>redis.clients</groupId>

@@ -19,12 +19,12 @@ module dawdler.client.plug {
 	requires dawdler.serialization;
 	requires dawdler.client;
 	requires dawdler.load.bean;
-	requires dom4j;
 	requires org.slf4j;
 	requires transitive dawdler.client.plug.validator;
 	requires transitive jakarta.servlet;
 	requires dawdler.jakarta.fileupload;
 	requires com.fasterxml.jackson.annotation;
+	requires org.dom4j;
 
 	exports com.anywide.dawdler.clientplug.annotation;
 	exports com.anywide.dawdler.clientplug.web.handler;
