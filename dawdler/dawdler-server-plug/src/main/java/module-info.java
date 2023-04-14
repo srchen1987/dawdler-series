@@ -9,7 +9,7 @@ module dawdler.server.plug {
 	requires dawdler.core;
 	requires dawdler.load.bean;
 	requires org.slf4j;
-	requires dom4j;
+	requires org.dom4j;
 
 	uses ComponentLifeCycle;
 
