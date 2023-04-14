@@ -55,18 +55,6 @@ public class NotEmptyRuleOperator extends StringRuleOperator {
 					break;
 				}
 			}
-		} else if (value instanceof List) {
-			List values = (List) value;
-			for (Object o : values) {
-				if (o == null) {
-					flag = false;
-					break;
-				}
-				if (o.toString().trim().equals("")) {
-					flag = false;
-					break;
-				}
-			}
 		}
 		if (!flag) {
 			return "不能为空!";

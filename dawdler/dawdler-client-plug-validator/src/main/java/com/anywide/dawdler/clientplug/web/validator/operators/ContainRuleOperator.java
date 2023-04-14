@@ -51,13 +51,6 @@ public class ContainRuleOperator extends RegexRuleOperator {
 					return error;
 				}
 			}
-		} else if (value instanceof List) {
-			List valuesArrayTemp = (List) value;
-			for (Object v : valuesArrayTemp) {
-				if (!validate(valueArray, v.toString())) {
-					return error;
-				}
-			}
 		}
 		return null;
 	}
