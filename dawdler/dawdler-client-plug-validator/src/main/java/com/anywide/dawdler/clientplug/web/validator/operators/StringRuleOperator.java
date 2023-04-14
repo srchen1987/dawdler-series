@@ -66,16 +66,6 @@ public abstract class StringRuleOperator extends RuleOperator {
 					}
 				}
 			}
-		} else if (value instanceof List) {
-			List values = (List) value;
-			for (Object o : values) {
-				if (o != null) {
-					if (!validator.validate(o.toString())) {
-						flag = false;
-						break;
-					}
-				}
-			}
 		}
 		if (!flag) {
 			return errorMessage;
