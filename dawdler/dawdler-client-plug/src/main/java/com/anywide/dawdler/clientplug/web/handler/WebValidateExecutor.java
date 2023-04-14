@@ -72,8 +72,7 @@ public class WebValidateExecutor {
 		return cv;
 	}
 
-	public static boolean validate(HttpServletRequest request, HttpServletResponse response,
-			Map<String, String> variables, Object controller, ViewForward viewForward) throws IOException {
+	public static boolean validate(HttpServletRequest request, HttpServletResponse response, Object controller, ViewForward viewForward) throws IOException {
 		RequestMapping requestMapping = viewForward.getRequestMapping();
 		Map<String, String> errors = new HashMap<>();
 		Class<?> clazz = controller.getClass();
@@ -110,10 +109,7 @@ public class WebValidateExecutor {
 				System.out.println(sb.toString());
 				System.out.println("######################################");
 			}
-			Map params = viewForward.paramMaps();
-			if (variables != null) {
-				params.putAll(variables);
-			}
+			Map<String, String[]> params = viewForward.paramMaps();
 			Set<Entry<String, ControlField>> rulesSet = rules.entrySet();
 			for (Entry<String, ControlField> entry : rulesSet) {
 				String key = entry.getKey();

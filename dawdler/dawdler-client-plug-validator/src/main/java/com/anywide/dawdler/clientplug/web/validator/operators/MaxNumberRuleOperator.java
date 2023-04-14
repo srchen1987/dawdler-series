@@ -78,25 +78,6 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 				}
 
 			}
-		} else if (value instanceof List) {
-			List values = (List) value;
-			for (Object o : values) {
-				if (isEmpty(o.toString())) {
-					continue;
-				}
-				Double dv = null;
-				try {
-					dv = Double.parseDouble(o.toString());
-				} catch (Exception e) {
-				}
-				if (dv == null) {
-					continue;
-				}
-				if (dv > i) {
-					flag = false;
-					break;
-				}
-			}
 		}
 		if (!flag) {
 			return error;

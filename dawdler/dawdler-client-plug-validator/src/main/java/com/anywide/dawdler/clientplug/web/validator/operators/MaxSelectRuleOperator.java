@@ -45,10 +45,6 @@ public class MaxSelectRuleOperator extends RegexRuleOperator {
 			if (((String[]) value).length > i) {
 				return error;
 			}
-		} else if (value instanceof List) {
-			if (((List) value).size() > i) {
-				return error;
-			}
 		}
 		return null;
 	}
