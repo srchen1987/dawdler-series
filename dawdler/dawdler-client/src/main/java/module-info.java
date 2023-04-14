@@ -10,7 +10,7 @@ module dawdler.client {
 	requires org.objectweb.asm;
 	requires cglib;
 	requires org.slf4j;
-	requires dom4j;
+	requires org.dom4j;
 
 	exports com.anywide.dawdler.client;
 	exports com.anywide.dawdler.client.conf;
