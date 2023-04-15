@@ -111,7 +111,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		service.setAddress(ipAddress);
 		service.setName(path);
 		service.setPort(port);
-		service.setId(value);
+		service.setId(getServiceId(path, value));
 		Check check = new Check();
 		check.setHttp(attributes.get(HEALTH_CHECK_SCHEME) + "://" + ipAddress + ":" + attributes.get(HEALTH_CHECK_PORT)
 				+ "/status");
@@ -133,7 +133,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public boolean deleteProvider(String path, String value) throws Exception {
-		client.agentServiceDeregister(value);
+		client.agentServiceDeregister(getServiceId(path, value));
 		return true;
 	}
 
@@ -141,7 +141,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	public boolean isExist(String path, String value) throws Exception {
 		Response<List<CatalogService>> response = client.getCatalogService(path, catalogServiceRequest);
 		for (CatalogService service : response.getValue()) {
-			if (service.getServiceId().equals(value)) {
+			if (service.getServiceId().equals(getServiceId(path, value))) {
 				return true;
 			}
 		}
@@ -159,6 +159,10 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	public String getRootPath() {
 		return ROOT_PATH;
+	}
+	
+	private String getServiceId(String path, String value) {
+		return path+":"+value;
 	}
 
 	public String getAuth(String username, String password) {
