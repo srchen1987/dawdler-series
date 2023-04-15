@@ -91,7 +91,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 					for (String k : newSet) {
 						if (!oldSet.contains(k)) {
 							if (cp != null) {
-								cp.doChange(gid, Action.ACTION_ADD, k);
+								cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
 							}
 						}
 					}
@@ -99,7 +99,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 					for (String k : oldSet) {
 						if (!newSet.contains(k)) {
 							if (cp != null) {
-								cp.doChange(gid, Action.ACTION_DEL, k);
+								cp.doChange(gid, Action.ACTION_DEL, getServiceAddress(k));
 							}
 						}
 					}
@@ -108,6 +108,10 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 				}
 			});
 		}
+	}
+	
+	private String getServiceAddress(String serviceId) {
+		return serviceId.substring(serviceId.indexOf(":")+1);
 	}
 
 	@Override

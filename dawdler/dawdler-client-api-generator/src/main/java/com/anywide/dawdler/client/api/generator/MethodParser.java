@@ -402,7 +402,7 @@ public class MethodParser {
 					List<String> packages = classStructs.get(javaClass.getFullyQualifiedName()).getImportPackages();
 					for (String classPackage : packages) {
 						if (classPackage.endsWith(className)) {
-							classStruct = classStructs.get(samePackageClassName);
+							classStruct = classStructs.get(classPackage);
 							if (classStruct != null) {
 								break;
 							}
