@@ -131,7 +131,7 @@ public class RWSplittingDataSourceManager {
 		if (dataSources.containsKey(id)) {
 			return;
 		}
-		String type = (String) attributes.remove("type");
+		String type = (String) attributes.get("type");
 		if (type == null) {
 			throw new NullPointerException("dataSource attribute [type] can't be null!");
 		}
@@ -139,6 +139,9 @@ public class RWSplittingDataSourceManager {
 		Object obj = clazz.getDeclaredConstructor().newInstance();
 
 		attributes.forEach((k, v) -> {
+			if(k.equals("type")) {
+				return;
+			}
 			String attributeName = captureName(k);
 			try {
 				ReflectionUtil.invoke(obj, "set" + attributeName, v.toString());
