@@ -19,6 +19,7 @@ package com.anywide.dawdler.client.api.generator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.anywide.dawdler.client.api.generator.TypesConverter.TypeData;
 import com.anywide.dawdler.client.api.generator.data.ClassStruct;
@@ -70,13 +71,20 @@ public class FieldParser {
 
 	public static void parserFields(JavaType fieldJavaType, Map<String, ClassStruct> classStructs,
 			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes) {
+		parserFields(fieldJavaType, classStructs, definitionsMap, javaTypes, null);
+	}
+
+	public static void parserFields(JavaType fieldJavaType, Map<String, ClassStruct> classStructs,
+			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes, Map<String, AtomicInteger> counter) {
 		String typeName = fieldJavaType.getBinaryName();
 		String genericFullyQualifiedName = fieldJavaType.getGenericFullyQualifiedName();
+		String originalFullyQualifiedName = fieldJavaType.getFullyQualifiedName();
 		if (ClassTypeUtil.isArray(typeName)) {
 			DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) fieldJavaType;
 			List<JavaType> dtList = dt.getActualTypeArguments();
 			if (!dtList.isEmpty()) {
 				typeName = dtList.get(0).getBinaryName();
+				originalFullyQualifiedName = dtList.get(0).getFullyQualifiedName();
 				genericFullyQualifiedName = dtList.get(0).getGenericFullyQualifiedName();
 			}
 		}
@@ -95,7 +103,8 @@ public class FieldParser {
 					}
 					objMap.put("properties", propertiesMap);
 					List<JavaField> fields = getAllFields(classStruct.getJavaClass());
-					for (JavaField javaField : fields) {
+					for (int i = 0; i < fields.size(); i++) {
+						JavaField javaField = fields.get(i);
 						if (!javaField.isStatic() && !javaField.isFinal()) {
 							String fieldTypeName = javaField.getType().getFullyQualifiedName();
 							String comment = javaField.getComment();
@@ -106,19 +115,16 @@ public class FieldParser {
 							if (javaTypes != null) {
 								JavaType javaType = javaTypes.get(binaryName);
 								if (javaType != null) {
-									if (javaType != null) {
-										DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) javaType;
-										array = ClassTypeUtil.isArray(dt.getBinaryName());
-										List<JavaType> typeArguments = dt.getActualTypeArguments();
-										if (!typeArguments.isEmpty()) {
-											JavaType typeArgument = typeArguments.get(0);
-											if (typeArgument != null) {
-												originalFieldTypeName = typeArgument.getFullyQualifiedName();
-												binaryName = typeArgument.getBinaryName();
-												genericFullyQualifiedFieldName = typeArgument
-														.getGenericFullyQualifiedName();
-											}
-
+									DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) javaType;
+									array = ClassTypeUtil.isArray(dt.getBinaryName());
+									List<JavaType> typeArguments = dt.getActualTypeArguments();
+									if (!typeArguments.isEmpty()) {
+										JavaType typeArgument = typeArguments.get(0);
+										if (typeArgument != null) {
+											originalFieldTypeName = typeArgument.getFullyQualifiedName();
+											binaryName = typeArgument.getBinaryName();
+											genericFullyQualifiedFieldName = typeArgument
+													.getGenericFullyQualifiedName();
 										}
 									}
 								}
@@ -180,8 +186,16 @@ public class FieldParser {
 										}
 									}
 								}
+								AtomicInteger count = null;
+								if (counter != null && (count = counter.get(originalFieldTypeName)) != null) {
+									if (count.getAndIncrement() > 2)
+										return;
+								} else if (originalFieldTypeName.equals(originalFullyQualifiedName)) {
+									counter = new HashMap<String, AtomicInteger>();
+									counter.put(originalFullyQualifiedName, new AtomicInteger(1));
+								}
 								if (classStructs.get(originalFieldTypeName) != null) {
-									parserFields(javaField.getType(), classStructs, definitionsMap, null);
+									parserFields(javaField.getType(), classStructs, definitionsMap, null, counter);
 									SchemaData schema = new SchemaData();
 									if (array) {
 										schema.setType("array");
