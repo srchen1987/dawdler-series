@@ -11,3 +11,7 @@
 ### 2. dawdler-discovery-center-zookeeper模块
 
 zookeeper实现注册中心的根模块,具体参考 [dawdler-discovery-center-zookeeper](dawdler-discovery-center-zookeeper/README.md)
+
+### 3. dawdler-discovery-center-consul模块
+
+zookeeper实现注册中心的根模块,具体参考 [dawdler-discovery-center-consul](dawdler-discovery-center-consul/README.md)
