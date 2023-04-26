@@ -31,6 +31,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.dom4j.Element;
 import org.dom4j.Node;
@@ -77,7 +79,7 @@ import com.anywide.dawdler.util.spring.antpath.StringUtils;
 public class ServiceBase implements Service {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceBase.class);
 	public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutorPrefix";
-	public static final String ASPECT_SUPPORT_OBJ = "aspectSupportObj";// aspect 支持
+	public static final String ASPECT_SUPPORT_OBJ = "aspectSupportObj";
 	public static final String ASPECT_SUPPORT_METHOD = "aspectSupportMethod";
 	public static final String FILTER_PROVIDER = "filterProvider";
 	public static final String DAWDLER_LISTENER_PROVIDER = "dawdlerListenerProvider";
@@ -100,7 +102,8 @@ public class ServiceBase implements Service {
 	private HealthCheck healthCheck;
 	private ExecutorService healthCheckExecutor;
 
-	public ServiceBase(ServerConfig serverConfig, File deploy, ClassLoader parent) throws Exception {
+	public ServiceBase(ServerConfig serverConfig, File deploy, ClassLoader parent, Semaphore startSemaphore,
+			AtomicBoolean started) throws Exception {
 		this.healthCheck = serverConfig.getHealthCheck();
 		if (healthCheck.isCheck()) {
 			healthCheckExecutor = Executors.newCachedThreadPool();
@@ -117,7 +120,7 @@ public class ServiceBase implements Service {
 		classLoader = DawdlerDeployClassLoader.createLoader(binPath, parent, getClassLoaderURL());
 		resetContextClassLoader();
 		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
-				host, port, servicesManager, antPathMatcher, healthCheck);
+				host, port, servicesManager, antPathMatcher, healthCheck, startSemaphore, started, status);
 		classLoader.setDawdlerContext(dawdlerContext);
 		dawdlerContext.initServicesConfig();
 		try {
@@ -292,7 +295,7 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void stop() {
-		status = Status.DOWN;
+		status(Status.DOWN);
 		if (healthCheck.isCheck()) {
 			healthCheckExecutor.shutdown();
 		}
@@ -496,6 +499,7 @@ public class ServiceBase implements Service {
 
 	@Override
 	public void status(String status) {
+		dawdlerContext.setServiceStatus(status);
 		this.status = status;
 	}
 

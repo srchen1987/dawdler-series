@@ -306,7 +306,10 @@ public class DawdlerConnection {
 				}
 			}
 			if (sessionGroup.isEmpty()) {
-				ConnectionPool.getConnectionPool(gid).remove(this);
+				ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
+				if(cp != null) {
+					cp.remove(this);
+				}
 				reconnectScheduled.shutdown();
 				if (shutdownNow) {
 					try {
