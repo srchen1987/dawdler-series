@@ -54,7 +54,7 @@ public class RedisMessageOperator implements MessageOperator {
 	public String CHANNEL_EXPIRED = "__keyevent@database__:expired";
 	public String CHANNEL_DEL = "__keyevent@database__:del";
 	public Pool<Jedis> jedisPool;
-	private volatile boolean stop = false;
+	private volatile boolean start = true;
 	private Jedis jedis = null;
 
 	public RedisMessageOperator(Serializer serializer, SessionStore sessionStore,
@@ -83,7 +83,7 @@ public class RedisMessageOperator implements MessageOperator {
 	@Override
 	public void listenExpireAndDelAndChange() {
 		thread = new Thread(() -> {
-			while (!stop) {
+			while (start) {
 				try {
 					jedis = jedisPool.getResource();
 					config(jedis);
@@ -98,9 +98,11 @@ public class RedisMessageOperator implements MessageOperator {
 						} catch (Exception e1) {
 						}
 					}
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e1) {
+					if(start) {
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e1) {
+						}
 					}
 				}
 			}
@@ -215,7 +217,7 @@ public class RedisMessageOperator implements MessageOperator {
 
 	@Override
 	public void stop() {
-		stop = true;
+		start = false;
 		if (jedis != null) {
 			try {
 				jedis.close();

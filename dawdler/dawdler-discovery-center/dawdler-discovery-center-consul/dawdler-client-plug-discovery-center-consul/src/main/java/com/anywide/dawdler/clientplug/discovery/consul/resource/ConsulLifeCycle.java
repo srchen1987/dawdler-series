@@ -71,22 +71,31 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 				while (!consulDiscoveryCenter.getDestroyed().get()) {
 					HealthChecksForServiceRequest hr = HealthChecksForServiceRequest.newBuilder()
 							.setQueryParams(new QueryParams(30, lastIndex)).build();
-					Response<List<Check>> listCheck = consulClient.getHealthChecksForService(gid, hr);
 					Set<String> newSet = new HashSet<>();
-					long currentLastIndex = listCheck.getConsulIndex();
-					for (Check c : listCheck.getValue()) {
-						String serviceId = c.getServiceId();
-						if (c.getStatus() == CheckStatus.CRITICAL || c.getStatus() == CheckStatus.UNKNOWN) {
-							try {
-								consulClient.agentServiceDeregister(serviceId);
-							} catch (Exception e) {
+					long currentLastIndex = 0;
+					try {
+						Response<List<Check>> listCheck = consulClient.getHealthChecksForService(gid, hr);
+						currentLastIndex = listCheck.getConsulIndex();
+						for (Check c : listCheck.getValue()) {
+							String serviceId = c.getServiceId();
+							if (c.getStatus() == CheckStatus.CRITICAL || c.getStatus() == CheckStatus.UNKNOWN) {
+								try {
+									consulClient.agentServiceDeregister(serviceId);
+								} catch (Exception e) {
+								}
+							}
+							if (c.getStatus() == CheckStatus.PASSING) {
+								newSet.add(serviceId);
 							}
 						}
-						if (c.getStatus() == CheckStatus.PASSING) {
-							newSet.add(serviceId);
+					} catch (Exception e) {
+						if (!consulDiscoveryCenter.getDestroyed().get()) {
+							try {
+								Thread.sleep(200);
+							} catch (InterruptedException e1) {
+							}
 						}
 					}
-
 					ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 					for (String k : newSet) {
 						if (!oldSet.contains(k)) {
@@ -109,9 +118,9 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 			});
 		}
 	}
-	
+
 	private String getServiceAddress(String serviceId) {
-		return serviceId.substring(serviceId.indexOf(":")+1);
+		return serviceId.substring(serviceId.indexOf(":") + 1);
 	}
 
 	@Override

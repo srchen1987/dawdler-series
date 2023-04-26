@@ -17,6 +17,8 @@
 package com.anywide.dawdler.server.context;
 
 import java.nio.channels.AsynchronousServerSocketChannel;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.deploys.ServiceRoot;
@@ -33,10 +35,14 @@ public class DawdlerServerContext {
 	private final ServiceRoot serviceRoot;
 	private final ServerConfig serverConfig;
 	private AsynchronousServerSocketChannel asynchronousServerSocketChannel;
+	private AtomicBoolean started;
+	private Semaphore startSemaphore;
 
-	public DawdlerServerContext(ServerConfig serverConfig) {
+	public DawdlerServerContext(ServerConfig serverConfig, AtomicBoolean started, Semaphore startSemaphore) {
 		serviceRoot = new ServiceRoot();
 		this.serverConfig = serverConfig;
+		this.started = started;
+		this.startSemaphore = startSemaphore;
 	}
 
 	public ServerConfig getServerConfig() {
@@ -73,6 +79,14 @@ public class DawdlerServerContext {
 
 	public void execute(Runnable runnable) {
 		serviceRoot.execute(runnable);
+	}
+
+	public AtomicBoolean getStarted() {
+		return started;
+	}
+
+	public Semaphore getStartSemaphore() {
+		return startSemaphore;
 	}
 
 }

@@ -164,7 +164,8 @@ public class ServiceRoot {
 					Callable<Void> call = (() -> {
 						try {
 							long serviceStart = JVMTimeProvider.currentTimeMillis();
-							Service service = new ServiceBase(serverConfig, deployFile, classLoader);
+							Service service = new ServiceBase(serverConfig, deployFile, classLoader,
+									dawdlerServerContext.getStartSemaphore(), dawdlerServerContext.getStarted());
 							services.put(deployName, service);
 							if (healthCheck) {
 								servicesHealth.put(deployName, service);

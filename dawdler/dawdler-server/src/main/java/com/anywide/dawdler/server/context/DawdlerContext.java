@@ -20,6 +20,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.dom4j.DocumentException;
 
@@ -55,10 +57,14 @@ public class DawdlerContext {
 	private XmlObject servicesConfig;
 	private AntPathMatcher antPathMatcher;
 	private HealthCheck healthCheck;
+	private Semaphore startSemaphore;
+	private String serviceStatus;
+	private AtomicBoolean started;
 
 	public DawdlerContext(DawdlerDeployClassLoader classLoader, String deployName, String deployPath,
 			String deployClassPath, String host, int port, ServicesManager servicesManager,
-			AntPathMatcher antPathMatcher, HealthCheck healthCheck) {
+			AntPathMatcher antPathMatcher, HealthCheck healthCheck, Semaphore startSemaphore, AtomicBoolean started,
+			String serviceStatus) {
 		this.classLoader = classLoader;
 		this.deployPath = deployPath + File.separator;
 		this.deployName = deployName;
@@ -68,6 +74,9 @@ public class DawdlerContext {
 		this.servicesManager = servicesManager;
 		this.antPathMatcher = antPathMatcher;
 		this.healthCheck = healthCheck;
+		this.startSemaphore = startSemaphore;
+		this.started = started;
+		this.serviceStatus = serviceStatus;
 	}
 
 	public static DawdlerContext getDawdlerContext() {
@@ -170,6 +179,20 @@ public class DawdlerContext {
 
 	public HealthCheck getHealthCheck() {
 		return healthCheck;
+	}
+
+	public void waitForStart() throws InterruptedException {
+		if (!started.get()) {
+			startSemaphore.acquire();
+		}
+	}
+
+	public String getServiceStatus() {
+		return serviceStatus;
+	}
+
+	public void setServiceStatus(String serviceStatus) {
+		this.serviceStatus = serviceStatus;
 	}
 
 }
