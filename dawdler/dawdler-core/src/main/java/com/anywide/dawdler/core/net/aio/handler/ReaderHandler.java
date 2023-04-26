@@ -49,7 +49,6 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 	@Override
 	public void completed(Integer result, AbstractSocketSession session) {
 		if (result == -1) {
-			logger.warn(session + "\tsession close.");
 			session.close();
 			return;
 		}

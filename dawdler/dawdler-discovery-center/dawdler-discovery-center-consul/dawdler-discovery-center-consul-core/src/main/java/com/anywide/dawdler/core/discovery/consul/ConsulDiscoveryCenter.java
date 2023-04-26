@@ -16,6 +16,11 @@
  */
 package com.anywide.dawdler.core.discovery.consul;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.HashMap;
@@ -27,6 +32,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.util.PropertiesUtil;
 import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.ConsulRawClient;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.NewService;
 import com.ecwid.consul.v1.agent.model.NewService.Check;
@@ -50,11 +56,24 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	private ConsulClient client;
 	private String host;
 	private int port;
-	private String checkTime = "3s";
+	private String checkTime = "90s";
 	public static final String HEALTH_CHECK_PORT = "health_check_port";
 	public static final String HEALTH_CHECK_SCHEME = "health_check_scheme";
 	public static final String HEALTH_CHECK_USERNAME = "health_check_username";
 	public static final String HEALTH_CHECK_PASSWORD = "health_check_password";
+	private ConsulRawClient consulRawClient;
+	private String healthCheckType = HealthCheckTypes.TCP.name;
+
+	public static enum HealthCheckTypes {
+		TCP("tcp"), HTTP("http");
+
+		private String name;
+
+		private HealthCheckTypes(String name) {
+			this.name = name;
+		}
+	}
+
 	private CatalogServiceRequest catalogServiceRequest = CatalogServiceRequest.newBuilder().build();
 	private HealthChecksForServiceRequest healthChecksForServiceRequest = HealthChecksForServiceRequest.newBuilder()
 			.build();
@@ -63,13 +82,17 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		if (consulDiscoveryCenter == null) {
 			consulDiscoveryCenter = new ConsulDiscoveryCenter();
 		}
-
 		return consulDiscoveryCenter;
 	}
 
 	private ConsulDiscoveryCenter() throws Exception {
 		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter("consul");
 		this.host = ps.getProperty("host");
+		String healthCheckType = ps.getProperty("healthCheckType");
+		if (healthCheckType != null && (healthCheckType.equals(HealthCheckTypes.TCP.name)
+				|| healthCheckType.equals(HealthCheckTypes.HTTP.name))) {
+			this.healthCheckType = healthCheckType;
+		}
 		this.port = PropertiesUtil.getIfNullReturnDefaultValueInt("port", 8500, ps);
 		String checkTime = ps.getProperty("checkTime");
 		if (checkTime != null) {
@@ -80,12 +103,24 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public void init() {
-		client = new ConsulClient(host, port);
+		this.consulRawClient = new ConsulRawClient(host, port);
+		this.client = new ConsulClient(consulRawClient);
 	}
 
 	@Override
 	public void destroy() {
 		if (destroyed.compareAndSet(false, true)) {
+			try {
+				Field field = consulRawClient.getClass().getDeclaredField("httpTransport");
+				field.setAccessible(true);
+				Object httpTransport = field.get(consulRawClient);
+				Method method = httpTransport.getClass().getDeclaredMethod("getHttpClient", null);
+				method.setAccessible(true);
+				Closeable obj = (Closeable) method.invoke(httpTransport, null);
+				obj.close();
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
+					| NoSuchMethodException | InvocationTargetException | IOException e) {
+			}
 		}
 	}
 
@@ -113,19 +148,24 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		service.setPort(port);
 		service.setId(getServiceId(path, value));
 		Check check = new Check();
-		check.setHttp(attributes.get(HEALTH_CHECK_SCHEME) + "://" + ipAddress + ":" + attributes.get(HEALTH_CHECK_PORT)
-				+ "/status");
-		String username = (String) attributes.get(HEALTH_CHECK_USERNAME);
-		String password = (String) attributes.get(HEALTH_CHECK_PASSWORD);
-		if (username != null && password != null) {
-			Map<String, List<String>> header = new HashMap<>();
-			List<String> auth = new ArrayList<>();
-			auth.add(getAuth(username, password));
-			header.put("Authorization", auth);
-			check.setHeader(header);
+		if (healthCheckType.equals(HealthCheckTypes.HTTP.name)) {
+			check.setHttp(attributes.get(HEALTH_CHECK_SCHEME) + "://" + ipAddress + ":"
+					+ attributes.get(HEALTH_CHECK_PORT) + "/status");
+			String username = (String) attributes.get(HEALTH_CHECK_USERNAME);
+			String password = (String) attributes.get(HEALTH_CHECK_PASSWORD);
+			if (username != null && password != null) {
+				Map<String, List<String>> header = new HashMap<>();
+				List<String> auth = new ArrayList<>();
+				auth.add(getAuth(username, password));
+				header.put("Authorization", auth);
+				check.setHeader(header);
+				check.setStatus("passing");
+			}
+		} else {
+			check.setTcp(value);
+			check.setStatus("passing");
 		}
 		check.setInterval(checkTime);
-		check.setStatus("warning");
 		service.setCheck(check);
 		client.agentServiceRegister(service);
 		return true;
@@ -160,9 +200,9 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	public String getRootPath() {
 		return ROOT_PATH;
 	}
-	
+
 	private String getServiceId(String path, String value) {
-		return path+":"+value;
+		return path + ":" + value;
 	}
 
 	public String getAuth(String username, String password) {
@@ -171,6 +211,10 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	public ConsulClient getClient() {
 		return client;
+	}
+
+	public String getHealthCheckType() {
+		return healthCheckType;
 	}
 
 }

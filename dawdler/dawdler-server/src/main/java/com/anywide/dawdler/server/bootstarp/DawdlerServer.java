@@ -29,6 +29,7 @@ import java.nio.channels.AsynchronousServerSocketChannel;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinWorkerThread;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -53,15 +54,16 @@ import com.anywide.dawdler.util.NetworkUtil;
 public class DawdlerServer {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerServer.class);
 	private static final AcceptorHandler acceptorInstance = new AcceptorHandler();
-	private static final AtomicBoolean started = new AtomicBoolean();
+	private static final AtomicBoolean STARTED = new AtomicBoolean();
 	private final AtomicInteger TNUMBER = new AtomicInteger(0);
 	private final AsynchronousServerSocketChannel serverChannel;
 	private final AsynchronousChannelGroup asynchronousChannelGroup;
 	private final DawdlerServerContext dawdlerServerContext;
 	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
+	private final Semaphore startSemaphore = new Semaphore(0);
 
 	public DawdlerServer(ServerConfig serverConfig) throws Exception {
-		dawdlerServerContext = new DawdlerServerContext(serverConfig);
+		dawdlerServerContext = new DawdlerServerContext(serverConfig, STARTED, startSemaphore);
 		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(
 				Runtime.getRuntime().availableProcessors() * 2, dawdlerForkJoinWorkerThreadFactory, null, true));
 		Server server = serverConfig.getServer();
@@ -81,7 +83,7 @@ public class DawdlerServer {
 	}
 
 	public static boolean isStart() {
-		return started.get();
+		return STARTED.get();
 	}
 
 	public void await() {
@@ -164,8 +166,8 @@ public class DawdlerServer {
 	}
 
 	public void start() {
-		doAccept();
-		if (started.compareAndSet(false, true)) {
+		if (STARTED.compareAndSet(false, true)) {
+			doAccept();
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
@@ -178,6 +180,7 @@ public class DawdlerServer {
 			});
 			new Thread(new Waiter(this)).start();
 			new Thread(new Closer()).start();
+			startSemaphore.release(Integer.MAX_VALUE);
 		}
 
 	}
@@ -187,7 +190,7 @@ public class DawdlerServer {
 	}
 
 	public void shutdownNow() throws IOException {
-		if (started.compareAndSet(true, false)) {
+		if (STARTED.compareAndSet(true, false)) {
 			dawdlerServerContext.prepareDestroyedApplication();
 			dawdlerServerContext.destroyedApplication();
 			ServerConnectionManager.getInstance().closeNow();
@@ -202,7 +205,7 @@ public class DawdlerServer {
 	}
 
 	public void shutdown() throws IOException {
-		if (started.compareAndSet(true, false)) {
+		if (STARTED.compareAndSet(true, false)) {
 			dawdlerServerContext.prepareDestroyedApplication();
 			ServerConnectionManager sm = ServerConnectionManager.getInstance();
 			while (sm.hasTask()) {
