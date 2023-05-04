@@ -14,66 +14,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.result;
+package com.anywide.dawdler.core.result;
 
+import com.anywide.dawdler.serverplug.load.bean.Page;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * @author jackson.song
  * @version V1.0
- * @Title BaseResult.java
- * @Description 返回vo的包装类
+ * @Title PageResult.java
+ * @Description 返回支持分页结果包装类
  * @date 2021年3月5日
  * @email suxuan696@gmail.com
  */
-public class BaseResult<T> {
+public class PageResult<T> extends BaseResult<T> {
 
 	@JsonInclude(Include.NON_NULL)
-	private T data;
+	private Page page;
 
-	@JsonInclude(Include.NON_NULL)
-	private Boolean success;
-
-	@JsonInclude(Include.NON_NULL)
-	private String message;
-
-	public BaseResult(T data) {
-		this.data = data;
-		this.success = true;
+	public PageResult(T data) {
+		super(data);
 	}
 
-	public BaseResult(String message, boolean success) {
-		this.message = message;
-		this.success = success;
+	public PageResult(T data, Page page) {
+		super(data);
+		this.page = page;
 	}
 
-	public BaseResult(boolean success) {
-		this.success = success;
+	public Page getPage() {
+		return page;
 	}
 
-	public T getData() {
-		return data;
-	}
-
-	public void setData(T data) {
-		this.data = data;
-	}
-
-	public Boolean getSuccess() {
-		return success;
-	}
-
-	public void setSuccess(Boolean success) {
-		this.success = success;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
+	public void setPage(Page page) {
+		this.page = page;
 	}
 
 }

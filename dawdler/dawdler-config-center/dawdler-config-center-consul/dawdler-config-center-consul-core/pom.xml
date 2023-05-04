@@ -16,6 +16,10 @@
 			<artifactId>consul-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-core</artifactId>
 		</dependency>
