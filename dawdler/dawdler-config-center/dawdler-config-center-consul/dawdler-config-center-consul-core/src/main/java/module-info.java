@@ -11,4 +11,5 @@ module dawdler.config.center.consul.core {
 	requires dawdler.core;
 	requires dawdler.util;
 	requires consul.api;
+	requires org.apache.httpcomponents.httpclient;
 }

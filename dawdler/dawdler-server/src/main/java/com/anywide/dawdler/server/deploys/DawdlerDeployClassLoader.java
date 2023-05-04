@@ -46,7 +46,6 @@ import jdk.internal.perf.PerfCounter;
  * @date 2015年3月9日
  * @email suxuan696@gmail.com
  */
-@SuppressWarnings("restriction")
 public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerDeployClassLoader.class);
 	private final URLClassPath ucp;

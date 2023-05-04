@@ -31,6 +31,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.util.PropertiesUtil;
+import com.ecwid.consul.transport.TLSConfig;
+import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.ConsulRawClient;
 import com.ecwid.consul.v1.Response;
@@ -62,6 +64,8 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	public static final String HEALTH_CHECK_USERNAME = "health_check_username";
 	public static final String HEALTH_CHECK_PASSWORD = "health_check_password";
 	private ConsulRawClient consulRawClient;
+	private TLSConfig config;
+	
 	private String healthCheckType = HealthCheckTypes.TCP.name;
 
 	public static enum HealthCheckTypes {
@@ -98,12 +102,27 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		if (checkTime != null) {
 			this.checkTime = checkTime;
 		}
+		String keyStoreInstanceType = ps.getProperty("keyStoreInstanceType");
+		String certificatePath = ps.getProperty("certificatePath");
+		String certificatePassword = ps.getProperty("certificatePassword");
+		String keyStorePath = ps.getProperty("keyStorePath");
+		String keyStorePassword = ps.getProperty("keyStorePassword");
+		if(keyStoreInstanceType != null) {
+			config = new TLSConfig(KeyStoreInstanceType.valueOf(keyStoreInstanceType), certificatePath,
+					certificatePassword, keyStorePath, keyStorePassword);
+		}
+	
 		init();
 	}
 
 	@Override
 	public void init() {
-		this.consulRawClient = new ConsulRawClient(host, port);
+		if(config != null) {
+			this.consulRawClient = new ConsulRawClient(host, port, config);
+		}else {
+			this.consulRawClient = new ConsulRawClient(host, port);
+		}
+		
 		this.client = new ConsulClient(consulRawClient);
 	}
 

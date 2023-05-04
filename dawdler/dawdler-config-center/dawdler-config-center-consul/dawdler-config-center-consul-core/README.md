@@ -43,7 +43,7 @@ wait-time:轮询超时长,单位秒数
 
  watch-keys: 监控的key,是一个list列表,只有被监控的key有变化才会刷新相关配置,也可以通过 ```/``` 来监控所有的keys.
 
- TLSConfig:证书相关配置,如果有敏感数据方面建议采用此配置,具体参考:[consul encryption](https://www.consul.io/docs/security/encryption)
+ TLSConfig:证书相关配置,如果有敏感数据并且consul需要部署在互联网中使用,建议采用此配置. 具体参考:[consul encryption](https://www.consul.io/docs/security/encryption)
 
 ### 2. 安装consul
 
@@ -141,3 +141,7 @@ ui: 可以访问UI界面
 -config-dir指定配置文件夹,Consul会加载其中的所有文件
 
 -datacenter 指定数据中心名称,默认是dc1
+
+#### 2.4 安全方面
+
+要注意consul不要开放端口给互联网使用,建议通过nginx Basic HTTP authentication做授权后反向代理到局域网的consul端口上.
