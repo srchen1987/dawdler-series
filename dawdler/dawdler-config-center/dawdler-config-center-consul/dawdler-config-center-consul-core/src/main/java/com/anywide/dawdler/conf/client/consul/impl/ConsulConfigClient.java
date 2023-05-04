@@ -16,10 +16,16 @@
  */
 package com.anywide.dawdler.conf.client.consul.impl;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +40,7 @@ import com.anywide.dawdler.util.ConfigContentDecryptor;
 import com.ecwid.consul.transport.TLSConfig;
 import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.ConsulRawClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Self.Config;
@@ -49,6 +56,7 @@ import com.ecwid.consul.v1.kv.model.GetValue;
  */
 public class ConsulConfigClient implements ConfigClient {
 	private ConsulClient client = null;
+	private ConsulRawClient consulRawClient;
 	private ExecutorService executor = null;
 	private List<String> watchKeys;
 	/**
@@ -61,7 +69,7 @@ public class ConsulConfigClient implements ConfigClient {
 	private String separator;
 	private String token;
 	private int waitTime;
-	private volatile boolean start = true;
+	private AtomicBoolean destroyed = new AtomicBoolean();
 	private static Logger logger = LoggerFactory.getLogger(ConsulConfigClient.class);
 	private Map<String, Object> conf;
 
@@ -94,10 +102,11 @@ public class ConsulConfigClient implements ConfigClient {
 		String host = (String) conf.get("host");
 		Integer port = Integer.parseInt(conf.get("port").toString());
 		if (config != null) {
-			client = new ConsulClient(host, port, config);
+			this.consulRawClient = new ConsulRawClient(host, port, config);
 		} else {
-			client = new ConsulClient(host, port);
+			this.consulRawClient = new ConsulRawClient(host, port);
 		}
+		this.client = new ConsulClient(consulRawClient);
 	}
 
 	@Override
@@ -108,7 +117,7 @@ public class ConsulConfigClient implements ConfigClient {
 				executor.execute(() -> {
 					try {
 						long index = updateIndex;
-						while (start) {
+						while (!destroyed.get()) {
 							Response<List<String>> responseKeys = client.getKVKeysOnly(watchKey, separator, token,
 									new QueryParams(waitTime, index));
 							if (responseKeys == null) {
@@ -124,7 +133,7 @@ public class ConsulConfigClient implements ConfigClient {
 						}
 					} catch (Throwable e) {
 						logger.error("", e);
-						if(start) {
+						if(!destroyed.get()) {
 							try {
 								Thread.sleep(1000);
 							} catch (InterruptedException interruptedException) {
@@ -140,10 +149,23 @@ public class ConsulConfigClient implements ConfigClient {
 
 	@Override
 	public void stop() {
-		this.start = false;
-		if (executor != null) {
-			executor.shutdownNow();
+		if (destroyed.compareAndSet(false, true)) {
+			if (executor != null) {
+				executor.shutdownNow();
+			}
+			try {
+				Field field = consulRawClient.getClass().getDeclaredField("httpTransport");
+				field.setAccessible(true);
+				Object httpTransport = field.get(consulRawClient);
+				Method method = httpTransport.getClass().getDeclaredMethod("getHttpClient", null);
+				method.setAccessible(true);
+				Closeable obj = (Closeable) method.invoke(httpTransport, null);
+				obj.close();
+			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
+					| NoSuchMethodException | InvocationTargetException | IOException e) {
+			}
 		}
+		
 	}
 
 	@Override
@@ -160,7 +182,7 @@ public class ConsulConfigClient implements ConfigClient {
 		for (GetValue getValue : getValues) {
 			String key = getValue.getKey();
 			String value = getValue.getDecodedValue();
-			if(value == null) {
+			if (value == null) {
 				continue;
 			}
 			ConfigData configData = ConfigDataCache.getConfigData(key);
