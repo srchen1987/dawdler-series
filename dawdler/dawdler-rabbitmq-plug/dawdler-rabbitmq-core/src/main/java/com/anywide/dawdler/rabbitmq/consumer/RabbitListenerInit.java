@@ -59,6 +59,7 @@ public class RabbitListenerInit {
 						AMQPConnectionFactory factory = AMQPConnectionFactory.getInstance(listener.fileName());
 						Connection con = factory.getConnection();
 						Channel channel = con.createChannel();
+						channel.queueDeclare(listener.queueName(), true, false, false, null);
 						channel.basicConsume(listener.queueName(), listener.autoAck(), new DefaultConsumer(channel) {
 							public void handleDelivery(String consumerTag, Envelope envelope,
 									AMQP.BasicProperties properties, byte[] body) throws IOException {
