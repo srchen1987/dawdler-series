@@ -77,7 +77,6 @@ public class AmqpConsumer extends MessageConsumer {
 
 	public AmqpConsumer() {
 		connectionFactory = DistributedTransactionAMQPConnectionFactoryProvider.getInstance().getConnectionFactory();
-
 	}
 
 	public void consume() throws Exception {
