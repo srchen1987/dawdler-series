@@ -6,7 +6,7 @@ import com.anywide.dawdler.rabbitmq.resource.RabbitLifeCycle;
 module dawdler.rabbitmq.core {
 	requires java.base;
 	requires dawdler.util;
-	requires com.rabbitmq.client;
+	requires transitive com.rabbitmq.client;
 	requires dawdler.core;
 	requires org.apache.commons.pool2;
 	requires org.slf4j;
