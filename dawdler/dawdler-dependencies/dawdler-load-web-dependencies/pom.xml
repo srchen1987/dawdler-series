@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>dawdler</groupId>
@@ -79,12 +81,6 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-discovery-center-consul-core</artifactId>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -98,7 +94,7 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<groupId>*</groupId>
+						<groupId>com.fasterxml.jackson.dataformat</groupId>
 						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
@@ -160,8 +156,14 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-util</artifactId>
-				<version>${dawdler.build.version}</version>
 				<scope>provided</scope>
+				<version>${dawdler.build.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
