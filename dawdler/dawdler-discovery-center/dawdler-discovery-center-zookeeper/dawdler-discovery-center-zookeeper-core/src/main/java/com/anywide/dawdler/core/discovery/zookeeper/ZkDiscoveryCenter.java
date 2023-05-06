@@ -86,7 +86,7 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 			if (client != null) {
 				Field field;
 				try {
-					field = client.getClass().getDeclaredField("runSafeService");// 这是一个bug,目前已经提交了pr给apache
+					field = client.getClass().getDeclaredField("runSafeService");
 					field.setAccessible(true);
 					ExecutorService runSafeService = (ExecutorService) field.get(client);
 					if (runSafeService != null) {

@@ -42,6 +42,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
  * @email suxuan696@gmail.com
  */
 public class ConfigInit {
+	private static Logger logger = LoggerFactory.getLogger(ConfigInit.class);
+	
+	List<ConfigClient> configClients = null;
 	private static ConfigInit configInit = new ConfigInit();
 
 	private ConfigInit() {
@@ -54,9 +57,6 @@ public class ConfigInit {
 	public static ConfigInit getInstance() {
 		return configInit;
 	}
-
-	private static Logger logger = LoggerFactory.getLogger(ConfigInit.class);
-	List<ConfigClient> configClients = null;
 
 	public void init() {
 		initConfigClients();
