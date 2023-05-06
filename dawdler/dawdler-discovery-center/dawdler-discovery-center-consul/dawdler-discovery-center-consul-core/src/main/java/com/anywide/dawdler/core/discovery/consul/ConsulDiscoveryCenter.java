@@ -133,10 +133,10 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 				Field field = consulRawClient.getClass().getDeclaredField("httpTransport");
 				field.setAccessible(true);
 				Object httpTransport = field.get(consulRawClient);
-				Method method = httpTransport.getClass().getDeclaredMethod("getHttpClient", null);
+				Method method = httpTransport.getClass().getDeclaredMethod("getHttpClient");
 				method.setAccessible(true);
-				Closeable obj = (Closeable) method.invoke(httpTransport, null);
-				obj.close();
+				Closeable closeable = (Closeable) method.invoke(httpTransport);
+				closeable.close();
 			} catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException
 					| NoSuchMethodException | InvocationTargetException | IOException e) {
 			}
