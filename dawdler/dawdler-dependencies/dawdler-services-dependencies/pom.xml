@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>dawdler</groupId>
@@ -8,7 +10,7 @@
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<name>dawdler-services-dependencies</name>
 	<packaging>pom</packaging>
-		<dependencyManagement>
+	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>dawdler</groupId>
@@ -147,24 +149,7 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-discovery-center-consul-core</artifactId>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-			<groupId>dawdler</groupId>
-				<artifactId>dawdler-config-center-core</artifactId>
-				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
@@ -177,7 +162,7 @@
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
-						<groupId>*</groupId>
+						<groupId>com.fasterxml.jackson.dataformat</groupId>
 						<artifactId>*</artifactId>
 					</exclusion>
 				</exclusions>
