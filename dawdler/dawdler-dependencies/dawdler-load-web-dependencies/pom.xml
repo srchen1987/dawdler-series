@@ -65,12 +65,6 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-discovery-center-zookeeper-core</artifactId>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -175,12 +169,6 @@
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>${commons-io.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
