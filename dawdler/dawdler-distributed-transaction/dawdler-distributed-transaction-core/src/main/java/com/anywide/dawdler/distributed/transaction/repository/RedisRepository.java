@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.distributed.transaction.context.DistributedTransactionContext;
-import com.anywide.dawdler.redis.JedisPoolFactory;
+import com.anywide.dawdler.jedis.JedisPoolFactory;
 import com.anywide.dawdler.util.PropertiesUtil;
 
 import redis.clients.jedis.Jedis;

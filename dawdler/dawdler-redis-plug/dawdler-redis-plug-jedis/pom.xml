@@ -1,0 +1,15 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>dawdler</groupId>
+    <artifactId>dawdler-redis-plug</artifactId>
+    <version>0.0.2-RELEASES</version>
+  </parent>
+  <artifactId>dawdler-redis-plug-jedis</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+  	<module>dawdler-jedis-core</module>
+  	<module>dawdler-client-plug-jedis</module>
+  	<module>dawdler-server-plug-jedis</module>
+  </modules>
+</project>
