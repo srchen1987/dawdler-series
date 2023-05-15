@@ -32,7 +32,7 @@ import com.anywide.dawdler.clientplug.web.session.store.RedisSessionStore;
 import com.anywide.dawdler.clientplug.web.session.store.SessionStore;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.serializer.Serializer;
-import com.anywide.dawdler.redis.JedisPoolFactory;
+import com.anywide.dawdler.jedis.JedisPoolFactory;
 import com.anywide.dawdler.util.PropertiesUtil;
 
 import jakarta.servlet.Filter;
