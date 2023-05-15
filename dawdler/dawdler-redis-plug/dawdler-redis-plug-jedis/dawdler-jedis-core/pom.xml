@@ -4,28 +4,24 @@
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>dawdler</groupId>
-		<artifactId>dawdler-distributed-transaction</artifactId>
+		<artifactId>dawdler-redis-plug-jedis</artifactId>
 		<version>0.0.2-RELEASES</version>
 	</parent>
-	<artifactId>dawdler-distributed-transaction-core</artifactId>
-	<name>dawdler-distributed-transaction-core</name>
+	<artifactId>dawdler-jedis-core</artifactId>
+	<name>dawdler-jedis-core</name>
 	<packaging>jar</packaging>
 	<dependencies>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-distributed-transaction-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-rabbitmq-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-jedis-core</artifactId>
+			<artifactId>dawdler-util</artifactId>
 		</dependency>
 	</dependencies>
 </project>

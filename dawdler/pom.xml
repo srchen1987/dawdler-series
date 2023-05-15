@@ -311,17 +311,17 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-redis-core</artifactId>
+				<artifactId>dawdler-jedis-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-server-plug-redis</artifactId>
+				<artifactId>dawdler-server-plug-jedis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-client-plug-redis</artifactId>
+				<artifactId>dawdler-client-plug-jedis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
