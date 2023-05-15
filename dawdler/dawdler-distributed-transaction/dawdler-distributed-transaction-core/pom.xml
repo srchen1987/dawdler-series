@@ -25,7 +25,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-redis-core</artifactId>
+			<artifactId>dawdler-jedis-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>

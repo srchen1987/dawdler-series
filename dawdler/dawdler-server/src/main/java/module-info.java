@@ -24,7 +24,7 @@ module dawdler.server {
 	exports com.anywide.dawdler.server.bean;
 	exports com.anywide.dawdler.server.thread.processor;
 	exports com.anywide.dawdler.server.deploys
-			to dawdler.server.plug.db, dawdler.server.plug.redis, dawdler.server.plug.config.center.consul,
+			to dawdler.server.plug.db, dawdler.server.plug.jedis, dawdler.server.plug.config.center.consul,
 			dawdler.server.plug.rabbitmq, dawdler.server.plug.es, dawdler.server.plug.schedule, dawdler.discovery.center.core;
 	exports com.anywide.dawdler.server.net.aio.session;
 	exports com.anywide.dawdler.server.conf to dawdler.server, dawdler.server.plug.discovery.center.consul;
