@@ -9,7 +9,7 @@ module dawdler.distributed.transaction.core {
 	requires transitive com.rabbitmq.client;
 	requires transitive redis.clients.jedis;
 	requires dawdler.serialization;
-	requires dawdler.redis.core;
+	requires dawdler.jedis.core;
 	requires org.apache.commons.pool2;
 
 	exports com.anywide.dawdler.distributed.transaction.release;

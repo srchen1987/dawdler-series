@@ -4,7 +4,7 @@ module dawdler.client.plug.session {
 	requires org.slf4j;
 	requires dawdler.serialization;
 	requires redis.clients.jedis;
-	requires dawdler.redis.core;
+	requires dawdler.jedis.core;
 	requires com.github.benmanes.caffeine;
 	requires jakarta.servlet;
 }
