@@ -43,6 +43,16 @@ public @interface RabbitListener {
 	 * 队列名
 	 */
 	String queueName();
+	
+	/**
+	 * routingKey
+	 */
+	String[] routingKey() default {};
+	
+	/**
+	 * 交换器
+	 */
+	String[] exchange() default {};
 
 	/**
 	 * 是否自动ack

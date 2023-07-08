@@ -23,18 +23,17 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.dom4j.DocumentException;
-
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.deploys.DawdlerDeployClassLoader;
 import com.anywide.dawdler.server.deploys.ServiceBase;
 import com.anywide.dawdler.server.service.ServiceFactory;
 import com.anywide.dawdler.server.service.ServicesManager;
+import com.anywide.dawdler.server.service.conf.ServicesConfig;
+import com.anywide.dawdler.server.service.conf.ServicesConfigParser;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 
 /**
@@ -54,7 +53,7 @@ public class DawdlerContext {
 	private final int port;
 	private final ServicesManager servicesManager;
 	private final Map<Object, Object> attributes = new HashMap<>();
-	private XmlObject servicesConfig;
+	private ServicesConfig servicesConfig;
 	private AntPathMatcher antPathMatcher;
 	private HealthCheck healthCheck;
 	private Semaphore startSemaphore;
@@ -148,28 +147,24 @@ public class DawdlerContext {
 	}
 
 	public void initServicesConfig() throws Exception {
-		try {
-			String configPath;
-			File file;
-			String activeProfile = System.getProperty("dawdler.profiles.active");
-			String prefix = "services-config";
-			String subfix = ".xml";
-			configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		String configPath;
+		File file;
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		String prefix = "services-config";
+		String subfix = ".xml";
+		configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		file = new File(DawdlerTool.getCurrentPath() + configPath);
+		if (!file.isFile()) {
+			configPath = prefix + subfix;
 			file = new File(DawdlerTool.getCurrentPath() + configPath);
-			if (!file.isFile()) {
-				configPath = prefix + subfix;
-				file = new File(DawdlerTool.getCurrentPath() + configPath);
-			}
-			if (!file.isFile()) {
-				throw new IOException("not found " + getDeployClassPath() + " services-config.xml");
-			}
-			this.servicesConfig = XmlObject.loadClassPathXML(configPath);
-		} catch (DocumentException | IOException e) {
-			throw e;
 		}
+		if (!file.isFile()) {
+			throw new IOException("not found " + getDeployClassPath() + "services-config.xml");
+		}
+		this.servicesConfig = new ServicesConfigParser().getServicesConfig();
 	}
 
-	public XmlObject getServicesConfig() {
+	public ServicesConfig getServicesConfig() {
 		return servicesConfig;
 	}
 

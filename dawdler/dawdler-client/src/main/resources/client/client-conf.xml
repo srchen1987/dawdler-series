@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config>
-	<zk-host username="username" password="password">localhost:2181</zk-host><!-- 
-		zookeeeper的地址 目前只支持zk -->
-	<certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath><!-- 身份验证 
-		公钥路径 -->
-
+<config xmlns="https://github.com/srchen1987/dawdler-series"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://github.com/srchen1987/dawdler-series https://cdn.jsdelivr.net/gh/srchen1987/dawdler-series-xsd@main/client-conf.xsd"><!-- 根节点 -->
+	<certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath>
 	<server-channel-group
 		channel-group-id="defaultgroup"
 		connection-num="2" session-num="4" serializer="2" user="jackson.song"
@@ -12,7 +10,6 @@
 			connection-num 连接数 session-num 会话数 serializer 序列化方式（1,jdk默认,2 kroy,支持扩展） 
 			user与password是帐号密码 -->
 	</server-channel-group>
-
 	<loads-on>
 		<item sleep="15000" channel-group-id="defaultgroup" mode="run">core
 		</item><!-- 配置加载core模块 sleep 检查更新间隔 毫秒单位，channel-group-id指定组，mode=run 为运行模式 
@@ -20,5 +17,4 @@
 		<item sleep="15000" channel-group-id="defaultgroup" mode="run">bbs
 		</item><!-- 配置加载bbs模块 -->
 	</loads-on>
-
 </config>

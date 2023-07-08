@@ -3,7 +3,6 @@ import com.anywide.dawdler.serverplug.discovery.zookeeper.resource.ZookeeperLife
 
 module dawdler.server.plug.discovery.center.zookeeper {
 	requires org.slf4j;
-	requires org.dom4j;
 	requires dawdler.discovery.center.zookeeper.core;
 	requires dawdler.server;
 	requires dawdler.core;

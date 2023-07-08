@@ -4,13 +4,13 @@ import com.anywide.dawdler.client.cluster.impl.RoundRobinLoadBalance;
 
 module dawdler.client {
 	requires java.base;
-	requires dawdler.util;
+	requires transitive dawdler.util;
 	requires transitive dawdler.core;
 	requires dawdler.serialization;
 	requires org.objectweb.asm;
 	requires cglib;
 	requires org.slf4j;
-	requires org.dom4j;
+	requires transitive java.xml;
 
 	exports com.anywide.dawdler.client;
 	exports com.anywide.dawdler.client.conf;

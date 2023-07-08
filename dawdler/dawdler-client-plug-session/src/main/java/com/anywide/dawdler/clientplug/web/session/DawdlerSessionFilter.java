@@ -280,6 +280,7 @@ public class DawdlerSessionFilter implements Filter {
 				String sessionKey = sessionIdGenerator.generateSessionId();
 				setCookie(cookieName, sessionKey);
 				this.session = sessionOperator.createLocalSession(sessionKey, maxInactiveInterval, true);
+				sessionOperator.addSession(session);
 				HttpSessionListener httpSessionListener = abstractDistributedSessionManager.getHttpSessionListener();
 				if (httpSessionListener != null) {
 					HttpSessionEvent httpSessionEvent = new HttpSessionEvent(session);

@@ -16,8 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
-import java.util.List;
-
 /**
  * @author jackson.song
  * @version V1.0
