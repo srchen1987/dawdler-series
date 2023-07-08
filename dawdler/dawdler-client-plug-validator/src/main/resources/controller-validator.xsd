@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="https://github.com/srchen1987/dawdler-series"
+	xmlns="https://github.com/srchen1987/dawdler-series"
+	xmlns:ns="https://github.com/srchen1987/dawdler-series" elementFormDefault="qualified">
+	<xs:element name="validator">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="validator-fields" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="validator-field" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType mixed="true">
+									<xs:attribute name="name" use="required" type="xs:string" />
+									<xs:attribute name="explain" use="required" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="validator-fields-groups" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="validator-fields-group" minOccurs="1"
+								maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="validator" minOccurs="1"
+											maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="ref" type="xs:string" />
+												<xs:attribute name="refgid" type="xs:string" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="id" use="required" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="validator-mappings" minOccurs="1" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="validator-mapping" minOccurs="1" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="validator" minOccurs="1"
+											maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="refgid" type="xs:string" />
+												<xs:attribute name="skip" type="xs:string" />
+												<xs:attribute name="ref" type="xs:string" />
+												<xs:attribute name="type" type="t_type" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="name" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="global-validator">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="validator" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="ref" type="xs:string" />
+									<xs:attribute name="refgid" type="xs:string" />
+									<xs:attribute name="type" type="t_type" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="validatorName">
+			<xs:selector xpath="ns:validator-fields/ns:validator-field" />
+			<xs:field xpath="@name" />
+		</xs:key>
+		<xs:key name="validatorGroup">
+			<xs:selector xpath="ns:validator-fields-groups/ns:validator-fields-group" />
+			<xs:field xpath="@id" />
+		</xs:key>
+		<xs:keyref refer="validatorName" name="validator-mapping-validator-field">
+			<xs:selector xpath="ns:validator-mappings/ns:validator-mapping/ns:validator"></xs:selector>
+			<xs:field xpath="@ref"></xs:field>
+		</xs:keyref>
+		<xs:keyref refer="validatorGroup" name="validator-mapping-validator-fields-group">
+			<xs:selector xpath="ns:validator-mappings/ns:validator-mapping/ns:validator"></xs:selector>
+			<xs:field xpath="@refgid"></xs:field>
+		</xs:keyref>
+		<xs:keyref refer="validatorName" name="validator-fields-group-validator-field">
+			<xs:selector xpath="ns:validator-fields-groups/ns:validator-fields-group/ns:validator"></xs:selector>
+			<xs:field xpath="@ref"></xs:field>
+		</xs:keyref>
+		<xs:keyref refer="validatorGroup" name="validator-fields-group">
+			<xs:selector xpath="ns:validator-fields-groups/ns:validator-fields-group/ns:validator"></xs:selector>
+			<xs:field xpath="@refgid"></xs:field>
+		</xs:keyref>
+		<xs:keyref refer="validatorGroup" name="global-validator-validator-fields-group">
+			<xs:selector xpath="ns:global-validator/ns:validator"></xs:selector>
+			<xs:field xpath="@refgid"></xs:field>
+		</xs:keyref>
+		<xs:keyref refer="validatorName" name="global-validator-validator-field">
+			<xs:selector xpath="ns:global-validator/ns:validator"></xs:selector>
+			<xs:field xpath="@ref"></xs:field>
+		</xs:keyref>
+		<xs:unique name="nameUnique">
+			<xs:selector xpath="ns:validator-fields/ns:validator-field"></xs:selector>
+			<xs:field xpath="@name"></xs:field>
+		</xs:unique>
+			<xs:unique name="groupUnique">
+			<xs:selector xpath="ns:validator-fields-groups/ns:validator-fields-group"></xs:selector>
+			<xs:field xpath="@id"></xs:field>
+		</xs:unique>
+	</xs:element>
+	<xs:simpleType name="t_type">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="param" />
+			<xs:enumeration value="header" />
+			<xs:enumeration value="body" />
+			<xs:enumeration value="path" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

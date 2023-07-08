@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.validator.operators;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
