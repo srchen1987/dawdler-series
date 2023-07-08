@@ -11,7 +11,6 @@ module dawdler.server {
 	requires transitive java.naming;
 	requires java.se;
 	requires org.slf4j;
-	requires transitive org.dom4j;
 	requires cglib;
 	requires ch.qos.logback.classic;
 	requires ch.qos.logback.core;
@@ -28,10 +27,7 @@ module dawdler.server {
 			dawdler.server.plug.rabbitmq, dawdler.server.plug.es, dawdler.server.plug.schedule, dawdler.discovery.center.core;
 	exports com.anywide.dawdler.server.net.aio.session;
 	exports com.anywide.dawdler.server.conf to dawdler.server, dawdler.server.plug.discovery.center.consul;
-	exports org.apache.naming.factory;
-	exports org.apache.naming.java;
-	exports org.apache.naming;
-
+	exports com.anywide.dawdler.server.service.conf;
 	uses SLF4JServiceProvider;
 
 	provides SLF4JServiceProvider with DawdlerLogbackServiceProvider;

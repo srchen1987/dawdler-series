@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<validator xmlns="https://github.com/srchen1987/dawdler-series"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://github.com/srchen1987/dawdler-series https://cdn.jsdelivr.net/gh/srchen1987/dawdler-series-xsd@main/controller-validator.xsd"><!-- 根节点 -->
+	<validator-fields><!--定义控件信息的根节点 -->
+		<validator-field name="userid" explain="用户Id">
+            <![CDATA[notEmpty&positiveNumber]]>
+		</validator-field><!-- 控件信息节点,@name 控件名称 @explain 控件描述.<![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展) -->
+		<validator-field name="username" explain="用户名">
+            <![CDATA[notEmpty&maxSize:32]]>
+		</validator-field>
+		<validator-field name="password" explain="密码">
+            <![CDATA[notEmpty&maxSize:32]]>
+		</validator-field>
+		<validator-field name="age" explain="年龄">
+            <![CDATA[positiveNumber]]>
+		</validator-field>
+		<validator-field name="platform" explain="平台">
+            <![CDATA[notEmpty&positiveNumber]]>
+		</validator-field>
+	</validator-fields>
+
+	<validator-fields-groups><!-- 控件信息组 -->
+
+		<!-- 控件信息组,如果同一个Controller里 有多个api都需要验证某些控件信息 则可以建立一个组,分别refgid这个组id即可. 
+			组之间也可以refgid引用,如果涉及相互依赖问题,系统会提醒错误！ -->
+		<validator-fields-group id="add"><!-- 控件信息组节点 @id 组的标识id,供其他组或mapping验证器进行引用 -->
+			<validator ref="userid" /><!-- 组内控件 @ref 引入validator-field中的定义. 
+				如果不存在则到全局global-validator.xml中引用,@refgid 引入其它组,@ref与@refgid可以并存. -->
+			<validator refgid="edit" />
+		</validator-fields-group>
+
+		<validator-fields-group id="edit">
+			<validator ref="username" />
+			<validator ref="password" />
+			<validator ref="age" />
+		</validator-fields-group>
+	</validator-fields-groups>
+	<validator-mappings><!-- 验证器组 -->
+		<validator-mapping name="/user/regist"><!-- 验证器 ＠name　请求的URI RequestMapping中定义的具体api地址. 
+				注意：如果类上有RequestMapping定义,需要将类上的RequestMapping中的value与方法上的RequestMapping中的value整合到一起. 
+				@skip为跳过某些验证,支持跳过多个规则,可以用 , 英文逗号隔开,里面写入的为validator-field的@name -->
+			<validator refgid="add" skip="age,username" /> <!-- 跳过了age和username的验证 -->
+		</validator-mapping>
+		<validator-mapping name="/user/edit">
+			<validator refgid="edit" />
+			<validator ref="platform" type="header" /><!-- type为类型 支持 param(默认不填时为param 
+				标准的http请求参数)、header(@RequestHeader)、body(@RequestBody)、path(@PathVariable). -->
+		</validator-mapping>
+	</validator-mappings>
+
+	<global-validator><!-- 全局验证器, 本Controller下的任何请求方法全部验证 一般不常用 -->
+		<validator ref="userid" /><!-- 描述：全局验证的控件 @ref 引入validator-field中@name 
+			就包含了此控件 @refgid 引入其它组（等于包含作用） -->
+		<validator ref="platform" type="header" /><!-- type为类型 支持 param(默认不填时为param 
+			标准的http请求参数)、header(@RequestHeader)、body(@RequestBody)、path(@PathVariable). -->
+	</global-validator>
+</validator>

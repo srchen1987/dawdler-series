@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="https://github.com/srchen1987/dawdler-series"
+	xmlns="https://github.com/srchen1987/dawdler-series" elementFormDefault="qualified">
+
+	<xs:element name="config">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="scanner" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="jar-files">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="jar-file" maxOccurs="unbounded"
+											type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="packages-in-jar">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="package-path"
+											maxOccurs="unbounded" type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="keyStore" maxOccurs="1" minOccurs="1">
+					<xs:complexType>
+						<xs:attribute name="keyStorePath" type="xs:string">
+						</xs:attribute>
+						<xs:attribute name="alias" type="xs:string">
+						</xs:attribute>
+						<xs:attribute name="password" type="xs:string">
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="server" maxOccurs="1" minOccurs="1">
+					<xs:complexType>
+						<xs:attribute name="host" type="xs:string" use="required" />
+						<xs:attribute name="tcp-port" type="t_port" use="required"/>
+						<xs:attribute name="shutdownWhiteList"
+							type="xs:string" use="required" />
+						<xs:attribute name="tcp-shutdownPort" type="t_port" use="required"/>
+						<xs:attribute name="tcp-backlog" type="xs:int" />
+						<xs:attribute name="tcp-sendBuffer" type="xs:int" />
+						<xs:attribute name="tcp-receiveBuffer" type="xs:int" />
+						<xs:attribute name="tcp-keepAlive" type="xs:boolean" />
+						<xs:attribute name="tcp-noDelay" type="xs:boolean" />
+						<xs:attribute name="maxThreads" type="xs:int" />
+						<xs:attribute name="queueCapacity" type="xs:int" />
+						<xs:attribute name="keepAliveMilliseconds" type="xs:int"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="global-auth" minOccurs="0"
+					maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="user" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="username" type="xs:string" />
+									<xs:attribute name="password" type="xs:string" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="module-auth" minOccurs="0"
+					maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="module" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="user" maxOccurs="unbounded">
+											<xs:complexType>
+												<xs:attribute name="username" type="xs:string" />
+												<xs:attribute name="password" type="xs:string" />
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="name" type="xs:string"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="health-check" minOccurs="0"
+					maxOccurs="1">
+					<xs:complexType>
+						<xs:all minOccurs="0">
+							<xs:element name="elasticSearch" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="jedis" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="rabbit" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="dataSource" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="config" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="zookeeper" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="consul" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="check" type="t_check" />
+						<xs:attribute name="scheme" type="t_scheme" />
+						<xs:attribute name="port" type="t_port" />
+						<xs:attribute name="backlog" type="xs:int" />
+						<xs:attribute name="username" type="xs:string" />
+						<xs:attribute name="password" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="t_scheme">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="http" />
+			<xs:enumeration value="https" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="t_check">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="on" />
+			<xs:enumeration value="off" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="t_port">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="65535" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

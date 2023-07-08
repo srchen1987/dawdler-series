@@ -28,11 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.clientplug.annotation.Controller;
 import com.anywide.dawdler.clientplug.web.TransactionController;
@@ -41,6 +39,7 @@ import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.IOUtil;
 import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.XmlTool;
 import com.anywide.dawdler.util.aspect.AspectHolder;
 
 /**
@@ -146,8 +145,7 @@ public class ClientPlugClassLoader {
 					try {
 						XmlObject xmlo = new XmlObject(aopXmlInput);
 						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-							Element aspectElement = (Element) aspectNode;
-							String className = aspectElement.attributeValue("name");
+							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(),"name");
 							if (className != null) {
 								String fileName = className.replace(".", File.separator) + ".class";
 								try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
@@ -165,7 +163,7 @@ public class ClientPlugClassLoader {
 								}
 							}
 						}
-					} catch (DocumentException | IOException e) {
+					} catch (Exception e) {
 						logger.error("", e);
 					} finally {
 						if (aopXmlInput != null) {

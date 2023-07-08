@@ -20,12 +20,13 @@ import static com.anywide.dawdler.util.XmlObject.getElementAttribute;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Int;
 
 import java.io.File;
+import java.net.URL;
 import java.util.List;
 
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.client.conf.ClientConfig.ServerChannelGroup;
 import com.anywide.dawdler.util.DawdlerTool;
@@ -50,31 +51,31 @@ public class ClientConfigParser {
 		String activeProfile = System.getProperty("dawdler.profiles.active");
 		String prefix = "client/client-conf";
 		String subfix = ".xml";
+		URL url = ClientConfigParser.class.getClassLoader().getResource("client/client-conf.xsd");
 		fileName = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
 		file = new File(DawdlerTool.getCurrentPath() + fileName);
 		if (!file.isFile()) {
 			logger.error("not found " + fileName);
 		} else {
 			try {
-				xmlObject = new XmlObject(DawdlerTool.getCurrentPath() + fileName);
-				Element root = xmlObject.getRoot();
+				xmlObject = new XmlObject(DawdlerTool.getCurrentPath() + fileName, url);
+				xmlObject.setPrefix("ns");
 				config = new ClientConfig();
-				Node certificatePath = root.selectSingleNode("certificatePath");
+				Node certificatePath = xmlObject.selectSingleNode("ns:certificatePath");
 				if (certificatePath != null) {
-					config.setCertificatePath(certificatePath.getText());
+					config.setCertificatePath(certificatePath.getTextContent().trim());
 				}
-				List<Node> serverChannelGroupNode = root.selectNodes("server-channel-group");
+				List<Node> serverChannelGroupNode = xmlObject.selectNodes("ns:server-channel-group");
 				for (Node node : serverChannelGroupNode) {
 					ServerChannelGroup serverChannelGroup = config.new ServerChannelGroup();
-
-					Element serverChannelGroupEle = (Element) node;
-					String groupId = getElementAttribute(serverChannelGroupEle, "channel-group-id");
-					int connectionNum = getElementAttribute2Int(serverChannelGroupEle, "connection-num", 2);
-					int sessionNum = getElementAttribute2Int(serverChannelGroupEle, "session-num", 2);
-					int serializer = getElementAttribute2Int(serverChannelGroupEle, "serializer", 2);
-					String user = getElementAttribute(serverChannelGroupEle, "user");
-					String password = getElementAttribute(serverChannelGroupEle, "password");
-					String host = getElementAttribute(serverChannelGroupEle, "host");
+					NamedNodeMap attributes = node.getAttributes();
+					String groupId = getElementAttribute(attributes, "channel-group-id");
+					int connectionNum = getElementAttribute2Int(attributes, "connection-num", 2);
+					int sessionNum = getElementAttribute2Int(attributes, "session-num", 2);
+					int serializer = getElementAttribute2Int(attributes, "serializer", 2);
+					String user = getElementAttribute(attributes, "user");
+					String password = getElementAttribute(attributes, "password");
+					String host = getElementAttribute(attributes, "host");
 
 					serverChannelGroup.setGroupId(groupId);
 					serverChannelGroup.setConnectionNum(connectionNum);
