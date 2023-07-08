@@ -18,7 +18,8 @@ package com.anywide.dawdler.serverplug.bean;
 
 import java.io.Serializable;
 
-import org.dom4j.Document;
+import org.w3c.dom.Document;
+
 
 /**
  * @author jackson.song

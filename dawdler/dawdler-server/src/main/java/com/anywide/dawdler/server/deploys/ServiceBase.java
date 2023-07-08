@@ -34,8 +34,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,6 +59,7 @@ import com.anywide.dawdler.server.filter.FilterProvider;
 import com.anywide.dawdler.server.listener.DawdlerListenerProvider;
 import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 import com.anywide.dawdler.server.service.ServicesManager;
+import com.anywide.dawdler.server.service.conf.ServicesConfig;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
@@ -171,21 +170,29 @@ public class ServiceBase implements Service {
 			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
 		}
 
-		Element root = dawdlerContext.getServicesConfig().getRoot();
-
-		List<Node> preLoadClasses = root.selectNodes("scanner/loads/pre-load");
-
-		for (Node node : preLoadClasses) {
-			classLoader.findClassForDawdler(node.getText().trim());
+		ServicesConfig servicesConfig = dawdlerContext.getServicesConfig();
+		
+		Set<String> preLoadClasses = dawdlerContext.getServicesConfig().getPreLoads();
+		if(preLoadClasses != null) {
+			for (String preLoadClass : preLoadClasses) {
+				classLoader.findClassForDawdler(preLoadClass);
+			}
 		}
-		List<Node> packagesInClasses = root.selectNodes("scanner/packages-in-classes/package-path");
-		for (Node node : packagesInClasses) {
-			deployScanner.splitAndAddPathInClasses(node.getText().trim());
+		
+		Set<String> packagesInClasses = servicesConfig.getPackagesInClasses();
+		if(packagesInClasses != null) {
+			for (String packageInClasses : packagesInClasses) {
+				deployScanner.splitAndAddPathInClasses(packageInClasses);
+			}
 		}
-		List<Node> packagesInJars = root.selectNodes("scanner/packages-in-jar/package-path");
-		for (Node node : packagesInJars) {
-			deployScanner.splitAndAddPathInJar(node.getText().trim());
+		
+		Set<String> packagesInJars = servicesConfig.getPackagesInJar();
+		if(packagesInJars != null) {
+			for (String packageInJars : packagesInJars) {
+				deployScanner.splitAndAddPathInJar(packageInJars);
+			}
 		}
+		
 		Set<Class<?>> classes;
 		classes = DeployClassesScanner.getClassesInPath(scanner, deployScanner, deploy);
 		Set<Class<?>> serviceClasses = new HashSet<>();

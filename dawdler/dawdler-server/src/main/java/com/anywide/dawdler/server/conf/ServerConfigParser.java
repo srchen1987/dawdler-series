@@ -16,177 +16,200 @@
  */
 package com.anywide.dawdler.server.conf;
 
-import static com.anywide.dawdler.util.XmlObject.getElementAttribute;
-import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Boolean;
-import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Int;
-import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Long;
+import static com.anywide.dawdler.util.XmlTool.getElementAttribute;
+import static com.anywide.dawdler.util.XmlTool.getElementAttribute2Boolean;
+import static com.anywide.dawdler.util.XmlTool.getElementAttribute2Int;
+import static com.anywide.dawdler.util.XmlTool.getElementAttribute2Long;
+import static com.anywide.dawdler.util.XmlTool.getNodes;
 
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.xml.XMLConstants;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.conf.ServerConfig.KeyStore;
 import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
-import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.XmlTool;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title ServerConfigParser.java
- * @Description 服务器配置解析类 (抛弃老版本的xstream实现，通过dom4j改造)
+ * @Description 服务器配置解析类 (抛弃老版本的xstream实现，后抛弃dom4j实现)
  * @date 2015年4月4日
  * @email suxuan696@gmail.com
  */
 public class ServerConfigParser {
-	private static final Logger logger = LoggerFactory.getLogger(ServerConfigParser.class);
 	private ServerConfig serverConfig = new ServerConfig();
 
-	public void loadJarFile(Element root) {
-		List<Node> files = root.selectNodes("scanner/jar-files/jar-file");
+	public void loadJarFile(Node node) {
 		Scanner scanner = serverConfig.getScanner();
-		for (Node node : files) {
-			String jarFile = node.getText().trim();
-			scanner.splitAndAddJarFiles(jarFile);
-		}
+		String jarFile = node.getTextContent().trim();
+		scanner.splitAndAddJarFiles(jarFile);
 	}
 
-	public void loadPackagePath(Element root) {
-		List<Node> files = root.selectNodes("scanner/packages-in-jar/package-path");
+	public void loadPackagePath(Node node) {
 		Scanner scanner = serverConfig.getScanner();
-		for (Node node : files) {
-			String jarFile = node.getText().trim();
-			scanner.splitAndAddPathInJar(jarFile);
-		}
+		String packagePath = node.getTextContent().trim();
+		scanner.splitAndAddPathInJar(packagePath);
 	}
 
-	public void loadKeyStore(Element keyStoreEle) {
-		String keyStorePath = getElementAttribute(keyStoreEle, "keyStorePath");
-		String alias = getElementAttribute(keyStoreEle, "alias");
-		String password = getElementAttribute(keyStoreEle, "password");
+	public void loadKeyStore(Node keyStoreEle) {
+		NamedNodeMap namedNodeMap = keyStoreEle.getAttributes();
+		String keyStorePath = getElementAttribute(namedNodeMap, "keyStorePath");
+		String alias = getElementAttribute(namedNodeMap, "alias");
+		String password = getElementAttribute(namedNodeMap, "password");
 		KeyStore keyStore = serverConfig.getKeyStore();
 		keyStore.setKeyStorePath(keyStorePath);
 		keyStore.setAlias(alias);
 		keyStore.setPassword(password);
 	}
 
-	public void loadServer(Element serverEle) {
+	public void loadServer(Node serverEle) {
+		NamedNodeMap namedNodeMap = serverEle.getAttributes();
 		Server server = serverConfig.getServer();
-		server.setHost(getElementAttribute(serverEle, "host", server.getHost()));
-		server.setTcpPort(getElementAttribute2Int(serverEle, "tcp-port", server.getTcpPort()));
-		server.setTcpBacklog(getElementAttribute2Int(serverEle, "tcp-backlog", server.getTcpBacklog()));
-		server.setTcpSendBuffer(getElementAttribute2Int(serverEle, "tcp-sendBuffer", server.getTcpSendBuffer()));
+		server.setHost(getElementAttribute(namedNodeMap, "host", server.getHost()));
+		server.setTcpPort(getElementAttribute2Int(namedNodeMap, "tcp-port", server.getTcpPort()));
+		server.setTcpBacklog(getElementAttribute2Int(namedNodeMap, "tcp-backlog", server.getTcpBacklog()));
+		server.setTcpSendBuffer(getElementAttribute2Int(namedNodeMap, "tcp-sendBuffer", server.getTcpSendBuffer()));
 		server.setTcpReceiveBuffer(
-				getElementAttribute2Int(serverEle, "tcp-receiveBuffer", server.getTcpReceiveBuffer()));
-		server.setTcpKeepAlive(getElementAttribute2Boolean(serverEle, "tcp-keepAlive", server.isTcpKeepAlive()));
-		server.setTcpNoDelay(getElementAttribute2Boolean(serverEle, "tcp-noDelay", server.isTcpNoDelay()));
-		server.setShutdownWhiteList(getElementAttribute(serverEle, "shutdownWhiteList", server.getShutdownWhiteList()));
-		server.setTcpShutdownPort(getElementAttribute2Int(serverEle, "tcp-shutdownPort", server.getTcpShutdownPort()));
-		server.setMaxThreads(getElementAttribute2Int(serverEle, "maxThreads", server.getMaxThreads()));
-		server.setQueueCapacity(getElementAttribute2Int(serverEle, "queueCapacity", server.getQueueCapacity()));
+				getElementAttribute2Int(namedNodeMap, "tcp-receiveBuffer", server.getTcpReceiveBuffer()));
+		server.setTcpKeepAlive(getElementAttribute2Boolean(namedNodeMap, "tcp-keepAlive", server.isTcpKeepAlive()));
+		server.setTcpNoDelay(getElementAttribute2Boolean(namedNodeMap, "tcp-noDelay", server.isTcpNoDelay()));
+		server.setShutdownWhiteList(
+				getElementAttribute(namedNodeMap, "shutdownWhiteList", server.getShutdownWhiteList()));
+		server.setTcpShutdownPort(
+				getElementAttribute2Int(namedNodeMap, "tcp-shutdownPort", server.getTcpShutdownPort()));
+		server.setMaxThreads(getElementAttribute2Int(namedNodeMap, "maxThreads", server.getMaxThreads()));
+		server.setQueueCapacity(getElementAttribute2Int(namedNodeMap, "queueCapacity", server.getQueueCapacity()));
 		server.setKeepAliveMilliseconds(
-				getElementAttribute2Long(serverEle, "keepAliveMilliseconds", server.getKeepAliveMilliseconds()));
+				getElementAttribute2Long(namedNodeMap, "keepAliveMilliseconds", server.getKeepAliveMilliseconds()));
 	}
 
-	public void loadGlobalAuth(Element globalAuthEle) {
-		List<Node> globalUsers = globalAuthEle.selectNodes("user");
+	public void loadGlobalAuth(Node globalAuthEle) {
+		List<Node> globalUsers = getNodes(globalAuthEle.getChildNodes());
 		Map<String, String> globalAuth = serverConfig.getGlobalAuth();
 		for (Node globalUser : globalUsers) {
-			Element globalUserEle = (Element) globalUser;
-			globalAuth.put(globalUserEle.attributeValue("username", ""), globalUserEle.attributeValue("password", ""));
+			NamedNodeMap namedNodeMap = globalUser.getAttributes();
+			globalAuth.put(namedNodeMap.getNamedItem("username").getNodeValue(),
+					namedNodeMap.getNamedItem("password").getNodeValue());
 		}
 	}
 
-	public void loadModuleAuth(Element moduleAuthEle) {
+	public void loadModuleAuth(Node moduleAuthEle) {
 		Map<String, Map<String, String>> moduleAuth = serverConfig.getModuleAuth();
-		List<Node> modules = moduleAuthEle.selectNodes("module");
+		List<Node> modules = getNodes(moduleAuthEle.getChildNodes());
 		for (Node module : modules) {
-			Element moduleEle = (Element) module;
-			String name = moduleEle.attributeValue("name", "");
-			if (!name.equals("")) {
+			Node nameNode = module.getAttributes().getNamedItem("name");
+			if (nameNode != null) {
+				String name = nameNode.getNodeValue();
 				Map<String, String> usersMap = moduleAuth.get(name);
 				if (usersMap == null) {
 					usersMap = new HashMap<>();
 					moduleAuth.put(name, usersMap);
 				}
-				List<Node> users = moduleEle.selectNodes("user");
+				List<Node> users = getNodes(module.getChildNodes());
 				for (Node user : users) {
-					Element userEle = (Element) user;
-					usersMap.put(userEle.attributeValue("username", ""), userEle.attributeValue("password", ""));
+					NamedNodeMap namedNodeMap = user.getAttributes();
+					usersMap.put(namedNodeMap.getNamedItem("username").getNodeValue(),
+							namedNodeMap.getNamedItem("password").getNodeValue());
 				}
 			}
 		}
 	}
 
-	public void loadModuleHealthCheck(Element healthCheckEle) {
-		if (healthCheckEle != null) {
-			String check = healthCheckEle.attributeValue("check");
-			if (check != null && check.trim().equals("on")) {
-				HealthCheck healthCheck = serverConfig.getHealthCheck();
-				healthCheck.setCheck(true);
+	public void loadModuleHealthCheck(Node healthCheckEle) {
+		NamedNodeMap namedNodeMap = healthCheckEle.getAttributes();
+		String check = namedNodeMap.getNamedItem("check").getNodeValue();
+		if (check != null && check.trim().equals("on")) {
+			HealthCheck healthCheck = serverConfig.getHealthCheck();
+			healthCheck.setCheck(true);
 
-				int port = Integer.parseInt(healthCheckEle.attributeValue("port"));
-				healthCheck.setPort(port);
+			int port = Integer.parseInt(namedNodeMap.getNamedItem("port").getNodeValue());
+			healthCheck.setPort(port);
 
-				String scheme = healthCheckEle.attributeValue("scheme");
-				healthCheck.setScheme(scheme);
+			String scheme = namedNodeMap.getNamedItem("scheme").getNodeValue();
+			healthCheck.setScheme(scheme);
 
-				int backlog = Integer.parseInt(healthCheckEle.attributeValue("port"));
-				healthCheck.setBacklog(backlog);
-
-				String username = healthCheckEle.attributeValue("username");
+			int backlog = Integer.parseInt(namedNodeMap.getNamedItem("backlog").getNodeValue());
+			healthCheck.setBacklog(backlog);
+			Node usernameNode = namedNodeMap.getNamedItem("username");
+			if (usernameNode != null) {
+				String username = usernameNode.getNodeValue();
 				healthCheck.setUsername(username);
-				String password = healthCheckEle.attributeValue("password");
+			}
+			Node passwordNode = namedNodeMap.getNamedItem("password");
+			if (passwordNode != null) {
+				String password = passwordNode.getNodeValue();
 				healthCheck.setPassword(password);
-
-				List<Element> componentElements = healthCheckEle.elements();
-				for (Element componentElement : componentElements) {
-					String componentCheck = componentElement.attributeValue("check");
-					if (componentCheck != null && componentCheck.trim().equals("on")) {
-						healthCheck.addComponentCheck(componentElement.getName());
+			}
+			List<Node> componentElements = getNodes(healthCheckEle.getChildNodes());
+			for (Node componentElement : componentElements) {
+				Node checkNode = componentElement.getAttributes().getNamedItem("check");
+				if (checkNode != null) {
+					String componentCheck = checkNode.getNodeValue();
+					if (componentCheck.trim().equals("on")) {
+						healthCheck.addComponentCheck(componentElement.getNodeName());
 					}
 				}
 			}
 		}
 
 	}
-
+	
 	public ServerConfigParser(URL binPath) throws Exception {
 		serverConfig = new ServerConfig();
 		serverConfig.setBinPath(binPath);
-		try {
-			XmlObject xmlo = new XmlObject(binPath.getPath() + "../conf/server-conf.xml");
-			Element root = xmlo.getRoot();
-
-			loadJarFile(root);
-
-			loadPackagePath(root);
-
-			Element keyStoreEle = (Element) root.selectSingleNode("keyStore");
-			loadKeyStore(keyStoreEle);
-
-			Element serverEle = (Element) root.selectSingleNode("server");
-			loadServer(serverEle);
-
-			Element globalAuthEle = (Element) root.selectSingleNode("global-auth");
-			loadGlobalAuth(globalAuthEle);
-
-			Element moduleAuthEle = (Element) root.selectSingleNode("module-auth");
-			loadModuleAuth(moduleAuthEle);
-
-			Element healthCheckEle = (Element) root.selectSingleNode("health-check");
-			loadModuleHealthCheck(healthCheckEle);
-
-		} catch (Exception e) {
-			logger.error("", e);
-			throw e;
+		URL url = getClass().getClassLoader().getResource("server-conf.xsd");
+		String xmlPath = binPath.getPath() + "../conf/server-conf.xml";
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setIgnoringElementContentWhitespace(true);
+		factory.setNamespaceAware(true);
+		factory.setIgnoringComments(true);
+		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+		Schema schema = sf.newSchema(url);
+		factory.setSchema(schema);
+		DocumentBuilder docBuilder = factory.newDocumentBuilder();
+		docBuilder.setErrorHandler(XmlTool.getErrorHandler());
+		Document root = docBuilder.parse(xmlPath);
+		List<Node> childNodes = getNodes(root.getDocumentElement().getChildNodes());
+		for (Node childNode : childNodes) {
+			String childNodeName = childNode.getNodeName();
+			if (childNodeName.equals("scanner")) {
+				List<Node> scannerChildNodes = getNodes(childNode.getChildNodes());
+				for (Node scannerChildNode : scannerChildNodes) {
+					List<Node> packageNodes = getNodes(scannerChildNode.getChildNodes());
+					for (Node pathNode : packageNodes) {
+						if (pathNode.getNodeName().equals("jar-file")) {
+							loadJarFile(pathNode);
+						} else if (pathNode.getNodeName().equals("package-path")) {
+							loadPackagePath(pathNode);
+						}
+					}
+				}
+			} else if (childNodeName.equals("keyStore")) {
+				loadKeyStore(childNode);
+			} else if (childNodeName.equals("server")) {
+				loadServer(childNode);
+			} else if (childNodeName.equals("global-auth")) {
+				loadGlobalAuth(childNode);
+			} else if (childNodeName.equals("module-auth")) {
+				loadModuleAuth(childNode);
+			} else if (childNodeName.equals("health-check")) {
+				loadModuleHealthCheck(childNode);
+			}
 		}
 	}
 

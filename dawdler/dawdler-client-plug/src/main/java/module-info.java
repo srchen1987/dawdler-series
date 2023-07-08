@@ -24,7 +24,6 @@ module dawdler.client.plug {
 	requires jakarta.servlet;
 	requires dawdler.jakarta.fileupload;
 	requires com.fasterxml.jackson.annotation;
-	requires org.dom4j;
 
 	exports com.anywide.dawdler.clientplug.annotation;
 	exports com.anywide.dawdler.clientplug.web.handler;

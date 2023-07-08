@@ -19,11 +19,10 @@ package com.anywide.dawdler.serverplug.db.mybatis;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,13 +49,11 @@ public class SingleSqlSessionFactory {
 	}
 
 	public List<Resource> getMapperLocations() throws IOException {
-		List<Node> mappers = DawdlerContext.getDawdlerContext().getServicesConfig()
-				.selectNodes("/config/mybatis/mappers/mapper");
-		if (!mappers.isEmpty()) {
+		Set<String> mappers = DawdlerContext.getDawdlerContext().getServicesConfig().getMappers();
+		if (mappers != null) {
 			List<Resource> resourceList = new ArrayList<>();
-			for (Node Nodemapper : mappers) {
-				Element mapper = (Element) Nodemapper;
-				Resource[] resources = resolver.getResources(mapper.getTextTrim());
+			for (String mapper : mappers) {
+				Resource[] resources = resolver.getResources(mapper);
 				for (Resource resource : resources) {
 					resourceList.add(resource);
 				}
