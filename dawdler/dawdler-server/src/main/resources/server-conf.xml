@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config>
+<config xmlns="https://github.com/srchen1987/dawdler-series"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://github.com/srchen1987/dawdler-series https://cdn.jsdelivr.net/gh/srchen1987/dawdler-series-xsd@main/server-conf.xsd">
 	<scanner>
 		<jar-files>
 			<jar-file>dawdler-server-plug*.jar</jar-file>
-			<jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
+			<jar-file>dawdler-distributed-transaction-core-0.17.1-jdk17-RELEASES.jar</jar-file>
 		</jar-files>
-			<!-- 需要扫描的jar包，被扫描的jar包中的组件会生效-->
 		<packages-in-jar>
 			<package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
 			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
@@ -13,21 +14,14 @@
 			<package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
 			<package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
 		</packages-in-jar>
-		<!-- 扫描的插件包名 -->
 	</scanner>
 	<keyStore
-		keyStorePath="${DAWDLER_BASE_PATH}/key/dawdler.keystore"
-		alias="srchen" password="jackson.song1948@anywide"></keyStore><!-- 
-		keyStorePath 私钥路径 alias帐号 password 密码 -->
+		keyStorePath="${DAWDLER_BASE_PATH}key/dawdler.keystore" alias="srchen"
+		password="jackson.song1948@anywide" />
 	<server host="0.0.0.0" tcp-port="9527"
-		shutdownWhiteList="127.0.0.1,localhost" tcp-shutdownPort="19530"
+		shutdownWhiteList="127.0.0.1,localhost" tcp-shutdownPort="19930"
 		tcp-backlog="200" tcp-sendBuffer="163840" tcp-receiveBuffer="163840"
-		tcp-keepAlive="false" tcp-noDelay="false" maxThreads="200"
-		queueCapacity="65536" keepAliveMilliseconds="0">
-	</server>
-	<!-- tcp-port服务器启动端口号， shutdownWhiteList允许关闭服务的白名单， tcp-shutdownPort关闭服务器的端口号 
-		maxThreads 处理业务线程池的大小 默认200，queueCapacity 线程池队列大小 默认65536，keepAliveMilliseconds 
-		线程池中空闲线程等待工作的超时时间 默认0，其他为tcp的配置 -->
+		tcp-keepAlive="false" tcp-noDelay="false" />
 	<global-auth>
 		<user username="global_user" password="global_password" />
 		<user username="global_user_1" password="global_password" />
@@ -38,18 +32,20 @@
 			<user username="user1" password="user1password" />
 			<user username="user2" password="user2password" />
 		</module>
-
 		<module name="order-service">
 			<user username="order_user1" password="user1password" />
 		</module>
 	</module-auth><!-- 模块下的用户，只能调用指定模块 第一行为帐号 第二行为密码 -->
 
-	<health-check check="on" scheme="https" port="19001"
-		backlog="0" username="jackson" password="jackson.song">
+	<health-check check="off" scheme="http" port="19001"
+		backlog="0" username="jackson" password="pttl123">
 		<elasticSearch check="on" />
 		<jedis check="on" />
 		<rabbit check="on" />
 		<dataSource check="on" />
 		<config check="on" />
+		<consul check="on" />
+		<zookeeper check="on" />
 	</health-check>
+
 </config>

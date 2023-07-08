@@ -85,13 +85,13 @@ public class MethodParser {
 
 	public static void generateMethodParamCode(Map<String, Object> rootMap, Map<String, Object> pathMap,
 			Map<String, ClassStruct> classStructs, Map<String, Object> definitionsMap, JavaClass javaClass,
-			JavaAnnotation requsetMappingAnnotation) {
+			JavaAnnotation requestMappingAnnotation) {
 		List<JavaMethod> methods = javaClass.getMethods();
 		for (JavaMethod method : methods) {
 			List<JavaAnnotation> methodAnnotations = method.getAnnotations();
-			String[] requsetClassMappingArray = AnnotationUtils.getAnnotationStringArrayValue(requsetMappingAnnotation,
+			String[] requestClassMappingArray = AnnotationUtils.getAnnotationStringArrayValue(requestMappingAnnotation,
 					"value");
-			String[] requsetMappingArray = null;
+			String[] requestMappingArray = null;
 			List<String> httpMethods = new ArrayList<>(8);
 			boolean responseBody = false;
 			boolean requestBody = false;
@@ -100,7 +100,7 @@ public class MethodParser {
 					responseBody = true;
 				}
 				if (RequestMapping.class.getName().equals(annotation.getType().getBinaryName())) {
-					requsetMappingArray = AnnotationUtils.getAnnotationStringArrayValue(annotation, "value");
+					requestMappingArray = AnnotationUtils.getAnnotationStringArrayValue(annotation, "value");
 					Object annotationMethodObj = AnnotationUtils.getAnnotationObjectValue(annotation, "method");
 					if (annotationMethodObj == null) {
 						for (RequestMethod requestMethod : RequestMethod.values()) {
@@ -248,11 +248,11 @@ public class MethodParser {
 				FieldParser.parserFields(returnType, classStructs, definitionsMap, javaTypes);
 				elements.put("responses", getResponse(returnType, definitionsMap));
 			}
-			if (requsetMappingArray != null) {
-				for (String mapping : requsetMappingArray) {
-					if (requsetClassMappingArray != null) {
+			if (requestMappingArray != null) {
+				for (String mapping : requestMappingArray) {
+					if (requestClassMappingArray != null) {
 						int i = 0;
-						for (String classMapping : requsetClassMappingArray) {
+						for (String classMapping : requestClassMappingArray) {
 							pathMap.put(classMapping + mapping, createHttpMethod(httpMethods, elements, method, i++));
 						}
 					} else {

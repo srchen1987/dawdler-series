@@ -60,6 +60,11 @@ public class RabbitListenerInit {
 						Connection con = factory.getConnection();
 						Channel channel = con.createChannel();
 						channel.queueDeclare(listener.queueName(), true, false, false, null);
+						for(String routingKey : listener.routingKey()) {
+							for(String exchange : listener.exchange()) {
+								channel.queueBind(listener.queueName(), exchange, routingKey);
+							}
+						}
 						channel.basicConsume(listener.queueName(), listener.autoAck(), new DefaultConsumer(channel) {
 							public void handleDelivery(String consumerTag, Envelope envelope,
 									AMQP.BasicProperties properties, byte[] body) throws IOException {
@@ -67,7 +72,7 @@ public class RabbitListenerInit {
 								try {
 									method.invoke(listenerCache.get(key), message);
 								} catch (Throwable e) {
-									logger.error("", e.getCause());
+									logger.error("", e);
 									if (listener.retry()) {
 										communalRetryMethod(message, channel, listener.retryCount(),
 												listener.failedToDLQ());

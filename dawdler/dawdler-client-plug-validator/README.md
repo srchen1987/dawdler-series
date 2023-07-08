@@ -67,7 +67,7 @@ UserController-validator.xml 内容：
     <validator-fields><!--定义控件信息的根节点--> 
         <validator-field name="userid" explain="用户Id">
             <![CDATA[notEmpty&positiveNumber]]>
-        </validator-field><!-- 控件信息节点,@name 控件名称 @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合 .<![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展) -->
+        </validator-field><!-- 控件信息节点,@name 控件名称  @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合(@globalRules 需求很少不容易理,解所以废弃了 )  . <![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展) -->
         <validator-field name="username" explain="用户名">
             <![CDATA[notEmpty&maxSize:32]]>
         </validator-field>
@@ -97,7 +97,7 @@ UserController-validator.xml 内容：
                 <validator ref="password"/>
                 <validator ref="age"/>
         </validator-fields-group>
-
+    </validator-fields-groups>
     <validator-mappings><!-- 验证器组 -->
         <validator-mapping name="/user/regist"><!-- 验证器 ＠name　请求的URI RequestMapping中定义的具体api地址.
         注意：如果类上有RequestMapping定义,需要将类上的RequestMapping中的value与方法上的RequestMapping中的value整合到一起.
@@ -119,7 +119,7 @@ UserController-validator.xml 内容：
 
 ### 3. 后台校验配置说明
 
-#### 3.1 validate-global-variable.properties 全局验证规则变量
+#### 3.1 ~~validate-global-variable.properties 全局验证规则变量~~(需求很少不容易理,解所以废弃了.)
 
 用于定义全局验证规则变量的配置文件
 
@@ -133,7 +133,7 @@ nm32=notEmpty&maxSize:32
 
 使用globalRules属性来引用全局验证规则变量
 
-#### 3.2 global-validator.xml 说明
+#### 3.2 ~~global-validator.xml 说明~~(需求很少不容易理,解所以废弃了.)
 
 用于定义全局验证规则的配置文件,全局验证规则可以通过validator-fields-group来引用,也可以通过validator-mapping来引用.
 
