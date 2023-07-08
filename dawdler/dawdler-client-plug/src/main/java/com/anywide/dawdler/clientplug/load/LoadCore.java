@@ -26,11 +26,10 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.client.Transaction;
 import com.anywide.dawdler.client.TransactionProvider;
@@ -100,7 +99,7 @@ public class LoadCore implements Runnable {
 				if (check(local, xmlo)) {
 					xmlObjectPreCache = xmlo;
 				}
-			} catch (DocumentException | IOException e) {
+			} catch (Exception e) {
 				logger.error("", e);
 			}
 		}
@@ -121,7 +120,7 @@ public class LoadCore implements Runnable {
 		int i = 0;
 		for (Object o : beanList) {
 			Element ele = (Element) o;
-			loadBeans[i++] = ele.attributeValue("checkname").replace(File.separator, ".");
+			loadBeans[i++] = ele.getAttribute("checkname").replace(File.separator, ".");
 		}
 
 		loadClass(loadBeans, type.equals(TYPE_API));
@@ -140,7 +139,7 @@ public class LoadCore implements Runnable {
 			remark = !remoteItems.isEmpty();
 			for (Object remoteItem : remoteItems) {
 				Element remoteEle = (Element) remoteItem;
-				String checkName = remoteEle.attributeValue("checkname");
+				String checkName = remoteEle.getAttribute("checkname");
 				String className = toClassName(checkName);
 				needLoad.add(className + CLASSP_REFIX);
 			}
@@ -148,15 +147,15 @@ public class LoadCore implements Runnable {
 
 		for (Node item : localItems) {
 			Element ele = (Element) item;
-			String localCheckName = ele.attributeValue("checkname");
+			String localCheckName = ele.getAttribute("checkname");
 			allLocalClass.add(toClassName(localCheckName));
 			for (Object remoteItem : remote
 					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname='" + localCheckName + "']")) {
 				Element remoteEle = (Element) remoteItem;
-				String checkName = remoteEle.attributeValue("checkname");
+				String checkName = remoteEle.getAttribute("checkname");
 				String className = toClassName(checkName);
 				allClass.add(checkName);
-				if (!ele.attributeValue("update").equals(remoteEle.attributeValue("update"))) {
+				if (!ele.getAttribute("update").equals(remoteEle.getAttribute("update"))) {
 					remark = true;
 					needLoad.add(className + CLASSP_REFIX);
 					if (!isApi && ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null) {
@@ -174,7 +173,7 @@ public class LoadCore implements Runnable {
 			for (Object item : local
 					.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']")) {// 查找本地文件在服务器端不存在的(去除这个names值以外的)
 				Element ele = (Element) item;
-				String checkName = ele.attributeValue("checkname");
+				String checkName = ele.getAttribute("checkname");
 				String className = toClassName(checkName);
 				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {// 如果list里面不包含并且set中也不包含
 					loadCache.add(checkName);// set中添加进去
@@ -191,7 +190,7 @@ public class LoadCore implements Runnable {
 			List<Node> items = remote.selectNodes("/hosts/host[@type='" + type + "']/item[@checkname!='" + name + "']");
 			for (Object item : items) {
 				Element ele = (Element) item;
-				String checkName = ele.attributeValue("checkname");
+				String checkName = ele.getAttribute("checkname");
 				if (!allClass.contains(checkName) && !loadCache.contains(checkName)) {
 					loadCache.add(checkName);
 					remark = true;

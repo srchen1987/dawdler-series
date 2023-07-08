@@ -23,9 +23,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 import javax.sql.DataSource;
 
 import com.anywide.dawdler.serverplug.db.DBAction;
@@ -48,7 +45,6 @@ public class LocalConnectionFactory {
 		}
 
 	};
-	private static Context ctx = null;
 
 	static {
 		LOCAL_WRITE_CONNECTION_HOLDER = new ThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>>() {
@@ -56,10 +52,6 @@ public class LocalConnectionFactory {
 				return new ConcurrentHashMap<DataSource, WriteConnectionHolder>();
 			}
 		};
-		try {
-			ctx = new InitialContext();
-		} catch (NamingException e) {
-		}
 	}
 
 	private LocalConnectionFactory() {
@@ -104,10 +96,6 @@ public class LocalConnectionFactory {
 		LOCAL_CONNECTION.get().remove(DBAction.WRITE);
 	}
 
-//	public static void clear() {
-//		localConnection.remove();
-//	}
-
 	static WriteConnectionHolder currentConnectionHolder(DataSource dataSource) {
 		ConcurrentMap<DataSource, WriteConnectionHolder> localMap = LOCAL_WRITE_CONNECTION_HOLDER.get();
 		WriteConnectionHolder holder = localMap.get(dataSource);
@@ -149,14 +137,6 @@ public class LocalConnectionFactory {
 
 	static WriteConnectionHolder createConnectionHolder(DataSource dataSource) {
 		return new WriteConnectionHolder(dataSource);
-	}
-
-	public static DataSource getDataSourceInDawdler(String id) throws NamingException {
-		return (DataSource) ctx.lookup("java:" + id);
-	}
-
-	public static void closeDataSourceInDawdler(String id) throws NamingException {
-		ctx.close();
 	}
 
 	public static SynReadConnectionObject getSynReadConnectionObject() {

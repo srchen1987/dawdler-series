@@ -87,14 +87,13 @@ public class AMQPConnectionFactory {
 			channel.queueBind(RABBIT_RETRY_QUEUE, RABBIT_RETRY_EXCHANGE, RABBIT_FAIL_QUEUE);
 			channel.queueBind(RABBIT_FAIL_QUEUE, RABBIT_FAIL_EXCHANGE, RABBIT_FAIL_QUEUE);
 		} finally {
-			if (con != null) {
-				con.close();
-			}
 			if (channel != null) {
 				channel.close();
 			}
+			if (con != null) {
+				con.close();
+			}
 		}
-
 	}
 
 	public AMQPConnectionFactory(String fileName) throws Exception {
@@ -116,8 +115,7 @@ public class AMQPConnectionFactory {
 		PooledConnectionFactory pooledConnectionFactory = new PooledConnectionFactory(connectionFactory, channelSize,
 				getChannelTimeOut, confirmSelect);
 		GenericObjectPoolConfig<Connection> config = new GenericObjectPoolConfig<>();
-		genericObjectPool = new GenericObjectPool<Connection>(pooledConnectionFactory, config);
-
+		
 		int ttlTime = PropertiesUtil.getIfNullReturnDefaultValueInt("ttlTime", 5000, ps);
 
 		int minIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle",
@@ -142,6 +140,7 @@ public class AMQPConnectionFactory {
 		config.setTestOnBorrow(testOnBorrow);
 		config.setTestOnCreate(testOnCreate);
 		config.setTestOnReturn(testOnReturn);
+		genericObjectPool = new GenericObjectPool<Connection>(pooledConnectionFactory, config);
 		pooledConnectionFactory.setConnectionPool(genericObjectPool);
 
 		initQueue(ttlTime);

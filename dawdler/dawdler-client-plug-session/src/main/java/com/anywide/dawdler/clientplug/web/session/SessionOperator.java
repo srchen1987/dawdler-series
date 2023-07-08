@@ -95,6 +95,7 @@ public class SessionOperator {
 						if (!data.isEmpty()) {
 							session = createLocalSession(sessionKey, maxInactiveInterval, false);
 							reloadAttributes(data, session, serializer);
+							addSession(session);
 						}
 					}
 				}
@@ -110,7 +111,6 @@ public class SessionOperator {
 		DawdlerHttpSession session = new DawdlerHttpSession(sessionKey, sessionSign, this, messageOperator,
 				servletContext, newSession);
 		session.setMaxInactiveInterval(maxInactiveInterval);
-		abstractDistributedSessionManager.addSession(sessionKey, session);
 		return session;
 	}
 
@@ -120,6 +120,11 @@ public class SessionOperator {
 		} catch (Exception e) {
 			logger.error("", e);
 		}
+	}
+	
+	
+	public void addSession(DawdlerHttpSession session) {
+		abstractDistributedSessionManager.addSession(session.getId(), session);
 	}
 
 	public void removeSession(String sessionKey) {

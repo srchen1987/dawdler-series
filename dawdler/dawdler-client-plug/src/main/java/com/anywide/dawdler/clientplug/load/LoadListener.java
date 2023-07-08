@@ -23,9 +23,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.client.ConnectionPool;
 import com.anywide.dawdler.client.conf.ClientConfigParser;
@@ -39,6 +40,7 @@ import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.XmlTool;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.Filter;
@@ -104,33 +106,33 @@ public class LoadListener implements ServletContextListener {
 		}
 
 		ClientPlugClassLoader classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getCurrentPath());
-		XmlObject xml = ClientConfigParser.getXmlObject();
-		for (Object o : xml.selectNodes("/config/loads-on/item")) {
-			Element ele = (Element) o;
-			String host = ele.getText();
-			if (logger.isDebugEnabled()) {
-				logger.debug("starting load.....\t" + host + "\tmodule!");
-			}
-			if (ele.attribute("sleep") != null) {
+		XmlObject xmlo = ClientConfigParser.getXmlObject();
+		try {
+			for (Node node : xmlo.selectNodes("/config/loads-on/item")) {
+				String host = node.getTextContent();
+				if (logger.isDebugEnabled()) {
+					logger.debug("starting load.....\t" + host + "\tmodule!");
+				}
+				NamedNodeMap attributes = node.getAttributes();
+				sleep = XmlTool.getElementAttribute2Long(attributes, "sleep", sleep);
+
+				String channelGroupId = XmlTool.getElementAttribute(attributes, "channel-group-id");
+				LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
 				try {
-					sleep = Long.parseLong(ele.attributeValue("sleep"));
-				} catch (Exception e) {
+					loadCore.toCheck();
+				} catch (Throwable e) {
+					logger.error("", e);
+				}
+				String mode = XmlTool.getElementAttribute(attributes, "mode");
+				boolean run = mode != null && (mode.trim().equals("run"));
+				if (!run) {
+					Thread thread = new Thread(loadCore, host + "LoadThread");
+					thread.start();
+					threads.put(loadCore, thread);
 				}
 			}
-			String channelGroupId = ele.attributeValue("channel-group-id");
-			LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
-			try {
-				loadCore.toCheck();
-			} catch (Throwable e) {
-				logger.error("", e);
-			}
-			String mode = ele.attributeValue("mode");
-			boolean run = mode != null && (mode.trim().equals("run"));
-			if (!run) {
-				Thread thread = new Thread(loadCore, host + "LoadThread");
-				thread.start();
-				threads.put(loadCore, thread);
-			}
+		} catch (Exception e) {
+			logger.error("", e);
 		}
 
 		for (int i = 0; i < lifeCycleList.size(); i++) {

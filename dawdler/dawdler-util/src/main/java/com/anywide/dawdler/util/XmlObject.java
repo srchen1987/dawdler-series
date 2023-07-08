@@ -16,215 +16,298 @@
  */
 package com.anywide.dawdler.util;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.util.HashMap;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
-import org.dom4j.Attribute;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
-import org.dom4j.Element;
-import org.dom4j.Node;
-import org.dom4j.io.DocumentResult;
-import org.dom4j.io.DocumentSource;
-import org.dom4j.io.OutputFormat;
-import org.dom4j.io.SAXReader;
-import org.dom4j.io.XMLWriter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title XmlObject.java
- * @Description 基于dom4j来做xml操作的类 支持压缩
+ * @Description 基于dom4j来做xml操作的类 支持压缩(目前已废弃dom4j)
  * @date 2007年7月11日
  * @email suxuan696@gmail.com
  */
 public final class XmlObject {
 	private static TransformerFactory factory = TransformerFactory.newInstance();
-	private final SAXReader reader = new SAXReader();
-	private Transformer transformer;
-	private Element root;
-	private Document document;
-	private String filepath;
-	private File file;
-	private boolean xmlFile = true;
+	private DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 	{
-		reader.setEncoding("utf-8");
+		documentBuilderFactory.setIgnoringElementContentWhitespace(true);
+		documentBuilderFactory.setIgnoringComments(true);
+	}
+	private Document document;
+	XPathFactory xpathFactory = XPathFactory.newInstance();
+	XPath xpath = xpathFactory.newXPath();
+	private Transformer transformer;
+	private String filePath;
+	private boolean compress = false;
+
+	public XmlObject(String xmlPath, String xsdPath) throws Exception {
+		setSchema(xsdPath);
+		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		document = builder.parse(xmlPath);
 	}
 
-	public XmlObject() {
+	public XmlObject(String xmlPath, URL xsdURL) throws Exception {
+		setSchema(xsdURL);
+		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		document = builder.parse(xmlPath);
+	}
+
+	public void setPrefix(String prefix) {
+		String xmlns = document.getDocumentElement().getAttribute("xmlns");
+		xpath.setNamespaceContext(new SimpleNamespaceResolver(prefix, xmlns));
+	}
+
+	public XmlObject() throws ParserConfigurationException {
 		initXML();
 	}
 
-	public XmlObject(String path) throws DocumentException, IOException {
+	public XmlObject(String path) throws Exception {
 		readPathToXML(path);
 	}
 
 	public XmlObject(Document document) {
 		this.document = document;
-		getXMLRoot();
 	}
 
-	public XmlObject(File file) throws DocumentException, IOException {
+	public XmlObject(File file) throws Exception {
 		fileToXML(file);
 	}
 
-	public XmlObject(StringBuffer code) throws DocumentException {
-		codeToXML(code.toString());
+	public XmlObject(InputStream in) throws Exception {
+		inputStreamToXML(in);
 	}
-
-	public XmlObject(InputStream in) throws DocumentException, IOException {
+	
+	public XmlObject(InputStream in,URL xsdURL) throws Exception {
+		setSchema(xsdURL);
 		inputStreamToXML(in);
 	}
 
-	public XmlObject(File file, boolean xmlFile) throws DocumentException, IOException {
-		this.xmlFile = xmlFile;
+	public XmlObject(File file, boolean compress) throws Exception {
+		this.compress = compress;
 		fileToXML(file);
 	}
 
-	public XmlObject(InputStream in, boolean xmlFile) throws DocumentException, IOException {
-		this.xmlFile = xmlFile;
+	public XmlObject(InputStream in, boolean compress) throws Exception {
+		this.compress = compress;
 		inputStreamToXML(in);
 	}
 
-	public XmlObject(String path, boolean xmlFile) throws DocumentException, IOException {
-		this.xmlFile = xmlFile;
+	public XmlObject(String path, boolean compress) throws Exception {
+		this.compress = compress;
 		readPathToXML(path);
 	}
 
-	public static XmlObject loadClassPathXML(String filename) throws DocumentException, IOException {
+	public XmlObject(StringBuffer code) throws ParserConfigurationException, SAXException, IOException {
+		codeToXML(code.toString());
+	}
+
+	public static XmlObject loadClassPathXML(String filename) throws Exception {
 		return new XmlObject(DawdlerTool.getCurrentPath() + filename);
 	}
 
-	public boolean isXmlfile() {
-		return xmlFile;
+	private void setSchema(String xsdPath) throws MalformedURLException, SAXException {
+		if (xsdPath != null) {
+			documentBuilderFactory.setNamespaceAware(true);
+			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = sf.newSchema(new File(xsdPath));
+			documentBuilderFactory.setSchema(schema);
+		}
 	}
 
-	public void setXmlfile(boolean xmlFile) {
-		this.xmlFile = xmlFile;
+	private void setSchema(URL xsdURL) throws SAXException {
+		if (xsdURL != null) {
+			documentBuilderFactory.setNamespaceAware(true);
+			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = sf.newSchema(xsdURL);
+			documentBuilderFactory.setSchema(schema);
+		}
 	}
 
-	private void initXML() {
-		this.document = DocumentHelper.createDocument();
+	public boolean isCompress() {
+		return compress;
 	}
 
-	private void readPathToXML(String path) throws DocumentException, IOException {
-		this.filepath = path;
-		fileToXML(new File(path));
+	public void setXmlfile(boolean compress) {
+		this.compress = compress;
 	}
 
-	private void fileToXML(File file) throws DocumentException, IOException {
-		if (xmlFile) {
-			this.document = this.reader.read(file);
-		} else {
+	public void initXML() throws ParserConfigurationException {
+		this.document = documentBuilderFactory.newDocumentBuilder().newDocument();
+	}
+
+	private void readPathToXML(String filePath) throws Exception {
+		this.filePath = filePath;
+		fileToXML(new File(filePath));
+	}
+
+	private void codeToXML(String code) throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		this.document = builder.parse(new InputSource(new StringReader(code)));
+	}
+
+	private void inputStreamToXML(InputStream input) throws Exception {
+		try {
+			DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+			if (compress) {
+				input = new GZIPInputStream(input);
+			}
+			this.document = builder.parse(input);
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+		}
+	}
+
+	private void fileToXML(File file) throws Exception {
+		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		if (compress) {
 			InputStream input = new FileInputStream(file);
 			try {
-				inputStreamToXML(input);
+				this.document = builder.parse(new GZIPInputStream(input));
 			} finally {
 				if (input != null) {
 					input.close();
 				}
 			}
-		}
-		getXMLRoot();
-		this.filepath = file.getPath();
-	}
-
-	private void codeToXML(String code) throws DocumentException {
-		this.document = this.reader.read(new StringReader(code));
-		getXMLRoot();
-	}
-
-	private void inputStreamToXML(InputStream in) throws DocumentException, IOException {
-		this.document = this.reader.read(xmlFile ? in : new GZIPInputStream(in));
-		getXMLRoot();
-	}
-
-	public void CreateRoot(String rootname) {
-		this.document.addElement(rootname);
-		getXMLRoot();
-	}
-
-	public Element getRoot() throws NullPointerException {
-		if (this.root == null) {
-			throw new NullPointerException("not found root!");
-		}
-		return this.root;
-	}
-
-	public List<Node> selectNodes(String xpath) {
-		return root.selectNodes(xpath);
-	}
-
-	public List<Node> selectNodes(String xpath, String cxe) {
-		return root.selectNodes(xpath, cxe);
-	}
-
-	public Element selectSingleNode(String xpath) {
-		if (xpath.equals("/")) {
-			return root;
 		} else {
-			return (Element) root.selectSingleNode(xpath);
+			this.document = builder.parse(file);
 		}
+		this.filePath = file.getAbsolutePath();
+	}
+
+	public void createRoot(String root) {
+		document.appendChild(document.createElement(root));
+	}
+
+	public Element getRoot() {
+		return this.document.getDocumentElement();
+	}
+
+	public List<Node> selectNodes(String xpath) throws XPathExpressionException {
+		List<Node> nodeList = new ArrayList<>();
+		XPathExpression expr = this.xpath.compile(xpath);
+		Object result = expr.evaluate(document, XPathConstants.NODESET);
+		if (result instanceof NodeList) {
+			NodeList nodes = (NodeList) result;
+			for (int i = 0; i < nodes.getLength(); i++) {
+				nodeList.add(nodes.item(i));
+			}
+		}
+		return nodeList;
+	}
+
+	public Node selectSingleNode(String xpath) throws XPathExpressionException {
+		if (xpath.equals("/")) {
+			return this.document.getDocumentElement();
+		} else {
+			XPathExpression expr = this.xpath.compile(xpath);
+			Object result = expr.evaluate(document, XPathConstants.NODESET);
+			if (result instanceof NodeList) {
+				NodeList nodes = (NodeList) result;
+				if (nodes.getLength() > 0) {
+					return nodes.item(0);
+				}
+			}
+		}
+		return null;
 	}
 
 	public void removeNode(String xpath) throws Exception {
 		if (xpath.equals("/")) {
-			throw new Exception("Can't remove Root!");
+			throw new Exception("can't remove root element!");
 		}
 		List<Node> list = selectNodes(xpath);
-		if (list != null) {
+		if (!list.isEmpty()) {
 			for (Object o : list) {
 				Element el = (Element) o;
-				el.getParent().remove(el);
+				el.getParentNode().removeChild(el);
 			}
 		} else {
-			throw new Exception("not defount element!");
+			throw new Exception("not defind element!");
 		}
 	}
 
-	public String asXML() throws IOException {
-		OutputFormat format = OutputFormat.createPrettyPrint();
-		format.setEncoding("UTF-8");
-		StringWriter sw = new StringWriter();
-		XMLWriter output = new XMLWriter(sw, format);
-		output.write(document);
-		return sw.getBuffer().toString();
+	public String asXML() throws IOException, TransformerException {
+		ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+		BufferedOutputStream out = new BufferedOutputStream(byteOut);
+		TransformerFactory transFactory = TransformerFactory.newInstance();
+		Transformer transformer = transFactory.newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+		DOMSource source = new DOMSource();
+		source.setNode(document);
+		StreamResult result = new StreamResult();
+		result.setOutputStream(out);
+		transformer.transform(source, result);
+		out.flush();
+		out.close();
+		return byteOut.toString(Charset.defaultCharset());
 	}
 
-	public XmlObject transformer(String xslCode) throws TransformerException, IOException, DocumentException {
+	public XmlObject transformer(String xslCode) throws TransformerException, IOException {
 		return transformer(new StreamSource(new StringReader(xslCode)));
 	}
 
-	public XmlObject transformer(File file) throws TransformerException, IOException, DocumentException {
+	public XmlObject transformer(File file) throws TransformerException, IOException {
 		return transformer(new StreamSource(file));
 	}
 
-	public XmlObject transformer(Source source) throws TransformerException, IOException, DocumentException {
+	public XmlObject transformer(Source source) throws TransformerException, IOException {
 		transformer = factory.newTransformer(source);
 		return transformer();
 	}
 
-	public String transformerToString(String xslCode) throws TransformerException, IOException, DocumentException {
+	public String transformerToString(String xslCode) throws TransformerException, IOException {
 		transformer = factory.newTransformer(new StreamSource(new StringReader(xslCode)));
-		Source source = new DocumentSource(document);
+		Source source = new DOMSource(document);
 		StreamResult streamResult = new StreamResult();
 		StringWriter sw = new StringWriter();
 		streamResult.setWriter(sw);
@@ -232,9 +315,9 @@ public final class XmlObject {
 		return sw.toString();
 	}
 
-	public String transformerToString(File xslFile) throws TransformerException, IOException, DocumentException {
+	public String transformerToString(File xslFile) throws TransformerException, IOException {
 		transformer = factory.newTransformer(new StreamSource(xslFile));
-		Source source = new DocumentSource(document);
+		Source source = new DOMSource(document);
 		StreamResult streamResult = new StreamResult();
 		StringWriter sw = new StringWriter();
 		streamResult.setWriter(sw);
@@ -242,22 +325,11 @@ public final class XmlObject {
 		return sw.toString();
 	}
 
-	private XmlObject transformer() throws TransformerException, IOException, DocumentException {
-		Source source = new DocumentSource(document);
-		DocumentResult result = new DocumentResult();
+	private XmlObject transformer() throws TransformerException, IOException {
+		Source source = new DOMSource(document);
+		DOMResult result = new DOMResult();
 		transformer.transform(source, result);
-		return new XmlObject(result.getDocument());
-	}
-
-	public void setDefaultNamespace(String prefix) {
-		String defaultNamespace = root.getNamespaceURI();
-		Map<String, String> xmlMap = new HashMap<>();
-		xmlMap.put(prefix, defaultNamespace);
-		reader.getDocumentFactory().setXPathNamespaceURIs(xmlMap);
-	}
-
-	private void getXMLRoot() {
-		this.root = this.document.getRootElement();
+		return new XmlObject((Document) result.getNode());
 	}
 
 	public Document getDocument() {
@@ -268,82 +340,129 @@ public final class XmlObject {
 		this.document = document;
 	}
 
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
-
-	public synchronized void saveXML() throws IOException, NullPointerException {
-		if (filepath == null || filepath.equals("")) {
-			throw new NullPointerException("not have created path to xml!");
+	public void saveXML(String filePath) throws Exception {
+		if (filePath == null || filePath.equals("")) {
+			throw new NullPointerException("filePath can't be null !");
 		}
-		OutputFormat format = OutputFormat.createPrettyPrint();
-		format.setEncoding("UTF-8");
-		format.setTrimText(true);
-		format.setPadText(false);
-		XMLWriter output = new XMLWriter(xmlFile ? new FileOutputStream(new File(this.filepath))
-				: new GZIPOutputStream(new FileOutputStream(new File(this.filepath))), format);
-		output.write(document);
-		output.close();
+		Transformer transformer = factory.newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+		if (compress) {
+			OutputStream out = new GZIPOutputStream(new FileOutputStream(filePath));
+			transformer.transform(new DOMSource(document), new StreamResult(out));
+			out.flush();
+			out.close();
+		} else {
+			transformer.transform(new DOMSource(document), new StreamResult(new File(filePath)));
+		}
 	}
 
-	public String getFilepath() {
-		return filepath;
+	public String getFilePath() {
+		return filePath;
 	}
 
-	public void setFilepath(String filepath) {
-		this.filepath = filepath;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
-	public static String getElementAttribute(Element element, String attribute, String defaultValue) {
-		Attribute attr = element.attribute(attribute);
+	public static class SimpleNamespaceResolver implements NamespaceContext {
+		private final String prefix;
+		private final String nsURI;
+
+		public SimpleNamespaceResolver(String prefix, String nsURI) {
+			this.prefix = prefix;
+			this.nsURI = nsURI;
+		}
+
+		@Override
+		public String getNamespaceURI(String prefix) {
+			if (prefix.equals(this.prefix)) {
+				return this.nsURI;
+			} else {
+				return XMLConstants.NULL_NS_URI;
+			}
+		}
+
+		@Override
+		public String getPrefix(String namespaceURI) {
+			if (namespaceURI.equals(this.nsURI)) {
+				return this.prefix;
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public Iterator<String> getPrefixes(String namespaceURI) {
+			return null;
+		}
+	}
+
+	public static List<Node> getNodes(NodeList nodeList) {
+		int length = nodeList.getLength();
+		List<Node> list = new ArrayList<>();
+		if (nodeList != null && length > 0) {
+			for (int i = 0; i < length; i++) {
+				Node node = nodeList.item(i);
+				if (node.getNodeType() == 1) {
+					list.add(node);
+				}
+			}
+		}
+		return list;
+	}
+
+	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute, String defaultValue) {
+		Node attr = namedNodeMap.getNamedItem(attribute);
 		if (attr == null) {
 			return defaultValue;
 		}
-		return attr.getStringValue();
+		return attr.getNodeValue();
 	}
 
-	public static int getElementAttribute2Int(Element element, String attribute, int defaultValue) {
-		Attribute attr = element.attribute(attribute);
+	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute) {
+		Node attr = namedNodeMap.getNamedItem(attribute);
+		if (attr == null) {
+			return null;
+		}
+		return attr.getNodeValue();
+	}
+
+	public static int getElementAttribute2Int(NamedNodeMap namedNodeMap, String attribute, int defaultValue) {
+		Node attr = namedNodeMap.getNamedItem(attribute);
 		if (attr == null) {
 			return defaultValue;
 		}
 		try {
-			return Integer.parseInt(attr.getStringValue());
+			return Integer.parseInt(attr.getNodeValue().trim());
 		} catch (NumberFormatException e) {
 			return defaultValue;
 		}
 	}
 
-	public static long getElementAttribute2Long(Element element, String attribute, long defaultValue) {
-		Attribute attr = element.attribute(attribute);
+	public static boolean getElementAttribute2Boolean(NamedNodeMap namedNodeMap, String attribute,
+			boolean defaultValue) {
+		Node attr = namedNodeMap.getNamedItem(attribute);
 		if (attr == null) {
 			return defaultValue;
 		}
 		try {
-			return Long.parseLong(attr.getStringValue());
+			return Boolean.parseBoolean(attr.getNodeValue().trim());
 		} catch (NumberFormatException e) {
 			return defaultValue;
 		}
 	}
 
-	public static boolean getElementAttribute2Boolean(Element element, String attribute, boolean defaultValue) {
-		Attribute attr = element.attribute(attribute);
+	public static long getElementAttribute2Long(NamedNodeMap namedNodeMap, String attribute, long defaultValue) {
+		Node attr = namedNodeMap.getNamedItem(attribute);
 		if (attr == null) {
 			return defaultValue;
 		}
 		try {
-			return Boolean.parseBoolean(attr.getStringValue());
+			return Long.parseLong(attr.getNodeValue().trim());
 		} catch (NumberFormatException e) {
 			return defaultValue;
 		}
-	}
-
-	public static String getElementAttribute(Element element, String attribute) {
-		return getElementAttribute(element, attribute, null);
 	}
 
 }
