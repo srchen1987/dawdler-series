@@ -26,10 +26,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.dom4j.Element;
-import org.dom4j.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
@@ -53,19 +54,19 @@ public class ReadClass {
 	public static XmlObject read(String host) {
 		try {
 			XmlObject remoteLoadXml = new XmlObject(
-					getRemoteLoad(DawdlerContext.getDawdlerContext().getServicesConfig()));
+					getRemoteLoad(DawdlerContext.getDawdlerContext().getServicesConfig().getRemoteLoad()));
 			List<Node> hosts = remoteLoadXml.selectNodes("/hosts/host[@name='" + host + "']/package");
 			if (hosts == null || hosts.isEmpty()) {
 				return null;
 			}
 			XmlObject xmlo = new XmlObject();
-			xmlo.CreateRoot("hosts");
+			xmlo.createRoot("hosts");
 			Element root = xmlo.getRoot();
 			for (Object hostObj : hosts) {
 				Element hostEle = (Element) hostObj;
-				String type = hostEle.attributeValue("type");
+				String type = hostEle.getAttribute("type");
 				boolean isbean = type != null && type.trim().equals("api");
-				String pack = hostEle.getTextTrim().replace(".", File.separator);
+				String pack = hostEle.getTextContent().trim().replace(".", File.separator);
 				File file = new File(path + pack);
 				if (!file.isDirectory()) {
 					throw new FileNotFoundException(
@@ -81,25 +82,27 @@ public class ReadClass {
 
 	}
 
-	public static String getRemoteLoad(XmlObject xmlo) {
-		Element ele = (Element) xmlo.getRoot().selectSingleNode("/config/remote-load");
-		if (ele == null) {
-			throw new NullPointerException(xmlo.getFilepath() + "\tconfig/remote-load not found！");
+	public static String getRemoteLoad(String remoteLoad) {
+		if (remoteLoad == null) {
+			throw new NullPointerException("/config/remote-load not found！");
 		}
-		return ele.attributeValue("package").replace("${classpath}", DawdlerTool.getCurrentPath());
+		return remoteLoad.replace("${classpath}", DawdlerTool.getCurrentPath());
 	}
 
 	private static void createXmlObjectByFile(Element hosts, File file, String pack, String host, boolean isbean) {
-		Element hostele = hosts.addElement("host");
-		hostele.addAttribute("type", isbean ? "api" : "component");
+		Document document = hosts.getOwnerDocument();
+		Element hostElement = document.createElement("host");
+		hosts.appendChild(hostElement);
+		hostElement.setAttribute("type", isbean ? "api" : "component");
 		for (File fs : file.listFiles()) {
 			String s = fs.getName();
 			Matcher match = classPattern.matcher(s);
 			if (match.find()) {
 				File f = new File(file.getPath() + File.separator + s);
-				Element item = hostele.addElement("item");
-				item.addAttribute("checkname", fs.getAbsolutePath().replace(path, ""));
-				item.addAttribute("update", "" + f.lastModified());
+				Element itemElement = document.createElement("item");
+				hostElement.appendChild(itemElement);
+				itemElement.setAttribute("checkname", fs.getAbsolutePath().replace(path, ""));
+				itemElement.setAttribute("update", "" + f.lastModified());
 			}
 		}
 	}

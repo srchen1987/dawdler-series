@@ -21,14 +21,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
@@ -37,9 +33,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import javax.naming.NamingException;
-import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +43,6 @@ import com.anywide.dawdler.core.health.Status;
 import com.anywide.dawdler.core.httpserver.DawdlerHttpServer;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
-import com.anywide.dawdler.server.conf.DataSourceParser;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
@@ -146,17 +138,6 @@ public class ServiceRoot {
 		if (deployFiles.length > 0) {
 			ExecutorService executor = Executors.newCachedThreadPool();
 			ClassLoader classLoader = createServerClassLoader(serverConfig.getBinPath());
-			if (classLoader != null) {
-				try {
-					DataSourceNamingInit.init(classLoader);
-				} catch (ClassNotFoundException | NamingException | InstantiationException | IllegalAccessException e) {
-					logger.error("", e);
-				}
-			}
-
-			if (healthCheck) {
-				validateDataSource();
-			}
 			List<DeployData> deployDataList = new ArrayList<>();
 			for (File deployFile : deployFiles) {
 				if (deployFile.isDirectory()) {
@@ -277,14 +258,6 @@ public class ServiceRoot {
 		ClassLoader bootClassLoader = Thread.currentThread().getContextClassLoader();
 		ServerHealth serverHealth = new ServerHealth();
 		serverHealth.setStatus(Status.STARTING);
-		try {
-			validateDataSource();
-		} catch (Exception e) {
-			logger.error("", e);
-			serverHealth.setStatus(Status.DOWN);
-			serverHealth.setError(e.getMessage());
-			return serverHealth;
-		}
 		Collection<Service> collection = servicesHealth.values();
 		boolean down = false;
 		for (Service service : collection) {
@@ -297,33 +270,6 @@ public class ServiceRoot {
 		serverHealth.setStatus(down ? Status.DOWN : Status.UP);
 		Thread.currentThread().setContextClassLoader(bootClassLoader);
 		return serverHealth;
-	}
-
-	private static boolean validateDataSource() throws Exception {
-		Map<String, DataSource> datasources = DataSourceParser.getDataSources();
-		if (datasources == null) {
-			return true;
-		}
-		Set<Entry<String, DataSource>> entrySet = datasources.entrySet();
-		for (Entry<String, DataSource> entry : entrySet) {
-			String key = entry.getKey();
-			DataSource dataSource = entry.getValue();
-			Connection con = null;
-			try {
-				con = dataSource.getConnection();
-				con.getAutoCommit();
-			} catch (Exception e) {
-				throw new Exception(key + ":" + e.getMessage());
-			} finally {
-				if (con != null) {
-					try {
-						con.close();
-					} catch (SQLException e) {
-					}
-				}
-			}
-		}
-		return true;
 	}
 
 }

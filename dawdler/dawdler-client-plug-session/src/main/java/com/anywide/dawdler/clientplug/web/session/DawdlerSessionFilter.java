@@ -148,7 +148,7 @@ public class DawdlerSessionFilter implements Filter {
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
 	private Pool<Jedis> jedisPool;
-	private final static String SESSION_REDIS_FILE_NAME = "session-redis";
+	private static final String SESSION_REDIS_FILE_NAME = "session-redis";
 	private MessageOperator messageOperator;
 
 	@Override
@@ -165,10 +165,10 @@ public class DawdlerSessionFilter implements Filter {
 		Object listener = servletContext
 				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTPSESSION_LISTENER);
 		if (listener instanceof HttpSessionListener) {
-			abstractDistributedSessionManager.setHttpSessionListener((HttpSessionListener) listener);
+			abstractDistributedSessionManager.setHttpSessionListener((HttpSessionListener)listener);
 		}
-
-		Serializer serializer = SerializeDecider.decide((byte) 2);// 默认为kroy 需要其他的可以自行扩展
+		// 默认为kroy 需要其他的可以自行修改或扩展
+		Serializer serializer = SerializeDecider.decide((byte) 2);
 		sessionStore = new RedisSessionStore(jedisPool, serializer);
 		messageOperator = new RedisMessageOperator(serializer, sessionStore, abstractDistributedSessionManager,
 				jedisPool);
@@ -281,6 +281,7 @@ public class DawdlerSessionFilter implements Filter {
 				String sessionKey = sessionIdGenerator.generateSessionId();
 				setCookie(cookieName, sessionKey);
 				this.session = sessionOperator.createLocalSession(sessionKey, maxInactiveInterval, true);
+				sessionOperator.addSession(session);
 				HttpSessionListener httpSessionListener = abstractDistributedSessionManager.getHttpSessionListener();
 				if (httpSessionListener != null) {
 					HttpSessionEvent httpSessionEvent = new HttpSessionEvent(session);
