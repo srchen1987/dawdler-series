@@ -16,30 +16,28 @@
  */
 package com.anywide.dawdler.clientplug.web.validator.webbind;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 
-import org.dom4j.DocumentException;
-import org.dom4j.Element;
-import org.dom4j.Node;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator.MappingFeildType;
-import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.XmlTool;
 
 /**
  * @author jackson.song
@@ -51,44 +49,6 @@ import com.anywide.dawdler.util.XmlObject;
  */
 public class ValidateResourceLoader {
 	private static final Logger logger = LoggerFactory.getLogger(ValidateResourceLoader.class);
-	private static final Map<String, ControlField> globalFields = new HashMap<>();
-	private static final ResourceBundle properties;
-
-	static {
-		properties = ResourceBundle.getBundle("validate-global-variable");
-		try {
-			String globalPath = DawdlerTool.getCurrentPath() + "global-validator.xml";
-			if (new File(globalPath).isFile()) {
-				try {
-					XmlObject xmlo = new XmlObject(globalPath);
-					List list = xmlo.selectNodes("/global-validator/validator-fields/validator-field");
-					for (Object obj : list) {
-						Element ele = (Element) obj;
-						String name = ele.attributeValue("name");
-						String explain = ele.attributeValue("explain");
-						String rules = ele.getTextTrim();
-						String globalRules = ele.attributeValue("globalRules");
-						if (globalRules != null) {
-							try {
-								String glpro = properties.getString(globalRules);
-								if (rules == null || rules.trim().equals("")) {
-									rules = glpro;
-								} else {
-									rules += "&" + glpro;
-								}
-							} catch (Exception e) {
-								logger.warn("not find " + globalRules + " in global properties!");
-							}
-						}
-						globalFields.put(name, new ControlField(name, rules, explain));
-					}
-				} catch (Exception e) {
-					logger.error("", e);
-				}
-			}
-		} catch (MissingResourceException e) {
-		}
-	}
 
 	public static ControlValidator getControlValidator(Class<?> controlClass) {
 		InputStream input = controlClass.getResourceAsStream(controlClass.getSimpleName() + "-validator.xml");
@@ -109,26 +69,28 @@ public class ValidateResourceLoader {
 		return null;
 	}
 
-	private static ControlValidator loadRules(InputStream input) throws DocumentException, IOException {
+	private static ControlValidator loadRules(InputStream input) throws Exception {
 		ControlValidator cv = new ControlValidator();
-		XmlObject xml = new XmlObject(input);
-		parserFields(xml, cv);
-		parserFieldsGroups(xml, cv);
-		parserGlobal(xml, cv);
-		parserMapping(xml, cv);
+		URL url = ValidateResourceLoader.class.getClassLoader().getResource("controller-validator.xsd");
+		XmlObject xmlObject = new XmlObject(input, url);
+		xmlObject.setPrefix("ns");
+		parserFields(xmlObject, cv);
+		parserFieldsGroups(xmlObject, cv);
+		parserGlobal(xmlObject, cv);
+		parserMapping(xmlObject, cv);
 		return cv;
 	}
 
-	private static void parserGlobal(XmlObject xml, ControlValidator cv) {
+	private static void parserGlobal(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
 		cv.initGlobalControlFieldsCache();
-		List<Node> globalList = xml.selectNodes("/validator/global-validator/validator");
+		List<Node> globalList = xmlObject.selectNodes("/ns:validator/ns:global-validator/ns:validator");
 		if (globalList != null && !globalList.isEmpty()) {
 			for (Node node : globalList) {
 				Map<String, ControlField> globals = new LinkedHashMap<String, ControlField>();
-				Element ele = (Element) node;
-				String refgid = ele.attributeValue("refgid");
-				String ref = ele.attributeValue("ref");
-				String type = ele.attributeValue("type");
+				NamedNodeMap namedNodeMap = node.getAttributes();
+				String refgid = XmlTool.getElementAttribute(namedNodeMap, "refgid");
+				String ref = XmlTool.getElementAttribute(namedNodeMap, "ref");
+				String type = XmlTool.getElementAttribute(namedNodeMap, "type");
 				if (refgid != null) {
 					Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
 					if (fieldGroup != null) {
@@ -137,9 +99,6 @@ public class ValidateResourceLoader {
 				}
 				if (ref != null) {
 					ControlField confield = cv.getControlFields().get(ref);
-					if (confield == null) {
-						confield = globalFields.get(ref);
-					}
 					if (confield != null) {
 						globals.put(confield.getFieldName(), confield);
 					} else {
@@ -152,52 +111,40 @@ public class ValidateResourceLoader {
 		}
 	}
 
-	private static void parserFields(XmlObject xml, ControlValidator cv) {
-		List<Node> fieldsList = xml.selectNodes("/validator/validator-fields/validator-field");
+	private static void parserFields(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
+		List<Node> fieldsList = xmlObject.selectNodes("/ns:validator/ns:validator-fields/ns:validator-field");
 		if (fieldsList != null) {
 			Map<String, ControlField> fields = new LinkedHashMap<String, ControlField>();
 			cv.setControlFields(fields);
 			for (Node node : fieldsList) {
-				Element ele = (Element) node;
-				String name = ele.attributeValue("name");
-				String explain = ele.attributeValue("explain");
-				String rules = ele.getTextTrim();
-				String globalRules = ele.attributeValue("globalRules");
-				if (globalRules != null) {
-					try {
-						String glpro = properties.getString(globalRules);
-						if (rules.equals("")) {
-							rules = glpro;
-						} else {
-							rules += "&" + glpro;
-						}
-					} catch (Exception e) {
-						logger.warn("not find " + globalRules + " in global properties!");
-					}
-				}
+				NamedNodeMap namedNodeMap = node.getAttributes();
+				String name = XmlTool.getElementAttribute(namedNodeMap, "name");
+				String explain = XmlTool.getElementAttribute(namedNodeMap, "explain");
+				String rules = node.getTextContent().trim();
 				fields.put(name, new ControlField(name, rules, explain));
 			}
 		}
 	}
 
-	private static void parserMapping(XmlObject xml, ControlValidator cv) {
-		List<Node> mappingList = xml.selectNodes("/validator/validator-mappings/validator-mapping");
+	private static void parserMapping(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
+		List<Node> mappingList = xmlObject.selectNodes("/ns:validator/ns:validator-mappings/ns:validator-mapping");
 		if (mappingList != null && !mappingList.isEmpty()) {
 			for (Node mappingNode : mappingList) {
-				Element ele = (Element) mappingNode;
+				NamedNodeMap namedNodeMap = mappingNode.getAttributes();
 				Map<MappingFeildType, Map<String, ControlField>> mappings = new LinkedHashMap<>();
 				if (cv.getGlobalControlFields() != null && !cv.getGlobalControlFields().isEmpty()) {
 					mappings.putAll(cv.getGlobalControlFields());
 				}
-				String mname = ele.attributeValue("name");
-				String skip = ele.attributeValue("skip");
-				List<Node> vlist = ele.selectNodes("validator");
+				String mname = XmlTool.getElementAttribute(namedNodeMap, "name");
+				String skip = XmlTool.getElementAttribute(namedNodeMap, "skip");
+				List<Node> vlist = xmlObject
+						.selectNodes("/ns:validator/ns:validator-mappings/ns:validator-mapping/ns:validator");
 				if (vlist != null) {
-					for (Node node : vlist) {
-						Element vele = (Element) node;
-						String refgid = vele.attributeValue("refgid");
-						String ref = vele.attributeValue("ref");
-						String type = vele.attributeValue("type");
+					for (Node validatorNode : vlist) {
+						NamedNodeMap validatorNamedNodeMap = validatorNode.getAttributes();
+						String refgid = XmlTool.getElementAttribute(validatorNamedNodeMap, "refgid");
+						String ref = XmlTool.getElementAttribute(validatorNamedNodeMap, "ref");
+						String type = XmlTool.getElementAttribute(validatorNamedNodeMap, "type");
 						MappingFeildType mappingFeildType = ControlValidator.getMappingFeildType(type);
 						if (refgid != null) {
 							Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
@@ -212,9 +159,6 @@ public class ValidateResourceLoader {
 						}
 						if (ref != null) {
 							ControlField controlField = cv.getControlFields().get(ref);
-							if (controlField == null) {
-								controlField = globalFields.get(ref);
-							}
 							if (controlField != null) {
 								Map<String, ControlField> fields = mappings.get(mappingFeildType);
 								if (fields == null) {
@@ -241,24 +185,25 @@ public class ValidateResourceLoader {
 		}
 	}
 
-	private static void parserFieldsGroups(XmlObject xml, ControlValidator cv) {
+	private static void parserFieldsGroups(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
 		Map<String, ControlField> fields = cv.getControlFields();
-		List<Node> groupsList = xml.selectNodes("/validator/validator-fields-groups/validator-fields-group");
+		List<Node> groupsList = xmlObject
+				.selectNodes("/ns:validator/ns:validator-fields-groups/ns:validator-fields-group");
 		Map<String, Map<String, ControlField>> groups = new LinkedHashMap<String, Map<String, ControlField>>();
 		cv.setFieldGroups(groups);
 		if (groupsList != null) {
 			Map<String, Map<String, String>> relation = new LinkedHashMap<String, Map<String, String>>();
 			for (Node groupsNode : groupsList) {
-				Element ele = (Element) groupsNode;
 				Map<String, ControlField> gfields = new LinkedHashMap<>();
-				String gid = ele.attributeValue("id");
+				String gid = XmlTool.getElementAttribute(groupsNode.getAttributes(), "id");
 				groups.put(gid, gfields);
-				List<Node> validatorList = ele.selectNodes("validator");
+				List<Node> validatorList = xmlObject
+						.selectNodes("/ns:validator/ns:validator-fields-groups/ns:validator-fields-group/ns:validator");
 				if (validatorList != null) {
 					for (Node node : validatorList) {
-						Element vele = (Element) node;
-						String agid = vele.attributeValue("refgid");
-						String aref = vele.attributeValue("ref");
+						NamedNodeMap namedNodeMap = node.getAttributes();
+						String agid = XmlTool.getElementAttribute(namedNodeMap, "refgid");
+						String aref = XmlTool.getElementAttribute(namedNodeMap, "ref");
 						if (agid != null) {
 							Map<String, String> rmap = relation.get(gid);
 							if (rmap == null) {
@@ -269,9 +214,6 @@ public class ValidateResourceLoader {
 						}
 						if (aref != null) {
 							ControlField cf = fields.get(aref);
-							if (cf == null) {
-								cf = globalFields.get(aref);
-							}
 							if (cf != null) {
 								gfields.put(cf.getFieldName(), cf);
 							} else {
