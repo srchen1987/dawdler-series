@@ -26,6 +26,7 @@ import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.io.UnsafeInput;
 import com.esotericsoftware.kryo.io.UnsafeOutput;
+import com.esotericsoftware.kryo.serializers.JavaSerializer;
 
 /**
  * @author jackson.song
@@ -37,13 +38,8 @@ import com.esotericsoftware.kryo.io.UnsafeOutput;
  */
 public class KryoSerializer implements Serializer {
 	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
-
-//	private static ThreadLocal<KryoLocal> kryos = new ThreadLocal<KryoLocal>() {
-//		protected KryoLocal initialValue() {
-//			KryoLocal kryoLocal = new KryoLocal();
-//			return kryoLocal;
-//		}
-//	};
+	private static final StdInstantiatorStrategy STD_INSTANTIATOR_STRATEGY = new StdInstantiatorStrategy();
+ 
 	private KryoLocal initialValue() {
 		KryoLocal kryoLocal = new KryoLocal();
 		return kryoLocal;
@@ -94,9 +90,9 @@ public class KryoSerializer implements Serializer {
 		public KryoLocal() {
 			kryo = new Kryo();
 			kryo.setReferences(true);
-			kryo.setInstantiatorStrategy(new Kryo.DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
-//			  ((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
-//              .setFallbackInstantiatorStrategy(new StdInstantiatorStrategy());
+			kryo.addDefaultSerializer(java.lang.Throwable.class, JavaSerializer.class);
+			((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
+					.setFallbackInstantiatorStrategy(STD_INSTANTIATOR_STRATEGY);
 			input = new UnsafeInput();
 			out = new UnsafeOutput(2048, -1);
 		}
