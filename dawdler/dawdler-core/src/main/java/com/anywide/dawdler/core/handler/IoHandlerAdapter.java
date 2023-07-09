@@ -34,11 +34,15 @@ public class IoHandlerAdapter implements IoHandler {
 	private static final Logger logger = LoggerFactory.getLogger(IoHandlerAdapter.class);
 
 	public void channelClose(AbstractSocketSession socketSession) {
-		logger.info("session close :{}", socketSession.getRemoteAddress());
+		if (logger.isDebugEnabled()) {
+			logger.debug("session close :{}", socketSession.getRemoteAddress());
+		}
 	}
 
 	public void channelOpen(AbstractSocketSession socketSession) {
-		logger.info("session open :{}", socketSession.getRemoteAddress());
+		if (logger.isDebugEnabled()) {
+			logger.debug("session open :{}", socketSession.getRemoteAddress());
+		}
 	}
 
 	public void exceptionCaught(AbstractSocketSession socketSession, Throwable caught) {
