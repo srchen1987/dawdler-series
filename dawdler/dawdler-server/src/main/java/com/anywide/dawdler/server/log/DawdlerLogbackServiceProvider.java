@@ -47,7 +47,7 @@ public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 	final static String NULL_CS_URL = CoreConstants.CODES_URL + "#null_CS";
 
 	private IMarkerFactory markerFactory;
-	private MDCAdapter mdcAdapter;
+	private LogbackMDCAdapter mdcAdapter;
 
 	private Map<ClassLoader, LoggerContext> instances = new HashMap<>();
 
@@ -70,7 +70,7 @@ public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 				return context;
 			}
 			context = new LoggerContext();
-			context.setName(CoreConstants.DEFAULT_CONTEXT_NAME);
+			context.setName(CoreConstants.DEFAULT_CONTEXT_NAME+classLoader.getName());
 			try {
 				try {
 					new DawdlerLogbackContextInitializer(context).autoConfig();
@@ -83,6 +83,8 @@ public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 			} catch (Exception t) { // see LOGBACK-1159
 				Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
 			}
+			context.setMDCAdapter(mdcAdapter);
+			context.start();
 			instances.put(classLoader, context);
 			return context;
 		}
