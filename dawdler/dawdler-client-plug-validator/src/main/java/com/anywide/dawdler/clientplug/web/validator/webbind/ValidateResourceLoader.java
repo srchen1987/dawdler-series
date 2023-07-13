@@ -80,7 +80,7 @@ public class ValidateResourceLoader {
 		parserMapping(xmlObject, cv);
 		return cv;
 	}
-
+	
 	private static void parserGlobal(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
 		cv.initGlobalControlFieldsCache();
 		List<Node> globalList = xmlObject.selectNodes("/ns:validator/ns:global-validator/ns:validator");
