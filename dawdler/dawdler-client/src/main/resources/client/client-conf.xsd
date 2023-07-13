@@ -6,7 +6,7 @@
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element name="certificatePath" minOccurs="1" maxOccurs="1" type="xs:string" />
-				<xs:element name="server-channel-group">
+				<xs:element name="server-channel-group" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType mixed="true">
 						<xs:attribute name="channel-group-id" use="required" type="xs:string" />
 						<xs:attribute name="connection-num" type="t_connection-num" use="required" />
@@ -14,10 +14,10 @@
 						<xs:attribute name="serializer" type="t_serializer" use="required" />
 						<xs:attribute name="user" use="required" type="xs:string" />
 						<xs:attribute name="password" use="required" type="xs:string" />
-						<xs:attribute name="host" use="required" type="xs:string" />
+						<xs:attribute name="host" type="xs:string" />
 					</xs:complexType>
 				</xs:element>
-				<xs:element name="loads-on" minOccurs="1" maxOccurs="1">
+				<xs:element name="loads-on" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
