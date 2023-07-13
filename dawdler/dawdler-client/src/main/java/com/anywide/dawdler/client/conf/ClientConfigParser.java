@@ -61,11 +61,11 @@ public class ClientConfigParser {
 				xmlObject = new XmlObject(DawdlerTool.getCurrentPath() + fileName, url);
 				xmlObject.setPrefix("ns");
 				config = new ClientConfig();
-				Node certificatePath = xmlObject.selectSingleNode("ns:certificatePath");
+				Node certificatePath = xmlObject.selectSingleNode("/ns:config/ns:certificatePath");
 				if (certificatePath != null) {
 					config.setCertificatePath(certificatePath.getTextContent().trim());
 				}
-				List<Node> serverChannelGroupNode = xmlObject.selectNodes("ns:server-channel-group");
+				List<Node> serverChannelGroupNode = xmlObject.selectNodes("/ns:config/ns:server-channel-group");
 				for (Node node : serverChannelGroupNode) {
 					ServerChannelGroup serverChannelGroup = config.new ServerChannelGroup();
 					NamedNodeMap attributes = node.getAttributes();
@@ -99,4 +99,5 @@ public class ClientConfigParser {
 	public static XmlObject getXmlObject() {
 		return xmlObject;
 	}
+	
 }
