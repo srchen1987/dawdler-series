@@ -48,7 +48,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.XmlTool;
 
- 
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -109,7 +109,7 @@ public class LoadListener implements ServletContextListener {
 		ClientPlugClassLoader classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getCurrentPath());
 		XmlObject xmlo = ClientConfigParser.getXmlObject();
 		try {
-			for (Node node : xmlo.selectNodes("/config/loads-on/item")) {
+			for (Node node : xmlo.selectNodes("/ns:config/ns:loads-on/ns:item")) {
 				String host = node.getTextContent();
 				if (logger.isDebugEnabled()) {
 					logger.debug("starting load.....\t" + host + "\tmodule!");
@@ -169,13 +169,4 @@ public class LoadListener implements ServletContextListener {
 
 	}
 
-//	private void loadConfModuleAndExecuteStaticMethod(String methodName) {
-//		try {
-//			Class<?> configInitClass = Class.forName("com.anywide.dawdler.conf.client.init.ClientConfigInit");
-//			Method method = configInitClass.getMethod(methodName);
-//			method.invoke(null);
-//		} catch (Exception e) {
-//			// ignore
-//		}
-//	}
 }

@@ -28,7 +28,6 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -90,12 +89,14 @@ public final class XmlObject {
 	public XmlObject(String xmlPath, String xsdPath) throws Exception {
 		setSchema(xsdPath);
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		builder.setErrorHandler(XmlTool.getErrorHandler());
 		document = builder.parse(xmlPath);
 	}
 
 	public XmlObject(String xmlPath, URL xsdURL) throws Exception {
 		setSchema(xsdURL);
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		builder.setErrorHandler(XmlTool.getErrorHandler());
 		document = builder.parse(xmlPath);
 	}
 
@@ -195,6 +196,7 @@ public final class XmlObject {
 	private void inputStreamToXML(InputStream input) throws Exception {
 		try {
 			DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+			builder.setErrorHandler(XmlTool.getErrorHandler());
 			if (compress) {
 				input = new GZIPInputStream(input);
 			}
