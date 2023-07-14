@@ -4,7 +4,7 @@ import com.anywide.dawdler.server.log.DawdlerLogbackServiceProvider;
 
 module dawdler.server {
 	requires transitive dawdler.util;
-	requires dawdler.serialization;
+	requires transitive dawdler.serialization;
 	requires transitive dawdler.core;
 	requires java.base;
 	requires jdk.httpserver;

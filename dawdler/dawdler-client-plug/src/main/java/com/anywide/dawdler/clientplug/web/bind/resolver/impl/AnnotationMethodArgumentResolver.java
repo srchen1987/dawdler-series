@@ -92,12 +92,12 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					}
 					try {
 						if (value == null && type.isPrimitive()) {
-							throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
+							throw new ConvertException(uri + ":" + paramName + " value null can't convert " + type.getName() + "!");
 						}
 						return ClassUtil.convert(value, type);
 					} catch (Exception e) {
 						throw new ConvertException(
-								paramName + " value " + value + " can't convert " + type.getName() + "!");
+								uri + ":" + paramName + " value " + value + " can't convert " + type.getName() + "!");
 					}
 				} else if (annotationClass == RequestBody.class) {
 					HttpServletRequest request = viewForward.getRequest();
@@ -163,12 +163,12 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						try {
 							if (value == null && type.isPrimitive()) {
 								throw new ConvertException(
-										paramName + " value null can't convert " + type.getName() + "!");
+										uri + ":" + paramName + " value null can't convert " + type.getName() + "!");
 							}
 							return ClassUtil.convert(value, type);
 						} catch (Exception e) {
 							throw new ConvertException(
-									paramName + " value " + value + " can't convert " + type.getName() + "!");
+									uri + ":" + paramName + " value " + value + " can't convert " + type.getName() + "!");
 						}
 					} else if (ClassUtil.isSimpleArrayType(type)) {
 						String[] values = getHeaders(viewForward.getRequest(), paramName);
@@ -180,11 +180,11 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						try {
 							result = ClassUtil.convertArray(values, type);
 						} catch (Exception e) {
-							throw new ConvertException(paramName + " value " + Arrays.toString(values)
+							throw new ConvertException(uri + ":" + paramName + " value " + Arrays.toString(values)
 									+ " can't convert " + type.getName() + "!");
 						}
 						if (result == null && type.getComponentType().isPrimitive()) {
-							throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
+							throw new ConvertException(uri + ":" + paramName + " value null can't convert " + type.getName() + "!");
 						}
 						return result;
 					}
