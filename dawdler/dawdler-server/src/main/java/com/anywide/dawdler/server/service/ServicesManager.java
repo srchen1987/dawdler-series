@@ -44,6 +44,8 @@ public class ServicesManager {
 
 	public ServicesManager() {
 		services = new ConcurrentHashMap<String, ServicesBean>() {
+			private static final long serialVersionUID = -8731173501243546754L;
+
 			@Override
 			public ServicesBean put(String key, ServicesBean value) {
 				ServicesBean sb = super.putIfAbsent(key, value);

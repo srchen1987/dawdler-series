@@ -21,8 +21,8 @@ module dawdler.client.plug {
 	requires dawdler.load.bean;
 	requires org.slf4j;
 	requires transitive dawdler.client.plug.validator;
-	requires jakarta.servlet;
-	requires dawdler.jakarta.fileupload;
+	requires transitive jakarta.servlet;
+	requires transitive dawdler.jakarta.fileupload;
 	requires com.fasterxml.jackson.annotation;
 
 	exports com.anywide.dawdler.clientplug.annotation;

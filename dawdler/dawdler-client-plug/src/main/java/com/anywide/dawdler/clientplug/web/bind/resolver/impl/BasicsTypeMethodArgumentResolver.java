@@ -61,11 +61,11 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			String value = viewForward.paramString(paramName);
 			try {
 				if (value == null && type.isPrimitive()) {
-					throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
+					throw new ConvertException(uri + ":" + paramName + " value null can't convert " + type.getName() + "!");
 				}
 				return ClassUtil.convert(value, type);
 			} catch (Exception e) {
-				throw new ConvertException(paramName + " value " + value + " can't convert " + type.getName() + "!");
+				throw new ConvertException(uri + ":" + paramName + " value " + value + " can't convert " + type.getName() + "!");
 			}
 		} else if (String[].class == type) {
 			return viewForward.paramValues(paramName);
@@ -76,16 +76,16 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 				result = ClassUtil.convertArray(values, type);
 			} catch (Exception e) {
 				throw new ConvertException(
-						paramName + " value " + Arrays.toString(values) + " can't convert " + type.getName() + "!");
+						uri + ":" + paramName + " value " + Arrays.toString(values) + " can't convert " + type.getName() + "!");
 			}
 			if (result == null && type.getComponentType().isPrimitive()) {
-				throw new ConvertException(paramName + " value null can't convert " + type.getName() + "!");
+				throw new ConvertException(uri + ":" + paramName + " value null can't convert " + type.getName() + "!");
 			}
 			return result;
 		} else if (Map.class.isAssignableFrom(type)) {
 			return viewForward.paramMaps();
 		} else {
-			return setField(type, viewForward, null);
+			return setField(type, viewForward, null, uri);
 		}
 
 	}
@@ -95,7 +95,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
 	}
 
-	public Object setField(Class<?> type, ViewForward viewForward, Object instance)
+	public Object setField(Class<?> type, ViewForward viewForward, Object instance, String uri)
 			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		if (!matchType(type) || type.isArray()) {
@@ -117,12 +117,12 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			} else if (ClassUtil.isSimpleValueType(fieldType)) {
 				String value = viewForward.paramString(typeName);
 				if (value == null && type.isPrimitive()) {
-					throw new ConvertException(typeName + " value null can't convert " + type.getName() + "!");
+					throw new ConvertException(uri + ":" + typeName + " value null can't convert " + type.getName() + "!");
 				}
 				try {
 					field.set(instance, ClassUtil.convert(value, fieldType));
 				} catch (Exception e) {
-					throw new ConvertException(typeName + " value " + value + " can't convert " + type.getName() + "!");
+					throw new ConvertException(uri + ":" + typeName + " value " + value + " can't convert " + type.getName() + "!");
 				}
 
 			} else if (String[].class == fieldType) {
@@ -134,14 +134,14 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 					result = ClassUtil.convertArray(values, fieldType);
 				} catch (Exception e) {
 					throw new ConvertException(
-							typeName + " value " + Arrays.toString(values) + " can't convert " + type.getName() + "!");
+							uri + ":" + typeName + " value " + Arrays.toString(values) + " can't convert " + type.getName() + "!");
 				}
 				if (result == null && type.getComponentType().isPrimitive()) {
-					throw new ConvertException(typeName + " value null can't convert " + type.getName() + "!");
+					throw new ConvertException(uri + ":" + typeName + " value null can't convert " + type.getName() + "!");
 				}
 				field.set(instance, result);
 			} else {
-				field.set(instance, setField(fieldType, viewForward, null));
+				field.set(instance, setField(fieldType, viewForward, null, uri));
 			}
 		}
 		return instance;
