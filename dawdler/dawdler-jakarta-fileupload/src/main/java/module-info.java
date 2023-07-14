@@ -1,6 +1,6 @@
 module dawdler.jakarta.fileupload {
 	requires java.base;
-	requires jakarta.servlet;
+	requires transitive jakarta.servlet;
 	requires org.apache.commons.io;
 	requires portlet.api;
 
