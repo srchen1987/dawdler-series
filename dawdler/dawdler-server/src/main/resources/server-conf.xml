@@ -5,7 +5,7 @@
 	<scanner>
 		<jar-files>
 			<jar-file>dawdler-server-plug*.jar</jar-file>
-			<jar-file>dawdler-distributed-transaction-core-0.17.1-jdk17-RELEASES.jar</jar-file>
+			<jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
 		</jar-files>
 		<packages-in-jar>
 			<package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
