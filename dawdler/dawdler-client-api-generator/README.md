@@ -64,7 +64,7 @@ scanPath配置一定要配置正确,确保路径下有Controller(必须使用@Co
 #### 3.3 生成api文件
 
 ```shell
-java -jar dawdler-client-api-generator-0.0.2-RELEASES.jar   /home/srchen/github/api-demo/dawdler-web-api.yml
+java -jar dawdler-client-api-generator-0.17.1-jdk17-RELEASES.jar   /home/srchen/github/api-demo/dawdler-web-api.yml
 ```
 
 运行后会生成demo-api.json(outPath配置的路径).
@@ -89,7 +89,7 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 ##### 4.1 JavaDoc的Tag
 
-1. @Description 用于类或方法的描述信息,支持放在类上或方法上.
+1. @Description 用于类或方法的描述信息,支持放在类上或方法上.(同时支持javadoc标准 方法上注释,可不编写@Description)
 
 2. @param 用于方法参数对应的注释信息,只支持方法上.
 
@@ -227,11 +227,10 @@ import com.anywide.dawdler.demo.api.entity.UserBank;
 public class DemoController {
 
  /**
-  * 
+  * 根据用户ID查询用户
   * @Title: get
   * @author jackson.song
   * @date 2022年3月23日
-  * @Description 根据用户ID查询用户
   * @param userId 用户ID
   **/
 
