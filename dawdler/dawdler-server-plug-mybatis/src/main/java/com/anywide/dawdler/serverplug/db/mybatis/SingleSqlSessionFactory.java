@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.serverplug.db.mybatis;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +68,10 @@ public class SingleSqlSessionFactory {
 		String resource = "mybatis-config.xml";
 		String path = Thread.currentThread().getContextClassLoader().getResource(resource).getFile();
 		DawdlerSqlSessionFactoryBuilder sessionBuilder = new DawdlerSqlSessionFactoryBuilder();
-		sessionBuilder.setConfigLocation(path);
+		File configFile = new File(path);
+		if(configFile.isFile()) {
+			sessionBuilder.setConfigLocation(path);
+		}
 		sessionBuilder.setTransactionFactory(new DawdlerTransactionFactory());
 		try {
 			List<Resource> mapperLocations = getMapperLocations();
