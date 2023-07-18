@@ -11,7 +11,7 @@
 <artifactId>dawdler-server-plug-mybatis</artifactId>
 ```
 
-### 2. mybatis-config.xml配置文件说明
+### 2. mybatis-config.xml配置文件说明(非必须)
 
 mybatis-config.xml是mybatis官方支持的配置文件，其他配置参考官方说明，以下为示例：
 
@@ -71,7 +71,6 @@ public class OrderServiceImpl implements OrderService{
   order.setAmount(amount);
   order.setProductId(productId);
   order.setUserId(userId);
-  orderMapper.insert(order);
-  return true;
+  return orderMapper.insert(order) > 0;
  }
 ```

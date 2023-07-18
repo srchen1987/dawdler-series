@@ -217,11 +217,9 @@ public class MethodParser {
 			Map<String, Object> elements = new LinkedHashMap<>();
 			elements.put("tags", new String[] { javaClass.getBinaryName() });
 			DocletTag descriptionTag = method.getTagByName("Description");
-			String summary = null;
+			String summary =  method.getComment();
 			if (descriptionTag != null) {
-				summary = descriptionTag.getValue();
-			} else {
-				summary = method.getName();
+				summary += descriptionTag.getValue();
 			}
 			elements.put("summary", summary);
 			TypeData typeData = TypesConverter.getType(returnType.getBinaryName());
