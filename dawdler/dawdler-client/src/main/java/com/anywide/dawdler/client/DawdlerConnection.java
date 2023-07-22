@@ -84,7 +84,7 @@ public class DawdlerConnection {
 	AsynchronousChannelGroup asynchronousChannelGroup;
 	private final String groupName;
 	private int serializer;
-	private volatile List<List<SocketSession>> socketSessions;
+	private List<List<SocketSession>> socketSessions;
 
 	public DawdlerConnection(String gid, int serializer, int sessionNum, String user, String password)
 			throws IOException {
