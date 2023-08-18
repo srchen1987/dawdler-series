@@ -153,15 +153,16 @@ public class DawdlerContext {
 		String prefix = "services-config";
 		String subfix = ".xml";
 		configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		file = new File(DawdlerTool.getCurrentPath() + configPath);
+		String currentPath = DawdlerTool.getCurrentPath();
+		file = new File(currentPath + configPath);
 		if (!file.isFile()) {
 			configPath = prefix + subfix;
-			file = new File(DawdlerTool.getCurrentPath() + configPath);
+			file = new File(currentPath + configPath);
 		}
 		if (!file.isFile()) {
-			throw new IOException("not found " + getDeployClassPath() + "services-config.xml");
+			throw new IOException("not found " +file.getAbsolutePath());
 		}
-		this.servicesConfig = new ServicesConfigParser().getServicesConfig();
+		this.servicesConfig = new ServicesConfigParser(currentPath + configPath).getServicesConfig();
 	}
 
 	public ServicesConfig getServicesConfig() {

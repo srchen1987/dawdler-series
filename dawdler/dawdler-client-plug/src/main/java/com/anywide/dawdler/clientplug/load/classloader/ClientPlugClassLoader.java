@@ -19,6 +19,7 @@ package com.anywide.dawdler.clientplug.load.classloader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,18 +27,18 @@ import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
 
-import com.anywide.dawdler.clientplug.annotation.Controller;
-import com.anywide.dawdler.clientplug.web.TransactionController;
-import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
-import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
+import com.anywide.dawdler.core.component.injector.CustomComponentInjectionProvider;
+import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.IOUtil;
+import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.XmlTool;
 import com.anywide.dawdler.util.aspect.AspectHolder;
@@ -56,6 +57,8 @@ public class ClientPlugClassLoader {
 	private static ClientPlugClassLoader classloader = null;
 	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
 			.getRemoteClassLoaderFire();
+	List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider
+			.getInstance(ClientPlugClassLoader.class.getName()).getCustomComponentInjectors();
 	private ClientClassLoader urlCL = null;
 
 	private ClientPlugClassLoader(String path) {
@@ -89,12 +92,45 @@ public class ClientPlugClassLoader {
 			}
 			Class<?> clazz = defineClass(className, classBytes);
 			remoteClass.put(host.trim() + "-" + className, clazz);
-			if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)
-					|| WebContextListener.class.isAssignableFrom(clazz)
-					|| HandlerInterceptor.class.isAssignableFrom(clazz)) {
-				Object target = clazz.getConstructor().newInstance();
-				for (OrderData<RemoteClassLoaderFire> rf : fireList) {
-					rf.getData().onLoadFire(clazz, target, classBytes);
+
+			for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
+				CustomComponentInjector customComponentInjector = data.getData();
+				boolean inject = false;
+				Class<?>[] matchTypes = data.getData().getMatchTypes();
+				if (matchTypes != null) {
+					for (Class<?> matchType : matchTypes) {
+						if (matchType.isAssignableFrom(clazz)) {
+							inject = true;
+							break;
+						}
+					}
+				}
+				if (!inject) {
+					Set<? extends Class<? extends Annotation>> annotationSet = data.getData().getMatchAnnotations();
+					if (annotationSet != null) {
+						for (Class<? extends Annotation> annotationType : annotationSet) {
+							Annotation annotation = clazz.getAnnotation(annotationType);
+							if (annotation != null) {
+								inject = true;
+							} else {
+								Class<?>[] interfaceList = clazz.getInterfaces();
+								for (Class<?> c : interfaceList) {
+									annotation = c.getAnnotation(annotationType);
+									if (annotation != null) {
+										inject = true;
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				if (inject) {
+					Object target = SunReflectionFactoryInstantiator.newInstance(clazz);
+					customComponentInjector.inject(clazz, target);
+					for (OrderData<RemoteClassLoaderFire> rf : fireList) {
+						rf.getData().onLoadFire(clazz, target, classBytes);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -145,7 +181,7 @@ public class ClientPlugClassLoader {
 					try {
 						XmlObject xmlo = new XmlObject(aopXmlInput);
 						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(),"name");
+							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
 							if (className != null) {
 								String fileName = className.replace(".", File.separator) + ".class";
 								try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
