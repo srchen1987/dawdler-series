@@ -87,3 +87,30 @@ public interface ComponentLifeCycle {
 在服务端(dawdler)中的顺序 prepareInit > init > DawdlerServiceListener
 
 具体实现可参考 redis、rabbitmq等组件相关实现该接口的类.
+
+### 6. CustomComponentInjector 定制化组件注入器
+
+通过实现此接口来实现注入功能,可以参考其他实现类.
+
+```java
+
+public interface CustomComponentInjector {
+
+ /**
+  * 注入方法
+  */
+ public void inject(Class<?> type, Object target) throws Throwable;
+
+ /**
+  * 匹配的类或接口
+  */
+ Class<?>[] getMatchTypes();
+
+ /**
+  * 匹配的注解
+  */
+ Set<? extends Class<? extends Annotation>> getMatchAnnotations();
+
+}
+
+```

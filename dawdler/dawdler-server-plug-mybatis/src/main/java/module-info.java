@@ -6,7 +6,7 @@ module dawdler.server.plug.mybatis {
 	requires dawdler.server.plug.db;
 	requires java.sql;
 	requires org.slf4j;
-	requires org.aspectj.runtime;
+	requires org.aspectj.weaver;
 	requires cglib;
 	requires javassist;
 	requires java.naming;

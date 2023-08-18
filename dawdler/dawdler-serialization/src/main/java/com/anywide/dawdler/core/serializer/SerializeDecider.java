@@ -59,5 +59,16 @@ public class SerializeDecider {
 			v.destroyed();
 		});
 	}
-
+	public static enum SerializeType{
+		JDK((byte)1),
+		KRYO((byte)2);
+		private byte type;
+		SerializeType(byte type) {
+			this.type = type;
+		}
+		public byte getType() {
+			return type;
+		}
+		
+	}
 }

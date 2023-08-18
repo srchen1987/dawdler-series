@@ -1,5 +1,10 @@
 import org.slf4j.spi.SLF4JServiceProvider;
 
+import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import com.anywide.dawdler.server.component.injector.DawdlerFilterInjector;
+import com.anywide.dawdler.server.component.injector.DawdlerServiceCreateListenerInjector;
+import com.anywide.dawdler.server.component.injector.DawdlerServiceListenerInjector;
+import com.anywide.dawdler.server.component.injector.ServiceInjector;
 import com.anywide.dawdler.server.log.DawdlerLogbackServiceProvider;
 
 module dawdler.server {
@@ -29,6 +34,8 @@ module dawdler.server {
 	exports com.anywide.dawdler.server.conf to dawdler.server, dawdler.server.plug.discovery.center.consul;
 	exports com.anywide.dawdler.server.service.conf;
 	uses SLF4JServiceProvider;
-
+	uses CustomComponentInjector;
+	
 	provides SLF4JServiceProvider with DawdlerLogbackServiceProvider;
+	provides CustomComponentInjector with DawdlerFilterInjector,DawdlerServiceCreateListenerInjector,DawdlerServiceListenerInjector,ServiceInjector;
 }

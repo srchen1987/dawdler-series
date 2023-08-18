@@ -1,3 +1,4 @@
+import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.health.HealthIndicator;
 
@@ -11,6 +12,7 @@ module dawdler.core {
 	requires org.slf4j;
 
 	exports com.anywide.dawdler.core.order;
+	exports com.anywide.dawdler.core.component.injector;
 	exports com.anywide.dawdler.core.bean;
 	exports com.anywide.dawdler.core.thread;
 	exports com.anywide.dawdler.core.rpc.context;
@@ -29,4 +31,5 @@ module dawdler.core {
 
 	uses HealthIndicator;
 	uses ComponentLifeCycle;
+	uses CustomComponentInjector;
 }

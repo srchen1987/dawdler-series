@@ -1,6 +1,6 @@
 module dawdler.distributed.transaction.core {
 	requires java.base;
-	requires org.aspectj.runtime;
+	requires org.aspectj.weaver;
 	requires org.slf4j;
 	requires dawdler.core;
 	requires transitive dawdler.distributed.transaction.api;

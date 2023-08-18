@@ -29,7 +29,7 @@ import java.security.ProtectionDomain;
  */
 public class AspectHolder {
 	public static Object aj;
-	public static Method preProcessMethod = null;
+	public static Method preProcessMethod;
 	static {
 		Class<?> clazz = null;
 		try {

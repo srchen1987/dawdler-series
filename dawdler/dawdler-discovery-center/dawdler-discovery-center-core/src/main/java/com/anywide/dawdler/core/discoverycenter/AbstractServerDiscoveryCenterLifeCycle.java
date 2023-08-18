@@ -100,6 +100,9 @@ public abstract class AbstractServerDiscoveryCenterLifeCycle implements Componen
 
 		@Override
 		public void run(Timeout timeout) throws Exception {
+			if (timeout.isCancelled()) {
+				return;
+			}
 			try {
 				DiscoveryCenter discoveryCenter = getDiscoveryCenter();
 				if (!discoveryCenter.isExist(path, value)) {
