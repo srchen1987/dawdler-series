@@ -16,7 +16,9 @@
  */
 package com.anywide.dawdler.server.service;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,6 +26,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.annotation.RemoteService;
+import com.anywide.dawdler.core.annotation.Service;
+import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateProvider;
@@ -143,5 +147,38 @@ public class ServicesManager {
 			}
 		}
 		return false;
+	}
+
+	public static void injectService(Object service) throws Throwable {
+		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
+		Field[] fields = service.getClass().getDeclaredFields();
+		for (Field field : fields) {
+			Service serviceAnnotation = field
+					.getAnnotation(Service.class);
+			if (!field.getType().isPrimitive()) {
+				Class<?> serviceClass = field.getType();
+				field.setAccessible(true);
+				Object obj = null;
+				if (serviceAnnotation != null) {
+					if (!serviceAnnotation.remote()) {
+						obj = dawdlerContext.getServiceProxy(serviceClass);
+					} else {
+						RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
+						if (remoteService == null) {
+							throw new NotSetRemoteServiceException(
+									"not found @RemoteService on " + serviceClass.getName());
+						}
+						Class<?> serviceFactoryClass = dawdlerContext.getClassLoader()
+								.loadClass("com.anywide.dawdler.client.ServiceFactory");
+						Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class, String.class,ClassLoader.class);
+						String groupName = remoteService.value();
+						obj = method.invoke(null, serviceClass, groupName, remoteService.loadBalance(), dawdlerContext.getClassLoader());
+					}
+					if (obj != null) {
+						field.set(service, obj);
+					}
+				}
+			}
+		}
 	}
 }

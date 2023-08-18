@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
+import com.anywide.dawdler.core.serializer.SerializeDecider.SerializeType;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -39,7 +40,7 @@ import com.esotericsoftware.kryo.serializers.JavaSerializer;
 public class KryoSerializer implements Serializer {
 	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
 	private static final StdInstantiatorStrategy STD_INSTANTIATOR_STRATEGY = new StdInstantiatorStrategy();
-
+ 
 	private KryoLocal initialValue() {
 		KryoLocal kryoLocal = new KryoLocal();
 		return kryoLocal;
@@ -114,7 +115,7 @@ public class KryoSerializer implements Serializer {
 
 	@Override
 	public byte key() {
-		return 2;
+		return SerializeType.KRYO.getType();
 	}
 
 	@Override

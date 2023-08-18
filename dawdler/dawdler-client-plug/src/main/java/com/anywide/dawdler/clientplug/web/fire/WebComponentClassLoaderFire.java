@@ -29,7 +29,6 @@ import com.anywide.dawdler.clientplug.annotation.JsonIgnoreNull;
 import com.anywide.dawdler.clientplug.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.TransactionController;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.handler.RequestUrlData;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
@@ -98,7 +97,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 		if (clazz.isInterface()) {
 			return;
 		}
-		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
+		if (clazz.getAnnotation(Controller.class) != null) {
 			ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
 			RequestMapping classRequestMapping = clazz.getAnnotation(RequestMapping.class);
 			if (classRequestMapping != null && classRequestMapping.value().length > 0) {
@@ -146,7 +145,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	}
 
 	public void removeMapping(Class<?> clazz) {
-		if (clazz.getAnnotation(Controller.class) != null || TransactionController.class.isAssignableFrom(clazz)) {
+		if (clazz.getAnnotation(Controller.class) != null) {
 			RequestMapping classRequestMapping = clazz.getAnnotation(RequestMapping.class);
 			if (classRequestMapping != null && classRequestMapping.value().length > 0) {
 				for (String classMapping : classRequestMapping.value()) {

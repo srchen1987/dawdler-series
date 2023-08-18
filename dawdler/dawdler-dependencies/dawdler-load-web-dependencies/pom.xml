@@ -160,10 +160,21 @@
 				</exclusions>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-caffeine</artifactId>
+				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-jedis</artifactId>
+				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<scope>provided</scope>
-				<version>${gson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
