@@ -9,7 +9,7 @@ module dawdler.jedis.core {
 	requires dawdler.util;
 	requires org.slf4j;
 	requires org.apache.commons.pool2;
-	requires redis.clients.jedis;
+	requires transitive redis.clients.jedis;
 
 	exports com.anywide.dawdler.jedis;
 
