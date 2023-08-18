@@ -184,6 +184,10 @@ dawdler实现pinpoint链路追踪插件.
 
 基于java源码doc生成兼容swagger-ui的OpenAPI 3.0的json工具,对源代码零侵入,上手简单,生成效率高,使用非常方便.
 
+#### 29. [dawdler-cache-plug](dawdler/dawdler-cache-plug/README.md)
+
+可以用在web端和服务端的缓存模块.
+
 ### dawdler-runtime介绍
 
 参考[dawdler-runtime](https://github.com/srchen1987/dawdler-runtime/blob/main/README.md)
@@ -281,4 +285,4 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
 
 更多实例请参考[dawdler-chapter](https://github.com/srchen1987/dawdler-chapter).
 
-需要帮助可以发送email到 suxuan696@gmail.com .
+需要帮助可以发送email到 <suxuan696@gmail.com> .
