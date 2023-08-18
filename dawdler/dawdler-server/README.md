@@ -25,12 +25,12 @@ server-conf.xml 是dawdler服务器的核心配置文件.
  <scanner>
  <jar-files>
    <jar-file>dawdler-server-plug*.jar</jar-file>
-   <jar-file>dawdler-distributed-transaction-core-0.17.1-jdk17-RELEASES.jar</jar-file>
-  </jar-files>
+   <jar-file>dawdler-distributed-transaction-core*.jar</jar-file>
+   <jar-file>dawdler-cache-core*.jar</jar-file>
+ </jar-files>
   <!-- 需要扫描的jar包，支持antpath 被扫描的jar包中的组件会生效-->
  <packages-in-jar>
-    <package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
-   <package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
+    <package-path>com.anywide.dawdler.**.aspect</package-path>
    <package-path>com.anywide.dawdler.serverplug.db.mybatis.session</package-path>
    <package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
    <package-path>com.anywide.dawdler.serverplug.**.listener</package-path>

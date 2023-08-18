@@ -2,7 +2,7 @@ module dawdler.mybatis.core {
 	requires java.base;
 	requires transitive java.sql;
 	requires org.slf4j;
-	requires org.aspectj.runtime;
+	requires org.aspectj.weaver;
 	requires cglib;
 	requires javassist;
 	requires transitive java.naming;

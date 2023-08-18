@@ -195,11 +195,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjrt</artifactId>
-				<version>${aspectj.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
 				<version>${aspectj.version}</version>
 			</dependency>
@@ -435,7 +430,32 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-server-plug-config</artifactId>
+				<artifactId>dawdler-client-plug-config-center-consul</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-config-center-consul</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-caffeine</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-jedis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-circuit-breaker</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -505,14 +525,14 @@
 					<generateBackupPoms>false</generateBackupPoms>
 				</configuration>
 			</plugin>
-	<!--		<plugin>
+			<!--		<plugin>
 				<groupId>org.owasp</groupId>
-				<artifactId>dependency-check-maven</artifactId>
-				<version>8.1.2</version>
+			<artifactId>dependency-check-maven</artifactId>
+			<version>8.1.2</version>
 				<executions>
 					<execution>
 						<goals>
-							<goal>check</goal>
+			<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -549,5 +569,6 @@
 		<module>dawdler-schedule-plug</module>
 		<module>dawdler-discovery-center</module>
 		<module>dawdler-dependencies</module>
+		<module>dawdler-cache-plug</module>
 	</modules>
 </project>
