@@ -24,16 +24,16 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 <config>
  <scanner>
  <jar-files>
-    <jar-file>dawdler-server-plug*.jar</jar-file>
-    <jar-file>dawdler-distributed-transaction-core-0.0.2-RELEASES.jar</jar-file>
+   <jar-file>dawdler-server-plug*.jar</jar-file>
+   <jar-file>dawdler-distributed-transaction-core*.jar</jar-file>
+   <jar-file>dawdler-cache-core*.jar</jar-file>
  </jar-files>
-   <!-- 需要扫描的jar包，支持antpath 被扫描的jar包中的组件会生效-->
+  <!-- 需要扫描的jar包，支持antpath 被扫描的jar包中的组件会生效-->
  <packages-in-jar>
-    <package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
-    <package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
-    <package-path>com.anywide.dawdler.serverplug.db.mybatis.session</package-path>
-    <package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
-    <package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
+    <package-path>com.anywide.dawdler.**.aspect</package-path>
+   <package-path>com.anywide.dawdler.serverplug.db.mybatis.session</package-path>
+   <package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
+   <package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
    <!-- 需要扫描的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效.需要注意所有部署在此容器下的服务都会被扫描,如果需要单独服务配置请到具体服务的services-config.xml中配置对应的扫描器-->
   </packages-in-jar>
  </scanner>
@@ -201,7 +201,7 @@ dawdler示例中采用keytool制作的证书,服务器端配置在server-conf文
 keytool制作的证书的命令如下：
 
 ```shell
-keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=jackson,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass suxuan696@gmail.com
+keytool -validity 65535 -genkey -v -alias srchen -keyalg RSA -keystore dawdler.keystore -dname "CN=jackson,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN" -storepass suxuan696@gmail.com -keypass jackson.song
 
 keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696@gmail.com -rfc -file dawdler.cer
 ```

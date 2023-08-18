@@ -100,10 +100,10 @@ public class DeployClassesScanner {
 		}
 	}
 
-	public static Set<Class<?>> getClassesInPath(Scanner scanner, DeployScanner deployScanner, File file)
+	public static Set<Class<?>> getClassesInPath(Scanner scanner, DeployScanner deployScanner, File deploy)
 			throws ClassNotFoundException {
 		Set<Class<?>> classes = new LinkedHashSet<>();
-		findAndAddClassesInPackageByPath(scanner, deployScanner, "", file.getPath(), true, classes);
+		findAndAddClassesInPackageByPath(scanner, deployScanner, "", deploy.getPath(), true, classes);
 		return classes;
 	}
 

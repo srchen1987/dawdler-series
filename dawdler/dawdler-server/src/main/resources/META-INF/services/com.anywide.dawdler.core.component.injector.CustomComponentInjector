@@ -1,0 +1,4 @@
+com.anywide.dawdler.server.component.injector.DawdlerFilterInjector
+com.anywide.dawdler.server.component.injector.DawdlerServiceCreateListenerInjector
+com.anywide.dawdler.server.component.injector.DawdlerServiceListenerInjector
+com.anywide.dawdler.server.component.injector.ServiceInjector

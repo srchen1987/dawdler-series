@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
+import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
 import sun.misc.PerfCounter;
 import sun.misc.Resource;
@@ -177,16 +178,15 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	}
 
 	public Class<?> findClassForDawdler(final String name) throws ClassNotFoundException {
+		Class<?> clazz = findLoadedClass(name);
+		if (clazz != null) {
+			return clazz;
+		}
 		String path = name.replace('.', '/').concat(".class");
 		Resource res = ucp.getResource(path, false);
 		if (res != null) {
 			try {
-				Class<?> clazz = findLoadedClass(name);
-				if (clazz != null) {
-					return clazz;
-				}
-				clazz = defineClassForDawdler(name, res);
-				return clazz;
+				return defineClassForDawdler(name, res);
 			} catch (IOException e) {
 				throw new ClassNotFoundException(name, e);
 			}
@@ -204,7 +204,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	}
 
 	public Class<?> loadClassFromBytes(String name, byte[] classData, ClassLoader classLoader, CodeSource cs)
-			throws ClassNotFoundException {
+			throws ClassNotFoundException, IOException {
 		Method method = (Method) dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_METHOD);
 		Object aspectSupportObj = dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_OBJ);
 		if (aspectSupportObj != null) {
@@ -215,7 +215,9 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 				logger.error("", e);
 			}
 		}
-		return defineClass(name, classData, 0, classData.length, cs);
+		Class<?> clazz =  defineClass(name, classData, 0, classData.length, cs);
+		ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classData);
+		return clazz;
 	}
 
 	@Override

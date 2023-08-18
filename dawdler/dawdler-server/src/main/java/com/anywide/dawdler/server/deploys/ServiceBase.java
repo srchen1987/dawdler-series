@@ -17,13 +17,10 @@
 package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,11 +35,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.annotation.ListenerConfig;
-import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.core.annotation.RemoteService;
+import com.anywide.dawdler.core.component.injector.CustomComponentInjectionProvider;
+import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycleProvider;
-import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.core.health.Health;
 import com.anywide.dawdler.core.health.HealthIndicator;
 import com.anywide.dawdler.core.health.HealthIndicatorProvider;
@@ -60,10 +56,10 @@ import com.anywide.dawdler.server.listener.DawdlerListenerProvider;
 import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 import com.anywide.dawdler.server.service.ServicesManager;
 import com.anywide.dawdler.server.service.conf.ServicesConfig;
-import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
+import com.anywide.dawdler.util.aspect.AspectHolder;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 import com.anywide.dawdler.util.spring.antpath.StringUtils;
 
@@ -82,6 +78,7 @@ public class ServiceBase implements Service {
 	public static final String ASPECT_SUPPORT_METHOD = "aspectSupportMethod";
 	public static final String FILTER_PROVIDER = "filterProvider";
 	public static final String DAWDLER_LISTENER_PROVIDER = "dawdlerListenerProvider";
+	public static final String SERVICES_MANAGER = "servicesManager";
 	private static final String CLASSES_PATH = "classes";
 	private static final String LIB_PATH = "lib";
 	private final DawdlerDeployClassLoader classLoader;
@@ -122,16 +119,9 @@ public class ServiceBase implements Service {
 				host, port, servicesManager, antPathMatcher, healthCheck, startSemaphore, started, status);
 		classLoader.setDawdlerContext(dawdlerContext);
 		dawdlerContext.initServicesConfig();
-		try {
-			Class<?> clazz = classLoader.loadClass("org.aspectj.weaver.loadtime.Aj");
-			Object obj = clazz.getDeclaredConstructor().newInstance();
-			Method initializeMethod = clazz.getMethod("initialize");
-			initializeMethod.invoke(obj);
-			Method preProcessMethod = clazz.getMethod("preProcess", String.class, byte[].class, ClassLoader.class,
-					ProtectionDomain.class);
-			dawdlerContext.setAttribute(ASPECT_SUPPORT_METHOD, preProcessMethod);
-			dawdlerContext.setAttribute(ASPECT_SUPPORT_OBJ, obj);
-		} catch (Exception e) {
+		if(AspectHolder.aj != null) {
+			dawdlerContext.setAttribute(ASPECT_SUPPORT_METHOD, AspectHolder.preProcessMethod);
+			dawdlerContext.setAttribute(ASPECT_SUPPORT_OBJ, AspectHolder.aj);
 		}
 	}
 
@@ -159,8 +149,12 @@ public class ServiceBase implements Service {
 	@Override
 	public void start() throws Throwable {
 		resetContextClassLoader();
+		List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider.getInstance(deployName).getCustomComponentInjectors();
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
 				.getComponentLifeCycles();
+		dawdlerContext.setAttribute(FILTER_PROVIDER, filterProvider);
+		dawdlerContext.setAttribute(DAWDLER_LISTENER_PROVIDER, dawdlerListenerProvider);
+		dawdlerContext.setAttribute(SERVICES_MANAGER, servicesManager);
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().prepareInit();
@@ -195,55 +189,63 @@ public class ServiceBase implements Service {
 		
 		Set<Class<?>> classes;
 		classes = DeployClassesScanner.getClassesInPath(scanner, deployScanner, deploy);
-		Set<Class<?>> serviceClasses = new HashSet<>();
 		for (Class<?> c : classes) {
 			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
 					&& ((c.getModifiers() & 16384) != 16384) && ((c.getModifiers() & 8192) != 8192)
 					&& ((c.getModifiers() & 512) != 512)) {
-				if (DawdlerServiceListener.class.isAssignableFrom(c)) {
-					DawdlerServiceListener listener = (DawdlerServiceListener) SunReflectionFactoryInstantiator
-							.newInstance(c);
-					dawdlerListenerProvider.addListener(listener);
-				}
-				if (DawdlerServiceCreateListener.class.isAssignableFrom(c)) {
-					DawdlerServiceCreateListener dl = (DawdlerServiceCreateListener) SunReflectionFactoryInstantiator
-							.newInstance(c);
-					servicesManager.getDawdlerServiceCreateProvider().addServiceCreate(dl);
-				}
-				if (DawdlerFilter.class.isAssignableFrom(c)) {
-					Order order = c.getAnnotation(Order.class);
-					DawdlerFilter filter = (DawdlerFilter) SunReflectionFactoryInstantiator.newInstance(c);
-					OrderData<DawdlerFilter> orderData = new OrderData<>();
-					orderData.setData(filter);
-					if (order != null) {
-						orderData.setOrder(order.value());
+				
+				for(OrderData<CustomComponentInjector> data : customComponentInjectorList) {
+					CustomComponentInjector customComponentInjector = data.getData();
+					boolean inject = false;
+					Class<?>[] matchTypes = data.getData().getMatchTypes();
+					if(matchTypes != null) {
+						for(Class<?> matchType : matchTypes) {
+							if(matchType.isAssignableFrom(c)) {
+								inject = true;
+								break;
+							}
+						}
 					}
-					filterProvider.addFilter(filter);
-				}
-
-				if (servicesManager.isService(c)) {
-					serviceClasses.add(c);
+					if(!inject) {
+						Set<? extends Class<? extends Annotation>> annotationSet = data.getData().getMatchAnnotations();
+						if(annotationSet != null) {
+							for( Class<? extends Annotation> annotationType : annotationSet) {
+								Annotation annotation = c.getAnnotation(annotationType);
+								if (annotation != null) {
+									inject = true;
+								} else {
+									Class<?>[] interfaceList = c.getInterfaces();
+									for (Class<?> clazz : interfaceList) {
+										annotation = clazz.getAnnotation(annotationType);
+										if (annotation != null) {
+											inject = true;
+											break;
+										}
+									}
+								}
+							}
+						}
+					}
+					if(inject) {
+						Object target =SunReflectionFactoryInstantiator
+								.newInstance(c);
+						customComponentInjector.inject(c, target);
+					}
 				}
 			}
 		}
-		for (Class<?> c : serviceClasses) {
-			servicesManager.smartRegister(c);
-		}
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		servicesManager.fireCreate(dawdlerContext);
-
 		dawdlerListenerProvider.order();
 		filterProvider.orderAndBuildChain();
 
 		for (OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
-			injectService(data.getData());
+			ServicesManager.injectService(data.getData());
 		}
 
 		for (OrderData<DawdlerFilter> data : filterProvider.getFilters()) {
-			injectService(data.getData());
+			ServicesManager.injectService(data.getData());
 		}
-		dawdlerContext.setAttribute(FILTER_PROVIDER, filterProvider);
-		dawdlerContext.setAttribute(DAWDLER_LISTENER_PROVIDER, dawdlerListenerProvider);
 
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
@@ -254,6 +256,7 @@ public class ServiceBase implements Service {
 		}
 		dawdlerContext.removeAttribute(FILTER_PROVIDER);
 		dawdlerContext.removeAttribute(DAWDLER_LISTENER_PROVIDER);
+		dawdlerContext.removeAttribute(SERVICES_MANAGER);
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
 			ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
 			if (listenerConfig != null && listenerConfig.asyn()) {
@@ -346,41 +349,6 @@ public class ServiceBase implements Service {
 		return serviceExecutor;
 	}
 
-	private void injectService(Object service) throws Throwable {
-		Field[] fields = service.getClass().getDeclaredFields();
-		for (Field field : fields) {
-			com.anywide.dawdler.core.annotation.Service serviceAnnotation = field
-					.getAnnotation(com.anywide.dawdler.core.annotation.Service.class);
-			if (!field.getType().isPrimitive()) {
-				Class<?> serviceClass = field.getType();
-				field.setAccessible(true);
-				try {
-					Object obj = null;
-					if (serviceAnnotation != null) {
-						if (!serviceAnnotation.remote()) {
-							obj = dawdlerContext.getServiceProxy(serviceClass);
-						} else {
-							RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
-							if (remoteService == null) {
-								throw new NotSetRemoteServiceException(
-										"not found @RemoteService on " + serviceClass.getName());
-							}
-							Class<?> serviceFactoryClass = classLoader
-									.loadClass("com.anywide.dawdler.client.ServiceFactory");
-							Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class);
-							String groupName = remoteService.value();
-							obj = method.invoke(null, serviceClass, groupName);
-						}
-						if (obj != null) {
-							field.set(service, obj);
-						}
-					}
-				} catch (Exception e) {
-					logger.error("", e);
-				}
-			}
-		}
-	}
 
 	private void resetContextClassLoader() {
 		Thread.currentThread().setContextClassLoader(classLoader);
