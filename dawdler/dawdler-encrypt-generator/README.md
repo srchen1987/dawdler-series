@@ -75,12 +75,15 @@ properties中支持加密内容需要使用 ENC(加密内容) 标识.
 addr=localhost
 port=6379
 auth=ENC(%2FkVZfdVQAuyD%2FXUNqzSQGw%3D%3D)
-database=15
-max_active=20
-max_idle=8
-max_wait=10000
+pool.maxTotal=20 #最大连接数
+pool.minIdle=2 #最小空闲数
+pool.maxIdle=8 #最大空闲数
+pool.maxWaitMillis=10000 #最大等待时长(单位毫秒)
+pool.testOnBorrow=false #获取连接时是否验证连接有效 默认为false
+pool.testOnCreate=false #创建连接时是否验证连接有效 默认为false
+pool.testOnReturn=false #反还连接时是否验证连接有效 默认为false
 timeout=10000
-test_on_borrow=true 
+test_on_borrow=true
 ```
 
 目前支持的模块有rabbitmq,redis,elasticSearch以及所有使用com.anywide.dawdler.util.PropertiesUtil来读取的自定义properties应用.

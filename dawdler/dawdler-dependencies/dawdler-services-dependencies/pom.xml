@@ -182,6 +182,16 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-caffeine</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-jedis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
@@ -225,11 +235,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjrt</artifactId>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
 				<scope>provided</scope>
 			</dependency>
@@ -237,7 +242,6 @@
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<scope>provided</scope>
-				<version>${gson.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

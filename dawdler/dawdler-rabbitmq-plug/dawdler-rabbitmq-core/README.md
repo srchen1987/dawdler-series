@@ -20,19 +20,18 @@ virtualHost=/ #虚拟host
 username=mq_user #用户名
 password=mq_user #密码
 networkRecoveryInterval=3000 #网络中断自动重连频率 3000ms 单位毫秒
-ttlTime=5000 #重试队列的时间,单位ms,当引入了dawdler-server-plug-rabbitmq才会生效
 confirmSelect=true #开启confirm模式
 pool.maxTotal=32 #最大连接
 pool.maxWaitMillis=5000 #最大等待时长(单位毫秒)
 pool.minIdle=0 #最小空闲数
 pool.maxIdle=4 #最大空闲数
+pool.testOnBorrow=true #获取之前校验连接
+pool.testOnCreate=false #创建后校验连接
+pool.testOnReturn=true #返回到池之前校验连接
 confirmSelect=true #开启confirm模式 一般配合ConfirmListener使用,参考RabbitProvider中publishIfFaildRetry方法
 channel.size=16 #每个connection中的channel数量
 channel.getTimeout=15000 #获取channel的超时事件(单位毫秒)
 ttlTime=5000 #消费者消费失败后重试的时间 单位ms,需要配合@RabbitListener来使用 
-testOnBorrow=true #获取之前校验连接
-testOnCreate=false #创建后校验连接
-testOnReturn=true #返回到池之前校验连接
 ```
 
 ### 3. RabbitInjector注解

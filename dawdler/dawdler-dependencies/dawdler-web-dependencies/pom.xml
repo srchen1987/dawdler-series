@@ -81,6 +81,16 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-caffeine</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-jedis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<version>${gson.version}</version>

@@ -33,11 +33,6 @@
 				</exclusion>
 				<exclusion>
 					<groupId>org.aspectj</groupId>
-					<artifactId>aspectjrt</artifactId>
-				</exclusion>
-
-				<exclusion>
-					<groupId>org.aspectj</groupId>
 					<artifactId>aspectjweaver</artifactId>
 				</exclusion>
 				<exclusion>

@@ -208,11 +208,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
-				<artifactId>aspectjrt</artifactId>
-				<version>${aspectj.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
 				<version>${aspectj.version}</version>
 			</dependency>
@@ -457,6 +452,26 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-caffeine</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-cache-jedis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-circuit-breaker</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>co.elastic.clients</groupId>
 				<artifactId>elasticsearch-java</artifactId>
 				<version>${elasticsearch.version}</version>
@@ -531,5 +546,6 @@
 		<module>dawdler-schedule-plug</module>
 		<module>dawdler-discovery-center</module>
 		<module>dawdler-dependencies</module>
+		<module>dawdler-cache-plug</module>
 	</modules>
 </project>
