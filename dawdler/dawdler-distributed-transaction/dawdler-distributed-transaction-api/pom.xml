@@ -13,13 +13,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
+			<artifactId>aspectjweaver</artifactId>
 			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-circuit-breaker</artifactId>
-			<version>0.17.1-jdk17-RELEASES</version>
 		</dependency>
 	</dependencies>
 </project>

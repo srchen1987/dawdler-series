@@ -28,7 +28,7 @@
 												use="required" />
 											<xs:attribute name="channel-group-id" use="required"
 												type="xs:string" />
-											<xs:attribute name="mode" fixed="run" />
+											<xs:attribute name="mode" type="t_mode"/>
 										</xs:extension>
 									</xs:simpleContent>
 								</xs:complexType>
@@ -63,6 +63,13 @@
 		<xs:restriction base="xs:integer">
 			<xs:minInclusive value="1" />
 			<xs:maxInclusive value="8" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<xs:simpleType name="t_mode">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="run" />
+			<xs:enumeration value="debug" />
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

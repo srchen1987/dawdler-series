@@ -24,6 +24,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamClass;
 
+import com.anywide.dawdler.core.serializer.SerializeDecider.SerializeType;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -90,7 +92,7 @@ public class JDKDefaultSerializer implements Serializer {
 
 	@Override
 	public byte key() {
-		return 1;
+		return SerializeType.JDK.getType();
 	}
 
 }

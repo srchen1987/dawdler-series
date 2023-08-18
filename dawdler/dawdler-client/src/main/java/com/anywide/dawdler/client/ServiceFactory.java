@@ -53,7 +53,7 @@ public class ServiceFactory {
 		return getService(delegate, groupName, remoteService.loadBalance());
 	}
 
-	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance,
+	public static <T> T getService(Class<T> delegate, String groupName, String loadBalance,
 			ClassLoader classLoader) {
 		if (classLoader == null) {
 			classLoader = Thread.currentThread().getContextClassLoader();
@@ -78,15 +78,15 @@ public class ServiceFactory {
 		return (T) obj;
 	}
 
-	public static <T> T getService(final Class<T> delegate, String groupName) {
+	public static <T> T getService(Class<T> delegate, String groupName) {
 		return getService(delegate, groupName, null, null);
 	}
 
-	public static <T> T getService(final Class<T> delegate, String groupName, String loadBalance) {
+	public static <T> T getService(Class<T> delegate, String groupName, String loadBalance) {
 		return getService(delegate, groupName, loadBalance, null);
 	}
 
-	private static <T> T createCglibDynamicProxy(final Class<T> delegate, String groupName, String loadBalance,
+	private static <T> T createCglibDynamicProxy(Class<T> delegate, String groupName, String loadBalance,
 			ClassLoader classLoader) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setCallback(new CglibInterceptor(delegate, groupName, loadBalance));

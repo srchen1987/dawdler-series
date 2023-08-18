@@ -20,7 +20,6 @@ virtualHost=/ #虚拟host
 username=mq_user #用户名
 password=mq_user #密码
 networkRecoveryInterval=3000 #网络中断自动重连频率 3000ms 单位毫秒
-ttlTime=5000 #重试队列的时间,单位ms,当引入了dawdler-server-plug-rabbitmq才会生效
 confirmSelect=true #开启confirm模式
 pool.maxTotal=32 #最大连接
 pool.maxWaitMillis=5000 #最大等待时长(单位毫秒)

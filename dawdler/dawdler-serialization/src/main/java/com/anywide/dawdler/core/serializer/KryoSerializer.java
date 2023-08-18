@@ -21,6 +21,7 @@ import java.util.Map;
 
 import org.objenesis.strategy.StdInstantiatorStrategy;
 
+import com.anywide.dawdler.core.serializer.SerializeDecider.SerializeType;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
@@ -114,7 +115,7 @@ public class KryoSerializer implements Serializer {
 
 	@Override
 	public byte key() {
-		return 2;
+		return SerializeType.KRYO.getType();
 	}
 
 	@Override

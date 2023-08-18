@@ -36,7 +36,6 @@ import org.w3c.dom.Node;
 
 import com.anywide.dawdler.server.service.conf.ServicesConfig.DataSourceExpression;
 import com.anywide.dawdler.server.service.conf.ServicesConfig.Decision;
-import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlTool;
 
 /**
@@ -135,10 +134,9 @@ public class ServicesConfigParser {
 		}
 	}
 
-	public ServicesConfigParser() throws Exception {
+	public ServicesConfigParser(String xmlPath) throws Exception {
 		servicesConfig = new ServicesConfig();
 		URL url = getClass().getClassLoader().getResource("services-config.xsd");
-		String xmlPath = DawdlerTool.getCurrentPath() + "services-config.xml";
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		factory.setIgnoringElementContentWhitespace(true);
 		factory.setNamespaceAware(true);
@@ -175,5 +173,6 @@ public class ServicesConfigParser {
 			}
 		}
 	}
+	
 	
 }
