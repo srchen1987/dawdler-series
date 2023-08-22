@@ -112,9 +112,9 @@ public interface ProductService {
 web端将发起者声明在web接口中(分布式事务框架也支持将发起者放在服务端做,服务端再调用多个服务,一般不建议这么做).
 
 ```java
-
 @RequestMapping(value = "/order")
-public class OrderController extends TransactionController {
+@Controller
+public class OrderController {
  @Service
  UserService userService;//注入用户服务
 
@@ -127,28 +127,26 @@ public class OrderController extends TransactionController {
  
  @DistributedTransaction(action = "createOrder",sponsor = true)//标识为分布式事务的发起者
  @RequestMapping(value = "/createOrder.do", viewType = ViewType.json)
- public void createOrder(@RequestParam Integer productId, @RequestParam Integer stock,
+ @ResponseBody
+ public Map<String, Object> createOrder(@RequestParam Integer productId, @RequestParam Integer stock,
    @RequestParam BigDecimal amount) throws Exception {
   int userId = 1;//定义一个用户id
   Map<String, Object> result;
-//  RpcContext.getContext().setAttachment("testdata", "test");
   boolean success = orderService.createOrder(userId, productId, amount);//调用创建订单服务
   if(!success) {
    result = new HashMap<>();
    result.put("success", false);
    result.put("msg", "订单创建失败!");
-   setData(result);
-   return;
+   return result;
   }
   result = userService.tryPayment(userId, amount);//扣减用户金额
   success = (boolean) result.get("success");
   if(!success) {
-   setData(result);
-   return;
+   return result;
   }
 
   result = productService.tryDeductStock(productId, stock);//扣减库存
-  setData(result);
+  return result;
  }
 ```
 

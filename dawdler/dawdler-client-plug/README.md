@@ -15,9 +15,7 @@ webmvc模块,使用上基本与springmvc一致.提供远程加载组件的客户
 
 #### 2.1 创建Controller
 
-编写一个Controller继承com.anywide.dawdler.clientplug.web.TransactionController或在类上加入注解@Controller.
-
-TransactionController由于历史原因所以保留了这个类,里面提供了很多便捷的param系列的方法,目前不推荐使用.文档生成器也不再支持TransactionController.
+编写一个Controller类上加入注解@Controller.
 
 #### 2.2 创建API
 
@@ -153,29 +151,7 @@ createOrder(@RequestParam("pid") Integer productId, @RequestParam Integer stock,
 
 stock参数表单提交需要传入stock
 
-示例2：
-继承TransactionController
-
-```java
-@RequestMapping(value = "/order") //注解RequestMapping放在类上 该类所有的webApi访问都必须以/order开头
-public class OrderController extends TransactionController {
- 
- @RequestMapping(value = "/createOrder.do", viewType = ViewType.json)
- public void createOrder(@RequestParam Integer productId, @RequestParam Integer stock,
-   @RequestParam BigDecimal amount) throws Exception {
-  Map<String, Object> result = new HashMap<>();
-  result.put("success", true);
-  setData(result);
- }
- 
- 
- @RequestMapping(value = "/order.html", viewType = ViewType.velocity)
- public void order() throws Exception {
-  setTemplatePath("order/add.html");
- }
-```
-
- 示例3：@Controller注解
+ 示例2：@Controller注解
 
 ```java
 @Controller
@@ -193,12 +169,12 @@ public class OrderController {
  
  @RequestMapping(value = "/order.html", viewType = ViewType.velocity)
  public void order(ViewForward viewForward) throws Exception {
-  viewForward.setTemplatePath("order/add.html");//由于没有继承TransactionController 所以需要注入ViewForward 来设置templatePath
+  viewForward.setTemplatePath("order/add.html");//注入ViewForward 来设置templatePath
  }
 
 ```
 
- 示例4：@ResponseBody注解
+ 示例3：@ResponseBody注解
 
 ```java
 @Controller
@@ -289,7 +265,7 @@ public class UserWebContextListener implements WebContextListener {
 
 ViewForward是一个传递request,response,设置模板路径,指定响应状态等等的一个类.
 
-ViewForward可以注入到方法参数列表中,也可以继承TransactionController(内部通过包装ViewForward支持相关的方法调用).
+ViewForward可以注入到方法参数列表中.
 
 常用方法：
 
