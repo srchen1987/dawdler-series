@@ -19,12 +19,13 @@ package com.anywide.dawdler.clientplug.jedis.fire;
 import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.jedis.JedisOperatorFactory;
+import com.anywide.dawdler.jedis.lock.JedisDistributedLockHolderFactory;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title JedisClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入JedisOperator
+ * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入JedisOperator,JedisDistributedLock
  * @date 2022年4月16日
  * @email suxuan696@gmail.com
  */
@@ -34,6 +35,7 @@ public class JedisClassLoaderFire implements RemoteClassLoaderFire {
 	@Override
 	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
 		JedisOperatorFactory.initField(target, clazz);
+		JedisDistributedLockHolderFactory.initField(target, clazz);
 	}
 
 	@Override
