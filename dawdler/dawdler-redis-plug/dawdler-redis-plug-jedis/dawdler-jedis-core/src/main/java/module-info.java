@@ -12,6 +12,7 @@ module dawdler.jedis.core {
 	requires transitive redis.clients.jedis;
 
 	exports com.anywide.dawdler.jedis;
+	exports com.anywide.dawdler.jedis.lock;
 
 	uses ComponentLifeCycle;
 
