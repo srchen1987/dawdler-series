@@ -17,6 +17,7 @@
 package com.anywide.dawdler.serverplug.jedis.listener;
 
 import com.anywide.dawdler.jedis.JedisOperatorFactory;
+import com.anywide.dawdler.jedis.lock.JedisDistributedLockHolderFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
@@ -24,7 +25,7 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
  * @author jackson.song
  * @version V1.0
  * @Title InjectServiceCreateListener.java
- * @Description 实现JedisOperator的注入
+ * @Description 实现JedisOperator,JedisDistributedLock的注入
  * @date 2022年4月16日
  * @email suxuan696@gmail.com
  */
@@ -34,6 +35,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 	public void create(Object service, boolean single, DawdlerContext context) throws Throwable {
 		Class<?> serviceType = service.getClass();
 		JedisOperatorFactory.initField(service, serviceType);
+		JedisDistributedLockHolderFactory.initField(service, serviceType);
 	}
 
 }
