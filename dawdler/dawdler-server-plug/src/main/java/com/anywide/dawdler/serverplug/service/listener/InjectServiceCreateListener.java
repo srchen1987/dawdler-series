@@ -17,8 +17,8 @@
 package com.anywide.dawdler.serverplug.service.listener;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
-import com.anywide.dawdler.client.ServiceFactory;
 import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.annotation.Service;
 import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
@@ -52,8 +52,11 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 					if (remoteService == null) {
 						throw new NotSetRemoteServiceException("not found @RemoteService on " + serviceClass.getName());
 					}
+					Class<?> serviceFactoryClass = Class.forName("com.anywide.dawdler.client.ServiceFactory");
+					Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class, String.class,
+							ClassLoader.class);
 					String groupName = remoteService.value();
-					field.set(service, ServiceFactory.getService(serviceClass, groupName, remoteService.loadBalance(),
+					field.set(service, method.invoke(null, serviceClass, groupName, remoteService.loadBalance(),
 							dawdlerContext.getClassLoader()));
 				} else {
 					field.set(service, dawdlerContext.getServiceProxy(serviceClass));
