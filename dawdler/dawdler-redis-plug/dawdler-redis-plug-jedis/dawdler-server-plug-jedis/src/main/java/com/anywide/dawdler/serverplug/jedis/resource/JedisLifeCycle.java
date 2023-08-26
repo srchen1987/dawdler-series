@@ -21,6 +21,7 @@ import java.util.List;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.jedis.JedisOperatorFactory;
+import com.anywide.dawdler.jedis.lock.JedisDistributedLockHolderFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.deploys.ServiceBase;
 import com.anywide.dawdler.server.filter.DawdlerFilter;
@@ -32,7 +33,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
  * @author jackson.song
  * @version V1.0
  * @Title JedisLifeCycle.java
- * @Description 实现向监听器,过滤器注入JedisOperator
+ * @Description 实现向监听器,过滤器注入JedisOperator,JedisDistributedLock
  * @date 2022年4月17日
  * @email suxuan696@gmail.com
  */
@@ -52,10 +53,12 @@ public class JedisLifeCycle implements ComponentLifeCycle {
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerServiceListeners) {
 			DawdlerServiceListener dawdlerServiceListener = orderData.getData();
 			JedisOperatorFactory.initField(dawdlerServiceListener, dawdlerServiceListener.getClass());
+			JedisDistributedLockHolderFactory.initField(dawdlerServiceListener, dawdlerServiceListener.getClass());
 		}
 		for (OrderData<DawdlerFilter> orderData : dawdlerFilters) {
 			DawdlerFilter dawdlerFilter = orderData.getData();
 			JedisOperatorFactory.initField(dawdlerFilter, dawdlerFilter.getClass());
+			JedisDistributedLockHolderFactory.initField(dawdlerFilter, dawdlerFilter.getClass());
 		}
 	}
 

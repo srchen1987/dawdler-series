@@ -22,8 +22,8 @@ import java.util.Set;
 
 import com.anywide.dawdler.core.health.Health;
 import com.anywide.dawdler.core.health.Health.Builder;
-import com.anywide.dawdler.jedis.JedisPoolFactory;
 import com.anywide.dawdler.core.health.HealthIndicator;
+import com.anywide.dawdler.jedis.JedisPoolFactory;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
