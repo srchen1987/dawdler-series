@@ -8,7 +8,7 @@
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug-jedis</artifactId>
-	<name>dawdler-server-plug-redis</name>
+	<name>dawdler-server-plug-jedis</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>

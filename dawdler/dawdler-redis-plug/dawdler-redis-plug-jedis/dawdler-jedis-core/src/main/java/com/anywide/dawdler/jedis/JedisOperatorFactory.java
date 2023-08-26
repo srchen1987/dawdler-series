@@ -37,7 +37,7 @@ import redis.clients.jedis.util.Pool;
  * @email suxuan696@gmail.com
  */
 public class JedisOperatorFactory {
-	private static Map<String, JedisOperator> JedisOperators = new ConcurrentHashMap<>();
+	private final static Map<String, JedisOperator> JEDIS_OPERATORS = new ConcurrentHashMap<>();
 
 	public static class JedisHandler implements InvocationHandler {
 		private Pool<Jedis> pool;
@@ -67,17 +67,17 @@ public class JedisOperatorFactory {
 	private static Class<?>[] jedisOperatorClass = new Class[] { JedisOperator.class };
 
 	public static JedisOperator getJedisOperator(String fileName) throws Exception {
-		JedisOperator operator = JedisOperators.get(fileName);
+		JedisOperator operator = JEDIS_OPERATORS.get(fileName);
 		if (operator != null) {
 			return operator;
 		}
-		synchronized (JedisOperators) {
-			operator = JedisOperators.get(fileName);
+		synchronized (JEDIS_OPERATORS) {
+			operator = JEDIS_OPERATORS.get(fileName);
 			if (operator == null) {
 				JedisHandler handler = new JedisHandler(JedisPoolFactory.getJedisPool(fileName));
 				operator = (JedisOperator) Proxy.newProxyInstance(JedisOperator.class.getClassLoader(),
 						jedisOperatorClass, handler);
-				JedisOperators.put(fileName, operator);
+				JEDIS_OPERATORS.put(fileName, operator);
 			}
 		}
 		return operator;
@@ -91,7 +91,7 @@ public class JedisOperatorFactory {
 				Class<?> serviceClass = field.getType();
 				if (jedisInjector != null && JedisOperator.class.isAssignableFrom(serviceClass)) {
 					field.setAccessible(true);
-					field.set(target, JedisOperatorFactory.getJedisOperator(jedisInjector.value()));
+					field.set(target, getJedisOperator(jedisInjector.value()));
 				}
 			}
 		}
