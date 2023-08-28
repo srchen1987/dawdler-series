@@ -64,10 +64,8 @@ public class JedisDistributedLockHolderFactory {
 			JedisLockInjector jedisLockInjector = field.getAnnotation(JedisLockInjector.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
-				System.out.println("serviceClass:" + serviceClass);
 				if (jedisLockInjector != null && JedisDistributedLockHolder.class.isAssignableFrom(serviceClass)) {
 					field.setAccessible(true);
-					System.out.println("holder :" + getJedisDistributedLockHolder(jedisLockInjector));
 					field.set(target, getJedisDistributedLockHolder(jedisLockInjector));
 				}
 			}
