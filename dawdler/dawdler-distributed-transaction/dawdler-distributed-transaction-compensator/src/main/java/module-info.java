@@ -1,6 +1,6 @@
 module dawdler.distributed.transaction.compensator {
 	requires java.base;
-	requires dawdler.distributed.transaction.core;
+	requires transitive dawdler.distributed.transaction.core;
 	requires dawdler.core;
 	requires dawdler.distributed.transaction.api;
 	requires dawdler.util;
