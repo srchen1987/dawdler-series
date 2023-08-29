@@ -118,14 +118,12 @@ public class WebApiGenerator {
 			if (isController) {
 				ControllerData data = new ControllerData();
 				DocletTag docletTag = javaClass.getTagByName("Description");
-				String describe;
+				String summary =  javaClass.getComment();
 				if (docletTag != null) {
-					describe = docletTag.getValue();
-				} else {
-					describe = javaClass.getBinaryName();
+					summary += docletTag.getValue();
 				}
 				data.setName(javaClass.getBinaryName());
-				data.setDescription(describe);
+				data.setDescription(summary);
 				controllers.add(data);
 				MethodParser.generateMethodParamCode(rootMap, pathMap, classStructs, definitionsMap, javaClass,
 						requestMappingAnnotation);
