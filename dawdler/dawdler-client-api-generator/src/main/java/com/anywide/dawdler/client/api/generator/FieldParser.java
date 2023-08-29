@@ -118,13 +118,24 @@ public class FieldParser {
 									DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) javaType;
 									array = ClassTypeUtil.isArray(dt.getBinaryName());
 									List<JavaType> typeArguments = dt.getActualTypeArguments();
-									if (!typeArguments.isEmpty()) {
-										JavaType typeArgument = typeArguments.get(0);
-										if (typeArgument != null) {
-											originalFieldTypeName = typeArgument.getFullyQualifiedName();
-											binaryName = typeArgument.getBinaryName();
-											genericFullyQualifiedFieldName = typeArgument
-													.getGenericFullyQualifiedName();
+									genericFullyQualifiedFieldName = dt.getGenericFullyQualifiedName();
+									MethodParameterData fieldparameterData = new MethodParameterData();
+									fieldparameterData.setType(genericFullyQualifiedFieldName);
+									propertiesMap.put(javaField.getName(), fieldparameterData);
+									if (dt.getBinaryName().equals("java.util.Map")) {
+										continue;
+									} else {
+										if (!typeArguments.isEmpty()) {
+											JavaType typeArgument = typeArguments.get(0);
+											if (typeArgument != null) {
+												if (typeArgument.getBinaryName().equals("java.util.Map")) {
+													continue;
+												}
+												originalFieldTypeName = typeArgument.getFullyQualifiedName();
+												binaryName = typeArgument.getBinaryName();
+												genericFullyQualifiedFieldName = typeArgument
+														.getGenericFullyQualifiedName();
+											}
 										}
 									}
 								}
