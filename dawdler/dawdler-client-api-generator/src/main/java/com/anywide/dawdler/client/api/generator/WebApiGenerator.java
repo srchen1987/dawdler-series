@@ -118,7 +118,7 @@ public class WebApiGenerator {
 			if (isController) {
 				ControllerData data = new ControllerData();
 				DocletTag docletTag = javaClass.getTagByName("Description");
-				String summary =  javaClass.getComment();
+				String summary = javaClass.getComment();
 				if (docletTag != null) {
 					summary += docletTag.getValue();
 				}
