@@ -16,6 +16,11 @@
  */
 package com.anywide.dawdler.client.api.generator.util;
 
+import java.util.List;
+
+import com.thoughtworks.qdox.model.JavaType;
+import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -40,6 +45,16 @@ public class ClassTypeUtil {
 	public static boolean isArray(String binaryName) {
 		return binaryName.equals("java.util.List") || binaryName.equals("java.util.Set")
 				|| binaryName.equals("java.util.Collection") || binaryName.equals("java.util.Vector");
+	}
+
+	public static String getType0(JavaType javaType) {
+		DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) javaType;
+		List<JavaType> dtList = dt.getActualTypeArguments();
+		if (!dtList.isEmpty()) {
+			JavaType actualTypeArgument = dtList.get(0);
+			return actualTypeArgument.getBinaryName();
+		}
+		return null;
 	}
 
 }
