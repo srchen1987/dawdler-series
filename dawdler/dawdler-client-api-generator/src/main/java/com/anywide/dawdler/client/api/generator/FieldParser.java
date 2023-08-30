@@ -131,10 +131,6 @@ public class FieldParser {
 												if (typeArgument.getBinaryName().equals("java.util.Map")) {
 													continue;
 												}
-												originalFieldTypeName = typeArgument.getFullyQualifiedName();
-												binaryName = typeArgument.getBinaryName();
-												genericFullyQualifiedFieldName = typeArgument
-														.getGenericFullyQualifiedName();
 											}
 										}
 									}
