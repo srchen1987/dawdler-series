@@ -62,8 +62,7 @@ public class FieldParser {
 					parameterData.setIn("query");
 					params.put(field.getName(), parameterData);
 					parameterData.setDescription(field.getComment());
-					ParserTypeData.convertion(field.getType().getFullyQualifiedName(), parameterData, classStructs,
-							params, isArray);
+					ParserTypeData.convertion(field.getType(), parameterData, classStructs, params, isArray);
 				}
 			}
 		}
@@ -83,12 +82,13 @@ public class FieldParser {
 			DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) fieldJavaType;
 			List<JavaType> dtList = dt.getActualTypeArguments();
 			if (!dtList.isEmpty()) {
-				typeName = dtList.get(0).getBinaryName();
-				originalFullyQualifiedName = dtList.get(0).getFullyQualifiedName();
-				genericFullyQualifiedName = dtList.get(0).getGenericFullyQualifiedName();
+				JavaType javaType = dtList.get(0);
+				typeName = javaType.getBinaryName();
+				originalFullyQualifiedName = javaType.getFullyQualifiedName();
+				genericFullyQualifiedName = javaType.getGenericFullyQualifiedName();
 			}
 		}
-		if (!definitionsMap.containsKey(typeName)) {
+		if (!definitionsMap.containsKey(genericFullyQualifiedName)) {
 			TypeData typeData = TypesConverter.getType(typeName);
 			if (typeData == null) {
 				ClassStruct classStruct = classStructs.get(typeName);
