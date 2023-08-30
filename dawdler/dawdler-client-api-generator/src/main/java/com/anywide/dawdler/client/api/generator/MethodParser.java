@@ -189,7 +189,10 @@ public class MethodParser {
 						type = typeName;
 					}
 					boolean array = false;
-					if (type.endsWith("[]")) {
+					if (ClassTypeUtil.isArray(javaParameter.getType().getBinaryName())) {
+						type = ClassTypeUtil.getType0(javaParameter.getType());
+						array = true;
+					} else if (type.endsWith("[]")) {
 						type = type.substring(0, type.lastIndexOf("[]"));
 						array = true;
 					}
@@ -205,9 +208,23 @@ public class MethodParser {
 						} else {
 							schema.set$ref("#/definitions/" + type);
 						}
+					} else {
+						schema = new SchemaData();
+						required = true;
+						if (array) {
+							schema.setType("array");
+						}
+						ItemsData items = new ItemsData();
+						TypeData typeData = TypesConverter.getType(type);
+						if (typeData != null) {
+							items.setType(typeData.getType());
+							items.setFormat(typeData.getFormat());
+						}
+						schema.setItems(items);
 					}
 				} else {
-					ParserTypeData.convertion(typeName, parameterData, classStructs, methodParameterMap, false);
+					ParserTypeData.convertion(javaParameter.getType(), parameterData, classStructs, methodParameterMap,
+							false);
 				}
 				parameterData.setIn(in);
 				parameterData.setRequired(required);
@@ -217,7 +234,7 @@ public class MethodParser {
 			Map<String, Object> elements = new LinkedHashMap<>();
 			elements.put("tags", new String[] { javaClass.getBinaryName() });
 			DocletTag descriptionTag = method.getTagByName("Description");
-			String summary =  method.getComment();
+			String summary = method.getComment();
 			if (descriptionTag != null) {
 				summary += descriptionTag.getValue();
 			}
