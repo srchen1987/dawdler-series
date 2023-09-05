@@ -96,11 +96,6 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-mybatis-core</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-mybatis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
