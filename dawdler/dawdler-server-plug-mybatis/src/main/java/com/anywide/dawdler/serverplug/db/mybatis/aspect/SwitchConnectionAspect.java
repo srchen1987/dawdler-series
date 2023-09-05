@@ -34,8 +34,14 @@ import com.anywide.dawdler.util.TLS;
  */
 @Aspect
 public class SwitchConnectionAspect {
+	static {
+		try {
+			Class.forName("org.apache.ibatis.session.defaults.DefaultSqlSession");
+		} catch (ClassNotFoundException e) {
+		}
+	}
 
-	@Around("execution(*  com.anywide.dawdler.serverplug.db.mybatis.session.DefaultSqlSession.selectList(..)) && args(String,Object,org.apache.ibatis.session.RowBounds)")
+	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(..)) && args(String,Object,org.apache.ibatis.session.RowBounds)")
 	public Object select(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getReadConnection());
@@ -47,7 +53,7 @@ public class SwitchConnectionAspect {
 		}
 	}
 
-	@Around("execution(*  com.anywide.dawdler.serverplug.db.mybatis.session.DefaultSqlSession.update(..)) && args(String,Object)")
+	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.update(..)) && args(String,Object)")
 	public Object update(ProceedingJoinPoint pjp) throws Throwable {
 		try {
 			TLS.set(DawdlerMybatisTransaction.CURRENT_CONNECTION, LocalConnectionFactory.getWriteConnection());
