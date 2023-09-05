@@ -28,7 +28,6 @@
 		<rabbitmq.version>5.12.0</rabbitmq.version>
 		<caffeine.version>2.9.3</caffeine.version>
 		<jsoup.version>1.16.1</jsoup.version>
-		<ognl.version>3.2.20</ognl.version>
 		<aspectj.version>1.9.6</aspectj.version>
 		<javassist.version>3.23.1-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
@@ -42,6 +41,7 @@
 		<qdox.version>2.0.1</qdox.version>
 		<quartz.version>2.3.2</quartz.version>
 		<gson.version>2.10.1</gson.version>
+		<mybatis.version>3.5.13</mybatis.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -217,10 +217,10 @@
 				<version>${javassist.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>ognl</groupId>
-				<artifactId>ognl</artifactId>
-				<version>${ognl.version}</version>
-			</dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency> 
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client</artifactId>
@@ -254,11 +254,6 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-db</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>dawdler</groupId>
-				<artifactId>dawdler-mybatis-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -541,7 +536,6 @@
 		<module>dawdler-es-plug</module>
 		<module>dawdler-pinpoint-plug</module>
 		<module>dawdler-client-api-generator</module>
-		<module>dawdler-mybatis-core</module>
 		<module>dawdler-encrypt-generator</module>
 		<module>dawdler-schedule-plug</module>
 		<module>dawdler-discovery-center</module>
