@@ -19,14 +19,19 @@ package com.anywide.dawdler.serverplug.db.mybatis;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import java.util.List;
 import java.util.Properties;
+
+import javax.sql.DataSource;
 
 import org.apache.ibatis.builder.xml.XMLConfigBuilder;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.executor.ErrorContext;
 import org.apache.ibatis.io.VFS;
-import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.reflection.factory.ObjectFactory;
@@ -34,12 +39,12 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.TypeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.serverplug.db.mybatis.session.DefaultSqlSessionFactory;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 
 /**
@@ -58,8 +63,6 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 	private Configuration configuration;
 
 	private List<Resource> mapperLocations;
-//jackson.song 
-//	private DataSource dataSource;
 
 	private TransactionFactory transactionFactory;
 
@@ -69,7 +72,6 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 
 	private SqlSessionFactory sqlSessionFactory;
 
-	// EnvironmentAware requires spring 3.1
 	private String environment = DawdlerSqlSessionFactoryBuilder.class.getSimpleName();
 
 	private Interceptor[] plugins;
@@ -84,9 +86,6 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 
 	private Class<?> typeAliasesSuperType;
 
-	// issue #19. No default provider.
-	private DatabaseIdProvider databaseIdProvider;
-
 	private Class<? extends VFS> vfs;
 
 	public Configuration getConfiguration() {
@@ -96,15 +95,6 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
-
-//jackson.song 
-//	public DataSource getDataSource() {
-//		return dataSource;
-//	}
-//
-//	public void setDataSource(DataSource dataSource) {
-//		this.dataSource = dataSource;
-//	}
 
 	public TransactionFactory getTransactionFactory() {
 		return transactionFactory;
@@ -192,14 +182,6 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 
 	public void setTypeAliasesSuperType(Class<?> typeAliasesSuperType) {
 		this.typeAliasesSuperType = typeAliasesSuperType;
-	}
-
-	public DatabaseIdProvider getDatabaseIdProvider() {
-		return databaseIdProvider;
-	}
-
-	public void setDatabaseIdProvider(DatabaseIdProvider databaseIdProvider) {
-		this.databaseIdProvider = databaseIdProvider;
 	}
 
 	public Class<? extends VFS> getVfs() {
@@ -322,15 +304,6 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 				}
 			}
 		}
-//jackson.song 
-//		if (this.databaseIdProvider != null) {// fix #64 set databaseId before parse mapper xmls
-//			try {
-//				configuration.setDatabaseId(this.databaseIdProvider.getDatabaseId(this.dataSource));
-//			} catch (SQLException e) {
-//				throw new SQLException("Failed getting a databaseId", e);
-//			}
-//		}
-
 		if (xmlConfigBuilder != null) {
 			try {
 				xmlConfigBuilder.parse();
@@ -344,8 +317,51 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 				ErrorContext.instance().reset();
 			}
 		}
-//jackson.song update
-		configuration.setEnvironment(new Environment(this.environment, this.transactionFactory, null));
+		configuration.setEnvironment(new Environment(this.environment, this.transactionFactory, new DataSource() {
+
+			@Override
+			public <T> T unwrap(Class<T> iface) throws SQLException {
+				return null;
+			}
+
+			@Override
+			public boolean isWrapperFor(Class<?> iface) throws SQLException {
+				return false;
+			}
+
+			@Override
+			public java.util.logging.Logger getParentLogger() throws SQLFeatureNotSupportedException {
+				return null;
+			}
+
+			@Override
+			public void setLoginTimeout(int seconds) throws SQLException {
+			}
+
+			@Override
+			public void setLogWriter(PrintWriter out) throws SQLException {
+			}
+
+			@Override
+			public int getLoginTimeout() throws SQLException {
+				return 0;
+			}
+
+			@Override
+			public PrintWriter getLogWriter() throws SQLException {
+				return null;
+			}
+
+			@Override
+			public Connection getConnection(String username, String password) throws SQLException {
+				return null;
+			}
+
+			@Override
+			public Connection getConnection() throws SQLException {
+				return null;
+			}
+		}));
 
 		if (this.mapperLocations != null) {
 			for (Resource mapperLocation : this.mapperLocations) {
