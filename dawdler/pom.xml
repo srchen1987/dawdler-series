@@ -26,7 +26,6 @@
 		<rabbitmq.version>5.14.0</rabbitmq.version>
 		<caffeine.version>3.0.5</caffeine.version>
 		<jsoup.version>1.16.1</jsoup.version>
-		<ognl.version>3.2.20</ognl.version>
 		<aspectj.version>1.9.19</aspectj.version>
 		<javassist.version>3.28.0-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
@@ -36,12 +35,13 @@
 		<consul-api.version>1.4.5</consul-api.version>
 		<httpclient.version>4.5.14</httpclient.version>
 		<elasticsearch.version>8.2.1</elasticsearch.version>
-		<pinpoint.version>2.4.0</pinpoint.version>
+		<pinpoint.version>2.5.2</pinpoint.version>
 		<qdox.version>2.0.3</qdox.version>
 		<quartz.version>2.3.2</quartz.version>
 		<gson.version>2.10.1</gson.version>
 		<portlet-api.version>3.0.1</portlet-api.version>
-	</properties>
+		<mybatis.version>3.5.13</mybatis.version>
+	</properties> 
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -204,10 +204,10 @@
 				<version>${javassist.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>ognl</groupId>
-				<artifactId>ognl</artifactId>
-				<version>${ognl.version}</version>
-			</dependency>
+				<groupId>org.mybatis</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${mybatis.version}</version>
+			</dependency> 
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client</artifactId>
@@ -241,11 +241,6 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-server-plug-db</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>dawdler</groupId>
-				<artifactId>dawdler-mybatis-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -564,7 +559,6 @@
 		<module>dawdler-pinpoint-plug</module>
 		<module>dawdler-jakarta-fileupload</module>
 		<module>dawdler-client-api-generator</module>
-		<module>dawdler-mybatis-core</module>
 		<module>dawdler-encrypt-generator</module>
 		<module>dawdler-schedule-plug</module>
 		<module>dawdler-discovery-center</module>
