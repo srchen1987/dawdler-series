@@ -114,8 +114,7 @@ public class FieldParser {
 							boolean array = false;
 							if (javaTypes != null) {
 								JavaType javaType = javaTypes.get(binaryName);
-								if (javaType != null) {
-									DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) javaType;
+								if (javaType != null && javaType instanceof DefaultJavaParameterizedType dt) {
 									array = ClassTypeUtil.isArray(dt.getBinaryName());
 									List<JavaType> typeArguments = dt.getActualTypeArguments();
 									genericFullyQualifiedFieldName = dt.getGenericFullyQualifiedName();
