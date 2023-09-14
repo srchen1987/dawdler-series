@@ -220,7 +220,7 @@
 				<groupId>org.mybatis</groupId>
 				<artifactId>mybatis</artifactId>
 				<version>${mybatis.version}</version>
-			</dependency> 
+			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client</artifactId>
