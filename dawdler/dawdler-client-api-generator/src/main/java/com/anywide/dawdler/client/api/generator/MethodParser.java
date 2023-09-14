@@ -54,6 +54,7 @@ import com.thoughtworks.qdox.model.JavaType;
 import com.thoughtworks.qdox.model.JavaTypeVariable;
 import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
+import com.thoughtworks.qdox.model.impl.DefaultJavaWildcardType;
 
 /**
  * @author jackson.song
@@ -258,7 +259,7 @@ public class MethodParser {
 			if (returnType != null) {
 				Map<String, JavaType> javaTypes = getActualTypesMap(method.getReturns());
 				for (Entry<String, JavaType> entry : javaTypes.entrySet()) {
-					parseType(entry.getValue(), classStructs, definitionsMap, javaTypes);
+					parseType(method, entry.getValue(), classStructs, definitionsMap, javaTypes);
 				}
 				FieldParser.parserFields(returnType, classStructs, definitionsMap, javaTypes);
 				elements.put("responses", getResponse(returnType, definitionsMap));
@@ -293,19 +294,39 @@ public class MethodParser {
 		return httpMethodMap;
 	}
 
-	public static void parseType(JavaType type, Map<String, ClassStruct> classStructs,
+	public static void parseType(JavaMethod method, JavaType type, Map<String, ClassStruct> classStructs,
 			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes) {
-		DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) type;
-		List<JavaTypeVariable<JavaGenericDeclaration>> typeList = dt.getTypeParameters();
-		List<JavaType> actualTypeArguments = getActualTypeArguments(dt);
+		DefaultJavaParameterizedType dt = null;
+		List<JavaType> actualTypeArguments = null;
+		List<JavaTypeVariable<JavaGenericDeclaration>> typeList = null;
 		Map<String, JavaType> innerJavaTypes = new HashMap<>();
-		if (!typeList.isEmpty()) {
-			for (int i = 0; i < typeList.size(); i++) {
-				parseType(actualTypeArguments.get(i), classStructs, definitionsMap, innerJavaTypes);
-				innerJavaTypes.put(typeList.get(i).getBinaryName(), actualTypeArguments.get(i));
+		try {
+			if(type instanceof DefaultJavaWildcardType) {
+				System.out.println(method+":"+" not support wildcard type <?> !\r\n");
+				return;
+			}
+			if(type instanceof DefaultJavaParameterizedType) {
+				dt = (DefaultJavaParameterizedType) type;
+			typeList = dt.getTypeParameters();
+			actualTypeArguments = getActualTypeArguments(dt);
+			if (!typeList.isEmpty()) {
+				if(actualTypeArguments.size() != typeList.size()) {
+					System.out.println(method+":"+type+" not defined type "+typeList+" !\r\n");
+				}else {
+					for (int i = 0; i < typeList.size(); i++) {
+						parseType(method, actualTypeArguments.get(i), classStructs, definitionsMap, innerJavaTypes);
+						innerJavaTypes.put(typeList.get(i).getBinaryName(), actualTypeArguments.get(i));
+					}
+				}
 			}
 		}
-		FieldParser.parserFields(dt, classStructs, definitionsMap, innerJavaTypes);
+			FieldParser.parserFields(type, classStructs, definitionsMap, innerJavaTypes);
+		} catch (Exception e) {
+			System.out.println(method+" failed");
+			e.printStackTrace();
+			
+		}
+		
 	}
 
 	public static Map<String, JavaType> getActualTypesMap(JavaClass javaClass) {
