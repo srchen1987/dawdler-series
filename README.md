@@ -94,7 +94,7 @@ dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现�
 
 #### 6. [dawdler-server-plug-mybatis](dawdler/dawdler-server-plug-mybatis/README.md)
 
-通过mybatis实现的数据库操作插件,注入mapper到service.
++通过mybatis实现的数据库操作插件,注入mapper到service,session变更为单例模式,支持读写分离.
 
 #### 7. [dawdler-client](dawdler/dawdler-client/README.md)
 
@@ -172,15 +172,11 @@ dawdler实现pinpoint链路追踪插件.
 
 构建项目时需要用的maven依赖声明.
 
-#### 26.  [dawdler-mybatis-core](dawdler/dawdler-mybatis-core/README.md)
-
-通过mybatis3.5.6进行改造,session变更为单例模式,支持读写分离,去除cache功能,一般不会单独使用,由dawdler-server-plug-mybatis依赖引入此模块即可.
-
-#### 27. [dawdler-client-api-generator](dawdler/dawdler-client-api-generator/README.md)
+#### 26. [dawdler-client-api-generator](dawdler/dawdler-client-api-generator/README.md)
 
 基于java源码doc生成兼容swagger-ui的OpenAPI 3.0的json工具,对源代码零侵入,上手简单,生成效率高,使用非常方便.
 
-#### 28. [dawdler-cache-plug](dawdler/dawdler-cache-plug/README.md)
+#### 27. [dawdler-cache-plug](dawdler/dawdler-cache-plug/README.md)
 
 可以用在web端和服务端的缓存模块.
 
