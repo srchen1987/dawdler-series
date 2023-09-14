@@ -114,15 +114,6 @@ public class SessionOperator {
 		return session;
 	}
 
-	public void getAttribute(String sessionKey, String attribute) {
-		try {
-			sessionStore.getAttribute(sessionKey, attribute);
-		} catch (Exception e) {
-			logger.error("", e);
-		}
-	}
-	
-	
 	public void addSession(DawdlerHttpSession session) {
 		abstractDistributedSessionManager.addSession(session.getId(), session);
 	}
