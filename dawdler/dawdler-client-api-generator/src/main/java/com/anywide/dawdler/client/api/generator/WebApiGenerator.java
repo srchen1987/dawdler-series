@@ -57,11 +57,11 @@ public class WebApiGenerator {
 		OpenApiConfig openApi = yamlMapper.readValue(file, OpenApiConfig.class);
 		Map<String, ClassStruct> classStructs = new HashMap<>();
 		JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
-		List<File> listList = new ArrayList<>();
+		List<File> fileList = new ArrayList<>();
 		for (String filePath : openApi.getScanPath()) {
-			addPath(new File(filePath), listList);
+			addPath(new File(filePath).getAbsoluteFile(), fileList);
 		}
-		for (File javaFile : listList) {
+		for (File javaFile : fileList) {
 			javaProjectBuilder.addSource(javaFile);
 		}
 		Map<String, Object> rootMap = new LinkedHashMap<String, Object>();
@@ -132,7 +132,7 @@ public class WebApiGenerator {
 		}
 		rootMap.put("definitions", definitionsMap);
 		String openApiText = JsonProcessUtil.beanToJson(rootMap);
-		OutputStream out = new FileOutputStream(openApi.getOutPath());
+		OutputStream out = new FileOutputStream(new File(openApi.getOutPath()).getAbsoluteFile());
 		out.write(openApiText.getBytes());
 		out.flush();
 		out.close();
