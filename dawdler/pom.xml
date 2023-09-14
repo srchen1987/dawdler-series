@@ -41,7 +41,7 @@
 		<gson.version>2.10.1</gson.version>
 		<portlet-api.version>3.0.1</portlet-api.version>
 		<mybatis.version>3.5.13</mybatis.version>
-	</properties> 
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -207,7 +207,7 @@
 				<groupId>org.mybatis</groupId>
 				<artifactId>mybatis</artifactId>
 				<version>${mybatis.version}</version>
-			</dependency> 
+			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client</artifactId>
@@ -532,6 +532,18 @@
 					</execution>
 				</executions>
 			</plugin>-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Built-By>dawdler</Built-By>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
 		</plugins>
 		<defaultGoal>compile</defaultGoal>
 	</build>
