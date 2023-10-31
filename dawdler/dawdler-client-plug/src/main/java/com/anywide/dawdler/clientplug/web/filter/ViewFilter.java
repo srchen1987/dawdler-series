@@ -28,9 +28,11 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.anywide.dawdler.clientplug.web.handler.AbstractUrlHandler;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
+
 
 /**
  * @author jackson.song
@@ -41,7 +43,7 @@ import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWr
  * @email suxuan696@gmail.com
  */
 public class ViewFilter implements Filter {
-	private AnnotationUrlHandler annotationUrlHander;
+	private AbstractUrlHandler annotationUrlHander;
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)

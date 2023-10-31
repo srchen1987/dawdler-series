@@ -48,13 +48,13 @@ public class RedisMessageOperator implements MessageOperator {
 	public static final String CHANNEL_ATTRIBUTE_CHANGE_RELOAD = "__keyevent__:attribute_change_reload";
 	public static final String CHANNEL_ATTRIBUTE_CHANGE = "__keyevent__:attribute_change";
 	public static final String CHANNEL_ATTRIBUTE_CHANGE_DEL = "__keyevent__:attribute_del";
-	public static Logger logger = LoggerFactory.getLogger(RedisMessageOperator.class);
+	public static final Logger logger = LoggerFactory.getLogger(RedisMessageOperator.class);
 	private final Serializer serializer;
 	private final SessionStore sessionStore;
 	private final AbstractDistributedSessionManager abstractDistributedSessionManager;
-	public String CHANNEL_EXPIRED = "__keyevent@database__:expired";
-	public String CHANNEL_DEL = "__keyevent@database__:del";
-	public Pool<Jedis> jedisPool;
+	private String channelExpired = "__keyevent@database__:expired";
+	private String channelDel = "__keyevent@database__:del";
+	private Pool<Jedis> jedisPool;
 	private volatile boolean start = true;
 	private Jedis jedis = null;
 
@@ -88,8 +88,8 @@ public class RedisMessageOperator implements MessageOperator {
 				try {
 					jedis = jedisPool.getResource();
 					config(jedis);
-					CHANNEL_EXPIRED = CHANNEL_EXPIRED.replace("database", jedis.getDB() + "");
-					CHANNEL_DEL = CHANNEL_DEL.replace("database", jedis.getDB() + "");
+					channelExpired = channelExpired.replace("database", jedis.getDB() + "");
+					channelDel = channelDel.replace("database", jedis.getDB() + "");
 					subscribe(jedis);
 				} catch (Exception e) {
 					abstractDistributedSessionManager.invalidateAll();
@@ -103,6 +103,7 @@ public class RedisMessageOperator implements MessageOperator {
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e1) {
+							Thread.currentThread().interrupt();
 						}
 					}
 				}
@@ -113,7 +114,7 @@ public class RedisMessageOperator implements MessageOperator {
 	}
 
 	private void subscribe(Jedis jedis) {
-		jedis.subscribe(new ResponseDataListener(), CHANNEL_EXPIRED, CHANNEL_DEL, CHANNEL_ATTRIBUTE_CHANGE,
+		jedis.subscribe(new ResponseDataListener(), channelExpired, channelDel, CHANNEL_ATTRIBUTE_CHANGE,
 				CHANNEL_ATTRIBUTE_CHANGE_RELOAD, CHANNEL_ATTRIBUTE_CHANGE_DEL);
 	}
 
@@ -201,7 +202,7 @@ public class RedisMessageOperator implements MessageOperator {
 						HttpSessionListener httpSessionListener = abstractDistributedSessionManager
 								.getHttpSessionListener();
 						if (httpSessionListener != null) {
-							if (CHANNEL_EXPIRED.equals(channel)) {
+							if (channelExpired.equals(channel)) {
 								session.setExpiredEvent(true);
 							}
 							HttpSessionEvent httpSessionEvent = new HttpSessionEvent(session);

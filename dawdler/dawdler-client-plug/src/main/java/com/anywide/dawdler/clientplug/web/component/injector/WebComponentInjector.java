@@ -18,12 +18,17 @@ package com.anywide.dawdler.clientplug.web.component.injector;
 
 import java.lang.annotation.Annotation;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.anywide.dawdler.clientplug.annotation.Controller;
+import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
+import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFireHolder;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
+import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import com.anywide.dawdler.core.order.OrderData;
 
 /**
  * @author jackson.song
@@ -33,11 +38,15 @@ import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
  * @date 2023年7月20日
  * @email suxuan696@gmail.com
  */
+@Order(1)
 public class WebComponentInjector implements CustomComponentInjector{
-
+	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
+			.getRemoteClassLoaderFire();
 	@Override
 	public void inject(Class<?> type, Object target) throws Throwable {
-		
+		for (OrderData<RemoteClassLoaderFire> rf : fireList) {
+			rf.getData().onLoadFire(type, target);
+		}
 	}
 
 	@Override

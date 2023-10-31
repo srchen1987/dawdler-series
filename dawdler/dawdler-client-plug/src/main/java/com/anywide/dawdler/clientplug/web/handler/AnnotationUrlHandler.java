@@ -194,9 +194,4 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		return controllers;
 	}
 
-	// FIXME no implement
-//	private boolean validateHeaders(RequestMapping requestMapping) throws ServletException {
-//		// String[] headers = requestMapping.headers();
-//		return true;
-//	}
 }

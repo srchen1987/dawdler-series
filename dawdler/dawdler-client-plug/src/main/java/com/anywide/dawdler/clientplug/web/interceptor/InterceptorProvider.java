@@ -32,10 +32,11 @@ import com.anywide.dawdler.core.order.OrderData;
  * @email suxuan696@gmail.com
  */
 public class InterceptorProvider {
-	private static final List<OrderData<HandlerInterceptor>> handlerInterceptors = new CopyOnWriteArrayList<>();
+	private InterceptorProvider() {}
+	private static final List<OrderData<HandlerInterceptor>> HANDLER_INTERCEPTORS = new CopyOnWriteArrayList<>();
 
 	public static List<OrderData<HandlerInterceptor>> getHandlerInterceptors() {
-		return handlerInterceptors;
+		return HANDLER_INTERCEPTORS;
 	}
 
 	public static void addHandlerInterceptor(HandlerInterceptor handlerInterceptor) {
@@ -45,23 +46,23 @@ public class InterceptorProvider {
 		if (order != null) {
 			orderData.setOrder(order.value());
 		}
-		handlerInterceptors.add(orderData);
+		HANDLER_INTERCEPTORS.add(orderData);
 	}
 
 	public static void removeHandlerInterceptor(Class<?> handlerInterceptorClass) {
 		if (!HandlerInterceptor.class.isAssignableFrom(handlerInterceptorClass)) {
 			return;
 		}
-		for (OrderData<HandlerInterceptor> orderData : handlerInterceptors) {
+		for (OrderData<HandlerInterceptor> orderData : HANDLER_INTERCEPTORS) {
 			if (orderData.getData().getClass() == handlerInterceptorClass) {
-				handlerInterceptors.remove(orderData);
+				HANDLER_INTERCEPTORS.remove(orderData);
 				return;
 			}
 		}
 	}
 
 	public static void order() {
-		OrderComparator.sort(handlerInterceptors);
+		OrderComparator.sort(HANDLER_INTERCEPTORS);
 	}
 
 }

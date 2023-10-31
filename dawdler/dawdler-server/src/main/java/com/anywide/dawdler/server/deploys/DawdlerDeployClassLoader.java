@@ -18,26 +18,31 @@ package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.CodeSigner;
 import java.security.CodeSource;
+import java.util.Enumeration;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
 
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
+import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.XmlTool;
+import com.anywide.dawdler.util.aspect.AspectHolder;
 import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
-import sun.misc.PerfCounter;
 import sun.misc.Resource;
 import sun.misc.URLClassPath;
+import sun.misc.PerfCounter;
 
 /**
  * @author jackson.song
@@ -47,7 +52,6 @@ import sun.misc.URLClassPath;
  * @date 2015年3月9日
  * @email suxuan696@gmail.com
  */
-@SuppressWarnings("restriction")
 public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerDeployClassLoader.class);
 	private final URLClassPath ucp;
@@ -113,20 +117,18 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 			definePackageInternal(pkgname, man, url);
 		}
 
-		DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
-				.getContextClassLoader();
-		java.nio.ByteBuffer codeBytes = res.getByteBuffer();
+		java.nio.ByteBuffer codeByteBuffer = res.getByteBuffer();
 		CodeSigner[] signers = res.getCodeSigners();
 		CodeSource cs = new CodeSource(url, signers);
 		PerfCounter.getReadClassBytesTime().addElapsedTimeFrom(t0);
-		byte[] classData = null;
-		if (codeBytes != null) {
-			codeBytes.flip();
-			classData = codeBytes.array();
+		byte[] codeBytes = null;
+		if (codeByteBuffer != null) {
+			codeByteBuffer.flip();
+			codeBytes = codeByteBuffer.array();
 		} else {
-			classData = res.getBytes();
+			codeBytes = res.getBytes();
 		}
-		return loadClassFromBytes(name, classData, classLoader, cs);
+		return loadClassFromBytes(name, codeBytes, this, cs);
 	}
 
 	private void definePackageInternal(String pkgname, Manifest man, URL url) {
@@ -178,12 +180,18 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 	}
 
 	public Class<?> findClassForDawdler(final String name) throws ClassNotFoundException {
+		return findClassForDawdler(name, null);
+	}
+
+	public Class<?> findClassForDawdler(final String name, Resource res) throws ClassNotFoundException {
 		Class<?> clazz = findLoadedClass(name);
 		if (clazz != null) {
 			return clazz;
 		}
-		String path = name.replace('.', '/').concat(".class");
-		Resource res = ucp.getResource(path, false);
+		if (res == null) {
+			String path = name.replace('.', '/').concat(".class");
+			res = ucp.getResource(path, false);
+		}
 		if (res != null) {
 			try {
 				return defineClassForDawdler(name, res);
@@ -195,33 +203,67 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader {
 		}
 	}
 
-	public Class<?> findClassForDawdler(final String name, boolean resolve) throws ClassNotFoundException {
-		Class<?> clazz = findClassForDawdler(name);
+	public Class<?> findClassForDawdler(final String name, boolean resolve, Resource res)
+			throws ClassNotFoundException {
+		Class<?> clazz = findClassForDawdler(name, res);
 		if (resolve) {
 			resolveClass(clazz);
 		}
 		return clazz;
 	}
 
-	public Class<?> loadClassFromBytes(String name, byte[] classData, ClassLoader classLoader, CodeSource cs)
+	public Class<?> loadClassFromBytes(String name, byte[] codeBytes, ClassLoader classLoader, CodeSource cs)
 			throws ClassNotFoundException, IOException {
-		Method method = (Method) dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_METHOD);
-		Object aspectSupportObj = dawdlerContext.getAttribute(ServiceBase.ASPECT_SUPPORT_OBJ);
-		if (aspectSupportObj != null) {
+		if (AspectHolder.aj != null) {
 			try {
-				classData = (byte[]) method.invoke(aspectSupportObj, name, classData, classLoader, null);
+				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, codeBytes, classLoader,
+						null);
 			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
 				logger.error("", e);
 			}
 		}
-		Class<?> clazz =  defineClass(name, classData, 0, classData.length, cs);
-		ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classData);
+		Class<?> clazz = defineClass(name, codeBytes, 0, codeBytes.length, cs);
+		ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, codeBytes);
 		return clazz;
 	}
 
 	@Override
 	public String toString() {
 		return getClass().getName() + "\tfor service : " + dawdlerContext.getDeployName();
+	}
+
+	public void loadAspectj() {
+		if (AspectHolder.aj != null) {
+			try {
+				Enumeration<URL> enums = getResources("META-INF/aop.xml");
+				while (enums.hasMoreElements()) {
+					URL url = enums.nextElement();
+					InputStream aopXmlInput = url.openStream();
+					try {
+						XmlObject xmlo = new XmlObject(aopXmlInput);
+						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
+							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
+							if (className != null) {
+								findClassForDawdler(className);
+							}
+						}
+					} catch (Exception e) {
+						logger.error("", e);
+					} finally {
+						if (aopXmlInput != null) {
+							try {
+								aopXmlInput.close();
+							} catch (IOException e) {
+							}
+						}
+					}
+				}
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+		} else {
+			logger.error("not found aspectjweaver in classpath !");
+		}
 	}
 }

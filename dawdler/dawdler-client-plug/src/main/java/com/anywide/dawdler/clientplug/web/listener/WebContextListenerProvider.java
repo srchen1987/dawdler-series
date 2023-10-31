@@ -34,14 +34,15 @@ import com.anywide.dawdler.core.order.OrderData;
  * @email suxuan696@gmail.com
  */
 public class WebContextListenerProvider {
-	private static final List<OrderData<WebContextListener>> webContextListeners = new CopyOnWriteArrayList<>();
+	private WebContextListenerProvider() {}
+	private static final List<OrderData<WebContextListener>> WEBCONTEXT_LISTENERS = new CopyOnWriteArrayList<>();
 
 	public static List<OrderData<WebContextListener>> getWebContextListeners() {
-		return webContextListeners;
+		return WEBCONTEXT_LISTENERS;
 	}
 
 	public static void order() {
-		OrderComparator.sort(webContextListeners);
+		OrderComparator.sort(WEBCONTEXT_LISTENERS);
 	}
 
 	public static void addWebContextListener(WebContextListener webContextListener) {
@@ -51,16 +52,16 @@ public class WebContextListenerProvider {
 		if (order != null) {
 			orderData.setOrder(order.value());
 		}
-		webContextListeners.add(orderData);
+		WEBCONTEXT_LISTENERS.add(orderData);
 	}
 
 	public static void removeWebContextListener(Class<?> webContextListenerClass) {
 		if (!WebContextListener.class.isAssignableFrom(webContextListenerClass)) {
 			return;
 		}
-		for (OrderData<WebContextListener> orderData : webContextListeners) {
+		for (OrderData<WebContextListener> orderData : WEBCONTEXT_LISTENERS) {
 			if (orderData.getData().getClass() == webContextListenerClass) {
-				webContextListeners.remove(orderData);
+				WEBCONTEXT_LISTENERS.remove(orderData);
 				return;
 			}
 		}

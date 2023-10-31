@@ -44,9 +44,12 @@ public class RuleOperatorProvider {
 	private static final Map<Pattern, RegexRuleOperator> REGEX_RULES = new HashMap<>();
 	private static final Map<String, RegexRuleOperator> CHECK_REGEX_RULES = new HashMap<>();
 
-	static {
-		registerRuleOperatorScanPackage(RuleOperator.class);
-	}
+	/**
+	 * 通过ValidatorInjector方式注入,淘汰静态块注入.
+	 */
+//	static {
+//		registerRuleOperatorScanPackage(RuleOperator.class);
+//	}
 
 	public static Map<String, StringRuleOperator> getStringRules() {
 		return STRING_RULES;
@@ -88,15 +91,13 @@ public class RuleOperatorProvider {
 
 	public static void registerRuleOperatorScanPackage(Class<?> target) {
 		Set<Class<?>> classes = RuleOperatorScanner.getAppClasses(target.getPackage().getName());
-		for (Class<?> c : classes) {
-			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
-					&& ((c.getModifiers() & 512) != 512) && RuleOperator.class.isAssignableFrom(c)) {
+		for (Class<?> clazz : classes) {
+			if (((clazz.getModifiers() & 1024) != 1024) && ((clazz.getModifiers() & 16) != 16)
+					&& ((clazz.getModifiers() & 512) != 512) && RuleOperator.class.isAssignableFrom(clazz)) {
 				try {
-					RuleOperator ro = (RuleOperator) c.newInstance();
+					RuleOperator ro = (RuleOperator) clazz.getDeclaredConstructor().newInstance();
 					registerRuleOperator(ro);
-				} catch (InstantiationException e) {
-					logger.warn("", e);
-				} catch (IllegalAccessException e) {
+				} catch (Exception e) {
 					logger.warn("", e);
 				}
 			}
