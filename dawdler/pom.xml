@@ -23,7 +23,7 @@
 		<jackson-databind.version>2.15.2</jackson-databind.version>
 		<velocity.version>2.3</velocity.version>
 		<jedis.version>4.3.1</jedis.version>
-		<rabbitmq.version>5.14.0</rabbitmq.version>
+		<rabbitmq.version>5.18.0</rabbitmq.version>
 		<caffeine.version>3.0.5</caffeine.version>
 		<jsoup.version>1.16.1</jsoup.version>
 		<aspectj.version>1.9.19</aspectj.version>
