@@ -17,7 +17,6 @@
 package com.anywide.dawdler.client.api.generator;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -51,11 +50,11 @@ import com.thoughtworks.qdox.model.JavaSource;
  * @email suxuan696@gmail.com
  */
 public class WebApiGenerator {
-
+	private WebApiGenerator() {}
 	public static void generate(File file) throws IOException {
 		YAMLMapper yamlMapper = YAMLMapperFactory.getYAMLMapper();
 		OpenApiConfig openApi = yamlMapper.readValue(file, OpenApiConfig.class);
-		Map<String, ClassStruct> classStructs = new HashMap<>();
+		Map<String, ClassStruct> classStructs = new HashMap<>(32);
 		JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
 		List<File> fileList = new ArrayList<>();
 		for (String filePath : openApi.getScanPath()) {
@@ -64,10 +63,10 @@ public class WebApiGenerator {
 		for (File javaFile : fileList) {
 			javaProjectBuilder.addSource(javaFile);
 		}
-		Map<String, Object> rootMap = new LinkedHashMap<String, Object>();
-		Map<String, Object> infoMap = new LinkedHashMap<String, Object>();
-		Map<String, Object> definitionsMap = new LinkedHashMap<String, Object>();
-		Map<String, Object> pathMap = new LinkedHashMap<String, Object>();
+		Map<String, Object> rootMap = new LinkedHashMap<>();
+		Map<String, Object> infoMap = new LinkedHashMap<>();
+		Map<String, Object> definitionsMap = new LinkedHashMap<>();
+		Map<String, Object> pathMap = new LinkedHashMap<>();
 		infoMap.put("version", openApi.getVersion());
 		infoMap.put("title", openApi.getTitle());
 		infoMap.put("description", openApi.getDescription());
@@ -146,11 +145,7 @@ public class WebApiGenerator {
 
 	public static void addPath(File file, List<File> list) {
 		if (file.isDirectory()) {
-			File[] files = file.listFiles(new FileFilter() {
-				public boolean accept(File pathName) {
-					return pathName.isDirectory() || pathName.getName().endsWith(".java");
-				}
-			});
+			File[] files = file.listFiles(pathName -> pathName.isDirectory() || pathName.getName().endsWith(".java"));
 			for (File f : files) {
 				addPath(f, list);
 			}

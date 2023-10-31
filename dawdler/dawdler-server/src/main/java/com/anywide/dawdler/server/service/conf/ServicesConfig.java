@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 package com.anywide.dawdler.server.service.conf;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,34 +38,27 @@ public class ServicesConfig {
 	/**
 	 * 数据源配置
 	 */
-	private Map<String,Map<String,Object>> dataSources = new HashMap<>();
-	
-	
+	private Map<String, Map<String, Object>> dataSources = new HashMap<>();
+
 	/**
 	 * 提供远程加载类的配置文件路径
 	 */
 	private String remoteLoad;
-	
+
 	/**
 	 * 预加载类
 	 */
 	private Set<String> preLoads;
-	
+
 	/**
-	 * deploys/lib下的jar扫描类 
+	 * 扫描路径
 	 */
-	private Set<String> packagesInJar;
-	
-	/**
-	 * deploys/classes下的扫描类
-	 */
-	private Set<String> packagesInClasses;
-	
-	
+	private Set<String> packagePaths;
+
 	private List<DataSourceExpression> dataSourceExpressions;
-	
+
 	private List<Decision> decisions;
-	
+
 	public Set<String> getMappers() {
 		return mappers;
 	}
@@ -97,23 +91,14 @@ public class ServicesConfig {
 		this.preLoads = preLoads;
 	}
 
-	public Set<String> getPackagesInJar() {
-		return packagesInJar;
+	public Set<String> getPackagePaths() {
+		return packagePaths;
 	}
 
-	public void setPackagesInJar(Set<String> packagesInJar) {
-		this.packagesInJar = packagesInJar;
+	public void setPackagePaths(Set<String> packagePaths) {
+		this.packagePaths = packagePaths;
 	}
 
-	public Set<String> getPackagesInClasses() {
-		return packagesInClasses;
-	}
-
-	public void setPackagesInClasses(Set<String> packagesInClasses) {
-		this.packagesInClasses = packagesInClasses;
-	}
-	
-	
 	public List<DataSourceExpression> getDataSourceExpressions() {
 		return dataSourceExpressions;
 	}
@@ -121,7 +106,7 @@ public class ServicesConfig {
 	public void setDataSourceExpressions(List<DataSourceExpression> dataSourceExpressions) {
 		this.dataSourceExpressions = dataSourceExpressions;
 	}
-	
+
 	public List<Decision> getDecisions() {
 		return decisions;
 	}
@@ -130,36 +115,43 @@ public class ServicesConfig {
 		this.decisions = decisions;
 	}
 
-	public class DataSourceExpression{
+	public class DataSourceExpression {
 		private String id;
 		private String latentExpression;
+
 		public String getId() {
 			return id;
 		}
+
 		public void setId(String id) {
 			this.id = id;
 		}
+
 		public String getLatentExpression() {
 			return latentExpression;
 		}
+
 		public void setLatentExpression(String latentExpression) {
 			this.latentExpression = latentExpression;
 		}
 	}
-	
-	
-	public class Decision{
+
+	public class Decision {
 		private String latentExpressionId;
 		private String mapping;
+
 		public String getLatentExpressionId() {
 			return latentExpressionId;
 		}
+
 		public void setLatentExpressionId(String latentExpressionId) {
 			this.latentExpressionId = latentExpressionId;
 		}
+
 		public String getMapping() {
 			return mapping;
 		}
+
 		public void setMapping(String mapping) {
 			this.mapping = mapping;
 		}

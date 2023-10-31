@@ -43,7 +43,6 @@ public class ServerConfig {
 	private URL binPath;
 	private Server server;
 	private KeyStore keyStore;
-	private Scanner scanner;
 	private HealthCheck healthChecked = new HealthCheck();
 	private Map<String, String> globalAuth = new HashMap<>();
 	private Map<String, Map<String, String>> moduleAuth = new HashMap<>();
@@ -51,7 +50,6 @@ public class ServerConfig {
 	private AntPathMatcher antPathMatcher = new AntPathMatcher();
 
 	public ServerConfig() {
-		this.scanner = new Scanner();
 		this.keyStore = new KeyStore();
 		this.server = new Server();
 	}
@@ -66,10 +64,6 @@ public class ServerConfig {
 
 	public Server getServer() {
 		return server;
-	}
-
-	public Scanner getScanner() {
-		return scanner;
 	}
 
 	public Map<String, String> getGlobalAuth() {

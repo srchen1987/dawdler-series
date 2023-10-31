@@ -44,7 +44,7 @@ public class SessionOperator {
 	private static final Logger logger = LoggerFactory.getLogger(SessionOperator.class);
 	private final AbstractDistributedSessionManager abstractDistributedSessionManager;
 	private final ServletContext servletContext;
-	private final Map<String, Object> sessionKey_lock = new ConcurrentHashMap<>();
+	private static final Map<String, Object> SESSIONKEY_LOCK = new ConcurrentHashMap<>();
 	private final SessionStore sessionStore;
 	private final Serializer serializer;
 	private final MessageOperator messageOperator;
@@ -87,7 +87,7 @@ public class SessionOperator {
 	public DawdlerHttpSession operationSession(String sessionKey, int maxInactiveInterval) throws Exception {
 		DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionKey);
 		if (session == null) {
-			Object sessionLock = sessionKey_lock.computeIfAbsent(sessionKey, lock -> new Object());
+			Object sessionLock = SESSIONKEY_LOCK.computeIfAbsent(sessionKey, lock -> new Object());
 			try {
 				synchronized (sessionLock) {
 					session = abstractDistributedSessionManager.getSession(sessionKey);
@@ -101,7 +101,7 @@ public class SessionOperator {
 					}
 				}
 			} finally {
-				sessionKey_lock.remove(sessionKey);
+				SESSIONKEY_LOCK.remove(sessionKey);
 			}
 		}
 		return session;

@@ -34,5 +34,9 @@
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+		</dependency>
 	</dependencies>
 </project>

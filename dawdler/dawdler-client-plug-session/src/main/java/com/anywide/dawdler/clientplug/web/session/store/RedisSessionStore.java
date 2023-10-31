@@ -44,8 +44,8 @@ import redis.clients.jedis.util.Pool;
  * @email suxuan696@gmail.com
  */
 public class RedisSessionStore implements SessionStore {
-	public final static String SESSIONKEY_PREFIX = "session:";
-	public final static String IP_PREFIX = "ip:";
+	public static final String SESSIONKEY_PREFIX = "session:";
+	public static final String IP_PREFIX = "ip:";
 	private static final Logger logger = LoggerFactory.getLogger(RedisSessionStore.class);
 	private final Pool<Jedis> jedisPool;
 	private final Serializer serializer;
@@ -103,7 +103,7 @@ public class RedisSessionStore implements SessionStore {
 	}
 
 	public void reloadAttributes(Map<byte[], byte[]> data, DawdlerHttpSession session) {
-		ConcurrentHashMap<String, Object> attribute = new ConcurrentHashMap<String, Object>();
+		ConcurrentHashMap<String, Object> attribute = new ConcurrentHashMap<>();
 		for (Entry<byte[], byte[]> entry : data.entrySet()) {
 			String key = new String(entry.getKey());
 			try {
@@ -156,7 +156,7 @@ public class RedisSessionStore implements SessionStore {
 			Map<String, Object> attributesAddNew = session.getAttributesAddNew();
 			boolean add = !attributesAddNew.isEmpty();
 			if (add) {
-				Map<byte[], byte[]> addData = new HashMap<byte[], byte[]>();
+				Map<byte[], byte[]> addData = new HashMap<>();
 				attributesAddNew.forEach((k, v) -> {
 					try {
 						addData.put(k.getBytes(), serializer.serialize(v));
@@ -204,7 +204,7 @@ public class RedisSessionStore implements SessionStore {
 			Map<String, Object> attributesAddNew = session.getAttributesAddNew();
 			boolean add = !attributesAddNew.isEmpty();
 			if (add) {
-				Map<byte[], byte[]> addData = new HashMap<byte[], byte[]>();
+				Map<byte[], byte[]> addData = new HashMap<>();
 				attributesAddNew.forEach((k, v) -> {
 					try {
 						addData.put(k.getBytes(), serializer.serialize(v));
