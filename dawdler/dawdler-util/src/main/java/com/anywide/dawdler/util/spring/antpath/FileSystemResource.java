@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.channels.FileChannel;
@@ -32,7 +33,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-public class FileSystemResource extends AbstractResource implements WritableResource {
+public class FileSystemResource extends WritableResource{
 
 	private final String path;
 
@@ -100,8 +101,12 @@ public class FileSystemResource extends AbstractResource implements WritableReso
 	}
 
 	@Override
-	public URL getURL() throws IOException {
-		return (this.file != null ? this.file.toURI().toURL() : this.filePath.toUri().toURL());
+	public URL getURL()  {
+		try {
+			return (this.file != null ? this.file.toURI().toURL() : this.filePath.toUri().toURL());
+		} catch (MalformedURLException e) {
+			return null;
+		}
 	}
 
 	@Override
@@ -134,9 +139,9 @@ public class FileSystemResource extends AbstractResource implements WritableReso
 	}
 
 	@Override
-	public long contentLength() throws IOException {
+	public int getContentLength() throws IOException {
 		if (this.file != null) {
-			long length = this.file.length();
+			int length = (int) this.file.length();
 			if (length == 0L && !this.file.exists()) {
 				throw new FileNotFoundException(
 						getDescription() + " cannot be resolved in the file system for checking its content length");
@@ -144,7 +149,7 @@ public class FileSystemResource extends AbstractResource implements WritableReso
 			return length;
 		} else {
 			try {
-				return Files.size(this.filePath);
+				return (int) Files.size(this.filePath);
 			} catch (NoSuchFileException ex) {
 				throw new FileNotFoundException(ex.getMessage());
 			}
@@ -192,4 +197,14 @@ public class FileSystemResource extends AbstractResource implements WritableReso
 		return this.path.hashCode();
 	}
 
+	@Override
+	public String getName() {
+		return getFilename();
+	}
+
+	@Override
+	public URL getCodeSourceURL() {
+		return getURL();
+	}
+	
 }

@@ -33,7 +33,7 @@ import com.anywide.dawdler.jedis.lock.JedisDistributedLockHolderFactory;
 public class JedisClassLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
+	public void onLoadFire(Class<?> clazz, Object target) throws Throwable {
 		JedisOperatorFactory.initField(target, clazz);
 		JedisDistributedLockHolderFactory.initField(target, clazz);
 	}

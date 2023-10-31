@@ -11,8 +11,8 @@
 						<xs:sequence>
 							<xs:element name="validator-field" minOccurs="1" maxOccurs="unbounded">
 								<xs:complexType mixed="true">
-									<xs:attribute name="name" use="required" type="xs:string" />
-									<xs:attribute name="explain" use="required" type="xs:string" />
+									<xs:attribute name="name" use="required" type="t_required_string" />
+									<xs:attribute name="explain" use="required" type="t_required_string" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
@@ -33,7 +33,7 @@
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
-									<xs:attribute name="id" use="required" type="xs:string" />
+									<xs:attribute name="id" use="required" type="t_required_string" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
@@ -49,13 +49,13 @@
 											maxOccurs="unbounded">
 											<xs:complexType>
 												<xs:attribute name="refgid" type="xs:string" />
-												<xs:attribute name="skip" type="xs:string" />
 												<xs:attribute name="ref" type="xs:string" />
 												<xs:attribute name="type" type="t_type" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
-									<xs:attribute name="name" type="xs:string" use="required" />
+									<xs:attribute name="name" type="t_required_string" use="required" />
+									<xs:attribute name="skip" type="xs:string" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
@@ -123,6 +123,11 @@
 			<xs:enumeration value="header" />
 			<xs:enumeration value="body" />
 			<xs:enumeration value="path" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="t_required_string">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

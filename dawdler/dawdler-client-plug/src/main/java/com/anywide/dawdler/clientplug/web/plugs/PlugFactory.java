@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.web.plugs;
 
 import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
+import  java.util.concurrent.ConcurrentMap;
 
 import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 
@@ -32,17 +33,18 @@ import jakarta.servlet.ServletContext;
  * @email suxuan696@gmail.com
  */
 public class PlugFactory {
-	private static final java.util.concurrent.ConcurrentMap<String, DisplayPlug> displayPlugs = new ConcurrentHashMap<>();
+	private PlugFactory() {}
+	private static final ConcurrentMap<String, DisplayPlug> DISPLAY_PLUGS = new ConcurrentHashMap<>();
 
 	public static void initFactory(ServletContext servletContext) {
 		ServiceLoader.load(DisplayPlug.class).forEach(displayPlug -> {
 			displayPlug.init(servletContext);
-			displayPlugs.put(displayPlug.plugName(), displayPlug);
+			DISPLAY_PLUGS.put(displayPlug.plugName(), displayPlug);
 		});
 	}
 
 	public static DisplayPlug getDisplayPlug(String key) {
-		DisplayPlug displayPlug = displayPlugs.get(key);
+		DisplayPlug displayPlug = DISPLAY_PLUGS.get(key);
 		if (displayPlug == null) {
 			return getDisplayPlug(ViewType.json.toString());
 		}

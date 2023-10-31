@@ -34,7 +34,7 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
  * @date 2023年7月20日
  * @email suxuan696@gmail.com
  */
-@Order(0)
+@Order(1)
 public class DawdlerServiceCreateListenerInjector implements CustomComponentInjector {
 
 	@Override
@@ -52,6 +52,11 @@ public class DawdlerServiceCreateListenerInjector implements CustomComponentInje
 	@Override
 	public Set<? extends Class<? extends Annotation>> getMatchAnnotations() {
 		return null;
+	}
+
+	@Override
+	public String[] scanLocations() {
+		return new String[] { "com.anywide.dawdler.serverplug.**.listener" };
 	}
 
 }

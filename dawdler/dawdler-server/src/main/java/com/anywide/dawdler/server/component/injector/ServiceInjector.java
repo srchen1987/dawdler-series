@@ -35,8 +35,8 @@ import com.anywide.dawdler.server.service.ServicesManager;
  * @date 2023年7月20日
  * @email suxuan696@gmail.com
  */
-@Order(0)
-public class ServiceInjector implements CustomComponentInjector{
+@Order(1)
+public class ServiceInjector implements CustomComponentInjector {
 
 	@Override
 	public void inject(Class<?> type, Object target) throws Throwable {
@@ -59,16 +59,13 @@ public class ServiceInjector implements CustomComponentInjector{
 				}
 				String serviceName = remoteService.serviceName();
 				if (serviceName.trim().equals("")) {
-					servicesManager.registerService(clazz, target,
-							remoteService.single());
+					servicesManager.registerService(clazz, target, remoteService.single());
 				} else {
-					servicesManager.register(serviceName, target,
-							remoteService.single());
+					servicesManager.register(serviceName, target, remoteService.single());
 				}
 			}
 		}
-		
-		
+
 	}
 
 	@Override
@@ -81,6 +78,11 @@ public class ServiceInjector implements CustomComponentInjector{
 		Set<Class<RemoteService>> annotationSet = new HashSet<>();
 		annotationSet.add(RemoteService.class);
 		return annotationSet;
+	}
+
+	@Override
+	public String[] scanLocations() {
+		return new String[] { "com.anywide.dawdler.serverplug.service.impl" };
 	}
 
 }

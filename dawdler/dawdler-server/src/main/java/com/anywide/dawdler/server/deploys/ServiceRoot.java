@@ -65,7 +65,7 @@ import com.sun.net.httpserver.HttpHandler;
  */
 public class ServiceRoot {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceRoot.class);
-	private static final Map<String, Service> services = new ConcurrentHashMap<>();
+	private static final Map<String, Service> SERVICES = new ConcurrentHashMap<>();
 	private Map<String, Service> servicesHealth;
 	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
 	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
@@ -74,7 +74,7 @@ public class ServiceRoot {
 	private DawdlerHttpServer httpServer = null;
 
 	public static Service getService(String path) {
-		Service service = services.get(path);
+		Service service = SERVICES.get(path);
 		if (service == null) {
 			return null;
 		}
@@ -136,7 +136,7 @@ public class ServiceRoot {
 		}
 		long start = JVMTimeProvider.currentTimeMillis();
 		if (deployFiles.length > 0) {
-			ExecutorService executor = Executors.newCachedThreadPool();
+			ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2+1);
 			ClassLoader classLoader = createServerClassLoader(serverConfig.getBinPath());
 			List<DeployData> deployDataList = new ArrayList<>();
 			for (File deployFile : deployFiles) {
@@ -147,7 +147,7 @@ public class ServiceRoot {
 							long serviceStart = JVMTimeProvider.currentTimeMillis();
 							Service service = new ServiceBase(serverConfig, deployFile, classLoader,
 									dawdlerServerContext.getStartSemaphore(), dawdlerServerContext.getStarted());
-							services.put(deployName, service);
+							SERVICES.put(deployName, service);
 							if (healthCheck) {
 								servicesHealth.put(deployName, service);
 							}
@@ -158,7 +158,7 @@ public class ServiceRoot {
 						} catch (Throwable e) {
 							logger.error(deployName, e);
 							System.err.println(deployName + " startup failed!");
-							Service service = services.remove(deployName);
+							Service service = SERVICES.remove(deployName);
 							service.status(Status.DOWN);
 							service.cause(e);
 							service.prepareStop();
@@ -174,8 +174,10 @@ public class ServiceRoot {
 				try {
 					deployData.future.get(3, TimeUnit.MINUTES);
 				} catch (InterruptedException | ExecutionException | TimeoutException e) {
-					System.out.println("server startup time out 3 minutes!");
-					Service service = services.remove(deployData.deployName);
+					if (e instanceof TimeoutException) {
+						System.out.println("server startup time out 3 minutes!");
+					}
+					Service service = SERVICES.remove(deployData.deployName);
 					if (service != null) {
 						service.prepareStop();
 						service.stop();
@@ -226,15 +228,11 @@ public class ServiceRoot {
 	}
 
 	public void prepareDestroyedApplication() {
-		services.values().forEach(v -> {
-			v.prepareStop();
-		});
+		SERVICES.values().forEach(Service::prepareStop);
 	}
 
 	public void destroyedApplication() {
-		services.values().forEach(v -> {
-			v.stop();
-		});
+		SERVICES.values().forEach(Service::stop);
 		if (httpServer != null) {
 			httpServer.stop();
 		}

@@ -35,6 +35,7 @@ import com.anywide.dawdler.server.filter.FilterProvider;
  * @date 2023年7月20日
  * @email suxuan696@gmail.com
  */
+@Order(1)
 public class DawdlerFilterInjector implements CustomComponentInjector {
 
 	@Override

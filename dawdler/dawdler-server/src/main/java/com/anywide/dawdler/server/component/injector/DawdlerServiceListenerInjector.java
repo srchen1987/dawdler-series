@@ -35,7 +35,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
  * @date 2023年7月20日
  * @email suxuan696@gmail.com
  */
-@Order(0)
+@Order(1)
 public class DawdlerServiceListenerInjector implements CustomComponentInjector {
 
 	@Override

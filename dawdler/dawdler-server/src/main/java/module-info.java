@@ -19,6 +19,7 @@ module dawdler.server {
 	requires cglib;
 	requires ch.qos.logback.classic;
 	requires ch.qos.logback.core;
+	requires org.aspectj.weaver;
 
 	exports com.anywide.dawdler.server.filter;
 	exports com.anywide.dawdler.server.listener;
@@ -28,14 +29,15 @@ module dawdler.server {
 	exports com.anywide.dawdler.server.bean;
 	exports com.anywide.dawdler.server.thread.processor;
 	exports com.anywide.dawdler.server.deploys
-			to dawdler.server.plug.db, dawdler.server.plug.jedis, dawdler.server.plug.config.center.consul,
-			dawdler.server.plug.rabbitmq, dawdler.server.plug.es, dawdler.server.plug.schedule, dawdler.discovery.center.core;
+	to dawdler.server.plug.db, dawdler.server.plug.jedis, dawdler.server.plug.config.center.consul,
+	dawdler.server.plug.rabbitmq, dawdler.server.plug.es, dawdler.server.plug.schedule, dawdler.discovery.center.core;
 	exports com.anywide.dawdler.server.net.aio.session;
 	exports com.anywide.dawdler.server.conf to dawdler.server, dawdler.server.plug.discovery.center.consul;
 	exports com.anywide.dawdler.server.service.conf;
 	uses SLF4JServiceProvider;
 	uses CustomComponentInjector;
-	
+
 	provides SLF4JServiceProvider with DawdlerLogbackServiceProvider;
-	provides CustomComponentInjector with DawdlerFilterInjector,DawdlerServiceCreateListenerInjector,DawdlerServiceListenerInjector,ServiceInjector;
+	provides CustomComponentInjector with DawdlerFilterInjector, DawdlerServiceCreateListenerInjector,
+			DawdlerServiceListenerInjector, ServiceInjector;
 }

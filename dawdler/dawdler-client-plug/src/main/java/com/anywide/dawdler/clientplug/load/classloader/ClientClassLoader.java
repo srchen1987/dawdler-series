@@ -17,14 +17,20 @@
 package com.anywide.dawdler.clientplug.load.classloader;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.ByteBuffer;
 import java.security.CodeSigner;
 import java.security.CodeSource;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.util.aspect.AspectHolder;
+import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
 import jdk.internal.loader.Resource;
 import jdk.internal.loader.URLClassPath;
@@ -39,6 +45,7 @@ import jdk.internal.loader.URLClassPath;
  */
 
 public class ClientClassLoader extends URLClassLoader {
+	private static final Logger logger = LoggerFactory.getLogger(ClientClassLoader.class);
 	private final URLClassPath ucp;
 
 	@Override
@@ -50,7 +57,7 @@ public class ClientClassLoader extends URLClassLoader {
 		return super.getResource(name);
 	}
 
-	public ClientClassLoader(URL[] urls, java.lang.ClassLoader parent) {
+	public ClientClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
 		ucp = new URLClassPath(urls, null, null);
 	}
@@ -60,9 +67,8 @@ public class ClientClassLoader extends URLClassLoader {
 		ucp = new URLClassPath(urls, null, null);
 	}
 
-	public static ClientClassLoader newInstance(final URL[] urls, final java.lang.ClassLoader parent) {
-		ClientClassLoader ucl = new FactoryURLClassLoader(urls, parent);
-		return ucl;
+	public static ClientClassLoader newInstance(final URL[] urls, final ClassLoader parent) {
+		return new FactoryURLClassLoader(urls, parent);
 	}
 
 	@Override
@@ -81,6 +87,10 @@ public class ClientClassLoader extends URLClassLoader {
 	}
 
 	public Class<?> defineClass(String name, Resource res) throws IOException {
+		Class<?> clazz = findLoadedClass(name);
+		if (clazz != null) {
+			return clazz;
+		}
 		int i = name.lastIndexOf('.');
 		URL url = res.getCodeSourceURL();
 		if (i != -1) {
@@ -107,19 +117,33 @@ public class ClientClassLoader extends URLClassLoader {
 				}
 			}
 		}
-		java.nio.ByteBuffer bb = res.getByteBuffer();
-		if (bb != null) {
-			byte[] bs = bb.array();
-			bb = ByteBuffer.wrap(bs);
-			CodeSigner[] signers = res.getCodeSigners();
-			CodeSource cs = new CodeSource(url, signers);
-			return defineClass(name, bb, cs);
+		CodeSigner[] signers = res.getCodeSigners();
+		CodeSource cs = new CodeSource(url, signers);
+		byte[] classBytes;
+		java.nio.ByteBuffer codeByteBuffer = res.getByteBuffer();
+		if (codeByteBuffer != null) {
+			codeByteBuffer.flip();
+			classBytes = codeByteBuffer.array();
 		} else {
-			byte[] b = res.getBytes();
-			CodeSigner[] signers = res.getCodeSigners();
-			CodeSource cs = new CodeSource(url, signers);
-			return defineClass(name, b, 0, b.length, cs);
+			classBytes = res.getBytes();
 		}
+
+		if (AspectHolder.aj != null) {
+			try {
+				classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, classBytes, this,
+						null);
+			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				logger.error("", e);
+			}
+		}
+		clazz = defineClass(name, classBytes, 0, classBytes.length, cs);
+		try {
+			ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classBytes);
+		} catch (IOException e) {
+			logger.error("", e);
+		}
+		return clazz;
 	}
 
 	private boolean isSealed(String name, Manifest man) {
@@ -129,15 +153,17 @@ public class ClientClassLoader extends URLClassLoader {
 		if (attr != null) {
 			sealed = attr.getValue(Name.SEALED);
 		}
-		if (sealed == null) {
-			if ((attr = man.getMainAttributes()) != null) {
-				sealed = attr.getValue(Name.SEALED);
-			}
+		if (sealed == null && (attr = man.getMainAttributes()) != null) {
+			sealed = attr.getValue(Name.SEALED);
 		}
 		return "true".equalsIgnoreCase(sealed);
 	}
 
 	public Class<?> defineClass(String name, byte[] data) {
+		Class<?> clazz = findLoadedClass(name);
+		if (clazz != null) {
+			return clazz;
+		}
 		return defineClass(name, data, 0, data.length);
 	}
 
@@ -156,6 +182,7 @@ final class FactoryURLClassLoader extends ClientClassLoader {
 		super(urls);
 	}
 
+	@Override
 	public final Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		return super.loadClass(name, resolve);
 	}

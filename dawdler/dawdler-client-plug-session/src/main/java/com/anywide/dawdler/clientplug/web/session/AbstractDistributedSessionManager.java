@@ -30,7 +30,10 @@ import jakarta.servlet.http.HttpSessionListener;
  */
 public abstract class AbstractDistributedSessionManager {
 	public static final String DISTRIBUTED_SESSION_HTTPSESSION_LISTENER = "distributed_session_httpsession_listener";
-	protected HttpSessionListener httpSessionListener;// session监听器 目前只监听 创建session 销毁session
+	/**
+	 * session监听器 目前只监听 创建session 销毁session
+	 */
+	protected HttpSessionListener httpSessionListener;
 
 	public HttpSessionListener getHttpSessionListener() {
 		return httpSessionListener;

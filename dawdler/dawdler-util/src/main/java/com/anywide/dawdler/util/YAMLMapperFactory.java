@@ -27,8 +27,9 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
  * @email suxuan696@gmail.com
  */
 public class YAMLMapperFactory {
-	private final static YAMLMapper YAML_MAPPER = YAMLMapper.builder().build();
-
+	
+	private static final YAMLMapper YAML_MAPPER = YAMLMapper.builder().build();
+	private YAMLMapperFactory(){}
 	public static YAMLMapper getYAMLMapper() {
 		return YAML_MAPPER;
 	}

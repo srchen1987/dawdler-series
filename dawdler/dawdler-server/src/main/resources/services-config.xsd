@@ -22,15 +22,7 @@
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
-							<xs:element name="packages-in-jar" maxOccurs="1" minOccurs="0">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="package-path"
-											maxOccurs="unbounded" type="xs:string" />
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-							<xs:element name="packages-in-classes" maxOccurs="1" minOccurs="0">
+							<xs:element name="package-paths" maxOccurs="1" minOccurs="0">
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element name="package-path"

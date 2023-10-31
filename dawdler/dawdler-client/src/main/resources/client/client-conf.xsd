@@ -8,13 +8,19 @@
 				<xs:element name="certificatePath" minOccurs="1" maxOccurs="1" type="xs:string" />
 				<xs:element name="server-channel-group" minOccurs="1" maxOccurs="unbounded">
 					<xs:complexType mixed="true">
-						<xs:attribute name="channel-group-id" use="required" type="xs:string" />
+						<xs:attribute name="channel-group-id" use="required" type="xs:NMTOKEN" />
 						<xs:attribute name="connection-num" type="t_connection-num" use="required" />
 						<xs:attribute name="session-num" type="t_session-num" use="required" />
 						<xs:attribute name="serializer" type="t_serializer" use="required" />
-						<xs:attribute name="user" use="required" type="xs:string" />
-						<xs:attribute name="password" use="required" type="xs:string" />
+						<xs:attribute name="user" use="required" type="xs:NMTOKEN" />
+						<xs:attribute name="password" use="required" type="t_string" />
 						<xs:attribute name="host" type="xs:string" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="component-scan" minOccurs="0" maxOccurs="1">
+					<xs:complexType mixed="true">
+						<xs:attribute name="base-package" use="required"
+												type="t_string" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="loads-on" minOccurs="0" maxOccurs="1">
@@ -23,7 +29,7 @@
 							<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:simpleContent>
-										<xs:extension base="xs:string">
+										<xs:extension base="t_string">
 											<xs:attribute name="sleep" type="xs:integer"
 												use="required" />
 											<xs:attribute name="channel-group-id" use="required"
@@ -65,11 +71,15 @@
 			<xs:maxInclusive value="8" />
 		</xs:restriction>
 	</xs:simpleType>
-	
 	<xs:simpleType name="t_mode">
 		<xs:restriction base="xs:string">
 			<xs:enumeration value="run" />
 			<xs:enumeration value="debug" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="t_string">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

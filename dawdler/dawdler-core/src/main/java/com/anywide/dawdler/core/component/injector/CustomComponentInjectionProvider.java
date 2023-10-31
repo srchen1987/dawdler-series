@@ -53,13 +53,13 @@ public class CustomComponentInjectionProvider {
 	}
 
 	private CustomComponentInjectionProvider() {
-		ServiceLoader.load(CustomComponentInjector.class).forEach(componentLifeCycle -> {
+		ServiceLoader.load(CustomComponentInjector.class).forEach(customComponentInjector -> {
 			OrderData<CustomComponentInjector> orderData = new OrderData<>();
-			Order order = componentLifeCycle.getClass().getAnnotation(Order.class);
+			Order order = customComponentInjector.getClass().getAnnotation(Order.class);
 			if (order != null) {
 				orderData.setOrder(order.value());
 			}
-			orderData.setData(componentLifeCycle);
+			orderData.setData(customComponentInjector);
 			customComponentInjectors.add(orderData);
 		});
 		OrderComparator.sort(customComponentInjectors);

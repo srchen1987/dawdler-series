@@ -37,6 +37,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @email suxuan696@gmail.com
  */
 public class CookieManager {
+	private CookieManager() {}
 	private static final String OLD_COOKIE_PATTERN = "EEE, dd-MMM-yyyy HH:mm:ss z";
 	private static final ThreadLocal<DateFormat> OLD_COOKIE_FORMAT = ThreadLocal.withInitial(() -> {
 		DateFormat df = new SimpleDateFormat(OLD_COOKIE_PATTERN, Locale.US);

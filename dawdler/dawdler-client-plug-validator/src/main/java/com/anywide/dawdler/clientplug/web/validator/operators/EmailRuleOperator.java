@@ -27,8 +27,6 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 public class EmailRuleOperator extends StringRuleOperator {
 	public static final String RULE_KEY = "email";
 	public static final String REGEX = "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w{2,4}){1,3})$";
-	// public static final String
-	// REGEX="^([-_A-Za-z0-9]+)@([_A-Za-z0-9-]+.)[A-Za-z0-9]{2,3}$";
 	public static final String EXPLAIN = "邮箱验证";
 
 	public EmailRuleOperator() {

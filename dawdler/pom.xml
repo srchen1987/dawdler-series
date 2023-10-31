@@ -487,13 +487,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.11.0</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>17</source>
 					<target>17</target>
 					<!--debug>true</debug>-->
 					<compilerArgs>
+						<arg>--add-exports</arg>
+						<arg>java.base/jdk.internal.loader=dawdler.core</arg>
 						<arg>--add-exports</arg>
 						<arg>java.base/jdk.internal.misc=dawdler.core</arg>
 						<arg>--add-exports</arg>
@@ -502,6 +504,8 @@
 						<arg>java.base/jdk.internal.perf=dawdler.server</arg>
 						<arg>--add-exports</arg>
 						<arg>java.base/jdk.internal.loader=dawdler.client.plug</arg>
+						<arg>--add-exports</arg>
+						<arg>java.base/jdk.internal.loader=dawdler.util</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>
