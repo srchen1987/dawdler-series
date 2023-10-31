@@ -8,7 +8,6 @@ module dawdler.client.plug.config.center.consul {
 	requires dawdler.client.plug;
 	requires dawdler.core;
 	requires dawdler.config.center.core;
-
 	uses RemoteClassLoaderFire;
 
 	provides RemoteClassLoaderFire with ConfigLoaderFire;
