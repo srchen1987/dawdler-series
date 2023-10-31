@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Modifier;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -42,6 +43,8 @@ import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.XmlTool;
 import com.anywide.dawdler.util.aspect.AspectHolder;
+import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
+import com.anywide.dawdler.util.spring.antpath.Resource;
 
 /**
  * @author jackson.song
@@ -53,13 +56,13 @@ import com.anywide.dawdler.util.aspect.AspectHolder;
  */
 public class ClientPlugClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(ClientPlugClassLoader.class);
-	private static final Map<String, Class<?>> remoteClass = new ConcurrentHashMap<>();
+	private static final Map<String, Class<?>> REMOTE_CLASSES = new ConcurrentHashMap<>();
 	private static ClientPlugClassLoader classloader = null;
 	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
 			.getRemoteClassLoaderFire();
 	List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider
 			.getInstance(ClientPlugClassLoader.class.getName()).getCustomComponentInjectors();
-	private ClientClassLoader urlCL = null;
+	private ClientClassLoader clientClassLoader = null;
 
 	private ClientPlugClassLoader(String path) {
 		updateLoad(path);
@@ -73,7 +76,7 @@ public class ClientPlugClassLoader {
 	}
 
 	public static Class<?> getRemoteClass(String key) {
-		return remoteClass.get(key);
+		return REMOTE_CLASSES.get(key);
 	}
 
 	public void load(String host, String className, byte[] classBytes) throws Throwable {
@@ -81,43 +84,39 @@ public class ClientPlugClassLoader {
 			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
 		}
 		try {
-			if (AspectHolder.aj != null) {
-				try {
-					classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, classBytes,
-							urlCL, null);
-				} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					logger.error("", e);
-				}
-			}
 			Class<?> clazz = defineClass(className, classBytes);
-			remoteClass.put(host.trim() + "-" + className, clazz);
-
+			REMOTE_CLASSES.put(host.trim() + "-" + className, clazz);
+			try {
+				ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classBytes);
+			} catch (IOException e) {
+				logger.error("", e);
+			}
 			for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
 				CustomComponentInjector customComponentInjector = data.getData();
-				boolean inject = false;
-				Class<?>[] matchTypes = data.getData().getMatchTypes();
+				boolean match = false;
+				Class<?>[] matchTypes = customComponentInjector.getMatchTypes();
 				if (matchTypes != null) {
 					for (Class<?> matchType : matchTypes) {
 						if (matchType.isAssignableFrom(clazz)) {
-							inject = true;
+							match = true;
 							break;
 						}
 					}
 				}
-				if (!inject) {
-					Set<? extends Class<? extends Annotation>> annotationSet = data.getData().getMatchAnnotations();
+				if (!match) {
+					Set<? extends Class<? extends Annotation>> annotationSet = customComponentInjector
+							.getMatchAnnotations();
 					if (annotationSet != null) {
 						for (Class<? extends Annotation> annotationType : annotationSet) {
 							Annotation annotation = clazz.getAnnotation(annotationType);
 							if (annotation != null) {
-								inject = true;
+								match = true;
 							} else {
 								Class<?>[] interfaceList = clazz.getInterfaces();
 								for (Class<?> c : interfaceList) {
 									annotation = c.getAnnotation(annotationType);
 									if (annotation != null) {
-										inject = true;
+										match = true;
 										break;
 									}
 								}
@@ -125,12 +124,10 @@ public class ClientPlugClassLoader {
 						}
 					}
 				}
-				if (inject) {
+				if (match && customComponentInjector.isInject() && !Modifier.isAbstract(clazz.getModifiers())
+						&& !clazz.isAnnotation() && !clazz.isInterface()) {
 					Object target = SunReflectionFactoryInstantiator.newInstance(clazz);
 					customComponentInjector.inject(clazz, target);
-					for (OrderData<RemoteClassLoaderFire> rf : fireList) {
-						rf.getData().onLoadFire(clazz, target, classBytes);
-					}
 				}
 			}
 		} catch (Exception e) {
@@ -139,24 +136,37 @@ public class ClientPlugClassLoader {
 	}
 
 	public Class<?> defineClass(String className, byte[] classBytes) {
-		return urlCL.defineClass(className, classBytes);
+		if (AspectHolder.aj != null) {
+			try {
+				classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, classBytes,
+						clientClassLoader, null);
+			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				logger.error("", e);
+			}
+		}
+		return clientClassLoader.defineClass(className, classBytes);
+	}
+
+	public Class<?> defineClass(String className, Resource res) throws IOException {
+		return clientClassLoader.defineClass(className, res);
 	}
 
 	public void remove(String name) {
 		if (logger.isDebugEnabled()) {
 			logger.debug("remove class " + name + ".class");
 		}
-		Class<?> clazz = remoteClass.remove(name);
+		Class<?> clazz = REMOTE_CLASSES.remove(name);
 		for (OrderData<RemoteClassLoaderFire> rf : fireList) {
 			rf.getData().onRemoveFire(clazz);
 		}
 	}
 
 	public void updateLoad(String path) {
-		URLClassLoader oldUrlCL = urlCL;
+		URLClassLoader oldUrlCL = clientClassLoader;
 		try {
 			URL url = new URL("file:" + path + "/");
-			this.urlCL = ClientClassLoader.newInstance(new URL[] { url }, getClass().getClassLoader());
+			this.clientClassLoader = ClientClassLoader.newInstance(new URL[] { url }, getClass().getClassLoader());
 			loadAspectj();
 		} catch (MalformedURLException e) {
 			logger.error("", e);
@@ -191,8 +201,8 @@ public class ClientPlugClassLoader {
 										byte[] classData = IOUtil.toByteArray(classInput);
 										classData = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj,
 												className, classData, classLoader, null);
-										Class<?> clazz = urlCL.defineClass(className, classData);
-										urlCL.toResolveClass(clazz);
+										Class<?> clazz = clientClassLoader.defineClass(className, classData);
+										clientClassLoader.toResolveClass(clazz);
 									}
 								} catch (Exception e) {
 									logger.error("", e);
@@ -215,6 +225,14 @@ public class ClientPlugClassLoader {
 			}
 		} else {
 			logger.error("not found aspectjweaver in classpath !");
+		}
+	}
+
+	public void close() {
+		try {
+			clientClassLoader.close();
+		} catch (IOException e) {
+			logger.error("", e);
 		}
 	}
 

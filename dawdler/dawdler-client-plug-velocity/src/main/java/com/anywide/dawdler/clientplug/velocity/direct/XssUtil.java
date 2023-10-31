@@ -11,8 +11,8 @@ import org.jsoup.safety.Safelist;
  * @email suxuan696@gmail.com
  */
 public class XssUtil {
-
-	private final static Safelist USER_CONTENT_FILTER = Safelist.basic();
+	private XssUtil() {}
+	private static final Safelist USER_CONTENT_FILTER = Safelist.basic();
 
 	static {
 		USER_CONTENT_FILTER.addTags("embed", "object", "td", "param", "span", "div", "p", "strong", "b", "font", "img",
@@ -26,7 +26,6 @@ public class XssUtil {
 		USER_CONTENT_FILTER.addAttributes("a", "href");
 	}
 
-	// 只去除ipt事件或脚本 保留以上定义的
 	public static String filterScript(String value) {
 		if (value == null) {
 			return null;
@@ -34,13 +33,12 @@ public class XssUtil {
 		return Jsoup.clean(value, USER_CONTENT_FILTER);
 	}
 
-	// 替换所有脚本 转换成&lt; &gt; 等等
 	public static String filter(String value) {
 		if (value == null) {
 			return null;
 		}
 		char[] content = value.toCharArray();
-		StringBuffer result = new StringBuffer(content.length + 30);
+		StringBuilder result = new StringBuilder(content.length + 30);
 		for (int i = 0; i < content.length; i++) {
 			switch (content[i]) {
 			case '<':

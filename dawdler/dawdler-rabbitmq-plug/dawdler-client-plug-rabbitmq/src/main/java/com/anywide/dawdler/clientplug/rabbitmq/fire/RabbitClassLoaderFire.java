@@ -34,7 +34,7 @@ import com.anywide.dawdler.rabbitmq.provider.RabbitProviderFactory;
 public class RabbitClassLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
+	public void onLoadFire(Class<?> clazz, Object target) throws Throwable {
 		RabbitProviderFactory.initField(target, clazz);
 		RabbitListenerInit.initRabbitListener(target, clazz);
 	}

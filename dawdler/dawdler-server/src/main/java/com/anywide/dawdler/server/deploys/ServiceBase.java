@@ -17,12 +17,16 @@
 package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
+import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -45,10 +49,12 @@ import com.anywide.dawdler.core.health.HealthIndicatorProvider;
 import com.anywide.dawdler.core.health.ServiceHealth;
 import com.anywide.dawdler.core.health.Status;
 import com.anywide.dawdler.core.order.OrderData;
+import com.anywide.dawdler.core.scan.DawdlerComponentScanner;
+import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser;
+import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser.ClassStructure;
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
-import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.filter.DawdlerFilter;
 import com.anywide.dawdler.server.filter.FilterProvider;
@@ -59,8 +65,8 @@ import com.anywide.dawdler.server.service.conf.ServicesConfig;
 import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
 import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
-import com.anywide.dawdler.util.aspect.AspectHolder;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
+import com.anywide.dawdler.util.spring.antpath.Resource;
 import com.anywide.dawdler.util.spring.antpath.StringUtils;
 
 /**
@@ -74,8 +80,6 @@ import com.anywide.dawdler.util.spring.antpath.StringUtils;
 public class ServiceBase implements Service {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceBase.class);
 	public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutorPrefix";
-	public static final String ASPECT_SUPPORT_OBJ = "aspectSupportObj";
-	public static final String ASPECT_SUPPORT_METHOD = "aspectSupportMethod";
 	public static final String FILTER_PROVIDER = "filterProvider";
 	public static final String DAWDLER_LISTENER_PROVIDER = "dawdlerListenerProvider";
 	public static final String SERVICES_MANAGER = "servicesManager";
@@ -90,8 +94,6 @@ public class ServiceBase implements Service {
 	private final ServicesManager servicesManager = new ServicesManager();
 	private final FilterProvider filterProvider = new FilterProvider();
 	private ServiceExecutor serviceExecutor = defaultServiceExecutor;
-	private final Scanner scanner;
-	private final DeployScanner deployScanner;
 	private AntPathMatcher antPathMatcher;
 	private volatile String status;
 	private Throwable cause;
@@ -107,8 +109,6 @@ public class ServiceBase implements Service {
 		URL binPath = serverConfig.getBinPath();
 		String host = serverConfig.getServer().getHost();
 		int port = serverConfig.getServer().getTcpPort();
-		this.scanner = serverConfig.getScanner();
-		this.deployScanner = new DeployScanner();
 		this.antPathMatcher = serverConfig.getAntPathMatcher();
 		this.deploy = deploy;
 		this.deployName = deploy.getName();
@@ -118,11 +118,8 @@ public class ServiceBase implements Service {
 		dawdlerContext = new DawdlerContext(classLoader, deploy.getName(), deploy.getPath(), getClassesDir().getPath(),
 				host, port, servicesManager, antPathMatcher, healthCheck, startSemaphore, started, status);
 		classLoader.setDawdlerContext(dawdlerContext);
+		classLoader.loadAspectj();
 		dawdlerContext.initServicesConfig();
-		if(AspectHolder.aj != null) {
-			dawdlerContext.setAttribute(ASPECT_SUPPORT_METHOD, AspectHolder.preProcessMethod);
-			dawdlerContext.setAttribute(ASPECT_SUPPORT_OBJ, AspectHolder.aj);
-		}
 	}
 
 	public ServicesBean getServicesBean(String name) {
@@ -149,7 +146,6 @@ public class ServiceBase implements Service {
 	@Override
 	public void start() throws Throwable {
 		resetContextClassLoader();
-		List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider.getInstance(deployName).getCustomComponentInjectors();
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(deployName)
 				.getComponentLifeCycles();
 		dawdlerContext.setAttribute(FILTER_PROVIDER, filterProvider);
@@ -165,75 +161,71 @@ public class ServiceBase implements Service {
 		}
 
 		ServicesConfig servicesConfig = dawdlerContext.getServicesConfig();
-		
+
 		Set<String> preLoadClasses = dawdlerContext.getServicesConfig().getPreLoads();
-		if(preLoadClasses != null) {
+		if (preLoadClasses != null) {
 			for (String preLoadClass : preLoadClasses) {
 				classLoader.findClassForDawdler(preLoadClass);
 			}
 		}
-		
-		Set<String> packagesInClasses = servicesConfig.getPackagesInClasses();
-		if(packagesInClasses != null) {
-			for (String packageInClasses : packagesInClasses) {
-				deployScanner.splitAndAddPathInClasses(packageInClasses);
+
+		Map<String, Resource> removeDuplicates = new LinkedHashMap<>();
+
+		List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider
+				.getInstance(deployName).getCustomComponentInjectors();
+
+		Set<String> packagePaths = servicesConfig.getPackagePaths();
+		if (packagePaths != null) {
+			for (String packageInClasses : packagePaths) {
+				Resource[] resources = DawdlerComponentScanner.getClasses(packageInClasses);
+				for (Resource resource : resources) {
+					removeDuplicates.putIfAbsent(resource.getURL().toString(), resource);
+				}
 			}
 		}
-		
-		Set<String> packagesInJars = servicesConfig.getPackagesInJar();
-		if(packagesInJars != null) {
-			for (String packageInJars : packagesInJars) {
-				deployScanner.splitAndAddPathInJar(packageInJars);
+
+		Collection<Resource> resources = removeDuplicates.values();
+		for (Resource resource : resources) {
+			InputStream input = null;
+			try {
+				input = resource.getInputStream();
+				ClassStructure classStructure = ClassStructureParser.parser(input);
+				if (classStructure != null) {
+					for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
+						CustomComponentInjector customComponentInjector = data.getData();
+						inject(resource, classStructure, customComponentInjector);
+					}
+				}
+			} finally {
+				if (input != null) {
+					input.close();
+				}
 			}
 		}
-		
-		Set<Class<?>> classes;
-		classes = DeployClassesScanner.getClassesInPath(scanner, deployScanner, deploy);
-		for (Class<?> c : classes) {
-			if (((c.getModifiers() & 1024) != 1024) && ((c.getModifiers() & 16) != 16)
-					&& ((c.getModifiers() & 16384) != 16384) && ((c.getModifiers() & 8192) != 8192)
-					&& ((c.getModifiers() & 512) != 512)) {
-				
-				for(OrderData<CustomComponentInjector> data : customComponentInjectorList) {
-					CustomComponentInjector customComponentInjector = data.getData();
-					boolean inject = false;
-					Class<?>[] matchTypes = data.getData().getMatchTypes();
-					if(matchTypes != null) {
-						for(Class<?> matchType : matchTypes) {
-							if(matchType.isAssignableFrom(c)) {
-								inject = true;
-								break;
+
+		for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
+			CustomComponentInjector customComponentInjector = data.getData();
+			String[] scanLocations = customComponentInjector.scanLocations();
+			if (scanLocations != null) {
+				for (String scanLocation : scanLocations) {
+					Resource[] resourcesArray = DawdlerComponentScanner.getClasses(scanLocation);
+					for (Resource resource : resourcesArray) {
+						InputStream input = null;
+						try {
+							input = resource.getInputStream();
+							ClassStructure classStructure = ClassStructureParser.parser(input);
+							inject(resource, classStructure, customComponentInjector);
+						} finally {
+							if (input != null) {
+								input.close();
 							}
 						}
-					}
-					if(!inject) {
-						Set<? extends Class<? extends Annotation>> annotationSet = data.getData().getMatchAnnotations();
-						if(annotationSet != null) {
-							for( Class<? extends Annotation> annotationType : annotationSet) {
-								Annotation annotation = c.getAnnotation(annotationType);
-								if (annotation != null) {
-									inject = true;
-								} else {
-									Class<?>[] interfaceList = c.getInterfaces();
-									for (Class<?> clazz : interfaceList) {
-										annotation = clazz.getAnnotation(annotationType);
-										if (annotation != null) {
-											inject = true;
-											break;
-										}
-									}
-								}
-							}
-						}
-					}
-					if(inject) {
-						Object target =SunReflectionFactoryInstantiator
-								.newInstance(c);
-						customComponentInjector.inject(c, target);
 					}
 				}
 			}
 		}
+
+		removeDuplicates.clear();
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		servicesManager.fireCreate(dawdlerContext);
 		dawdlerListenerProvider.order();
@@ -246,7 +238,6 @@ public class ServiceBase implements Service {
 		for (OrderData<DawdlerFilter> data : filterProvider.getFilters()) {
 			ServicesManager.injectService(data.getData());
 		}
-
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().init();
@@ -265,6 +256,7 @@ public class ServiceBase implements Service {
 						try {
 							Thread.sleep(listenerConfig.delayMsec());
 						} catch (InterruptedException e) {
+							Thread.currentThread().interrupt();
 						}
 						try {
 							orderData.getData().contextInitialized(dawdlerContext);
@@ -281,6 +273,43 @@ public class ServiceBase implements Service {
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().afterInit();
+		}
+	}
+
+	private void inject(Resource resource, ClassStructure classStructure,
+			CustomComponentInjector customComponentInjector) throws Throwable {
+		boolean match = false;
+		Class<?>[] matchTypes = customComponentInjector.getMatchTypes();
+		if (matchTypes != null) {
+			for (Class<?> matchType : matchTypes) {
+				if (classStructure.getInterfaces().contains(matchType.getName())) {
+					match = true;
+					break;
+				}
+				if (classStructure.getClassName().equals(matchType.getName())
+						|| classStructure.getSuperClasses().contains(matchType.getName())) {
+					match = true;
+					break;
+				}
+			}
+		}
+		if (!match) {
+			final Set<? extends Class<? extends Annotation>> annotationSet = customComponentInjector.getMatchAnnotations();
+			if (annotationSet != null) {
+				for (Class<? extends Annotation> annotationType : annotationSet) {
+					if (classStructure.getAnnotationNames().contains(annotationType.getName())) {
+						match = true;
+					}
+				}
+			}
+		}
+		if (match) {
+			Class<?> c = classLoader.findClassForDawdler(classStructure.getClassName(), resource);
+			if(customComponentInjector.isInject() && !classStructure.isAbstract() && !classStructure.isAnnotation()
+					&& !classStructure.isInterface()) {
+				Object target = SunReflectionFactoryInstantiator.newInstance(c);
+				customComponentInjector.inject(c, target);
+			}
 		}
 	}
 
@@ -349,16 +378,15 @@ public class ServiceBase implements Service {
 		return serviceExecutor;
 	}
 
-
 	private void resetContextClassLoader() {
 		Thread.currentThread().setContextClassLoader(classLoader);
 	}
 
 	public class DeployScanner {
-		private Set<String> packagePathInJar = new LinkedHashSet<String>();
-		private Set<String> packageAntPathInJar = new LinkedHashSet<String>();
-		private Set<String> packagePathInClasses = new LinkedHashSet<String>();
-		private Set<String> packageAntPathInClasses = new LinkedHashSet<String>();
+		private Set<String> packagePathInJar = new LinkedHashSet<>();
+		private Set<String> packageAntPathInJar = new LinkedHashSet<>();
+		private Set<String> packagePathInClasses = new LinkedHashSet<>();
+		private Set<String> packageAntPathInClasses = new LinkedHashSet<>();
 
 		public void splitAndAddPathInJar(String packagePath) {
 			if (!StringUtils.hasLength(packagePath)) {
@@ -449,16 +477,18 @@ public class ServiceBase implements Service {
 			});
 			checkResult.add(healthCheckExecutor.submit(call));
 		}
-		String status = Status.UP;
+		String checkedStatus = Status.UP;
 		for (Future<Boolean> future : checkResult) {
 			try {
-				if (future.get()) {
-					status = Status.DOWN;
+				if (future.get().booleanValue()) {
+					checkedStatus = Status.DOWN;
 				}
-			} catch (InterruptedException | ExecutionException e) {
+			} catch (ExecutionException e) {
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
 			}
 		}
-		serviceHealth.setStatus(status);
+		serviceHealth.setStatus(checkedStatus);
 		return serviceHealth;
 	}
 

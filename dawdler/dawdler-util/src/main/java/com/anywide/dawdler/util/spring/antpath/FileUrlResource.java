@@ -26,7 +26,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
-public class FileUrlResource extends UrlResource implements WritableResource {
+public class FileUrlResource extends UrlResource{
 
 	private volatile File file;
 
@@ -49,7 +49,6 @@ public class FileUrlResource extends UrlResource implements WritableResource {
 		return file;
 	}
 
-	@Override
 	public boolean isWritable() {
 		try {
 			File file = getFile();
@@ -59,12 +58,10 @@ public class FileUrlResource extends UrlResource implements WritableResource {
 		}
 	}
 
-	@Override
 	public OutputStream getOutputStream() throws IOException {
 		return Files.newOutputStream(getFile().toPath());
 	}
 
-	@Override
 	public WritableByteChannel writableChannel() throws IOException {
 		return FileChannel.open(getFile().toPath(), StandardOpenOption.WRITE);
 	}

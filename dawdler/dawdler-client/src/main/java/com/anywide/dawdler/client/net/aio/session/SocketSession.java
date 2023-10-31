@@ -94,8 +94,8 @@ public class SocketSession extends AbstractSocketSession {
 				ioHandler.channelClose(this);
 			}
 			Collection<InvokeFuture<Object>> invokeFuture = getFutures().values();
-			invokeFuture.forEach(
-					(future) -> future.setCause(new SessionCloseException("session closed. " + this.toString())));
+				invokeFuture.forEach(
+						(future) -> future.setCause(new SessionCloseException("session closed. " + this.toString())));
 			Map<SocketAddress, List<SocketSession>> sessionGroup = dawdlerConnection.getSessionGroup();
 			if (remoteAddress != null) {
 				List<SocketSession> sessions = sessionGroup.remove(remoteAddress);
@@ -135,15 +135,16 @@ public class SocketSession extends AbstractSocketSession {
 	public void messageCompleted() {
 		byte[] data = getAppendData();
 		try {
-			new DataProcessor(this, compress, serializer, data).process();
+			DataProcessor.process(this, compress, serializer, data);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+		}finally {
+			if (markClose.get() && futures.isEmpty()) {
+				close(false);
+			}
+			data = null;
+			toPrepare();
 		}
-		if (markClose.get() && futures.isEmpty()) {
-			close(false);
-		}
-		data = null;
-		toPrepare();
 	}
 
 	@Override

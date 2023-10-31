@@ -32,7 +32,7 @@ import com.anywide.dawdler.es.restclient.EsOperatorFactory;
 public class EsClassLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
+	public void onLoadFire(Class<?> clazz, Object target) throws Throwable {
 		EsOperatorFactory.initField(target, clazz);
 	}
 
