@@ -153,8 +153,7 @@ public class ServicesManager {
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			Service serviceAnnotation = field
-					.getAnnotation(Service.class);
+			Service serviceAnnotation = field.getAnnotation(Service.class);
 			if (!field.getType().isPrimitive()) {
 				Class<?> serviceClass = field.getType();
 				field.setAccessible(true);
@@ -170,9 +169,11 @@ public class ServicesManager {
 						}
 						Class<?> serviceFactoryClass = dawdlerContext.getClassLoader()
 								.loadClass("com.anywide.dawdler.client.ServiceFactory");
-						Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class, String.class,ClassLoader.class);
+						Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class,
+								String.class, ClassLoader.class);
 						String groupName = remoteService.value();
-						obj = method.invoke(null, serviceClass, groupName, remoteService.loadBalance(), dawdlerContext.getClassLoader());
+						obj = method.invoke(null, serviceClass, groupName, remoteService.loadBalance(),
+								dawdlerContext.getClassLoader());
 					}
 					if (obj != null) {
 						field.set(service, obj);

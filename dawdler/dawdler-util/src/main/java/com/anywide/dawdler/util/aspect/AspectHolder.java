@@ -19,11 +19,12 @@ package com.anywide.dawdler.util.aspect;
 import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
 
+
 /**
  * @author jackson.song
  * @version V1.0
  * @Title AspectHolder.java
- * @Description IO操作类
+ * @Description AspectHolder
  * @date 2021年4月10日
  * @email suxuan696@gmail.com
  */
@@ -34,7 +35,7 @@ public class AspectHolder {
 		Class<?> clazz = null;
 		try {
 			clazz = Class.forName("org.aspectj.weaver.loadtime.Aj");
-			aj = clazz.newInstance();
+			aj = clazz.getDeclaredConstructor().newInstance();
 			Method initializeMethod = null;
 			initializeMethod = clazz.getMethod("initialize");
 			initializeMethod.invoke(aj);

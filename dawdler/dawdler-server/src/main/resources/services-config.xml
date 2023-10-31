@@ -9,13 +9,10 @@
 		<loads>
 			<pre-load>com.dawdler.user.service.aop</pre-load>
 		</loads>
-		<packages-in-jar>
+		<package-paths>
 			<package-path>com.dawdler.user.service.impl</package-path>
-		</packages-in-jar>
-		<packages-in-classes>
-			<package-path>com.dawdler.user.service.impl</package-path>
-		</packages-in-classes><!--
-		需要扫描classes下的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效-->
+		</package-paths><!--
+		扫描路径，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效-->
 	</scanner>
 	<mybatis>
 		<mappers>

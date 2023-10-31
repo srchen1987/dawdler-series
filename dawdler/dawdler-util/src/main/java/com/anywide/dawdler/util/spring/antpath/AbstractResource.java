@@ -26,11 +26,10 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public abstract class AbstractResource implements Resource {
+public abstract class AbstractResource extends Resource {
 
 	@Override
 	public boolean exists() {
-		// Try file existence: can we find the file in the file system?
 		if (isFile()) {
 			try {
 				return getFile().exists();
@@ -61,8 +60,8 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	@Override
-	public URL getURL() throws IOException {
-		throw new FileNotFoundException(getDescription() + " cannot be resolved to URL");
+	public URL getURL() {
+		throw null;
 	}
 
 	@Override
@@ -86,16 +85,11 @@ public abstract class AbstractResource implements Resource {
 	}
 
 	@Override
-	public long contentLength() throws IOException {
+	public int getContentLength() throws IOException{
 		InputStream is = getInputStream();
+		
 		try {
-			long size = 0;
-			byte[] buf = new byte[256];
-			int read;
-			while ((read = is.read(buf)) != -1) {
-				size += read;
-			}
-			return size;
+			return is.available();
 		} finally {
 			try {
 				is.close();

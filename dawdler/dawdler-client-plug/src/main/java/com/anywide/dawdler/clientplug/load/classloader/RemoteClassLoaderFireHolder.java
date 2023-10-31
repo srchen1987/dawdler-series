@@ -33,11 +33,10 @@ import com.anywide.dawdler.core.order.OrderData;
  * @email suxuan696@gmail.com
  */
 public class RemoteClassLoaderFireHolder {
-	private static final RemoteClassLoaderFireHolder remoteClassLoaderFireHolder = new RemoteClassLoaderFireHolder();
-	private final List<OrderData<RemoteClassLoaderFire>> fires = new ArrayList<>();
+	private final List<OrderData<RemoteClassLoaderFire>> remoteClassLoaderFires = new ArrayList<>();
 
 	public static RemoteClassLoaderFireHolder getInstance() {
-		return remoteClassLoaderFireHolder;
+		return SingletonHelper.INSTANCE;
 	}
 
 	private RemoteClassLoaderFireHolder() {
@@ -48,12 +47,16 @@ public class RemoteClassLoaderFireHolder {
 				orderData.setOrder(order.value());
 			}
 			orderData.setData(service);
-			fires.add(orderData);
+			remoteClassLoaderFires.add(orderData);
 		});
-		OrderComparator.sort(fires);
+		OrderComparator.sort(remoteClassLoaderFires);
 	}
 
-	List<OrderData<RemoteClassLoaderFire>> getRemoteClassLoaderFire() {
-		return fires;
+	public List<OrderData<RemoteClassLoaderFire>> getRemoteClassLoaderFire() {
+		return remoteClassLoaderFires;
 	}
+	private static class SingletonHelper {
+        private static final RemoteClassLoaderFireHolder INSTANCE = new RemoteClassLoaderFireHolder();
+    }
+
 }

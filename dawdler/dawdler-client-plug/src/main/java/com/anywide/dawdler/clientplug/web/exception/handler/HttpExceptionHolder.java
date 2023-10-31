@@ -37,24 +37,25 @@ import com.anywide.dawdler.clientplug.web.plugs.DisplaySwitcher;
  * @email suxuan696@gmail.com
  */
 public class HttpExceptionHolder {
+	private HttpExceptionHolder() {}
 	private static final Logger logger = LoggerFactory.getLogger(HttpExceptionHolder.class);
-	private static final ConcurrentHashMap<String, HttpExceptionHandler> handles = new ConcurrentHashMap<>();
+	private static final ConcurrentHashMap<String, HttpExceptionHandler> HANDLES = new ConcurrentHashMap<>();
 
 	static {
-		handles.put(ViewType.json.toString(), new JsonHttpExceptionHandler());
-		handles.put(ViewType.velocity.toString(), new VelocityHttpExceptionHandler());
-		handles.put(ViewType.jsp.toString(), new JspHttpExceptionHandler());
+		HANDLES.put(ViewType.json.toString(), new JsonHttpExceptionHandler());
+		HANDLES.put(ViewType.velocity.toString(), new VelocityHttpExceptionHandler());
+		HANDLES.put(ViewType.jsp.toString(), new JspHttpExceptionHandler());
 	}
 
 	public static void register(String id, HttpExceptionHandler handler) {
-		HttpExceptionHandler handlerPre = handles.putIfAbsent(id, handler);
+		HttpExceptionHandler handlerPre = HANDLES.putIfAbsent(id, handler);
 		if (handlerPre != null) {
 			logger.warn(handler.getClass().getName() + " : " + id + "\talready exists!");
 		}
 	}
 
 	public static HttpExceptionHandler getHttpExceptionHandler(String id) {
-		return handles.get(id);
+		return HANDLES.get(id);
 	}
 
 	public static HttpExceptionHandler getJsonHttpExceptionHandler() {

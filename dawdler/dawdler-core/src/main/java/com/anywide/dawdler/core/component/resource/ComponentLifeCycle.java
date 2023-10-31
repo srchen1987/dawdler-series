@@ -27,22 +27,22 @@ package com.anywide.dawdler.core.component.resource;
  */
 public interface ComponentLifeCycle {
 
-	default public void prepareInit() throws Throwable {
+	default void prepareInit() throws Throwable {
 	};
 
-	default public void init() throws Throwable {
+	default void init() throws Throwable {
 	};
 
-	default public void afterInit() throws Throwable {
+	default void afterInit() throws Throwable {
 	};
 
-	default public void prepareDestroy() throws Throwable {
+	default void prepareDestroy() throws Throwable {
 	};
 
-	default public void destroy() throws Throwable {
+	default void destroy() throws Throwable {
 	};
 
-	default public void afterDestroy() throws Throwable {
+	default void afterDestroy() throws Throwable {
 	};
 
 }
