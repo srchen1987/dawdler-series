@@ -52,127 +52,129 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 			session.close();
 			return;
 		}
-		session.setLastReadTime(JVMTimeProvider.currentTimeMillis());
-		if (result > 0) {
-			DawdlerByteBuffer dawdlerBuffer = session.getReadBuffer();
-			ByteBuffer buffer = dawdlerBuffer.getByteBuffer();
-			if (session.isReceived()) {
-				if (session.isNeedNext() ? buffer.remaining() <= HEADER_FIELD_LENGTH
-						: buffer.position() <= HEADER_FIELD_LENGTH) {
-					if (session.isNeedNext()) {
-						byte[] data = new byte[buffer.remaining()];
-						buffer.get(data);
-						buffer.clear();
-						buffer.put(data);
-						session.setNeedNext(false);
+		try {
+			session.setLastReadTime(JVMTimeProvider.currentTimeMillis());
+			if (result > 0) {
+				DawdlerByteBuffer dawdlerBuffer = session.getReadBuffer();
+				ByteBuffer buffer = dawdlerBuffer.getByteBuffer();
+				if (session.isReceived()) {
+					if (session.isNeedNext() ? buffer.remaining() <= HEADER_FIELD_LENGTH
+							: buffer.position() <= HEADER_FIELD_LENGTH) {
+						if (session.isNeedNext()) {
+							byte[] data = new byte[buffer.remaining()];
+							buffer.get(data);
+							buffer.clear();
+							buffer.put(data);
+							session.setNeedNext(false);
+						}
+						process(session);
+						return;
 					}
-					process(session);
-					return;
-				}
-				session.toConnectionState();
-				if (!session.isNeedNext()) {
-					buffer.flip();
-				}
-				int dataLength = buffer.getInt();
-				InetSocketAddress inetAddress = (InetSocketAddress) session.getRemoteAddress();
-				String ipAddress = inetAddress.getAddress().getHostAddress();
-				if (session.isServer() && !session.isAuthored() && dataLength > AUTH_DATA_SIZE) {
-					throw new IllegalConnectionException(
-							ipAddress + " send auth data " + dataLength + "B > " + AUTH_DATA_SIZE + "B.", ipAddress,
-							dataLength);
-				}
-				if (dataLength == 0) {
-					if (buffer.remaining() > 0) {
-						session.toReceiveState();
-						session.setNeedNext(true);
-						completed(buffer.remaining(), session);
-					} else {
-						try {
+					session.toConnectionState();
+					if (!session.isNeedNext()) {
+						buffer.flip();
+					}
+					int dataLength = buffer.getInt();
+					InetSocketAddress inetAddress = (InetSocketAddress) session.getRemoteAddress();
+					String ipAddress = inetAddress.getAddress().getHostAddress();
+					if (session.isServer() && !session.isAuthored() && dataLength > AUTH_DATA_SIZE) {
+						throw new IllegalConnectionException(
+								ipAddress + " send auth data " + dataLength + "B > " + AUTH_DATA_SIZE + "B.", ipAddress,
+								dataLength);
+					}
+					if (dataLength == 0) {
+						if (buffer.remaining() > 0) {
+							session.toReceiveState();
+							session.setNeedNext(true);
+							completed(buffer.remaining(), session);
+						} else {
 							session.clearBuffer(buffer);
 							session.toPrepare();
 							process(session);
-						} catch (Exception e) {
-							throw new RuntimeException(e);
 						}
+						return;
 					}
-					return;
-				}
-				session.setDataLength(dataLength);
-				session.setPackageSize(dataLength);
-				int readLength = buffer.remaining();
-				if (readLength > dataLength) {
-					session.parseHead(buffer);
-					session.appendReadLength(dataLength);
-					buffer.get(session.getAppendData());
-					session.messageCompleted();
-					session.setNeedNext(true);
-					completed(buffer.remaining(), session);
-					return;
-				} else if (buffer.remaining() == dataLength) {
-					session.parseHead(buffer);
-					session.appendReadLength(dataLength);
-					buffer.get(session.getAppendData());
-					session.clearBuffer(buffer);
-					session.messageCompleted();
-					process(session);
-				} else {
-					session.appendReadLength(readLength);
-					session.parseHead(buffer);
-					int remain = buffer.remaining();
-					if (remain > 0) {
-						byte[] data = new byte[remain];
-						buffer.get(data);
-						session.appendData(data);
-					}
-					session.clearBuffer(buffer);
-					session.setNeedNext(false);
-					process(session);
-				}
-			} else {
-				buffer.flip();
-				int readLength = buffer.remaining();
-				int remanentDataLength = session.getRemanentDataLength();
-				if (readLength > remanentDataLength) {
-					byte[] data = new byte[remanentDataLength];
-					buffer.get(data);
-					session.appendReadLength(remanentDataLength);
-					session.appendData(data);
-					session.messageCompleted();
-					session.setNeedNext(true);
-					completed(buffer.remaining(), session);
-					return;
-				} else {
-					if (readLength == remanentDataLength) {
-						session.appendReadLength(remanentDataLength);
-						byte[] data = new byte[remanentDataLength];
-						buffer.get(data);
-						session.appendData(data);
+					session.setDataLength(dataLength);
+					session.setPackageSize(dataLength);
+					int readLength = buffer.remaining();
+					if (readLength > dataLength) {
+						session.parseHead(buffer);
+						session.appendReadLength(dataLength);
+						buffer.get(session.getAppendData());
+						session.messageCompleted();
+						session.setNeedNext(true);
+						completed(buffer.remaining(), session);
+						return;
+					} else if (buffer.remaining() == dataLength) {
+						session.parseHead(buffer);
+						session.appendReadLength(dataLength);
+						buffer.get(session.getAppendData());
 						session.clearBuffer(buffer);
 						session.messageCompleted();
+						process(session);
 					} else {
 						session.appendReadLength(readLength);
-						byte[] data = new byte[readLength];
-						buffer.get(data);
-						session.appendData(data);
+						session.parseHead(buffer);
+						int remain = buffer.remaining();
+						if (remain > 0) {
+							byte[] data = new byte[remain];
+							buffer.get(data);
+							session.appendData(data);
+						}
 						session.clearBuffer(buffer);
 						session.setNeedNext(false);
+						process(session);
 					}
-					process(session);
+				} else {
+					buffer.flip();
+					int readLength = buffer.remaining();
+					int remanentDataLength = session.getRemanentDataLength();
+					if (readLength > remanentDataLength) {
+						byte[] data = new byte[remanentDataLength];
+						buffer.get(data);
+						session.appendReadLength(remanentDataLength);
+						session.appendData(data);
+						session.messageCompleted();
+						session.setNeedNext(true);
+						completed(buffer.remaining(), session);
+						return;
+					} else {
+						if (readLength == remanentDataLength) {
+							session.appendReadLength(remanentDataLength);
+							byte[] data = new byte[remanentDataLength];
+							buffer.get(data);
+							session.appendData(data);
+							session.clearBuffer(buffer);
+							session.messageCompleted();
+						} else {
+							session.appendReadLength(readLength);
+							byte[] data = new byte[readLength];
+							buffer.get(data);
+							session.appendData(data);
+							session.clearBuffer(buffer);
+							session.setNeedNext(false);
+						}
+						process(session);
+					}
 				}
+			} else {
+				if (INFERIOR_COUNT.getAndIncrement() > INFERIOR_COUNT_NUM) {
+					session.close();
+					return;
+				}
+				process(session);
 			}
-		} else {
-			if (INFERIOR_COUNT.getAndIncrement() > INFERIOR_COUNT_NUM) {
-				session.close();
-				return;
-			}
-			process(session);
+		} catch (Throwable throwble) {
+			failed(throwble, session);
 		}
 	}
 
 	@Override
 	public void failed(Throwable exc, AbstractSocketSession session) {
-		logger.warn("failed", exc);
-		session.close();
+		logger.error("", exc);
+		if (!session.isClose()) {
+			session.close();
+		}
 	}
 
 	public void process(AbstractSocketSession session) {

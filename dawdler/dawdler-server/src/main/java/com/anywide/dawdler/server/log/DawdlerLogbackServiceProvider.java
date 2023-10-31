@@ -70,7 +70,7 @@ public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 				return context;
 			}
 			context = new LoggerContext();
-			context.setName(CoreConstants.DEFAULT_CONTEXT_NAME+classLoader.toString());
+			context.setName(CoreConstants.DEFAULT_CONTEXT_NAME + classLoader.toString());
 			try {
 				try {
 					new DawdlerLogbackContextInitializer(context).autoConfig();

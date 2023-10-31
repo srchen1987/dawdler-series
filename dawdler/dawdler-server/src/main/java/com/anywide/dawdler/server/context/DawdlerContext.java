@@ -160,7 +160,7 @@ public class DawdlerContext {
 			file = new File(currentPath + configPath);
 		}
 		if (!file.isFile()) {
-			throw new IOException("not found " +file.getAbsolutePath());
+			throw new IOException("not found " + file.getAbsolutePath());
 		}
 		this.servicesConfig = new ServicesConfigParser(currentPath + configPath).getServicesConfig();
 	}

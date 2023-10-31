@@ -62,7 +62,7 @@ public class LoadCore implements Runnable {
 
 	private final String host;
 	private final String channelGroupId;
-	private boolean start = true;
+	private volatile boolean start = true;
 	private long time = 60000;
 	private ClientPlugClassLoader classLoder = null;
 
@@ -281,7 +281,6 @@ public class LoadCore implements Runnable {
 						fo.flush();
 					} catch (Exception e) {
 						logger.error("", e);
-						return;
 					} finally {
 						try {
 							if (fo != null) {

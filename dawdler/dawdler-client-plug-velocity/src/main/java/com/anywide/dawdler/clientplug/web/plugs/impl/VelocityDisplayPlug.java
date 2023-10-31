@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -37,7 +38,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +58,7 @@ import com.anywide.dawdler.util.PropertiesUtil;
  */
 public class VelocityDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(VelocityDisplayPlug.class);
-	private Map<String, VelocityToolBox> toolboxs = new HashMap<String, VelocityToolBox>();
+	private Map<String, VelocityToolBox> toolboxs = new HashMap<>();
 
 	public Map<String, VelocityToolBox> getToolboxs() {
 		return toolboxs;
@@ -126,12 +126,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		}
 		PrintWriter out = null;
 		try {
-			Template template;
-			try {
-				template = VelocityTemplateManager.getInstance().getTemplate(tpath);
-			} catch (ResourceNotFoundException e) {
-				throw new ServletException(e);
-			}
+			Template template = VelocityTemplateManager.getInstance().getTemplate(tpath);
 			Map<String, Object> data = wf.getData();
 			Context context = new VelocityContext(data);
 			if (wf.isAddRequestAttribute()) {
@@ -186,18 +181,13 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 					System.err.println("warn\t" + className + "\tmust extends VelocityToolBox!");
 					continue;
 				}
-				try {
-					Constructor<?> cs = c.getConstructor(String.class);
-					VelocityToolBox obj = (VelocityToolBox) cs.newInstance(name);
-					toolboxs.put(name, obj);
-				} catch (Exception e) {
-					logger.error("", e);
-				}
-			} catch (ClassNotFoundException e) {
-				System.err.println("warn can't find " + className);
+				Constructor<?> cs = c.getConstructor(String.class);
+				VelocityToolBox obj = (VelocityToolBox) cs.newInstance(name);
+				toolboxs.put(name, obj);
+			} catch (Exception e) {
+				logger.error("", e);
 			}
 		}
-		pstool = null;
 		String templatePath = servletContext.getInitParameter("template-path");
 		VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
 		String path;

@@ -167,10 +167,6 @@ public class PageStyle {
 		return pc;
 	}
 
-	private String replaceLinkMark(String content, String linkcontent, int page) {
-		return content.replace(CONTENTMARK, linkcontent).replace(PMARK, "" + page);
-	}
-
 	public class PageStyleContent {
 		private String pageOn;// 当前页
 		private String firstpage;// 首页
@@ -237,6 +233,10 @@ public class PageStyle {
 
 		public void setEndpage(String endpage) {
 			this.endpage = endpage;
+		}
+		
+		private String replaceLinkMark(String content, String linkcontent, int page) {
+			return content.replace(CONTENTMARK, linkcontent).replace(PMARK, "" + page);
 		}
 	}
 }

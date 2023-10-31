@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.fire;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.List;
 
@@ -52,10 +51,10 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 	private static final Logger logger = LoggerFactory.getLogger(WebComponentClassLoaderFire.class);
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
+	public void onLoadFire(Class<?> clazz, Object target) throws Throwable {
 		initListener(clazz, target);
 		initInterceptor(clazz, target);
-		initMapping(clazz, target, classCodes);
+		initMapping(clazz, target);
 	}
 
 	@Override
@@ -93,7 +92,7 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 		}
 	}
 
-	private void initMapping(Class<?> clazz, Object target, byte[] classCodes) {
+	private void initMapping(Class<?> clazz, Object target) {
 		if (clazz.isInterface()) {
 			return;
 		}
@@ -106,12 +105,6 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 				}
 			} else {
 				registMapping(null, clazz, target);
-			}
-
-			try {
-				ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classCodes);
-			} catch (IOException e) {
-				logger.error("", e);
 			}
 		}
 	}

@@ -98,18 +98,14 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 					}
 					ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 					for (String k : newSet) {
-						if (!oldSet.contains(k)) {
-							if (cp != null) {
-								cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
-							}
+						if (!oldSet.contains(k) && cp != null) {
+							cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
 						}
 					}
 
 					for (String k : oldSet) {
-						if (!newSet.contains(k)) {
-							if (cp != null) {
-								cp.doChange(gid, Action.ACTION_DEL, getServiceAddress(k));
-							}
+						if (!newSet.contains(k) && cp != null) {
+							cp.doChange(gid, Action.ACTION_DEL, getServiceAddress(k));
 						}
 					}
 					oldSet = newSet;

@@ -17,18 +17,20 @@
 package com.anywide.dawdler.clientplug.load.classloader;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.ByteBuffer;
-import java.security.AccessControlContext;
-import java.security.AccessController;
 import java.security.CodeSigner;
 import java.security.CodeSource;
-import java.security.PrivilegedAction;
-import java.security.PrivilegedExceptionAction;
 import java.util.jar.Attributes;
 import java.util.jar.Attributes.Name;
 import java.util.jar.Manifest;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.util.aspect.AspectHolder;
+import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
 import sun.misc.Resource;
 import sun.misc.URLClassPath;
@@ -43,8 +45,8 @@ import sun.misc.URLClassPath;
  */
 
 public class ClientClassLoader extends URLClassLoader {
+	private static final Logger logger = LoggerFactory.getLogger(ClientClassLoader.class);
 	private final URLClassPath ucp;
-	private AccessControlContext acc;
 
 	@Override
 	public URL getResource(String name) {
@@ -55,57 +57,40 @@ public class ClientClassLoader extends URLClassLoader {
 		return super.getResource(name);
 	}
 
-	public ClientClassLoader(URL[] urls, java.lang.ClassLoader parent) {
+	public ClientClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
-		SecurityManager security = System.getSecurityManager();
-		if (security != null) {
-			security.checkCreateClassLoader();
-		}
-		acc = AccessController.getContext();
-		ucp = new URLClassPath(urls);
-
+		ucp = new URLClassPath(urls, null, null);
 	}
 
 	public ClientClassLoader(URL[] urls) {
 		super(urls);
-		SecurityManager security = System.getSecurityManager();
-		if (security != null) {
-			security.checkCreateClassLoader();
-		}
-		acc = AccessController.getContext();
-		ucp = new URLClassPath(urls);
+		ucp = new URLClassPath(urls, null, null);
 	}
 
-	public static ClientClassLoader newInstance(final URL[] urls, final java.lang.ClassLoader parent) {
-		AccessControlContext acc = AccessController.getContext();
-		ClientClassLoader ucl = (ClientClassLoader) AccessController
-				.doPrivileged((PrivilegedAction) () -> new FactoryURLClassLoader(urls, parent));
-		ucl.acc = acc;
-		return ucl;
+	public static ClientClassLoader newInstance(final URL[] urls, final ClassLoader parent) {
+		return new FactoryURLClassLoader(urls, parent);
 	}
 
 	@Override
 	protected Class<?> findClass(final String name) throws ClassNotFoundException {
-		try {
-			return (Class<?>) AccessController.doPrivileged((PrivilegedExceptionAction<?>) () -> {
-				String path = name.replace('.', '/').concat(".class");
-				Resource res = ucp.getResource(path, false);
-				if (res != null) {
-					try {
-						return defineClass(name, res);
-					} catch (IOException e) {
-						throw new ClassNotFoundException(name, e);
-					}
-				} else {
-					throw new ClassNotFoundException(name);
-				}
-			}, acc);
-		} catch (java.security.PrivilegedActionException pae) {
-			throw (ClassNotFoundException) pae.getException();
+		String path = name.replace('.', '/').concat(".class");
+		Resource res = ucp.getResource(path, false);
+		if (res != null) {
+			try {
+				return defineClass(name, res);
+			} catch (IOException e) {
+				throw new ClassNotFoundException(name, e);
+			}
+		} else {
+			throw new ClassNotFoundException(name);
 		}
 	}
 
 	public Class<?> defineClass(String name, Resource res) throws IOException {
+		Class<?> clazz = findLoadedClass(name);
+		if (clazz != null) {
+			return clazz;
+		}
 		int i = name.lastIndexOf('.');
 		URL url = res.getCodeSourceURL();
 		if (i != -1) {
@@ -132,19 +117,33 @@ public class ClientClassLoader extends URLClassLoader {
 				}
 			}
 		}
-		java.nio.ByteBuffer bb = res.getByteBuffer();
-		if (bb != null) {
-			byte[] bs = bb.array();
-			bb = ByteBuffer.wrap(bs);
-			CodeSigner[] signers = res.getCodeSigners();
-			CodeSource cs = new CodeSource(url, signers);
-			return defineClass(name, bb, cs);
+		CodeSigner[] signers = res.getCodeSigners();
+		CodeSource cs = new CodeSource(url, signers);
+		byte[] classBytes;
+		java.nio.ByteBuffer codeByteBuffer = res.getByteBuffer();
+		if (codeByteBuffer != null) {
+			codeByteBuffer.flip();
+			classBytes = codeByteBuffer.array();
 		} else {
-			byte[] b = res.getBytes();
-			CodeSigner[] signers = res.getCodeSigners();
-			CodeSource cs = new CodeSource(url, signers);
-			return defineClass(name, b, 0, b.length, cs);
+			classBytes = res.getBytes();
 		}
+
+		if (AspectHolder.aj != null) {
+			try {
+				classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, classBytes, this,
+						null);
+			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				logger.error("", e);
+			}
+		}
+		clazz = defineClass(name, classBytes, 0, classBytes.length, cs);
+		try {
+			ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classBytes);
+		} catch (IOException e) {
+			logger.error("", e);
+		}
+		return clazz;
 	}
 
 	private boolean isSealed(String name, Manifest man) {
@@ -154,19 +153,21 @@ public class ClientClassLoader extends URLClassLoader {
 		if (attr != null) {
 			sealed = attr.getValue(Name.SEALED);
 		}
-		if (sealed == null) {
-			if ((attr = man.getMainAttributes()) != null) {
-				sealed = attr.getValue(Name.SEALED);
-			}
+		if (sealed == null && (attr = man.getMainAttributes()) != null) {
+			sealed = attr.getValue(Name.SEALED);
 		}
 		return "true".equalsIgnoreCase(sealed);
 	}
 
 	public Class<?> defineClass(String name, byte[] data) {
+		Class<?> clazz = findLoadedClass(name);
+		if (clazz != null) {
+			return clazz;
+		}
 		return defineClass(name, data, 0, data.length);
 	}
 
-	public void toResolveClass(Class c) {
+	public void toResolveClass(Class<?> c) {
 		resolveClass(c);
 	}
 
@@ -180,15 +181,9 @@ final class FactoryURLClassLoader extends ClientClassLoader {
 	FactoryURLClassLoader(URL[] urls) {
 		super(urls);
 	}
-
-	public final Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		SecurityManager sm = System.getSecurityManager();
-		if (sm != null) {
-			int i = name.lastIndexOf('.');
-			if (i != -1) {
-				sm.checkPackageAccess(name.substring(0, i));
-			}
-		}
+	
+	@Override
+	public final Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
 		return super.loadClass(name, resolve);
 	}
 }

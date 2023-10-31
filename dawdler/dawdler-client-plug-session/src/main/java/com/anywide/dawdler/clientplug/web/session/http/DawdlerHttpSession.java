@@ -40,9 +40,9 @@ import com.anywide.dawdler.util.JVMTimeProvider;
  * @email suxuan696@gmail.com
  */
 public class DawdlerHttpSession implements HttpSession {
-	public final static String CREATION_TIME_KEY = "creationTime";
-	public final static String LAST_ACCESSED_TIME_KEY = "lastAccessedTime";
-	public final static ThreadLocal<Boolean> flushImmediately = new ThreadLocal<>();
+	public static final String CREATION_TIME_KEY = "creationTime";
+	public static final String LAST_ACCESSED_TIME_KEY = "lastAccessedTime";
+	public static final ThreadLocal<Boolean> FLUSH_IMMEDIATELY = new ThreadLocal<>();
 	private final Map<String, Object> attributesAddNew = new HashMap<>();
 	private final SessionOperator sessionOperator;
 	private final MessageOperator messageOperator;
@@ -77,15 +77,15 @@ public class DawdlerHttpSession implements HttpSession {
 	}
 
 	public static boolean isFlushImmediately() {
-		return flushImmediately.get() != null;
+		return FLUSH_IMMEDIATELY.get() != null;
 	}
 
 	public static void setFlushImmediately() {
-		flushImmediately.set(true);
+		FLUSH_IMMEDIATELY.set(true);
 	}
 
 	public static void clearFlushImmediately() {
-		flushImmediately.remove();
+		FLUSH_IMMEDIATELY.remove();
 	}
 
 	public boolean isValid() {

@@ -32,7 +32,16 @@ public interface CustomComponentInjector {
 	/**
 	 * 注入方法
 	 */
-	public void inject(Class<?> type, Object target) throws Throwable;
+	default public void inject(Class<?> type, Object target) throws Throwable {
+	};
+
+	/**
+	 * 是否注入
+	 *
+	 */
+	default public boolean isInject() {
+		return true;
+	}
 
 	/**
 	 * 匹配的类或接口
@@ -43,4 +52,11 @@ public interface CustomComponentInjector {
 	 * 匹配的注解
 	 */
 	Set<? extends Class<? extends Annotation>> getMatchAnnotations();
+
+	/**
+	 * 扫描包路径
+	 */
+	default String[] scanLocations() {
+		return null;
+	}
 }

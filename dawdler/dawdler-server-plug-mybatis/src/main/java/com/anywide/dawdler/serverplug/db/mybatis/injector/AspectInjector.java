@@ -14,25 +14,45 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.serverplug.conf.consul.listener;
+package com.anywide.dawdler.serverplug.db.mybatis.injector;
 
-import com.anywide.dawdler.conf.Refresher;
-import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
+import java.lang.annotation.Annotation;
+import java.util.Set;
+
+import org.apache.ibatis.session.SqlSession;
+
+import com.anywide.dawdler.core.annotation.Order;
+import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigServiceCreateListener.java
- * @Description 监听服务器端服务创建的事件，注入配置信息
- * @date 2021年5月30日
+ * @Title AspectInjector.java
+ * @Description 加载需要被aspect织入的组件
+ * @date 2023年9月2日
  * @email suxuan696@gmail.com
  */
-public class ConfigServiceCreateListener implements DawdlerServiceCreateListener {
+@Order(0)
+public class AspectInjector implements CustomComponentInjector {
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext context) {
-		Refresher.refreshAllConfig(service, single);
+	public Class<?>[] getMatchTypes() {
+		return new Class[] { SqlSession.class };
+	}
+
+	@Override
+	public Set<? extends Class<? extends Annotation>> getMatchAnnotations() {
+		return null;
+	}
+
+	@Override
+	public String[] scanLocations() {
+		return new String[] { "org.apache.ibatis.session.defaults" };
+	}
+
+	@Override
+	public boolean isInject() {
+		return false;
 	}
 
 }
