@@ -34,6 +34,7 @@ import jakarta.servlet.ServletContext;
  * @email suxuan696@gmail.com
  */
 public class WebContextListenerProvider {
+	private WebContextListenerProvider() {}
 	private static final List<OrderData<WebContextListener>> webContextListeners = new CopyOnWriteArrayList<>();
 
 	public static List<OrderData<WebContextListener>> getWebContextListeners() {

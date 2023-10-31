@@ -54,7 +54,6 @@ public abstract class AbstractCacheManager implements CacheManager {
 				Cache preCache = cacheMap.putIfAbsent(cacheConfig.getName(), cache);
 				if (preCache != null) {
 					cache.clear();
-					cache = null;
 				}
 			}
 		}

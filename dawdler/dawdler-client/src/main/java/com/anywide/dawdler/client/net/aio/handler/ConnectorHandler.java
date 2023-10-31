@@ -40,7 +40,7 @@ import com.anywide.dawdler.util.CertificateOperator;
 public class ConnectorHandler implements CompletionHandler<Void, SocketSession> {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectorHandler.class);
 	private static final ReaderHandler readerHandler = new ReaderHandler();
-	private final IoHandler ioHandler = IoHandlerFactory.getHandler();
+	private static final IoHandler ioHandler = IoHandlerFactory.getHandler();
 
 	@Override
 	public void completed(Void result, SocketSession session) {

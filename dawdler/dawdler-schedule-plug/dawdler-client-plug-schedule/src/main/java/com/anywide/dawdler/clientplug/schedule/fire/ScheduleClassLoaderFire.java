@@ -32,7 +32,7 @@ import com.anywide.dawdler.schedule.ScheduleInit;
 public class ScheduleClassLoaderFire implements RemoteClassLoaderFire {
 
 	@Override
-	public void onLoadFire(Class<?> clazz, Object target, byte[] classCodes) throws Throwable {
+	public void onLoadFire(Class<?> clazz, Object target) throws Throwable {
 		ScheduleInit.initScheduler(target, clazz);
 	}
 

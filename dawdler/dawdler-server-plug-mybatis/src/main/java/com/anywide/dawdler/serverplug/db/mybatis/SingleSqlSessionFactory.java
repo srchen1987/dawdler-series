@@ -43,7 +43,7 @@ import com.anywide.dawdler.util.spring.antpath.ResourcePatternResolver;
 public class SingleSqlSessionFactory {
 	private static final Logger logger = LoggerFactory.getLogger(SingleSqlSessionFactory.class);
 	private SqlSession sqlSession;
-	private ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+	private ResourcePatternResolver resolver = PathMatchingResourcePatternResolver.getInstance();
 
 	public static class SingletonHoler {
 		private static SingleSqlSessionFactory instance = new SingleSqlSessionFactory();

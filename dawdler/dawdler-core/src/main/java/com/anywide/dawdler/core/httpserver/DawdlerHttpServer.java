@@ -44,14 +44,14 @@ import com.sun.net.httpserver.HttpsServer;
 public class DawdlerHttpServer {
 	private Authenticator authenticator;
 	private HttpServer httpServer;
-
+	private static final String HTTPS_SCHEME = "https";
 	public DawdlerHttpServer(String host, String scheme, int port, int backlog, String username, String password,
 			String keyStorePath, String keyPassword) throws Exception {
 		InetSocketAddress address = new InetSocketAddress(host, port);
 		if (username != null && password != null) {
 			authenticator = new Auth("dawdler-realm", username, password);
 		}
-		if ("https".equals(scheme)) {
+		if (HTTPS_SCHEME.equals(scheme)) {
 			InputStream input = new FileInputStream(keyStorePath);
 			try {
 				char[] passwordArray = keyPassword.toCharArray();

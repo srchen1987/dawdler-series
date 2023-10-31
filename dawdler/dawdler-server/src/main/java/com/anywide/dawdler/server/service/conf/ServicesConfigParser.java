@@ -82,25 +82,14 @@ public class ServicesConfigParser {
 		}
 	}
 
-	public void loadPackagesInJar(Node node) {
-		List<Node> packagesInJar = getNodes(node.getChildNodes());
-		if (!packagesInJar.isEmpty()) {
-			Set<String> packageInJarSet = new HashSet<>();
-			for (Node packageInJar : packagesInJar) {
-				packageInJarSet.add(packageInJar.getTextContent().trim());
-			}
-			servicesConfig.setPackagesInJar(packageInJarSet);
-		}
-	}
-
 	public void loadPackagesInClasses(Node node) {
-		List<Node> packagesInClasses = getNodes(node.getChildNodes());
-		if (!packagesInClasses.isEmpty()) {
-			Set<String> packageInClassesSet = new HashSet<>();
-			for (Node packageInClasses : packagesInClasses) {
-				packageInClassesSet.add(packageInClasses.getTextContent().trim());
+		List<Node> packagePaths = getNodes(node.getChildNodes());
+		if (!packagePaths.isEmpty()) {
+			Set<String> packagePathsSet = new HashSet<>();
+			for (Node packagePath : packagePaths) {
+				packagePathsSet.add(packagePath.getTextContent().trim());
 			}
-			servicesConfig.setPackagesInClasses(packageInClassesSet);
+			servicesConfig.setPackagePaths(packagePathsSet);
 		}
 	}
 
@@ -160,9 +149,7 @@ public class ServicesConfigParser {
 					String scannerChildNodeName = scannerChildNode.getNodeName();
 					if (scannerChildNodeName.equals("loads")) {
 						loadPreLoads(scannerChildNode);
-					} else if (scannerChildNodeName.equals("packages-in-jar")) {
-						loadPackagesInJar(scannerChildNode);
-					} else if (scannerChildNodeName.equals("packages-in-classes")) {
+					} else if (scannerChildNodeName.equals("package-paths")) {
 						loadPackagesInClasses(scannerChildNode);
 					}
 				}
@@ -173,6 +160,5 @@ public class ServicesConfigParser {
 			}
 		}
 	}
-	
-	
+
 }

@@ -34,13 +34,7 @@ import com.anywide.dawdler.util.TLS;
  */
 @Aspect
 public class SwitchConnectionAspect {
-	static {
-		try {
-			Class.forName("org.apache.ibatis.session.defaults.DefaultSqlSession");
-		} catch (ClassNotFoundException e) {
-		}
-	}
-
+	
 	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(..)) && args(String,Object,org.apache.ibatis.session.RowBounds)")
 	public Object select(ProceedingJoinPoint pjp) throws Throwable {
 		try {

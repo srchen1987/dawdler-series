@@ -80,7 +80,7 @@ public class ValidateResourceLoader {
 		parserMapping(xmlObject, cv);
 		return cv;
 	}
-	
+
 	private static void parserGlobal(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
 		cv.initGlobalControlFieldsCache();
 		List<Node> globalList = xmlObject.selectNodes("/ns:validator/ns:global-validator/ns:validator");
@@ -137,8 +137,7 @@ public class ValidateResourceLoader {
 				}
 				String mname = XmlTool.getElementAttribute(namedNodeMap, "name");
 				String skip = XmlTool.getElementAttribute(namedNodeMap, "skip");
-				List<Node> vlist = xmlObject
-						.selectNodes("/ns:validator/ns:validator-mappings/ns:validator-mapping/ns:validator");
+				List<Node> vlist = XmlTool.getNodes(mappingNode.getChildNodes());
 				if (vlist != null) {
 					for (Node validatorNode : vlist) {
 						NamedNodeMap validatorNamedNodeMap = validatorNode.getAttributes();

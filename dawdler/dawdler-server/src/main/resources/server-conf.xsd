@@ -6,28 +6,6 @@
 	<xs:element name="config">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="scanner" maxOccurs="1">
-					<xs:complexType>
-						<xs:sequence>
-							<xs:element name="jar-files">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="jar-file" maxOccurs="unbounded"
-											type="xs:string" />
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-							<xs:element name="packages-in-jar">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="package-path"
-											maxOccurs="unbounded" type="xs:string" />
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-						</xs:sequence>
-					</xs:complexType>
-				</xs:element>
 				<xs:element name="keyStore" maxOccurs="1" minOccurs="1">
 					<xs:complexType>
 						<xs:attribute name="keyStorePath" type="xs:string">

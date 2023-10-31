@@ -172,6 +172,7 @@ public class OrderController {
   viewForward.setTemplatePath("order/add.html");//注入ViewForward 来设置templatePath
  }
 
+}
 ```
 
  示例3：@ResponseBody注解
@@ -352,24 +353,36 @@ public class UserController{
 
 ```
 
-### 11. 配置需要加载的api与entity
+### 11. 扫描组件包配置
 
-参考以下示例,loads-on是配置加载项,其中channel-group-id对应上面server-channel-group中声明的server-channel-group.关于示例中其他配置请参考[client/client-conf.xml配置文件说明](../dawdler-client/README.md#2-clientclient-confxml配置文件说明)
+component-scan配置当前的web环境中的包扫描路径(部署在web容器中的lib或classes中的包路径并支持antpath). 注意: 这里的远程加载配置可以与[配置需要加载的api与entity](#12-配置需要加载的api与entity).
 
 示例：
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <zk-host>localhost:2181</zk-host>
     <certificatePath>key/dawdler.cer</certificatePath>
-    <server-channel-group channel-group-id="user-api"
+    <server-channel-group channel-group-id="user-load-web"
                           connection-num="1"
                           sessionNum="4" serializer="2"
                           user="global_user" password="global_password">
     </server-channel-group>
-    
-        <server-channel-group channel-group-id="user-load-web"
+    <component-scan base-package="com.xxx.controller,com.yyy.**.ccontroller"></component-scan><!-- 需要扫描的路径，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效-->
+</config>
+```
+
+### 12. 配置需要加载的api与entity
+
+参考以下示例,loads-on是配置加载项,其中channel-group-id对应上面server-channel-group中声明的server-channel-group.关于示例中其他配置请参考[client/client-conf.xml配置文件说明](../dawdler-client/README.md#2-clientclient-confxml配置文件说明). 注意: 这里的远程加载配置可以与[扫描组件包配置](#11-扫描组件包配置)并存.
+
+示例：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <certificatePath>key/dawdler.cer</certificatePath>
+    <server-channel-group channel-group-id="user-load-web"
                           connection-num="1"
                           sessionNum="4" serializer="2"
                           user="global_user" password="global_password">
@@ -377,14 +390,13 @@ public class UserController{
   
     <!-- web启动时动态加载配置,dawdler-client-plug需要此配置 -->
     <loads-on>
-        <item sleep="15000" channel-group-id="user-api" mode="run">user</item><!-- 配置加载user-api服务中的user模块  sleep 检查更新间隔 毫秒单位,channel-group-id指定组,mode=run 为运行模式 不再检查更新-->
-        <item sleep="15000" channel-group-id="user-load-web" mode="run">user</item><!-- 配置加载user-load-web服务中的user模块  sleep 检查更新间隔 毫秒单位,channel-group-id指定组,mode=run 为运行模式 不再检查更新-->
+        <item sleep="15000" channel-group-id="user-load-web" mode="run">user</item><!-- 配置加载user-load-web服务中的user模块,channel-group-id指定组,mode=run 为运行模式 不再检查更新,如果不填写mode 默认为debug模式 会触发sleep 检查更新间隔 毫秒单位 -->
     </loads-on>
 
 </config>
 ```
 
-### 12. aop使用方式
+### 13. aop使用方式
 
 dawdler的aop支持采用aspjectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
 

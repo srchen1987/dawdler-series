@@ -22,21 +22,6 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
- <scanner>
- <jar-files>
-   <jar-file>dawdler-server-plug*.jar</jar-file>
-   <jar-file>dawdler-distributed-transaction-core*.jar</jar-file>
-   <jar-file>dawdler-cache-core*.jar</jar-file>
- </jar-files>
-  <!-- 需要扫描的jar包，支持antpath 被扫描的jar包中的组件会生效-->
- <packages-in-jar>
-    <package-path>com.anywide.dawdler.**.aspect</package-path>
-   <package-path>com.anywide.dawdler.serverplug.db.mybatis.session</package-path>
-   <package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
-   <package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
-   <!-- 需要扫描的java包，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效.需要注意所有部署在此容器下的服务都会被扫描,如果需要单独服务配置请到具体服务的services-config.xml中配置对应的扫描器-->
-  </packages-in-jar>
- </scanner>
  <keyStore
   keyStorePath="${DAWDLER_BASE_PATH}/key/dawdler.keystore"
   alias="srchen" password="jackson.song1948@anywide"></keyStore><!-- 
@@ -76,10 +61,6 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 ```
 
 属性说明：
-
-##### scanner节点
-
-dawdler启动后会扫描的包,如果有DawdlerServiceListener、DawdlerServiceCreateListener、DawdlerFilter的实现需要在dawdler容器中加载的类,则需要在此配置.
 
 ##### keyStore节点
 
@@ -145,56 +126,7 @@ dataSource 数据源检测
 
 config 配置中心检测
 
-#### 2.2 data-sources.xml说明
-
-dawdler支持jndi数据源,dawdler服务器中的数据源可以被deploys下的服务公用. datasources节点下可以有多个datasource节点,每个节点都是一个数据源配置,datasource中id属性是数据源的id,type属性的节点内容是连接池的dataSource实现类.attribute节点中的属性name是连接池中的配置名,attribute节点的text为具体配置值.
-
-示例：
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<config>
- <datasources>
-  <datasource id="read1">
-   <attribute name="type">com.zaxxer.hikari.HikariDataSource</attribute>
-   <attribute name="jdbcUrl">jdbc:mysql://127.0.0.1:3306/new_schema?characterEncoding=utf8&amp;useSSL=false
-   </attribute>
-   <attribute name="driverClass">com.mysql.cj.jdbc.Driver</attribute>
-   <attribute name="user">root</attribute>
-   <attribute name="password">12345678</attribute>
-   <attribute name="acquireIncrement">10</attribute>
-   <attribute name="checkoutTimeout">30000</attribute>
-   <attribute name="initialPoolSize">5</attribute>
-   <attribute name="maxIdleTime">7200</attribute>
-   <attribute name="maxIdleTimeExcessConnections">1800</attribute>
-   <attribute name="maxPoolSize">15</attribute>
-  </datasource>
- </datasources>
-</config>
-```
-
-##### 2.2.1 使用jndi数据源的方式
-
-在服务模块中通过调用LocalConnectionFactory的getDataSourceInDawdler方法来获取数据源.注意获取到的dataSource不要调用关闭方法,因为别的服务也可以使用这个dataSource.通过dataSource获取的Connection一定要关闭.
-
-示例1：
-
-```java
-//通过jndi方式获取数据源
-public static DataSource getDataSourceInDawdler(String id) throws NamingException {
-    InitialContext ctx = new InitialContext();
-    return (DataSource) ctx.lookup("java:" + id);
- }
-```
-
-示例2：
-
-```java
-//dawdler-server-plug-db模块下LocalConnectionFactory提供jndi获取方式
-DataSource dataSource = LocalConnectionFactory.getDataSourceInDawdler("orderDataSource");
-```
-
-#### 2.3 采用keytool制作证书
+#### 2.2 采用keytool制作证书
 
 dawdler示例中采用keytool制作的证书,服务器端配置在server-conf文件中的keyStore节点. 客户端配置在client-conf文件中的certificatePath节点.
 

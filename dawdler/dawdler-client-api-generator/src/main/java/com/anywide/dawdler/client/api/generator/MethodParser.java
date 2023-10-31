@@ -65,7 +65,12 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaWildcardType;
  * @email suxuan696@gmail.com
  */
 public class MethodParser {
+	private MethodParser(){}
 
+	private static final ResponseData RESPONSE_401 = new ResponseData("Unauthorized");
+	private static final ResponseData RESPONSE_403 = new ResponseData("Forbidden");
+	private static final ResponseData RESPONSE_404 = new ResponseData("Not Found");
+	private static final String BRACKET = "[]";
 	private static String[] allTypeArray = { "*/*" };
 	private static String[] textArray = { AbstractDisplayPlug.MIME_TYPE_TEXT_HTML };
 	private static String[] jsonArray = { AbstractDisplayPlug.MIME_TYPE_JSON };
@@ -351,11 +356,6 @@ public class MethodParser {
 		}
 		return ((JavaParameterizedType) javaType).getActualTypeArguments();
 	}
-
-	private final static ResponseData RESPONSE_401 = new ResponseData("Unauthorized");
-	private final static ResponseData RESPONSE_403 = new ResponseData("Forbidden");
-	private final static ResponseData RESPONSE_404 = new ResponseData("Not Found");
-	private final static String BRACKET = "[]";
 
 	public static Map<String, Object> getResponse(JavaType returnType, Map<String, Object> definitionsMap) {
 		Map<String, Object> response = new LinkedHashMap<>();
