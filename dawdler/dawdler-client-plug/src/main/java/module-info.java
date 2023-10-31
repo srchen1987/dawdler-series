@@ -14,15 +14,15 @@ import com.anywide.dawdler.clientplug.web.plugs.impl.JspDisplayPlug;
 
 module dawdler.client.plug {
 	requires java.base;
-	requires transitive dawdler.util;
-	requires transitive dawdler.core;
-	requires transitive dawdler.serialization;
-	requires transitive dawdler.client;
-	requires transitive dawdler.load.bean;
+	requires dawdler.util;
+	requires dawdler.core;
+	requires dawdler.serialization;
+	requires dawdler.client;
+	requires dawdler.load.bean;
 	requires org.slf4j;
-	requires transitive dawdler.client.plug.validator;
-	requires transitive jakarta.servlet;
-	requires transitive dawdler.jakarta.fileupload;
+	requires dawdler.client.plug.validator;
+	requires jakarta.servlet;
+	requires dawdler.jakarta.fileupload;
 	requires com.fasterxml.jackson.annotation;
 
 	exports com.anywide.dawdler.clientplug.annotation;
