@@ -1,3 +1,5 @@
+import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+
 module dawdler.distributed.transaction.core {
 	requires java.base;
 	requires org.aspectj.weaver;
@@ -16,4 +18,7 @@ module dawdler.distributed.transaction.core {
 	exports com.anywide.dawdler.distributed.transaction.message;
 	exports com.anywide.dawdler.distributed.transaction.message.amqp.rabbitmq;
 	exports com.anywide.dawdler.distributed.transaction.repository;
+	
+	uses CustomComponentInjector;
+
 }

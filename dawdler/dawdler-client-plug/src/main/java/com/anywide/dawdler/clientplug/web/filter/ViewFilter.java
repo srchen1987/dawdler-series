@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.web.filter;
 
 import java.io.IOException;
 
+import com.anywide.dawdler.clientplug.web.handler.AbstractUrlHandler;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
@@ -41,7 +42,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * @email suxuan696@gmail.com
  */
 public class ViewFilter implements Filter {
-	private AnnotationUrlHandler annotationUrlHander;
+	private AbstractUrlHandler annotationUrlHander;
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)

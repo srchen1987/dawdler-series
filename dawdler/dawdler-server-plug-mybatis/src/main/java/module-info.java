@@ -1,3 +1,6 @@
+import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import com.anywide.dawdler.serverplug.db.mybatis.injector.AspectInjector;
+
 module dawdler.server.plug.mybatis {
 	requires java.base;
 	requires dawdler.server.plug;
@@ -7,10 +10,10 @@ module dawdler.server.plug.mybatis {
 	requires java.sql;
 	requires org.slf4j;
 	requires org.aspectj.weaver;
-//	requires cglib;
-//	requires javassist;
 	requires java.naming;
-//	requires ognl;
-//	requires dawdler.mybatis.core;
 	requires org.mybatis;
+	
+	uses CustomComponentInjector;
+
+	provides CustomComponentInjector with AspectInjector;
 }

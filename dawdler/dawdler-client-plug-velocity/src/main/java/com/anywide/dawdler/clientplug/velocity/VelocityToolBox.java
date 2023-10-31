@@ -27,7 +27,7 @@ package com.anywide.dawdler.clientplug.velocity;
 public abstract class VelocityToolBox {
 	private final String name;
 
-	public VelocityToolBox(String name) {
+	protected VelocityToolBox(String name) {
 		this.name = name;
 	}
 

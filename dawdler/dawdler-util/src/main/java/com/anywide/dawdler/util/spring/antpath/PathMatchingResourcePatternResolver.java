@@ -19,7 +19,6 @@ package com.anywide.dawdler.util.spring.antpath;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.JarURLConnection;
 import java.net.MalformedURLException;
@@ -44,9 +43,13 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	private final ResourceLoader resourceLoader;
 
 	private PathMatcher pathMatcher = new AntPathMatcher();
-
-	public PathMatchingResourcePatternResolver() {
+	private static PathMatchingResourcePatternResolver instance = new PathMatchingResourcePatternResolver();
+	private PathMatchingResourcePatternResolver() {
 		this.resourceLoader = new DefaultResourceLoader();
+	}
+	
+	public static PathMatchingResourcePatternResolver getInstance() {
+		return instance;
 	}
 
 	public PathMatchingResourcePatternResolver(ResourceLoader resourceLoader) {
@@ -82,18 +85,14 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	@Override
 	public Resource[] getResources(String locationPattern) throws IOException {
 		if (locationPattern.startsWith(CLASSPATH_ALL_URL_PREFIX)) {
-			// a class path resource (multiple resources for same name possible)
 			if (getPathMatcher().isPattern(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()))) {
-				// a class path resource pattern
 				return findPathMatchingResources(locationPattern);
 			} else {
 				return findAllClassPathResources(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()));
 			}
 		} else {
-			int prefixEnd = (locationPattern.startsWith("war:") ? locationPattern.indexOf("*/") + 1
-					: locationPattern.indexOf(':') + 1);
+			int prefixEnd = locationPattern.indexOf(':') + 1;
 			if (getPathMatcher().isPattern(locationPattern.substring(prefixEnd))) {
-				// a file pattern
 				return findPathMatchingResources(locationPattern);
 			} else {
 				return new Resource[] { getResourceLoader().getResource(locationPattern) };
@@ -222,10 +221,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 				}
 				rootDirResource = new UrlResource(rootDirUrl);
 			}
-			if (rootDirUrl.getProtocol().startsWith(ResourceUtils.URL_PROTOCOL_VFS)) {
-				result.addAll(
-						VfsResourceMatchingDelegate.findMatchingResources(rootDirUrl, subPattern, getPathMatcher()));
-			} else if (ResourceUtils.isJarURL(rootDirUrl) || isJarResource(rootDirResource)) {
+			if (ResourceUtils.isJarURL(rootDirUrl) || isJarResource(rootDirResource)) {
 				result.addAll(doFindPathMatchingJarResources(rootDirResource, rootDirUrl, subPattern));
 			} else {
 				result.addAll(doFindPathMatchingFileResources(rootDirResource, subPattern));
@@ -405,81 +401,4 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		return files;
 	}
 
-	private static class VfsResourceMatchingDelegate {
-
-		public static Set<Resource> findMatchingResources(URL rootDirURL, String locationPattern,
-				PathMatcher pathMatcher) throws IOException {
-
-			Object root = VfsPatternUtils.findRoot(rootDirURL);
-			PatternVirtualFileVisitor visitor = new PatternVirtualFileVisitor(VfsPatternUtils.getPath(root),
-					locationPattern, pathMatcher);
-			VfsPatternUtils.visit(root, visitor);
-			return visitor.getResources();
-		}
-	}
-
-	@SuppressWarnings("unused")
-	private static class PatternVirtualFileVisitor implements InvocationHandler {
-
-		private final String subPattern;
-
-		private final PathMatcher pathMatcher;
-
-		private final String rootPath;
-
-		private final Set<Resource> resources = new LinkedHashSet<>();
-
-		public PatternVirtualFileVisitor(String rootPath, String subPattern, PathMatcher pathMatcher) {
-			this.subPattern = subPattern;
-			this.pathMatcher = pathMatcher;
-			this.rootPath = (rootPath.isEmpty() || rootPath.endsWith("/") ? rootPath : rootPath + "/");
-		}
-
-		@Override
-
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			String methodName = method.getName();
-			if (Object.class == method.getDeclaringClass()) {
-				if (methodName.equals("equals")) {
-					// Only consider equal when proxies are identical.
-					return (proxy == args[0]);
-				} else if (methodName.equals("hashCode")) {
-					return System.identityHashCode(proxy);
-				}
-			} else if ("getAttributes".equals(methodName)) {
-				return getAttributes();
-			} else if ("visit".equals(methodName)) {
-				visit(args[0]);
-				return null;
-			} else if ("toString".equals(methodName)) {
-				return toString();
-			}
-
-			throw new IllegalStateException("Unexpected method invocation: " + method);
-		}
-
-		public void visit(Object vfsResource) {
-			if (this.pathMatcher.match(this.subPattern,
-					VfsPatternUtils.getPath(vfsResource).substring(this.rootPath.length()))) {
-				this.resources.add(new VfsResource(vfsResource));
-			}
-		}
-
-		public Object getAttributes() {
-			return VfsPatternUtils.getVisitorAttributes();
-		}
-
-		public Set<Resource> getResources() {
-			return this.resources;
-		}
-
-		public int size() {
-			return this.resources.size();
-		}
-
-		@Override
-		public String toString() {
-			return "sub-pattern: " + this.subPattern + ", resources: " + this.resources;
-		}
-	}
 }

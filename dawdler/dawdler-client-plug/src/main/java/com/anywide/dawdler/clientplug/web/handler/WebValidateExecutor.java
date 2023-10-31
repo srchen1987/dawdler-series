@@ -53,18 +53,19 @@ import jakarta.servlet.http.HttpServletResponse;
  * @email suxuan696@gmail.com
  */
 public class WebValidateExecutor {
+	private WebValidateExecutor() {}
 	public static final String VALIDATE_ERROR = "validate_error";
 	private static final Logger logger = LoggerFactory.getLogger(WebValidateExecutor.class);
-	private static final Map<Class<?>, ControlValidator> validators = new ConcurrentHashMap<>();
+	private static final Map<Class<?>, ControlValidator> VALIDATORS = new ConcurrentHashMap<>();
 
 	public static ControlValidator loadControlValidator(Class<?> controllerClass) {
-		ControlValidator cv = validators.get(controllerClass);
+		ControlValidator cv = VALIDATORS.get(controllerClass);
 		if (cv == null) {
 			cv = ValidateResourceLoader.getControlValidator(controllerClass);
 			if (cv == null) {
 				cv = new ControlValidator();
 			}
-			ControlValidator preCv = validators.putIfAbsent(controllerClass, cv);
+			ControlValidator preCv = VALIDATORS.putIfAbsent(controllerClass, cv);
 			if (preCv != null) {
 				cv = preCv;
 			}
@@ -91,7 +92,7 @@ public class WebValidateExecutor {
 		}
 		if (rules != null) {
 			if (requestMapping != null && requestMapping.generateValidator() && !rules.isEmpty()) {
-				StringBuffer sb = new StringBuffer("sir_validate.addRule(");
+				StringBuilder sb = new StringBuilder("sir_validate.addRule(");
 				Collection<ControlField> cc = rules.values();
 				List<Map<String, String>> list = new ArrayList<>();
 				for (Iterator<ControlField> it = cc.iterator(); it.hasNext();) {

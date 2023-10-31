@@ -30,6 +30,11 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
  * @email suxuan696@gmail.com
  */
 public class ClassTypeUtil {
+	private ClassTypeUtil() {}
+	private static final String LIST_NAME = "java.util.List";
+	private static final String SET_NAME = "java.util.Set";
+	private static final String COLLECTION_NAME = "java.util.Collection";
+	private static final String VECTOR_NAME = "java.util.Vector";
 
 	/**
 	 * 
@@ -38,13 +43,13 @@ public class ClassTypeUtil {
 	 * @date 2022年3月27日 下午1:41:02
 	 * @Description 是否是List,Set,Collection,Vector
 	 * @param binaryName
-	 * @return
+	 * @return boolean
 	 *
 	 * 
 	 */
 	public static boolean isArray(String binaryName) {
-		return binaryName.equals("java.util.List") || binaryName.equals("java.util.Set")
-				|| binaryName.equals("java.util.Collection") || binaryName.equals("java.util.Vector");
+		return LIST_NAME.equals(binaryName) || SET_NAME.equals(binaryName)
+				|| COLLECTION_NAME.equals(binaryName) || VECTOR_NAME.equals(binaryName);
 	}
 
 	public static String getType0(JavaType javaType) {

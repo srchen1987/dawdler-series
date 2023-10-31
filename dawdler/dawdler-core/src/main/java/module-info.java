@@ -6,10 +6,12 @@ module dawdler.core {
 	requires jdk.unsupported;
 	requires transitive jdk.httpserver;
 	requires java.base;
-	requires dawdler.util;
+	requires transitive dawdler.util;
 	requires dawdler.serialization;
 	requires org.apache.commons.pool2;
 	requires org.slf4j;
+	requires org.objectweb.asm;
+	requires org.objectweb.asm.tree;
 
 	exports com.anywide.dawdler.core.order;
 	exports com.anywide.dawdler.core.component.injector;
@@ -26,6 +28,8 @@ module dawdler.core {
 	exports com.anywide.dawdler.core.component.resource;
 	exports com.anywide.dawdler.core.health;
 	exports com.anywide.dawdler.core.httpserver;
+	exports com.anywide.dawdler.core.scan;
+	exports com.anywide.dawdler.core.scan.component.reader;
 
 	opens com.anywide.dawdler.core.bean;
 

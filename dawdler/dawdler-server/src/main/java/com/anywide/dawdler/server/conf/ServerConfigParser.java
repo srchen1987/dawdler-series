@@ -39,7 +39,6 @@ import org.w3c.dom.Node;
 
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.conf.ServerConfig.KeyStore;
-import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.util.XmlTool;
 
@@ -53,18 +52,6 @@ import com.anywide.dawdler.util.XmlTool;
  */
 public class ServerConfigParser {
 	private ServerConfig serverConfig = new ServerConfig();
-
-	public void loadJarFile(Node node) {
-		Scanner scanner = serverConfig.getScanner();
-		String jarFile = node.getTextContent().trim();
-		scanner.splitAndAddJarFiles(jarFile);
-	}
-
-	public void loadPackagePath(Node node) {
-		Scanner scanner = serverConfig.getScanner();
-		String packagePath = node.getTextContent().trim();
-		scanner.splitAndAddPathInJar(packagePath);
-	}
 
 	public void loadKeyStore(Node keyStoreEle) {
 		NamedNodeMap namedNodeMap = keyStoreEle.getAttributes();
@@ -168,7 +155,7 @@ public class ServerConfigParser {
 		}
 
 	}
-	
+
 	public ServerConfigParser(URL binPath) throws Exception {
 		serverConfig = new ServerConfig();
 		serverConfig.setBinPath(binPath);
@@ -187,19 +174,7 @@ public class ServerConfigParser {
 		List<Node> childNodes = getNodes(root.getDocumentElement().getChildNodes());
 		for (Node childNode : childNodes) {
 			String childNodeName = childNode.getNodeName();
-			if (childNodeName.equals("scanner")) {
-				List<Node> scannerChildNodes = getNodes(childNode.getChildNodes());
-				for (Node scannerChildNode : scannerChildNodes) {
-					List<Node> packageNodes = getNodes(scannerChildNode.getChildNodes());
-					for (Node pathNode : packageNodes) {
-						if (pathNode.getNodeName().equals("jar-file")) {
-							loadJarFile(pathNode);
-						} else if (pathNode.getNodeName().equals("package-path")) {
-							loadPackagePath(pathNode);
-						}
-					}
-				}
-			} else if (childNodeName.equals("keyStore")) {
+			if (childNodeName.equals("keyStore")) {
 				loadKeyStore(childNode);
 			} else if (childNodeName.equals("server")) {
 				loadServer(childNode);

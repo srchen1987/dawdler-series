@@ -2,19 +2,6 @@
 <config xmlns="https://github.com/srchen1987/dawdler-series"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://github.com/srchen1987/dawdler-series https://cdn.jsdelivr.net/gh/srchen1987/dawdler-series-xsd@main/server-conf.xsd">
-	<scanner>
-		<jar-files>
-			<jar-file>dawdler-server-plug*.jar</jar-file>
-			<jar-file>dawdler-distributed-transaction-core-0.17.1-jdk17-RELEASES.jar</jar-file>
-		</jar-files>
-		<packages-in-jar>
-			<package-path>com.anywide.dawdler.distributed.transaction.aspect</package-path>
-			<package-path>com.anywide.dawdler.serverplug.db.mybatis.aspect</package-path>
-			<package-path>com.anywide.dawdler.serverplug.db.mybatis.session</package-path>
-			<package-path>com.anywide.dawdler.serverplug.service.impl</package-path>
-			<package-path>com.anywide.dawdler.serverplug.**.listener</package-path>
-		</packages-in-jar>
-	</scanner>
 	<keyStore
 		keyStorePath="${DAWDLER_BASE_PATH}key/dawdler.keystore" alias="srchen"
 		password="jackson.song1948@anywide" />

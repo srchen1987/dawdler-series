@@ -47,12 +47,6 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 		this.clazz = clazz;
 	}
 
-	@Deprecated
-	protected ClassPathResource(String path, ClassLoader classLoader, Class<?> clazz) {
-		this.path = StringUtils.cleanPath(path);
-		this.classLoader = classLoader;
-		this.clazz = clazz;
-	}
 
 	public final String getPath() {
 		return this.path;
@@ -100,11 +94,8 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	}
 
 	@Override
-	public URL getURL() throws IOException {
+	public URL getURL(){
 		URL url = resolveURL();
-		if (url == null) {
-			throw new FileNotFoundException(getDescription() + " cannot be resolved to URL because it does not exist");
-		}
 		return url;
 	}
 

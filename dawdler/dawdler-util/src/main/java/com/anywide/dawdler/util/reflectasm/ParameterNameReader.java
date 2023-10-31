@@ -62,12 +62,12 @@ public class ParameterNameReader {
 	 * @throws IOException
 	 *
 	 */
-	public static void loadAllDeclaredMethodsParameterNames(Class<?> clazz, byte[] classCodes) throws IOException {
+	public static void loadAllDeclaredMethodsParameterNames(Class<?> clazz, byte[] codeBytes) throws IOException {
 		Map<Method, String[]> methodsParameterNames = getParameterNames(clazz);
 		if (methodsParameterNames != null) {
 			return;
 		}
-		ClassReader classReader = new ClassReader(classCodes);
+		ClassReader classReader = new ClassReader(codeBytes);
 		ClassNode classNode = new ClassNode();
 		classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
 		Method[] methods = clazz.getDeclaredMethods();
@@ -112,7 +112,7 @@ public class ParameterNameReader {
 		return null;
 	}
 
-	public static String[] findLocalVars(MethodNode methodNode, /* boolean statics, */ int parameterCount) {
+	public static String[] findLocalVars(MethodNode methodNode, int parameterCount) {
 		List<LocalVariableNode> localVariableNodes = methodNode.localVariables;
 		if (localVariableNodes.isEmpty()) {
 			return null;
@@ -123,18 +123,12 @@ public class ParameterNameReader {
 		for (LocalVariableNode variableNode : localVariableNodes) {
 			int index = variableNode.index;
 			String name = variableNode.name;
-//			if (statics) {
-//				if (index == parameterCount - 1)
-//					return parameterNames;
-//				parameterNames[index] = name;
-//			} else {
 			if (index - 1 >= parameterCount) {
 				return parameterNames;
 			} else if (index == 0) {
 				continue;// skip this
 			}
 			parameterNames[index - 1] = name;
-//			}
 		}
 		return parameterNames;
 	}

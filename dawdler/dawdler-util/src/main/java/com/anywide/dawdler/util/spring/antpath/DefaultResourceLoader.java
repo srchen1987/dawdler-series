@@ -96,13 +96,12 @@ public class DefaultResourceLoader implements ResourceLoader {
 		return new ClassPathContextResource(path, getClassLoader());
 	}
 
-	protected static class ClassPathContextResource extends ClassPathResource implements ContextResource {
+	protected static class ClassPathContextResource extends ClassPathResource {
 
 		public ClassPathContextResource(String path, ClassLoader classLoader) {
 			super(path, classLoader);
 		}
 
-		@Override
 		public String getPathWithinContext() {
 			return getPath();
 		}

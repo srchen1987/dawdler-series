@@ -86,14 +86,14 @@ public class CacheAspect {
 		Class<?> clazz = pjp.getTarget().getClass();
 		Boolean conditionResult = null;
 		JexlContext paramsContext = null;
-		if (!condition.equals("")) {
+		if (!"".equals(condition)) {
 			paramsContext = initParamsContext(clazz, method, args);
 			JexlExpression expression = JEXL_ENGINE.createExpression(condition);
 			Object conditionObjResult = expression.evaluate(paramsContext);
-			if (conditionObjResult == null || !(conditionObjResult instanceof Boolean)) {
+			if (!(conditionObjResult instanceof Boolean)) {
 				throw new ConditionTypeException(condition + " result not Boolean type! ");
 			}
-			conditionResult = (Boolean) conditionObjResult;
+			conditionResult = (boolean) conditionObjResult;
 		}
 
 		String key = cacheable.key();
@@ -129,10 +129,10 @@ public class CacheAspect {
 				JexlContext context = new MapContext();
 				context.set("result", result);
 				Object unlessObjResult = expression.evaluate(context);
-				if (unlessObjResult == null || !(unlessObjResult instanceof Boolean)) {
+				if (!(unlessObjResult instanceof Boolean)) {
 					throw new ConditionTypeException(condition + " result not Boolean type! ");
 				}
-				if ((Boolean) unlessObjResult) {
+				if ((boolean) unlessObjResult) {
 					return result;
 				}
 			}
@@ -185,10 +185,10 @@ public class CacheAspect {
 			paramsContext = initParamsContext(clazz, method, args);
 			JexlExpression expression = JEXL_ENGINE.createExpression(condition);
 			Object conditionObjResult = expression.evaluate(paramsContext);
-			if (conditionObjResult == null || !(conditionObjResult instanceof Boolean)) {
+			if (!(conditionObjResult instanceof Boolean)) {
 				throw new ConditionTypeException(condition + " result not Boolean type! ");
 			}
-			conditionResult = (Boolean) conditionObjResult;
+			conditionResult = (boolean) conditionObjResult;
 		}
 
 		String key = cacheEvict.key();
@@ -271,10 +271,10 @@ public class CacheAspect {
 			paramsContext = initParamsContext(clazz, method, args);
 			JexlExpression expression = JEXL_ENGINE.createExpression(condition);
 			Object conditionObjResult = expression.evaluate(paramsContext);
-			if (conditionObjResult == null || !(conditionObjResult instanceof Boolean)) {
+			if (!(conditionObjResult instanceof Boolean)) {
 				throw new ConditionTypeException(condition + " result not Boolean type! ");
 			}
-			conditionResult = (Boolean) conditionObjResult;
+			conditionResult = (boolean) conditionObjResult;
 		}
 
 		String key = cachePut.key();
@@ -306,10 +306,10 @@ public class CacheAspect {
 			JexlContext context = new MapContext();
 			context.set("result", result);
 			Object unlessObjResult = expression.evaluate(context);
-			if (unlessObjResult == null || !(unlessObjResult instanceof Boolean)) {
+			if ( !(unlessObjResult instanceof Boolean)) {
 				throw new ConditionTypeException(condition + " result not Boolean type! ");
 			}
-			if ((Boolean) unlessObjResult) {
+			if ((boolean) unlessObjResult) {
 				return result;
 			}
 		}

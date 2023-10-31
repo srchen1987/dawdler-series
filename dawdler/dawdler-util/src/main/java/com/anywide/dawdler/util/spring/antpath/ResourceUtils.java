@@ -24,27 +24,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
-/**
- * Utility methods for resolving resource locations to files in the file system.
- * Mainly for internal use within the framework.
- *
- * <p>
- * Consider using Spring's Resource abstraction in the core package for handling
- * all kinds of file resources in a uniform manner.
- * {@link org.springframework.core.io.ResourceLoader}'s {@code getResource()}
- * method can resolve any location to a
- * {@link org.springframework.core.io.Resource} object, which in turn allows one
- * to obtain a {@code java.io.File} in the file system through its
- * {@code getFile()} method.
- *
- * @author Juergen Hoeller
- * @since 1.1.5
- * @see org.springframework.core.io.Resource
- * @see org.springframework.core.io.ClassPathResource
- * @see org.springframework.core.io.FileSystemResource
- * @see org.springframework.core.io.UrlResource
- * @see org.springframework.core.io.ResourceLoader
- */
+ 
 public abstract class ResourceUtils {
 
 	/** Pseudo URL prefix for loading from the class path: "classpath:". */
@@ -56,7 +36,6 @@ public abstract class ResourceUtils {
 	/** URL prefix for loading from a jar file: "jar:". */
 	public static final String JAR_URL_PREFIX = "jar:";
 
-	/** URL prefix for loading from a war file on Tomcat: "war:". */
 	public static final String WAR_URL_PREFIX = "war:";
 
 	/** URL protocol for a file in the file system: "file". */
@@ -76,12 +55,6 @@ public abstract class ResourceUtils {
 
 	/** URL protocol for an entry from a JBoss jar file: "vfszip". */
 	public static final String URL_PROTOCOL_VFSZIP = "vfszip";
-
-	/** URL protocol for a JBoss file system resource: "vfsfile". */
-	public static final String URL_PROTOCOL_VFSFILE = "vfsfile";
-
-	/** URL protocol for a general JBoss VFS resource: "vfs". */
-	public static final String URL_PROTOCOL_VFS = "vfs";
 
 	/** File extension for a regular jar file: ".jar". */
 	public static final String JAR_FILE_EXTENSION = ".jar";
@@ -268,8 +241,7 @@ public abstract class ResourceUtils {
 	 */
 	public static boolean isFileURL(URL url) {
 		String protocol = url.getProtocol();
-		return (URL_PROTOCOL_FILE.equals(protocol) || URL_PROTOCOL_VFSFILE.equals(protocol)
-				|| URL_PROTOCOL_VFS.equals(protocol));
+		return (URL_PROTOCOL_FILE.equals(protocol));
 	}
 
 	/**
