@@ -196,8 +196,7 @@ public class ValidateResourceLoader {
 				Map<String, ControlField> gfields = new LinkedHashMap<>();
 				String gid = XmlTool.getElementAttribute(groupsNode.getAttributes(), "id");
 				groups.put(gid, gfields);
-				List<Node> validatorList = xmlObject
-						.selectNodes("/ns:validator/ns:validator-fields-groups/ns:validator-fields-group/ns:validator");
+				List<Node> validatorList = XmlTool.getNodes(groupsNode.getChildNodes());
 				if (validatorList != null) {
 					for (Node node : validatorList) {
 						NamedNodeMap namedNodeMap = node.getAttributes();
