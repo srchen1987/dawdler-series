@@ -66,15 +66,10 @@ public class RedisMessageOperator implements MessageOperator {
 		this.jedisPool = jedisPool;
 	}
 
-	// config set notify-keyspace-events Ex
-	// config set notify-keyspace-events AKE
-	// config set notify-keyspace-events gxE
 	private static void config(Jedis jedis) {
 		String parameter = "notify-keyspace-events";
 		List<String> notify = jedis.configGet(parameter);
 		if (notify.get(1).equals("")) {
-//          jedis.configSet(parameter, "Ex"); //过期事件
-//        	jedis.configSet(parameter, "AKE"); //全部事件 包括 hset 等
 			jedis.configSet(parameter, "gxE");// 过期与删除
 		}
 	}
@@ -191,7 +186,6 @@ public class RedisMessageOperator implements MessageOperator {
 						if (session.getSessionSign().equals(data[1])) {
 							return;
 						}
-						session.clear();
 						try {
 							SessionOperator.reloadAttributes(sessionStore.getAttributes(session.getId()), session,
 									serializer);
