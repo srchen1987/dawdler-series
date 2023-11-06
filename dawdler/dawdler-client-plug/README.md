@@ -368,7 +368,7 @@ component-scan配置当前的web环境中的包扫描路径(部署在web容器�
                           sessionNum="4" serializer="2"
                           user="global_user" password="global_password">
     </server-channel-group>
-    <component-scan base-package="com.xxx.controller,com.yyy.**.ccontroller"></component-scan><!-- 需要扫描的路径，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效-->
+    <component-scan base-package="com.xxx.controller,com.yyy.**.ccontroller"></component-scan><!-- 需要扫描的路径，支持antpath 如有多个用,分割-->
 </config>
 ```
 
