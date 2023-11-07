@@ -15,6 +15,7 @@
 		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-core</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
