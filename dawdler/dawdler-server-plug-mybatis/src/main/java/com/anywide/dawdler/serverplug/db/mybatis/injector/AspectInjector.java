@@ -29,7 +29,7 @@ import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
  * @version V1.0
  * @Title AspectInjector.java
  * @Description 加载需要被aspect织入的组件
- * @date 2023年9月2日
+ * @date 2023年7月30日
  * @email suxuan696@gmail.com
  */
 @Order(0)
