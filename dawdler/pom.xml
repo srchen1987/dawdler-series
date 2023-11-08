@@ -41,7 +41,7 @@
 		<quartz.version>2.3.2</quartz.version>
 		<gson.version>2.10.1</gson.version>
 		<portlet-api.version>3.0.1</portlet-api.version>
-		<mybatis.version>3.5.13</mybatis.version>
+		<mybatis.version>3.5.14</mybatis.version>
 	</properties>
 	<dependencies>
 		<dependency>
