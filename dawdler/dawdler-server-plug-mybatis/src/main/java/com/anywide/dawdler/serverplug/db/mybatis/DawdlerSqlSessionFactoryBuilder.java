@@ -39,12 +39,12 @@ import org.apache.ibatis.reflection.wrapper.ObjectWrapperFactory;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.ibatis.session.defaults.DefaultSqlSessionFactory;
 import org.apache.ibatis.transaction.TransactionFactory;
 import org.apache.ibatis.type.TypeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.serverplug.db.mybatis.session.DawdlerSqlSessionFactory;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 
 /**
@@ -409,6 +409,6 @@ public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
 	}
 
 	public SqlSessionFactory build(Configuration config) {
-		return new DefaultSqlSessionFactory(config);
+		return new DawdlerSqlSessionFactory(config);
 	}
 }
