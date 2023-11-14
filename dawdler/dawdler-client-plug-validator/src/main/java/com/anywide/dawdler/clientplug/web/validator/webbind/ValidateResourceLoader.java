@@ -151,9 +151,9 @@ public class ValidateResourceLoader {
 								Map<String, ControlField> fields = mappings.get(mappingFeildType);
 								if (fields == null) {
 									fields = new LinkedHashMap<>();
+									mappings.put(mappingFeildType, fields);
 								}
 								fields.putAll(fieldGroup);
-								mappings.put(mappingFeildType, fields);
 							}
 						}
 						if (ref != null) {
