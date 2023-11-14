@@ -37,10 +37,10 @@
 		</validator-fields-group>
 	</validator-fields-groups>
 	<validator-mappings><!-- 验证器组 -->
-		<validator-mapping name="/user/regist"><!-- 验证器 ＠name　请求的URI RequestMapping中定义的具体api地址. 
+		<validator-mapping name="/user/regist" skip="age,username" ><!-- 验证器 ＠name　请求的URI RequestMapping中定义的具体api地址. 
 				注意：如果类上有RequestMapping定义,需要将类上的RequestMapping中的value与方法上的RequestMapping中的value整合到一起. 
 				@skip为跳过某些验证,支持跳过多个规则,可以用 , 英文逗号隔开,里面写入的为validator-field的@name -->
-			<validator refgid="add" skip="age,username" /> <!-- 跳过了age和username的验证 -->
+			<validator refgid="add"/>
 		</validator-mapping>
 		<validator-mapping name="/user/edit">
 			<validator refgid="edit" />
