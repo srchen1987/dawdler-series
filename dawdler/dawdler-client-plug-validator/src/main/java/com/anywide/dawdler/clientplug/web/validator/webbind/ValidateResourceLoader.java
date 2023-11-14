@@ -149,11 +149,11 @@ public class ValidateResourceLoader {
 							Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
 							if (fieldGroup != null) {
 								Map<String, ControlField> fields = mappings.get(mappingFeildType);
-								if (fields != null) {
-									fields.putAll(fieldGroup);
-								} else {
-									mappings.put(mappingFeildType, fieldGroup);
+								if (fields == null) {
+									fields = new LinkedHashMap<>();
 								}
+								fields.putAll(fieldGroup);
+								mappings.put(mappingFeildType, fields);
 							}
 						}
 						if (ref != null) {
