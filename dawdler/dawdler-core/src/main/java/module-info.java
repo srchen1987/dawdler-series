@@ -1,10 +1,11 @@
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.health.HealthIndicator;
+import com.anywide.dawdler.core.shutdown.ContainerGracefulShutdown;
 
 module dawdler.core {
 	requires jdk.unsupported;
-	requires transitive jdk.httpserver;
+	requires jdk.httpserver;
 	requires java.base;
 	requires transitive dawdler.util;
 	requires dawdler.serialization;
@@ -30,10 +31,14 @@ module dawdler.core {
 	exports com.anywide.dawdler.core.httpserver;
 	exports com.anywide.dawdler.core.scan;
 	exports com.anywide.dawdler.core.scan.component.reader;
+	exports com.anywide.dawdler.core.shutdown;
 
 	opens com.anywide.dawdler.core.bean;
+	opens com.anywide.dawdler.core.shutdown;
 
 	uses HealthIndicator;
 	uses ComponentLifeCycle;
 	uses CustomComponentInjector;
+	uses ContainerGracefulShutdown;
+
 }

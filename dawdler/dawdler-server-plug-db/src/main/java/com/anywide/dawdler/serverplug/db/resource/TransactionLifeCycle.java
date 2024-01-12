@@ -1,8 +1,5 @@
 package com.anywide.dawdler.serverplug.db.resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.server.context.DawdlerContext;
@@ -20,17 +17,12 @@ import com.anywide.dawdler.serverplug.db.transaction.TransactionServiceExecutor;
  */
 @Order(2)
 public class TransactionLifeCycle implements ComponentLifeCycle {
-	private static final Logger logger = LoggerFactory.getLogger(TransactionLifeCycle.class);
 
 	@Override
 	public void prepareInit() throws Throwable {
-		try {
-			DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
-			dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX,
-					new RWSplittingDataSourceManager(dawdlerContext));
-			dawdlerContext.setAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX, new TransactionServiceExecutor());
-		} catch (Throwable e) {
-			logger.error("", e);
-		}
+		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
+		dawdlerContext.setAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX,
+				new RWSplittingDataSourceManager(dawdlerContext));
+		dawdlerContext.setAttribute(ServiceBase.SERVICE_EXECUTOR_PREFIX, new TransactionServiceExecutor());
 	}
 }

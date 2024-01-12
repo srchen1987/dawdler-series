@@ -9,6 +9,5 @@ module dawdler.server.plug.jedis {
 	requires dawdler.jedis.core;
 
 	uses ComponentLifeCycle;
-
 	provides ComponentLifeCycle with JedisLifeCycle;
 }

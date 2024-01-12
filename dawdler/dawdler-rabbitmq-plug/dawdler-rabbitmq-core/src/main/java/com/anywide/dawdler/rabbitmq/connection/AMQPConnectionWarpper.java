@@ -38,7 +38,6 @@ import com.rabbitmq.client.ShutdownSignalException;
 import com.rabbitmq.client.UnblockedCallback;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title AMQPConnectionWarpper.java
@@ -145,7 +144,7 @@ public class AMQPConnectionWarpper implements Connection {
 				if (confirmSelect) {
 					channel.confirmSelect();
 				}
-				ChannelWarpperHandler channelWarpperHandler = new ChannelWarpperHandler(channel, genericObjectPool,
+				ChannelWarpperHandler channelWarpperHandler = new ChannelWarpperHandler(channel,
 						channels, semaphore);
 				return (Channel) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), channelClass,
 						channelWarpperHandler);

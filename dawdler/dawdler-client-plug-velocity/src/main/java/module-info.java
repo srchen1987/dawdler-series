@@ -5,7 +5,7 @@ module dawdler.client.plug.velocity {
 	requires java.base;
 	requires dawdler.load.bean;
 	requires dawdler.util;
-	requires dawdler.client.plug;
+	requires dawdler.client.plug.web;
 	requires dawdler.jakarta.fileupload;
 	requires org.slf4j;
 	requires org.jsoup;

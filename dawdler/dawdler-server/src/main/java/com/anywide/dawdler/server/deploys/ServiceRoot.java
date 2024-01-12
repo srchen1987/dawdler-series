@@ -18,69 +18,41 @@ package com.anywide.dawdler.server.deploys;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.core.health.ServerHealth;
-import com.anywide.dawdler.core.health.ServiceHealth;
 import com.anywide.dawdler.core.health.Status;
-import com.anywide.dawdler.core.httpserver.DawdlerHttpServer;
-import com.anywide.dawdler.core.serializer.SerializeDecider;
-import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
 import com.anywide.dawdler.server.conf.ServerConfig;
-import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
+import com.anywide.dawdler.server.deploys.loader.DeployClassLoader;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 import com.anywide.dawdler.util.JVMTimeProvider;
-import com.anywide.dawdler.util.JsonProcessUtil;
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpHandler;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title ServiceRoot.java
- * @Description deploy下服务模块的根实现
+ * @Description deploy下服务模块的根实现(改造后继承AbstractServiceRoot)
  * @date 2015年3月22日
  * @email suxuan696@gmail.com
  */
-public class ServiceRoot {
+public class ServiceRoot extends AbstractServiceRoot {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceRoot.class);
-	private static final Map<String, Service> SERVICES = new ConcurrentHashMap<>();
-	private Map<String, Service> servicesHealth;
 	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
 	private static final String DAWDLER_DEPLOYS_PATH = "deploys";
 	private static final String DAWDLER_LIB_PATH = "lib";
-	private DataProcessWorkerPool dataProcessWorkerPool;
-	private DawdlerHttpServer httpServer = null;
-
-	public static Service getService(String path) {
-		Service service = SERVICES.get(path);
-		if (service == null) {
-			return null;
-		}
-		Thread.currentThread().setContextClassLoader(service.getDawdlerContext().getClassLoader());
-		return service;
-	}
 
 	public ClassLoader createServerClassLoader(URL binPath) {
 		try {
@@ -92,32 +64,12 @@ public class ServiceRoot {
 		}
 	}
 
-	private String getProperty(String key) {
-		return DawdlerTool.getProperty(key);
-	}
-
 	private File getDeploys() {
 		return new File(getProperty(DAWDLER_BASE_PATH), DAWDLER_DEPLOYS_PATH);
 	}
 
 	private URL[] getLibURL() throws MalformedURLException {
 		return PathUtils.getRecursionLibURL(new File(getProperty(DAWDLER_BASE_PATH), DAWDLER_LIB_PATH));
-	}
-
-	private void initWorkPool(int nThreads, int queueCapacity, long keepAliveMilliseconds) {
-		dataProcessWorkerPool = new DataProcessWorkerPool(nThreads, queueCapacity, keepAliveMilliseconds);
-	}
-
-	public void shutdownWorkPool() {
-		dataProcessWorkerPool.shutdown();
-	}
-
-	public void shutdownWorkPoolNow() {
-		dataProcessWorkerPool.shutdownNow();
-	}
-
-	public void execute(Runnable runnable) {
-		dataProcessWorkerPool.execute(runnable);
 	}
 
 	public void initApplication(DawdlerServerContext dawdlerServerContext) throws Exception {
@@ -136,7 +88,7 @@ public class ServiceRoot {
 		}
 		long start = JVMTimeProvider.currentTimeMillis();
 		if (deployFiles.length > 0) {
-			ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors()*2+1);
+			ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2 + 1);
 			ClassLoader classLoader = createServerClassLoader(serverConfig.getBinPath());
 			List<DeployData> deployDataList = new ArrayList<>();
 			for (File deployFile : deployFiles) {
@@ -156,13 +108,7 @@ public class ServiceRoot {
 							long serviceEnd = JVMTimeProvider.currentTimeMillis();
 							System.out.println(deployName + " startup in " + (serviceEnd - serviceStart) + " ms!");
 						} catch (Throwable e) {
-							logger.error(deployName, e);
-							System.err.println(deployName + " startup failed!");
-							Service service = SERVICES.remove(deployName);
-							service.status(Status.DOWN);
-							service.cause(e);
-							service.prepareStop();
-							service.stop();
+							throw new RuntimeException(e);
 						}
 						return null;
 					});
@@ -172,13 +118,14 @@ public class ServiceRoot {
 			}
 			for (DeployData deployData : deployDataList) {
 				try {
-					deployData.future.get(3, TimeUnit.MINUTES);
-				} catch (InterruptedException | ExecutionException | TimeoutException e) {
-					if (e instanceof TimeoutException) {
-						System.out.println("server startup time out 3 minutes!");
-					}
+					deployData.future.get();
+				} catch (InterruptedException | ExecutionException e) {
+					logger.error("", e);
+					System.err.println(deployData.deployName + " startup failed!");
 					Service service = SERVICES.remove(deployData.deployName);
 					if (service != null) {
+						service.status(Status.DOWN);
+						service.cause(e);
 						service.prepareStop();
 						service.stop();
 					}
@@ -194,51 +141,22 @@ public class ServiceRoot {
 		}
 	}
 
-	public void startHttpServer(ServerConfig serverConfig) throws Exception {
-		HealthCheck healthCheck = serverConfig.getHealthCheck();
-		String host = serverConfig.getServer().getHost();
-		String scheme = healthCheck.getScheme();
-		int port = healthCheck.getPort();
-		int backlog = healthCheck.getBacklog();
-		String username = healthCheck.getUsername();
-		String password = healthCheck.getPassword();
-		String keyStorePath = serverConfig.getKeyStore().getKeyStorePath();
-		String keyPassword = serverConfig.getKeyStore().getPassword();
-		httpServer = new DawdlerHttpServer(host, scheme, port, backlog, username, password, keyStorePath, keyPassword);
-		HttpHandler handler = new HttpHandler() {
-			@Override
-			public void handle(HttpExchange exchange) throws IOException {
-				ServerHealth serverHealth = getServerHealth();
-				byte[] data = JsonProcessUtil.beanToJsonByte(serverHealth.getData());
-				exchange.getResponseHeaders().add("Content-Type", "application/json;charset=UTF-8");
-				if (Status.UP.equals(serverHealth.getStatus())) {
-					exchange.sendResponseHeaders(200, data.length);
-				} else {
-					exchange.sendResponseHeaders(500, data.length);
-				}
-				OutputStream out = exchange.getResponseBody();
-				out.write(data);
-				out.flush();
-				out.close();
-			}
-
-		};
-		httpServer.addPath("/status", handler);
-		httpServer.start();
-	}
-
 	public void prepareDestroyedApplication() {
 		SERVICES.values().forEach(Service::prepareStop);
 	}
 
 	public void destroyedApplication() {
 		SERVICES.values().forEach(Service::stop);
-		if (httpServer != null) {
-			httpServer.stop();
-		}
-		SerializeDecider.destroyed();
-		JVMTimeProvider.stop();
-		HashedWheelTimerSingleCreator.getHashedWheelTimer().stop();
+		releaseResource();
+	}
+
+	public void closeClassLoader() {
+		SERVICES.values().forEach(service -> {
+			try {
+				((DeployClassLoader) service.getClassLoader()).close();
+			} catch (IOException e) {
+			}
+		});
 	}
 
 	public static class DeployData {
@@ -250,24 +168,6 @@ public class ServiceRoot {
 		private String deployName;
 		private Future<Void> future;
 
-	}
-
-	public ServerHealth getServerHealth() {
-		ClassLoader bootClassLoader = Thread.currentThread().getContextClassLoader();
-		ServerHealth serverHealth = new ServerHealth();
-		serverHealth.setStatus(Status.STARTING);
-		Collection<Service> collection = servicesHealth.values();
-		boolean down = false;
-		for (Service service : collection) {
-			ServiceHealth health = service.getServiceHealth();
-			if (health.getStatus().equals(Status.DOWN)) {
-				down = true;
-			}
-			serverHealth.addService(health);
-		}
-		serverHealth.setStatus(down ? Status.DOWN : Status.UP);
-		Thread.currentThread().setContextClassLoader(bootClassLoader);
-		return serverHealth;
 	}
 
 }

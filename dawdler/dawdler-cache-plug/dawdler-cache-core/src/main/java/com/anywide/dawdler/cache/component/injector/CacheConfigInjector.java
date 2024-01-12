@@ -27,7 +27,6 @@ import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title CacheConfigInjector.java
@@ -35,7 +34,7 @@ import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
  * @date 2023年7月30日
  * @email suxuan696@gmail.com
  */
-@Order(1) 
+@Order(1)
 public class CacheConfigInjector implements CustomComponentInjector {
 
 	@Override

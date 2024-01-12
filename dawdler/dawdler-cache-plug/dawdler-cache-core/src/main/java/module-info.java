@@ -1,3 +1,4 @@
+import com.anywide.dawdler.cache.CacheManager;
 import com.anywide.dawdler.cache.component.injector.CacheConfigInjector;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 
@@ -14,6 +15,8 @@ module dawdler.cache.core {
 	exports com.anywide.dawdler.cache.exception;
 
 	uses CustomComponentInjector;
+	
+	uses CacheManager;
 
 	provides CustomComponentInjector with CacheConfigInjector;
 }

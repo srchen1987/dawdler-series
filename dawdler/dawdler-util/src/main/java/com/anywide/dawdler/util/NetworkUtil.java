@@ -27,7 +27,6 @@ import java.util.Enumeration;
 import java.util.List;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title NetworkUtil.java

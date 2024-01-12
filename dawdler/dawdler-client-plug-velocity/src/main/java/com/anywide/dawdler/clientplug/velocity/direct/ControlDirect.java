@@ -54,12 +54,6 @@ public class ControlDirect extends Directive {
 	public boolean render(InternalContextAdapter arg0, Writer arg1, Node arg2)
 			throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
 		Node node = arg2.jjtGetChild(0);
-		/*
-		 * if(node==null){ Object action = arg0.get("action"); ControlTag page =
-		 * (ControlTag)ToolEL.getBeanValue(action,"controlTag"); try {
-		 * arg1.write(ControlFactory.getControl(page).showView()); } catch
-		 * (JspTagException e) { } return true; }
-		 */
 		Object object = node.value(arg0);
 		if (object instanceof ControlTag controlTag) {
 			arg1.write(ControlFactory.getControl(controlTag).showView());

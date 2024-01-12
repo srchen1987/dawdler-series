@@ -12,7 +12,9 @@ module dawdler.server.plug.mybatis {
 	requires org.aspectj.weaver;
 	requires java.naming;
 	requires org.mybatis;
-	
+
+	exports com.anywide.dawdler.serverplug.db.mybatis;
+
 	uses CustomComponentInjector;
 
 	provides CustomComponentInjector with AspectInjector;

@@ -15,10 +15,8 @@ module dawdler.jedis.core {
 	exports com.anywide.dawdler.jedis.lock;
 
 	uses ComponentLifeCycle;
-
 	provides ComponentLifeCycle with JedisLifeCycle;
 
 	uses HealthIndicator;
-
 	provides HealthIndicator with JedisIndicator;
 }

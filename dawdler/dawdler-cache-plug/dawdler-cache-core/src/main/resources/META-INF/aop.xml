@@ -1,8 +1,8 @@
 ﻿<aspectj>
-  <aspects>
-    <aspect name="com.anywide.dawdler.cache.aspect.CacheAspect"/>
-  </aspects>
-  <!--  
+	<aspects>
+		<aspect name="com.anywide.dawdler.cache.aspect.CacheAspect" />
+	</aspects>
+	<!--  
   <weaver options="-verbose">
     <include within="*"/>
   </weaver>

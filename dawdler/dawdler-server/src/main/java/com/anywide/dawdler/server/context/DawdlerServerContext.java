@@ -21,7 +21,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.anywide.dawdler.server.conf.ServerConfig;
-import com.anywide.dawdler.server.deploys.ServiceRoot;
+import com.anywide.dawdler.server.deploys.AbstractServiceRoot;
 
 /**
  * @author jackson.song
@@ -32,14 +32,15 @@ import com.anywide.dawdler.server.deploys.ServiceRoot;
  * @email suxuan696@gmail.com
  */
 public class DawdlerServerContext {
-	private final ServiceRoot serviceRoot;
+	private final AbstractServiceRoot abstractServiceRoot;
 	private final ServerConfig serverConfig;
 	private AsynchronousServerSocketChannel asynchronousServerSocketChannel;
 	private AtomicBoolean started;
 	private Semaphore startSemaphore;
 
-	public DawdlerServerContext(ServerConfig serverConfig, AtomicBoolean started, Semaphore startSemaphore) {
-		serviceRoot = new ServiceRoot();
+	public DawdlerServerContext(ServerConfig serverConfig, AbstractServiceRoot abstractServiceRoot,
+			AtomicBoolean started, Semaphore startSemaphore) {
+		this.abstractServiceRoot = abstractServiceRoot;
 		this.serverConfig = serverConfig;
 		this.started = started;
 		this.startSemaphore = startSemaphore;
@@ -58,27 +59,27 @@ public class DawdlerServerContext {
 	}
 
 	public void initApplication() throws Exception {
-		serviceRoot.initApplication(this);
+		abstractServiceRoot.initApplication(this);
 	}
 
 	public void prepareDestroyedApplication() {
-		serviceRoot.prepareDestroyedApplication();
+		abstractServiceRoot.prepareDestroyedApplication();
 	}
 
 	public void destroyedApplication() {
-		serviceRoot.destroyedApplication();
+		abstractServiceRoot.destroyedApplication();
 	}
 
 	public void shutdownWorkPool() {
-		serviceRoot.shutdownWorkPool();
+		abstractServiceRoot.shutdownWorkPool();
 	}
 
 	public void shutdownWorkPoolNow() {
-		serviceRoot.shutdownWorkPoolNow();
+		abstractServiceRoot.shutdownWorkPoolNow();
 	}
 
 	public void execute(Runnable runnable) {
-		serviceRoot.execute(runnable);
+		abstractServiceRoot.execute(runnable);
 	}
 
 	public AtomicBoolean getStarted() {

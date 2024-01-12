@@ -20,6 +20,7 @@ virtualHost=/ #虚拟host
 username=mq_user #用户名
 password=mq_user #密码
 networkRecoveryInterval=3000 #网络中断自动重连频率 3000ms 单位毫秒
+shutdownTimeout=30000 #关闭超时时间 30000ms 单位毫秒
 confirmSelect=true #开启confirm模式
 pool.maxTotal=32 #最大连接
 pool.maxWaitMillis=5000 #最大等待时长(单位毫秒)

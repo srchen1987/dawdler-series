@@ -59,4 +59,8 @@ public interface CustomComponentInjector {
 	default String[] scanLocations() {
 		return null;
 	}
+
+	default boolean useAop() {
+		return true;
+	}
 }

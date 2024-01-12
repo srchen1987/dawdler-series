@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.util;
 
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -77,10 +77,17 @@ public class CertificateOperator {
 
 	private Certificate getCertificate() throws Exception {
 		CertificateFactory certificateFactory = CertificateFactory.getInstance(X509);
-		FileInputStream in = new FileInputStream(certificatePath);
-		Certificate certificate = certificateFactory.generateCertificate(in);
-		in.close();
-		return certificate;
+		InputStream input = DawdlerTool.getResourceFromClassPath(certificatePath, "");
+		if (input == null) {
+			throw new FileNotFoundException("not found " + certificatePath + " in classPath!");
+		}
+		try {
+			return certificateFactory.generateCertificate(input);
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+		}
 	}
 
 	private Certificate getCertificate(KeyStoreConfig keyStore) throws Exception {
@@ -94,11 +101,15 @@ public class CertificateOperator {
 	}
 
 	public synchronized KeyStore getKeyStore(KeyStoreConfig keyStore) throws Exception {
-		KeyStore store = null;
-		FileInputStream is = new FileInputStream(keyStorePath);
-		store = getKeyStore(is, keyStore);
-		is.close();
-		return store;
+		InputStream input = DawdlerTool.getResourceFromClassPath(keyStorePath, "");
+		if (input == null) {
+			throw new FileNotFoundException("not found " + keyStorePath + " in classPath!");
+		}
+		try {
+			return getKeyStore(input, keyStore);
+		} finally {
+			input.close();
+		}
 	}
 
 	public synchronized KeyStore getKeyStore(InputStream in, KeyStoreConfig keyStore) throws Exception {

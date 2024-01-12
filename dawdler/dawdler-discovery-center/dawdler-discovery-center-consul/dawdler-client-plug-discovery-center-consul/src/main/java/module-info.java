@@ -10,5 +10,7 @@ module dawdler.client.plug.discovery.center.consul {
 	requires dawdler.discovery.center.consul.core;
 	requires consul.api;
 
+	uses ComponentLifeCycle;
+
 	provides ComponentLifeCycle with ConsulLifeCycle;
 }

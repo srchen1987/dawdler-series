@@ -30,8 +30,8 @@ import java.util.Map;
 import com.anywide.dawdler.client.api.generator.conf.OpenApiConfig;
 import com.anywide.dawdler.client.api.generator.data.ClassStruct;
 import com.anywide.dawdler.client.api.generator.data.ControllerData;
-import com.anywide.dawdler.clientplug.annotation.Controller;
-import com.anywide.dawdler.clientplug.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.web.annotation.Controller;
+import com.anywide.dawdler.clientplug.web.annotation.RequestMapping;
 import com.anywide.dawdler.util.JsonProcessUtil;
 import com.anywide.dawdler.util.YAMLMapperFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
@@ -50,7 +50,9 @@ import com.thoughtworks.qdox.model.JavaSource;
  * @email suxuan696@gmail.com
  */
 public class WebApiGenerator {
-	private WebApiGenerator() {}
+	private WebApiGenerator() {
+	}
+
 	public static void generate(File file) throws IOException {
 		YAMLMapper yamlMapper = YAMLMapperFactory.getYAMLMapper();
 		OpenApiConfig openApi = yamlMapper.readValue(file, OpenApiConfig.class);

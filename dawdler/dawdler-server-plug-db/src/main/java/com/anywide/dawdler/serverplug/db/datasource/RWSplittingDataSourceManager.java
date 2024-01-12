@@ -134,6 +134,9 @@ public class RWSplittingDataSourceManager {
 		Object obj = clazz.getDeclaredConstructor().newInstance();
 
 		attributes.forEach((k, v) -> {
+			if (v == null) {
+				v = "";
+			}
 			if (k.equals("type")) {
 				return;
 			}
