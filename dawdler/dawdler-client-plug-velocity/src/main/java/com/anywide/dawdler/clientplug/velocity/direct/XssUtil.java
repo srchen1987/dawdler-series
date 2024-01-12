@@ -11,7 +11,9 @@ import org.jsoup.safety.Safelist;
  * @email suxuan696@gmail.com
  */
 public class XssUtil {
-	private XssUtil() {}
+	private XssUtil() {
+	}
+
 	private static final Safelist USER_CONTENT_FILTER = Safelist.basic();
 
 	static {

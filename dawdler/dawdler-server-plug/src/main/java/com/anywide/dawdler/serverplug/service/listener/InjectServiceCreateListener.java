@@ -16,13 +16,8 @@
  */
 package com.anywide.dawdler.serverplug.service.listener;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
-import com.anywide.dawdler.core.annotation.RemoteService;
-import com.anywide.dawdler.core.annotation.Service;
-import com.anywide.dawdler.core.exception.NotSetRemoteServiceException;
 import com.anywide.dawdler.server.context.DawdlerContext;
+import com.anywide.dawdler.server.service.ServicesManager;
 import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
 /**
@@ -37,31 +32,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 
 	@Override
 	public void create(Object service, boolean single, DawdlerContext dawdlerContext) throws Throwable {
-		inject(service, dawdlerContext);
+		ServicesManager.injectService(service);
 	}
 
-	private void inject(Object service, DawdlerContext dawdlerContext) throws Throwable {
-		Field[] fields = service.getClass().getDeclaredFields();
-		for (Field field : fields) {
-			Service serviceAnnotation = field.getAnnotation(Service.class);
-			Class<?> serviceClass = field.getType();
-			field.setAccessible(true);
-			if (serviceAnnotation != null) {
-				if (serviceAnnotation.remote()) {
-					RemoteService remoteService = serviceClass.getAnnotation(RemoteService.class);
-					if (remoteService == null) {
-						throw new NotSetRemoteServiceException("not found @RemoteService on " + serviceClass.getName());
-					}
-					Class<?> serviceFactoryClass = Class.forName("com.anywide.dawdler.client.ServiceFactory");
-					Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class, String.class,
-							ClassLoader.class);
-					String groupName = remoteService.value();
-					field.set(service, method.invoke(null, serviceClass, groupName, remoteService.loadBalance(),
-							dawdlerContext.getClassLoader()));
-				} else {
-					field.set(service, dawdlerContext.getServiceProxy(serviceClass));
-				}
-			}
-		}
-	}
 }

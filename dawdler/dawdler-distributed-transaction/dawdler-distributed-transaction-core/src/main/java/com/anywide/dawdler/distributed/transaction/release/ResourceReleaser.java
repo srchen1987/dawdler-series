@@ -21,14 +21,13 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.distributed.transaction.message.amqp.rabbitmq.DistributedTransactionAMQPConnectionFactoryProvider;
 import com.anywide.dawdler.distributed.transaction.repository.RedisRepository;
-import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
 import com.anywide.dawdler.jedis.JedisPoolFactory;
+import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title ResourceReleaser.java

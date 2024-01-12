@@ -15,7 +15,7 @@
  */
 
 package com.anywide.dawdler.util.spring.antpath;
- 
+
 public abstract class ContextResource extends Resource {
 
 	abstract String getPathWithinContext();

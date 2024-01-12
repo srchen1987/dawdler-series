@@ -307,7 +307,7 @@ public class DawdlerConnection {
 			}
 			if (sessionGroup.isEmpty()) {
 				ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-				if(cp != null) {
+				if (cp != null) {
 					cp.remove(this);
 				}
 				reconnectScheduled.shutdown();

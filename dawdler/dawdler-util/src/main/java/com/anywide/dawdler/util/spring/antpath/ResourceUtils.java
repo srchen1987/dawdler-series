@@ -24,7 +24,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLConnection;
 
- 
 public abstract class ResourceUtils {
 
 	/** Pseudo URL prefix for loading from the class path: "classpath:". */

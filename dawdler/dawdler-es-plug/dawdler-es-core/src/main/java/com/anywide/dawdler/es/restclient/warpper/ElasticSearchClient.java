@@ -24,7 +24,6 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title ElasticSearchClient.java

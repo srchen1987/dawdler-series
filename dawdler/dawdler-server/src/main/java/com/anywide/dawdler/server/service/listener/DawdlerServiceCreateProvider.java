@@ -43,13 +43,13 @@ public class DawdlerServiceCreateProvider {
 	}
 
 	public void addServiceCreate(DawdlerServiceCreateListener dawdlerServiceListener) {
-		Order co = dawdlerServiceListener.getClass().getAnnotation(Order.class);
-		OrderData<DawdlerServiceCreateListener> od = new OrderData<>();
-		od.setData(dawdlerServiceListener);
-		if (co != null) {
-			od.setOrder(co.value());
+		Order order = dawdlerServiceListener.getClass().getAnnotation(Order.class);
+		OrderData<DawdlerServiceCreateListener> orderData = new OrderData<>();
+		orderData.setData(dawdlerServiceListener);
+		if (order != null) {
+			orderData.setOrder(order.value());
 		}
-		listeners.add(od);
+		listeners.add(orderData);
 	}
 
 }

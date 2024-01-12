@@ -63,8 +63,8 @@ public class DawdlerSessionFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);
 	private static String cookieName = "_dawdler_key";
 	private static String tokenName = "token";
-	private static boolean suportHead;
-	private static boolean suportParam;
+	private static boolean supportHead;
+	private static boolean supportParam;
 	private static String domain;
 	private static String path = "/";
 	private static boolean secure;
@@ -109,8 +109,8 @@ public class DawdlerSessionFilter implements Filter {
 			if (tokenString != null && !tokenString.trim().equals("")) {
 				tokenName = tokenString;
 			}
-			suportHead = PropertiesUtil.getIfNullReturnDefaultValueBoolean("suportHead", false, ps);
-			suportParam = PropertiesUtil.getIfNullReturnDefaultValueBoolean("suportParam", false, ps);
+			supportHead = PropertiesUtil.getIfNullReturnDefaultValueBoolean("supportHead", false, ps);
+			supportParam = PropertiesUtil.getIfNullReturnDefaultValueBoolean("supportParam", false, ps);
 			secure = PropertiesUtil.getIfNullReturnDefaultValueBoolean("secure", false, ps);
 			maxInactiveInterval = PropertiesUtil.getIfNullReturnDefaultValueInt("maxInactiveInterval", 1800, ps);
 			maxSize = PropertiesUtil.getIfNullReturnDefaultValueInt("maxSize", 65525, ps);
@@ -195,7 +195,7 @@ public class DawdlerSessionFilter implements Filter {
 						sessionStore.saveSession(session);
 					}
 				} catch (Exception e) {
-					logger.error("", e);
+					throw new ServletException(e);
 				}
 				session.finish();
 				if (session.isValid()) {
@@ -252,9 +252,9 @@ public class DawdlerSessionFilter implements Filter {
 			if (session == null) {
 				String sessionKey;
 				String token = null;
-				if (suportHead) {
+				if (supportHead) {
 					token = request.getHeader(tokenName);
-				} else if (suportParam) {
+				} else if (supportParam) {
 					token = request.getParameter(tokenName);
 				}
 				if (token != null) {

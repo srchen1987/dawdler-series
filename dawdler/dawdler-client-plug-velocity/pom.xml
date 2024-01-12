@@ -22,7 +22,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-client-plug</artifactId>
+			<artifactId>dawdler-client-plug-web</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.servlet</groupId>

@@ -60,7 +60,6 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 		List<ServerChannelGroup> sgs = clientConfig.getServerChannelGroups();
 		consulDiscoveryCenter = ConsulDiscoveryCenter.getInstance();
 		ConsulClient consulClient = consulDiscoveryCenter.getClient();
-
 		executor = Executors.newFixedThreadPool(sgs.size(), new DefaultThreadFactory("consulPullThread#"));
 		for (ServerChannelGroup sg : sgs) {
 			String gid = sg.getGroupId();
@@ -93,16 +92,18 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 							try {
 								Thread.sleep(200);
 							} catch (InterruptedException e1) {
+								Thread.currentThread().interrupt();
 							}
+						} else {
+							return;
 						}
 					}
 					ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 					for (String k : newSet) {
 						if (!oldSet.contains(k) && cp != null) {
-								cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
+							cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
 						}
 					}
-
 					for (String k : oldSet) {
 						if (!newSet.contains(k) && cp != null) {
 							cp.doChange(gid, Action.ACTION_DEL, getServiceAddress(k));

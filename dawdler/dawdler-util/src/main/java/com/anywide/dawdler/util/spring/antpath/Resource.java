@@ -22,14 +22,14 @@ import java.net.URI;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
-public abstract class Resource extends jdk.internal.loader.Resource  implements InputStreamSource {
+public abstract class Resource extends jdk.internal.loader.Resource implements InputStreamSource {
 
 	public abstract boolean exists();
 
 	public boolean isReadable() {
 		return exists();
 	}
-	
+
 	public boolean isOpen() {
 		return false;
 	}

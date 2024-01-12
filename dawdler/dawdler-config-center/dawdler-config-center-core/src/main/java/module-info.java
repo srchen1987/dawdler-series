@@ -1,3 +1,4 @@
+import com.anywide.dawdler.conf.client.ConfigClient;
 import com.anywide.dawdler.conf.health.ConfigIndicator;
 import com.anywide.dawdler.core.health.HealthIndicator;
 
@@ -18,6 +19,8 @@ module dawdler.config.center.core {
 	exports com.anywide.dawdler.conf.annotation;
 
 	uses HealthIndicator;
+
+	uses ConfigClient;
 
 	provides HealthIndicator with ConfigIndicator;
 }

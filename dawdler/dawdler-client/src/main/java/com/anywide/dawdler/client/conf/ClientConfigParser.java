@@ -19,8 +19,8 @@ package com.anywide.dawdler.client.conf;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute;
 import static com.anywide.dawdler.util.XmlObject.getElementAttribute2Int;
 
-import java.io.File;
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -47,18 +47,17 @@ public class ClientConfigParser {
 
 	static {
 		String fileName;
-		File file;
 		String activeProfile = System.getProperty("dawdler.profiles.active");
-		String prefix = "client/client-conf";
+		String prefix = "client-conf";
 		String subfix = ".xml";
-		URL url = ClientConfigParser.class.getClassLoader().getResource("client/client-conf.xsd");
+		InputStream xsdInput = ClientConfigParser.class.getResourceAsStream("/client-conf.xsd");
 		fileName = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		file = new File(DawdlerTool.getCurrentPath() + fileName);
-		if (!file.isFile()) {
+		InputStream input = DawdlerTool.getResourceFromClassPath(prefix, subfix);
+		if (input == null) {
 			logger.error("not found " + fileName);
 		} else {
 			try {
-				xmlObject = new XmlObject(DawdlerTool.getCurrentPath() + fileName, url);
+				xmlObject = new XmlObject(input, xsdInput);
 				xmlObject.setPrefix("ns");
 				config = new ClientConfig();
 				Node certificatePath = xmlObject.selectSingleNode("/ns:config/ns:certificatePath");
@@ -88,7 +87,13 @@ public class ClientConfigParser {
 				}
 			} catch (Exception e) {
 				logger.error("", e);
+			} finally {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
 			}
+
 		}
 	}
 
@@ -99,5 +104,5 @@ public class ClientConfigParser {
 	public static XmlObject getXmlObject() {
 		return xmlObject;
 	}
-	
+
 }

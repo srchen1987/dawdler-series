@@ -139,5 +139,4 @@ public class DawdlerSqlSessionFactory implements SqlSessionFactory {
 		return environment.getTransactionFactory();
 	}
 
-
 }

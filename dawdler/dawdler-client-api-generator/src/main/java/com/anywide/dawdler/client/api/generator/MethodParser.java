@@ -34,13 +34,13 @@ import com.anywide.dawdler.client.api.generator.data.ResponseData;
 import com.anywide.dawdler.client.api.generator.data.SchemaData;
 import com.anywide.dawdler.client.api.generator.util.AnnotationUtils;
 import com.anywide.dawdler.client.api.generator.util.ClassTypeUtil;
-import com.anywide.dawdler.clientplug.annotation.PathVariable;
-import com.anywide.dawdler.clientplug.annotation.RequestBody;
-import com.anywide.dawdler.clientplug.annotation.RequestHeader;
-import com.anywide.dawdler.clientplug.annotation.RequestMapping;
-import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
-import com.anywide.dawdler.clientplug.annotation.RequestParam;
-import com.anywide.dawdler.clientplug.annotation.ResponseBody;
+import com.anywide.dawdler.clientplug.web.annotation.PathVariable;
+import com.anywide.dawdler.clientplug.web.annotation.RequestBody;
+import com.anywide.dawdler.clientplug.web.annotation.RequestHeader;
+import com.anywide.dawdler.clientplug.web.annotation.RequestMapping;
+import com.anywide.dawdler.clientplug.web.annotation.RequestMapping.RequestMethod;
+import com.anywide.dawdler.clientplug.web.annotation.RequestParam;
+import com.anywide.dawdler.clientplug.web.annotation.ResponseBody;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.thoughtworks.qdox.builder.impl.EvaluatingVisitor;
 import com.thoughtworks.qdox.model.DocletTag;
@@ -65,7 +65,8 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaWildcardType;
  * @email suxuan696@gmail.com
  */
 public class MethodParser {
-	private MethodParser(){}
+	private MethodParser() {
+	}
 
 	private static final ResponseData RESPONSE_401 = new ResponseData("Unauthorized");
 	private static final ResponseData RESPONSE_403 = new ResponseData("Forbidden");
@@ -306,32 +307,32 @@ public class MethodParser {
 		List<JavaTypeVariable<JavaGenericDeclaration>> typeList = null;
 		Map<String, JavaType> innerJavaTypes = new HashMap<>();
 		try {
-			if(type instanceof DefaultJavaWildcardType) {
-				System.out.println(method+":"+" not support wildcard type <?> !\r\n");
+			if (type instanceof DefaultJavaWildcardType) {
+				System.out.println(method + ":" + " not support wildcard type <?> !\r\n");
 				return;
 			}
-			if(type instanceof DefaultJavaParameterizedType) {
+			if (type instanceof DefaultJavaParameterizedType) {
 				dt = (DefaultJavaParameterizedType) type;
-			typeList = dt.getTypeParameters();
-			actualTypeArguments = getActualTypeArguments(dt);
-			if (!typeList.isEmpty()) {
-				if(actualTypeArguments.size() != typeList.size()) {
-					System.out.println(method+":"+type+" not defined type "+typeList+" !\r\n");
-				}else {
-					for (int i = 0; i < typeList.size(); i++) {
-						parseType(method, actualTypeArguments.get(i), classStructs, definitionsMap, innerJavaTypes);
-						innerJavaTypes.put(typeList.get(i).getBinaryName(), actualTypeArguments.get(i));
+				typeList = dt.getTypeParameters();
+				actualTypeArguments = getActualTypeArguments(dt);
+				if (!typeList.isEmpty()) {
+					if (actualTypeArguments.size() != typeList.size()) {
+						System.out.println(method + ":" + type + " not defined type " + typeList + " !\r\n");
+					} else {
+						for (int i = 0; i < typeList.size(); i++) {
+							parseType(method, actualTypeArguments.get(i), classStructs, definitionsMap, innerJavaTypes);
+							innerJavaTypes.put(typeList.get(i).getBinaryName(), actualTypeArguments.get(i));
+						}
 					}
 				}
 			}
-		}
 			FieldParser.parserFields(type, classStructs, definitionsMap, innerJavaTypes);
 		} catch (Exception e) {
-			System.out.println(method+" failed");
+			System.out.println(method + " failed");
 			e.printStackTrace();
-			
+
 		}
-		
+
 	}
 
 	public static Map<String, JavaType> getActualTypesMap(JavaClass javaClass) {

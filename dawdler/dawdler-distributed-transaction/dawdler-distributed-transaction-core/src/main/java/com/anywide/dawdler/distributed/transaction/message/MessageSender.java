@@ -17,7 +17,6 @@
 package com.anywide.dawdler.distributed.transaction.message;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title MessageSender.java

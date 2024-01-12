@@ -37,8 +37,9 @@ import org.apache.ibatis.transaction.Transaction;
  * @author jackson.song
  * @version V1.0
  * @Title SimpleExecutor.java
- * @Description 执行器继承NoCacheBaseExecutor
- * 因为优化将session改为single模式 所以不支持其他的BatchExecutor, ReuseExecutor 有batch的需求可以采用jdbc batch方式处理 效率更高
+ * @Description 执行器继承NoCacheBaseExecutor 因为优化将session改为single模式
+ *              所以不支持其他的BatchExecutor, ReuseExecutor 有batch的需求可以采用jdbc batch方式处理
+ *              效率更高
  * @date 2023年11月7日
  * @email suxuan696@gmail.com
  */

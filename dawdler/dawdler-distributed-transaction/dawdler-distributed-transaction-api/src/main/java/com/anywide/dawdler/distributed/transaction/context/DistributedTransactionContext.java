@@ -21,7 +21,6 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title DistributedTransactionContext.java

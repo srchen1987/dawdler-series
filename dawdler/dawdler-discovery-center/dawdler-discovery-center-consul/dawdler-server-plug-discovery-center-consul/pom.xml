@@ -17,6 +17,10 @@
 			<artifactId>dawdler-discovery-center-consul-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>dawdler</groupId> 
+			<artifactId>dawdler-discovery-center-server-plug</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>dawdler</groupId>
 			<artifactId>dawdler-server</artifactId>
 		</dependency>
