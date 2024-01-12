@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title DistributedTransactionAMQPConnectionFactoryProvider.java

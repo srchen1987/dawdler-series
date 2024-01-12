@@ -27,7 +27,8 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
  * @email suxuan696@gmail.com
  */
 public class PageFactory {
-	private PageFactory() {}
+	private PageFactory() {
+	}
 
 	public static Page getPage() {
 		return new Page();

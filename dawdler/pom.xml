@@ -19,7 +19,7 @@
 		<org.apache.curator.version>5.4.0</org.apache.curator.version>
 		<zookeeper.version>3.8.0</zookeeper.version>
 		<cglib.version>3.3.0</cglib.version>
-		<jakarta.servlet-api.version>5.0.0</jakarta.servlet-api.version>
+		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
 		<jackson-core.version>2.15.2</jackson-core.version>
 		<jackson-databind.version>2.15.2</jackson-databind.version>
 		<velocity.version>2.3</velocity.version>
@@ -42,6 +42,11 @@
 		<gson.version>2.10.1</gson.version>
 		<portlet-api.version>3.0.1</portlet-api.version>
 		<mybatis.version>3.5.14</mybatis.version>
+		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+		<jakarta.websocket.version>2.1.1</jakarta.websocket.version>
+		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+		<versions-maven-plugin.version>2.3</versions-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -216,7 +221,17 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-client-plug</artifactId>
+				<artifactId>dawdler-client-plug-session</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-web</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-load</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -385,6 +400,21 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-discovery-center-server-plug</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-discovery-center-consul</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-discovery-center-consul</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.fasterxml.jackson.dataformat</groupId>
 				<artifactId>jackson-dataformat-yaml</artifactId>
 				<version>${jackson-dataformat-yaml.version}</version>
@@ -479,7 +509,21 @@
 				<groupId>javax.portlet</groupId>
 				<artifactId>portlet-api</artifactId>
 				<version>${portlet-api.version}</version>
-				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>jakarta.websocket</groupId>
+				<artifactId>jakarta.websocket-api</artifactId>
+				<version>${jakarta.websocket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>jakarta.websocket</groupId>
+				<artifactId>jakarta.websocket-client-api</artifactId>
+				<version>${jakarta.websocket.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -488,39 +532,25 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.11.0</version>
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>17</source>
 					<target>17</target>
 					<!--debug>true</debug>-->
-					<compilerArgs>
-						<arg>--add-exports</arg>
-						<arg>java.base/jdk.internal.loader=dawdler.core</arg>
-						<arg>--add-exports</arg>
-						<arg>java.base/jdk.internal.misc=dawdler.core</arg>
-						<arg>--add-exports</arg>
-						<arg>java.base/jdk.internal.loader=dawdler.server</arg>
-						<arg>--add-exports</arg>
-						<arg>java.base/jdk.internal.perf=dawdler.server</arg>
-						<arg>--add-exports</arg>
-						<arg>java.base/jdk.internal.loader=dawdler.client.plug</arg>
-						<arg>--add-exports</arg>
-						<arg>java.base/jdk.internal.loader=dawdler.util</arg>
-					</compilerArgs>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>${maven-source-plugin.version}</version>
 			</plugin>
 			<plugin>
 				<!-- -N versions:update-child-modules -->
 				<!--mvn versions:set -DnewVersion=0.0.3-RELEASES-->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.3</version>
+				<version>${versions-maven-plugin.version}</version>
 				<configuration>
 					<generateBackupPoms>false</generateBackupPoms>
 				</configuration>
@@ -540,7 +570,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>${maven-jar-plugin.version}</version>
 				<configuration>
 					<archive>
 						<manifestEntries>
@@ -558,8 +588,8 @@
 		<module>dawdler-core</module>
 		<module>dawdler-client</module>
 		<module>dawdler-server</module>
+		<module>dawdler-client-plug-web</module>
 		<module>dawdler-client-plug-validator</module>
-		<module>dawdler-client-plug</module>
 		<module>dawdler-client-plug-session</module>
 		<module>dawdler-server-plug</module>
 		<module>dawdler-server-plug-db</module>
@@ -581,5 +611,7 @@
 		<module>dawdler-discovery-center</module>
 		<module>dawdler-dependencies</module>
 		<module>dawdler-cache-plug</module>
+		<module>dawdler-server-logback</module>
+		<module>dawdler-client-plug-load</module>
 	</modules>
 </project>

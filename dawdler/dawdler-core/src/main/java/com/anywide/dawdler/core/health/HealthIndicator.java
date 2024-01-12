@@ -17,7 +17,6 @@
 package com.anywide.dawdler.core.health;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title HealthIndicator.java

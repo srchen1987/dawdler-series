@@ -16,6 +16,8 @@ module dawdler.client {
 	exports com.anywide.dawdler.client.conf;
 	exports com.anywide.dawdler.client.filter;
 	exports com.anywide.dawdler.client.net.aio.session;
+	exports com.anywide.dawdler.client.cglib.proxy;
+	exports com.anywide.dawdler.client.cluster;
 
 	uses com.anywide.dawdler.client.cluster.LoadBalance;
 	uses com.anywide.dawdler.client.filter.DawdlerClientFilter;

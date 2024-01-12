@@ -9,6 +9,5 @@ module dawdler.server.plug.rabbitmq {
 	requires dawdler.server;
 
 	uses ComponentLifeCycle;
-
 	provides ComponentLifeCycle with RabbitLifeCycle;
 }

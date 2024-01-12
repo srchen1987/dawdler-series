@@ -18,6 +18,7 @@ package com.anywide.dawdler.rabbitmq.resource;
 
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
+import com.anywide.dawdler.rabbitmq.consumer.RabbitListenerInit;
 
 /**
  * @author jackson.song
@@ -31,6 +32,7 @@ public class RabbitLifeCycle implements ComponentLifeCycle {
 
 	@Override
 	public void destroy() {
+		RabbitListenerInit.closeAllConnections();
 		AMQPConnectionFactory.shutdownAll();
 	}
 

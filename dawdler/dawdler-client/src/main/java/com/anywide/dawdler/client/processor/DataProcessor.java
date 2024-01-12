@@ -39,7 +39,8 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
 public class DataProcessor {
 	private static final IoHandler ioHandler = IoHandlerFactory.getHandler();
 
-	public static void process(SocketSession socketSession, boolean compress, Serializer serializer, byte[] data) throws Exception {
+	public static void process(SocketSession socketSession, boolean compress, Serializer serializer, byte[] data)
+			throws Exception {
 		if (compress) {
 			data = ThresholdCompressionStrategy.staticSingle().decompress(data);
 		}

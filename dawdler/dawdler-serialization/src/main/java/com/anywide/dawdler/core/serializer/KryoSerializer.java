@@ -40,7 +40,7 @@ import com.esotericsoftware.kryo.serializers.JavaSerializer;
 public class KryoSerializer implements Serializer {
 	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
 	private static final StdInstantiatorStrategy STD_INSTANTIATOR_STRATEGY = new StdInstantiatorStrategy();
- 
+
 	private KryoLocal initialValue() {
 		KryoLocal kryoLocal = new KryoLocal();
 		return kryoLocal;

@@ -47,7 +47,6 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 		this.clazz = clazz;
 	}
 
-
 	public final String getPath() {
 		return this.path;
 	}
@@ -94,7 +93,7 @@ public class ClassPathResource extends AbstractFileResolvingResource {
 	}
 
 	@Override
-	public URL getURL(){
+	public URL getURL() {
 		URL url = resolveURL();
 		return url;
 	}

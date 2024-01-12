@@ -267,7 +267,7 @@ registerRuleOperatorScanPackage接收参数为Class对象,添加这个Class所�
 
 #### 5.1 监听器中添加扫描验证器
 
-关于监听器参考 [WebContextListener](../dawdler-client-plug/README.md#6-webcontextlistener-监听器)
+关于监听器参考 [WebContextListener](../dawdler-client-plug-web/README.md#6-webcontextlistener-监听器)
 
 ```java
 package com.anywide.yyg.user.web.listener;
@@ -301,7 +301,7 @@ public class UserWebContextListener2 implements WebContextListener{
 
 #### 5.2 通过扫描组件包添加扫描验证器
 
-通过配置扫描组件包的验证器会被注入,参考 [扫描组件包配置](../dawdler-client-plug/README.md#11-扫描组件包配置).
+通过配置扫描组件包的验证器会被注入,参考 [扫描组件包配置](../dawdler-client-plug-web/README.md#11-扫描组件包配置).
 
 ### 6. 前端js验证框架
 
