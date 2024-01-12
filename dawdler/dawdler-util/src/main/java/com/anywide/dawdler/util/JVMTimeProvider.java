@@ -16,8 +16,6 @@
  */
 package com.anywide.dawdler.util;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -27,38 +25,12 @@ import java.util.concurrent.TimeUnit;
  * @email suxuan696@gmail.com
  */
 public final class JVMTimeProvider {
-	private static volatile long currentTimeMillis;
-	private static volatile boolean stop = false;
-
-	static {
-		currentTimeMillis = System.currentTimeMillis();
-		Thread daemon = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				while (!stop) {
-					currentTimeMillis = System.currentTimeMillis();
-					try {
-						TimeUnit.MILLISECONDS.sleep(1);
-					} catch (Throwable e) {
-
-					}
-				}
-			}
-		});
-		daemon.setDaemon(true);
-		daemon.setName("dawdler-time-tick-thread");
-		daemon.start();
-	}
-
-	public static void stop() {
-		stop = true;
-	}
 
 	public static long currentTimeMillis() {
-		return currentTimeMillis;
+		return System.currentTimeMillis();
 	}
 
 	public static int currentTimeSeconds() {
-		return (int) (currentTimeMillis / 1000);
+		return (int) (currentTimeMillis() / 1000);
 	}
 }

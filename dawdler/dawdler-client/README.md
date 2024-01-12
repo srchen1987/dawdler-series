@@ -11,7 +11,7 @@
  <artifactId>dawdler-client</artifactId>
 ```
 
-### 2. client/client-conf.xml配置文件说明
+### 2. client-conf.xml配置文件说明
 
 例:
 

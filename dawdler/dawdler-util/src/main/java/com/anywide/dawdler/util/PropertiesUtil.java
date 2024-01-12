@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.util;
 
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
@@ -102,11 +102,13 @@ public class PropertiesUtil {
 	}
 
 	public static Properties loadProperties(String fileName) throws Exception {
-		String path = DawdlerTool.getCurrentPath() + fileName + ".properties";
 		InputStream inStream = null;
 		Properties ps = new Properties();
 		try {
-			inStream = new FileInputStream(path);
+			inStream = DawdlerTool.getResourceFromClassPath(fileName, ".properties");
+			if (inStream == null) {
+				throw new FileNotFoundException("not found " + fileName + ".properties in classPath!");
+			}
 			ps.load(inStream);
 		} finally {
 			if (inStream != null) {

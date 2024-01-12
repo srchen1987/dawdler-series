@@ -53,8 +53,7 @@ public class ServiceFactory {
 		return getService(delegate, groupName, remoteService.loadBalance());
 	}
 
-	public static <T> T getService(Class<T> delegate, String groupName, String loadBalance,
-			ClassLoader classLoader) {
+	public static <T> T getService(Class<T> delegate, String groupName, String loadBalance, ClassLoader classLoader) {
 		if (classLoader == null) {
 			classLoader = Thread.currentThread().getContextClassLoader();
 		}

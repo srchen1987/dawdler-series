@@ -15,5 +15,6 @@
 		<module>dawdler-discovery-center-zookeeper</module>
 		<module>dawdler-discovery-center-core</module>
 		<module>dawdler-discovery-center-consul</module>
+		<module>dawdler-discovery-center-server-plug</module>
 	</modules>
 </project>

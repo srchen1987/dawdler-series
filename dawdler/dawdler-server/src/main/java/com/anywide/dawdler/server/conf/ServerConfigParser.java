@@ -22,16 +22,11 @@ import static com.anywide.dawdler.util.XmlTool.getElementAttribute2Int;
 import static com.anywide.dawdler.util.XmlTool.getElementAttribute2Long;
 import static com.anywide.dawdler.util.XmlTool.getNodes;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -40,7 +35,7 @@ import org.w3c.dom.Node;
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.conf.ServerConfig.KeyStore;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
-import com.anywide.dawdler.util.XmlTool;
+import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
@@ -157,20 +152,24 @@ public class ServerConfigParser {
 	}
 
 	public ServerConfigParser(URL binPath) throws Exception {
+		this(binPath, null);
+	}
+
+	public ServerConfigParser(InputStream xmlInputStream) throws Exception {
+		this(null, xmlInputStream);
+	}
+
+	public ServerConfigParser(URL binPath, InputStream xmlInputStream) throws Exception {
 		serverConfig = new ServerConfig();
 		serverConfig.setBinPath(binPath);
-		URL url = getClass().getClassLoader().getResource("server-conf.xsd");
-		String xmlPath = binPath.getPath() + "../conf/server-conf.xml";
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setIgnoringElementContentWhitespace(true);
-		factory.setNamespaceAware(true);
-		factory.setIgnoringComments(true);
-		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		Schema schema = sf.newSchema(url);
-		factory.setSchema(schema);
-		DocumentBuilder docBuilder = factory.newDocumentBuilder();
-		docBuilder.setErrorHandler(XmlTool.getErrorHandler());
-		Document root = docBuilder.parse(xmlPath);
+		InputStream xsdInputStream = getClass().getResourceAsStream("/server-conf.xsd");
+		Document root;
+		if (xmlInputStream != null) {
+			root = new XmlObject(xmlInputStream, xsdInputStream).getDocument();
+		} else {
+			String xmlPath = binPath.getPath() + "../conf/server-conf.xml";
+			root = new XmlObject(xmlPath, xsdInputStream).getDocument();
+		}
 		List<Node> childNodes = getNodes(root.getDocumentElement().getChildNodes());
 		for (Node childNode : childNodes) {
 			String childNodeName = childNode.getNodeName();
@@ -186,6 +185,7 @@ public class ServerConfigParser {
 				loadModuleHealthCheck(childNode);
 			}
 		}
+
 	}
 
 	public ServerConfig getServerConfig() {

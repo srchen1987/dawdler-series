@@ -29,7 +29,6 @@ import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title WebListener2StartCompensator.java

@@ -20,7 +20,6 @@ import java.io.Serializable;
 
 import org.w3c.dom.Document;
 
-
 /**
  * @author jackson.song
  * @version V1.0

@@ -20,7 +20,6 @@ import com.rabbitmq.client.BasicProperties;
 import com.rabbitmq.client.Envelope;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title Message.java

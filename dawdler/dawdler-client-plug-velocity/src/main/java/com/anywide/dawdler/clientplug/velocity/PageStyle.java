@@ -166,6 +166,7 @@ public class PageStyle {
 
 		return pc;
 	}
+
 	public class PageStyleContent {
 		private String pageOn;// 当前页
 		private String firstpage;// 首页

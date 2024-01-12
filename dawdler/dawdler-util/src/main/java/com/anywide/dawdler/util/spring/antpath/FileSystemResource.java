@@ -33,7 +33,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 
-public class FileSystemResource extends WritableResource{
+public class FileSystemResource extends WritableResource {
 
 	private final String path;
 
@@ -101,7 +101,7 @@ public class FileSystemResource extends WritableResource{
 	}
 
 	@Override
-	public URL getURL()  {
+	public URL getURL() {
 		try {
 			return (this.file != null ? this.file.toURI().toURL() : this.filePath.toUri().toURL());
 		} catch (MalformedURLException e) {
@@ -206,5 +206,5 @@ public class FileSystemResource extends WritableResource{
 	public URL getCodeSourceURL() {
 		return getURL();
 	}
-	
+
 }

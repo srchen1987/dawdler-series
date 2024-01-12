@@ -18,17 +18,12 @@ package com.anywide.dawdler.server.service.conf;
 
 import static com.anywide.dawdler.util.XmlTool.getNodes;
 
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
@@ -36,7 +31,8 @@ import org.w3c.dom.Node;
 
 import com.anywide.dawdler.server.service.conf.ServicesConfig.DataSourceExpression;
 import com.anywide.dawdler.server.service.conf.ServicesConfig.Decision;
-import com.anywide.dawdler.util.XmlTool;
+import com.anywide.dawdler.util.DawdlerTool;
+import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
@@ -123,19 +119,28 @@ public class ServicesConfigParser {
 		}
 	}
 
-	public ServicesConfigParser(String xmlPath) throws Exception {
+	public ServicesConfigParser() throws Exception {
+		String configPath;
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		String prefix = "services-config";
+		String subfix = ".xml";
+		configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		InputStream xmlInput = DawdlerTool.getResourceFromClassPath(prefix, subfix);
+		if (xmlInput == null) {
+			throw new IOException("not found " + configPath + " in classPath!");
+		}
+		InputStream xsdInput = getClass().getResourceAsStream("/services-config.xsd");
+		try {
+			parser(xmlInput, xsdInput);
+		} finally {
+			xmlInput.close();
+		}
+
+	}
+
+	private void parser(InputStream xmlInput, InputStream xsdInput) throws Exception {
 		servicesConfig = new ServicesConfig();
-		URL url = getClass().getClassLoader().getResource("services-config.xsd");
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		factory.setIgnoringElementContentWhitespace(true);
-		factory.setNamespaceAware(true);
-		factory.setIgnoringComments(true);
-		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		Schema schema = sf.newSchema(url);
-		factory.setSchema(schema);
-		DocumentBuilder docBuilder = factory.newDocumentBuilder();
-		docBuilder.setErrorHandler(XmlTool.getErrorHandler());
-		Document root = docBuilder.parse(xmlPath);
+		Document root = new XmlObject(xmlInput, xsdInput).getDocument();
 		List<Node> childNodes = getNodes(root.getDocumentElement().getChildNodes());
 		for (Node childNode : childNodes) {
 			String childNodeName = childNode.getNodeName();
@@ -159,6 +164,10 @@ public class ServicesConfigParser {
 				loadDecisions(childNode);
 			}
 		}
+	}
+
+	public ServicesConfigParser(InputStream xmlInput, InputStream xsdInput) throws Exception {
+		parser(xmlInput, xsdInput);
 	}
 
 }

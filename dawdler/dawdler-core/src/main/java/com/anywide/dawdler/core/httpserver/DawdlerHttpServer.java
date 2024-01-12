@@ -45,6 +45,7 @@ public class DawdlerHttpServer {
 	private Authenticator authenticator;
 	private HttpServer httpServer;
 	private static final String HTTPS_SCHEME = "https";
+
 	public DawdlerHttpServer(String host, String scheme, int port, int backlog, String username, String password,
 			String keyStorePath, String keyPassword) throws Exception {
 		InetSocketAddress address = new InetSocketAddress(host, port);

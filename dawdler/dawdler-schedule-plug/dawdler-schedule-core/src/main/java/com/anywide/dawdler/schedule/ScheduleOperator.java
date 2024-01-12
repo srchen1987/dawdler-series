@@ -16,6 +16,8 @@
  */
 package com.anywide.dawdler.schedule;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -33,9 +35,12 @@ import org.quartz.JobExecutionException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
+import org.quartz.impl.StdScheduler;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.anywide.dawdler.util.DawdlerTool;
 
 /**
  * @author jackson.song
@@ -65,9 +70,54 @@ public class ScheduleOperator {
 			}
 		});
 	}
+	
+	public static void shutdownNow() {
+		try {
+			SchedulerFactory.getInstance().scheduler.shutdown(false);
+		} catch (Exception e) {
+			logger.error("", e);
+		}
+
+		SchedulerFactory.getInstance().getInstances().forEach((k, v) -> {
+			try {
+				v.getScheduler().shutdown(false);
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+		});
+	}
+	
+	public static void waitAll() throws InterruptedException {
+			Scheduler scheduler = SchedulerFactory.getInstance().scheduler;
+			if(scheduler instanceof StdScheduler stdScheduler) {
+				while(!stdScheduler.getCurrentlyExecutingJobs().isEmpty()) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						Thread.interrupted();
+					}
+				}
+			}
+
+		SchedulerFactory.getInstance().getInstances().forEach((k, v) -> {
+			try {
+				if(v.getScheduler() instanceof StdScheduler stdScheduler) {
+					while(!stdScheduler.getCurrentlyExecutingJobs().isEmpty()) {
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							Thread.interrupted();
+						}
+					}
+				}
+			} catch (Exception e) {
+				logger.error("", e);
+			}
+		});
+	}
 
 	public static void addJob(String fileName, String cron, boolean concurrent, Object target, Method method)
-			throws SchedulerException {
+			throws SchedulerException, IOException {
 		Scheduler scheduler = SchedulerFactory.getInstance().getScheduler(fileName);
 		JobDetail jobDetail;
 		if (concurrent) {
@@ -105,24 +155,30 @@ public class ScheduleOperator {
 				8);
 
 		private SchedulerFactory() {
-			org.quartz.SchedulerFactory schedulerFactory = new StdSchedulerFactory();
 			try {
-				scheduler = schedulerFactory.getScheduler();
+				scheduler = StdSchedulerFactory.getDefaultScheduler();
 			} catch (SchedulerException e) {
 				logger.error("", e);
 			}
 		}
 
-		public Scheduler getScheduler(String fileName) throws SchedulerException {
+		public Scheduler getScheduler(String fileName) throws SchedulerException, IOException {
 			if ("".equals(fileName)) {
 				return scheduler;
 			}
 			org.quartz.SchedulerFactory factory = INSTANCES.get(fileName);
 			if (factory == null) {
-				factory = new StdSchedulerFactory(fileName + PREFIX);
-				org.quartz.SchedulerFactory pre = INSTANCES.putIfAbsent(fileName, factory);
-				if (pre != null) {
-					factory = pre;
+				try (InputStream input = DawdlerTool.getResourceFromClassPath(fileName, PREFIX)) {
+					if (input == null) {
+						throw new SchedulerException("Properties file: '" + fileName + PREFIX + "' could not be read.");
+					}
+					StdSchedulerFactory stdSchedulerFactory = new StdSchedulerFactory();
+					stdSchedulerFactory.initialize(input);
+					factory = stdSchedulerFactory;
+					org.quartz.SchedulerFactory pre = INSTANCES.putIfAbsent(fileName, factory);
+					if (pre != null) {
+						factory = pre;
+					}
 				}
 			}
 			return factory.getScheduler();

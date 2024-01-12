@@ -46,7 +46,12 @@ public class ZkIndicator implements HealthIndicator {
 		String state = zkDiscoveryCenter.state();
 		int tryTime = 0;
 		while (!States.CONNECTED.toString().equals(state)) {
-			Thread.sleep(10);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+
 			state = zkDiscoveryCenter.state();
 			if (tryTime++ > TRYTIME) {
 				throw new ConnectionLossException();

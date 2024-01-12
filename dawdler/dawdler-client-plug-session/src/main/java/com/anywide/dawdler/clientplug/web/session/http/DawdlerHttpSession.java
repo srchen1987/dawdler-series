@@ -29,7 +29,6 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.HttpSessionContext;
 
 /**
  * @author jackson.song
@@ -151,28 +150,13 @@ public class DawdlerHttpSession implements HttpSession {
 	}
 
 	@Override
-	public HttpSessionContext getSessionContext() {
-		return null;
-	}
-
-	@Override
 	public Object getAttribute(String name) {
 		return attributes.get(name);
 	}
 
 	@Override
-	public Object getValue(String name) {
-		return getAttribute(name);
-	}
-
-	@Override
 	public Enumeration<String> getAttributeNames() {
 		return attributes.keys();
-	}
-
-	@Override
-	public String[] getValueNames() {
-		return attributes.keySet().toArray(new String[0]);
 	}
 
 	@Override
@@ -202,11 +186,6 @@ public class DawdlerHttpSession implements HttpSession {
 	}
 
 	@Override
-	public void putValue(String name, Object value) {
-		setAttribute(name, value);
-	}
-
-	@Override
 	public void removeAttribute(String name) {
 		attributes.remove(name);
 		attributesAddNew.remove(name);
@@ -221,11 +200,6 @@ public class DawdlerHttpSession implements HttpSession {
 	public void removeAttributeFromNotify(String name) {
 		attributes.remove(name);
 		attributesAddNew.remove(name);
-	}
-
-	@Override
-	public void removeValue(String name) {
-		removeAttribute(name);
 	}
 
 	@Override

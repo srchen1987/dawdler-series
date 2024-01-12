@@ -25,7 +25,6 @@ import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title ValidatorInjector.java
@@ -54,6 +53,11 @@ public class ValidatorInjector implements CustomComponentInjector {
 	@Override
 	public String[] scanLocations() {
 		return new String[] { "com.anywide.dawdler.clientplug.web.validator.operators" };
+	}
+
+	@Override
+	public boolean useAop() {
+		return false;
 	}
 
 }

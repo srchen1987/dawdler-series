@@ -30,7 +30,9 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
  * @email suxuan696@gmail.com
  */
 public class ClassTypeUtil {
-	private ClassTypeUtil() {}
+	private ClassTypeUtil() {
+	}
+
 	private static final String LIST_NAME = "java.util.List";
 	private static final String SET_NAME = "java.util.Set";
 	private static final String COLLECTION_NAME = "java.util.Collection";
@@ -48,8 +50,8 @@ public class ClassTypeUtil {
 	 * 
 	 */
 	public static boolean isArray(String binaryName) {
-		return LIST_NAME.equals(binaryName) || SET_NAME.equals(binaryName)
-				|| COLLECTION_NAME.equals(binaryName) || VECTOR_NAME.equals(binaryName);
+		return LIST_NAME.equals(binaryName) || SET_NAME.equals(binaryName) || COLLECTION_NAME.equals(binaryName)
+				|| VECTOR_NAME.equals(binaryName);
 	}
 
 	public static String getType0(JavaType javaType) {

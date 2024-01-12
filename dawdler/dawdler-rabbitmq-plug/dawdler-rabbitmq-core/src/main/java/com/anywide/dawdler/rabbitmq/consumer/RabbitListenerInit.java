@@ -34,7 +34,6 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title RabbitListenerInit.java
@@ -45,6 +44,8 @@ import com.rabbitmq.client.Envelope;
 public class RabbitListenerInit {
 	private static final Logger logger = LoggerFactory.getLogger(RabbitListenerInit.class);
 	private static Map<String, Object> listenerCache = new ConcurrentHashMap<>();
+	private static Map<Object, Connection> connections = new ConcurrentHashMap<>();
+	private static Map<String, Channel> channels = new ConcurrentHashMap<>();
 
 	public static void initRabbitListener(Object target, Class<?> clazz) {
 		Method[] methods = clazz.getDeclaredMethods();
@@ -56,38 +57,45 @@ public class RabbitListenerInit {
 				if (object == null) {
 					listenerCache.put(key, target);
 					try {
-						AMQPConnectionFactory factory = AMQPConnectionFactory.getInstance(listener.fileName());
-						Connection con = factory.getConnection();
+						Connection con = connections.get(target);
+						if (con == null) {
+							AMQPConnectionFactory factory = AMQPConnectionFactory.getInstance(listener.fileName());
+							con = factory.getConnection();
+							connections.put(target, con);
+						}
 						Channel channel = con.createChannel();
 						channel.queueDeclare(listener.queueName(), true, false, false, null);
-						for(String routingKey : listener.routingKey()) {
-							for(String exchange : listener.exchange()) {
+						for (String routingKey : listener.routingKey()) {
+							for (String exchange : listener.exchange()) {
 								channel.queueBind(listener.queueName(), exchange, routingKey);
 							}
 						}
-						channel.basicConsume(listener.queueName(), listener.autoAck(), new DefaultConsumer(channel) {
-							public void handleDelivery(String consumerTag, Envelope envelope,
-									AMQP.BasicProperties properties, byte[] body) throws IOException {
-								Message message = new Message(consumerTag, envelope, properties, body);
-								try {
-									method.invoke(listenerCache.get(key), message);
-								} catch (Throwable e) {
-									logger.error("", e);
-									if (listener.retry()) {
-										communalRetryMethod(message, channel, listener.retryCount(),
-												listener.failedToDLQ());
-									} else if (listener.failedToDLQ()) {
-										String routingKey = message.getEnvelope().getRoutingKey();
-										channel.basicPublish(AMQPConnectionFactory.RABBIT_FAIL_EXCHANGE, routingKey,
-												(AMQP.BasicProperties) message.getProperties(), message.getBody());
+						String consumerTag = channel.basicConsume(listener.queueName(), listener.autoAck(),
+								new DefaultConsumer(channel) {
+									public void handleDelivery(String consumerTag, Envelope envelope,
+											AMQP.BasicProperties properties, byte[] body) throws IOException {
+										Message message = new Message(consumerTag, envelope, properties, body);
+										try {
+											method.invoke(listenerCache.get(key), message);
+										} catch (Throwable e) {
+											logger.error("", e);
+											if (listener.retry()) {
+												communalRetryMethod(message, channel, listener.retryCount(),
+														listener.failedToDLQ());
+											} else if (listener.failedToDLQ()) {
+												String routingKey = message.getEnvelope().getRoutingKey();
+												channel.basicPublish(AMQPConnectionFactory.RABBIT_FAIL_EXCHANGE,
+														routingKey, (AMQP.BasicProperties) message.getProperties(),
+														message.getBody());
+											}
+										}
+										if (!listener.autoAck()) {
+											long deliveryTag = envelope.getDeliveryTag(); // autoACK
+											channel.basicAck(deliveryTag, false);
+										}
 									}
-								}
-								if (!listener.autoAck()) {
-									long deliveryTag = envelope.getDeliveryTag(); // autoACK
-									channel.basicAck(deliveryTag, false);
-								}
-							}
-						});
+								});
+						channels.put(consumerTag, channel);
 					} catch (Exception e) {
 						logger.error("", e);
 					}
@@ -95,6 +103,18 @@ public class RabbitListenerInit {
 			}
 		}
 
+	}
+
+	public static void closeAllConnections() {
+		connections.values().forEach(con -> {
+			if (con.isOpen()) {
+				try {
+					con.close();
+				} catch (IOException e) {
+					logger.error("", e);
+				}
+			}
+		});
 	}
 
 	public static void communalRetryMethod(Message message, Channel channel, int retryCount, boolean intoDLQ)
@@ -129,5 +149,15 @@ public class RabbitListenerInit {
 			}
 		}
 		return retryCount;
+	}
+
+	public static void cancelConsumer() {
+		channels.forEach((k, v) -> {
+			try {
+				v.basicCancel(k);
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+		});
 	}
 }

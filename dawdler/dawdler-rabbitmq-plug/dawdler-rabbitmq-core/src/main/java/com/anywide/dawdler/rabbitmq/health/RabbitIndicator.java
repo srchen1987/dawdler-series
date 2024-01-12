@@ -28,7 +28,6 @@ import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactor
 import com.rabbitmq.client.Connection;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title RabbitIndicator.java

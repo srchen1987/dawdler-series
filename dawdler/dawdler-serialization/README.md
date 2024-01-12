@@ -16,7 +16,7 @@
 实现com.anywide.dawdler.core.serializer.Serializer接口
 注意：key方法返回一个byte值,不可以重复,目前系统提供jdk,kryo两种方式,jdk的标识为1,kryo的标识为2.
 
-标识用于client/client-conf.xml中的server-channel-group节点下的serializer属性.
+标识用于client-conf.xml中的server-channel-group节点下的serializer属性.
 
 在resources/META-INF/services下创建文件
 com.anywide.dawdler.core.serializer.Serializer

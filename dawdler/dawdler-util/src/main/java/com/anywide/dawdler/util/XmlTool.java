@@ -16,20 +16,9 @@
  */
 package com.anywide.dawdler.util;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -65,10 +54,11 @@ public final class XmlTool {
 			}
 		};
 	}
-	
+
 	public static ErrorHandler getErrorHandler() {
 		return ERRORHANDLER_INSTANCE;
 	}
+
 	public static List<Node> getNodes(NodeList nodeList) {
 		int length = nodeList.getLength();
 		List<Node> list = new ArrayList<>();
@@ -129,69 +119,5 @@ public final class XmlTool {
 	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute) {
 		return getElementAttribute(namedNodeMap, attribute, null);
 	}
-	
-	public static class XmlObject{
-		private Document document;
-		XPathFactory xpathfactory = XPathFactory.newInstance();
-		XPath xpath = xpathfactory.newXPath();
-		
-		
-		public XmlObject(String xmlPath, String xsdPath) throws Exception {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			if(xsdPath != null) {
-				factory.setIgnoringElementContentWhitespace(true);
-				factory.setNamespaceAware(true);
-				SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-				Schema schema = sf.newSchema(new File(xsdPath));
-				factory.setSchema(schema);
-			}
-		
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			document = builder.parse(xmlPath);
-		}
-		
-		public Element getRoot(){
-			return document.getDocumentElement();
-		}
-		
-		
-		
-		
-	}
-	
-	
-	
-//	public static class SimpleNamespaceResolver implements NamespaceContext {
-//		private final String prefix;
-//		private final String nsURI;
-//
-//		public SimpleNamespaceResolver(String prefix, String nsURI) {
-//			this.prefix = prefix;
-//			this.nsURI = nsURI;
-//		}
-//
-//		@Override
-//		public String getNamespaceURI(String prefix) {
-//			if (prefix.equals(this.prefix)) {
-//				return this.nsURI;
-//			} else {
-//				return XMLConstants.NULL_NS_URI;
-//			}
-//		}
-//
-//		@Override
-//		public String getPrefix(String namespaceURI) {
-//			if (namespaceURI.equals(this.nsURI)) {
-//				return this.prefix;
-//			} else {
-//				return null;
-//			}
-//		}
-//
-//		@Override
-//		public Iterator<String> getPrefixes(String namespaceURI) {
-//			return null;
-//		}
-//	}
-	
+
 }

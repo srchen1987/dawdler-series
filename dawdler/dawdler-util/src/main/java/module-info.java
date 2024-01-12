@@ -13,4 +13,6 @@ module dawdler.util {
 	exports com.anywide.dawdler.util.aspect;
 	exports com.anywide.dawdler.util.reflectasm;
 	exports com.anywide.dawdler.util.spring.antpath;
+
+	opens com.anywide.dawdler.util;
 }

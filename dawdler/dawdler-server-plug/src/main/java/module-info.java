@@ -6,4 +6,8 @@ module dawdler.server.plug {
 	requires dawdler.core;
 	requires dawdler.load.bean;
 	requires org.slf4j;
+	requires org.objectweb.asm;
+	requires org.objectweb.asm.tree;
+
+	exports com.anywide.dawdler.serverplug.service;
 }
