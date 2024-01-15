@@ -222,9 +222,6 @@ public class WebListener implements ServletContextListener {
 		} catch (Exception e) {
 			logger.error("", e);
 		}
-		if (classLoader != null) {
-			classLoader.close();
-		}
 	}
 
 }
