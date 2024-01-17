@@ -32,13 +32,13 @@ import com.anywide.dawdler.util.spring.antpath.ResourcePatternResolver;
  */
 public class DawdlerComponentScanner {
 	private static ResourcePatternResolver resolver = PathMatchingResourcePatternResolver.getInstance();
-	
+
 	public static Resource getClass(String location) {
-		return resolver.getResource(location.replace(".", "/")+".class");
+		return resolver.getResource(location.replace(".", "/").concat(".class"));
 	}
-	
+
 	public static Resource[] getClasses(String location) throws IOException {
-		return resolver.getResources("classpath*:"+location.replace(".", "/")+"/*.class");
+		return resolver.getResources("classpath*:" + location.replace(".", "/") + "/*.class");
 	}
-	
+
 }

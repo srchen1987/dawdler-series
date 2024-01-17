@@ -82,7 +82,6 @@ public class ServicesManager {
 
 	public void register(String name, Object service, boolean single) {
 		ServicesBean serviceBean = createServicesBean(name, service, single);
-		logger.info(name + "\t" + service);
 		this.services.put(name, serviceBean);
 	}
 
@@ -91,7 +90,6 @@ public class ServicesManager {
 	}
 
 	public void registerService(Class<?> serviceInterface, Object service, boolean single) {
-		logger.info(serviceInterface.getName() + "\t" + service);
 		ServicesBean serviceBean = createServicesBean(serviceInterface.getName(), service, single);
 		this.services.put(serviceBean.getName(), serviceBean);
 	}
@@ -151,6 +149,7 @@ public class ServicesManager {
 
 	public static void injectService(Object service) throws Throwable {
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Service serviceAnnotation = field.getAnnotation(Service.class);
@@ -167,13 +166,12 @@ public class ServicesManager {
 							throw new NotSetRemoteServiceException(
 									"not found @RemoteService on " + serviceClass.getName());
 						}
-						Class<?> serviceFactoryClass = dawdlerContext.getClassLoader()
+						Class<?> serviceFactoryClass = Thread.currentThread().getContextClassLoader()
 								.loadClass("com.anywide.dawdler.client.ServiceFactory");
 						Method method = serviceFactoryClass.getMethod("getService", Class.class, String.class,
 								String.class, ClassLoader.class);
 						String groupName = remoteService.value();
-						obj = method.invoke(null, serviceClass, groupName, remoteService.loadBalance(),
-								dawdlerContext.getClassLoader());
+						obj = method.invoke(null, serviceClass, groupName, remoteService.loadBalance(), classLoader);
 					}
 					if (obj != null) {
 						field.set(service, obj);

@@ -18,7 +18,6 @@ package com.anywide.dawdler.clientplug.web.validator.webbind;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -71,8 +70,8 @@ public class ValidateResourceLoader {
 
 	private static ControlValidator loadRules(InputStream input) throws Exception {
 		ControlValidator cv = new ControlValidator();
-		URL url = ValidateResourceLoader.class.getClassLoader().getResource("controller-validator.xsd");
-		XmlObject xmlObject = new XmlObject(input, url);
+		InputStream xsdInput = ValidateResourceLoader.class.getResourceAsStream("/controller-validator.xsd");
+		XmlObject xmlObject = new XmlObject(input, xsdInput);
 		xmlObject.setPrefix("ns");
 		parserFields(xmlObject, cv);
 		parserFieldsGroups(xmlObject, cv);

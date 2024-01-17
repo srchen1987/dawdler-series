@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.util;
 
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
@@ -49,6 +50,36 @@ public class DawdlerTool {
 
 	public static URL getCurrentURL() {
 		return Thread.currentThread().getContextClassLoader().getResource("");
+	}
+
+	public static InputStream getResourceFromClassPath(String prefix, String subfix) {
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		String configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		InputStream input = null;
+		if (startClass != null) {
+			if (!configPath.startsWith("/")) {
+				configPath = "/" + configPath;
+			}
+			input = startClass.getResourceAsStream(configPath);
+			if (input == null && activeProfile != null) {
+				try {
+					if (!prefix.startsWith("/")) {
+						prefix = "/" + prefix;
+					}
+					input = startClass.getResourceAsStream(prefix.concat(subfix));
+				} catch (Exception e) {
+				}
+			}
+		} else {
+			input = Thread.currentThread().getContextClassLoader().getResourceAsStream(configPath);
+			if (input == null) {
+				try {
+					input = Thread.currentThread().getContextClassLoader().getResourceAsStream(prefix.concat(subfix));
+				} catch (Exception e) {
+				}
+			}
+		}
+		return input;
 	}
 
 	public static String getEnv(String key) {
@@ -116,6 +147,16 @@ public class DawdlerTool {
 	}
 
 	public static void printServerBaseInformation() {
+		System.out.println("Welcome to use dawdler!\n");
+		String logoAscii = "  _____              __          __  _____    _        ______   _____  \r\n"
+				+ " |  __ \\      /\\     \\ \\        / / |  __ \\  | |      |  ____| |  __ \\ \r\n"
+				+ " | |  | |    /  \\     \\ \\  /\\  / /  | |  | | | |      | |__    | |__) |\r\n"
+				+ " | |  | |   / /\\ \\     \\ \\/  \\/ /   | |  | | | |      |  __|   |  _  / \r\n"
+				+ " | |__| |  / ____ \\     \\  /\\  /    | |__| | | |____  | |____  | | \\ \\ \r\n"
+				+ " |_____/  /_/    \\_\\     \\/  \\/     |_____/  |______| |______| |_|  \\_\\\r\n"
+				+ "                                                                       \r\n"
+				+ "                                                                       ";
+		System.out.println(logoAscii);
 		DecimalFormat kbFormat = new DecimalFormat("#0.00");
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
 		System.out.println("OS arch: " + operatingSystemMXBean.getArch());
@@ -139,5 +180,11 @@ public class DawdlerTool {
 		RuntimeMXBean runtimeMXBean = ManagementFactory.getRuntimeMXBean();
 		System.out.println("ClassPath: " + runtimeMXBean.getClassPath());
 		System.out.println("LibraryPath: " + runtimeMXBean.getLibraryPath());
+	}
+
+	private static Class<?> startClass;
+
+	public static Class<?> getStartClass() {
+		return startClass;
 	}
 }

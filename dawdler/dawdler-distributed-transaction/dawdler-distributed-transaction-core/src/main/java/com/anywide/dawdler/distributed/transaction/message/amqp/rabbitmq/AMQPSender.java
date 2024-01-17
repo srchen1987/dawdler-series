@@ -28,7 +28,6 @@ import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title AMQPSender.java

@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.rabbitmq.fire;
 
-import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
+import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.rabbitmq.consumer.RabbitListenerInit;
 import com.anywide.dawdler.rabbitmq.provider.RabbitProviderFactory;

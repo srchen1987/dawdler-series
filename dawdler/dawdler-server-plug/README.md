@@ -11,18 +11,18 @@ dawdler-server-plug 用于提供服务端将服务注册到注册中心,加载�
  <artifactId>dawdler-server-plug</artifactId>
 ```
 
-### 2. 配置需要被加载的api与entity
+### 2. 配置需要被加载的组件
 
-中,dawdler提供远程加载服务将这些类暴露给调用端使用,api一般为接口,entity为数据库实体也有时被做为dto做传输,所以服务端与调用端都依赖这些类.(现在的项目基本都是maven或gradle构建,在过去的开发中开发者需要将api与entity进行打包到具体应用)
+注意: 只有提供远程加载服务时才需要配置
 
-在项目中的resources节点下的services-config配置文件中有remote-load节点,用于指定配置文件.
+dawdler提供远程加载组件的服务,在项目中的resources节点下的services-config配置文件中有remote-load节点,用于指定配置文件.
 
 ```xml
 <!--${classpath}是当前项目的class节点-->
 <remote-load package="${classpath}/load-config.xml"></remote-load>
 ```
 
-load-config.xml文件是用来配置本服务中哪些包是可以被远程加载的,type类型为api代表本包是用于service接口或dto的,如果不填写type或type为component则为controller,listener,interceptor.
+load-config.xml文件是用来配置本服务中哪些包是可以被远程加载的,支持的组件有controller,listener,interceptor.
 
 load-config.xml示例：
 
@@ -32,8 +32,8 @@ load-config.xml示例：
 <?xml version="1.0" encoding="UTF-8"?>
 <hosts>
  <host name="user">
-  <package type="api">com.anywide.yyg.user.entity</package>
-  <package type="api">com.anywide.yyg.user.service</package>
+  <package>com.anywide.yyg.user.controller</package>
+  <package>com.anywide.yyg.user.interceptor</package>
  </host>
 </hosts>
 ```
@@ -55,9 +55,11 @@ services-config.xml中的扫描器
 
 ```xml
 <scanner>
+<!-- >
  <loads>
-  <pre-load>com.anywide.shop.execute.AbstractOrderExecutor</pre-load><!-- 预先加载此类 -->
+  <pre-load>com.anywide.shop.execute.AbstractOrderExecutor</pre-load>
  </loads>
+  -->
  <package-paths>
   <package-path>com.anywide.shop.listener</package-path>
   <package-path>com.anywide.shop.**.service.impl</package-path>
@@ -65,10 +67,10 @@ services-config.xml中的扫描器
 </scanner>
 ```
 
-pre-load为了解决先加载了子类而通过classpath加载父类未被aop织入的情况.
+pre-load为了解决先加载了子类而通过classpath加载父类未被aop织入的情况,没有特殊需求无需配置.
 
-注意：此扫描器只扫描本服务中的组件.
+### 4. client端配置需要加载的组件
 
-### 4. 配置需要加载的api与entity
+注意: 不建议使用服务调用其他服务的方式
 
-当服务端需要调用远程服务时可以配置此项来进行远程加载api与entity,参考[dawdler-client-plug模块的配置需要加载的api与entity](../dawdler-client-plug/README.md#12-配置需要加载的api与entity).
+当服务端需要调用远程服务时可以配置此项来进行远程加载组件,参考[dawdler-client-plug-load置需要加载的api与entity](../dawdler-client-plug-load/README.md#2配置需要加载的api与entity).

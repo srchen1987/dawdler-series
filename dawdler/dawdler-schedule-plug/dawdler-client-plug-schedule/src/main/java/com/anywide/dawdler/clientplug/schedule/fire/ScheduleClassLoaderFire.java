@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.schedule.fire;
 
-import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
+import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.schedule.ScheduleInit;
 

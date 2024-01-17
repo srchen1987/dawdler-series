@@ -83,7 +83,6 @@ pool.testOnBorrow=false #获取连接时是否验证连接有效 默认为false
 pool.testOnCreate=false #创建连接时是否验证连接有效 默认为false
 pool.testOnReturn=false #反还连接时是否验证连接有效 默认为false
 timeout=10000
-test_on_borrow=true
 ```
 
 目前支持的模块有rabbitmq,redis,elasticSearch以及所有使用com.anywide.dawdler.util.PropertiesUtil来读取的自定义properties应用.

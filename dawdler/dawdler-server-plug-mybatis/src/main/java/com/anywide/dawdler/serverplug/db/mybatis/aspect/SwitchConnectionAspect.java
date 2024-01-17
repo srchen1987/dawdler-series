@@ -34,7 +34,6 @@ import com.anywide.dawdler.util.TLS;
  */
 @Aspect
 public class SwitchConnectionAspect {
-	
 	@Around("execution(*  org.apache.ibatis.session.defaults.DefaultSqlSession.selectList(..)) && args(String,Object,org.apache.ibatis.session.RowBounds)")
 	public Object select(ProceedingJoinPoint pjp) throws Throwable {
 		try {

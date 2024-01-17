@@ -46,13 +46,13 @@ public class FilterProvider {
 	}
 
 	static void addFilters(DawdlerClientFilter filter) {
-		Order co = filter.getClass().getAnnotation(Order.class);
-		OrderData<DawdlerClientFilter> od = new OrderData<>();
-		od.setData(filter);
-		if (co != null) {
-			od.setOrder(co.value());
+		Order order = filter.getClass().getAnnotation(Order.class);
+		OrderData<DawdlerClientFilter> orderData = new OrderData<>();
+		orderData.setData(filter);
+		if (order != null) {
+			orderData.setOrder(order.value());
 		}
-		filters.add(od);
+		filters.add(orderData);
 	}
 
 	static void order() {

@@ -31,7 +31,7 @@ import com.navercorp.pinpoint.common.util.CollectionUtils;
  * @email suxuan696@gmail.com
  */
 public final class DawdlerProviderDetector {
-	private static final String DEFAULT_EXPECTED_MAIN_CLASS = "com.anywide.dawdler.server.bootstarp.Bootstrap";
+	private static final String DEFAULT_EXPECTED_MAIN_CLASS = "com.anywide.dawdler.server.bootstrap.Bootstrap";
 
 	private List<String> expectedMainClasses;
 

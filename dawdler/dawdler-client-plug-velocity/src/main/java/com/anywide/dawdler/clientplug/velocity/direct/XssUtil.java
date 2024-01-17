@@ -11,7 +11,9 @@ import org.jsoup.safety.Safelist;
  * @email suxuan696@gmail.com
  */
 public class XssUtil {
-	private XssUtil() {}
+	private XssUtil() {
+	}
+
 	private static final Safelist USER_CONTENT_FILTER = Safelist.basic();
 
 	static {
@@ -33,9 +35,6 @@ public class XssUtil {
 		return Jsoup.clean(value, USER_CONTENT_FILTER);
 	}
 
-	/**
-	 * 替换所有脚本 转换成&lt; &gt; 等等
-	 */
 	public static String filter(String value) {
 		if (value == null) {
 			return null;

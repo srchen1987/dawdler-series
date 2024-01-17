@@ -26,7 +26,7 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
 
-public class FileUrlResource extends UrlResource{
+public class FileUrlResource extends UrlResource {
 
 	private volatile File file;
 

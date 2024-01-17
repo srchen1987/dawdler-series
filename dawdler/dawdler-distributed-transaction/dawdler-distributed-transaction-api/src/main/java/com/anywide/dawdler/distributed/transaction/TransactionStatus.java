@@ -17,7 +17,6 @@
 package com.anywide.dawdler.distributed.transaction;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title TransactionStatus.java

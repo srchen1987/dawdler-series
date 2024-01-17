@@ -27,7 +27,6 @@ import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title PooledEsClientFactory.java

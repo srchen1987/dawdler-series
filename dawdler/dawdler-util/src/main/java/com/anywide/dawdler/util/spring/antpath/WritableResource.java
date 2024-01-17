@@ -23,7 +23,6 @@ import java.nio.channels.WritableByteChannel;
 
 public abstract class WritableResource extends AbstractResource {
 
-	 
 	boolean isWritable() {
 		return true;
 	}

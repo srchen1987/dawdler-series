@@ -38,12 +38,12 @@ public class IOUtil {
 			while (-1 != (n = input.read(buffer))) {
 				output.write(buffer, 0, n);
 			}
-		}finally {
-			if(input != null) {
+		} finally {
+			if (input != null) {
 				input.close();
 			}
 		}
-		
+
 		return output.toByteArray();
 	}
 }

@@ -17,10 +17,9 @@
 package com.anywide.dawdler.serverplug.discovery.zookeeper.resource;
 
 import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.discovery.zookeeper.ZkDiscoveryCenter;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
-import com.anywide.dawdler.core.discoverycenter.AbstractServerDiscoveryCenterLifeCycle;
+import com.anywide.dawdler.server.plug.discoverycenter.AbstractServerDiscoveryCenterLifeCycle;
 
 /**
  * @author jackson.song
@@ -31,7 +30,7 @@ import com.anywide.dawdler.core.discoverycenter.AbstractServerDiscoveryCenterLif
  * @email suxuan696@gmail.com
  */
 @Order(Integer.MAX_VALUE)
-public class ZookeeperLifeCycle extends AbstractServerDiscoveryCenterLifeCycle implements ComponentLifeCycle {
+public class ZookeeperLifeCycle extends AbstractServerDiscoveryCenterLifeCycle {
 	@Override
 	public void afterInit() throws Throwable {
 		addProvider(null);

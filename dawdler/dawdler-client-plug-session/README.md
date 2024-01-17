@@ -18,8 +18,8 @@
 ```properties
 cookieName=_dawdler_key #sessionId存放的cookie名称
 tokenName=token #header或http请求参数中的sessionId名称,默认为token.
-suportHead=false #是否支持http header中传入tokenName定义的sessionId.
-suportParam=false #是否支持http 请求参数中传入tokenName定义的sessionId.
+supportHead=false #是否支持http header中传入tokenName定义的sessionId.
+supportParam=false #是否支持http 请求参数中传入tokenName定义的sessionId.
 domain= #cookie的域,一般无须填写默认即可
 path=/ #cookie中的path 默认为/
 secure=false #是否是https 如果是https此参数需要设置为true
