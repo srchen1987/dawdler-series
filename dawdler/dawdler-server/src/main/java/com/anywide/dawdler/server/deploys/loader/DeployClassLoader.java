@@ -66,7 +66,7 @@ public interface DeployClassLoader extends Closeable {
 		if (i != -1) {
 			String pkgname = name.substring(0, i);
 			Manifest man = res.getManifest();
-			definePackageInternal(pkgname, man, url);
+			definePackageInner(pkgname, man, url);
 		}
 
 		java.nio.ByteBuffer codeByteBuffer = res.getByteBuffer();
@@ -83,8 +83,8 @@ public interface DeployClassLoader extends Closeable {
 		return loadClassFromBytes(name, codeBytes, classLoader(), cs, useAop);
 	}
 
-	default void definePackageInternal(String pkgname, Manifest man, URL url) {
-		if (getAndVerifyPackage(pkgname, man, url) == null) {
+	default void definePackageInner(String pkgname, Manifest man, URL url) {
+		if (getAndVerifyPackageInner(pkgname, man, url) == null) {
 			try {
 				if (man != null) {
 					deployDefinePackage(pkgname, man, url);
@@ -92,14 +92,14 @@ public interface DeployClassLoader extends Closeable {
 					deployDefinePackage(pkgname, null, null, null, null, null, null, null);
 				}
 			} catch (IllegalArgumentException iae) {
-				if (getAndVerifyPackage(pkgname, man, url) == null) {
+				if (getAndVerifyPackageInner(pkgname, man, url) == null) {
 					throw new AssertionError("Cannot find package " + pkgname);
 				}
 			}
 		}
 	}
 
-	default Package getAndVerifyPackage(String pkgname, Manifest man, URL url) {
+	default Package getAndVerifyPackageInner(String pkgname, Manifest man, URL url) {
 		Package pkg = getDeployDefinedPackage(pkgname);
 		if (pkg != null) {
 			if (pkg.isSealed()) {
@@ -107,7 +107,7 @@ public interface DeployClassLoader extends Closeable {
 					throw new SecurityException("sealing violation: package " + pkgname + " is sealed");
 				}
 			} else {
-				if ((man != null) && isSealed(pkgname, man)) {
+				if ((man != null) && isSealedInner(pkgname, man)) {
 					throw new SecurityException(
 							"sealing violation: can't seal package " + pkgname + ": already loaded");
 				}
@@ -118,7 +118,7 @@ public interface DeployClassLoader extends Closeable {
 
 	Package getDeployDefinedPackage(String pkgname);
 
-	default boolean isSealed(String name, Manifest man) {
+	default boolean isSealedInner(String name, Manifest man) {
 		String path = name.replace('.', '/').concat("/");
 		Attributes attr = man.getAttributes(path);
 		String sealed = null;

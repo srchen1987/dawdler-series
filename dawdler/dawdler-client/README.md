@@ -116,7 +116,7 @@ public interface HelloService {
 
 ```java
   HelloService hs = ServiceFactory.getService(HelloService.class);
-  String response = hs.say("jackson");
+  hs.say("jackson");
   InvokeFuture<String> future = AsyncInvokeFutureHolder.getContext().getInvokeFuture();
   System.out.println(future.getResult());
   ConnectionPool.shutdown(); 
