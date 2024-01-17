@@ -39,10 +39,10 @@ public interface ComponentLifeCycle {
 	default void prepareDestroy() throws Throwable {
 	};
 
-	default public void destroy() throws Throwable {
+	default void destroy() throws Throwable {
 	};
 
-	default public void afterDestroy() throws Throwable {
+	default void afterDestroy() throws Throwable {
 	};
 
 }

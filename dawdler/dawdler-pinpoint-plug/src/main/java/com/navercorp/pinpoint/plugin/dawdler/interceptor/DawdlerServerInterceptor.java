@@ -34,7 +34,7 @@ import com.navercorp.pinpoint.plugin.dawdler.DawdlerProviderMethodDescriptor;
  * @author jackson.song
  * @version V1.0
  * @Title DawdlerServerInterceptor.java
- * @Description 基于pinpoint实现客户端拦截器
+ * @Description 基于pinpoint实现服务端拦截器
  * @date 2021年4月3日
  * @email suxuan696@gmail.com
  */

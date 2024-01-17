@@ -305,7 +305,7 @@ public class CacheAspect {
 			JexlContext context = new MapContext();
 			context.set("result", result);
 			Object unlessObjResult = expression.evaluate(context);
-			if ( !(unlessObjResult instanceof Boolean)) {
+			if (!(unlessObjResult instanceof Boolean)) {
 				throw new ConditionTypeException(condition + " result not Boolean type! ");
 			}
 			if ((boolean) unlessObjResult) {

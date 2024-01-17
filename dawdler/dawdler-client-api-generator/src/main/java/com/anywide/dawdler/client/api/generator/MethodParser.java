@@ -302,7 +302,6 @@ public class MethodParser {
 
 	public static void parseType(JavaMethod method, JavaType type, Map<String, ClassStruct> classStructs,
 			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes) {
-		DefaultJavaParameterizedType dt = null;
 		List<JavaType> actualTypeArguments = null;
 		List<JavaTypeVariable<JavaGenericDeclaration>> typeList = null;
 		Map<String, JavaType> innerJavaTypes = new HashMap<>();
@@ -311,8 +310,7 @@ public class MethodParser {
 				System.out.println(method + ":" + " not support wildcard type <?> !\r\n");
 				return;
 			}
-			if (type instanceof DefaultJavaParameterizedType) {
-				dt = (DefaultJavaParameterizedType) type;
+			if (type instanceof DefaultJavaParameterizedType dt) {
 				typeList = dt.getTypeParameters();
 				actualTypeArguments = getActualTypeArguments(dt);
 				if (!typeList.isEmpty()) {
@@ -330,7 +328,6 @@ public class MethodParser {
 		} catch (Exception e) {
 			System.out.println(method + " failed");
 			e.printStackTrace();
-
 		}
 
 	}
