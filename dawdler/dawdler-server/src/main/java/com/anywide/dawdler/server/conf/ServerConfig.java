@@ -86,7 +86,6 @@ public class ServerConfig {
 		}
 		passwordByte = certificateOperator.decrypt(passwordByte, KeyStoreConfig.DKS);
 		String password = new String(passwordByte);
-		Map<String, String> globalAuth = getGlobalAuth();
 		Map<String, Map<String, String>> moduleAuth = getModuleAuth();
 		boolean success = false;
 		if (path != null) {
@@ -103,7 +102,7 @@ public class ServerConfig {
 
 	public boolean validate(Map<String, String> users, String user, String password) {
 		boolean success = false;
-		String passwd = globalAuth.get(user);
+		String passwd = users.get(user);
 		if (passwd != null) {
 			success = passwd.equals(password);
 		}

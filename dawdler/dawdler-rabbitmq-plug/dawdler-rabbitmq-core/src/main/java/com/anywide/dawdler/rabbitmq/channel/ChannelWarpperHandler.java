@@ -21,15 +21,9 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.concurrent.Semaphore;
 
-import org.apache.commons.pool2.impl.GenericObjectPool;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title ChannelWarpperHandler.java
@@ -38,19 +32,15 @@ import com.rabbitmq.client.Connection;
  * @email suxuan696@gmail.com
  */
 public class ChannelWarpperHandler implements InvocationHandler {
-	private static final Logger logger = LoggerFactory.getLogger(ChannelWarpperHandler.class);
 
 	private Channel target;
 	private LinkedList<Channel> channels;
 	private Semaphore semaphore;
-	private GenericObjectPool<Connection> genericObjectPool;
-
-	public ChannelWarpperHandler(Channel target, GenericObjectPool<Connection> genericObjectPool,
+	public ChannelWarpperHandler(Channel target,
 			LinkedList<Channel> channels, Semaphore semaphore) {
 		this.target = target;
 		this.channels = channels;
 		this.semaphore = semaphore;
-		this.genericObjectPool = genericObjectPool;
 	}
 
 	@Override
@@ -62,38 +52,8 @@ public class ChannelWarpperHandler implements InvocationHandler {
 			}
 			semaphore.release();
 			return null;
-		} else if (name.equals("basicConsume")) {
-			return method.invoke(target, args);
-		} else if (name.equals("hashCode")) {
-			return method.invoke(target, args);
-		} else if (name.equals("finalize")) {
-			return method.invoke(target, args);
-		} else if (name.equals("toString")) {
-			return method.invoke(target, args);
-		} else if (name.equals("equals")) {
-			return method.invoke(target, args);
-		} else if (name.equals("clone")) {
-			return method.invoke(target, args);
-		} else if (name.startsWith("tx")) {
-			return method.invoke(target, args);
-		} else {
-			handleAbnormalDisconnection();
-			return method.invoke(target, args);
-		}
-	}
-
-	public void handleAbnormalDisconnection() {
-		while (!target.isOpen()) {
-			try {
-				target = genericObjectPool.borrowObject().createChannel();
-			} catch (Exception e) {
-				logger.error("", e);
-			}
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {
-			}
-		}
+		} 
+		return method.invoke(target, args);
 	}
 
 }

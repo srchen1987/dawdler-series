@@ -19,7 +19,6 @@ package com.anywide.dawdler.serverplug.db.transaction;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
-import javax.transaction.TransactionRequiredException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +34,7 @@ import com.anywide.dawdler.serverplug.db.annotation.DBTransaction.MODE;
 import com.anywide.dawdler.serverplug.db.annotation.DBTransaction.READ_CONFIG;
 import com.anywide.dawdler.serverplug.db.datasource.RWSplittingDataSourceManager;
 import com.anywide.dawdler.serverplug.db.datasource.RWSplittingDataSourceManager.MappingDecision;
+import com.anywide.dawdler.serverplug.db.exception.TransactionRequiredException;
 import com.anywide.dawdler.util.ReflectionUtil;
 import com.anywide.dawdler.util.reflectasm.MethodAccess;
 
@@ -81,12 +81,13 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 		try {
 			if (dbt != null) {
 				DawdlerContext context = DawdlerContext.getDawdlerContext();
-				RWSplittingDataSourceManager dm = (RWSplittingDataSourceManager) context
+				RWSplittingDataSourceManager dataSourceManager = (RWSplittingDataSourceManager) context
 						.getAttribute(RWSplittingDataSourceManager.DATASOURCE_MANAGER_PREFIX);
 				MODE mode = dbt.mode();
 				synReadObj = LocalConnectionFactory.getSynReadConnectionObject();
-				if (dm != null) {
-					MappingDecision mappingDecision = dm.getMappingDecision(object.getClass().getPackage().getName());
+				if (dataSourceManager != null) {
+					MappingDecision mappingDecision = dataSourceManager
+							.getMappingDecision(object.getClass().getPackage().getName());
 					if (mappingDecision == null) {
 						throw new TransactionRequiredException(
 								object.getClass().getPackage().getName() + " transaction needs to be set.");
@@ -199,7 +200,6 @@ public class TransactionServiceExecutor implements ServiceExecutor {
 				if (readConnectionHolder != null) {
 					synReadObj.setReadConnectionHolder(readConnectionHolder);
 				}
-
 			}
 		}
 	}

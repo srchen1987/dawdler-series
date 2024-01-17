@@ -8,6 +8,8 @@
 		<version>0.0.2-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-discovery-center-core</artifactId>
+	<name>dawdler-discovery-center-core</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
@@ -15,8 +17,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-server</artifactId>
-			<scope>provided</scope>
+			<artifactId>dawdler-util</artifactId>
 		</dependency>
 	</dependencies>
 </project>

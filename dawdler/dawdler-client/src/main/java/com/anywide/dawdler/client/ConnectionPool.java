@@ -43,7 +43,7 @@ public class ConnectionPool {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 	private static final ConcurrentHashMap<String, ConnectionPool> GROUPS = new ConcurrentHashMap<>();
 	private static final Map<String, ServerChannelGroup> SERVER_CHANNEL_GROUPS = new HashMap<>();
-	private volatile List<DawdlerConnection> connections = new CopyOnWriteArrayList<>();
+	private List<DawdlerConnection> connections = new CopyOnWriteArrayList<>();
 	private Semaphore semaphore = new Semaphore(0);
 	private String groupName;
 

@@ -22,7 +22,6 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title CaffeineCache.java

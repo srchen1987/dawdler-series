@@ -49,7 +49,7 @@ public class PoolBuffer {
 		ByteBufferPooledFactory factory = new ByteBufferPooledFactory(capacity);
 		GenericObjectPoolConfig<DawdlerByteBuffer> poolConfig = new GenericObjectPoolConfig<>();
 		poolConfig.setMinIdle(1);
-		poolConfig.setMinIdle(4);
+		poolConfig.setMaxIdle(4);
 		poolConfig.setMaxTotal(32);
 		poolConfig.setSoftMinEvictableIdleTime(Duration.ofMillis(180000));
 		objectPool = new GenericObjectPool<DawdlerByteBuffer>(factory, poolConfig);

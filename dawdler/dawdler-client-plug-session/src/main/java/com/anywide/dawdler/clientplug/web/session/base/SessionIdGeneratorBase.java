@@ -105,7 +105,7 @@ public abstract class SessionIdGeneratorBase implements SessionIdGenerator {
 			try {
 				// Construct and seed a new random number generator
 				Class<?> clazz = Class.forName(secureRandomClass);
-				result = (SecureRandom) clazz.newInstance();
+				result = (SecureRandom) clazz.getDeclaredConstructor().newInstance();
 			} catch (Exception e) {
 			}
 		}

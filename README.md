@@ -94,13 +94,13 @@ dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现�
 
 #### 6. [dawdler-server-plug-mybatis](dawdler/dawdler-server-plug-mybatis/README.md)
 
-+通过mybatis实现的数据库操作插件,注入mapper到service,session变更为单例模式,支持读写分离.
+通过mybatis实现的数据库操作插件,注入mapper到service,session变更为单例模式,支持读写分离.
 
 #### 7. [dawdler-client](dawdler/dawdler-client/README.md)
 
 客户端核心代码,服务发现,连接池,动态代理,aop实现,负载均衡等.
 
-#### 8. [dawdler-client-plug](dawdler/dawdler-client-plug/README.md)
+#### 8. [dawdler-client-plug-web](dawdler/dawdler-client-plug-web/README.md)
 
 客户端插件,webmvc,远程加载组件的客户端,远程加载组件的通知器,web监听器,web拦截器等.
 
@@ -179,6 +179,11 @@ dawdler实现pinpoint链路追踪插件.
 #### 27. [dawdler-cache-plug](dawdler/dawdler-cache-plug/README.md)
 
 可以用在web端和服务端的缓存模块.
+
+#### 28. [dawdler-client-plug-load](dawdler/dawdler-client-plug-load/README.md)
+
+远程加载模块,之前在dawdler-client-plug模块中,将dawdler-client-plug模块拆分成dawdler-client-plug-web与dawdler-client-plug-load模块.
+此模块最常用的场景用于做动态网关. 
 
 ### dawdler-runtime介绍
 

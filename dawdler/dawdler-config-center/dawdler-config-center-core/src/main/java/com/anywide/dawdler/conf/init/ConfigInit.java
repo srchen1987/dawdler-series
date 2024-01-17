@@ -16,8 +16,8 @@
  */
 package com.anywide.dawdler.conf.init;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,25 +60,25 @@ public class ConfigInit {
 
 	public void init() {
 		initConfigClients();
-		String activeProfile = System.getProperty("dawdler.profiles.active");
 		String prefix = "dawdler-config";
 		String subfix = ".yml";
-		String configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		File file = new File(DawdlerTool.getCurrentPath() + configPath);
-		if (!file.isFile()) {
-			configPath = prefix + subfix;
-			file = new File(DawdlerTool.getCurrentPath() + configPath);
-		}
-		if (!file.isFile()) {
-			logger.warn("not found " + configPath);
-		}
+		InputStream input = DawdlerTool.getResourceFromClassPath(prefix, subfix);
 		YAMLMapper YAMLMapper = YAMLMapperFactory.getYAMLMapper();
 		Map<String, Map<String, Object>> data = null;
+		if (input == null) {
+			throw new RuntimeException("not found dawdler-config.yml in classPath!");
+		}
 		try {
-			data = YAMLMapper.readValue(file, HashMap.class);
+			data = YAMLMapper.readValue(input, HashMap.class);
 		} catch (IOException e) {
-			logger.error("", e);
-			return;
+			throw new RuntimeException(e);
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
+			}
 		}
 		if (data != null) {
 			this.configClients = new ArrayList<>();

@@ -32,6 +32,8 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfigParser;
+import com.anywide.dawdler.server.deploys.AbstractServiceRoot;
+import com.anywide.dawdler.server.deploys.ServiceRoot;
 import com.anywide.dawdler.util.DawdlerTool;
 
 /**
@@ -73,7 +75,8 @@ public class Bootstrap {
 				return;
 			}
 			printServerInfo();
-			new DawdlerServer(serverConfig).start();
+			AbstractServiceRoot abstractServiceRoot = new ServiceRoot();
+			new DawdlerServer(serverConfig, abstractServiceRoot).start();
 		}
 	}
 
@@ -117,16 +120,6 @@ public class Bootstrap {
 	}
 
 	private static void printServerInfo() {
-		System.out.println("Welcome to use dawdler!\n");
-		String logoAscii = "  _____              __          __  _____    _        ______   _____  \r\n"
-				+ " |  __ \\      /\\     \\ \\        / / |  __ \\  | |      |  ____| |  __ \\ \r\n"
-				+ " | |  | |    /  \\     \\ \\  /\\  / /  | |  | | | |      | |__    | |__) |\r\n"
-				+ " | |  | |   / /\\ \\     \\ \\/  \\/ /   | |  | | | |      |  __|   |  _  / \r\n"
-				+ " | |__| |  / ____ \\     \\  /\\  /    | |__| | | |____  | |____  | | \\ \\ \r\n"
-				+ " |_____/  /_/    \\_\\     \\/  \\/     |_____/  |______| |______| |_|  \\_\\\r\n"
-				+ "                                                                       \r\n"
-				+ "                                                                       ";
-		System.out.println(logoAscii);
 		DawdlerTool.printServerBaseInformation();
 	}
 

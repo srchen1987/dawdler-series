@@ -23,7 +23,7 @@ import com.anywide.dawdler.schedule.ScheduleOperator;
  * @author jackson.song
  * @version V1.0
  * @Title ScheduleLifeCycle.java
- * @Description 初始化调度器
+ * @Description 初始化/关闭调度器 
  * @date 2022年7月12日
  * @email suxuan696@gmail.com
  */
@@ -32,11 +32,6 @@ public class ScheduleLifeCycle implements ComponentLifeCycle {
 	@Override
 	public void afterInit() throws Throwable {
 		ScheduleOperator.start();
-	}
-
-	@Override
-	public void destroy() throws Throwable {
-		ScheduleOperator.shutdown();
 	}
 
 }

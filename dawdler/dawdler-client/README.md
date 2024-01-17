@@ -11,7 +11,7 @@
  <artifactId>dawdler-client</artifactId>
 ```
 
-### 2. client/client-conf.xml配置文件说明
+### 2. client-conf.xml配置文件说明
 
 例:
 
@@ -116,7 +116,7 @@ public interface HelloService {
 
 ```java
   HelloService hs = ServiceFactory.getService(HelloService.class);
-  hs.say("hello");
+  hs.say("jackson");
   InvokeFuture<String> future = AsyncInvokeFutureHolder.getContext().getInvokeFuture();
   System.out.println(future.getResult());
   ConnectionPool.shutdown(); 

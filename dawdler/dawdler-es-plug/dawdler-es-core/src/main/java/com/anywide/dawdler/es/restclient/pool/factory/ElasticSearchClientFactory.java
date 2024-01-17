@@ -29,7 +29,6 @@ import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
 import com.anywide.dawdler.util.PropertiesUtil;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title ElasticSearchClientFactory.java

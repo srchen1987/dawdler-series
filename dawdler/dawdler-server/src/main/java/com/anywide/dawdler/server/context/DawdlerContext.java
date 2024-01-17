@@ -16,8 +16,8 @@
  */
 package com.anywide.dawdler.server.context;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
@@ -25,8 +25,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
-import com.anywide.dawdler.server.deploys.DawdlerDeployClassLoader;
 import com.anywide.dawdler.server.deploys.ServiceBase;
+import com.anywide.dawdler.server.deploys.loader.DeployClassLoader;
 import com.anywide.dawdler.server.service.ServiceFactory;
 import com.anywide.dawdler.server.service.ServicesManager;
 import com.anywide.dawdler.server.service.conf.ServicesConfig;
@@ -45,10 +45,7 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
  * @email suxuan696@gmail.com
  */
 public class DawdlerContext {
-	private final ClassLoader classLoader;
-	private final String deployPath;
 	private final String deployName;
-	private final String deployClassPath;
 	private final String host;
 	private final int port;
 	private final ServicesManager servicesManager;
@@ -60,14 +57,10 @@ public class DawdlerContext {
 	private String serviceStatus;
 	private AtomicBoolean started;
 
-	public DawdlerContext(DawdlerDeployClassLoader classLoader, String deployName, String deployPath,
-			String deployClassPath, String host, int port, ServicesManager servicesManager,
+	public DawdlerContext(String deployName, String host, int port, ServicesManager servicesManager,
 			AntPathMatcher antPathMatcher, HealthCheck healthCheck, Semaphore startSemaphore, AtomicBoolean started,
 			String serviceStatus) {
-		this.classLoader = classLoader;
-		this.deployPath = deployPath + File.separator;
 		this.deployName = deployName;
-		this.deployClassPath = deployClassPath + File.separator;
 		this.host = host;
 		this.port = port;
 		this.servicesManager = servicesManager;
@@ -79,21 +72,9 @@ public class DawdlerContext {
 	}
 
 	public static DawdlerContext getDawdlerContext() {
-		DawdlerContext context = ((DawdlerDeployClassLoader) Thread.currentThread().getContextClassLoader())
+		DawdlerContext context = ((DeployClassLoader) Thread.currentThread().getContextClassLoader())
 				.getDawdlerContext();
 		return context;
-	}
-
-	public ClassLoader getClassLoader() {
-		return classLoader;
-	}
-
-	public String getDeployPath() {
-		return deployPath;
-	}
-
-	public String getDeployClassPath() {
-		return deployClassPath;
 	}
 
 	public String getDeployName() {
@@ -148,21 +129,20 @@ public class DawdlerContext {
 
 	public void initServicesConfig() throws Exception {
 		String configPath;
-		File file;
 		String activeProfile = System.getProperty("dawdler.profiles.active");
 		String prefix = "services-config";
 		String subfix = ".xml";
 		configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		String currentPath = DawdlerTool.getCurrentPath();
-		file = new File(currentPath + configPath);
-		if (!file.isFile()) {
-			configPath = prefix + subfix;
-			file = new File(currentPath + configPath);
+		InputStream xmlInput = DawdlerTool.getResourceFromClassPath(prefix, subfix);
+		if (xmlInput == null) {
+			throw new IOException("not found " + configPath + " in classPath!");
 		}
-		if (!file.isFile()) {
-			throw new IOException("not found " + file.getAbsolutePath());
+		InputStream xsdInput = getClass().getResourceAsStream("/services-config.xsd");
+		try {
+			this.servicesConfig = new ServicesConfigParser(xmlInput, xsdInput).getServicesConfig();
+		} finally {
+			xmlInput.close();
 		}
-		this.servicesConfig = new ServicesConfigParser(currentPath + configPath).getServicesConfig();
 	}
 
 	public ServicesConfig getServicesConfig() {

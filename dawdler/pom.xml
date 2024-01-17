@@ -11,7 +11,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<dawdler.build.version>0.0.2-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.0</slf4j.version>
-		<ch.qos.logback.version>1.3.5</ch.qos.logback.version>
+		<ch.qos.logback.version>1.3.14</ch.qos.logback.version>
 		<org.ow2.asm.version>7.1</org.ow2.asm.version>
 		<commons-pool2.version>2.10.0</commons-pool2.version>
 		<kryo.version>4.0.2</kryo.version>
@@ -42,6 +42,11 @@
 		<quartz.version>2.3.2</quartz.version>
 		<gson.version>2.10.1</gson.version>
 		<mybatis.version>3.5.14</mybatis.version>
+		<maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+		<javax.websocket.version>1.1</javax.websocket.version>
+		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
+		<maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+		<versions-maven-plugin.version>2.3</versions-maven-plugin.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -57,7 +62,6 @@
 			<artifactId>logback-classic</artifactId>
 		</dependency>
 	</dependencies>
-
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -142,11 +146,6 @@
 			</dependency>
 			<dependency>
 				<groupId>cglib</groupId>
-				<artifactId>cglib-nodep</artifactId>
-				<version>${cglib-nodep.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>cglib</groupId>
 				<artifactId>cglib</artifactId>
 				<version>${cglib.version}</version>
 			</dependency>
@@ -154,7 +153,6 @@
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet-api.version}</version>
-				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
@@ -177,14 +175,14 @@
 				<version>${commons-fileupload.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.apache.velocity</groupId>
 				<artifactId>velocity-engine-core</artifactId>
 				<version>${velocity.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>mysql</groupId>
-				<artifactId>mysql-connector-java</artifactId>
-				<version>${mysql.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>redis.clients</groupId>
@@ -228,7 +226,17 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-client-plug</artifactId>
+				<artifactId>dawdler-client-plug-session</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-web</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency> 
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-load</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -368,6 +376,11 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
+				<artifactId>dawdler-discovery-center-zookeeper</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
 				<artifactId>dawdler-discovery-center-zookeeper-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
@@ -388,12 +401,17 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-server-plug-discovery-center-consul</artifactId>
+				<artifactId>dawdler-discovery-center-server-plug</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-client-plug-discovery-center-consul</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-discovery-center-consul</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -487,6 +505,26 @@
 				<artifactId>quartz</artifactId>
 				<version>${quartz.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>javax.portlet</groupId>
+				<artifactId>portlet-api</artifactId>
+				<version>${portlet-api.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.websocket</groupId>
+				<artifactId>javax.websocket-api</artifactId>
+				<version>${javax.websocket.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.websocket</groupId>
+				<artifactId>javax.websocket-client-api</artifactId>
+				<version>${javax.websocket.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -502,12 +540,53 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+				<configuration>
+					<attach>true</attach>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<!-- -N versions:update-child-modules -->
+				<!--mvn versions:set -DnewVersion=0.0.3-RELEASES-->
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>versions-maven-plugin</artifactId>
-				<version>2.3</version>
+				<version>${versions-maven-plugin.version}</version>
 				<configuration>
 					<generateBackupPoms>false</generateBackupPoms>
+				</configuration>
+			</plugin>
+			<!--		<plugin>
+				<groupId>org.owasp</groupId>
+			<artifactId>dependency-check-maven</artifactId>
+			<version>8.1.2</version>
+				<executions>
+					<execution>
+						<goals>
+			<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>-->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<configuration>
+					<archive>
+						<manifestEntries>
+							<Built-By>dawdler</Built-By>
+						</manifestEntries>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -519,8 +598,8 @@
 		<module>dawdler-core</module>
 		<module>dawdler-client</module>
 		<module>dawdler-server</module>
+		<module>dawdler-client-plug-web</module>
 		<module>dawdler-client-plug-validator</module>
-		<module>dawdler-client-plug</module>
 		<module>dawdler-client-plug-session</module>
 		<module>dawdler-server-plug</module>
 		<module>dawdler-server-plug-db</module>
@@ -541,5 +620,7 @@
 		<module>dawdler-discovery-center</module>
 		<module>dawdler-dependencies</module>
 		<module>dawdler-cache-plug</module>
+		<module>dawdler-server-logback</module>
+		<module>dawdler-client-plug-load</module>
 	</modules>
 </project>

@@ -31,7 +31,6 @@ import co.elastic.clients.transport.ElasticsearchTransport;
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title EsClientFactory.java

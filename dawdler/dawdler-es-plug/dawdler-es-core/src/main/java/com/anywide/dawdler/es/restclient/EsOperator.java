@@ -131,7 +131,6 @@ import co.elastic.clients.transport.TransportOptions;
 import co.elastic.clients.transport.endpoints.BooleanResponse;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title EsOperator.java
