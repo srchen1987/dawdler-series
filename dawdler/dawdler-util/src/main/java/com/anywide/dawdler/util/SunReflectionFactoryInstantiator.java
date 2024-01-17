@@ -27,9 +27,9 @@ import java.lang.reflect.InvocationTargetException;
  * @email suxuan696@gmail.com
  */
 public class SunReflectionFactoryInstantiator {
-	private SunReflectionFactoryInstantiator() {}
-	public static <T> T newInstance(Class<T> type) throws InstantiationException, IllegalAccessException,
+
+	public static <T> T newInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		return (T) type.newInstance();
+		return (T) clazz.getDeclaredConstructor().newInstance();
 	}
 }

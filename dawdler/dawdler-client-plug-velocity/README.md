@@ -120,7 +120,7 @@ String templatePath = servletContext.getInitParameter("template-path");
 
 ### 5. VelocityToolBox的使用
 
-自定义指令比较麻烦,为了方便使用一些工具类的方法,提供了VelocityToolBox的扩展方法.
+自定义指令实现方式复杂,为了方便使用一些工具类的方法,提供了VelocityToolBox的扩展方法.
 
 使用方式：
 

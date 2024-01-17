@@ -23,7 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.anywide.dawdler.rabbitmq.provider.annotation.RabbitInjector;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title RabbitProviderFactory.java

@@ -28,13 +28,13 @@ import net.sf.cglib.core.ReflectUtils;
  * @version $Id: CallbackHelper.java,v 1.2 2004/06/24 21:15:20 herbyderby Exp $
  */
 abstract public class CallbackHelper implements CallbackFilter {
-	private Map methodMap = new HashMap();
-	private List callbacks = new ArrayList();
+	private Map<Method, Integer> methodMap = new HashMap<>();
+	private List<Object> callbacks = new ArrayList<>();
 
-	public CallbackHelper(Class superclass, Class[] interfaces) {
-		List methods = new ArrayList();
+	public CallbackHelper(Class<?> superclass, Class<?>[] interfaces) {
+		List<Method> methods = new ArrayList<>();
 		Enhancer.getMethods(superclass, interfaces, methods);
-		Map indexes = new HashMap();
+		Map<Object, Integer> indexes = new HashMap<>();
 		for (int i = 0, size = methods.size(); i < size; i++) {
 			Method method = (Method) methods.get(i);
 			Object callback = getCallback(method);
@@ -52,7 +52,7 @@ abstract public class CallbackHelper implements CallbackFilter {
 
 			Integer index = (Integer) indexes.get(callback);
 			if (index == null) {
-				index = new Integer(callbacks.size());
+				index = Integer.valueOf(callbacks.size());
 				indexes.put(callback, index);
 			}
 			methodMap.put(method, index);
@@ -73,7 +73,7 @@ abstract public class CallbackHelper implements CallbackFilter {
 		}
 	}
 
-	public Class[] getCallbackTypes() {
+	public Class<?>[] getCallbackTypes() {
 		if (callbacks.size() == 0)
 			return new Class[0];
 		if (callbacks.get(0) instanceof Callback) {

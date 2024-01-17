@@ -137,7 +137,7 @@ public class RuleOperatorScanner {
 		}
 	}
 
-	public static Set<Class<?>> getLibClasses(Class c) {
+	public static Set<Class<?>> getLibClasses(Class<?> c) {
 		Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
 		if (c != null) {
 			URL url = c.getResource(c.getSimpleName() + ".class");

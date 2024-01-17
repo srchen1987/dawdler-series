@@ -17,7 +17,6 @@
 package com.anywide.dawdler.server.service;
 
 import java.lang.reflect.Method;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -42,18 +41,18 @@ import net.sf.cglib.proxy.MethodProxy;
  * @email suxuan696@gmail.com
  */
 public class ServiceFactory {
-	private static final ConcurrentHashMap<Class<?>, Object> proxyObjects = new ConcurrentHashMap<>();
-	private static final Map<Class<?>, String> servicesName = new HashMap<>();
+	private static final Map<Class<?>, Object> PROXY_OBJECTS = new ConcurrentHashMap<>();
+	private static final Map<Class<?>, String> SERVICES_NAME = new ConcurrentHashMap<>();
 
 	public static <T> T getService(final Class<T> delegate, ServiceExecutor serviceExecutor,
 			DawdlerContext dawdlerContext) {
 		String serviceName = getServiceName(delegate);
 		if (serviceName != null) {
 			ServicesBean servicesBean = dawdlerContext.getServicesBean(serviceName);
-			Object proxy = proxyObjects.get(delegate);
+			Object proxy = PROXY_OBJECTS.get(delegate);
 			if (proxy == null) {
 				proxy = createCglibDynamicProxy(delegate, servicesBean, serviceExecutor);
-				Object preProxy = proxyObjects.putIfAbsent(delegate, proxy);
+				Object preProxy = PROXY_OBJECTS.putIfAbsent(delegate, proxy);
 				if (preProxy != null) {
 					proxy = preProxy;
 				}
@@ -72,7 +71,7 @@ public class ServiceFactory {
 	}
 
 	public static String getServiceName(Class<?> service) {
-		String serviceName = servicesName.get(service);
+		String serviceName = SERVICES_NAME.get(service);
 		if (serviceName != null) {
 			return serviceName;
 		}
@@ -82,7 +81,7 @@ public class ServiceFactory {
 			if (serviceName.trim().equals("")) {
 				serviceName = service.getName();
 			}
-			servicesName.put(service, serviceName);
+			SERVICES_NAME.put(service, serviceName);
 			return serviceName;
 		} else {
 			Class<?>[] interfaceList = service.getInterfaces();
@@ -95,7 +94,7 @@ public class ServiceFactory {
 				if (serviceName.trim().equals("")) {
 					serviceName = service.getName();
 				}
-				servicesName.put(service, serviceName);
+				SERVICES_NAME.put(service, serviceName);
 				return serviceName;
 			}
 			return null;

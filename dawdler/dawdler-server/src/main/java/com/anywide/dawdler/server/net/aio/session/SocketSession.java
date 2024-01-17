@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.server.net.aio.session;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 
@@ -67,12 +68,23 @@ public class SocketSession extends AbstractSocketSession {
 				clean(readBuffer);
 				readBuffer = null;
 			}
-			try {
-				if (channel != null) {
-					channel.close();
+
+			if (channel != null) {
+				try {
+					channel.shutdownInput();
+				} catch (IOException e) {
+					logger.error("", e);
 				}
-			} catch (Exception e) {
-				logger.error("", e);
+				try {
+					channel.shutdownOutput();
+				} catch (IOException e) {
+					logger.error("", e);
+				}
+				try {
+					channel.close();
+				} catch (IOException e) {
+					logger.error("", e);
+				}
 			}
 			if (writerIdleTimeout != null) {
 				writerIdleTimeout.cancel();

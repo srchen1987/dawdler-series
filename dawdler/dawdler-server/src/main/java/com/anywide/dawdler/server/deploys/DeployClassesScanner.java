@@ -92,7 +92,7 @@ public class DeployClassesScanner {
 						String loadClassName = packageName.equals("") ? className : (packageName + '.' + className);
 						DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 								.getContextClassLoader();
-						classes.add(classLoader.findClassForDawdler(loadClassName));
+						classes.add(classLoader.findClassForDawdler(loadClassName, true));
 					}
 
 				}
@@ -140,7 +140,7 @@ public class DeployClassesScanner {
 						DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 								.getContextClassLoader();
 						try {
-							classes.add(classLoader.findClassForDawdler(loadClassName));
+							classes.add(classLoader.findClassForDawdler(loadClassName, true));
 						} catch (Throwable e) {
 							logger.error("", e);
 						}

@@ -76,8 +76,7 @@ public class DefaultThreadFactory implements ThreadFactory {
 		prefix = poolName + '-' + poolId.incrementAndGet() + '-';
 		this.daemon = daemon;
 		this.priority = priority;
-		SecurityManager s = System.getSecurityManager();
-		threadGroup = (s == null) ? Thread.currentThread().getThreadGroup() : s.getThreadGroup();
+		threadGroup = Thread.currentThread().getThreadGroup();
 	}
 
 	private static String toPoolName(Class<?> poolType) {

@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.client.net.aio.session;
 
+import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
@@ -112,15 +113,25 @@ public class SocketSession extends AbstractSocketSession {
 				clean(readBuffer);
 				readBuffer = null;
 			}
-			try {
-				if (reconnect && dawdlerConnection != null) {
-					dawdlerConnection.getConnectManager().addDisconnectAddress(remoteAddress);
+			if (reconnect && dawdlerConnection != null) {
+				dawdlerConnection.getConnectManager().addDisconnectAddress(remoteAddress);
+			}
+			if (channel != null) {
+				try {
+					channel.shutdownInput();
+				} catch (IOException e) {
+					logger.error("", e);
 				}
-				if (channel != null) {
+				try {
+					channel.shutdownOutput();
+				} catch (IOException e) {
+					logger.error("", e);
+				}
+				try {
 					channel.close();
+				} catch (IOException e) {
+					logger.error("", e);
 				}
-			} catch (Exception e) {
-				logger.error("", e);
 			}
 			if (writerIdleTimeout != null) {
 				writerIdleTimeout.cancel();
@@ -138,7 +149,7 @@ public class SocketSession extends AbstractSocketSession {
 			DataProcessor.process(this, compress, serializer, data);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
-		}finally {
+		} finally {
 			if (markClose.get() && futures.isEmpty()) {
 				close(false);
 			}

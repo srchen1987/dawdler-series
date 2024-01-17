@@ -32,8 +32,8 @@
 
 #### 2.1 web端支持注入的三种组件
 
-1、 [web端controller](../../dawdler-client-plug/README.md#3-controller注解)
+1、 [web端controller](../../dawdler-client-plug-web/README.md#3-controller注解)
 
-2、 [web端拦截器HandlerInterceptor](../../dawdler-client-plug/README.md#5-HandlerInterceptor-拦截器)
+2、 [web端拦截器HandlerInterceptor](../../dawdler-client-plug-web/README.md#5-HandlerInterceptor-拦截器)
 
-3、 [web端监听器WebContextListener](../../dawdler-client-plug/README.md#6-webcontextlistener-监听器)
+3、 [web端监听器WebContextListener](../../dawdler-client-plug-web/README.md#6-webcontextlistener-监听器)

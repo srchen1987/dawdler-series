@@ -49,6 +49,7 @@ public class ComponentLifeCycleProvider {
 				instances.put(serviceName, new ComponentLifeCycleProvider());
 			}
 		}
+
 		return instances.get(serviceName);
 	}
 

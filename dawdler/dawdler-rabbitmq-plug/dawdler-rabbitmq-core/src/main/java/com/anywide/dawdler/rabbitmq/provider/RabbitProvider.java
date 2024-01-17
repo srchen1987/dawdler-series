@@ -30,7 +30,6 @@ import com.rabbitmq.client.ConfirmListener;
 import com.rabbitmq.client.Connection;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title RabbitProvider.java
@@ -145,6 +144,31 @@ public class RabbitProvider {
 		}
 	}
 
+	/**
+	 * 
+	 * @Title: getConnection
+	 * @author jackson.song
+	 * @date 2023年1月7日
+	 * @Description 提供获取Connection的方法用于开启事务功能 通过Connection获取Channal 伪代码:
+	 * 	try {
+				channel = con.createChannel();
+				channel.txSelect();
+				channel.basicPublish(exchange, routingKey, props, body);
+				channel.txCommit();
+		}catch(Exception e) {
+				channel.txRollback();
+		}finally {
+				channel.close();
+				con.close();
+		}
+	 * @throws Exception
+	 *
+	 * 
+	 */
+	public Connection getConnection() throws Exception {
+		return connectionFactory.getConnection();
+	}
+	
 	/**
 	 * 加入本地缓存表 这种情况会引发 顺序问题，如果对queue有顺序要求的 不能采用此方式来处理 特别是两个queue间隔比较短的
 	 */

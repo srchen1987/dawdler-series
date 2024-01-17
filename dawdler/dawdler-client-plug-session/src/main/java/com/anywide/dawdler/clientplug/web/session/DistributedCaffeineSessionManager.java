@@ -47,7 +47,7 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 	}
 
 	public DawdlerHttpSession getSession(String sessionKey) {
-		return sessions.getIfPresent(sessionKey);
+		return sessions.get(sessionKey);
 	}
 
 	public int getMaxInactiveInterval() {

@@ -119,8 +119,8 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
 
 	@Override
 	public boolean isFile() {
-			URL url = getURL();
-			return ResourceUtils.URL_PROTOCOL_FILE.equals(url.getProtocol());
+		URL url = getURL();
+		return ResourceUtils.URL_PROTOCOL_FILE.equals(url.getProtocol());
 	}
 
 	/**
@@ -158,7 +158,7 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
 	 * @see #getFile(URI)
 	 */
 	protected boolean isFile(URI uri) {
-			return ResourceUtils.URL_PROTOCOL_FILE.equals(uri.getScheme());
+		return ResourceUtils.URL_PROTOCOL_FILE.equals(uri.getScheme());
 	}
 
 	/**
@@ -277,5 +277,5 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
 	public URL getCodeSourceURL() {
 		return getURL();
 	}
-	
+ 
 }

@@ -55,7 +55,7 @@ public class ParameterNameReader {
 	 * @return void
 	 *         <p>
 	 *         Description:
-	 *         Controller初始化时会加载此类，所以不需要考虑线程安全,其他场景使用需要考虑线程安全，防止多次调用影响性能，瞬间增加io和系统负载
+	 *         Controller或服务端的服务实现者初始化时会加载此类，所以不需要考虑线程安全,其他场景使用需要考虑线程安全，防止多次调用影响性能，瞬间增加io和系统负载
 	 *         初始化所有本类的方法 不考虑 bridge、static、syn 、private、varArgs、abstract 及其父类的方法
 	 *         </p>
 	 * @param clazz

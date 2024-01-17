@@ -33,7 +33,6 @@ import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title AmqpConsumer.java

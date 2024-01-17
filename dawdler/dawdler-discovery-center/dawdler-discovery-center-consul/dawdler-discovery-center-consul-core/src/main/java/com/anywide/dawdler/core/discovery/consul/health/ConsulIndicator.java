@@ -22,7 +22,6 @@ import com.anywide.dawdler.core.health.Health.Builder;
 import com.anywide.dawdler.core.health.HealthIndicator;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title ConsulIndicator.java

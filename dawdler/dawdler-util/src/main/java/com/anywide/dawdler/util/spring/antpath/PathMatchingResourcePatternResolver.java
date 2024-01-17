@@ -118,9 +118,6 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 			result.add(convertClassLoaderURL(url));
 		}
 		if (!StringUtils.hasLength(path)) {
-			// The above result is likely to be incomplete, i.e. only containing file system
-			// references.
-			// We need to have pointers to each of the jar files on the classpath as well...
 			addAllClassLoaderJarRoots(cl, result);
 		}
 		return result;
@@ -150,13 +147,11 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		}
 
 		if (classLoader == ClassLoader.getSystemClassLoader()) {
-			// "java.class.path" manifest evaluation...
 			addClassPathManifestEntries(result);
 		}
 
 		if (classLoader != null) {
 			try {
-				// Hierarchy traversal...
 				addAllClassLoaderJarRoots(classLoader.getParent(), result);
 			} catch (Exception ex) {
 			}
@@ -172,17 +167,11 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 					String filePath = new File(path).getAbsolutePath();
 					int prefixIndex = filePath.indexOf(':');
 					if (prefixIndex == 1) {
-						// Possibly "c:" drive prefix on Windows, to be upper-cased for proper duplicate
-						// detection
 						filePath = StringUtils.capitalize(filePath);
 					}
-					// # can appear in directories/filenames, java.net.URL should not treat it as a
-					// fragment
 					filePath = StringUtils.replace(filePath, "#", "%23");
-					// Build URL that points to the root of the jar file
 					UrlResource jarResource = new UrlResource(ResourceUtils.JAR_URL_PREFIX
 							+ ResourceUtils.FILE_URL_PREFIX + filePath + ResourceUtils.JAR_URL_SEPARATOR);
-					// Potentially overlapping with URLClassLoader.getURLs() result above!
 					if (!result.contains(jarResource) && !hasDuplicate(filePath, result) && jarResource.exists()) {
 						result.add(jarResource);
 					}
@@ -260,7 +249,6 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		boolean closeJarFile;
 
 		if (con instanceof JarURLConnection) {
-			// Should usually be the case for traditional JAR files.
 			JarURLConnection jarCon = (JarURLConnection) con;
 			ResourceUtils.useCachesIfNecessary(jarCon);
 			jarFile = jarCon.getJarFile();
@@ -269,10 +257,6 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 			rootEntryPath = (jarEntry != null ? jarEntry.getName() : "");
 			closeJarFile = !jarCon.getUseCaches();
 		} else {
-			// No JarURLConnection -> need to resort to URL file parsing.
-			// We'll assume URLs of the format "jar:path!/entry", with the protocol
-			// being arbitrary as long as following the entry format.
-			// We'll also handle paths with and without leading "file:" prefix.
 			String urlFile = rootDirURL.getFile();
 			try {
 				int separatorIndex = urlFile.indexOf(ResourceUtils.WAR_URL_SEPARATOR);
@@ -296,8 +280,6 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 		try {
 			if (StringUtils.hasLength(rootEntryPath) && !rootEntryPath.endsWith("/")) {
-				// Root entry path must end with slash to allow for proper matching.
-				// The Sun JRE does not return a slash here, but BEA JRockit does.
 				rootEntryPath = rootEntryPath + "/";
 			}
 			Set<Resource> result = new LinkedHashSet<>(8);
@@ -324,7 +306,6 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 			try {
 				return new JarFile(ResourceUtils.toURI(jarFileUrl).getSchemeSpecificPart());
 			} catch (URISyntaxException ex) {
-				// Fallback for URLs that are not valid URIs (should hardly ever happen).
 				return new JarFile(jarFileUrl.substring(ResourceUtils.FILE_URL_PREFIX.length()));
 			}
 		} else {
@@ -357,11 +338,9 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 	protected Set<File> retrieveMatchingFiles(File rootDir, String pattern) throws IOException {
 		if (!rootDir.exists()) {
-			// Silently skip non-existing directories.
 			return Collections.emptySet();
 		}
 		if (!rootDir.isDirectory()) {
-			// Complain louder if it exists but is no directory.
 			return Collections.emptySet();
 		}
 		if (!rootDir.canRead()) {

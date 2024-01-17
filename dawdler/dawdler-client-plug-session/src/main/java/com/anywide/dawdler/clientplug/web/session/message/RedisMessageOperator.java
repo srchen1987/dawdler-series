@@ -94,7 +94,7 @@ public class RedisMessageOperator implements MessageOperator {
 						} catch (Exception e1) {
 						}
 					}
-					if(start) {
+					if (start) {
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e1) {

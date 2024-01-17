@@ -41,11 +41,15 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
 public class ClassStructureParser {
 
 	public static ClassStructure parser(InputStream inputStream) throws IOException {
-		return parser(inputStream, null);
+		return parser(new ClassReader(inputStream), null);
 	}
 
-	public static ClassStructure parser(InputStream inputStream, ClassStructure classStructure) throws IOException {
-		ClassReader cr = new ClassReader(inputStream);
+	public static ClassStructure parser(byte[] data) throws IOException {
+		return parser(new ClassReader(data), null);
+	}
+	
+	@SuppressWarnings("restriction")
+	private static ClassStructure parser(ClassReader cr, ClassStructure classStructure) throws IOException {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, ClassReader.SKIP_DEBUG);
 		if (classStructure == null) {
@@ -72,8 +76,7 @@ public class ClassStructureParser {
 				if (resource != null) {
 					InputStream input = null;
 					try {
-						input = resource.getInputStream();
-						parser(input, classStructure);
+						parser(new ClassReader(resource.getBytes()), classStructure);
 					} finally {
 						if (input != null) {
 							input.close();
@@ -88,8 +91,7 @@ public class ClassStructureParser {
 			if (resource != null) {
 				InputStream input = null;
 				try {
-					input = resource.getInputStream();
-					parser(input, classStructure);
+					parser(new ClassReader(resource.getBytes()), classStructure);
 				} finally {
 					if (input != null) {
 						input.close();
