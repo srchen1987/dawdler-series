@@ -36,8 +36,7 @@ public class DownloadFileBean implements DownloadFile {
 
 	public RemoteFiles download(String[] names) {
 		try {
-			RemoteFiles rfs = ReadClass.operation(names);
-			return rfs;
+			return ReadClass.readRemoteFiles(names);
 		} catch (Exception e) {
 			logger.error("", e);
 		}

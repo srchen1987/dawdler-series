@@ -47,10 +47,8 @@ public class DAOFactory {
 			object = instances.get(clazz);
 			if (object == null) {
 				try {
-					object = (SuperDAO) clazz.newInstance();
-				} catch (InstantiationException e) {
-					return null;
-				} catch (IllegalAccessException e) {
+					object = (SuperDAO) clazz.getConstructor().newInstance();
+				} catch (Exception e) {
 					return null;
 				}
 				instances.put(clazz, object);

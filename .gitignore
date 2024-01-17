@@ -17,10 +17,10 @@
 
 #target fil
 target/
-
 bin/
 
 /target/
 .classpath
 .project
 .settings
+.vscode/settings.json

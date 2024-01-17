@@ -85,9 +85,9 @@ public abstract class AbstractResource extends Resource {
 	}
 
 	@Override
-	public int getContentLength() throws IOException{
+	public int getContentLength() throws IOException {
 		InputStream is = getInputStream();
-		
+
 		try {
 			return is.available();
 		} finally {

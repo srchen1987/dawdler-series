@@ -26,6 +26,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
+import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinWorkerThread;
@@ -37,9 +39,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.core.order.OrderData;
+import com.anywide.dawdler.core.shutdown.ContainerGracefulShutdown;
+import com.anywide.dawdler.core.shutdown.ContainerShutdownProvider;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
+import com.anywide.dawdler.server.deploys.AbstractServiceRoot;
 import com.anywide.dawdler.server.net.aio.handler.AcceptorHandler;
 import com.anywide.dawdler.util.NetworkUtil;
 
@@ -47,7 +53,7 @@ import com.anywide.dawdler.util.NetworkUtil;
  * @author jackson.song
  * @version V1.0
  * @Title DawdlerServer.java
- * @Description dawdler服务器
+ * @Description dawdler服务器启动者
  * @date 2015年4月9日
  * @email suxuan696@gmail.com
  */
@@ -59,11 +65,13 @@ public class DawdlerServer {
 	private final AsynchronousServerSocketChannel serverChannel;
 	private final AsynchronousChannelGroup asynchronousChannelGroup;
 	private final DawdlerServerContext dawdlerServerContext;
+	private final AbstractServiceRoot abstractServiceRoot;
 	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
 	private final Semaphore startSemaphore = new Semaphore(0);
 
-	public DawdlerServer(ServerConfig serverConfig) throws Exception {
-		dawdlerServerContext = new DawdlerServerContext(serverConfig, STARTED, startSemaphore);
+	public DawdlerServer(ServerConfig serverConfig, AbstractServiceRoot abstractServiceRoot) throws Exception {
+		this.abstractServiceRoot = abstractServiceRoot;
+		dawdlerServerContext = new DawdlerServerContext(serverConfig, abstractServiceRoot, STARTED, startSemaphore);
 		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(
 				Runtime.getRuntime().availableProcessors() * 2, dawdlerForkJoinWorkerThreadFactory, null, true));
 		Server server = serverConfig.getServer();
@@ -129,13 +137,10 @@ public class DawdlerServer {
 					br = new BufferedReader(new InputStreamReader(input));
 					String command = br.readLine();
 					if (command != null) {
-						if ("stop".equals(command.trim())) {
-							shutdown();
+						if ("stop".equals(command.trim()) || "stopnow".equals(command.trim())) {
+							shutdown("stop".equals(command.trim()));
 							closed = true;
-							return;
-						} else if ("stopnow".equals(command.trim())) {
-							shutdownNow();
-							closed = true;
+							abstractServiceRoot.closeClassLoader();
 							return;
 						}
 					}
@@ -172,10 +177,11 @@ public class DawdlerServer {
 				@Override
 				public void run() {
 					try {
-						shutdownNow();
-					} catch (IOException e) {
+						shutdown(true);
+					} catch (Exception e) {
 						logger.error("", e);
 					}
+					abstractServiceRoot.closeClassLoader();
 				}
 			});
 			new Thread(new Waiter(this)).start();
@@ -189,33 +195,26 @@ public class DawdlerServer {
 		serverChannel.accept(dawdlerServerContext, acceptorInstance);
 	}
 
-	public void shutdownNow() throws IOException {
+	public void shutdown(boolean graceful) throws Exception {
 		if (STARTED.compareAndSet(true, false)) {
 			dawdlerServerContext.prepareDestroyedApplication();
-			dawdlerServerContext.destroyedApplication();
-			ServerConnectionManager.getInstance().closeNow();
-			dawdlerServerContext.shutdownWorkPoolNow();
-			if (serverChannel.isOpen()) {
-				serverChannel.close();
-			}
-			if (!asynchronousChannelGroup.isShutdown()) {
-				asynchronousChannelGroup.shutdownNow();
-			}
-		}
-	}
-
-	public void shutdown() throws IOException {
-		if (STARTED.compareAndSet(true, false)) {
-			dawdlerServerContext.prepareDestroyedApplication();
-			ServerConnectionManager sm = ServerConnectionManager.getInstance();
-			while (sm.hasTask()) {
-				try {
-					Thread.sleep(500);
-				} catch (InterruptedException e) {
+			List<OrderData<ContainerGracefulShutdown>> containerShutdownList = ContainerShutdownProvider.getInstance()
+					.getContainerShutdownList();
+			if (graceful) {
+				CountDownLatch countDownLatch = new CountDownLatch(containerShutdownList.size());
+				for (OrderData<ContainerGracefulShutdown> data : containerShutdownList) {
+					data.getData().shutdown(() -> {
+						countDownLatch.countDown();
+					});
+				}
+				countDownLatch.await(120, TimeUnit.SECONDS);
+			} else {
+				for (OrderData<ContainerGracefulShutdown> data : containerShutdownList) {
+					data.getData().shutdown(null);
 				}
 			}
 			dawdlerServerContext.destroyedApplication();
-			sm.closeNow();
+			ServerConnectionManager.getInstance().closeNow();
 			dawdlerServerContext.shutdownWorkPool();
 			if (serverChannel.isOpen()) {
 				serverChannel.close();
@@ -223,11 +222,10 @@ public class DawdlerServer {
 			if (!asynchronousChannelGroup.isShutdown()) {
 				asynchronousChannelGroup.shutdown();
 			}
-			dawdlerServerContext.destroyedApplication();
 		}
 	}
 
-	final class DawdlerForkJoinWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
+	public final class DawdlerForkJoinWorkerThreadFactory implements ForkJoinWorkerThreadFactory {
 		public final ForkJoinWorkerThread newThread(ForkJoinPool pool) {
 			ForkJoinWorkerThread thread = new DawdlerForkJoinWorkerThread(pool);
 			thread.setName("dawdler-Server-acceptor#" + (TNUMBER.incrementAndGet()));

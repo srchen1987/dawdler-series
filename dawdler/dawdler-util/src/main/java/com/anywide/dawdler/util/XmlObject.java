@@ -78,10 +78,11 @@ public final class XmlObject {
 	{
 		documentBuilderFactory.setIgnoringElementContentWhitespace(true);
 		documentBuilderFactory.setIgnoringComments(true);
+		documentBuilderFactory.setNamespaceAware(true);
 	}
 	private Document document;
-	XPathFactory xpathFactory = XPathFactory.newInstance();
-	XPath xpath = xpathFactory.newXPath();
+	private XPathFactory xpathFactory = XPathFactory.newInstance();
+	private XPath xpath = xpathFactory.newXPath();
 	private Transformer transformer;
 	private String filePath;
 	private boolean compress = false;
@@ -91,6 +92,21 @@ public final class XmlObject {
 		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
 		builder.setErrorHandler(XmlTool.getErrorHandler());
 		document = builder.parse(xmlPath);
+	}
+
+	public XmlObject(String xmlPath, InputStream xsdInput) throws Exception {
+		setSchema(xsdInput);
+		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		builder.setErrorHandler(XmlTool.getErrorHandler());
+		document = builder.parse(xmlPath);
+	}
+
+	public XmlObject(InputStream xmlInput, InputStream xsdInput)
+			throws SAXException, ParserConfigurationException, IOException {
+		setSchema(xsdInput);
+		DocumentBuilder builder = documentBuilderFactory.newDocumentBuilder();
+		builder.setErrorHandler(XmlTool.getErrorHandler());
+		document = builder.parse(xmlInput);
 	}
 
 	public XmlObject(String xmlPath, URL xsdURL) throws Exception {
@@ -124,8 +140,8 @@ public final class XmlObject {
 	public XmlObject(InputStream in) throws Exception {
 		inputStreamToXML(in);
 	}
-	
-	public XmlObject(InputStream in,URL xsdURL) throws Exception {
+
+	public XmlObject(InputStream in, URL xsdURL) throws Exception {
 		setSchema(xsdURL);
 		inputStreamToXML(in);
 	}
@@ -155,10 +171,18 @@ public final class XmlObject {
 
 	private void setSchema(String xsdPath) throws MalformedURLException, SAXException {
 		if (xsdPath != null) {
-			documentBuilderFactory.setNamespaceAware(true);
 			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 			Schema schema = sf.newSchema(new File(xsdPath));
 			documentBuilderFactory.setSchema(schema);
+		}
+	}
+
+	private void setSchema(InputStream xsdInput) throws SAXException, IOException {
+		if (xsdInput != null) {
+			SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+			Schema schema = sf.newSchema(new StreamSource(xsdInput));
+			documentBuilderFactory.setSchema(schema);
+			xsdInput.close();
 		}
 	}
 

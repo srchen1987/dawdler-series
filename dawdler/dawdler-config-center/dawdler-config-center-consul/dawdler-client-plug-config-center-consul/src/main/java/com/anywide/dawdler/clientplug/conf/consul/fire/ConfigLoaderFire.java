@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.conf.consul.fire;
 
-import com.anywide.dawdler.clientplug.load.classloader.RemoteClassLoaderFire;
+import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.conf.Refresher;
 import com.anywide.dawdler.conf.cache.PathMappingTargetCache;
 import com.anywide.dawdler.core.annotation.Order;

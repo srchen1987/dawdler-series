@@ -17,26 +17,28 @@
 package com.anywide.dawdler.serverplug.load;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import com.anywide.dawdler.core.scan.DawdlerComponentScanner;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles;
 import com.anywide.dawdler.serverplug.load.bean.RemoteFiles.RemoteFile;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
+import com.anywide.dawdler.util.spring.antpath.Resource;
 
 /**
  * @author jackson.song
@@ -49,12 +51,13 @@ import com.anywide.dawdler.util.XmlObject;
 public class ReadClass {
 	private static final Logger logger = LoggerFactory.getLogger(ReadClass.class);
 	private static final Pattern classPattern = Pattern.compile("(.*)\\.class$");
-	private static String path = new File(DawdlerTool.getCurrentPath()).getPath() + File.separator;
 
 	public static XmlObject read(String host) {
+		InputStream input = null;
 		try {
-			XmlObject remoteLoadXml = new XmlObject(
-					getRemoteLoad(DawdlerContext.getDawdlerContext().getServicesConfig().getRemoteLoad()));
+			input = DawdlerTool.getResourceFromClassPath(
+					DawdlerContext.getDawdlerContext().getServicesConfig().getRemoteLoad(), "");
+			XmlObject remoteLoadXml = new XmlObject(input);
 			List<Node> hosts = remoteLoadXml.selectNodes("/hosts/host[@name='" + host + "']/package");
 			if (hosts == null || hosts.isEmpty()) {
 				return null;
@@ -64,68 +67,58 @@ public class ReadClass {
 			Element root = xmlo.getRoot();
 			for (Object hostObj : hosts) {
 				Element hostEle = (Element) hostObj;
-				String type = hostEle.getAttribute("type");
-				boolean isbean = type != null && type.trim().equals("api");
-				String pack = hostEle.getTextContent().trim().replace(".", File.separator);
-				File file = new File(path + pack);
-				if (!file.isDirectory()) {
-					throw new FileNotFoundException(
-							"not exist\t" + path + pack + "\t or " + path + pack + " is not directory!");
+				Resource[] resources = DawdlerComponentScanner.getClasses(hostEle.getTextContent().trim());
+				if (resources != null) {
+					Document document = root.getOwnerDocument();
+					Element hostElement = document.createElement("host");
+					root.appendChild(hostElement);
+					for (Resource rs : resources) {
+						Matcher match = classPattern.matcher(rs.getFilename());
+						if (match.find()) {
+							Element itemElement = document.createElement("item");
+							hostElement.appendChild(itemElement);
+							InputStream in = rs.getInputStream();
+							ClassReader classReader = new ClassReader(in);
+							ClassNode classNode = new ClassNode();
+							classReader.accept(classNode, ClassReader.EXPAND_FRAMES);
+							in.close();
+							itemElement.setAttribute("checkname", classNode.name.concat(".class"));
+							itemElement.setAttribute("update", "" + rs.lastModified());
+						}
+					}
 				}
-				createXmlObjectByFile(root, file, pack, host, isbean);
 			}
 			return xmlo;
 		} catch (Exception e) {
 			logger.error("", e);
 			return null;
-		}
-
-	}
-
-	public static String getRemoteLoad(String remoteLoad) {
-		if (remoteLoad == null) {
-			throw new NullPointerException("/config/remote-load not found！");
-		}
-		return remoteLoad.replace("${classpath}", DawdlerTool.getCurrentPath());
-	}
-
-	private static void createXmlObjectByFile(Element hosts, File file, String pack, String host, boolean isbean) {
-		Document document = hosts.getOwnerDocument();
-		Element hostElement = document.createElement("host");
-		hosts.appendChild(hostElement);
-		hostElement.setAttribute("type", isbean ? "api" : "component");
-		for (File fs : file.listFiles()) {
-			String s = fs.getName();
-			Matcher match = classPattern.matcher(s);
-			if (match.find()) {
-				File f = new File(file.getPath() + File.separator + s);
-				Element itemElement = document.createElement("item");
-				hostElement.appendChild(itemElement);
-				itemElement.setAttribute("checkname", fs.getAbsolutePath().replace(path, ""));
-				itemElement.setAttribute("update", "" + f.lastModified());
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+				}
 			}
 		}
 	}
 
-	public static RemoteFiles operation(String[] filenames) throws FileNotFoundException {
+	public static RemoteFiles readRemoteFiles(String[] filenames) throws IOException {
 		RemoteFiles rfs = new RemoteFiles();
 		List<RemoteFile> files = new ArrayList<>();
-		String path = DawdlerTool.getCurrentPath();
 		for (String name : filenames) {
 			Matcher match = classPattern.matcher(name);
 			if (match.find()) {
-				String fileName = match.group(1).replace(".", File.separator);
-				File file = new File(path + File.separator + fileName + ".class");
-				if (file.exists()) {
-					RemoteFile rf = new RemoteFiles().new RemoteFile();
-					rf.setFilename(name);
-					InputStream in = null;
+				Resource resource = DawdlerComponentScanner.getClass(match.group(1));
+				InputStream in;
+				if (resource != null) {
 					try {
-						in = new FileInputStream(file);
-					} catch (FileNotFoundException e) {
+						in = resource.getInputStream();
+					} catch (IOException e) {
 						logger.error("", e);
 						throw e;
 					}
+					RemoteFile rf = new RemoteFiles().new RemoteFile();
+					rf.setFilename(name);
 					ByteArrayOutputStream out = new ByteArrayOutputStream();
 					byte[] data = new byte[2048];
 					int position;
@@ -140,7 +133,9 @@ public class ReadClass {
 						logger.error("", e);
 					} finally {
 						try {
-							in.close();
+							if (in != null) {
+								in.close();
+							}
 						} catch (Exception e) {
 							logger.error("", e);
 						}

@@ -41,7 +41,6 @@ import com.sun.net.httpserver.HttpsServer;
  * @date 2022年5月1日
  * @email suxuan696@gmail.com
  */
-@SuppressWarnings("restriction")
 public class DawdlerHttpServer {
 	private Authenticator authenticator;
 	private HttpServer httpServer;

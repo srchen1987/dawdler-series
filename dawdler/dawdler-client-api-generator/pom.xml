@@ -13,13 +13,23 @@
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-client-plug</artifactId>
+			<artifactId>dawdler-client-plug-web</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
 					<artifactId>*</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-client-plug-validator</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
@@ -40,10 +50,6 @@
 				<exclusion>
 					<groupId>jaxen</groupId>
 					<artifactId>jaxen</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.dom4j</groupId>
-					<artifactId>dom4j</artifactId>
 				</exclusion>
 				<exclusion>
 					<groupId>ch.qos.logback</groupId>

@@ -31,7 +31,6 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title AMQPConnectionFactory.java
@@ -41,7 +40,7 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class AMQPConnectionFactory {
 	private GenericObjectPool<Connection> genericObjectPool;
-	private final static Map<String, AMQPConnectionFactory> instances = new ConcurrentHashMap<>();
+	private final static Map<String, AMQPConnectionFactory> INSTANCES = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 	private int channelSize;
 
@@ -55,15 +54,15 @@ public class AMQPConnectionFactory {
 	private final static String RABBIT_FAIL_QUEUE = "rabbit_fail_queue";
 
 	public static AMQPConnectionFactory getInstance(String fileName) throws Exception {
-		AMQPConnectionFactory connectionFactory = instances.get(fileName);
+		AMQPConnectionFactory connectionFactory = INSTANCES.get(fileName);
 		if (connectionFactory != null) {
 			return connectionFactory;
 		}
-		synchronized (instances) {
-			connectionFactory = instances.get(fileName);
+		synchronized (INSTANCES) {
+			connectionFactory = INSTANCES.get(fileName);
 			if (connectionFactory == null) {
 				connectionFactory = new AMQPConnectionFactory(fileName);
-				instances.put(fileName, connectionFactory);
+				INSTANCES.put(fileName, connectionFactory);
 			}
 		}
 		return connectionFactory;
@@ -105,6 +104,7 @@ public class AMQPConnectionFactory {
 		connectionFactory.setUsername(ps.getProperty("username"));
 		connectionFactory.setPassword(ps.getProperty("password"));
 		connectionFactory.setAutomaticRecoveryEnabled(true);
+		connectionFactory.setShutdownTimeout(PropertiesUtil.getIfNullReturnDefaultValueInt("shutdownTimeout", 30000, ps));
 		connectionFactory.setNetworkRecoveryInterval(
 				PropertiesUtil.getIfNullReturnDefaultValueInt("networkRecoveryInterval", 3000, ps));
 		channelSize = PropertiesUtil.getIfNullReturnDefaultValueInt("channel.size", 16, ps);
@@ -160,20 +160,39 @@ public class AMQPConnectionFactory {
 
 	public static void shutdownAll() {
 		if (stopped.compareAndSet(false, true)) {
-			instances.forEach((k, v) -> {
+			INSTANCES.forEach((k, v) -> {
 				if (!v.isClose()) {
 					v.close();
 				}
 			});
 		}
 	}
+	
+	public static void waitAll() {
+		INSTANCES.forEach((k, v) -> {
+			if (!v.isClose()) {
+				while (v.getPooledConnectionFactory().getExecutor().getActiveCount() > 0) {
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
+		});
+	}
+
 
 	public int getChannelSize() {
 		return channelSize;
 	}
 
 	public static Map<String, AMQPConnectionFactory> getInstances() {
-		return instances;
+		return INSTANCES;
+	}
+	
+	public PooledConnectionFactory getPooledConnectionFactory() {
+		return (PooledConnectionFactory) genericObjectPool.getFactory();
 	}
 
 }

@@ -65,7 +65,6 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	public static final String HEALTH_CHECK_PASSWORD = "health_check_password";
 	private ConsulRawClient consulRawClient;
 	private TLSConfig config;
-	
 	private String healthCheckType = HealthCheckTypes.TCP.name;
 
 	public static enum HealthCheckTypes {
@@ -107,22 +106,22 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		String certificatePassword = ps.getProperty("certificatePassword");
 		String keyStorePath = ps.getProperty("keyStorePath");
 		String keyStorePassword = ps.getProperty("keyStorePassword");
-		if(keyStoreInstanceType != null) {
+		if (keyStoreInstanceType != null) {
 			config = new TLSConfig(KeyStoreInstanceType.valueOf(keyStoreInstanceType), certificatePath,
 					certificatePassword, keyStorePath, keyStorePassword);
 		}
-	
+
 		init();
 	}
 
 	@Override
 	public void init() {
-		if(config != null) {
+		if (config != null) {
 			this.consulRawClient = new ConsulRawClient(host, port, config);
-		}else {
+		} else {
 			this.consulRawClient = new ConsulRawClient(host, port);
 		}
-		
+
 		this.client = new ConsulClient(consulRawClient);
 	}
 
@@ -192,7 +191,9 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public boolean deleteProvider(String path, String value) throws Exception {
-		client.agentServiceDeregister(getServiceId(path, value));
+		if (isExist(path, value)) {
+			client.agentServiceDeregister(getServiceId(path, value));
+		}
 		return true;
 	}
 

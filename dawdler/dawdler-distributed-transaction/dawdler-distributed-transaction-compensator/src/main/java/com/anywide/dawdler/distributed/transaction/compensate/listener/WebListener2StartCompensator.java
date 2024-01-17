@@ -29,7 +29,6 @@ import com.anywide.dawdler.distributed.transaction.compensate.timers.Compensatio
 import com.anywide.dawdler.distributed.transaction.release.ResourceReleaser;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title WebListener2StartCompensator.java

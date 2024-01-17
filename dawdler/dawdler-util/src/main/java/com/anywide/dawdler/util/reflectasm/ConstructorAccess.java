@@ -40,7 +40,7 @@ import org.objectweb.asm.MethodVisitor;
  * @author jackson.song
  * @version V1.0
  * @Title ConstructorAccess.java
- * @Description asm的改进版 已升到asm支持jdk9
+ * @Description asm的改进版
  * @date 2012年5月16日
  * @email suxuan696@gmail.com
  */
@@ -119,7 +119,7 @@ public abstract class ConstructorAccess<T> {
 		}
 		ConstructorAccess<T> access;
 		try {
-			access = (ConstructorAccess<T>) accessClass.newInstance();
+			access = (ConstructorAccess<T>) accessClass.getDeclaredConstructor().newInstance();
 		} catch (Throwable t) {
 			throw new RuntimeException("Exception constructing constructor access class: " + accessClassName, t);
 		}
@@ -138,7 +138,7 @@ public abstract class ConstructorAccess<T> {
 		MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);
 		mv.visitCode();
 		mv.visitVarInsn(ALOAD, 0);
-		mv.visitMethodInsn(INVOKESPECIAL, superclassNameInternal, "<init>", "()V");
+		mv.visitMethodInsn(INVOKESPECIAL, superclassNameInternal, "<init>", "()V", false);
 		mv.visitInsn(RETURN);
 		mv.visitMaxs(1, 1);
 		mv.visitEnd();
@@ -149,7 +149,7 @@ public abstract class ConstructorAccess<T> {
 		mv.visitCode();
 		mv.visitTypeInsn(NEW, classNameInternal);
 		mv.visitInsn(DUP);
-		mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "()V");
+		mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "()V", false);
 		mv.visitInsn(ARETURN);
 		mv.visitMaxs(2, 1);
 		mv.visitEnd();
@@ -165,9 +165,10 @@ public abstract class ConstructorAccess<T> {
 			mv.visitVarInsn(ALOAD, 1);
 			mv.visitTypeInsn(CHECKCAST, enclosingClassNameInternal);
 			mv.visitInsn(DUP);
-			mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "getClass", "()Ljava/lang/Class;");
+			mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Object", "getClass", "()Ljava/lang/Class;", false);
 			mv.visitInsn(POP);
-			mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "(L" + enclosingClassNameInternal + ";)V");
+			mv.visitMethodInsn(INVOKESPECIAL, classNameInternal, "<init>", "(L" + enclosingClassNameInternal + ";)V",
+					false);
 			mv.visitInsn(ARETURN);
 			mv.visitMaxs(4, 2);
 		} else {
@@ -175,7 +176,7 @@ public abstract class ConstructorAccess<T> {
 			mv.visitInsn(DUP);
 			mv.visitLdcInsn("Not an inner class.");
 			mv.visitMethodInsn(INVOKESPECIAL, "java/lang/UnsupportedOperationException", "<init>",
-					"(Ljava/lang/String;)V");
+					"(Ljava/lang/String;)V", false);
 			mv.visitInsn(ATHROW);
 			mv.visitMaxs(3, 2);
 		}

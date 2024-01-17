@@ -31,7 +31,6 @@ import co.elastic.clients.elasticsearch.cluster.HealthRequest;
 import co.elastic.clients.elasticsearch.cluster.HealthResponse;
 
 /**
- *
  * @author jackson.song
  * @version V1.0
  * @Title EsIndicator.java

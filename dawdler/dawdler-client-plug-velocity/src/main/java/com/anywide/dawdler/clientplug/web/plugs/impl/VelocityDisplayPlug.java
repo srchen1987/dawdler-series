@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -41,8 +40,8 @@ import org.apache.velocity.context.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.clientplug.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.velocity.VelocityToolBox;
+import com.anywide.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;

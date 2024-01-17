@@ -31,6 +31,11 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @email suxuan696@gmail.com
  */
 public interface Service {
+	public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutorPrefix";
+	public static final String FILTER_PROVIDER = "filterProvider";
+	public static final String DAWDLER_LISTENER_PROVIDER = "dawdlerListenerProvider";
+	public static final String SERVICES_MANAGER = "servicesManager";
+
 	void start() throws Throwable;
 
 	void stop();
@@ -56,4 +61,6 @@ public interface Service {
 	public String getStatus();
 
 	public Throwable getCause();
+
+	public ClassLoader getClassLoader();
 }

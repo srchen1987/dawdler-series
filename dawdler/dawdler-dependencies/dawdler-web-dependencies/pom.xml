@@ -19,7 +19,12 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-client-plug</artifactId>
+				<artifactId>dawdler-client-plug-web</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-load</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
