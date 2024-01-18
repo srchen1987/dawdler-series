@@ -12,8 +12,8 @@
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>dawdler</groupId>
-			<artifactId>dawdler-util</artifactId>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
 		</dependency>
 	</dependencies>
 </project>
