@@ -41,6 +41,10 @@ public class BaseResult<T> {
 	@JsonInclude(Include.NON_NULL)
 	protected Integer code;
 
+	public BaseResult() {
+	
+	}
+	
 	public BaseResult(T data) {
 		this.data = data;
 		this.success = true;
