@@ -32,6 +32,10 @@ public class PageResult<T> extends BaseResult<T> {
 
 	@JsonInclude(Include.NON_NULL)
 	private Page page;
+	
+	public PageResult() {
+		
+	}
 
 	public PageResult(T data) {
 		super(data);
