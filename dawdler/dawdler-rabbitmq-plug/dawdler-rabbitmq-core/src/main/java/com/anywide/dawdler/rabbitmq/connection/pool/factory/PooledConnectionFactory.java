@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.rabbitmq.connection.pool.factory;
 
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
