@@ -38,7 +38,7 @@ import com.esotericsoftware.kryo.serializers.JavaSerializer;
  * @email suxuan696@gmail.com
  */
 public class KryoSerializer implements Serializer {
-	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
+	private static Map<String, KryoLocal> kryos = new HashMap<String, KryoSerializer.KryoLocal>();
 	private static final StdInstantiatorStrategy STD_INSTANTIATOR_STRATEGY = new StdInstantiatorStrategy();
 
 	private KryoLocal initialValue() {
@@ -48,12 +48,17 @@ public class KryoSerializer implements Serializer {
 
 	public KryoLocal getKryoLocal() {
 		Thread thread = Thread.currentThread();
-		KryoLocal kryoLocal = kryos.get(thread);
+		String name = thread.toString();
+		int index = name.indexOf("@");
+		if (index != -1) {
+			name = name.substring(index, name.length());
+		}
+		KryoLocal kryoLocal = kryos.get(name);
 		if (kryoLocal != null) {
 			return kryoLocal;
 		}
 		kryoLocal = initialValue();
-		kryos.put(thread, kryoLocal);
+		kryos.put(name, kryoLocal);
 		return kryoLocal;
 	}
 
@@ -69,7 +74,6 @@ public class KryoSerializer implements Serializer {
 	@Override
 	public byte[] serialize(Object object) throws Exception {
 		KryoLocal kryoLocal = getKryoLocal();
-		synchronized (kryoLocal) {
 			Kryo kryo = kryoLocal.kryo;
 			Output out = kryoLocal.out;
 			byte[] data;
@@ -80,7 +84,6 @@ public class KryoSerializer implements Serializer {
 				out.clear();
 			}
 			return data;
-		}
 	}
 
 	public static class KryoLocal {

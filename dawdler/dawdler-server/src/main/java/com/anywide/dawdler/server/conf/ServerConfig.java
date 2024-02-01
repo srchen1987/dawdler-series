@@ -221,7 +221,8 @@ public class ServerConfig {
 		private int maxThreads = 200;
 		private int queueCapacity = 1024 * 64;
 		private long keepAliveMilliseconds = 0;
-
+		private boolean virtualThread;
+		
 		public String getHost() {
 			return host;
 		}
@@ -317,6 +318,15 @@ public class ServerConfig {
 		public void setKeepAliveMilliseconds(long keepAliveMilliseconds) {
 			this.keepAliveMilliseconds = keepAliveMilliseconds;
 		}
+
+		public boolean isVirtualThread() {
+			return virtualThread;
+		}
+
+		public void setVirtualThread(boolean virtualThread) {
+			this.virtualThread = virtualThread;
+		}
+		
 	}
 
 	public URL getBinPath() {

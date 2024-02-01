@@ -79,7 +79,7 @@ public class ServiceRoot extends AbstractServiceRoot {
 		if (healthCheck) {
 			servicesHealth = new ConcurrentHashMap<>(16);
 		}
-		initWorkPool(server.getMaxThreads(), server.getQueueCapacity(), server.getKeepAliveMilliseconds());
+		initWorkPool(server);
 		File deployFileRoot = getDeploys();
 		File[] deployFiles = deployFileRoot.listFiles();
 		if (deployFiles == null) {
