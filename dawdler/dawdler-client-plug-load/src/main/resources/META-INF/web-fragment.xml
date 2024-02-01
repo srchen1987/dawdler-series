@@ -6,7 +6,7 @@
 	<name>DawdlerClientPlugLoad</name>
 	<ordering>
 		<before>
-			<name>DawdlerClientPlug</name>
+			<name>DawdlerClientPlugWeb</name>
 		</before>
 	</ordering>
 </web-fragment>

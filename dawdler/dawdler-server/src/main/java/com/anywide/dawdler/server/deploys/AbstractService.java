@@ -199,7 +199,7 @@ public abstract class AbstractService implements Service {
 							throw new RuntimeException(e);
 						}
 					}
-				}).start();
+				}, "listenerThread").start();
 			} else {
 				orderData.getData().contextInitialized(dawdlerContext);
 			}
