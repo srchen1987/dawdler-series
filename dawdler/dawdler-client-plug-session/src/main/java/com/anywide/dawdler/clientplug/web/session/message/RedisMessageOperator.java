@@ -102,7 +102,7 @@ public class RedisMessageOperator implements MessageOperator {
 					}
 				}
 			}
-		});
+		}, "listenExpireAndDelAndChangeThread");
 		thread.setDaemon(true);
 		thread.start();
 	}

@@ -78,7 +78,7 @@ public class DawdlerServer {
 		int port = server.getTcpPort();
 		int backlog = server.getTcpBacklog();
 		String host = server.getHost();
-		serverChannel = AsynchronousServerSocketChannel.open();
+		serverChannel = AsynchronousServerSocketChannel.open(asynchronousChannelGroup);
 		String addressString = NetworkUtil.getInetAddress(host);
 		if (addressString == null) {
 			throw new UnknownHostException("server-conf.xml server host : " + host);
@@ -184,8 +184,8 @@ public class DawdlerServer {
 					abstractServiceRoot.closeClassLoader();
 				}
 			});
-			new Thread(new Waiter(this)).start();
-			new Thread(new Closer()).start();
+			new Thread(new Waiter(this), "waiter").start();
+			new Thread(new Closer(), "closer").start();
 			startSemaphore.release(Integer.MAX_VALUE);
 		}
 

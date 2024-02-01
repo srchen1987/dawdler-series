@@ -69,18 +69,16 @@ public class KryoSerializer implements Serializer {
 	@Override
 	public byte[] serialize(Object object) throws Exception {
 		KryoLocal kryoLocal = getKryoLocal();
-		synchronized (kryoLocal) {
-			Kryo kryo = kryoLocal.kryo;
-			Output out = kryoLocal.out;
-			byte[] data;
-			try {
-				kryo.writeClassAndObject(out, object);
-				data = out.toBytes();
-			} finally {
-				out.clear();
-			}
-			return data;
+		Kryo kryo = kryoLocal.kryo;
+		Output out = kryoLocal.out;
+		byte[] data;
+		try {
+			kryo.writeClassAndObject(out, object);
+			data = out.toBytes();
+		} finally {
+			out.clear();
 		}
+		return data;
 	}
 
 	public static class KryoLocal {
