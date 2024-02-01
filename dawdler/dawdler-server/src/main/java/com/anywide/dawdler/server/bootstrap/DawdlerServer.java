@@ -184,8 +184,8 @@ public class DawdlerServer {
 					abstractServiceRoot.closeClassLoader();
 				}
 			});
-			new Thread(new Waiter(this)).start();
-			new Thread(new Closer()).start();
+			new Thread(new Waiter(this), "waiter").start();
+			new Thread(new Closer(), "closer").start();
 			startSemaphore.release(Integer.MAX_VALUE);
 		}
 
