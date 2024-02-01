@@ -21,15 +21,20 @@ import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.anywide.dawdler.core.health.ServerHealth;
 import com.anywide.dawdler.core.health.ServiceHealth;
 import com.anywide.dawdler.core.health.Status;
 import com.anywide.dawdler.core.httpserver.DawdlerHttpServer;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
-import com.anywide.dawdler.core.thread.DataProcessWorkerPool;
+import com.anywide.dawdler.core.thread.DefaultThreadFactory;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
+import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
@@ -47,28 +52,39 @@ import com.sun.net.httpserver.HttpHandler;
  */
 public abstract class AbstractServiceRoot {
 	protected Map<String, Service> servicesHealth;
-	protected DataProcessWorkerPool dataProcessWorkerPool;
 	protected DawdlerHttpServer httpServer = null;
 	protected static final Map<String, Service> SERVICES = new ConcurrentHashMap<>();
+
+	protected ExecutorService dataProcessExecutor;
 
 	protected String getProperty(String key) {
 		return DawdlerTool.getProperty(key);
 	}
 
-	protected void initWorkPool(int nThreads, int queueCapacity, long keepAliveMilliseconds) {
-		dataProcessWorkerPool = new DataProcessWorkerPool(nThreads, queueCapacity, keepAliveMilliseconds);
+	protected void initWorkPool(Server server) {
+		int queueCapacity = server.getQueueCapacity();
+		if (queueCapacity <= 0) {
+			queueCapacity = Integer.MAX_VALUE;
+		}
+		long keepAliveMilliseconds = server.getKeepAliveMilliseconds();
+		if (keepAliveMilliseconds < 0) {
+			keepAliveMilliseconds = 0;
+		}
+		int nThreads = server.getMaxThreads();
+		dataProcessExecutor = new ThreadPoolExecutor(nThreads, nThreads, keepAliveMilliseconds, TimeUnit.MILLISECONDS,
+				new LinkedBlockingQueue<Runnable>(queueCapacity), new DefaultThreadFactory("dataProcessWorkerPool#"));
 	}
 
 	public void shutdownWorkPool() {
-		dataProcessWorkerPool.shutdown();
+		dataProcessExecutor.shutdown();
 	}
 
 	public void shutdownWorkPoolNow() {
-		dataProcessWorkerPool.shutdownNow();
+		dataProcessExecutor.shutdownNow();
 	}
 
 	public void execute(Runnable runnable) {
-		dataProcessWorkerPool.execute(runnable);
+		dataProcessExecutor.execute(runnable);
 	}
 
 	public abstract void initApplication(DawdlerServerContext dawdlerServerContext) throws Exception;
