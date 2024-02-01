@@ -67,7 +67,7 @@ public abstract class AbstractServerDiscoveryCenterLifeCycle implements Componen
 				timeout = hashedWheelTimer.newTimeout(new ProviderTimeoutTask(path, value), checkTime,
 						TimeUnit.MILLISECONDS);
 			}
-		}).start();
+		}, "addProviderThread").start();
 	}
 
 	@Override
