@@ -7,7 +7,6 @@
 		<artifactId>dawdler</artifactId>
 		<version>0.17.1-jdk17-RELEASES</version>
 	</parent>
-	<groupId>dawdler-server-logback</groupId>
 	<artifactId>dawdler-server-logback</artifactId>
 	<dependencies>
 		<dependency>
