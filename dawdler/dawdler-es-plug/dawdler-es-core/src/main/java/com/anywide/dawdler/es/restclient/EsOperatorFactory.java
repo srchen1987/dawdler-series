@@ -74,7 +74,7 @@ public class EsOperatorFactory {
 
 	private static Class<?>[] esRestHighLevelOperatorClass = new Class[] { EsOperator.class };
 
-	public static EsOperator getEsRestHighLevelOperator(String fileName) throws Exception {
+	public static EsOperator getEsOperator(String fileName) throws Exception {
 		EsOperator operator = esRestHighLevelOperators.get(fileName);
 		if (operator != null) {
 			return operator;
@@ -100,7 +100,7 @@ public class EsOperatorFactory {
 				Class<?> serviceClass = field.getType();
 				if (esInjector != null && EsOperator.class.isAssignableFrom(serviceClass)) {
 					field.setAccessible(true);
-					field.set(target, EsOperatorFactory.getEsRestHighLevelOperator(esInjector.value()));
+					field.set(target, EsOperatorFactory.getEsOperator(esInjector.value()));
 				}
 			}
 		}
