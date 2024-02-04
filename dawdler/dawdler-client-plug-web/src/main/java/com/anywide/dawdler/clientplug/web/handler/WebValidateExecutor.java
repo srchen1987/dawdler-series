@@ -90,9 +90,6 @@ public class WebValidateExecutor {
 		}
 
 		Map<String, ControlField> rules = cv.getParamFields(uri);
-		if (rules == null) {
-			rules = cv.getParamGlobalFields();
-		}
 		if (rules != null) {
 			if (requestMapping != null && requestMapping.generateValidator() && !rules.isEmpty()) {
 				StringBuilder sb = new StringBuilder("sir_validate.addRule(");
