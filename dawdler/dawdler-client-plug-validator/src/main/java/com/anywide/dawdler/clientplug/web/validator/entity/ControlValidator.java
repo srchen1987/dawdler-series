@@ -85,13 +85,6 @@ public class ControlValidator {
 		return globalControlFieldsCache;
 	}
 
-	public Map<String, ControlField> getParamGlobalFields() {
-		if (globalControlFieldsCache == null) {
-			return null;
-		}
-		return globalControlFieldsCache.get(MappingFeildType.param);
-	}
-
 	public void initGlobalControlFieldsCache() {
 		if (globalControlFieldsCache == null) {
 			globalControlFieldsCache = new LinkedHashMap<>();
