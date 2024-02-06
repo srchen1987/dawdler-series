@@ -67,13 +67,9 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 
 	private void initListener(Class<?> clazz, Object target) {
 		if (WebContextListener.class.isAssignableFrom(clazz)) {
-			try {
-				WebContextListener listener = (WebContextListener) target;
-				WebContextListenerProvider.addWebContextListener(listener);
-				WebContextListenerProvider.order();
-			} catch (Throwable e) {
-				logger.error("", e);
-			}
+			WebContextListener listener = (WebContextListener) target;
+			WebContextListenerProvider.addWebContextListener(listener);
+			WebContextListenerProvider.order();
 		}
 	}
 
@@ -120,15 +116,11 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 				requestUrlData.setResponseBody(method.getAnnotation(ResponseBody.class));
 				requestUrlData.setJsonIgnoreNull(method.getAnnotation(JsonIgnoreNull.class));
 				for (String requestMappingPath : requestMapping.value()) {
-					try {
-						String mapping = prefix == null ? requestMappingPath : (prefix + requestMappingPath);
-						RequestUrlData preRequestUrlData = AnnotationUrlHandler.registMapping(mapping, requestUrlData);
-						if (preRequestUrlData != null) {
-							logger.error("regist {} failed because it was registered at {} {}", mapping,
-									preRequestUrlData.getTarget().getClass().getName(), preRequestUrlData.getMethod());
-						}
-					} catch (Exception e) {
-						logger.error("", e);
+					String mapping = prefix == null ? requestMappingPath : (prefix + requestMappingPath);
+					RequestUrlData preRequestUrlData = AnnotationUrlHandler.registMapping(mapping, requestUrlData);
+					if (preRequestUrlData != null) {
+						logger.error("regist {} failed because it was registered at {} {}", mapping,
+								preRequestUrlData.getTarget().getClass().getName(), preRequestUrlData.getMethod());
 					}
 				}
 			}
@@ -155,12 +147,8 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
 			if (requestMapping != null && requestMapping.value().length > 0) {
 				for (String requestMappingPath : requestMapping.value()) {
-					try {
-						AnnotationUrlHandler
-								.removeMapping(prefix == null ? requestMappingPath : (prefix + requestMappingPath));
-					} catch (Exception e) {
-						logger.error("", e);
-					}
+					AnnotationUrlHandler
+							.removeMapping(prefix == null ? requestMappingPath : (prefix + requestMappingPath));
 				}
 			}
 		}
