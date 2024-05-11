@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
-	<packaging>pom</packaging>
 	<artifactId>dawdler-es-plug</artifactId>
 	<name>dawdler-es-plug</name>
+	<packaging>pom</packaging>
 	<modules>
 		<module>dawdler-es-core</module>
 		<module>dawdler-server-plug-es</module>

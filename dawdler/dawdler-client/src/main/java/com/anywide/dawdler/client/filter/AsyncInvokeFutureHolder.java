@@ -48,6 +48,7 @@ public class AsyncInvokeFutureHolder {
 		this.invokeFuture = invokeFuture;
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> InvokeFuture<T> getInvokeFuture() {
 		removeContext();
 		return (InvokeFuture<T>) invokeFuture;

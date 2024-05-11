@@ -41,7 +41,6 @@ import org.objectweb.asm.tree.MethodNode;
  * @email suxuan696@gmail.com
  */
 public class ParameterNameReader {
-
 	private static final Map<Class<?>, Map<Method, String[]>> PARAMETER_NAMES_CACHE = new ConcurrentHashMap<>(64);
 
 	/**

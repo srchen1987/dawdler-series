@@ -42,9 +42,9 @@ public class BaseResult<T> {
 	protected Integer code;
 
 	public BaseResult() {
-	
+
 	}
-	
+
 	public BaseResult(T data) {
 		this.data = data;
 		this.success = true;

@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>dawdler</groupId>
+		<artifactId>dawdler-dao-plug</artifactId>
+		<version>0.17.2-jdk17-RELEASES</version>
+	</parent>
+	<artifactId>dawdler-dao-core</artifactId>
+	<name>dawdler-dao-core</name>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-db-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-load-bean</artifactId>
+		</dependency>
+	</dependencies>
+</project>

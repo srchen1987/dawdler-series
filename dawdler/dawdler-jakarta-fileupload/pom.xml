@@ -5,9 +5,11 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-jakarta-fileupload</artifactId>
+	<name>dawdler-jakarta-fileupload</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>jakarta.servlet</groupId>

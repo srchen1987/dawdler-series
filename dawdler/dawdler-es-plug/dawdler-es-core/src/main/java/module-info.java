@@ -12,8 +12,8 @@ module dawdler.es.core {
 	requires org.apache.commons.pool2;
 	requires org.apache.httpcomponents.httpcore.nio;
 	requires org.apache.httpcomponents.httpasyncclient;
-	requires elasticsearch.java;
-	requires elasticsearch.rest.client;
+	requires transitive elasticsearch.java;
+	requires transitive elasticsearch.rest.client;
 
 	exports com.anywide.dawdler.es.restclient;
 

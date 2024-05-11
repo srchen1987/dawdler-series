@@ -6,6 +6,7 @@ module dawdler.server.plug.config.center.consul {
 	requires dawdler.core;
 	requires dawdler.server;
 	requires org.slf4j;
+	requires dawdler.service.core;
 
 	uses ComponentLifeCycle;
 

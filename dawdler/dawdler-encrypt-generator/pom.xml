@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-encrypt-generator</artifactId>
 	<name>dawdler-encrypt-generator</name>
@@ -48,7 +48,8 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>com.anywide.dawdler.encrypt.EncryptContentGenerator</mainClass>
+							<mainClass>
+								com.anywide.dawdler.encrypt.EncryptContentGenerator</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

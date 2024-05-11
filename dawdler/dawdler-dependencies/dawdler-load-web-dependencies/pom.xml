@@ -5,9 +5,10 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-load-web-dependencies</artifactId>
+	<name>dawdler-load-web-dependencies</name>
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>

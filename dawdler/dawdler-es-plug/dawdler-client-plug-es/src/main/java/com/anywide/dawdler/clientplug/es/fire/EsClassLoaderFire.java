@@ -36,8 +36,4 @@ public class EsClassLoaderFire implements RemoteClassLoaderFire {
 		EsOperatorFactory.initField(target, clazz);
 	}
 
-	@Override
-	public void onRemoveFire(Class<?> clazz) {
-	}
-
 }

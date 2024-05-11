@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="https://github.com/srchen1987/dawdler-series"
+	xmlns="https://github.com/srchen1987/dawdler-series"
+	elementFormDefault="qualified">
+
+	<xs:element name="config">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="remote-load" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="package" type="xs:string"
+							use="required" />
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="scanner" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="package-paths" maxOccurs="1"
+								minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="package-path"
+											maxOccurs="unbounded"
+											type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="mybatis" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="mappers" maxOccurs="1"
+								minOccurs="1">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="mapper" minOccurs="1"
+											maxOccurs="unbounded"
+											type="xs:string" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="datasource-expressions" maxOccurs="1"
+					minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="datasource-expression"
+								maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="id" type="xs:string"
+										use="required" />
+									<xs:attribute name="latent-expression"
+										type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="decisions" maxOccurs="1" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="decision" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:attribute name="mapping"
+										type="xs:string" use="required" />
+									<xs:attribute name="latent-expression-id"
+										type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

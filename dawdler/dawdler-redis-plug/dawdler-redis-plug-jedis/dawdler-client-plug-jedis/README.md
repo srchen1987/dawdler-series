@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-实现dawdler-client端注入JedisOperator的功能.
+实现web端注入JedisOperator的功能.
 
 ### 1. pom中引入依赖
 

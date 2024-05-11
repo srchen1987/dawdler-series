@@ -13,7 +13,8 @@ module dawdler.core {
 	requires org.slf4j;
 	requires org.objectweb.asm;
 	requires org.objectweb.asm.tree;
-
+	requires transitive java.xml;
+	
 	exports com.anywide.dawdler.core.order;
 	exports com.anywide.dawdler.core.component.injector;
 	exports com.anywide.dawdler.core.bean;
@@ -32,6 +33,8 @@ module dawdler.core {
 	exports com.anywide.dawdler.core.scan;
 	exports com.anywide.dawdler.core.scan.component.reader;
 	exports com.anywide.dawdler.core.shutdown;
+	exports com.anywide.dawdler.core.loader;
+	exports com.anywide.dawdler.core.context;
 
 	opens com.anywide.dawdler.core.bean;
 	opens com.anywide.dawdler.core.shutdown;

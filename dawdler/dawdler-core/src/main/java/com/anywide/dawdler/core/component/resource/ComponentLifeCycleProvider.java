@@ -69,5 +69,4 @@ public class ComponentLifeCycleProvider {
 	public List<OrderData<ComponentLifeCycle>> getComponentLifeCycles() {
 		return componentLifeCycles;
 	}
-
 }

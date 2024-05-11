@@ -10,4 +10,4 @@
 
 [dawdler-server-plug-schedule 实现dawdler-server端注入功能.](./dawdler-server-plug-schedule/README.md)
 
-[dawdler-client-plug-schedule 实现dawdler-client端注入功能.](./dawdler-client-plug-schedule/README.md)
+[dawdler-client-plug-schedule 实现web端注入功能.](./dawdler-client-plug-schedule/README.md)

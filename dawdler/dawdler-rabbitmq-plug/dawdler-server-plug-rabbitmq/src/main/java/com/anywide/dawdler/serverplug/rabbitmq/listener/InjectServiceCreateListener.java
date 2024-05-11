@@ -17,10 +17,9 @@
 package com.anywide.dawdler.serverplug.rabbitmq.listener;
 
 import com.anywide.dawdler.core.annotation.Order;
+import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.rabbitmq.consumer.RabbitListenerInit;
 import com.anywide.dawdler.rabbitmq.provider.RabbitProviderFactory;
-import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
 /**
  * @author jackson.song
@@ -34,7 +33,7 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext context) throws Throwable {
+	public void create(Object service, boolean single) throws Throwable {
 		Class<?> serviceType = service.getClass();
 		RabbitProviderFactory.initField(service, serviceType);
 		RabbitListenerInit.initRabbitListener(service, serviceType);

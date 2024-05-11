@@ -4,20 +4,19 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>0.17.1-jdk17-RELEASES</version>
+	<version>0.17.2-jdk17-RELEASES</version>
 	<name>dawdler</name>
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<dawdler.build.version>0.17.1-jdk17-RELEASES</dawdler.build.version>
+		<dawdler.build.version>0.17.2-jdk17-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.6</slf4j.version>
 		<ch.qos.logback.version>1.4.14</ch.qos.logback.version>
 		<org.ow2.asm.version>9.2</org.ow2.asm.version>
 		<commons-pool2.version>2.10.0</commons-pool2.version>
-		<kryo.version>4.0.2</kryo.version>
+		<kryo.version>5.6.0</kryo.version>
 		<org.apache.curator.version>5.4.0</org.apache.curator.version>
 		<zookeeper.version>3.8.0</zookeeper.version>
-		<cglib.version>3.3.0</cglib.version>
 		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
 		<jackson-core.version>2.15.2</jackson-core.version>
 		<jackson-databind.version>2.15.2</jackson-databind.version>
@@ -26,7 +25,7 @@
 		<rabbitmq.version>5.18.0</rabbitmq.version>
 		<caffeine.version>3.0.5</caffeine.version>
 		<jsoup.version>1.16.1</jsoup.version>
-		<aspectj.version>1.9.19</aspectj.version>
+		<aspectj.version>1.9.22</aspectj.version>
 		<javassist.version>3.28.0-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
 		<commons-io.version>2.11.0</commons-io.version>
@@ -130,11 +129,6 @@
 				<version>${zookeeper.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>cglib</groupId>
-				<artifactId>cglib</artifactId>
-				<version>${cglib.version}</version>
-			</dependency>
-			<dependency>
 				<groupId>jakarta.servlet</groupId>
 				<artifactId>jakarta.servlet-api</artifactId>
 				<version>${jakarta.servlet-api.version}</version>
@@ -236,7 +230,37 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-server-plug</artifactId>
+				<artifactId>dawdler-service-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-mybatis-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-db-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-remote-service</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-local-service</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-local-service-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-remote-service-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
@@ -470,6 +494,21 @@
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-local-service</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-remote-service</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-dao-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>co.elastic.clients</groupId>
 				<artifactId>elasticsearch-java</artifactId>
 				<version>${elasticsearch.version}</version>
@@ -587,10 +626,6 @@
 		<module>dawdler-client-plug-web</module>
 		<module>dawdler-client-plug-validator</module>
 		<module>dawdler-client-plug-session</module>
-		<module>dawdler-server-plug</module>
-		<module>dawdler-server-plug-db</module>
-		<module>dawdler-server-plug-dao</module>
-		<module>dawdler-server-plug-mybatis</module>
 		<module>dawdler-circuit-breaker</module>
 		<module>dawdler-load-bean</module>
 		<module>dawdler-client-plug-velocity</module>
@@ -608,6 +643,10 @@
 		<module>dawdler-dependencies</module>
 		<module>dawdler-cache-plug</module>
 		<module>dawdler-server-logback</module>
-		<module>dawdler-client-plug-load</module>
+		<module>dawdler-service-plug</module>
+		<module>dawdler-mybatis-plug</module>
+		<module>dawdler-db-plug</module>
+		<module>dawdler-load-plug</module>
+		<module>dawdler-dao-plug</module>
 	</modules>
 </project>

@@ -25,22 +25,22 @@ import com.anywide.dawdler.core.serializer.SerializeDecider.SerializeType;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
 import com.esotericsoftware.kryo.io.Output;
-import com.esotericsoftware.kryo.io.UnsafeInput;
-import com.esotericsoftware.kryo.io.UnsafeOutput;
 import com.esotericsoftware.kryo.serializers.JavaSerializer;
+import com.esotericsoftware.kryo.unsafe.UnsafeInput;
+import com.esotericsoftware.kryo.unsafe.UnsafeOutput;
+import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
 
 /**
  * @author jackson.song
  * @version V1.0
  * @Title KryoSerializer.java
- * @Description kryo实现的序列化 目前升级到新版本 4x
+ * @Description kryo实现的序列化 目前升级到新版本 5x
  * @date 2014年12月22日
  * @email suxuan696@gmail.com
  */
 public class KryoSerializer implements Serializer {
 	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
 	private static final StdInstantiatorStrategy STD_INSTANTIATOR_STRATEGY = new StdInstantiatorStrategy();
-
 	private KryoLocal initialValue() {
 		KryoLocal kryoLocal = new KryoLocal();
 		return kryoLocal;
@@ -76,7 +76,7 @@ public class KryoSerializer implements Serializer {
 			kryo.writeClassAndObject(out, object);
 			data = out.toBytes();
 		} finally {
-			out.clear();
+			out.reset();
 		}
 		return data;
 	}
@@ -89,8 +89,9 @@ public class KryoSerializer implements Serializer {
 		public KryoLocal() {
 			kryo = new Kryo();
 			kryo.setReferences(true);
+			kryo.setRegistrationRequired(false);
 			kryo.addDefaultSerializer(java.lang.Throwable.class, JavaSerializer.class);
-			((Kryo.DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
+			((DefaultInstantiatorStrategy) kryo.getInstantiatorStrategy())
 					.setFallbackInstantiatorStrategy(STD_INSTANTIATOR_STRATEGY);
 			input = new UnsafeInput();
 			out = new UnsafeOutput(2048, -1);

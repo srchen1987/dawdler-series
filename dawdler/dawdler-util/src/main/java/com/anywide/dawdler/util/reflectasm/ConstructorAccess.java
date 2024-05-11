@@ -48,7 +48,7 @@ public abstract class ConstructorAccess<T> {
 	boolean isNonStaticMemberClass;
 
 	static public <T> ConstructorAccess<T> get(Class<T> type) {
-		Class enclosingType = type.getEnclosingClass();
+		Class<?> enclosingType = type.getEnclosingClass();
 		boolean isNonStaticMemberClass = enclosingType != null && type.isMemberClass()
 				&& !Modifier.isStatic(type.getModifiers());
 
@@ -56,7 +56,7 @@ public abstract class ConstructorAccess<T> {
 		String accessClassName = className + "ConstructorAccess";
 		if (accessClassName.startsWith("java."))
 			accessClassName = "reflectasm." + accessClassName;
-		Class accessClass;
+		Class<?> accessClass;
 
 		AccessClassLoader loader = AccessClassLoader.get(type);
 		try {

@@ -16,6 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.classloader;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
@@ -119,26 +120,28 @@ public class ClientClassLoader extends URLClassLoader {
 		}
 		CodeSigner[] signers = res.getCodeSigners();
 		CodeSource cs = new CodeSource(url, signers);
-		byte[] classBytes;
+		byte[] codeBytes;
 		java.nio.ByteBuffer codeByteBuffer = res.getByteBuffer();
 		if (codeByteBuffer != null) {
 			codeByteBuffer.flip();
-			classBytes = codeByteBuffer.array();
+			codeBytes = codeByteBuffer.array();
 		} else {
-			classBytes = res.getBytes();
+			codeBytes = res.getBytes();
 		}
 		if (useAop && AspectHolder.aj != null) {
 			try {
-				classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, classBytes, this,
-						null);
+				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, codeBytes, this, null);
+				FileOutputStream fileOut = new FileOutputStream("/home/srchen/logs/" + name + ".class");
+				fileOut.write(codeBytes);
+				fileOut.close();
 			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
 				logger.error("", e);
 			}
 		}
-		clazz = defineClass(name, classBytes, 0, classBytes.length, cs);
+		clazz = defineClass(name, codeBytes, 0, codeBytes.length, cs);
 		try {
-			ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classBytes);
+			ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, codeBytes);
 		} catch (IOException e) {
 			logger.error("", e);
 		}

@@ -35,7 +35,7 @@ import com.anywide.dawdler.server.plug.discoverycenter.AbstractServerDiscoveryCe
  * @date 2023年3月5日
  * @email suxuan696@gmail.com
  */
-@Order(Integer.MAX_VALUE)
+@Order(com.anywide.dawdler.core.order.Order.LOWEST_PRECEDENCE)
 public class ConsulLifeCycle extends AbstractServerDiscoveryCenterLifeCycle {
 
 	@Override

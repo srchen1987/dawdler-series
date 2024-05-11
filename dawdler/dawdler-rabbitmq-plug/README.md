@@ -10,4 +10,4 @@ rabbitmq模块的支持,包含客户端,服务器端,rabbitmq核心模块.
 
 [dawdler-server-plug-rabbitmq 实现dawdler-server端注入功能.](./dawdler-server-plug-rabbitmq/README.md)
 
-[dawdler-client-plug-rabbitmq 实现dawdler-client端注入功能.](./dawdler-client-plug-rabbitmq/README.md)
+[dawdler-client-plug-rabbitmq 实现web端注入功能.](./dawdler-client-plug-rabbitmq/README.md)
