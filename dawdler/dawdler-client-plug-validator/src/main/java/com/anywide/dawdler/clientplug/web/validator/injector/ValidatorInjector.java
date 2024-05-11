@@ -16,9 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.validator.injector;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
 import com.anywide.dawdler.clientplug.web.validator.RuleOperatorProvider;
 import com.anywide.dawdler.clientplug.web.validator.operators.RuleOperator;
 import com.anywide.dawdler.core.annotation.Order;
@@ -43,11 +40,6 @@ public class ValidatorInjector implements CustomComponentInjector {
 	@Override
 	public Class<?>[] getMatchTypes() {
 		return new Class<?>[] { RuleOperator.class };
-	}
-
-	@Override
-	public Set<? extends Class<? extends Annotation>> getMatchAnnotations() {
-		return null;
 	}
 
 	@Override

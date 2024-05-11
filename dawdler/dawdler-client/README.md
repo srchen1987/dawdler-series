@@ -13,7 +13,7 @@
 
 ### 2. client-conf.xml配置文件说明
 
-例:
+示例:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -23,7 +23,7 @@
                             connection-num="2"
                           session-num="4" serializer="2"
                           user="jackson.song" password="srchen">
-    <!-- channel-group-id 标识id 一般用于@RemoteService(标识id),在服务器端是dawdler下deploys下部署的项目名称.
+    <!-- channel-group-id 标识id 一般用于@Service(标识id),在服务器端是dawdler下deploys下部署的项目名称.
  connection-num 连接数
  session-num 会话数
  serializer 序列化方式(1,jdk默认,2 kroy,支持扩展)
@@ -55,12 +55,13 @@ public static void main(String[] args) throws Exception {
 ### 4. interface proxy 调用方式
 
 ```java
-@RemoteService("simple-service")
+@Service("simple-service")
 public interface HelloService {
 
  public String say(String text);
  
  public List<Message> responseList(Map<String, Object> data);
+ 
 }
 ```
 
@@ -77,7 +78,7 @@ public interface HelloService {
 
 目前提供随机负载与轮询负载.
 
-继承AbstractLoadBalance抽象类,参考[RoundRobinLoadBalance](src/main/java/com/anywide/dawdler/client/cluster/impl/RoundRobinLoadBalance.java).构造方法中传入的name对应RemoteService注解中的loadBalance(默认为roundRobin).通过SPI方式配置[LoadBalance文件中](src/main/resources/META-INF/services/com.anywide.dawdler.client.cluster.LoadBalance).
+继承AbstractLoadBalance抽象类,参考[RoundRobinLoadBalance](src/main/java/com/anywide/dawdler/client/cluster/impl/RoundRobinLoadBalance.java).构造方法中传入的name对应Service注解中的loadBalance(默认为roundRobin).通过SPI方式配置[LoadBalance文件中](src/main/resources/META-INF/services/com.anywide.dawdler.client.cluster.LoadBalance).
 
 ### 7. 异步调用
 
@@ -104,7 +105,7 @@ public static void main(String[] args) throws Exception {
 #### 7.2 interface proxy 调用方式
 
 ```java
-@RemoteService("simple-service")
+@Service("simple-service")
 public interface HelloService {
 
  @RemoteServiceAssistant(async = true)//指定为异步

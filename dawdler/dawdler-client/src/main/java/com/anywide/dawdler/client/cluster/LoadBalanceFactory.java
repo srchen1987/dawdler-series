@@ -29,18 +29,21 @@ import java.util.ServiceLoader;
  * @email suxuan696@gmail.com
  */
 public class LoadBalanceFactory<T, K> {
+	@SuppressWarnings("rawtypes")
 	private final static Map<String, LoadBalance> LOAD_BALANCES = new HashMap<>();
 	static {
+		@SuppressWarnings("rawtypes")
 		ServiceLoader<LoadBalance> loader = ServiceLoader.load(LoadBalance.class);
 		loader.forEach(LoadBalanceFactory::addLoadBalance);
 	}
 
 	public static <T, K> LoadBalance<T, K> getLoadBalance(String name) {
+		@SuppressWarnings("unchecked")
 		LoadBalance<T, K> loadBalance = LOAD_BALANCES.get(name);
 		return loadBalance;
 	}
 
-	static void addLoadBalance(LoadBalance loadBalance) {
+	static void addLoadBalance(@SuppressWarnings("rawtypes") LoadBalance loadBalance) {
 		LOAD_BALANCES.put(loadBalance.getName(), loadBalance);
 	}
 }

@@ -33,10 +33,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.health.Status;
+import com.anywide.dawdler.core.loader.DeployClassLoader;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.Server;
 import com.anywide.dawdler.server.context.DawdlerServerContext;
-import com.anywide.dawdler.server.deploys.loader.DeployClassLoader;
 import com.anywide.dawdler.server.loader.DawdlerClassLoader;
 import com.anywide.dawdler.util.JVMTimeProvider;
 

@@ -5,9 +5,10 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-redis-plug</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-redis-plug-jedis</artifactId>
+	<name>dawdler-redis-plug-jedis</name>
 	<packaging>pom</packaging>
 	<modules>
 		<module>dawdler-jedis-core</module>

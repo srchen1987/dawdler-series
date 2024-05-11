@@ -17,7 +17,6 @@
 package com.anywide.dawdler.util;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -34,25 +33,22 @@ import java.util.Set;
  * @email suxuan696@gmail.com
  */
 public class PropertiesUtil {
-	private static Class<?> configMappingDataCacheClass = null;
-	static {
-		try {
-			configMappingDataCacheClass = Thread.currentThread().getContextClassLoader()
-					.loadClass("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
-		} catch (ClassNotFoundException e) {
-		}
-	}
-
 	public static Properties loadPropertiesIfNotExistLoadConfigCenter(String fileName) throws Exception {
 		Properties ps = null;
-		if (configMappingDataCacheClass != null) {
+		try {
+			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+		} catch (Exception e) {
 			try {
-				ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
-			} catch (Exception e) {
+				Class<?> configMappingDataCacheClass = Thread.currentThread().getContextClassLoader()
+						.loadClass("com.anywide.dawdler.conf.cache.ConfigMappingDataCache");
 				Method method = configMappingDataCacheClass.getMethod("getMappingDataCache", String.class);
-				Map<String, Object> attributes = (Map<String, Object>) method.invoke(null, fileName);
+				
+				Map<String, Object> attributes = (Map<String, Object>) method.invoke(null, getProfilesPathOrDefault(fileName));
 				if (attributes == null) {
-					throw e;
+					attributes = (Map<String, Object>) method.invoke(null, getProfilesPathOrDefault(fileName));
+					if(attributes == null) {
+						throw e;
+					}
 				}
 				ps = new Properties();
 				Set<Entry<String, Object>> entrySet = attributes.entrySet();
@@ -61,9 +57,8 @@ public class PropertiesUtil {
 						ps.setProperty(entry.getKey(), entry.getValue().toString());
 					}
 				}
+			} catch (ClassNotFoundException ignore) {
 			}
-		} else {
-			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		}
 		return ps;
 	}
@@ -126,18 +121,20 @@ public class PropertiesUtil {
 		}
 		return ps;
 	}
-
-	public static Properties loadActiveProfileProperties(String fileName) throws Exception {
+	 
+	private static String getProfilesPathOrDefault(String fileName) {
 		String activeProfile = System.getProperty("dawdler.profiles.active");
 		if (activeProfile != null) {
-			return loadProperties(fileName + "-" + activeProfile);
+			return fileName + "-" + activeProfile;
 		}
-		throw new IOException("dawdler.profiles.active not set!");
+		return fileName;
 	}
+	
+	
 
 	public static Properties loadActiveProfileIfNotExistUseDefaultProperties(String fileName) throws Exception {
 		try {
-			return loadActiveProfileProperties(fileName);
+			return loadProperties(getProfilesPathOrDefault(fileName));
 		} catch (Exception e) {
 			return loadProperties(fileName);
 		}

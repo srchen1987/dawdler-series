@@ -43,6 +43,7 @@ import com.anywide.dawdler.clientplug.web.validator.entity.ControlValidator;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
+import com.anywide.dawdler.util.JsonProcessUtil.TypeReferenceType;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -105,9 +106,9 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					Object target = null;
 					if (request.getClass() == BodyReaderHttpServletRequestWrapper.class) {
 						BodyReaderHttpServletRequestWrapper requestWrapper = (BodyReaderHttpServletRequestWrapper) request;
-						target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(), type);
+						target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(), new TypeReferenceType(requestParamFieldData.getParameterType()));
 					} else {
-						target = JsonProcessUtil.jsonToBean(request.getInputStream(), type);
+						target = JsonProcessUtil.jsonToBean(request.getInputStream(), new TypeReferenceType(requestParamFieldData.getParameterType()));
 					}
 					if (controlValidator != null) {
 						Map<String, ControlField> bodyFields = controlValidator.getBodyFields(uri);

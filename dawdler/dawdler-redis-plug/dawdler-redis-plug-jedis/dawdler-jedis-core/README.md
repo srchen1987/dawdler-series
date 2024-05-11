@@ -45,7 +45,7 @@ JedisInjector注解中的value传入fileName为配置文件名(不包含.propert
 
 [dawdler-server-plug-redis 实现dawdler-server端注入功能.](../dawdler-server-plug-redis/README.md)
 
-[dawdler-client-plug-redis 实现dawdler-client端注入功能.](../dawdler-client-plug-redis/README.md)
+[dawdler-client-plug-redis 实现web端注入功能.](../dawdler-client-plug-redis/README.md)
 
 ### 4. 在非dawdler架构下的使用方式
 

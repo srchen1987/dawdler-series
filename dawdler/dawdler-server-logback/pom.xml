@@ -5,9 +5,11 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-logback</artifactId>
+	<name>dawdler-server-logback</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>org.slf4j</groupId>

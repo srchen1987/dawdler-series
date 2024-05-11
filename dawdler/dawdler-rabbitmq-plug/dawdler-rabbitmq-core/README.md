@@ -30,9 +30,6 @@ confirmSelect=true #开启confirm模式 一般配合ConfirmListener使用,参考
 channel.size=16 #每个connection中的channel数量
 channel.getTimeout=15000 #获取channel的超时事件(单位毫秒)
 ttlTime=5000 #消费者消费失败后重试的时间 单位ms,需要配合@RabbitListener来使用 
-testOnBorrow=true #获取之前校验连接
-testOnCreate=false #创建后校验连接
-testOnReturn=true #返回到池之前校验连接
 ```
 
 ### 3. RabbitInjector注解
@@ -45,7 +42,7 @@ RabbitInjector注解中的value传入fileName为配置文件名(不包含.proper
 
 [dawdler-server-plug-rabbitmq 实现dawdler-server端注入功能.](../dawdler-server-plug-rabbitmq/README.md)
 
-[dawdler-client-plug-rabbitmq 实现dawdler-client端注入功能.](../dawdler-client-plug-rabbitmq/README.md)
+[dawdler-client-plug-rabbitmq 实现web端注入功能.](../dawdler-client-plug-rabbitmq/README.md)
 
 ### 4. RabbitListener注解
 

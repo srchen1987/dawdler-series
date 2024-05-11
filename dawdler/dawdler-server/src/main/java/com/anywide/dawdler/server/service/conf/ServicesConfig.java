@@ -55,9 +55,9 @@ public class ServicesConfig {
 	 */
 	private Set<String> packagePaths;
 
-	private List<DataSourceExpression> dataSourceExpressions;
+	private List<Map<String, String>> dataSourceExpressions;
 
-	private List<Decision> decisions;
+	private List<Map<String, String>> decisions;
 
 	public Set<String> getMappers() {
 		return mappers;
@@ -69,10 +69,6 @@ public class ServicesConfig {
 
 	public Map<String, Map<String, Object>> getDataSources() {
 		return dataSources;
-	}
-
-	public void setDataSources(Map<String, Map<String, Object>> dataSources) {
-		this.dataSources = dataSources;
 	}
 
 	public String getRemoteLoad() {
@@ -99,62 +95,20 @@ public class ServicesConfig {
 		this.packagePaths = packagePaths;
 	}
 
-	public List<DataSourceExpression> getDataSourceExpressions() {
+	public List<Map<String, String>> getDataSourceExpressions() {
 		return dataSourceExpressions;
 	}
 
-	public void setDataSourceExpressions(List<DataSourceExpression> dataSourceExpressions) {
+	public void setDataSourceExpressions(List<Map<String, String>> dataSourceExpressions) {
 		this.dataSourceExpressions = dataSourceExpressions;
 	}
 
-	public List<Decision> getDecisions() {
+	public List<Map<String, String>> getDecisions() {
 		return decisions;
 	}
 
-	public void setDecisions(List<Decision> decisions) {
+	public void setDecisions(List<Map<String, String>> decisions) {
 		this.decisions = decisions;
-	}
-
-	public class DataSourceExpression {
-		private String id;
-		private String latentExpression;
-
-		public String getId() {
-			return id;
-		}
-
-		public void setId(String id) {
-			this.id = id;
-		}
-
-		public String getLatentExpression() {
-			return latentExpression;
-		}
-
-		public void setLatentExpression(String latentExpression) {
-			this.latentExpression = latentExpression;
-		}
-	}
-
-	public class Decision {
-		private String latentExpressionId;
-		private String mapping;
-
-		public String getLatentExpressionId() {
-			return latentExpressionId;
-		}
-
-		public void setLatentExpressionId(String latentExpressionId) {
-			this.latentExpressionId = latentExpressionId;
-		}
-
-		public String getMapping() {
-			return mapping;
-		}
-
-		public void setMapping(String mapping) {
-			this.mapping = mapping;
-		}
 	}
 
 }

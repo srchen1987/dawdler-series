@@ -1,36 +1,45 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.anywide.dawdler.clientplug.web.initializer;
 
 import java.util.EnumSet;
-import java.util.List;
 import java.util.Set;
 
 import com.anywide.dawdler.clientplug.web.filter.ViewFilter;
 import com.anywide.dawdler.clientplug.web.listener.WebListener;
 import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycleProvider;
-import com.anywide.dawdler.core.order.OrderData;
 
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContainerInitializer;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 
-@Order(0)
+/**
+ * @author jackson.song
+ * @version V1.0
+ * @Title WebInitializer.java
+ * @Description web初始化
+ * @date 2015年3月11日
+ * @email suxuan696@gmail.com
+ */
+@Order(1)
 public class WebInitializer implements ServletContainerInitializer {
 	@Override
 	public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
-		String contextPath = ctx.getContextPath();
-		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(contextPath)
-				.getComponentLifeCycles();
-		for (int i = 0; i < lifeCycleList.size(); i++) {
-			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-			try {
-				lifeCycle.getData().prepareInit();
-			} catch (Throwable e) {
-				throw new ServletException(e);
-			}
-		}
 		ctx.addListener(WebListener.class);
 		EnumSet<DispatcherType> dispatcherType = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
 				DispatcherType.ERROR, DispatcherType.INCLUDE);

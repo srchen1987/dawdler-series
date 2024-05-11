@@ -56,10 +56,14 @@ public class JedisCache implements Cache {
 	@Override
 	public <T> T get(Object key, Class<T> type) throws Exception {
 		Object value = cache.get(key);
-		if (value != null && type != null && !type.isInstance(value)) {
-			throw new IllegalStateException("Cached value is not of required type [" + type.getName() + "]: " + value);
+		if (value != null && type != null) {
+			if (!type.isInstance(value)) {
+				throw new IllegalStateException(
+						"Cached value is not of required type [" + type.getName() + "]: " + value);
+			}
+			return type.cast(value);
 		}
-		return (T) value;
+		return null;
 	}
 
 	@Override

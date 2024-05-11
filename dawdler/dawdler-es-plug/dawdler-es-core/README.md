@@ -42,7 +42,7 @@ pool.testOnReturn=false #反还连接时是否验证连接有效 默认为false
 
 [dawdler-server-plug-es 实现dawdler-server端注入功能.](../dawdler-server-plug-es/README.md)
 
-[dawdler-client-plug-es 实现dawdler-client端注入功能.](../dawdler-client-plug-es/README.md)
+[dawdler-client-plug-es 实现web端注入功能.](../dawdler-client-plug-es/README.md)
 
 ### 4. 非dawdler架构下的使用方式
 

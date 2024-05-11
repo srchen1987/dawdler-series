@@ -27,11 +27,8 @@ import jakarta.servlet.http.Cookie;
  * @email suxuan696@gmail.com
  */
 public class CookieUtil {
-	private static final String VERSION = "Version=";
-	private static final String COMMENT = "Comment=";
 	private static final String DOMAIN = "Domain=";
 	private static final String MAX_AGE = "Max-Age=";
-	// private static final String EXPIRES="Expires=";
 	private static final String PATH = "Path=";
 	private static final String SECURE = "Secure";
 	private static final String HTTPONLY = "HttpOnly";
@@ -56,26 +53,14 @@ public class CookieUtil {
 			if (values != null) {
 				value = values[1];
 			}
-			if (ck.startsWith(VERSION)) {
-				if (value != null) {
-					try {
-						c.setVersion(Integer.parseInt(value));
-					} catch (Exception e) {
-					}
-				}
-
-			} else if (ck.startsWith(COMMENT)) {
-				c.setComment(value);
-			} else if (ck.startsWith(DOMAIN)) {
+			if (ck.startsWith(DOMAIN)) {
 				c.setDomain(value);
 			} else if (ck.startsWith(MAX_AGE)) {
 				try {
-					c.setVersion(Integer.parseInt(value));
+					c.setMaxAge(Integer.parseInt(value));
 				} catch (Exception e) {
 				}
-			} /*
-				 * else if(ck.startsWith(EXPIRES)){ // rfc deprecated it }
-				 */ else if (ck.startsWith(PATH)) {
+			} else if (ck.startsWith(PATH)) {
 				c.setPath(value);
 			} else if (ck.equals(SECURE)) {
 				c.setSecure(true);

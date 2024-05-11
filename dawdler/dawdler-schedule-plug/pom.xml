@@ -5,9 +5,10 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-schedule-plug</artifactId>
+	<name>dawdler-schedule-plug</name>
 	<packaging>pom</packaging>
 	<modules>
 		<module>dawdler-schedule-core</module>

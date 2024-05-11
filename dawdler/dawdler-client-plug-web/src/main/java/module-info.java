@@ -19,10 +19,9 @@ import jakarta.servlet.ServletContainerInitializer;
 
 module dawdler.client.plug.web {
 	requires java.base;
-	requires dawdler.util;
+	requires transitive dawdler.util;
 	requires dawdler.core;
 	requires dawdler.serialization;
-	requires dawdler.client;
 	requires dawdler.load.bean;
 	requires org.slf4j;
 	requires dawdler.client.plug.validator;
@@ -39,6 +38,7 @@ module dawdler.client.plug.web {
 	exports com.anywide.dawdler.clientplug.web.upload;
 	exports com.anywide.dawdler.clientplug.web.filter;
 	exports com.anywide.dawdler.clientplug.web.classloader;
+	exports com.anywide.dawdler.clientplug.web.conf;
 
 	uses com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 

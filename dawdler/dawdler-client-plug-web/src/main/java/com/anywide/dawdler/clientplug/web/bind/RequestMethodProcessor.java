@@ -122,6 +122,7 @@ public class RequestMethodProcessor {
 			requestParamFieldData.setAnnotations(parameter.getAnnotations());
 			requestParamFieldData.setParamName(parameterNames[i]);
 			requestParamFieldData.setType(parameter.getType());
+			requestParamFieldData.setParameterType(method.getGenericParameterTypes()[i]);
 			requestParamFieldData.setIndex(i);
 			requestParamFieldDataList.add(requestParamFieldData);
 		}

@@ -31,7 +31,7 @@ public class Message implements Serializable {
 
 ```java
 //定义一个Hello服务的接口
-@RemoteService("simple-service")
+@Service("simple-service")
 public interface HelloService {
  
  //@RemoteServiceAssistant(async = true)

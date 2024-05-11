@@ -5,10 +5,11 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-discovery-center-consul</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-discovery-center-consul</artifactId>
 	<name>dawdler-client-plug-discovery-center-consul</name>
+	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
 			<groupId>dawdler</groupId>

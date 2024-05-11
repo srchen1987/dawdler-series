@@ -16,9 +16,7 @@
  */
 package com.anywide.dawdler.cache.component.injector;
 
-import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.Set;
 
 import com.anywide.dawdler.cache.CacheConfig;
 import com.anywide.dawdler.cache.CacheManager;
@@ -48,11 +46,6 @@ public class CacheConfigInjector implements CustomComponentInjector {
 	@Override
 	public Class<?>[] getMatchTypes() {
 		return new Class<?>[] { CacheConfig.class };
-	}
-
-	@Override
-	public Set<? extends Class<? extends Annotation>> getMatchAnnotations() {
-		return null;
 	}
 
 }

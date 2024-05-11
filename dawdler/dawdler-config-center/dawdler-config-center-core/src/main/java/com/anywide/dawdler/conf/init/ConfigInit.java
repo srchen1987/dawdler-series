@@ -58,6 +58,7 @@ public class ConfigInit {
 		return configInit;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void init() {
 		initConfigClients();
 		String prefix = "dawdler-config";

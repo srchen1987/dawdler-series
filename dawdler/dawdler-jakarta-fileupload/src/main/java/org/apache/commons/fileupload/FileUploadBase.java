@@ -401,7 +401,6 @@ public abstract class FileUploadBase {
 					try {
 						fileItem.delete();
 					} catch (Exception ignored) {
-						// ignored TODO perhaps add to tracker delete failure list somehow?
 					}
 				}
 			}

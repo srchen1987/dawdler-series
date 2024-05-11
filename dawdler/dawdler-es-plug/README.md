@@ -10,4 +10,4 @@ es模块的支持,包含客户端,服务器端,es核心模块.
 
 [dawdler-server-plug-es 实现dawdler-server端注入功能.](./dawdler-server-plug-es/README.md)
 
-[dawdler-client-plug-es 实现dawdler-client端注入功能.](./dawdler-client-plug-es/README.md)
+[dawdler-client-plug-es 实现web端注入功能.](./dawdler-client-plug-es/README.md)

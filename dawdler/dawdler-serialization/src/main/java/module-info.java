@@ -4,9 +4,9 @@ import com.anywide.dawdler.core.serializer.Serializer;
 
 module dawdler.serialization {
 	requires java.base;
-	requires objenesis;
+	requires org.objenesis;
 	requires org.slf4j;
-	requires kryo;
+	requires transitive com.esotericsoftware.kryo;
 	requires jdk.unsupported;
 
 	exports com.anywide.dawdler.core.serializer;

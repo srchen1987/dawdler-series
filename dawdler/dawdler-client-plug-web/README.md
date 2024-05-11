@@ -240,7 +240,7 @@ public class UserWebInterceptor implements HandlerInterceptor {
 ```java
 package com.anywide.yyg.user.web.listener;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.core.annotation.Order;
@@ -322,57 +322,24 @@ dawdler内部提供[JsonDisplayPlug](src/main/java/com/anywide/dawdler/clientplu
 
 注意: 如果方法标记了@ResponseBody 返回类型是基本数据类型或String类型或BigDecimal类型则直接输出类型为text/html;charset=UTF-8,其他类型会转换为json类型为application/json;charset=UTF-8.
 
-### 10. 注入远程服务接口
+### 10. 扫描组件包配置
 
-在Controller,WebContextListener,HandlerInterceptor中支持使用@RemoteService进行注入远程调用的服务接口.
+web-conf.xml是web端核心配置文件. 包含组件扫描,配置据源定义,指定目标包定义数据源,读写分离配置.
 
-[RemoteService介绍](../dawdler-core/README.md#2-RemoteService注解)
-
-示例：
-
-```java
-@Controller
-@RequestMapping(value="/user")
-public class UserController{
- 
- @RemoteService(group="user-service")
- UserService userService;
-
-@RequestMapping(value="/list.html")
-@ResponseBody
- public PageResult<User> list(int pageOn) throws Exception{
-  int row = 20;
-  Map<String, Object> result = userService.selectUserList(pageOn, row);
-  List<User> list = (List<User>)result.get("list");
-  Page page = result.get("page");
-  PageResult<User> pageResult = new PageResult<User>(list, page, true);
-  return pageResult;
- }
-
-}
-
-```
-
-### 11. 扫描组件包配置
-
-component-scan配置当前的web环境中的包扫描路径(部署在web容器中的lib或classes中的包路径并支持antpath). 注意: 这里的远程加载配置可以与[配置需要加载的组件](../dawdler-client-plug-load/README.md#2-配置需要加载的组件)并存.
+package-path配置当前的web环境中的包扫描路径(部署在web容器中的lib或classes中的包路径并支持antpath). 
 
 示例：
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<config>
-    <certificatePath>key/dawdler.cer</certificatePath>
-    <server-channel-group channel-group-id="user-load-web"
-                          connection-num="1"
-                          sessionNum="4" serializer="2"
-                          user="global_user" password="global_password">
-    </server-channel-group>
-    <component-scan base-package="com.xxx.controller,com.yyy.**.ccontroller"></component-scan><!-- 需要扫描的路径，支持antpath 如有多个用,分割-->
-</config>
+	<scanner>
+		<package-paths>
+			<package-path>com.dawdler.order.controller</package-path>
+			<package-path>com.dawdler.**.service.impl</package-path>
+		</package-paths>
+	</scanner>
 ```
 
-### 12. aop使用方式
+### 11. aop使用方式
 
 dawdler的aop支持采用aspjectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
 

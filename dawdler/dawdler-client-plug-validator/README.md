@@ -272,7 +272,7 @@ registerRuleOperatorScanPackage接收参数为Class对象,添加这个Class所�
 ```java
 package com.anywide.yyg.user.web.listener;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.clientplug.web.validator.RuleOperatorProvider;

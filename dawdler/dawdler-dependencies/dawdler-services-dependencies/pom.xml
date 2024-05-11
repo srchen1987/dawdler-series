@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<name>dawdler-services-dependencies</name>
@@ -74,7 +74,18 @@
 			</dependency>
 			<dependency>
 				<groupId>dawdler</groupId>
-				<artifactId>dawdler-server-plug</artifactId>
+				<artifactId>dawdler-server-plug-remote-service</artifactId>
+				<version>${dawdler.build.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-server-plug-local-service</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>

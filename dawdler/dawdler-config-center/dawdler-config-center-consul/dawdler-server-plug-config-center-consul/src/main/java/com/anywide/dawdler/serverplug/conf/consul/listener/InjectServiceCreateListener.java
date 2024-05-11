@@ -17,8 +17,7 @@
 package com.anywide.dawdler.serverplug.conf.consul.listener;
 
 import com.anywide.dawdler.conf.Refresher;
-import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
+import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateListener;
 
 /**
  * @author jackson.song
@@ -31,7 +30,7 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext context) {
+	public void create(Object service, boolean single) {
 		Refresher.refreshAllConfig(service, single);
 	}
 

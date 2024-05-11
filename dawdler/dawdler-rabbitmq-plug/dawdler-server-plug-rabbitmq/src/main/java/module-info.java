@@ -7,6 +7,7 @@ module dawdler.server.plug.rabbitmq {
 	requires dawdler.core;
 	requires dawdler.rabbitmq.core;
 	requires dawdler.server;
+	requires dawdler.service.core;
 
 	uses ComponentLifeCycle;
 	provides ComponentLifeCycle with RabbitLifeCycle;

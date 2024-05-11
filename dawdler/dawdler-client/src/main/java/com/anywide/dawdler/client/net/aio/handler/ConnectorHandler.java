@@ -21,6 +21,7 @@ import java.nio.channels.CompletionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.client.conf.ClientConfig;
 import com.anywide.dawdler.client.conf.ClientConfigParser;
 import com.anywide.dawdler.client.net.aio.session.SocketSession;
 import com.anywide.dawdler.core.bean.AuthRequestBean;
@@ -44,8 +45,11 @@ public class ConnectorHandler implements CompletionHandler<Void, SocketSession> 
 
 	@Override
 	public void completed(Void result, SocketSession session) {
-		CertificateOperator certificate = new CertificateOperator(
-				ClientConfigParser.getClientConfig().getCertificatePath());
+		ClientConfig clientConfig = ClientConfigParser.getClientConfig();
+		if (clientConfig == null) {
+			return;
+		}
+		CertificateOperator certificate = new CertificateOperator(clientConfig.getCertificatePath());
 		try {
 			session.init();
 		} catch (Exception e) {

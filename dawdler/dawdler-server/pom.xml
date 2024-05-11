@@ -5,19 +5,19 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.1-jdk17-RELEASES</version>
+		<version>0.17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server</artifactId>
 	<name>dawdler-server</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-core</artifactId>
+			<artifactId>dawdler-remote-service-core</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -39,6 +39,10 @@
 						<arg>java.base/jdk.httpserver=dawdler.server</arg>
 						<arg>--add-exports</arg>
 						<arg>java.base/jdk.internal.loader=dawdler.util</arg>
+						<arg>--add-exports</arg>
+						<arg>java.base/jdk.internal.loader=dawdler.core</arg>
+						<arg>--add-exports</arg>
+						<arg>java.base/jdk.internal.perf=dawdler.core</arg>
 					</compilerArgs>
 				</configuration>
 			</plugin>

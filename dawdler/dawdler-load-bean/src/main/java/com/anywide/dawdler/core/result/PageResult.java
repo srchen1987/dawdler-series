@@ -34,9 +34,9 @@ public class PageResult<T> extends BaseResult<T> {
 	private Page page;
 
 	public PageResult() {
-	
+
 	}
-	
+
 	public PageResult(T data) {
 		super(data);
 	}

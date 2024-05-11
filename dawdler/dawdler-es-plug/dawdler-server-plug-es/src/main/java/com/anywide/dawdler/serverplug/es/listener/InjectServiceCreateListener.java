@@ -16,9 +16,8 @@
  */
 package com.anywide.dawdler.serverplug.es.listener;
 
+import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.es.restclient.EsOperatorFactory;
-import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
 /**
  * @author jackson.song
@@ -31,7 +30,7 @@ import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 
 	@Override
-	public void create(Object service, boolean single, DawdlerContext context) throws Throwable {
+	public void create(Object service, boolean single) throws Throwable {
 		Class<?> serviceType = service.getClass();
 		EsOperatorFactory.initField(service, serviceType);
 	}

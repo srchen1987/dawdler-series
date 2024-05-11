@@ -1,0 +1,10 @@
+﻿<aspectj>
+	<aspects>
+		<aspect name="com.anywide.dawdler.core.db.aspect.TransactionAspect" />
+	</aspects>
+	<!--  
+  <weaver options="-verbose">
+    <include within="*"/>
+  </weaver>
+  -->
+</aspectj>

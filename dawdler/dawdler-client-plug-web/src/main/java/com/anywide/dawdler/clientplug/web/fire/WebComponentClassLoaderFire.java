@@ -22,7 +22,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.client.ServiceFactory;
 import com.anywide.dawdler.clientplug.web.annotation.Controller;
 import com.anywide.dawdler.clientplug.web.annotation.JsonIgnoreNull;
 import com.anywide.dawdler.clientplug.web.annotation.RequestMapping;
@@ -42,7 +41,7 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
  * @author jackson.song
  * @version V1.0
  * @Title WebComponentClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller 注入service
+ * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller 
  * @date 2015年3月11日
  * @email suxuan696@gmail.com
  */
@@ -55,7 +54,6 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 		initListener(clazz, target);
 		initInterceptor(clazz, target);
 		initMapping(clazz, target);
-		ServiceFactory.injectRemoteService(clazz, target, clazz.getClassLoader());
 	}
 
 	@Override
