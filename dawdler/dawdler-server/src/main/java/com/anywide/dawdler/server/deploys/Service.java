@@ -17,10 +17,10 @@
 package com.anywide.dawdler.server.deploys;
 
 import com.anywide.dawdler.core.health.ServiceHealth;
-import com.anywide.dawdler.server.bean.ServicesBean;
+import com.anywide.dawdler.core.service.bean.ServicesBean;
+import com.anywide.dawdler.core.service.processor.ServiceExecutor;
 import com.anywide.dawdler.server.context.DawdlerContext;
 import com.anywide.dawdler.server.filter.FilterProvider;
-import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 
 /**
  * @author jackson.song
@@ -31,10 +31,8 @@ import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
  * @email suxuan696@gmail.com
  */
 public interface Service {
-	public static final String SERVICE_EXECUTOR_PREFIX = "serviceExecutorPrefix";
 	public static final String FILTER_PROVIDER = "filterProvider";
 	public static final String DAWDLER_LISTENER_PROVIDER = "dawdlerListenerProvider";
-	public static final String SERVICES_MANAGER = "servicesManager";
 
 	void start() throws Throwable;
 
@@ -43,8 +41,6 @@ public interface Service {
 	void prepareStop();
 
 	ServicesBean getServicesBean(String name);
-
-	ServicesBean getServicesBeanNoSafe(String name);
 
 	DawdlerContext getDawdlerContext();
 

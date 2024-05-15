@@ -16,15 +16,11 @@
  */
 package com.anywide.dawdler.server.component.injector;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import com.anywide.dawdler.core.service.ServicesManager;
+import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateListener;
 import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.deploys.ServiceBase;
-import com.anywide.dawdler.server.service.ServicesManager;
-import com.anywide.dawdler.server.service.listener.DawdlerServiceCreateListener;
 
 /**
  * @author jackson.song
@@ -39,19 +35,13 @@ public class DawdlerServiceCreateListenerInjector implements CustomComponentInje
 
 	@Override
 	public void inject(Class<?> type, Object target) throws Throwable {
-		ServicesManager servicesManager = (ServicesManager) DawdlerContext.getDawdlerContext()
-				.getAttribute(ServiceBase.SERVICES_MANAGER);
+		ServicesManager servicesManager = DawdlerContext.getDawdlerContext().getServicesManager();
 		servicesManager.getDawdlerServiceCreateProvider().addServiceCreate((DawdlerServiceCreateListener) target);
 	}
 
 	@Override
 	public Class<?>[] getMatchTypes() {
 		return new Class<?>[] { DawdlerServiceCreateListener.class };
-	}
-
-	@Override
-	public Set<? extends Class<? extends Annotation>> getMatchAnnotations() {
-		return null;
 	}
 
 	@Override

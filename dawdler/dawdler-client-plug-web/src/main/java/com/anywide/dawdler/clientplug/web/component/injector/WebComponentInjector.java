@@ -38,7 +38,6 @@ import com.anywide.dawdler.core.order.OrderData;
  * @date 2023年7月20日
  * @email suxuan696@gmail.com
  */
-@Order(1)
 public class WebComponentInjector implements CustomComponentInjector {
 	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
 			.getRemoteClassLoaderFire();
@@ -60,6 +59,11 @@ public class WebComponentInjector implements CustomComponentInjector {
 		Set<Class<? extends Annotation>> annotationSet = new HashSet<>();
 		annotationSet.add(Controller.class);
 		return annotationSet;
+	}
+
+	@Override
+	public boolean storeVariableNameByASM() {
+		return true;
 	}
 
 }

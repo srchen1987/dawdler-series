@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.server.conf.ServerConfig.Scanner;
 import com.anywide.dawdler.server.deploys.ServiceBase.DeployScanner;
+import com.anywide.dawdler.server.deploys.loader.DawdlerDeployClassLoader;
 
 /**
  * @author jackson.song
@@ -92,7 +93,7 @@ public class DeployClassesScanner {
 						String loadClassName = packageName.equals("") ? className : (packageName + '.' + className);
 						DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 								.getContextClassLoader();
-						classes.add(classLoader.findClassForDawdler(loadClassName, true));
+						classes.add(classLoader.findClassForDawdler(loadClassName, true, false));
 					}
 
 				}
@@ -140,7 +141,7 @@ public class DeployClassesScanner {
 						DawdlerDeployClassLoader classLoader = (DawdlerDeployClassLoader) Thread.currentThread()
 								.getContextClassLoader();
 						try {
-							classes.add(classLoader.findClassForDawdler(loadClassName, true));
+							classes.add(classLoader.findClassForDawdler(loadClassName, true, false));
 						} catch (Throwable e) {
 							logger.error("", e);
 						}

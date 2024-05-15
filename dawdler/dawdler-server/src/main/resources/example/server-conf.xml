@@ -22,7 +22,8 @@
 		<module name="order-service">
 			<user username="order_user1" password="user1password" />
 		</module>
-	</module-auth><!-- 模块下的用户，只能调用指定模块 第一行为帐号 第二行为密码 -->
+	</module-auth><!--
+	模块下的用户，只能调用指定模块 第一行为帐号 第二行为密码 -->
 
 	<health-check check="off" scheme="http" port="19001"
 		backlog="0" username="jackson" password="pttl123">

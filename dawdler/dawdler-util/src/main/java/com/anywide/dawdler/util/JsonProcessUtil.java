@@ -20,10 +20,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -97,6 +99,18 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
+	
+	public static Object jsonToBean(String json, TypeReferenceType typeReferenceType) {
+		Object obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		try {
+			obj = mapper.readValue(json, typeReferenceType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
 
 	public static <T> T jsonToBean(byte[] json, Class<T> valueType) {
 		T obj = null;
@@ -109,12 +123,36 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
+	
+	public static Object jsonToBean(byte[] json, TypeReferenceType typeReferenceType) {
+		Object obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		try {
+			obj = mapper.readValue(json, typeReferenceType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
 
 	public static <T> T jsonToBean(InputStream jsonStream, Class<T> valueType) {
 		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
 			obj = mapper.readValue(jsonStream, valueType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+	
+	public static Object jsonToBean(InputStream jsonStream, TypeReferenceType typeReferenceType) {
+		Object obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		try {
+			obj = mapper.readValue(jsonStream, typeReferenceType);
 		} catch (JsonMappingException e) {
 		} catch (JsonParseException e) {
 		} catch (IOException e) {
@@ -186,5 +224,17 @@ public class JsonProcessUtil {
 		} catch (IOException e) {
 		}
 		return obj;
+	}
+	
+	public static class TypeReferenceType extends TypeReference<Object>{
+		private Type type;
+		public TypeReferenceType(Type type) {
+			this.type = type;
+		}
+		@Override
+		public Type getType() {
+			return type;
+		}
+		
 	}
 }

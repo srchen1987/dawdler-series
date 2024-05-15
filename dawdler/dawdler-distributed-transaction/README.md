@@ -61,7 +61,7 @@ api层定义接口
 
 ```java
 //订单服务的接口定义
-@RemoteService("distributed-transaction-order-service")
+@Service("distributed-transaction-order-service")
 public interface OrderService {
 
  @DistributedTransaction(action = "order",sponsor = false)//标识为分布式事务的参与者
@@ -79,7 +79,7 @@ api层定义接口
 
 ```java
 //用户服务的接口定义
-@RemoteService("distributed-transaction-user-service")
+@Service("distributed-transaction-user-service")
 public interface UserService {
  @DistributedTransaction(action = "user",sponsor = false)//标识为分布式事务的参与者
  public Map<String, Object> tryPayment(Integer userId,BigDecimal amount);
@@ -97,7 +97,7 @@ api层定义接口
 
 ```java
 //商品库存服务的接口定义
-@RemoteService("distributed-transaction-product-service")
+@Service("distributed-transaction-product-service")
 public interface ProductService {
 
  @DistributedTransaction(action = "product",sponsor = false)//标识为分布式事务的参与者

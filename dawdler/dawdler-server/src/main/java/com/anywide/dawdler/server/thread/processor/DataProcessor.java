@@ -32,8 +32,9 @@ import com.anywide.dawdler.core.handler.IoHandlerFactory;
 import com.anywide.dawdler.core.net.buffer.DawdlerByteBuffer;
 import com.anywide.dawdler.core.net.buffer.PoolBuffer;
 import com.anywide.dawdler.core.serializer.Serializer;
+import com.anywide.dawdler.core.service.bean.ServicesBean;
+import com.anywide.dawdler.core.service.processor.ServiceExecutor;
 import com.anywide.dawdler.core.thread.InvokeFuture;
-import com.anywide.dawdler.server.bean.ServicesBean;
 import com.anywide.dawdler.server.bootstrap.ServerConnectionManager;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.deploys.Service;
@@ -89,10 +90,10 @@ public class DataProcessor implements Runnable {
 			ioHandler.messageReceived(socketSession, obj);
 		}
 		if (obj instanceof RequestBean) {
+			RequestBean requestBean = (RequestBean) obj;
 			if (!socketSession.isAuthored()) {
 				throw new IllegalAccessException("unauthorized access ！");
 			}
-			RequestBean requestBean = (RequestBean) obj;
 			String serviceName = requestBean.getServiceName();
 			ServicesBean servicesBean = null;
 			if (service != null) {

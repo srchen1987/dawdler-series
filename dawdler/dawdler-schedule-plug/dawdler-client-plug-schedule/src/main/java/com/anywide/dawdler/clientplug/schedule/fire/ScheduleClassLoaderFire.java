@@ -36,8 +36,4 @@ public class ScheduleClassLoaderFire implements RemoteClassLoaderFire {
 		ScheduleInit.initScheduler(target, clazz);
 	}
 
-	@Override
-	public void onRemoveFire(Class<?> clazz) {
-	}
-
 }

@@ -164,7 +164,7 @@ public class ConsulConfigClient implements ConfigClient {
 					| NoSuchMethodException | InvocationTargetException | IOException e) {
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -173,7 +173,7 @@ public class ConsulConfigClient implements ConfigClient {
 	}
 
 	public long flushCache(String watchKey) {
-		Response<List<GetValue>> responseValues = client.getKVValues(watchKey);
+		Response<List<GetValue>> responseValues = client.getKVValues(watchKey, token);
 		List<GetValue> getValues = responseValues.getValue();
 		if (getValues == null) {
 			return -1;
@@ -204,7 +204,7 @@ public class ConsulConfigClient implements ConfigClient {
 
 	@Override
 	public String info() throws Exception {
-		Config config = client.getAgentSelf().getValue().getConfig();
+		Config config = client.getAgentSelf(token).getValue().getConfig();
 		return config.getNodeName() + "-" + config.getDatacenter() + "-" + config.getVersion();
 	}
 

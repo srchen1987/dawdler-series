@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>1.8.2-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-web-dependencies</artifactId>
 	<name>dawdler-web-dependencies</name>
@@ -95,6 +95,26 @@
 			<dependency>
 				<groupId>dawdler</groupId>
 				<artifactId>dawdler-cache-jedis</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-local-service</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-remote-service</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-dao</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-client-plug-mybatis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>

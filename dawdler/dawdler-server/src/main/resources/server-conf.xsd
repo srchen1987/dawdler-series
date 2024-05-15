@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="https://github.com/srchen1987/dawdler-series"
-	xmlns="https://github.com/srchen1987/dawdler-series" elementFormDefault="qualified">
+	xmlns="https://github.com/srchen1987/dawdler-series"
+	elementFormDefault="qualified">
 
 	<xs:element name="config">
 		<xs:complexType>
@@ -18,11 +19,14 @@
 				</xs:element>
 				<xs:element name="server" maxOccurs="1" minOccurs="1">
 					<xs:complexType>
-						<xs:attribute name="host" type="xs:string" use="required" />
-						<xs:attribute name="tcp-port" type="t_port" use="required"/>
+						<xs:attribute name="host" type="xs:string"
+							use="required" />
+						<xs:attribute name="tcp-port" type="t_port"
+							use="required" />
 						<xs:attribute name="shutdownWhiteList"
 							type="xs:string" use="required" />
-						<xs:attribute name="tcp-shutdownPort" type="t_port" use="required"/>
+						<xs:attribute name="tcp-shutdownPort" type="t_port"
+							use="required" />
 						<xs:attribute name="tcp-backlog" type="xs:int" />
 						<xs:attribute name="tcp-sendBuffer" type="xs:int" />
 						<xs:attribute name="tcp-receiveBuffer" type="xs:int" />
@@ -30,7 +34,7 @@
 						<xs:attribute name="tcp-noDelay" type="xs:boolean" />
 						<xs:attribute name="maxThreads" type="xs:int" />
 						<xs:attribute name="queueCapacity" type="xs:int" />
-						<xs:attribute name="keepAliveMilliseconds" type="xs:int"/>
+						<xs:attribute name="keepAliveMilliseconds" type="xs:int" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="global-auth" minOccurs="0"
@@ -39,8 +43,10 @@
 						<xs:sequence>
 							<xs:element name="user" maxOccurs="unbounded">
 								<xs:complexType>
-									<xs:attribute name="username" type="xs:string" />
-									<xs:attribute name="password" type="xs:string" />
+									<xs:attribute name="username"
+										type="xs:string" />
+									<xs:attribute name="password"
+										type="xs:string" />
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
@@ -53,10 +59,13 @@
 							<xs:element name="module" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="user" maxOccurs="unbounded">
+										<xs:element name="user"
+											maxOccurs="unbounded">
 											<xs:complexType>
-												<xs:attribute name="username" type="xs:string" />
-												<xs:attribute name="password" type="xs:string" />
+												<xs:attribute name="username"
+													type="xs:string" />
+												<xs:attribute name="password"
+													type="xs:string" />
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>

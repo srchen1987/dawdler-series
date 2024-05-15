@@ -16,42 +16,31 @@
  */
 package com.anywide.dawdler.clientplug.web.listener;
 
-import java.io.InputStream;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
 
-import com.anywide.dawdler.client.ConnectionPool;
-import com.anywide.dawdler.client.conf.ClientConfigParser;
-import com.anywide.dawdler.clientplug.web.classloader.ClientPlugClassLoader;
+import com.anywide.dawdler.clientplug.web.classloader.DawdlerWebDeployClassLoader;
+import com.anywide.dawdler.clientplug.web.conf.WebConfig;
+import com.anywide.dawdler.clientplug.web.conf.WebConfigParser;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjectionProvider;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import com.anywide.dawdler.core.component.injector.CustomComponentOperator;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.component.resource.ComponentLifeCycleProvider;
+import com.anywide.dawdler.core.loader.DeployClassLoader;
 import com.anywide.dawdler.core.order.OrderData;
-import com.anywide.dawdler.core.scan.DawdlerComponentScanner;
-import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser;
-import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser.ClassStructure;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.shutdown.ContainerGracefulShutdown;
 import com.anywide.dawdler.core.shutdown.ContainerShutdownProvider;
-import com.anywide.dawdler.util.DawdlerTool;
-import com.anywide.dawdler.util.XmlObject;
-import com.anywide.dawdler.util.XmlTool;
-import com.anywide.dawdler.util.spring.antpath.Resource;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.ServletException;
 
 /**
  * @author jackson.song
@@ -63,87 +52,52 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
  */
 public class WebListener implements ServletContextListener {
 	private static final Logger logger = LoggerFactory.getLogger(WebListener.class);
-	private ClientPlugClassLoader classLoader;
-
+	
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		XmlObject xmlo = ClientConfigParser.getXmlObject();
+		DeployClassLoader classLoader = null;
+		WebConfig webConfig = WebConfigParser.getWebConfig();
 		String contextPath = sce.getServletContext().getContextPath();
-		classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getCurrentPath());
+		ClassLoader tcl = Thread.currentThread().getContextClassLoader();
+		if (!(tcl instanceof DeployClassLoader)) {
+			try {
+				classLoader = new DawdlerWebDeployClassLoader(tcl);
+			} catch (Exception e) {
+				logger.error("", e);
+				throw new RuntimeException("Web application failed to start !", e);
+			}
+			finally{
+				try {
+					if(classLoader != null){
+						classLoader.close();
+					}
+				} catch (IOException e) {
+				}
+			}
+		} else {
+			classLoader = (DeployClassLoader) tcl;
+		}
 		List<OrderData<ComponentLifeCycle>> lifeCycleList = ComponentLifeCycleProvider.getInstance(contextPath)
 				.getComponentLifeCycles();
 		List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider
-				.getInstance(contextPath).getCustomComponentInjectors();
-
+				.getDefaultInstance().getCustomComponentInjectors();
 		try {
-			Map<String, Resource> removeDuplicates = new LinkedHashMap<>();
-			Set<String> packagePaths = new HashSet<>();
-			Node componentNode = xmlo.selectSingleNode("/ns:config/ns:component-scan");
-			if (componentNode != null) {
-				NamedNodeMap attributes = componentNode.getAttributes();
-				String basePackage = XmlTool.getElementAttribute(attributes, "base-package");
-				if (basePackage != null) {
-					packagePaths = new HashSet<>();
-					for (String base : basePackage.split(",")) {
-						packagePaths.add(base);
-					}
-				}
-			}
-			if (packagePaths != null) {
-				for (String packageInClasses : packagePaths) {
-					Resource[] resources = DawdlerComponentScanner.getClasses(packageInClasses);
-					for (Resource resource : resources) {
-						removeDuplicates.putIfAbsent(resource.getURL().toString(), resource);
-					}
-				}
-			}
-			Collection<Resource> resources = removeDuplicates.values();
-			for (Resource resource : resources) {
-				InputStream input = null;
-				try {
-					input = resource.getInputStream();
-					ClassStructure classStructure = ClassStructureParser.parser(input);
-					if (classStructure != null) {
-						for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
-							CustomComponentInjector customComponentInjector = data.getData();
-							classLoader.inject(resource, classStructure, customComponentInjector);
-						}
-					}
-				} finally {
-					if (input != null) {
-						input.close();
-					}
-				}
-			}
-			for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
-				CustomComponentInjector customComponentInjector = data.getData();
-				String[] scanLocations = customComponentInjector.scanLocations();
-				if (scanLocations != null) {
-					for (String scanLocation : scanLocations) {
-						Resource[] resourcesArray = DawdlerComponentScanner.getClasses(scanLocation);
-						for (Resource resource : resourcesArray) {
-							InputStream input = null;
-							try {
-								input = resource.getInputStream();
-								ClassStructure classStructure = ClassStructureParser.parser(input);
-								classLoader.inject(resource, classStructure, customComponentInjector);
-							} finally {
-								if (input != null) {
-									input.close();
-								}
-							}
-						}
-					}
-				}
-			}
-
 			for (int i = 0; i < lifeCycleList.size(); i++) {
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 				try {
-					OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-					lifeCycle.getData().init();
+					lifeCycle.getData().prepareInit();
 				} catch (Throwable e) {
-					logger.error("", e);
+					throw new ServletException(e);
 				}
+			}
+			if (webConfig == null) {
+				return;
+			}
+			CustomComponentOperator.scanAndInject(classLoader, customComponentInjectorList,
+					webConfig.getPackagePaths());
+			for (int i = 0; i < lifeCycleList.size(); i++) {
+				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
+				lifeCycle.getData().init();
 			}
 			WebContextListenerProvider.listenerRun(true, sce.getServletContext());
 			for (int i = 0; i < lifeCycleList.size(); i++) {
@@ -217,11 +171,6 @@ public class WebListener implements ServletContextListener {
 			}
 		}
 		SerializeDecider.destroyed();
-		try {
-			ConnectionPool.shutdown();
-		} catch (Exception e) {
-			logger.error("", e);
-		}
 	}
 
 }

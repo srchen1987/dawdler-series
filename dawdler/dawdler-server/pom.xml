@@ -5,19 +5,19 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>1.8.2-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server</artifactId>
 	<name>dawdler-server</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>cglib</groupId>
-			<artifactId>cglib</artifactId>
+			<groupId>dawdler</groupId>
+			<artifactId>dawdler-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-core</artifactId>
+			<artifactId>dawdler-remote-service-core</artifactId>
 		</dependency>
 	</dependencies>
 </project>
