@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dawdler</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>0.17.2-jdk17-RELEASES</version>
+	<version>17.2-jdk17-RELEASES</version>
 	<name>dawdler</name>
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<dawdler.build.version>0.17.2-jdk17-RELEASES</dawdler.build.version>
+		<dawdler.build.version>17.2-jdk17-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.6</slf4j.version>
 		<ch.qos.logback.version>1.4.14</ch.qos.logback.version>
 		<org.ow2.asm.version>9.2</org.ow2.asm.version>
