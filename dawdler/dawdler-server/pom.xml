@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.2-jdk17-RELEASES</version>
+		<version>17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server</artifactId>
 	<name>dawdler-server</name>

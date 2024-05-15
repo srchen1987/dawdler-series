@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.17.2-jdk17-RELEASES</version>
+		<version>17.2-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-session</artifactId>
 	<name>dawdler-client-plug-session</name>
