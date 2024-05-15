@@ -25,7 +25,7 @@
 		<rabbitmq.version>5.18.0</rabbitmq.version>
 		<caffeine.version>3.0.5</caffeine.version>
 		<jsoup.version>1.16.1</jsoup.version>
-		<aspectj.version>1.9.22</aspectj.version>
+		<aspectj.version>1.9.20</aspectj.version>
 		<javassist.version>3.28.0-GA</javassist.version>
 		<commons-jexl3.version>3.2</commons-jexl3.version>
 		<commons-io.version>2.11.0</commons-io.version>
