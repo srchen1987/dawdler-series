@@ -19,8 +19,9 @@
 
 2、 [DawdlerServiceListener监听器](../../../dawdler-server/README.md#3-dawdler服务器启动销毁监听器)
 
-3、 [@RemoteService注解的接口实现类](../../../dawdler-core/README.md#2-RemoteService注解)
+3、 [@Service注解的接口实现类](../../../dawdler-service-plug/dawdler-service-core/README.md#2-service说明)
 
 #### 2.2 FieldConfig注解
 
 参考[FieldConfig注解使用](../../dawdler-config-center-core/README.md#1-FieldConfig注解)
+

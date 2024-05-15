@@ -21,7 +21,7 @@ import java.util.Map;
 import com.anywide.dawdler.core.bean.RequestBean;
 import com.anywide.dawdler.core.bean.ResponseBean;
 import com.anywide.dawdler.core.rpc.context.RpcContext;
-import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
+import com.anywide.dawdler.core.service.processor.ServiceExecutor;
 
 /**
  * @author jackson.song

@@ -83,8 +83,6 @@ public class AmqpConsumer extends MessageConsumer {
 			public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties,
 					byte[] body) throws IOException {
 				consume(body);
-//				long deliveryTag = envelope.getDeliveryTag(); //autoACK
-//				channel.basicAck(deliveryTag, false);
 			}
 		});
 	}

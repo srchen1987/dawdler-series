@@ -26,6 +26,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.anywide.dawdler.server.conf.ServerConfig;
+import com.anywide.dawdler.server.deploys.loader.DawdlerDeployClassLoader;
 import com.anywide.dawdler.util.spring.antpath.StringUtils;
 
 /**

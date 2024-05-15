@@ -23,8 +23,8 @@ import java.util.ServiceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.anywide.dawdler.client.ServiceFactory;
 import com.anywide.dawdler.distributed.transaction.context.DistributedTransactionContext;
+import com.anywide.dawdler.remote.service.injector.RemoteServiceInjector;
 
 /**
  * @author jackson.song
@@ -42,7 +42,11 @@ public abstract class DistributedTransactionCustomProcessor {
 				.load(DistributedTransactionCustomProcessor.class);
 		processors.forEach(processor -> {
 			String action = processor.action;
-			ServiceFactory.injectRemoteService(processor.getClass(), processor, null);
+			try {
+				RemoteServiceInjector.injectRemoteService(processors);
+			} catch (Throwable e) {
+				logger.error("", e);
+			}
 			if (processorInstances.containsKey(action)) {
 				logger.error(
 						action + " already exists in " + processorInstances.get(action).getClass().getName() + "!");

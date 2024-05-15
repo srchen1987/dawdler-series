@@ -27,5 +27,6 @@ package com.anywide.dawdler.clientplug.web.classloader;
 public interface RemoteClassLoaderFire {
 	void onLoadFire(Class<?> clazz, Object target) throws Throwable;
 
-	void onRemoveFire(Class<?> clazz);
+	default void onRemoveFire(Class<?> clazz) {
+	}
 }

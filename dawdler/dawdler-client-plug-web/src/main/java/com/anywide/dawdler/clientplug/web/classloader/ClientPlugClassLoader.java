@@ -17,6 +17,7 @@
 package com.anywide.dawdler.clientplug.web.classloader;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -62,7 +63,7 @@ public class ClientPlugClassLoader {
 	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()
 			.getRemoteClassLoaderFire();
 	List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider
-			.getInstance(ClientPlugClassLoader.class.getName()).getCustomComponentInjectors();
+			.getDefaultInstance().getCustomComponentInjectors();
 	private ClientClassLoader clientClassLoader = null;
 
 	private ClientPlugClassLoader(String path) {
@@ -80,14 +81,14 @@ public class ClientPlugClassLoader {
 		return REMOTE_CLASSES.get(key);
 	}
 
-	public void load(String host, String className, byte[] classBytes) throws Throwable {
+	public void load(String host, String className, byte[] codeBytes) throws Throwable {
 		if (logger.isDebugEnabled()) {
 			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
 		}
 		try {
-			ClassStructure classStructure = ClassStructureParser.parser(classBytes);
+			ClassStructure classStructure = ClassStructureParser.parser(codeBytes);
 			for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
-				Class<?> clazz = inject(classBytes, classStructure, data.getData());
+				Class<?> clazz = inject(codeBytes, classStructure, data.getData());
 				if (clazz == null) {
 					continue;
 				}
@@ -95,7 +96,7 @@ public class ClientPlugClassLoader {
 				if (oldClazz == null || oldClazz != clazz) {
 					REMOTE_CLASSES.put(host.trim() + "-" + className, clazz);
 					try {
-						ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, classBytes);
+						ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, codeBytes);
 					} catch (IOException e) {
 						logger.error("", e);
 					}
@@ -106,10 +107,10 @@ public class ClientPlugClassLoader {
 		}
 	}
 
-	public Class<?> defineClass(String className, byte[] classBytes, boolean useAop) {
+	public Class<?> defineClass(String className, byte[] codeBytes, boolean useAop) {
 		if (useAop && AspectHolder.aj != null) {
 			try {
-				classBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, classBytes,
+				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, codeBytes,
 						clientClassLoader, null);
 			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
@@ -117,7 +118,7 @@ public class ClientPlugClassLoader {
 			}
 		}
 
-		return clientClassLoader.defineClass(className, classBytes);
+		return clientClassLoader.defineClass(className, codeBytes);
 	}
 
 	public Class<?> defineClass(String className, Resource res, boolean useAop) throws IOException {
@@ -174,6 +175,11 @@ public class ClientPlugClassLoader {
 										classData = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj,
 												className, classData, classLoader, null);
 										Class<?> clazz = clientClassLoader.defineClass(className, classData);
+										FileOutputStream out = new FileOutputStream(
+												"/home/srchen/logs/" + className + ".class");
+										out.write(classData);
+										out.flush();
+										out.close();
 										clientClassLoader.toResolveClass(clazz);
 									}
 								} catch (Exception e) {
@@ -213,12 +219,12 @@ public class ClientPlugClassLoader {
 		return inject(resource, null, classStructure, customComponentInjector);
 	}
 
-	public Class<?> inject(byte[] classBytes, ClassStructure classStructure,
+	public Class<?> inject(byte[] codeBytes, ClassStructure classStructure,
 			CustomComponentInjector customComponentInjector) throws Throwable {
-		return inject(null, classBytes, classStructure, customComponentInjector);
+		return inject(null, codeBytes, classStructure, customComponentInjector);
 	}
 
-	private Class<?> inject(Resource resource, byte[] classBytes, ClassStructure classStructure,
+	private Class<?> inject(Resource resource, byte[] codeBytes, ClassStructure classStructure,
 			CustomComponentInjector customComponentInjector) throws Throwable {
 		boolean match = false;
 		Class<?>[] matchTypes = customComponentInjector.getMatchTypes();
@@ -248,8 +254,8 @@ public class ClientPlugClassLoader {
 		}
 		if (match) {
 			Class<?> c;
-			if (classBytes != null) {
-				c = defineClass(classStructure.getClassName(), classBytes, customComponentInjector.useAop());
+			if (codeBytes != null) {
+				c = defineClass(classStructure.getClassName(), codeBytes, customComponentInjector.useAop());
 			} else {
 				c = defineClass(classStructure.getClassName(), resource, customComponentInjector.useAop());
 			}

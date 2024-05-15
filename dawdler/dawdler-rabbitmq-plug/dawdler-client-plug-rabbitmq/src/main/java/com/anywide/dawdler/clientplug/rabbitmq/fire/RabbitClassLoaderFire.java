@@ -39,8 +39,4 @@ public class RabbitClassLoaderFire implements RemoteClassLoaderFire {
 		RabbitListenerInit.initRabbitListener(target, clazz);
 	}
 
-	@Override
-	public void onRemoveFire(Class<?> clazz) {
-	}
-
 }

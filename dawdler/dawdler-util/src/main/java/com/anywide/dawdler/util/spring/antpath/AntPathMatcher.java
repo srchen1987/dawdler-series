@@ -50,6 +50,8 @@ public class AntPathMatcher implements PathMatcher {
 
 	final Map<String, AntPathStringMatcher> stringMatcherCache = new ConcurrentHashMap<>(256);
 
+	public static AntPathMatcher DEFAULT_INSTANCE = new AntPathMatcher();
+
 	/**
 	 * Create a new instance with the {@link #DEFAULT_PATH_SEPARATOR}.
 	 */

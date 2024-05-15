@@ -18,7 +18,7 @@
 例:
 
 ```java
-@RemoteService(group="user-service")
+@Service("user-service")
 public interface UserService {
  
  @CircuitBreaker
