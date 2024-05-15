@@ -233,7 +233,7 @@ public class MyFilter implements DawdlerFilter{
 
 ### 5. dawdler服务创建监听器
 
-实现DawdlerServiceCreateListener接口,实现create方法.支持@Order注解进行升序排序.服务实体类被初始化会调用此方法,单例情况下会在服务器启动时创建,如果是多例情况下则在被调用时调用.是否是单例是在服务端的@RemoteService注解中进行设置,single默认为true是单例.
+实现DawdlerServiceCreateListener接口,实现create方法.支持@Order注解进行升序排序.服务实体类被初始化会调用此方法,单例情况下会在服务器启动时创建,如果是多例情况下则在被调用时调用.是否是单例是在服务端的@Service注解中进行设置,single默认为true是单例.
 
 dawdler-server-plug-mybatis中使用InjectServiceCreateListener的示例：
 

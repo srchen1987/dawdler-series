@@ -5,11 +5,11 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>1.8.2-jdk1.8-RELEASES</version>
 	</parent>
-	<packaging>pom</packaging>
 	<artifactId>dawdler-redis-plug</artifactId>
 	<name>dawdler-redis-plug</name>
+	<packaging>pom</packaging>
 	<modules>
 		<module>dawdler-redis-plug-jedis</module>
 	</modules>

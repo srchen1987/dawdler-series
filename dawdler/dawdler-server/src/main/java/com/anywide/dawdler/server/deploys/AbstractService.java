@@ -1,3 +1,19 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.anywide.dawdler.server.deploys;
 
 import java.io.InputStream;
@@ -28,27 +44,34 @@ import com.anywide.dawdler.core.health.HealthIndicator;
 import com.anywide.dawdler.core.health.HealthIndicatorProvider;
 import com.anywide.dawdler.core.health.ServiceHealth;
 import com.anywide.dawdler.core.health.Status;
+import com.anywide.dawdler.core.loader.DeployClassLoader;
 import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.core.scan.DawdlerComponentScanner;
 import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser;
 import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser.ClassStructure;
-import com.anywide.dawdler.server.bean.ServicesBean;
+import com.anywide.dawdler.core.service.ServicesManager;
+import com.anywide.dawdler.core.service.bean.ServicesBean;
+import com.anywide.dawdler.core.service.processor.DefaultServiceExecutor;
+import com.anywide.dawdler.core.service.processor.ServiceExecutor;
 import com.anywide.dawdler.server.conf.ServerConfig;
 import com.anywide.dawdler.server.conf.ServerConfig.HealthCheck;
 import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.deploys.loader.DeployClassLoader;
-import com.anywide.dawdler.server.filter.DawdlerFilter;
 import com.anywide.dawdler.server.filter.FilterProvider;
 import com.anywide.dawdler.server.listener.DawdlerListenerProvider;
 import com.anywide.dawdler.server.listener.DawdlerServiceListener;
-import com.anywide.dawdler.server.service.ServicesManager;
 import com.anywide.dawdler.server.service.conf.ServicesConfig;
-import com.anywide.dawdler.server.thread.processor.DefaultServiceExecutor;
-import com.anywide.dawdler.server.thread.processor.ServiceExecutor;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 
+/**
+ * @author jackson.song
+ * @version V1.0
+ * @Title AbstractService.java
+ * @Description 抽象服务
+ * @date 2015年3月22日
+ * @email suxuan696@gmail.com
+ */
 public abstract class AbstractService implements Service {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractService.class);
 	protected DeployClassLoader classLoader;
@@ -86,22 +109,16 @@ public abstract class AbstractService implements Service {
 				.getComponentLifeCycles();
 		dawdlerContext.setAttribute(FILTER_PROVIDER, filterProvider);
 		dawdlerContext.setAttribute(DAWDLER_LISTENER_PROVIDER, dawdlerListenerProvider);
-		dawdlerContext.setAttribute(SERVICES_MANAGER, servicesManager);
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().prepareInit();
 		}
-		Object definedServiceExecutor = dawdlerContext.getAttribute(SERVICE_EXECUTOR_PREFIX);
-		if (definedServiceExecutor != null) {
-			serviceExecutor = (ServiceExecutor) definedServiceExecutor;
-		}
-
 		ServicesConfig servicesConfig = dawdlerContext.getServicesConfig();
 
 		Set<String> preLoadClasses = dawdlerContext.getServicesConfig().getPreLoads();
 		if (preLoadClasses != null) {
 			for (String preLoadClass : preLoadClasses) {
-				classLoader.findClassForDawdler(preLoadClass, true);
+				classLoader.findClassForDawdler(preLoadClass, true, false);
 			}
 		}
 
@@ -162,17 +179,10 @@ public abstract class AbstractService implements Service {
 
 		removeDuplicates.clear();
 		servicesManager.getDawdlerServiceCreateProvider().order();
-		servicesManager.fireCreate(dawdlerContext);
+		servicesManager.fireCreate();
 		dawdlerListenerProvider.order();
 		filterProvider.orderAndBuildChain();
 
-		for (OrderData<DawdlerServiceListener> data : dawdlerListenerProvider.getListeners()) {
-			ServicesManager.injectService(data.getData());
-		}
-
-		for (OrderData<DawdlerFilter> data : filterProvider.getFilters()) {
-			ServicesManager.injectService(data.getData());
-		}
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().init();
@@ -182,7 +192,6 @@ public abstract class AbstractService implements Service {
 		}
 		dawdlerContext.removeAttribute(FILTER_PROVIDER);
 		dawdlerContext.removeAttribute(DAWDLER_LISTENER_PROVIDER);
-		dawdlerContext.removeAttribute(SERVICES_MANAGER);
 		for (OrderData<DawdlerServiceListener> orderData : dawdlerListenerProvider.getListeners()) {
 			ListenerConfig listenerConfig = orderData.getClass().getAnnotation(ListenerConfig.class);
 			if (listenerConfig != null && listenerConfig.asyn()) {
@@ -242,7 +251,7 @@ public abstract class AbstractService implements Service {
 		}
 		if (match) {
 			Class<?> clazz = classLoader.findClassForDawdler(classStructure.getClassName(), resource,
-					customComponentInjector.useAop());
+					customComponentInjector.useAop(), customComponentInjector.storeVariableNameByASM());
 			if (customComponentInjector.isInject() && !classStructure.isAbstract() && !classStructure.isAnnotation()
 					&& !classStructure.isInterface()) {
 				Object target = SunReflectionFactoryInstantiator.newInstance(clazz);
@@ -355,11 +364,6 @@ public abstract class AbstractService implements Service {
 
 	@Override
 	public ServicesBean getServicesBean(String name) {
-		return servicesManager.getService(name);
-	}
-
-	@Override
-	public ServicesBean getServicesBeanNoSafe(String name) {
 		return servicesManager.getService(name);
 	}
 

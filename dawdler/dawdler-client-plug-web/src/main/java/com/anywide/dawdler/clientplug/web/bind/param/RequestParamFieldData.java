@@ -18,6 +18,7 @@ package com.anywide.dawdler.clientplug.web.bind.param;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 
 /**
  * @author jackson.song
@@ -32,6 +33,8 @@ public class RequestParamFieldData {
 	private String paramName;
 
 	private Class<?> type;
+
+	private Type parameterType;
 
 	private int index;
 
@@ -53,6 +56,14 @@ public class RequestParamFieldData {
 
 	public void setType(Class<?> type) {
 		this.type = type;
+	}
+
+	public Type getParameterType() {
+		return parameterType;
+	}
+
+	public void setParameterType(Type parameterType) {
+		this.parameterType = parameterType;
 	}
 
 	public int getIndex() {
@@ -85,7 +96,7 @@ public class RequestParamFieldData {
 		}
 		for (int i = 0; i < annotations.length; i++) {
 			if (annotation == annotations[i].annotationType()) {
-				return (T) annotations[i];
+				return annotation.cast(annotations[i]);
 			}
 		}
 		return null;

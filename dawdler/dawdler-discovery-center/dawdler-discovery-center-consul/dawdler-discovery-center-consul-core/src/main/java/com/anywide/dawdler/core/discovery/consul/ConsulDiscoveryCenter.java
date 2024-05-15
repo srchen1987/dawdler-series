@@ -17,6 +17,7 @@
 package com.anywide.dawdler.core.discovery.consul;
 
 import java.io.Closeable;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -65,6 +66,8 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	public static final String HEALTH_CHECK_PASSWORD = "health_check_password";
 	private ConsulRawClient consulRawClient;
 	private TLSConfig config;
+	private String token;
+
 	private String healthCheckType = HealthCheckTypes.TCP.name;
 
 	public static enum HealthCheckTypes {
@@ -77,7 +80,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		}
 	}
 
-	private CatalogServiceRequest catalogServiceRequest = CatalogServiceRequest.newBuilder().build();
+	private CatalogServiceRequest catalogServiceRequest;
 	private HealthChecksForServiceRequest healthChecksForServiceRequest = HealthChecksForServiceRequest.newBuilder()
 			.build();
 
@@ -90,6 +93,9 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	private ConsulDiscoveryCenter() throws Exception {
 		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter("consul");
+		if(ps == null) {
+			throw new FileNotFoundException("not found consul in path , please check your configuration.");
+		}
 		this.host = ps.getProperty("host");
 		String healthCheckType = ps.getProperty("healthCheckType");
 		if (healthCheckType != null && (healthCheckType.equals(HealthCheckTypes.TCP.name)
@@ -106,10 +112,13 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		String certificatePassword = ps.getProperty("certificatePassword");
 		String keyStorePath = ps.getProperty("keyStorePath");
 		String keyStorePassword = ps.getProperty("keyStorePassword");
+		token = ps.getProperty("token");
 		if (keyStoreInstanceType != null) {
 			config = new TLSConfig(KeyStoreInstanceType.valueOf(keyStoreInstanceType), certificatePath,
 					certificatePassword, keyStorePath, keyStorePassword);
 		}
+
+		catalogServiceRequest = CatalogServiceRequest.newBuilder().setToken(token).build();
 
 		init();
 	}
@@ -121,7 +130,6 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		} else {
 			this.consulRawClient = new ConsulRawClient(host, port);
 		}
-
 		this.client = new ConsulClient(consulRawClient);
 	}
 
@@ -185,14 +193,14 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		}
 		check.setInterval(checkTime);
 		service.setCheck(check);
-		client.agentServiceRegister(service);
+		client.agentServiceRegister(service, token);
 		return true;
 	}
 
 	@Override
 	public boolean deleteProvider(String path, String value) throws Exception {
 		if (isExist(path, value)) {
-			client.agentServiceDeregister(getServiceId(path, value));
+			client.agentServiceDeregister(getServiceId(path, value), token);
 		}
 		return true;
 	}
@@ -209,7 +217,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	}
 
 	public String info() throws Exception {
-		Config config = client.getAgentSelf().getValue().getConfig();
+		Config config = client.getAgentSelf(token).getValue().getConfig();
 		return config.getNodeName() + "-" + config.getDatacenter() + "-" + config.getVersion();
 	}
 
@@ -235,6 +243,10 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	public String getHealthCheckType() {
 		return healthCheckType;
+	}
+
+	public String getToken() {
+		return token;
 	}
 
 }

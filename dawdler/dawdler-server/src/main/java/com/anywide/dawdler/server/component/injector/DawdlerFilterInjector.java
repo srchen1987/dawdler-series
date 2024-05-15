@@ -16,9 +16,6 @@
  */
 package com.anywide.dawdler.server.component.injector;
 
-import java.lang.annotation.Annotation;
-import java.util.Set;
-
 import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 import com.anywide.dawdler.core.order.OrderData;
@@ -54,11 +51,6 @@ public class DawdlerFilterInjector implements CustomComponentInjector {
 	@Override
 	public Class<?>[] getMatchTypes() {
 		return new Class<?>[] { DawdlerFilter.class };
-	}
-
-	@Override
-	public Set<? extends Class<? extends Annotation>> getMatchAnnotations() {
-		return null;
 	}
 
 }

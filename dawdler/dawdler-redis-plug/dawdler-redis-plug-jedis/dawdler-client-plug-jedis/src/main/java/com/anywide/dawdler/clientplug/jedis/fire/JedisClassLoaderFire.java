@@ -38,8 +38,4 @@ public class JedisClassLoaderFire implements RemoteClassLoaderFire {
 		JedisDistributedLockHolderFactory.initField(target, clazz);
 	}
 
-	@Override
-	public void onRemoveFire(Class<?> clazz) {
-	}
-
 }

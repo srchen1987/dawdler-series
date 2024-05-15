@@ -21,11 +21,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.anywide.dawdler.core.annotation.Order;
-import com.anywide.dawdler.core.annotation.RemoteService;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import com.anywide.dawdler.core.service.ServicesManager;
+import com.anywide.dawdler.core.service.annotation.Service;
 import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.deploys.ServiceBase;
-import com.anywide.dawdler.server.service.ServicesManager;
 
 /**
  * @author jackson.song
@@ -40,43 +39,14 @@ public class ServiceInjector implements CustomComponentInjector {
 
 	@Override
 	public void inject(Class<?> type, Object target) throws Throwable {
-		ServicesManager servicesManager = (ServicesManager) DawdlerContext.getDawdlerContext()
-				.getAttribute(ServiceBase.SERVICES_MANAGER);
-		RemoteService remoteService = type.getAnnotation(RemoteService.class);
-		if (remoteService != null) {
-			String serviceName = remoteService.serviceName();
-			if (serviceName.trim().equals("")) {
-				servicesManager.registerService(type, target, remoteService.single());
-			} else {
-				servicesManager.register(serviceName, target, remoteService.single());
-			}
-		} else {
-			Class<?>[] interfaceList = type.getInterfaces();
-			for (Class<?> clazz : interfaceList) {
-				remoteService = clazz.getAnnotation(RemoteService.class);
-				if (remoteService == null) {
-					continue;
-				}
-				String serviceName = remoteService.serviceName();
-				if (serviceName.trim().equals("")) {
-					servicesManager.registerService(clazz, target, remoteService.single());
-				} else {
-					servicesManager.register(serviceName, target, remoteService.single());
-				}
-			}
-		}
-
-	}
-
-	@Override
-	public Class<?>[] getMatchTypes() {
-		return null;
+		ServicesManager servicesManager = DawdlerContext.getDawdlerContext().getServicesManager();
+		servicesManager.smartRegister(type, target);
 	}
 
 	@Override
 	public Set<? extends Class<? extends Annotation>> getMatchAnnotations() {
-		Set<Class<RemoteService>> annotationSet = new HashSet<>();
-		annotationSet.add(RemoteService.class);
+		Set<Class<Service>> annotationSet = new HashSet<>();
+		annotationSet.add(Service.class);
 		return annotationSet;
 	}
 
@@ -85,4 +55,9 @@ public class ServiceInjector implements CustomComponentInjector {
 		return new String[] { "com.anywide.dawdler.serverplug.service.impl" };
 	}
 
+	@Override
+	public boolean storeVariableNameByASM() {
+		return true;
+	}
+	
 }

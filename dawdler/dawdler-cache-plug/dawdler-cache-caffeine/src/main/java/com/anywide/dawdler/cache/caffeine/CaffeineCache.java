@@ -63,8 +63,16 @@ public class CaffeineCache implements Cache {
 	}
 
 	@Override
-	public <T> T get(Object key, Class<T> type) {
-		return (T) cache.get(key);
+	public <T> T get(Object key, Class<T> type) throws Exception {
+		Object value = cache.get(key);
+		if (value != null && type != null) {
+			if (!type.isInstance(value)) {
+				throw new IllegalStateException(
+						"Cached value is not of required type [" + type.getName() + "]: " + value);
+			}
+			return type.cast(value);
+		}
+		return null;
 	}
 
 	@Override

@@ -5,9 +5,10 @@
 	<parent>
 		<groupId>dawdler</groupId>
 		<artifactId>dawdler-config-center</artifactId>
-		<version>0.0.2-RELEASES</version>
+		<version>1.8.2-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-config-center-consul</artifactId>
+	<name>dawdler-config-center-consul</name>
 	<packaging>pom</packaging>
 	<modules>
 		<module>dawdler-client-plug-config-center-consul</module>

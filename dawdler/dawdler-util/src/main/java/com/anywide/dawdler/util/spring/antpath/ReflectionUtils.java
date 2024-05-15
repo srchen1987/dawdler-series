@@ -99,7 +99,6 @@ public abstract class ReflectionUtils {
 		return ctor;
 	}
 
-	@SuppressWarnings("deprecation") // on JDK 9
 	public static void makeAccessible(Constructor<?> ctor) {
 		if ((!Modifier.isPublic(ctor.getModifiers()) || !Modifier.isPublic(ctor.getDeclaringClass().getModifiers()))
 				&& !ctor.isAccessible()) {
@@ -313,7 +312,6 @@ public abstract class ReflectionUtils {
 		return false;
 	}
 
-	@SuppressWarnings("deprecation") // on JDK 9
 	public static void makeAccessible(Method method) {
 		if ((!Modifier.isPublic(method.getModifiers()) || !Modifier.isPublic(method.getDeclaringClass().getModifiers()))
 				&& !method.isAccessible()) {

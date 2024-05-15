@@ -1,40 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	targetNamespace="https://github.com/srchen1987/dawdler-series"
-	xmlns="https://github.com/srchen1987/dawdler-series" xmlns:ns="https://github.com/srchen1987/dawdler-series"  elementFormDefault="qualified">
+	xmlns="https://github.com/srchen1987/dawdler-series"
+	xmlns:ns="https://github.com/srchen1987/dawdler-series"
+	elementFormDefault="qualified">
 	<xs:element name="config">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="certificatePath" minOccurs="1" maxOccurs="1" type="xs:string" />
-				<xs:element name="server-channel-group" minOccurs="1" maxOccurs="unbounded">
+				<xs:element name="certificatePath" minOccurs="1" maxOccurs="1"
+					type="xs:string" />
+				<xs:element name="server-channel-group" minOccurs="1"
+					maxOccurs="unbounded">
 					<xs:complexType mixed="true">
-						<xs:attribute name="channel-group-id" use="required" type="xs:NMTOKEN" />
-						<xs:attribute name="connection-num" type="t_connection-num" use="required" />
-						<xs:attribute name="session-num" type="t_session-num" use="required" />
-						<xs:attribute name="serializer" type="t_serializer" use="required" />
-						<xs:attribute name="user" use="required" type="xs:NMTOKEN" />
-						<xs:attribute name="password" use="required" type="t_string" />
+						<xs:attribute name="channel-group-id" use="required"
+							type="xs:NMTOKEN" />
+						<xs:attribute name="connection-num"
+							type="t_connection-num" use="required" />
+						<xs:attribute name="session-num" type="t_session-num"
+							use="required" />
+						<xs:attribute name="serializer" type="t_serializer"
+							use="required" />
+						<xs:attribute name="user" use="required"
+							type="xs:NMTOKEN" />
+						<xs:attribute name="password" use="required"
+							type="t_string" />
 						<xs:attribute name="host" type="xs:string" />
-					</xs:complexType>
-				</xs:element>
-				<xs:element name="component-scan" minOccurs="0" maxOccurs="1">
-					<xs:complexType mixed="true">
-						<xs:attribute name="base-package" use="required"
-												type="t_string" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="loads-on" minOccurs="0" maxOccurs="1">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="item" minOccurs="1" maxOccurs="unbounded">
+							<xs:element name="item" minOccurs="1"
+								maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:simpleContent>
 										<xs:extension base="t_string">
-											<xs:attribute name="sleep" type="xs:integer"
+											<xs:attribute name="sleep"
+												type="xs:integer"
 												use="required" />
-											<xs:attribute name="channel-group-id" use="required"
+											<xs:attribute
+												name="channel-group-id"
+												use="required"
 												type="xs:string" />
-											<xs:attribute name="mode" type="t_mode"/>
+											<xs:attribute name="mode"
+												type="t_mode" />
 										</xs:extension>
 									</xs:simpleContent>
 								</xs:complexType>
@@ -48,7 +57,8 @@
 			<xs:selector xpath="ns:server-channel-group" />
 			<xs:field xpath="@channel-group-id" />
 		</xs:key>
-		<xs:keyref refer="channel-group-id" name="loads-on-item-channel-group-id">
+		<xs:keyref refer="channel-group-id"
+			name="loads-on-item-channel-group-id">
 			<xs:selector xpath="ns:loads-on/ns:item"></xs:selector>
 			<xs:field xpath="@channel-group-id"></xs:field>
 		</xs:keyref>
@@ -79,7 +89,7 @@
 	</xs:simpleType>
 	<xs:simpleType name="t_string">
 		<xs:restriction base="xs:string">
-			<xs:minLength value="1"/>
+			<xs:minLength value="1" />
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

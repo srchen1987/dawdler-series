@@ -48,7 +48,7 @@ public class RedisMessageOperator implements MessageOperator {
 	public static final String CHANNEL_ATTRIBUTE_CHANGE_RELOAD = "__keyevent__:attribute_change_reload";
 	public static final String CHANNEL_ATTRIBUTE_CHANGE = "__keyevent__:attribute_change";
 	public static final String CHANNEL_ATTRIBUTE_CHANGE_DEL = "__keyevent__:attribute_del";
-	public static final Logger logger = LoggerFactory.getLogger(RedisMessageOperator.class);
+	private static final Logger logger = LoggerFactory.getLogger(RedisMessageOperator.class);
 	private final Serializer serializer;
 	private final SessionStore sessionStore;
 	private final AbstractDistributedSessionManager abstractDistributedSessionManager;
