@@ -80,19 +80,20 @@ RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服�
 
 dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现实现,线程池,注解,压缩算法等.
 
-#### 3. [dawdler-server-plug](dawdler/dawdler-server-plug/README.md)
 
-服务端插件,提供远程加载服务,注入service到过滤器,监听器,远程加载客户端.
+#### 3. [dawdler-load-plug](dawdler/dawdler-load-plug/README.md)
 
-#### 4. [dawdler-server-plug-db](dawdler/dawdler-server-plug-db/README.md)
+远程组件加载模块. 一般用于做动态网关.
 
-服务端数据库事务,读写分离的插件.
+#### 4. [dawdler-db-plug](dawdler/dawdler-db-plug/README.md)
 
-#### 5. [dawdler-server-plug-dao](dawdler/dawdler-server-plug-dao/README.md)
+事务管理器模块,提供与spring基本一致的事务应用,支持读写分离.服务端数据库事务,读写分离的插件.
 
-通过反射实现的jdbc通用dao插件,注入dao到service.
+#### 5. [dawdler-dao-plug](dawdler/dawdler-dao-plug/README.md)
 
-#### 6. [dawdler-server-plug-mybatis](dawdler/dawdler-server-plug-mybatis/README.md)
+通过反射实现的一套简易操作数据库的一套组件.支持基本的增删改查,读写分离. 注入dao到service. (仅支持mysql,如果是其他数据库推荐使用mybatis.)
+
+#### 6. [dawdler-mybatis-plug](dawdler/dawdler-mybatis-plug/README.md)
 
 通过mybatis实现的数据库操作插件,注入mapper到service,session变更为单例模式,支持读写分离.
 
@@ -180,10 +181,9 @@ dawdler实现pinpoint链路追踪插件.
 
 可以用在web端和服务端的缓存模块.
 
-#### 28. [dawdler-client-plug-load](dawdler/dawdler-client-plug-load/README.md)
+#### 28. [dawdler-service-plug](dawdler/dawdler-service-plug/README.md)
 
-远程加载模块,之前在dawdler-client-plug模块中,将dawdler-client-plug模块拆分成dawdler-client-plug-web与dawdler-client-plug-load模块.
-此模块最常用的场景用于做动态网关. 
+service模块的支持,包含客户端,服务器端,service核心模块.
 
 ### dawdler-runtime介绍
 
@@ -219,7 +219,7 @@ dawdler需要三方组件的支持,如下:
 | 软件 | 是否必须 | 备注 |
 | :-: | :-: | :-: |  
 | jdk-1.8 | √ | 建议使用openjdk1.8x |
-| apache-zookeeper-3.6+ | √ | 注册中心 |
+| apache-zookeeper-3.6+ | x | 注册中心时需要 |
 | tomcat-8.5+ | x | web服务时需要 |
 | redis5x \| 6x | x | 缓存服务时需要 |
 | mysql5x \| 8x | x | 数据库服务时需要 |
@@ -266,9 +266,6 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
     |   --order-api #存放接口定义,dto,entity.
     |   --product-api
     --load-web #远程加载服务,包类型为pom的子模块工程.
-    |   --user-load-web 
-    |   --order-load-web #存放controller,listener,filter组件,用于被web-api模块远程加载.
-    |   --product-load-web
     |   --core-load-web #用与加载公用组件,如服代替网关的过滤器,用于被web-api模块远程加载.
     --service #具体服务实现,部署在dawdler中,包类型为pom的子模块工程.
     |   --user-service 
@@ -279,7 +276,5 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
     |   --order-web-api
     |   --product-web-api
 ```
-
-更多实例请参考[dawdler-chapter](https://github.com/srchen1987/dawdler-chapter).
 
 需要帮助可以发送email到 <suxuan696@gmail.com> .

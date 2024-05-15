@@ -102,7 +102,7 @@ public class Transaction {
 		values.add(value);
 	}
 
-	void addObjectParam(Class<?> type, Object value) {
+	public void addObjectParam(Class<?> type, Object value) {
 		types.add(type);
 		values.add(value);
 	}

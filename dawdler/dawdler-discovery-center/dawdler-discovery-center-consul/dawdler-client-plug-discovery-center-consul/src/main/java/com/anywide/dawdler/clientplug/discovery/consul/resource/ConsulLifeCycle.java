@@ -46,7 +46,7 @@ import com.ecwid.consul.v1.health.model.Check.CheckStatus;
  * @date 2023年3月5日
  * @email suxuan696@gmail.com
  */
-@Order(Integer.MAX_VALUE)
+@Order(com.anywide.dawdler.core.order.Order.LOWEST_PRECEDENCE)
 public class ConsulLifeCycle implements ComponentLifeCycle {
 	private ConsulDiscoveryCenter consulDiscoveryCenter = null;
 	private ExecutorService executor = null;

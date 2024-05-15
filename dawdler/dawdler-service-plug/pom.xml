@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>dawdler</groupId>
+		<artifactId>dawdler</artifactId>
+		<version>1.8.2-jdk1.8-RELEASES</version>
+	</parent>
+	<artifactId>dawdler-service-plug</artifactId>
+	<name>dawdler-service-plug</name>
+	<packaging>pom</packaging>
+	<modules>
+		<module>dawdler-service-core</module>
+		<module>dawdler-client-plug-remote-service</module>
+		<module>dawdler-client-plug-local-service</module>
+		<module>dawdler-server-plug-remote-service</module>
+		<module>dawdler-server-plug-local-service</module>
+		<module>dawdler-local-service-core</module>
+		<module>dawdler-remote-service-core</module>
+	</modules>
+</project>

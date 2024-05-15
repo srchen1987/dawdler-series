@@ -21,16 +21,16 @@ import static com.anywide.dawdler.util.XmlTool.getNodes;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import com.anywide.dawdler.server.service.conf.ServicesConfig.DataSourceExpression;
-import com.anywide.dawdler.server.service.conf.ServicesConfig.Decision;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 
@@ -38,7 +38,7 @@ import com.anywide.dawdler.util.XmlObject;
  * @author jackson.song
  * @version V1.0
  * @Title ServicesConfigParser.java
- * @Description 服务配置解析类 (抛弃老版本的xstream实现使用dom4j实现，最后抛弃dom4j实现)
+ * @Description 服务配置解析类 (抛弃老版本的xstream实现. 使用dom4j实现,最后抛弃dom4j实现)
  * @date 2023年5月1日
  * @email suxuan696@gmail.com
  */
@@ -92,12 +92,13 @@ public class ServicesConfigParser {
 	public void loadDatasourceExpressions(Node node) {
 		List<Node> dataSourceExpressions = getNodes(node.getChildNodes());
 		if (!dataSourceExpressions.isEmpty()) {
-			List<DataSourceExpression> datasourceExpressionList = new ArrayList<>();
+			List<Map<String, String>> datasourceExpressionList = new ArrayList<>();
 			for (Node datasourceExpressionNode : dataSourceExpressions) {
-				DataSourceExpression dataSourceExpression = servicesConfig.new DataSourceExpression();
+				Map<String, String> dataSourceExpression = new HashMap<>();
 				NamedNodeMap namedNodeMap = datasourceExpressionNode.getAttributes();
-				dataSourceExpression.setId(namedNodeMap.getNamedItem("id").getNodeValue());
-				dataSourceExpression.setLatentExpression(namedNodeMap.getNamedItem("latent-expression").getNodeValue());
+				dataSourceExpression.put("id", namedNodeMap.getNamedItem("id").getNodeValue());
+				dataSourceExpression.put("latentExpression",
+						namedNodeMap.getNamedItem("latent-expression").getNodeValue());
 				datasourceExpressionList.add(dataSourceExpression);
 			}
 			servicesConfig.setDataSourceExpressions(datasourceExpressionList);
@@ -107,29 +108,48 @@ public class ServicesConfigParser {
 	public void loadDecisions(Node node) {
 		List<Node> decisions = getNodes(node.getChildNodes());
 		if (!decisions.isEmpty()) {
-			List<Decision> decisionList = new ArrayList<>();
+			List<Map<String, String>> decisionList = new ArrayList<>();
 			for (Node decisionNode : decisions) {
-				Decision decision = servicesConfig.new Decision();
+				Map<String, String> decision = new HashMap<>();
 				NamedNodeMap namedNodeMap = decisionNode.getAttributes();
-				decision.setLatentExpressionId(namedNodeMap.getNamedItem("latent-expression-id").getNodeValue());
-				decision.setMapping(namedNodeMap.getNamedItem("mapping").getNodeValue());
+				decision.put("latentExpressionId", namedNodeMap.getNamedItem("latent-expression-id").getNodeValue());
+				decision.put("mapping", namedNodeMap.getNamedItem("mapping").getNodeValue());
 				decisionList.add(decision);
 			}
 			servicesConfig.setDecisions(decisionList);
 		}
 	}
 
+	public void loadDataSources(Node node) {
+		List<Node> dataSources = getNodes(node.getChildNodes());
+		if (!dataSources.isEmpty()) {
+			for (Node dataSourceNode : dataSources) {
+				NamedNodeMap namedNodeMap = dataSourceNode.getAttributes();
+				String id = namedNodeMap.getNamedItem("id").getNodeValue();
+				List<Node> attributes = getNodes(dataSourceNode.getChildNodes());
+				Map<String, Object> attributeMap = new HashMap<>();
+				for (Node attribute : attributes) {
+					namedNodeMap = attribute.getAttributes();
+					String name = namedNodeMap.getNamedItem("name").getNodeValue();
+					String content = attribute.getTextContent();
+					attributeMap.put(name, content);
+				}
+				servicesConfig.getDataSources().put(id, attributeMap);
+			}
+		}
+	}
+
 	public ServicesConfigParser() throws Exception {
 		String configPath;
 		String activeProfile = System.getProperty("dawdler.profiles.active");
-		String prefix = "services-config";
+		String prefix = "services-conf";
 		String subfix = ".xml";
 		configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
 		InputStream xmlInput = DawdlerTool.getResourceFromClassPath(prefix, subfix);
 		if (xmlInput == null) {
 			throw new IOException("not found " + configPath + " in classPath!");
 		}
-		InputStream xsdInput = getClass().getResourceAsStream("/services-config.xsd");
+		InputStream xsdInput = getClass().getResourceAsStream("/services-conf.xsd");
 		try {
 			parser(xmlInput, xsdInput);
 		} finally {
@@ -162,6 +182,8 @@ public class ServicesConfigParser {
 				loadDatasourceExpressions(childNode);
 			} else if (childNodeName.equals("decisions")) {
 				loadDecisions(childNode);
+			} else if (childNodeName.equals("datasources")) {
+				loadDataSources(childNode);
 			}
 		}
 	}

@@ -10,4 +10,4 @@ jedis实现的redis模块.
 
 [dawdler-server-plug-jedis 实现dawdler-server端注入功能.](./dawdler-server-plug-jedis/README.md)
 
-[dawdler-client-plug-jedis 实现dawdler-client端注入功能.](./dawdler-client-plug-jedis/README.md)
+[dawdler-client-plug-jedis 实现web端注入功能.](./dawdler-client-plug-jedis/README.md)

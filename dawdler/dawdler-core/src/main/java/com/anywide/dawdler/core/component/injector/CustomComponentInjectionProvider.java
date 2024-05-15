@@ -38,6 +38,10 @@ public class CustomComponentInjectionProvider {
 	private static Map<String, CustomComponentInjectionProvider> instances = new ConcurrentHashMap<>();
 	private final List<OrderData<CustomComponentInjector>> customComponentInjectors = new ArrayList<>();
 
+	public static CustomComponentInjectionProvider getDefaultInstance() {
+		return getInstance(CustomComponentInjectionProvider.class.getName());
+	}
+
 	public static CustomComponentInjectionProvider getInstance(String serviceName) {
 		CustomComponentInjectionProvider componentLifeCycleProvider = instances.get(serviceName);
 		if (componentLifeCycleProvider != null) {
