@@ -179,10 +179,6 @@ public class ServerConfig {
 		private String password;
 
 		public String getKeyStorePath() {
-			if (keyStorePath != null) {
-				keyStorePath = keyStorePath.replace("${" + ServiceRoot.DAWDLER_BASE_PATH + "}",
-						DawdlerTool.getProperty(ServiceRoot.DAWDLER_BASE_PATH) + File.separator);
-			}
 			return keyStorePath;
 		}
 

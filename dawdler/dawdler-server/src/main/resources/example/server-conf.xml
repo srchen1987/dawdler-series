@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://github.com/srchen1987/dawdler-series https://cdn.jsdelivr.net/gh/srchen1987/dawdler-series-xsd@main/server-conf.xsd">
 	<keyStore
-		keyStorePath="${DAWDLER_BASE_PATH}key/dawdler.keystore" alias="srchen"
+		keyStorePath="dawdler.keystore" alias="srchen"
 		password="jackson.song1948@anywide" />
 	<server host="0.0.0.0" tcp-port="9527"
 		shutdownWhiteList="127.0.0.1,localhost" tcp-shutdownPort="19930"
