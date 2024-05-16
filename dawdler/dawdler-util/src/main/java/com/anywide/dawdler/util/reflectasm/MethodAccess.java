@@ -35,7 +35,7 @@ import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.RETURN;
-import static org.objectweb.asm.Opcodes.V17;
+import static org.objectweb.asm.Opcodes.V21;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -54,7 +54,7 @@ import org.objectweb.asm.Type;
  * @author jackson.song
  * @version V1.0
  * @Title MethodAccess.java
- * @Description asm的改进版 已升到asm支持jdk17
+ * @Description asm的改进版
  * @date 2012年5月16日
  * @email suxuan696@gmail.com
  */
@@ -140,7 +140,7 @@ public abstract class MethodAccess {
 
 					ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
 					MethodVisitor mv;
-					cw.visit(V17, ACC_PUBLIC + ACC_SUPER, accessClassNameInternal, null,
+					cw.visit(V21, ACC_PUBLIC + ACC_SUPER, accessClassNameInternal, null,
 							"com/anywide/dawdler/util/reflectasm/MethodAccess", null);
 					{
 						mv = cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null);

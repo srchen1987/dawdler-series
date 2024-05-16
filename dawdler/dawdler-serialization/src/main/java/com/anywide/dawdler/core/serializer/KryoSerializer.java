@@ -39,8 +39,9 @@ import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
  * @email suxuan696@gmail.com
  */
 public class KryoSerializer implements Serializer {
-	private static Map<Thread, KryoLocal> kryos = new HashMap<Thread, KryoSerializer.KryoLocal>();
+	private static Map<String, KryoLocal> kryos = new HashMap<String, KryoSerializer.KryoLocal>();
 	private static final StdInstantiatorStrategy STD_INSTANTIATOR_STRATEGY = new StdInstantiatorStrategy();
+
 	private KryoLocal initialValue() {
 		KryoLocal kryoLocal = new KryoLocal();
 		return kryoLocal;
@@ -48,12 +49,17 @@ public class KryoSerializer implements Serializer {
 
 	public KryoLocal getKryoLocal() {
 		Thread thread = Thread.currentThread();
-		KryoLocal kryoLocal = kryos.get(thread);
+		String name = thread.toString();
+		int index = name.indexOf("@");
+		if (index != -1) {
+			name = name.substring(index, name.length());
+		}
+		KryoLocal kryoLocal = kryos.get(name);
 		if (kryoLocal != null) {
 			return kryoLocal;
 		}
 		kryoLocal = initialValue();
-		kryos.put(thread, kryoLocal);
+		kryos.put(name, kryoLocal);
 		return kryoLocal;
 	}
 

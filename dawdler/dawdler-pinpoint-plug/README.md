@@ -124,7 +124,7 @@ profiler.dawdler.bootstrap.main=com.anywide.dawdler.server.bootstrap.Bootstrap
 
 ```
 
-dawdler-jdk17版本加入:
+dawdler-jdk21版本加入:
 
 ```config
 ###########################################################

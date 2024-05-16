@@ -28,10 +28,12 @@ import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.ForkJoinPool.ForkJoinWorkerThreadFactory;
 import java.util.concurrent.ForkJoinWorkerThread;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,15 +68,19 @@ public class DawdlerServer {
 	private final AsynchronousChannelGroup asynchronousChannelGroup;
 	private final DawdlerServerContext dawdlerServerContext;
 	private final AbstractServiceRoot abstractServiceRoot;
-	public DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
 	private final Semaphore startSemaphore = new Semaphore(0);
 
 	public DawdlerServer(ServerConfig serverConfig, AbstractServiceRoot abstractServiceRoot) throws Exception {
 		this.abstractServiceRoot = abstractServiceRoot;
 		dawdlerServerContext = new DawdlerServerContext(serverConfig, abstractServiceRoot, STARTED, startSemaphore);
-		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(
-				Runtime.getRuntime().availableProcessors() * 2, dawdlerForkJoinWorkerThreadFactory, null, true));
 		Server server = serverConfig.getServer();
+		if(server.isVirtualThread()) {
+			ThreadFactory factory = Thread.ofVirtual().name("@dawdler-Server-acceptor#", 1).factory();
+			asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(Executors.newThreadPerTaskExecutor(factory));
+		}else {
+			asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(
+					Runtime.getRuntime().availableProcessors() * 2,  new DawdlerForkJoinWorkerThreadFactory(), null, true));
+		}
 		int port = server.getTcpPort();
 		int backlog = server.getTcpBacklog();
 		String host = server.getHost();

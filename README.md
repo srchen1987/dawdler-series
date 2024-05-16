@@ -1,8 +1,8 @@
 # dawdler-series
 
-![version](https://img.shields.io/badge/dawdler--series-0.17.1--jdk17--RELEASES-brightgreen)&nbsp;
+![version](https://img.shields.io/badge/dawdler--series-21.2--jdk21--RELEASES-brightgreen)&nbsp;
 [![License](https://img.shields.io/badge/license-apache2.0-green)](LICENSE)&nbsp;
-![jdk](https://img.shields.io/badge/jdk-17%2B-green)
+![jdk](https://img.shields.io/badge/jdk-21%2B-green)
 
 ## 项目介绍
 
@@ -194,7 +194,7 @@ service模块的支持,包含客户端,服务器端,service核心模块.
 
 ### 安装教程
 
-1. 下载[dawdler-runtime-jdk17](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/dawdler-runtime-jdk17.zip)
+1. 下载[dawdler-runtime-jdk21](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/dawdler-runtime-jdk21.zip)
 
 2. 启动注册中心,zookeeper执行 `sh zkServer.sh start`  启动zookeeper或启动consul.
 
