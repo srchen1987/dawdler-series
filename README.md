@@ -269,9 +269,6 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
     |   --order-api #存放接口定义,dto,entity.
     |   --product-api
     --load-web #远程加载服务,包类型为pom的子模块工程.
-    |   --user-load-web #存放controller,listener,filter组件,用于被web-api模块远程加载.
-    |   --order-load-web 
-    |   --product-load-web
     |   --core-load-web #用与加载公用组件,如服代替网关的过滤器,用于被web-api模块远程加载.
     --service #具体服务实现,部署在dawdler中,包类型为pom的子模块工程.
     |   --user-service 
