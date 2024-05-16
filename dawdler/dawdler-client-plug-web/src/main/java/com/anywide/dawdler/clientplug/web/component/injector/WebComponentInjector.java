@@ -26,7 +26,6 @@ import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFireHolder;
 import com.anywide.dawdler.clientplug.web.interceptor.HandlerInterceptor;
 import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
-import com.anywide.dawdler.core.annotation.Order;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 import com.anywide.dawdler.core.order.OrderData;
 
