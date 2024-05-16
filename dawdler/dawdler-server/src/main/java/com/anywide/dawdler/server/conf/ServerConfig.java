@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.server.conf;
 
-import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -24,10 +23,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.anywide.dawdler.server.deploys.ServiceRoot;
 import com.anywide.dawdler.util.CertificateOperator;
 import com.anywide.dawdler.util.CertificateOperator.KeyStoreConfig;
-import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 import com.anywide.dawdler.util.spring.antpath.StringUtils;
 
@@ -217,6 +214,7 @@ public class ServerConfig {
 		private int maxThreads = 200;
 		private int queueCapacity = 1024 * 64;
 		private long keepAliveMilliseconds = 0;
+		private boolean virtualThread;
 
 		public String getHost() {
 			return host;
@@ -312,6 +310,14 @@ public class ServerConfig {
 
 		public void setKeepAliveMilliseconds(long keepAliveMilliseconds) {
 			this.keepAliveMilliseconds = keepAliveMilliseconds;
+		}
+		
+		public boolean isVirtualThread() {
+			return virtualThread;
+		}
+
+		public void setVirtualThread(boolean virtualThread) {
+			this.virtualThread = virtualThread;
 		}
 	}
 

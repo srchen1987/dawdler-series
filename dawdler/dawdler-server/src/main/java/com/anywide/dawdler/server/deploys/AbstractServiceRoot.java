@@ -22,7 +22,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
@@ -59,19 +61,23 @@ public abstract class AbstractServiceRoot {
 	protected String getProperty(String key) {
 		return DawdlerTool.getProperty(key);
 	}
-
 	protected void initWorkPool(Server server) {
-		int queueCapacity = server.getQueueCapacity();
-		if (queueCapacity <= 0) {
-			queueCapacity = Integer.MAX_VALUE;
+		if(server.isVirtualThread()) {
+			ThreadFactory factory = Thread.ofVirtual().name("@dataProcessWorkerPool#", 1).factory();
+			dataProcessExecutor = Executors.newThreadPerTaskExecutor(factory);
+		}else {
+			int queueCapacity = server.getQueueCapacity();
+			if (queueCapacity <= 0) {
+				queueCapacity = Integer.MAX_VALUE;
+			}
+			long keepAliveMilliseconds = server.getKeepAliveMilliseconds();
+			if (keepAliveMilliseconds < 0) {
+				keepAliveMilliseconds = 0;
+			}
+			int nThreads = server.getMaxThreads();
+			dataProcessExecutor = new ThreadPoolExecutor(nThreads, nThreads, keepAliveMilliseconds, TimeUnit.MILLISECONDS,
+					new LinkedBlockingQueue<Runnable>(queueCapacity), new DefaultThreadFactory("dataProcessWorkerPool#"));
 		}
-		long keepAliveMilliseconds = server.getKeepAliveMilliseconds();
-		if (keepAliveMilliseconds < 0) {
-			keepAliveMilliseconds = 0;
-		}
-		int nThreads = server.getMaxThreads();
-		dataProcessExecutor = new ThreadPoolExecutor(nThreads, nThreads, keepAliveMilliseconds, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>(queueCapacity), new DefaultThreadFactory("dataProcessWorkerPool#"));
 	}
 
 	public void shutdownWorkPool() {

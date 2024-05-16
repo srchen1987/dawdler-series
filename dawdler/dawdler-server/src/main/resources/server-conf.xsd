@@ -35,6 +35,7 @@
 						<xs:attribute name="maxThreads" type="xs:int" />
 						<xs:attribute name="queueCapacity" type="xs:int" />
 						<xs:attribute name="keepAliveMilliseconds" type="xs:int" />
+						<xs:attribute name="virtualThread" type="xs:boolean" />
 					</xs:complexType>
 				</xs:element>
 				<xs:element name="global-auth" minOccurs="0"

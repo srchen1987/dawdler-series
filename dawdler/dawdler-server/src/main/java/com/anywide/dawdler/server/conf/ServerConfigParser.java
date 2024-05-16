@@ -78,6 +78,7 @@ public class ServerConfigParser {
 		server.setQueueCapacity(getElementAttribute2Int(namedNodeMap, "queueCapacity", server.getQueueCapacity()));
 		server.setKeepAliveMilliseconds(
 				getElementAttribute2Long(namedNodeMap, "keepAliveMilliseconds", server.getKeepAliveMilliseconds()));
+		server.setVirtualThread(getElementAttribute2Boolean(namedNodeMap, "virtualThread", server.isVirtualThread()));
 	}
 
 	public void loadGlobalAuth(Node globalAuthEle) {

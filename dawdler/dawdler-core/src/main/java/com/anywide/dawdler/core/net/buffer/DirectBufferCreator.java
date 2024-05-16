@@ -41,7 +41,7 @@ public class DirectBufferCreator implements BufferCreator {
 		try {
 			unsafe = Unsafe.getUnsafe();
 			Class<?> bufferClass = Class.forName("java.nio.DirectByteBuffer");
-			bufferConstructor = bufferClass.getDeclaredConstructor(long.class, int.class);
+			bufferConstructor = bufferClass.getDeclaredConstructor(long.class, long.class);
 			bufferConstructor.setAccessible(true);
 		} catch (Exception e) {
 			logger.error("", e);
