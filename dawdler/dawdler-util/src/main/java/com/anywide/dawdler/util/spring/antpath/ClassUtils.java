@@ -46,9 +46,6 @@ public abstract class ClassUtils {
 	/** Prefix for internal non-primitive array class names: {@code "[L"}. */
 	private static final String NON_PRIMITIVE_ARRAY_PREFIX = "[L";
 
-	/** A reusable empty class array constant. */
-	private static final Class<?>[] EMPTY_CLASS_ARRAY = {};
-
 	/** The package separator character: {@code '.'}. */
 	private static final char PACKAGE_SEPARATOR = '.';
 
