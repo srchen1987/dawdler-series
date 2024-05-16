@@ -23,7 +23,7 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
  <keyStore
-  keyStorePath="${DAWDLER_BASE_PATH}/key/dawdler.keystore"
+  keyStorePath="dawdler.keystore"
   alias="srchen" password="jackson.song1948@anywide"></keyStore><!-- 
 		keyStorePath 私钥路径 alias帐号 password 密码 -->
  <server host="0.0.0.0" tcp-port="9527"
