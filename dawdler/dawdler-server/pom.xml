@@ -17,7 +17,7 @@
 		</dependency>
 		<dependency>
 			<groupId>dawdler</groupId>
-			<artifactId>dawdler-remote-service-core</artifactId>
+			<artifactId>dawdler-service-core</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
