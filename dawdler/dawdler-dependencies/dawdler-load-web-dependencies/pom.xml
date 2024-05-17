@@ -195,6 +195,12 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>dawdler</groupId>
+				<artifactId>dawdler-service-core</artifactId>
+				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
 				<scope>provided</scope>
