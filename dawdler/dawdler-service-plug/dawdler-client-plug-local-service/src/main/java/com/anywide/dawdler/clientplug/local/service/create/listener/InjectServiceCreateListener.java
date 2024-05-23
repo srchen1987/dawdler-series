@@ -26,10 +26,7 @@ import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectServiceCreateListener.java
- * @Description 实现Service的组件注入
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * 实现Service的组件注入
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()

@@ -23,10 +23,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClassUtil.java
- * @Description Class操作类
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * Class操作类
  */
 public class ClassUtil {
 	private static final Map<Class<?>, Class<?>> primitiveWrapperTypeMap = new IdentityHashMap<>(8);

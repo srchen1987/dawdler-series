@@ -29,10 +29,7 @@ import javax.crypto.spec.SecretKeySpec;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AesSecurityPlus.java
- * @Description AES加密解密工具类,替代DES
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * AES加密解密工具类,替代DES
  */
 public class AesSecurityPlus {
 	private static ConcurrentHashMap<String, AesSecurityPlus> cachePlug = new ConcurrentHashMap<>();

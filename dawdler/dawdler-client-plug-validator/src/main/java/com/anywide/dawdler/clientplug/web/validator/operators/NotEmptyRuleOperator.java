@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title NotEmptyRuleOperator.java
- * @Description 不能为空验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 不能为空验证
  */
 public class NotEmptyRuleOperator extends StringRuleOperator {
 	public static final String RULE_KEY = "notEmpty";

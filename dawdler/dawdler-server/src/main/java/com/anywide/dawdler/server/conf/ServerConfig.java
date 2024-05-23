@@ -31,10 +31,7 @@ import com.anywide.dawdler.util.spring.antpath.StringUtils;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServerConfig.java
- * @Description 服务器配置类
- * @date 2015年4月4日
- * @email suxuan696@gmail.com
+ * 服务器配置类
  */
 public class ServerConfig {
 	private URL binPath;

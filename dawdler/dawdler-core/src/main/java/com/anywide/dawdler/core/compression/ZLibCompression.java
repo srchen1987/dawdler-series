@@ -24,10 +24,7 @@ import java.util.zip.Inflater;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ZLibCompression.java
- * @Description Copy过来的Zlib实现
- * @date 2015年7月16日
- * @email suxuan696@gmail.com
+ * Copy过来的Zlib实现
  */
 public class ZLibCompression implements CompressionAlgorithm {
 

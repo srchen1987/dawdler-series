@@ -24,10 +24,7 @@ import com.anywide.dawdler.core.annotation.Order;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigLoaderFire.java
- * @Description 获取远程类加载时触发通知，实现动态注入config
- * @date 2021年5月30日
- * @email suxuan696@gmail.com
+ * 获取远程类加载时触发通知，实现动态注入config
  */
 @Order(1)
 public class ConfigLoaderFire implements RemoteClassLoaderFire {

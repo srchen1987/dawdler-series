@@ -31,10 +31,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ScheduleLifeCycle.java
- * @Description 实现向监听器,过滤器 schedule注解方法的调用
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * 实现向监听器,过滤器 schedule注解方法的调用
  */
 public class ScheduleLifeCycle implements ComponentLifeCycle {
 	@Override

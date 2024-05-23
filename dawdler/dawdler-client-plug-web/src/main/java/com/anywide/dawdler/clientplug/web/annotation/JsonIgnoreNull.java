@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JsonIgnoreNull.java
- * @Description 序列化时忽略Null属性
- * @date 2023年1月22日
- * @email suxuan696@gmail.com
+ * 序列化时忽略Null属性
  */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

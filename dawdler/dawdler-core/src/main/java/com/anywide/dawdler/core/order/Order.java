@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.order;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Order.java
- * @Description 排序的接口
- * @date 2007年12月3日
- * @email suxuan696@gmail.com
+ * 排序的接口
  */
 public interface Order {
 	int HIGHEST_PRECEDENCE = Integer.MIN_VALUE;

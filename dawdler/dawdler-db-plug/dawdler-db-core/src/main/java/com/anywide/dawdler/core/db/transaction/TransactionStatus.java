@@ -21,10 +21,7 @@ import java.sql.SQLException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionStatus.java
- * @Description 事务状态定义的接口
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 事务状态定义的接口
  */
 public interface TransactionStatus extends TransactionDefinition {
 	boolean isCompleted();

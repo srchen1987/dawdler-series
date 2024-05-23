@@ -21,10 +21,7 @@ import com.sun.net.httpserver.BasicAuthenticator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Auth.java
- * @Description Auth 认证器
- * @date 2022年5月1日
- * @email suxuan696@gmail.com
+ * Auth 认证器
  */
 public class Auth extends BasicAuthenticator {
 	private String username;

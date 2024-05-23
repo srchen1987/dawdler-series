@@ -19,10 +19,7 @@ package com.anywide.dawdler.util;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LogUtil.java
- * @Description 输出代码调用行的工具类
- * @date 2007年4月16日
- * @email suxuan696@gmail.com
+ * 输出代码调用行的工具类
  */
 public class LogUtil {
 	public static String getLineInfo() {

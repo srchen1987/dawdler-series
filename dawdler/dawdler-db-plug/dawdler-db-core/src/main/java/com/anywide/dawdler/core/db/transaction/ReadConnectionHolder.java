@@ -24,10 +24,7 @@ import javax.sql.DataSource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ReadConnectionHolder.java
- * @Description 读连接持有者
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 读连接持有者
  */
 public class ReadConnectionHolder {
 	private int referenceCount;

@@ -32,15 +32,12 @@ import javax.crypto.Cipher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CertificateOperator.java
- * @Description 证书验证的类 ，直接下面注释中的命令生成证书配置即可 keytool -validity 65535 -genkey -v
+ * 证书验证的类 ，直接下面注释中的命令生成证书配置即可 keytool -validity 65535 -genkey -v
  *              -alias srchen -keyalg RSA -keystore dawdler.keystore -dname
  *              "CN=jackson,OU=互联网事业部,O=anywide,L=DALIAN,ST=LIAONING,c=CN"
  *              -storepass suxuan696@gmail.com -keypass jackson.song keytool
  *              -export -v -alias srchen -keystore dawdler.keystore -storepass
  *              suxuan696@gmail.com -rfc -file dawdler.cer
- * @date 2015年5月23日
- * @email suxuan696@gmail.com
  */
 public class CertificateOperator {
 	public final String X509 = "X.509";

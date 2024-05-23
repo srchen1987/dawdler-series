@@ -24,10 +24,7 @@ import javax.crypto.Cipher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SecurityPlus.java
- * @Description DES加密解密工具类,不建议使用DES,采用AesSecurityPlus代替
- * @date 2009年4月21日
- * @email suxuan696@gmail.com
+ * DES加密解密工具类,不建议使用DES,采用AesSecurityPlus代替
  */
 @Deprecated
 public class SecurityPlus {

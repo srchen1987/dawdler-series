@@ -8,10 +8,7 @@ import java.util.WeakHashMap;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AccessClassLoader.java
- * @Description asm的改进版
- * @date 2012年5月16日
- * @email suxuan696@gmail.com
+ * asm的改进版
  */
 class AccessClassLoader extends ClassLoader {
 	static private final WeakHashMap<ClassLoader, WeakReference<AccessClassLoader>> accessClassLoaders = new WeakHashMap<>();

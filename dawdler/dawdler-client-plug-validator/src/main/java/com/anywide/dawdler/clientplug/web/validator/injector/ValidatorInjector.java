@@ -24,10 +24,7 @@ import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ValidatorInjector.java
- * @Description 注入系统初始化的Validator
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * 注入系统初始化的Validator
  */
 @Order(1)
 public class ValidatorInjector implements CustomComponentInjector {

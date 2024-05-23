@@ -19,10 +19,7 @@ package com.anywide.dawdler.util;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JVMTimeProvider.java
- * @Description VMTimeProvider
- * @date 2015年11月7日
- * @email suxuan696@gmail.com
+ * VMTimeProvider
  */
 public final class JVMTimeProvider {
 

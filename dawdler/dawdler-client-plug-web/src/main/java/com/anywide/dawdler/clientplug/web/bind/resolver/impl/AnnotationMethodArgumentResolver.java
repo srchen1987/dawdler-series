@@ -50,10 +50,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AnnotationMethodArgumentResolver.java
- * @Description 获取mvc中常用方法参数注解相关参数值的决策者
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * 获取mvc中常用方法参数注解相关参数值的决策者
  */
 public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentResolver {
 

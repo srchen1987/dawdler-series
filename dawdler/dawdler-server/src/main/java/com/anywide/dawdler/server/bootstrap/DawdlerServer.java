@@ -52,10 +52,7 @@ import com.anywide.dawdler.util.NetworkUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerServer.java
- * @Description dawdler服务器启动者
- * @date 2015年4月9日
- * @email suxuan696@gmail.com
+ * dawdler服务器启动者
  */
 public class DawdlerServer {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerServer.class);

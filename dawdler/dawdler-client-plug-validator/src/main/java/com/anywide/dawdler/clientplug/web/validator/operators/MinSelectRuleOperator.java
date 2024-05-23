@@ -21,10 +21,7 @@ import java.util.regex.Matcher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MinSelectRuleOperator.java
- * @Description 选择项小于判断
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 选择项小于判断
  */
 public class MinSelectRuleOperator extends RegexRuleOperator {
 	public static final String RULE_KEY = "^minSelect:([1-9]{1}\\d*$)";

@@ -23,10 +23,7 @@ import java.util.List;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title OrderComparator.java
- * @Description 排序(升序)
- * @date 2007年12月3日
- * @email suxuan696@gmail.com
+ * 排序(升序)
  */
 public class OrderComparator<T> implements Comparator<OrderData<T>> {
 	public static final OrderComparator INSTANCE = new OrderComparator<>();

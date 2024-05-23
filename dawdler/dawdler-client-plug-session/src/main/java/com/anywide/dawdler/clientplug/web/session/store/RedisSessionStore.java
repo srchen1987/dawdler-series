@@ -38,10 +38,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RedisSessionStore.java
- * @Description session存储 基于redis的实现
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * session存储 基于redis的实现
  */
 public class RedisSessionStore implements SessionStore {
 	public static final String SESSIONKEY_PREFIX = "session:";
@@ -76,7 +73,7 @@ public class RedisSessionStore implements SessionStore {
 	 * @return void
 	 * @throws Exception
 	 * @Title saveSession
-	 * @Description 将session序列化到redis中，由于redis不支持put与expire一起执行，lua写又没办法传入hmap结构
+	 * 将session序列化到redis中，由于redis不支持put与expire一起执行，lua写又没办法传入hmap结构
 	 *              所以采用了pipeline
 	 * @author jackson.song
 	 * @date 2016年6月16日

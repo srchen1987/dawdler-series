@@ -22,10 +22,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServerHealth.java
- * @Description ServerHealth 实体类
- * @date 2022年5月3日
- * @email suxuan696@gmail.com
+ * ServerHealth 实体类
  */
 public class ServerHealth {
 	private Map<String, Object> data = new LinkedHashMap<String, Object>();

@@ -35,10 +35,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RuleOperatorScanner.java
- * @Description 验证规则扫描器
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 验证规则扫描器
  */
 public class RuleOperatorScanner {
 	private static final Logger logger = LoggerFactory.getLogger(RuleOperatorScanner.class);

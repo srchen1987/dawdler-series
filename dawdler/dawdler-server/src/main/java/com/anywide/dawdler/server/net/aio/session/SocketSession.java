@@ -32,10 +32,7 @@ import com.anywide.dawdler.server.thread.processor.DataProcessor;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SocketSession.java
- * @Description 服务器端session具体实现类 还有在极端情况下触发的其他粘包规则没有进行System.copyArray优化
- * @date 2015年3月11日
- * @email suxuan696@gmail.com
+ * 服务器端session具体实现类 还有在极端情况下触发的其他粘包规则没有进行System.copyArray优化
  */
 public class SocketSession extends AbstractSocketSession {
 	private static final Logger logger = LoggerFactory.getLogger(SocketSession.class);

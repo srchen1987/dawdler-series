@@ -35,10 +35,7 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JsonDisplayPlug.java
- * @Description json的实现
- * @date 2007年4月21日
- * @email suxuan696@gmail.com
+ * json的实现
  */
 public class JsonDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(JsonDisplayPlug.class);

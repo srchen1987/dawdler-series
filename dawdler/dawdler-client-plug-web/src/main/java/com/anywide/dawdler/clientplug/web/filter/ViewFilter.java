@@ -37,10 +37,7 @@ import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWr
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ViewFilter.java
- * @Description 请求处理过滤器
- * @date 2007年4月18日
- * @email suxuan696@gmail.com
+ * 请求处理过滤器
  */
 public class ViewFilter implements Filter {
 	private AbstractUrlHandler annotationUrlHander;

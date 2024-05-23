@@ -29,10 +29,7 @@ import org.apache.velocity.runtime.parser.node.Node;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title XSSFilterDirect.java
- * @Description 自定义控件的指令 过滤xss
- * @date 2010年4月5日
- * @email suxuan696@gmail.com
+ * 自定义控件的指令 过滤xss
  */
 public class XSSFilterDirect extends Directive {
 

@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerClientFilter.java
- * @Description dawdler客户端过滤器接口
- * @date 2015年4月6日
- * @email suxuan696@gmail.com
+ * dawdler客户端过滤器接口
  */
 public interface DawdlerClientFilter {
 	Object doFilter(RequestBean request, FilterChain chain) throws Exception;

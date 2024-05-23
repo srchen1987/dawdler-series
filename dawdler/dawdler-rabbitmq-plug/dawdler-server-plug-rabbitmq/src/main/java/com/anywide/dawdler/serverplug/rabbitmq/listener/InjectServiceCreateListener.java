@@ -24,10 +24,7 @@ import com.anywide.dawdler.rabbitmq.provider.RabbitProviderFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectServiceCreateListener.java
- * @Description 实现RabbitProvider的注入
- * @date 2022年4月15日
- * @email suxuan696@gmail.com
+ * 实现RabbitProvider的注入
  */
 @Order(Integer.MAX_VALUE)
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {

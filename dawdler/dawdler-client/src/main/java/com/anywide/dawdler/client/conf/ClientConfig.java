@@ -24,10 +24,7 @@ import com.anywide.dawdler.util.DawdlerTool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClientConfig.java
- * @Description 配置类
- * @date 2015年3月16日
- * @email suxuan696@gmail.com
+ * 配置类
  */
 public class ClientConfig {
 

@@ -24,10 +24,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ValidatorFactory.java
- * @Description 验证器工厂
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 验证器工厂
  */
 public class ValidatorFactory {
 	private static final Logger logger = LoggerFactory.getLogger(ValidatorFactory.class);

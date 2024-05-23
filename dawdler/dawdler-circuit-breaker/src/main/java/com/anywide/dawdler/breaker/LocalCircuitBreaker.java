@@ -28,10 +28,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LocalCircuitBreaker.java
- * @Description 本地熔断器实现
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 本地熔断器实现
  */
 public class LocalCircuitBreaker implements CircuitBreaker {
 	private final int sleepWindowInMilliseconds;

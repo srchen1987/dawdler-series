@@ -30,10 +30,7 @@ import com.anywide.dawdler.clientplug.web.validator.operators.StringRuleOperator
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RuleOperatorExecuter.java
- * @Description 验证执行者
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 验证执行者
  */
 public class RuleOperatorExecuter {
 	private static final Logger logger = LoggerFactory.getLogger(RuleOperatorExecuter.class);

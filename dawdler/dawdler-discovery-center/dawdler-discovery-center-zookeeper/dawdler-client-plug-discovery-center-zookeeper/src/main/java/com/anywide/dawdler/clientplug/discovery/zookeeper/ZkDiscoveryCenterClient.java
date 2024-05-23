@@ -28,10 +28,7 @@ import com.anywide.dawdler.core.discovery.zookeeper.ZkDiscoveryCenter;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ZkDiscoveryCenterClient.java
- * @Description 注册中心zk监听器的客户端
- * @date 2018年8月13日
- * @email suxuan696@gmail.com
+ * 注册中心zk监听器的客户端
  */
 public class ZkDiscoveryCenterClient {
 	private static final Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenterClient.class);

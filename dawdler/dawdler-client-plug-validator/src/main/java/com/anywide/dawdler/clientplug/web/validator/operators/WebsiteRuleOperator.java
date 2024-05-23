@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebsiteRuleOperator.java
- * @Description 网址验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 网址验证
  */
 public class WebsiteRuleOperator extends StringRuleOperator {
 

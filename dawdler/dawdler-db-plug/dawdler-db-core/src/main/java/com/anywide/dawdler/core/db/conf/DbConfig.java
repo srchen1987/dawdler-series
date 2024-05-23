@@ -21,10 +21,7 @@ import java.util.List;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DbConfig.java
- * @Description 数据源配置(从原有的ServicesConfig独立出来)
- * @date 2024年1月22日
- * @email suxuan696@gmail.com
+ * 数据源配置(从原有的ServicesConfig独立出来)
  */
 public class DbConfig {
 
