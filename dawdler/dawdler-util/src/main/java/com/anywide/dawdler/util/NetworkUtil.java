@@ -38,10 +38,8 @@ public class NetworkUtil {
 	/**
 	 * @return List<NetworkInterface>
 	 * @throws SocketException
-	 * @Title selectActiveNetworkInterfaces
 	 * 获取可用网络接口
 	 * @author jackson.song
-	 * @date 2018年8月13日
 	 */
 	public static List<NetworkInterface> selectActiveNetworkInterfaces() throws SocketException {
 		List<NetworkInterface> interfacesList = new ArrayList<>();

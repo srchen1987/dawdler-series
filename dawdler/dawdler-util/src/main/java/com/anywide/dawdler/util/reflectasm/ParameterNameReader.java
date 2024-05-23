@@ -35,7 +35,7 @@ import org.objectweb.asm.tree.MethodNode;
 /**
  * @author jackson.song
  * @version V1.0
- * @Description 参数名称读取类，基于asm实现读取localVariableNodes来实现
+ * 参数名称读取类，基于asm实现读取localVariableNodes来实现
  */
 public class ParameterNameReader {
 
@@ -48,7 +48,6 @@ public class ParameterNameReader {
 	 * </p>
 	 * 
 	 * @author jackson.song
-	 * @date 2021年3月27日
 	 * @return void
 	 *         <p>
 	 *         Description:
