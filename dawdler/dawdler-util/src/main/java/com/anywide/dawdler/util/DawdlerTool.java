@@ -33,10 +33,7 @@ import java.util.List;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerTool.java
- * @Description 常用工具类
- * @date 2007年7月3日
- * @email suxuan696@gmail.com
+ * 常用工具类
  */
 public class DawdlerTool {
 

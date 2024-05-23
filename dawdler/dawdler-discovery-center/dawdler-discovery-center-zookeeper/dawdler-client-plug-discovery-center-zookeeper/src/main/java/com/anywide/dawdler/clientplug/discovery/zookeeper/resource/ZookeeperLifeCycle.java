@@ -29,10 +29,7 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ZookeeperLifeCycle.java
- * @Description Zookeeper注册中心初始化与销毁
- * @date 2022年9月30日
- * @email suxuan696@gmail.com
+ * Zookeeper注册中心初始化与销毁
  */
 @Order(Integer.MAX_VALUE)
 public class ZookeeperLifeCycle implements ComponentLifeCycle {

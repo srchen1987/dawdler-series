@@ -23,10 +23,7 @@ import jakarta.servlet.http.HttpSessionListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractDistributedSessionManager.java
- * @Description 抽象分布式session管理器
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * 抽象分布式session管理器
  */
 public abstract class AbstractDistributedSessionManager {
 	public static final String DISTRIBUTED_SESSION_HTTPSESSION_LISTENER = "distributed_session_httpsession_listener";

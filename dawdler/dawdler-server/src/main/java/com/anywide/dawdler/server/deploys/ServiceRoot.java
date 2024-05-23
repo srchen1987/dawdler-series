@@ -43,10 +43,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceRoot.java
- * @Description deploy下服务模块的根实现(改造后继承AbstractServiceRoot)
- * @date 2015年3月22日
- * @email suxuan696@gmail.com
+ * deploy下服务模块的根实现(改造后继承AbstractServiceRoot)
  */
 public class ServiceRoot extends AbstractServiceRoot {
 	private static final Logger logger = LoggerFactory.getLogger(ServiceRoot.class);

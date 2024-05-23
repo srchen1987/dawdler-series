@@ -27,10 +27,7 @@ import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CacheConfigInjector.java
- * @Description 注入CacheConfig
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * 注入CacheConfig
  */
 @Order(1)
 public class CacheConfigInjector implements CustomComponentInjector {

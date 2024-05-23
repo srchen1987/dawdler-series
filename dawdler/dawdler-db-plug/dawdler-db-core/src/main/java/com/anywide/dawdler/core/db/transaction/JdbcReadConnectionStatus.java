@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.db.annotation.DBTransaction;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JdbcReadConnectionStatus.java
- * @Description 数据库读连接的状态存储类
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 数据库读连接的状态存储类
  */
 public class JdbcReadConnectionStatus {
 	private final int timeOut;

@@ -38,10 +38,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RedisRepository.java
- * @Description 基于redis实现的存储方式
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 基于redis实现的存储方式
  */
 public class RedisRepository extends TransactionRepository {
 	private static final Logger logger = LoggerFactory.getLogger(RedisRepository.class);

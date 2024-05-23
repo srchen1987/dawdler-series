@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.net.aio.session;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SessionIdleType.java
- * @Description session读写操作过期标识
- * @date 2015年3月11日
- * @email suxuan696@gmail.com
+ * session读写操作过期标识
  */
 public enum SessionIdleType {
 	READ, WRITE

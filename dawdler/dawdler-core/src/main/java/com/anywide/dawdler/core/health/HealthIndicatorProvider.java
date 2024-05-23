@@ -29,10 +29,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title HealthIndicatorProvider.java
- * @Description HealthIndicatorProvider 检测提供者 通过SPI接入
- * @date 2022年5月3日
- * @email suxuan696@gmail.com
+ * HealthIndicatorProvider 检测提供者 通过SPI接入
  */
 public class HealthIndicatorProvider {
 	private final List<OrderData<HealthIndicator>> indicators = new ArrayList<>();

@@ -24,10 +24,7 @@ import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SessionStore.java
- * @Description session存储抽象接口
- * @date 2020年12月12日
- * @email suxuan696@gmail.com
+ * session存储抽象接口
  */
 public interface SessionStore {
 

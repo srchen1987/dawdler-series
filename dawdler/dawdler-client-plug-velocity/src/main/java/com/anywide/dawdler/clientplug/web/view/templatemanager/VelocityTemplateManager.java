@@ -24,10 +24,7 @@ import org.apache.velocity.app.VelocityEngine;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title VelocityTemplateManager.java
- * @Description velocity模板管理器
- * @date 2009年4月19日
- * @email suxuan696@gmail.com
+ * velocity模板管理器
  */
 public class VelocityTemplateManager implements TemplateManager {
 	private static VelocityTemplateManager templateManager;

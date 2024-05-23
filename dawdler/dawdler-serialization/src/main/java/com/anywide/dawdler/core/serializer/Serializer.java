@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.serializer;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Serializer.java
- * @Description 序列化接口
- * @date 2014年12月22日
- * @email suxuan696@gmail.com
+ * 序列化接口
  */
 public interface Serializer {
 	Object deserialize(byte[] bytes) throws Exception;

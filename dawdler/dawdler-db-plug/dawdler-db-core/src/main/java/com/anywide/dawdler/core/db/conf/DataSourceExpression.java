@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.db.conf;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DataSourceExpression.java
- * @Description 数据源解表达式配置(从原有的ServicesConfig独立出来)
- * @date 2024年1月22日
- * @email suxuan696@gmail.com
+ * 数据源解表达式配置(从原有的ServicesConfig独立出来)
  */
 public class DataSourceExpression {
 	private String id;

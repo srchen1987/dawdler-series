@@ -45,10 +45,7 @@ import com.anywide.dawdler.core.db.transaction.TransactionStatus;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionAspect.java
- * @Description 事务传播器(aop方式实现代替TransactionServiceExecutor)
- * @date 2012年9月27日
- * @email suxuan696@gmail.com
+ * 事务传播器(aop方式实现代替TransactionServiceExecutor)
  */
 @Aspect
 public class TransactionAspect {

@@ -28,10 +28,7 @@ import jdk.internal.misc.Unsafe;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DirectBufferCreator.java
- * @Description jvm堆外分配buffer
- * @date 2015年3月14日
- * @email suxuan696@gmail.com
+ * jvm堆外分配buffer
  */
 public class DirectBufferCreator implements BufferCreator {
 	private static final Logger logger = LoggerFactory.getLogger(DirectBufferCreator.class);

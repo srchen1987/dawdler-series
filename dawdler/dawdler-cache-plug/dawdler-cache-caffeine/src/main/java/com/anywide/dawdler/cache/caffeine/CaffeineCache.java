@@ -24,10 +24,7 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CaffeineCache.java
- * @Description CaffeineCache 咖啡因实现的Cache
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * CaffeineCache 咖啡因实现的Cache
  */
 public class CaffeineCache implements Cache {
 

@@ -24,10 +24,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title PageStyle.java
- * @Description 分页样式
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 分页样式
  */
 public class PageStyle {
 	public static final String PMARK = "~p";

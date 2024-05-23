@@ -25,10 +25,7 @@ import com.anywide.dawdler.util.spring.antpath.ResourcePatternResolver;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerComponentScanner.java
- * @Description 类扫描器,用于替换DeployClassesScanner与验证框架中的这类实现
- * @date 2023年7月19日
- * @email suxuan696@gmail.com
+ * 类扫描器,用于替换DeployClassesScanner与验证框架中的这类实现
  */
 public class DawdlerComponentScanner {
 	private static ResourcePatternResolver resolver = PathMatchingResourcePatternResolver.getInstance();

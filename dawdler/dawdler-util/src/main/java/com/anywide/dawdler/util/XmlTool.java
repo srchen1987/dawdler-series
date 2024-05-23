@@ -29,10 +29,7 @@ import org.xml.sax.SAXParseException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title XmlTool.java
- * @Description xml操作类
- * @date 2023年5月1日
- * @email suxuan696@gmail.com
+ * xml操作类
  */
 public final class XmlTool {
 	private static final ErrorHandler ERRORHANDLER_INSTANCE;

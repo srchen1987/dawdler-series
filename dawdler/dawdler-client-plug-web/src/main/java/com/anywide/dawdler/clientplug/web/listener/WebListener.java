@@ -45,10 +45,7 @@ import jakarta.servlet.ServletException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebListener.java
- * @Description 用于替换原有的LoadListener
- * @date 2007年5月8日
- * @email suxuan696@gmail.com
+ * 用于替换原有的LoadListener
  */
 public class WebListener implements ServletContextListener {
 	private static final Logger logger = LoggerFactory.getLogger(WebListener.class);

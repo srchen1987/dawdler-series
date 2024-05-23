@@ -43,10 +43,7 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ReadClass.java
- * @Description 读取服务端类模版
- * @date 2007年9月7日
- * @email suxuan696@gmail.com
+ * 读取服务端类模版
  */
 public class ReadClass {
 	private static final Logger logger = LoggerFactory.getLogger(ReadClass.class);

@@ -22,10 +22,7 @@ import java.util.regex.Pattern;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RuleOperator.java
- * @Description 验证规则定义抽象类
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 验证规则定义抽象类
  */
 public abstract class RuleOperator {
 	protected Pattern pattern;

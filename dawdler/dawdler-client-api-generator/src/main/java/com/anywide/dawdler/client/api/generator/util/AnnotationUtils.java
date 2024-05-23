@@ -22,10 +22,7 @@ import com.thoughtworks.qdox.model.expression.AnnotationValue;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AnnotationUtils.java
- * @Description 读取注解的工具类
- * @date 2022年3月19日
- * @email suxuan696@gmail.com
+ * 读取注解的工具类
  */
 public class AnnotationUtils {
 	public static String getAnnotationStringValue(JavaAnnotation javaAnnotation, String name) {

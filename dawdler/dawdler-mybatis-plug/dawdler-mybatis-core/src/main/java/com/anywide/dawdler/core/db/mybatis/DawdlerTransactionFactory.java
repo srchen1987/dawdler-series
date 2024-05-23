@@ -27,10 +27,7 @@ import org.apache.ibatis.transaction.TransactionFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerTransactionFactory.java
- * @Description dawdler实现transaction工厂
- * @date 2021年5月8日
- * @email suxuan696@gmail.com
+ * dawdler实现transaction工厂
  */
 public class DawdlerTransactionFactory implements TransactionFactory {
 	DawdlerMybatisTransaction dawdlerTransaction = new DawdlerMybatisTransaction();

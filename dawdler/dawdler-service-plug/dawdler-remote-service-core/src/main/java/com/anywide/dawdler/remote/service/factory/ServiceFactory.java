@@ -31,10 +31,7 @@ import com.anywide.dawdler.remote.service.annotation.RemoteServiceAssistant;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceFactory.java
- * @Description 代理工厂，用于创建客户端代理对象，淘汰cglib改用jdk代理
- * @date 2008年3月22日
- * @email suxuan696@gmail.com
+ * 代理工厂，用于创建客户端代理对象，淘汰cglib改用jdk代理
  */
 public class ServiceFactory {
 	private static final ConcurrentHashMap<String, ConcurrentHashMap<String, Object>> PROXY_OBJECTS = new ConcurrentHashMap<>();

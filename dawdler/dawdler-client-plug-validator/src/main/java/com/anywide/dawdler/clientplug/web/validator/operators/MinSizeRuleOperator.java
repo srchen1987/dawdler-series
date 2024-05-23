@@ -21,10 +21,7 @@ import java.util.regex.Matcher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MinSizeRuleOperator.java
- * @Description 字符个数小于判断
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 字符个数小于判断
  */
 public class MinSizeRuleOperator extends RegexRuleOperator {
 	public static final String RULE_KEY = "^minSize:([1-9]{1}\\d*$)";

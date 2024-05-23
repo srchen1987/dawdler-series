@@ -28,10 +28,7 @@ import jakarta.servlet.ServletException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LoadInitializer.java
- * @Description 初始化加载器(从原有模块独立出来)
- * @date 2024年1月15日
- * @email suxuan696@gmail.com
+ * 初始化加载器(从原有模块独立出来)
  */
 @Order(1)
 public class LoadInitializer implements ServletContainerInitializer {

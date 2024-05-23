@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.service.annotation.Service;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DownloadFile.java
- * @Description 下载模版类文件的接口
- * @date 2007年9月18日
- * @email suxuan696@gmail.com
+ * 下载模版类文件的接口
  */
 @Service
 public interface DownloadFile {

@@ -7,6 +7,6 @@
 ### 1. web端的pom中引入依赖
 
 ```xml
-<groupId>dawdler</groupId>
+<groupId>io.github.dawdler-series</groupId>
 <artifactId>dawdler-distributed-transaction-compensator</artifactId>
 ```

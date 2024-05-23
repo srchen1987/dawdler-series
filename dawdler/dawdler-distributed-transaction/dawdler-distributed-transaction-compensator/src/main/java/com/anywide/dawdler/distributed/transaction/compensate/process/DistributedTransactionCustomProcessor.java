@@ -29,10 +29,7 @@ import com.anywide.dawdler.remote.service.injector.RemoteServiceInjector;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DistributedTransactionCustomProcessor.java
- * @Description 客户端处理者抽象类，补偿器中的实现是通过SPI接入的，不同服务可以继承此类，同时注入服务，具体参考分布式事务的demo
- * @date 2021年4月17日
- * @email suxuan696@gmail.com
+ * 客户端处理者抽象类，补偿器中的实现是通过SPI接入的，不同服务可以继承此类，同时注入服务，具体参考分布式事务的demo
  */
 public abstract class DistributedTransactionCustomProcessor {
 	private static Logger logger = LoggerFactory.getLogger(DistributedTransactionCustomProcessor.class);

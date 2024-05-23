@@ -26,10 +26,7 @@ import java.util.List;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title PathUtils.java
- * @Description 工具类 获取多个jar包组装成url数组
- * @date 2008年3月28日
- * @email suxuan696@gmail.com
+ * 工具类 获取多个jar包组装成url数组
  */
 public class PathUtils {
 	public static URL[] getLibURL(File path, URL defaultURL) throws MalformedURLException {
