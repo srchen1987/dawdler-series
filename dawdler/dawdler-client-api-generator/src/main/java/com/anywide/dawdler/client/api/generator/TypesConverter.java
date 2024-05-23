@@ -25,10 +25,7 @@ import com.anywide.dawdler.clientplug.web.upload.UploadFile;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TypesConverter.java
- * @Description 类型转换者
- * @date 2022年3月20日
- * @email suxuan696@gmail.com
+ * 类型转换者
  */
 public class TypesConverter {
 	private static Map<String, TypeData> typesCache = new HashMap<String, TypeData>() {

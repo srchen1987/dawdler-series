@@ -26,10 +26,7 @@ import com.anywide.dawdler.clientplug.web.validator.ValidatorFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title StringRuleOperator.java
- * @Description 普通字符串类定义抽象类
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 普通字符串类定义抽象类
  */
 public abstract class StringRuleOperator extends RuleOperator {
 	public StringRuleOperator(String ruleKey, String regex, String explain) {

@@ -22,10 +22,7 @@ import java.io.IOException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MainGenerator.java
- * @Description MainGenerator Main程序入口
- * @date 2022年3月21日
- * @email suxuan696@gmail.com
+ * MainGenerator Main程序入口
  */
 public class MainGenerator {
 	public static void main(String[] args) throws IOException {

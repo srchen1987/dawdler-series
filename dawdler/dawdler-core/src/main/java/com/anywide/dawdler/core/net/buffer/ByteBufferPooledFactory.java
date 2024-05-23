@@ -23,10 +23,7 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ByteBufferPooledFactory.java
- * @Description 通过apache的Pooled组件实现了 buffer池，极端情况下才会使用到
- * @date 2015年3月14日
- * @email suxuan696@gmail.com
+ * 通过apache的Pooled组件实现了 buffer池，极端情况下才会使用到
  */
 public class ByteBufferPooledFactory implements PooledObjectFactory<DawdlerByteBuffer> {
 	private final int capacity;

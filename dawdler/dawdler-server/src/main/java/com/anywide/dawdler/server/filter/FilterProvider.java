@@ -32,10 +32,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title FilterProvider.java
- * @Description 过滤器提供者 采用spi方式配置 update 改为实现DawdlerFilter接口即可
- * @date 2015年4月8日
- * @email suxuan696@gmail.com
+ * 过滤器提供者 采用spi方式配置 update 改为实现DawdlerFilter接口即可
  */
 public class FilterProvider {
 	private static final Logger logger = LoggerFactory.getLogger(FilterProvider.class);

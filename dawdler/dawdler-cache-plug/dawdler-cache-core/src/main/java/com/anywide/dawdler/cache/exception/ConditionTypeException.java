@@ -19,10 +19,7 @@ package com.anywide.dawdler.cache.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConditionTypeException.java
- * @Description ConditionTypeException 条件不符合类型异常
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * ConditionTypeException 条件不符合类型异常
  */
 public class ConditionTypeException extends RuntimeException {
 

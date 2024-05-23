@@ -32,10 +32,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisLifeCycle.java
- * @Description 实现向监听器,过滤器注入JedisOperator,JedisDistributedLock
- * @date 2022年4月17日
- * @email suxuan696@gmail.com
+ * 实现向监听器,过滤器注入JedisOperator,JedisDistributedLock
  */
 public class JedisLifeCycle implements ComponentLifeCycle {
 

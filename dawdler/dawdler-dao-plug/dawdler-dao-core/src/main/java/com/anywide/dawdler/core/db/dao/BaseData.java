@@ -23,10 +23,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title BaseData.java
- * @Description jdbc常用操作的接口
- * @date 2007年4月15日
- * @email suxuan696@gmail.com
+ * jdbc常用操作的接口
  */
 public interface BaseData {
 	<T extends Object> List<T> queryList(String sql, Class<T> c) throws SQLException;

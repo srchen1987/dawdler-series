@@ -31,10 +31,7 @@ import com.navercorp.pinpoint.plugin.dawdler.DawdlerConstants;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerClientInterceptor.java
- * @Description 基于pinpoint实现客户端拦截器
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * 基于pinpoint实现客户端拦截器
  */
 public class DawdlerClientInterceptor implements AroundInterceptor {
 	private final PLogger logger = PLoggerFactory.getLogger(this.getClass());

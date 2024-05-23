@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AsyncInvokeFutureHolder.java
- * @Description 异步调用结果持有者
- * @date 2020年4月22日
- * @email suxuan696@gmail.com
+ * 异步调用结果持有者
  */
 public class AsyncInvokeFutureHolder {
 

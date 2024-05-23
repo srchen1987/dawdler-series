@@ -7,7 +7,7 @@ schedule模块的支持,包含客户端,服务器端,schedule核心模块.
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>dawdler</groupId>
+ <groupId>io.github.dawdler-series</groupId>
  <artifactId>dawdler-schedule-core</artifactId>
 ```
 
@@ -19,10 +19,7 @@ schedule模块的支持,包含客户端,服务器端,schedule核心模块.
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Schedule.java
- * @Description 定时任务注解
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * 定时任务注解
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

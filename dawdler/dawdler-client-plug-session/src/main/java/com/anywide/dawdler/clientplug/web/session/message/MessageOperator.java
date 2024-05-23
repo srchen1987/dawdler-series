@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.session.message;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MessageOperator.java
- * @Description 消息操作者
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * 消息操作者
  */
 public interface MessageOperator {
 

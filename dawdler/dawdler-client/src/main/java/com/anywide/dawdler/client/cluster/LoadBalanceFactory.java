@@ -23,10 +23,7 @@ import java.util.ServiceLoader;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LoadBalanceFactory.java
- * @Description 负载均衡工厂
- * @date 2019年8月16日
- * @email suxuan696@gmail.com
+ * 负载均衡工厂
  */
 public class LoadBalanceFactory<T, K> {
 	@SuppressWarnings("rawtypes")

@@ -27,10 +27,7 @@ import com.thoughtworks.qdox.model.JavaType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ParserTypeData.java
- * @Description ParserTypeData
- * @date 2022年3月19日
- * @email suxuan696@gmail.com
+ * ParserTypeData
  */
 public class ParserTypeData {
 

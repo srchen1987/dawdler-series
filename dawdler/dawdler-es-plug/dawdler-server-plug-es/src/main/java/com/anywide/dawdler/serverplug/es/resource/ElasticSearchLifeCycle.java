@@ -31,10 +31,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ElasticSearchLifeCycle.java
- * @Description 实现向监听器,过滤器注入EsRestHighLevelOperator
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * 实现向监听器,过滤器注入EsRestHighLevelOperator
  */
 public class ElasticSearchLifeCycle implements ComponentLifeCycle {
 

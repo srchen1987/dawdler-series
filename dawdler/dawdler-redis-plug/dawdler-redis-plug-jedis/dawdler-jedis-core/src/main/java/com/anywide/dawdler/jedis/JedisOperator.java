@@ -33,10 +33,7 @@ import redis.clients.jedis.commands.ServerCommands;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisOperator.java
- * @Description jedis操作接口
- * @date 2022年4月17日
- * @email suxuan696@gmail.com
+ * jedis操作接口
  */
 public interface JedisOperator
 		extends ServerCommands, DatabaseCommands, JedisCommands, JedisBinaryCommands, ControlCommands,

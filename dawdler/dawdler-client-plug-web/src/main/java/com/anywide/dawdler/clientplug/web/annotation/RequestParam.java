@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestParam.java
- * @Description 指定request请求参数名的注解
- * @date 2021年3月6日
- * @email suxuan696@gmail.com
+ * 指定request请求参数名的注解
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

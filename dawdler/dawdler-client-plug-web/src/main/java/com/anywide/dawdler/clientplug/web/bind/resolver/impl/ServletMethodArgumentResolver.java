@@ -32,10 +32,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServletMethodArgumentResolver.java
- * @Description 获取servlet或基于servlet api相关参数值的决策者
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * 获取servlet或基于servlet api相关参数值的决策者
  */
 public class ServletMethodArgumentResolver implements MethodArgumentResolver {
 

@@ -39,10 +39,7 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RWSplittingDataSourceManager.java
- * @Description 读写分离的数据管理器
- * @date 2007年8月6日
- * @email suxuan696@gmail.com
+ * 读写分离的数据管理器
  */
 public class RWSplittingDataSourceManager {
 	public static final String DATASOURCE_MANAGER_PREFIX = "DATASOURCE_MANAGER_PREFIX";

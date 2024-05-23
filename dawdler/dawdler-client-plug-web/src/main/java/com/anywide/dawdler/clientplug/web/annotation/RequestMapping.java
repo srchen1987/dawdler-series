@@ -26,10 +26,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestMapping.java
- * @Description http接口请求注解
- * @date 2007年4月17日
- * @email suxuan696@gmail.com
+ * http接口请求注解
  */
 public @interface RequestMapping {
 

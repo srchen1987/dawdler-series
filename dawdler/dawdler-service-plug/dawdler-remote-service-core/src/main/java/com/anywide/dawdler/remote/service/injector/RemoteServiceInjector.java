@@ -26,10 +26,7 @@ import com.anywide.dawdler.remote.service.factory.ServiceFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RemoteServiceInjector.java
- * @Description 注入远程服务通用类
- * @date 2024年2月8日
- * @email suxuan696@gmail.com
+ * 注入远程服务通用类
  */
 public class RemoteServiceInjector {
 

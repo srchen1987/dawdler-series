@@ -30,10 +30,7 @@ import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServicesBean.java
- * @Description 服务提供类(从dawdler-server独立出来)
- * @date 2015年4月21日
- * @email suxuan696@gmail.com
+ * 服务提供类(从dawdler-server独立出来)
  */
 public class ServicesBean {
 	private static final Logger logger = LoggerFactory.getLogger(ServicesBean.class);

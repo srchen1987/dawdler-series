@@ -34,10 +34,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ReaderHandler.java
- * @Description aio读包的处理者，相对比较复杂 实现粘包等功能
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * aio读包的处理者，相对比较复杂 实现粘包等功能
  */
 public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketSession> {
 	private final static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);

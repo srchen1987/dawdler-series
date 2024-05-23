@@ -47,10 +47,7 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebValidateExecutor.java
- * @Description 对web请求进行校验
- * @date 2007年7月23日
- * @email suxuan696@gmail.com
+ * 对web请求进行校验
  */
 public class WebValidateExecutor {
 	private WebValidateExecutor() {

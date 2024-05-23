@@ -36,10 +36,7 @@ import com.sun.net.httpserver.HttpsServer;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerHttpServer.java
- * @Description DawdlerHttpServer 内置http服务器
- * @date 2022年5月1日
- * @email suxuan696@gmail.com
+ * DawdlerHttpServer 内置http服务器
  */
 public class DawdlerHttpServer {
 	private Authenticator authenticator;

@@ -26,10 +26,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RegexRules.java
- * @Description 正则实现验证规则的存储类
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 正则实现验证规则的存储类
  */
 public class RegexRules {
 	private static final Map<String, Pattern> regexRules = new ConcurrentHashMap<>();

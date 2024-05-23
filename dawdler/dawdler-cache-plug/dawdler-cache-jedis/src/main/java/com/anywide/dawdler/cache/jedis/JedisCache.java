@@ -22,10 +22,7 @@ import com.anywide.dawdler.cache.CacheConfig;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisCache.java
- * @Description JedisCache Jedis实现的Cache
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * JedisCache Jedis实现的Cache
  */
 public class JedisCache implements Cache {
 

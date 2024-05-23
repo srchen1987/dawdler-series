@@ -24,10 +24,7 @@ import com.anywide.dawdler.core.db.annotation.Propagation;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionDefinition.java
- * @Description 传播性，隔离级别定义接口
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 传播性，隔离级别定义接口
  */
 public interface TransactionDefinition {
 	int PROPAGATION_REQUIRED = 0;// 支持当前事务，如果当前没有事务，就新建一个事务。

@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.db.transaction.TransactionDefinition;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Propagation.java
- * @Description 事务传播方式
- * @date 2012年9月27日
- * @email suxuan696@gmail.com
+ * 事务传播方式
  */
 public enum Propagation {
 	REQUIRED(TransactionDefinition.PROPAGATION_REQUIRED), SUPPORTS(TransactionDefinition.PROPAGATION_SUPPORTS),

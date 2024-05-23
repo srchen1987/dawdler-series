@@ -21,10 +21,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title YAMLMapperFactory.java
- * @Description YAMLMapper工厂,提供单例
- * @date 2023年2月8日
- * @email suxuan696@gmail.com
+ * YAMLMapper工厂,提供单例
  */
 public class YAMLMapperFactory {
 

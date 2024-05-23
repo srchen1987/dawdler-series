@@ -21,10 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerClientTool.java
- * @Description 常用工具
- * @date 2008年8月28日
- * @email suxuan696@gmail.com
+ * 常用工具
  */
 public class DawdlerClientTool {
 	public static String get_onlineip(HttpServletRequest request) {

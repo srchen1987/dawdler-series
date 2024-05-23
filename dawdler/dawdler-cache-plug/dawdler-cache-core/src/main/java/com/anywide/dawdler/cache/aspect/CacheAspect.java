@@ -46,10 +46,7 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CacheAspect.java
- * @Description cache切面
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * cache切面
  */
 @Aspect
 public class CacheAspect {

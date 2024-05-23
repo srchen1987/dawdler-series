@@ -40,10 +40,7 @@ import com.anywide.dawdler.util.XmlObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServerConfigParser.java
- * @Description 服务器配置解析类 (抛弃老版本的xstream实现，后抛弃dom4j实现)
- * @date 2015年4月4日
- * @email suxuan696@gmail.com
+ * 服务器配置解析类 (抛弃老版本的xstream实现，后抛弃dom4j实现)
  */
 public class ServerConfigParser {
 	private ServerConfig serverConfig = new ServerConfig();

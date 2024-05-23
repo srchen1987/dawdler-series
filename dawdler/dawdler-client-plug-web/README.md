@@ -7,7 +7,7 @@ webmvc模块,使用上基本与springmvc一致.提供远程加载组件的客户
 ### 1. pom中引入依赖
 
 ```xml
-<groupId>dawdler</groupId>
+<groupId>io.github.dawdler-series</groupId>
 <artifactId>dawdler-client-plug-web</artifactId>
 ```
 

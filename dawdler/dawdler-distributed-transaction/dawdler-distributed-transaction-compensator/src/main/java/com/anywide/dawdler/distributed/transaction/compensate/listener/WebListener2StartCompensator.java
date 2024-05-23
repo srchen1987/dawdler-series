@@ -31,10 +31,7 @@ import com.anywide.dawdler.distributed.transaction.release.ResourceReleaser;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebListener2StartCompensator.java
- * @Description 补偿模块的监听器 启动初始化定时任务，销毁时释放资源
- * @date 2021年4月17日
- * @email suxuan696@gmail.com
+ * 补偿模块的监听器 启动初始化定时任务，销毁时释放资源
  */
 @WebListener
 public class WebListener2StartCompensator implements ServletContextListener {

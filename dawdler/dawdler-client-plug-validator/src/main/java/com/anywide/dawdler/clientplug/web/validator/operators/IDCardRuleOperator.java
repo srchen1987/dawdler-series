@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.web.validator.ext.IDCard;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title IDCardRuleOperator.java
- * @Description 身份证验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 身份证验证
  */
 public class IDCardRuleOperator extends StringRuleOperator {
 	public static final String RULE_KEY = "IDCard";

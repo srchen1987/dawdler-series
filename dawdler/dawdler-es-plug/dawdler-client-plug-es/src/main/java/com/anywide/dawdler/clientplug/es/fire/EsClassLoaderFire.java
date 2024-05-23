@@ -23,10 +23,7 @@ import com.anywide.dawdler.es.restclient.EsOperatorFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EsClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入EsOperator
- * @date 2022年4月17日
- * @email suxuan696@gmail.com
+ * 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入EsOperator
  */
 @Order(1)
 public class EsClassLoaderFire implements RemoteClassLoaderFire {

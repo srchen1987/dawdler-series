@@ -33,10 +33,7 @@ import com.anywide.dawdler.clientplug.web.validator.scanner.RuleOperatorScanner;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RuleOperatorProvider.java
- * @Description 验证规则提供则
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 验证规则提供则
  */
 public class RuleOperatorProvider {
 	private static final Logger logger = LoggerFactory.getLogger(RuleOperatorProvider.class);

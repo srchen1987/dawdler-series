@@ -23,10 +23,7 @@ import com.anywide.dawdler.remote.service.injector.RemoteServiceInjector;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceClassLoaderFire.java
- * @Description 注入远程调用service(替换老版本com.anywide.dawdler.clientplug.web.fire.WebComponentClassLoaderFire注入)
- * @date 2024年2月9日
- * @email suxuan696@gmail.com
+ * 注入远程调用service(替换老版本com.anywide.dawdler.clientplug.web.fire.WebComponentClassLoaderFire注入)
  */
 @Order(0)
 public class ServiceClassLoaderFire implements RemoteClassLoaderFire {

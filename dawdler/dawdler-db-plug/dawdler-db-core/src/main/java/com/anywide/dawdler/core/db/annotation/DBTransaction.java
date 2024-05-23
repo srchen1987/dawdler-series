@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DBTransaction.java
- * @Description 事务注解，应用于service方法中
- * @date 2012年9月27日
- * @email suxuan696@gmail.com
+ * 事务注解，应用于service方法中
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
