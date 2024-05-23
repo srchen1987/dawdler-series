@@ -60,7 +60,8 @@ public class DawdlerWebDeployClassLoader extends SecureClassLoader implements De
 	}
 
 	@Override
-	public Class<?> findClassForDawdler(String name, Resource res, boolean useAop, boolean storeVariableNameByASM) throws ClassNotFoundException {
+	public Class<?> findClassForDawdler(String name, Resource res, boolean useAop, boolean storeVariableNameByASM)
+			throws ClassNotFoundException {
 		Class<?> clazz = findLoadedClass(name);
 		if (clazz != null) {
 			return clazz;
@@ -103,6 +104,16 @@ public class DawdlerWebDeployClassLoader extends SecureClassLoader implements De
 	@Override
 	public Package deployDefinePackage(String pkgname, Manifest man, URL url) {
 		return null;
+	}
+
+	@Override
+	public Class<?> loadClass(String name) throws ClassNotFoundException {
+		try {
+			return super.loadClass(name);
+		} catch (Exception e) {
+			return parent.loadClass(name);
+		}
+
 	}
 
 }
