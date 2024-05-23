@@ -36,8 +36,8 @@ import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.XmlTool;
 import com.anywide.dawdler.util.aspect.AspectHolder;
 
-import sun.misc.Resource;
 import sun.misc.PerfCounter;
+import sun.misc.Resource;
 
 /**
  * @author jackson.song
@@ -161,6 +161,7 @@ public interface DeployClassLoader extends Closeable {
 		}
 		Class<?> clazz = deployDefineClass(name, codeBytes, 0, codeBytes.length, cs);
 		if(storeVariableNameByASM) {
+			// ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, codeBytes);
 			Class<?> parameterNameReaderClass = loadClass("com.anywide.dawdler.util.reflectasm.ParameterNameReader");
 			try {
 				Method method = parameterNameReaderClass.getDeclaredMethod("loadAllDeclaredMethodsParameterNames",
