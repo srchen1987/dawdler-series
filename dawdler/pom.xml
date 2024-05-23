@@ -30,7 +30,7 @@
 
 	<scm>
 		<connection>https://github.com/srchen1987/dawdler-series.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:srchen1987/dawdler-series.gitgit@github.com:srchen1987/dawdler-series.git </developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com:srchen1987/dawdler-series.git</developerConnection>
 		<url>https://github.com/srchen1987/dawdler-series</url>
 	</scm>
 
