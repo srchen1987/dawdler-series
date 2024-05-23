@@ -29,7 +29,6 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisDistributedLockHolderFactory
  * JedisDistributedLockHolder工厂
  */
 public class JedisDistributedLockHolderFactory {
