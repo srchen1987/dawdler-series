@@ -29,10 +29,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerClassLoader.java
- * @Description Dawdler类加载器
- * @date 2015年3月9日
- * @email suxuan696@gmail.com
+ * Dawdler类加载器
  */
 public class DawdlerClassLoader extends URLClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerClassLoader.class);

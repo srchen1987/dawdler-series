@@ -32,10 +32,7 @@ import com.anywide.dawdler.core.db.datasource.RWSplittingDataSourceManager;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionLifeCycle.java
- * @Description 绑定事务管理器(代替老版本中的PlugInit)
- * @date 2022年4月30日
- * @email suxuan696@gmail.com
+ * 绑定事务管理器(代替老版本中的PlugInit)
  */
 @Order(2)
 public class TransactionLifeCycle implements ComponentLifeCycle {

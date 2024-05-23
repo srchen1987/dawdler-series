@@ -23,10 +23,7 @@ import com.thoughtworks.qdox.model.JavaClass;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClassStruct.java
- * @Description ClassStruct存储结构,存储导入的包
- * @date 2022年3月19日
- * @email suxuan696@gmail.com
+ * ClassStruct存储结构,存储导入的包
  */
 public class ClassStruct {
 	private List<String> importPackages;

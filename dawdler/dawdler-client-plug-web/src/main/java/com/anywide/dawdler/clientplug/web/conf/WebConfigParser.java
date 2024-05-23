@@ -39,10 +39,7 @@ import com.anywide.dawdler.util.XmlObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebConfigParser.java
- * @Description web配置解析器
- * @date 2024年2月9日
- * @email suxuan696@gmail.com
+ * web配置解析器
  */
 public class WebConfigParser {
 	private static final Logger logger = LoggerFactory.getLogger(WebConfigParser.class);

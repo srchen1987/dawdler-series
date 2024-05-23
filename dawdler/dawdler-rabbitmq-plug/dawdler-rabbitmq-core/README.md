@@ -7,7 +7,7 @@
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>dawdler</groupId>
+ <groupId>io.github.dawdler-series</groupId>
  <artifactId>dawdler-rabbitmq-core</artifactId>
 ```
 
@@ -51,12 +51,9 @@ RabbitInjector注解中的value传入fileName为配置文件名(不包含.proper
 ```java
 /**
 *
-* @Title RabbitListener.java
-* @Description 标注一个方法是否是rabbitmq的消费者 此方法格式固定为void methodName(Message message)
+* 标注一个方法是否是rabbitmq的消费者 此方法格式固定为void methodName(Message message)
 * @author jackson.song
-* @date 2022年4月14日
 * @version V1.0
-* @email suxuan696@gmail.com
 */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })
@@ -142,11 +139,8 @@ public void publish(String exchange, String routingKey, BasicProperties props, b
  }
 
  /**
-  * 
-  * @Title: publishIfFaildRetry
   * @author jackson.song
-  * @date 2022年4月15日
-  * @Description 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况) (注意要在配置文件中开启confirmSelect=true)
+  * 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况) (注意要在配置文件中开启confirmSelect=true)
   * @param exchange
   * @param routingKey
   * @param props

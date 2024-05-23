@@ -37,10 +37,7 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SocketSession.java
- * @Description 客户端session 主要功能在父类中，包含了 读写超时重连、心跳处理等方式。
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * 客户端session 主要功能在父类中，包含了 读写超时重连、心跳处理等方式。
  */
 public class SocketSession extends AbstractSocketSession {
 	private static final Logger logger = LoggerFactory.getLogger(SocketSession.class);

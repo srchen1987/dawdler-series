@@ -23,10 +23,7 @@ import com.anywide.dawdler.breaker.SlideTimeWindows;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CircuitBreakerState.java
- * @Description 熔断器状态
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 熔断器状态
  */
 public interface CircuitBreakerState {
 

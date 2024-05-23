@@ -51,10 +51,7 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClientPlugClassLoader.java
- * @Description 提供加载方法来加载远端模版类到jvm中
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 提供加载方法来加载远端模版类到jvm中
  */
 public class ClientPlugClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(ClientPlugClassLoader.class);

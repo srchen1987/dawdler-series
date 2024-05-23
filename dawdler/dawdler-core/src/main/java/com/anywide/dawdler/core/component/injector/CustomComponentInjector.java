@@ -22,10 +22,7 @@ import java.util.Set;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CustomComponentInjector.java
- * @Description CustomComponentInjector注入接口
- * @date 2023年7月20日
- * @email suxuan696@gmail.com
+ * CustomComponentInjector注入接口
  */
 public interface CustomComponentInjector {
 

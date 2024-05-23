@@ -40,10 +40,7 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebComponentClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller 
- * @date 2015年3月11日
- * @email suxuan696@gmail.com
+ * 客户端加载类通知类，初始化各种监听器 拦截器 controller 
  */
 @Order(0)
 public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {

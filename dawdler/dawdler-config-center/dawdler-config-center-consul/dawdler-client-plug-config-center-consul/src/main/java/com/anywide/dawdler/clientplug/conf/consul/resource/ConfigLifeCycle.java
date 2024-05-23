@@ -23,10 +23,7 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigLifeCycle.java
- * @Description client端配置中心初始化与销毁
- * @date 2021年5月30日
- * @email suxuan696@gmail.com
+ * client端配置中心初始化与销毁
  */
 @Order(1)
 public class ConfigLifeCycle implements ComponentLifeCycle {

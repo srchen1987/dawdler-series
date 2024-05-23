@@ -23,10 +23,7 @@ import com.anywide.dawdler.core.db.annotation.DBTransaction;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionManager.java
- * @Description 事务管理器
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 事务管理器
  */
 public interface TransactionManager {
 	TransactionStatus getTransaction(DBTransaction dBTransaction) throws SQLException;

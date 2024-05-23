@@ -22,10 +22,7 @@ import com.anywide.dawdler.core.bean.ResponseBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerFilter.java
- * @Description dawdler服务过滤器
- * @date 2015年4月8日
- * @email suxuan696@gmail.com
+ * dawdler服务过滤器
  */
 public interface DawdlerFilter {
 	void doFilter(RequestBean request, ResponseBean response, FilterChain chain) throws Exception;

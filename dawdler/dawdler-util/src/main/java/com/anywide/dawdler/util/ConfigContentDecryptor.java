@@ -27,10 +27,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigContentDecryptor.java
- * @Description 配置内容解密器
- * @date 2022年6月21日
- * @email suxuan696@gmail.com
+ * 配置内容解密器
  */
 public class ConfigContentDecryptor {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigContentDecryptor.class);

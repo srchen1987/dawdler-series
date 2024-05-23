@@ -45,10 +45,7 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DistributedTransactionAspect.java
- * @Description aop拦截器 根据事务注解来做事务处理
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * aop拦截器 根据事务注解来做事务处理
  */
 @Aspect
 public class DistributedTransactionAspect {

@@ -27,10 +27,7 @@ import com.anywide.dawdler.util.TLS;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SwitchConnectionAspect.java
- * @Description 通过aop切换数据库连接
- * @date 2021年5月8日
- * @email suxuan696@gmail.com
+ * 通过aop切换数据库连接
  */
 @Aspect
 public class SwitchConnectionAspect {

@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RegexRuleOperator.java
- * @Description 表达式定义的抽象类
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 表达式定义的抽象类
  */
 public abstract class RegexRuleOperator extends RuleOperator {
 	public RegexRuleOperator(String regex) {

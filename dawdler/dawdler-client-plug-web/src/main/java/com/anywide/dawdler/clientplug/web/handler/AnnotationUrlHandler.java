@@ -43,10 +43,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AnnotationUrlHandler.java
- * @Description 基于Annotation的UrlHandler实现 基于xml的删除掉了 因为servlet3.0之后不建议使用web.xml了
- * @date 2007年4月18日
- * @email suxuan696@gmail.com
+ * 基于Annotation的UrlHandler实现 基于xml的删除掉了 因为servlet3.0之后不建议使用web.xml了
  */
 public class AnnotationUrlHandler extends AbstractUrlHandler {
 	private static final ConcurrentHashMap<String, RequestUrlData> ANT_URL_RULES = new ConcurrentHashMap<>(64);

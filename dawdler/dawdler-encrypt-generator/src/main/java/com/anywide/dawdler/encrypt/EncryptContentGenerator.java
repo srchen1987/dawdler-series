@@ -27,10 +27,7 @@ import com.anywide.dawdler.util.ConfigContentDecryptor;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EncryptContentGenerator.java
- * @Description 用于加密内容的类(同时生成密钥文件)
- * @date 2022年6月21日
- * @email suxuan696@gmail.com
+ * 用于加密内容的类(同时生成密钥文件)
  */
 public class EncryptContentGenerator {
 	public static final String DAWDLER_ENCRYP_FILE = "DAWDLER_ENCRYP_FILE";

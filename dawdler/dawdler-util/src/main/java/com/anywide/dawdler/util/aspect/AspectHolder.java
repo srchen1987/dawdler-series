@@ -22,10 +22,7 @@ import java.security.ProtectionDomain;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AspectHolder.java
- * @Description AspectHolder
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * AspectHolder
  */
 public class AspectHolder {
 	public static Object aj;

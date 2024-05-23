@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.service.listener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerServiceCreateListener.java
- * @Description 服务创建监听器
- * @date 2008年3月12日
- * @email suxuan696@gmail.com
+ * 服务创建监听器
  */
 public interface DawdlerServiceCreateListener {
 	void create(Object service, boolean single) throws Throwable;

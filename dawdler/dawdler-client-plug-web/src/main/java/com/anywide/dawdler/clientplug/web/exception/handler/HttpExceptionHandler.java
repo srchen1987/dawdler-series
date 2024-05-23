@@ -24,10 +24,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title HttpExceptionHandler.java
- * @Description 异常处理接口(替代老版本的FileUploadExceptionHandler 统一处理异常)
- * @date 2007年4月16日
- * @email suxuan696@gmail.com
+ * 异常处理接口(替代老版本的FileUploadExceptionHandler 统一处理异常)
  */
 public interface HttpExceptionHandler {
 	void handle(HttpServletRequest request, HttpServletResponse response, ViewForward viewForward, Throwable ex);

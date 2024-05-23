@@ -7,7 +7,7 @@
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>dawdler</groupId>
+ <groupId>io.github.dawdler-series</groupId>
  <artifactId>dawdler-client-api-generator</artifactId>
 ```
 
@@ -89,7 +89,7 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 ##### 4.1 JavaDoc的Tag
 
-1. @Description 用于类或方法的描述信息,支持放在类上或方法上.(同时支持javadoc标准 方法上注释,可不编写@Description)
+1. 用于类或方法的描述信息,支持放在类上或方法上.(同时支持javadoc标准 方法上注释)
 
 2. @param 用于方法参数对应的注释信息,只支持方法上.
 
@@ -99,11 +99,8 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 ```java
  /**
-  * 
- * @Title: get 
  * @author jackson.song 
- * @date 2022年3月23日
- * @Description 根据用户ID查询用户
+ * 根据用户ID查询用户
  * @param userId 用户ID
  *
   */
@@ -218,19 +215,15 @@ import com.anywide.dawdler.demo.api.entity.UserBank;
 /**
  * 
  * @ClassName: DemoController
- * @Description 演示的demo
+ * 演示的demo
  * @author jackson.song
- * @date 2022年3月23日
- *
  */
 @Controller
 public class DemoController {
 
  /**
   * 根据用户ID查询用户
-  * @Title: get
   * @author jackson.song
-  * @date 2022年3月23日
   * @param userId 用户ID
   **/
 
@@ -241,11 +234,8 @@ public class DemoController {
  }
 
  /**
-  * 
-  * @Title: getUserByUserId
   * @author jackson.song
-  * @date 2022年3月23日
-  * @Description 根据用户id查询用户,antPath方式
+  * 根据用户id查询用户,antPath方式
   * @param id 用户ID
   **/
 
@@ -256,11 +246,8 @@ public class DemoController {
  }
 
  /**
-  * 
-  * @Title: getUserComposite
   * @author jackson.song
-  * @date 2022年3月23日
-  * @Description 根据用户ID查询并返回复合bean
+  * 根据用户ID查询并返回复合bean
   * @param userId 用户ID
   *
   */
@@ -272,11 +259,8 @@ public class DemoController {
  }
 
  /**
-  * 
-  * @Title: getUserComposite2
   * @author jackson.song
-  * @date 2022年3月23日
-  * @Description 根据用户ID查询并返回复合bean 返回结果List结构
+  * 根据用户ID查询并返回复合bean 返回结果List结构
   * @param userId
   * @return
   *
@@ -288,11 +272,8 @@ public class DemoController {
  }
 
  /**
-  * 
-  * @Title: create
   * @author jackson.song
-  * @date 2022年3月23日
-  * @Description 创建一个用户
+  * 创建一个用户
   **/
  @RequestMapping(value = "/user/create", method = RequestMethod.POST)
  @ResponseBody
@@ -301,11 +282,8 @@ public class DemoController {
  }
 
  /**
-  * 
-  * @Title: headTest
   * @author jackson.song
-  * @date 2022年3月23日
-  * @Description 头部获取信息测试
+  * 头部获取信息测试
   * @param token 请求头信息
   * 
   **/
@@ -316,11 +294,8 @@ public class DemoController {
  }
 
  /**
-  * 
-  * @Title: testFileUpload
   * @author jackson.song
-  * @date 2022年3月23日
-  * @Description 测试文件上传
+  * 测试文件上传
   * @param id   业务Id
   * @param file 文件
   * @return
@@ -334,11 +309,8 @@ public class DemoController {
  }
 
  /**
-  * 
-  * @Title: createUser
   * @author jackson.song
-  * @date 2022年3月23日
-  * @Description 根据User实体对象的属性生成对应的Http param参数
+  * 根据User实体对象的属性生成对应的Http param参数
   *
   */
  @RequestMapping(value = "/createUser", method = RequestMethod.POST)
@@ -360,11 +332,9 @@ package com.anywide.dawdler.demo.api.entity;
 /**
  * 
 * @ClassName: User 
-* @Description: 用户实体
+*: 用户实体
 * @author jackson.song
-* @date 2022年3月23日
-*
- */
+*/
 public class User {
  /**
   * 用户ID

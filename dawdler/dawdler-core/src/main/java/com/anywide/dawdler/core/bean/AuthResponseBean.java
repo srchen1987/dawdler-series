@@ -21,10 +21,7 @@ import java.io.Serializable;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AuthResponseBean.java
- * @Description 身份验证响应信息
- * @date 2015年5月23日
- * @email suxuan696@gmail.com
+ * 身份验证响应信息
  */
 public class AuthResponseBean implements Serializable {
 

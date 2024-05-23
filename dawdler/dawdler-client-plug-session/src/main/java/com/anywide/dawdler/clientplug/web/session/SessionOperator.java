@@ -34,10 +34,7 @@ import jakarta.servlet.ServletContext;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SessionOperator.java
- * @Description session操作者
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * session操作者
  */
 public class SessionOperator {
 	private static final Logger logger = LoggerFactory.getLogger(SessionOperator.class);

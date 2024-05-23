@@ -38,10 +38,7 @@ import jakarta.servlet.ServletContextListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LoadListener.java
- * @Description 加载模版类的监听器
- * @date 2007年5月8日
- * @email suxuan696@gmail.com
+ * 加载模版类的监听器
  */
 public class LoadListener implements ServletContextListener {
 	private static final Logger logger = LoggerFactory.getLogger(LoadListener.class);

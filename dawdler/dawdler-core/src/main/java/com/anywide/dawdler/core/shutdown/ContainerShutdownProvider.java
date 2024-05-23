@@ -27,10 +27,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ContainerShutdownProvider.java
- * @Description ContainerShutdown提供者 SPI方式接入
- * @date 2023年11月22日
- * @email suxuan696@gmail.com
+ * ContainerShutdown提供者 SPI方式接入
  */
 public class ContainerShutdownProvider {
 

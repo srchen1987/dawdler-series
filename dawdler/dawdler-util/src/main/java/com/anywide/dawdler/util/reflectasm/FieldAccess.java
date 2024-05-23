@@ -53,10 +53,7 @@ import org.objectweb.asm.Type;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title FieldAccess.java
- * @Description asm的改进版
- * @date 2012年5月16日
- * @email suxuan696@gmail.com
+ * asm的改进版
  */
 public abstract class FieldAccess {
 	private String[] fieldNames;

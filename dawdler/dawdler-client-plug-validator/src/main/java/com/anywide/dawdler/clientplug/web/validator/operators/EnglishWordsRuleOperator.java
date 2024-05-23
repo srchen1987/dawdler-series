@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EnglishWordsRuleOperator.java
- * @Description 英文字母验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 英文字母验证
  */
 public class EnglishWordsRuleOperator extends StringRuleOperator {
 	public static final String RULE_KEY = "englishWords";

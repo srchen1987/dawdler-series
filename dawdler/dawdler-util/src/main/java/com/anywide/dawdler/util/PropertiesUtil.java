@@ -27,10 +27,7 @@ import java.util.Set;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title PropertiesUtil.java
- * @Description Class操作类
- * @date 2021年8月12日
- * @email suxuan696@gmail.com
+ * Class操作类
  */
 public class PropertiesUtil {
 	public static Properties loadPropertiesIfNotExistLoadConfigCenter(String fileName) throws Exception {

@@ -24,10 +24,7 @@ import com.anywide.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactor
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DistributedTransactionAMQPConnectionFactoryProvider.java
- * @Description amqp工厂单例提供者
- * @date 2021年4月11日
- * @email suxuan696@gmail.com
+ * amqp工厂单例提供者
  */
 public class DistributedTransactionAMQPConnectionFactoryProvider {
 	private static final Logger logger = LoggerFactory.getLogger(AMQPSender.class);

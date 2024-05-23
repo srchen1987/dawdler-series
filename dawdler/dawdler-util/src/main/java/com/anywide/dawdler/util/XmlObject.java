@@ -68,10 +68,7 @@ import org.xml.sax.SAXException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title XmlObject.java
- * @Description 基于dom4j来做xml操作的类 支持压缩(目前已废弃dom4j)
- * @date 2007年7月11日
- * @email suxuan696@gmail.com
+ * 基于dom4j来做xml操作的类 支持压缩(目前已废弃dom4j)
  */
 public final class XmlObject {
 	private static TransformerFactory factory = TransformerFactory.newInstance();

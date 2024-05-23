@@ -21,10 +21,7 @@ import jakarta.servlet.ServletContext;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebContextListener.java
- * @Description 监听器接口
- * @date 2007年4月19日
- * @email suxuan696@gmail.com
+ * 监听器接口
  */
 public interface WebContextListener {
 

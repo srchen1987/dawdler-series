@@ -21,10 +21,7 @@ import java.io.Serializable;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ResponseBean.java
- * @Description 远程响应信息类
- * @date 2007年11月15日
- * @email suxuan696@gmail.com
+ * 远程响应信息类
  */
 public class ResponseBean implements Serializable {
 	private static final long serialVersionUID = -7692626494747302648L;

@@ -33,10 +33,7 @@ import com.esotericsoftware.kryo.util.DefaultInstantiatorStrategy;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title KryoSerializer.java
- * @Description kryo实现的序列化 目前升级到新版本 5x
- * @date 2014年12月22日
- * @email suxuan696@gmail.com
+ * kryo实现的序列化 目前升级到新版本 5x
  */
 public class KryoSerializer implements Serializer {
 	private static Map<String, KryoLocal> kryos = new HashMap<String, KryoSerializer.KryoLocal>();

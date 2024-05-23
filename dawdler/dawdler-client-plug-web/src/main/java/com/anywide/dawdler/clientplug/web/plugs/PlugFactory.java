@@ -27,10 +27,7 @@ import jakarta.servlet.ServletContext;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title PlugFactory.java
- * @Description 插件工厂
- * @date 2007年4月21日
- * @email suxuan696@gmail.com
+ * 插件工厂
  */
 public class PlugFactory {
 	private PlugFactory() {

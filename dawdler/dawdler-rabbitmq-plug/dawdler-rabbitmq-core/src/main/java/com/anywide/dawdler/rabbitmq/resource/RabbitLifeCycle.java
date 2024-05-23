@@ -23,10 +23,7 @@ import com.anywide.dawdler.rabbitmq.consumer.RabbitListenerInit;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitLifeCycle.java
- * @Description rabbit资源释放类
- * @date 2022年4月15日
- * @email suxuan696@gmail.com
+ * rabbit资源释放类
  */
 public class RabbitLifeCycle implements ComponentLifeCycle {
 

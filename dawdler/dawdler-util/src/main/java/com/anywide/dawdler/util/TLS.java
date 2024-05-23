@@ -22,10 +22,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TLS.java
- * @Description TLS工具类
- * @date 2007年10月9日
- * @email suxuan696@gmail.com
+ * TLS工具类
  */
 public class TLS {
 	private static final ThreadLocal<Map<Object, Object>> THREAD_LOCAL = new ThreadLocal<Map<Object, Object>>();

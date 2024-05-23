@@ -32,10 +32,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitLifeCycle.java
- * @Description 实现向监听器,过滤器注入RabbitProvider与RabbitListener注解方法
- * @date 2022年4月15日
- * @email suxuan696@gmail.com
+ * 实现向监听器,过滤器注入RabbitProvider与RabbitListener注解方法
  */
 public class RabbitLifeCycle implements ComponentLifeCycle {
 	@Override

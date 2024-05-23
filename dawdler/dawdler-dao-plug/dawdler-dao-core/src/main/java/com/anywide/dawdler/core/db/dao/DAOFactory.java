@@ -21,10 +21,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DAOFactory.java
- * @Description dao工厂
- * @date 2007年4月15日
- * @email suxuan696@gmail.com
+ * dao工厂
  */
 public class DAOFactory {
 	private static DAOFactory daofactory = new DAOFactory();
