@@ -7,7 +7,7 @@ dawdler-server 是dawdler容器端的具体实现,提供容器启动服务的监
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>dawdler</groupId>
+ <groupId>io.github.dawdler-series</groupId>
  <artifactId>dawdler-server</artifactId>
 ```
 

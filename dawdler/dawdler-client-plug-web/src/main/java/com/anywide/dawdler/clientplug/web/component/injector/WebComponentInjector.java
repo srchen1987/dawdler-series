@@ -32,10 +32,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebComponentInjector.java
- * @Description 注入web组件 Controller WebContextListener HandlerInterceptor
- * @date 2023年7月20日
- * @email suxuan696@gmail.com
+ * 注入web组件 Controller WebContextListener HandlerInterceptor
  */
 public class WebComponentInjector implements CustomComponentInjector {
 	private final List<OrderData<RemoteClassLoaderFire>> fireList = RemoteClassLoaderFireHolder.getInstance()

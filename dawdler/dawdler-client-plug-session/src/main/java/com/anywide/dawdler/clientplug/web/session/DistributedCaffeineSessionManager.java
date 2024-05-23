@@ -25,10 +25,7 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DistributedCaffeineSessionManager.java
- * @Description caffeine session管理器的一个实现
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * caffeine session管理器的一个实现
  */
 public class DistributedCaffeineSessionManager extends AbstractDistributedSessionManager {
 	private final int maxInactiveInterval;

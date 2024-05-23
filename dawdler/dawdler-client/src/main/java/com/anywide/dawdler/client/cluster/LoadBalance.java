@@ -23,10 +23,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LoadBalance.java
- * @Description 负载均衡接口
- * @date 2019年8月16日
- * @email suxuan696@gmail.com
+ * 负载均衡接口
  */
 public interface LoadBalance<T, K extends Object> {
 

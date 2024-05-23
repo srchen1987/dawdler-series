@@ -33,10 +33,7 @@ import com.rabbitmq.client.ConnectionFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AMQPConnectionFactory.java
- * @Description AMQP连接多例工厂
- * @date 2021年4月11日
- * @email suxuan696@gmail.com
+ * AMQP连接多例工厂
  */
 public class AMQPConnectionFactory {
 	private GenericObjectPool<Connection> genericObjectPool;

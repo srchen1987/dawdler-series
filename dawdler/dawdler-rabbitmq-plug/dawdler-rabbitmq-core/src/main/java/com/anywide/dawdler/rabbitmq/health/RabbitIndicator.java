@@ -30,10 +30,7 @@ import com.rabbitmq.client.Connection;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitIndicator.java
- * @Description RabbitIndicator rabbitmq健康指示器
- * @date 2022年5月1日
- * @email suxuan696@gmail.com
+ * RabbitIndicator rabbitmq健康指示器
  */
 public class RabbitIndicator implements HealthIndicator {
 

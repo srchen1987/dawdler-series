@@ -41,10 +41,7 @@ import com.anywide.dawdler.util.XmlObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LoadCore.java
- * @Description 加载服务端类模版
- * @date 2007年9月5日
- * @email suxuan696@gmail.com
+ * 加载服务端类模版
  */
 public class LoadCore implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(LoadCore.class);

@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Service.java
- * @Description 标注一个类是远程提供服务的注解,可以注释在实现类或接口上
- * @date 2015年4月26日
- * @email suxuan696@gmail.com
+ * 标注一个类是远程提供服务的注解,可以注释在实现类或接口上
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })

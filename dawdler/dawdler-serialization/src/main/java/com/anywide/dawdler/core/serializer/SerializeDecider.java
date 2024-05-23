@@ -26,10 +26,7 @@ import org.slf4j.LoggerFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SerializeDecider.java
- * @Description 序列化决策者，可通过SPI方式扩展
- * @date 2014年12月22日
- * @email suxuan696@gmail.com
+ * 序列化决策者，可通过SPI方式扩展
  */
 public class SerializeDecider {
 	private static final Logger logger = LoggerFactory.getLogger(SerializeDecider.class);

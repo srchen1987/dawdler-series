@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ResponseBody.java
- * @Description 标注响应body体的注解
- * @date 2021年3月6日
- * @email suxuan696@gmail.com
+ * 标注响应body体的注解
  */
 @Target({ ElementType.TYPE, ElementType.METHOD })
 @Retention(RetentionPolicy.RUNTIME)

@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Controller.java
- * @Description 标识为Controller
- * @date 2021年3月6日
- * @email suxuan696@gmail.com
+ * 标识为Controller
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

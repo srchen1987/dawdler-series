@@ -23,10 +23,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Health.java
- * @Description Health实体类
- * @date 2022年5月3日
- * @email suxuan696@gmail.com
+ * Health实体类
  */
 public class Health {
 

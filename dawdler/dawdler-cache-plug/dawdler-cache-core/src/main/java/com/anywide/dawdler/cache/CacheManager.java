@@ -21,10 +21,7 @@ import java.util.Collection;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CacheManager.java
- * @Description CacheManager接口,一般扩展cache实现类型的管理直接继承AbstractCacheManager即可
- * @date 2023年7月29日
- * @email suxuan696@gmail.com
+ * CacheManager接口,一般扩展cache实现类型的管理直接继承AbstractCacheManager即可
  */
 public interface CacheManager {
 

@@ -39,10 +39,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MultipartViewForward.java
- * @Description 支持获取附件上传的forward
- * @date 2007年4月19日
- * @email suxuan696@gmail.com
+ * 支持获取附件上传的forward
  */
 public class MultipartViewForward extends ViewForward {
 	private static final Logger logger = LoggerFactory.getLogger(MultipartViewForward.class);

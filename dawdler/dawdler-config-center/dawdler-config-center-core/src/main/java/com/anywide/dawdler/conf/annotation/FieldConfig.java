@@ -24,12 +24,9 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title FieldConfig.java
- * @Description 统一配置中心配置注解 支持用在服务器端 service listener(DawdlerServiceListener)
+ * 统一配置中心配置注解 支持用在服务器端 service listener(DawdlerServiceListener)
  *              filter(DawdlerFilter) 调用者（客户端） controller(TransactionController)
  *              listener(WebContextListener) interceptor(HandlerInterceptor)
- * @date 2021年5月30日
- * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.FIELD })

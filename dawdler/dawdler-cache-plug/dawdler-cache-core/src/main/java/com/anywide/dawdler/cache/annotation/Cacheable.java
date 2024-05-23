@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Cacheable.java
- * @Description Cacheable 注解
- * @date 2023年7月29日
- * @email suxuan696@gmail.com
+ * Cacheable 注解
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)

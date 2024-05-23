@@ -27,10 +27,7 @@ import com.anywide.dawdler.core.health.HealthIndicator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigIndicator.java
- * @Description ConfigIndicator 配置中心健康指示器
- * @date 2022年5月2日
- * @email suxuan696@gmail.com
+ * ConfigIndicator 配置中心健康指示器
  */
 public class ConfigIndicator implements HealthIndicator {
 

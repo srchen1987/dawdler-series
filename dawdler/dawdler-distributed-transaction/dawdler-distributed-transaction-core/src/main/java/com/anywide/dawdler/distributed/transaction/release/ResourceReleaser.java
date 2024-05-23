@@ -30,10 +30,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ResourceReleaser.java
- * @Description 资源释放者 释放redis rabbitmq
- * @date 2021年4月11日
- * @email suxuan696@gmail.com
+ * 资源释放者 释放redis rabbitmq
  */
 public class ResourceReleaser {
 	private static final Logger logger = LoggerFactory.getLogger(ResourceReleaser.class);

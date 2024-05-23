@@ -23,10 +23,7 @@ import com.anywide.dawdler.server.context.DawdlerContext;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectServiceCreateListener.java
- * @Description 监听器实现service和service的注入
- * @date 2015年7月8日
- * @email suxuan696@gmail.com
+ * 监听器实现service和service的注入
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 

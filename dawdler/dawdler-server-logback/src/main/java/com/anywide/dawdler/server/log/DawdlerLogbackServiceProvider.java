@@ -37,10 +37,7 @@ import ch.qos.logback.core.util.StatusPrinter;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerLogbackServiceProvider.java
- * @Description logback扩展支持多模块
- * @date 2022年6月11日
- * @email suxuan696@gmail.com
+ * logback扩展支持多模块
  */
 public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 

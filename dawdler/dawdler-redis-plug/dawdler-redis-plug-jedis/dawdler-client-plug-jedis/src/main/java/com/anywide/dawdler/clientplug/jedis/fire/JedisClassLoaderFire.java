@@ -24,10 +24,7 @@ import com.anywide.dawdler.jedis.lock.JedisDistributedLockHolderFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入JedisOperator,JedisDistributedLock
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入JedisOperator,JedisDistributedLock
  */
 @Order(1)
 public class JedisClassLoaderFire implements RemoteClassLoaderFire {

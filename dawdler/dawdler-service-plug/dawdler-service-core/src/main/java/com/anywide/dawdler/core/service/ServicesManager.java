@@ -30,10 +30,7 @@ import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServicesManager.java
- * @Description 服务管理器
- * @date 2008年3月12日
- * @email suxuan696@gmail.com
+ * 服务管理器
  */
 public class ServicesManager {
 

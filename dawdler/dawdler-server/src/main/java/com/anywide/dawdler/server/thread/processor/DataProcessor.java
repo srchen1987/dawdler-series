@@ -45,10 +45,7 @@ import com.anywide.dawdler.server.net.aio.session.SocketSession;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DataProcessor.java
- * @Description 服务器端经过readHandler读取粘包数据的处理类
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * 服务器端经过readHandler读取粘包数据的处理类
  */
 public class DataProcessor implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(DataProcessor.class);

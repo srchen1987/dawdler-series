@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DateRuleOperator.java
- * @Description 日期验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 日期验证
  */
 public class DateRuleOperator extends StringRuleOperator {
 

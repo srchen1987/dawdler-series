@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LocalService.java
- * @Description 注入服务的注解(本地服务 用于代替老版本的@Service 新版本的@Service用于标注接口或实现类)
- * @date 2024年2月9日
- * @email suxuan696@gmail.com
+ * 注入服务的注解(本地服务 用于代替老版本的@Service 新版本的@Service用于标注接口或实现类)
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })

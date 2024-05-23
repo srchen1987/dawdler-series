@@ -33,10 +33,7 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerContext.java
- * @Description dawdler上下文
- * @date 2015年3月21日
- * @email suxuan696@gmail.com
+ * dawdler上下文
  */
 public class DawdlerContext extends ServiceContext {
 	private final String deployName;

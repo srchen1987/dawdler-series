@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CookieValue.java
- * @Description 获取cookie值的注解
- * @date 2021年3月6日
- * @email suxuan696@gmail.com
+ * 获取cookie值的注解
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

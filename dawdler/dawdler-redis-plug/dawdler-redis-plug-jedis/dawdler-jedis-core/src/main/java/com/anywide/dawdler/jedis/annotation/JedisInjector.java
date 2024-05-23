@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisInjector.java
- * @Description 标注一个成员变量 注入JedisOperator
- * @date 2022年4月17日
- * @email suxuan696@gmail.com
+ * 标注一个成员变量 注入JedisOperator
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

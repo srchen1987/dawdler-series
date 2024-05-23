@@ -23,10 +23,7 @@ import java.util.Set;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebConfig.java
- * @Description web配置
- * @date 2024年2月9日
- * @email suxuan696@gmail.com
+ * web配置
  */
 public class WebConfig {
 

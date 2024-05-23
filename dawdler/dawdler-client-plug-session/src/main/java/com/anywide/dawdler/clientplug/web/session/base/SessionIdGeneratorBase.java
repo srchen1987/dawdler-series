@@ -25,10 +25,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SessionIdGeneratorBase.java
- * @Description SessionId生成者 抽象出一些通用方法 直接copy tomcat代码
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * SessionId生成者 抽象出一些通用方法 直接copy tomcat代码
  */
 public abstract class SessionIdGeneratorBase implements SessionIdGenerator {
 	private final Queue<SecureRandom> randoms = new ConcurrentLinkedQueue<>();

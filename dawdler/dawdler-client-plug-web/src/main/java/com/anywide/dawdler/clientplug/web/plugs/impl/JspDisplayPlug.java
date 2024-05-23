@@ -36,10 +36,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JspDisplayPlug.java
- * @Description jsp的实现
- * @date 2007年4月21日
- * @email suxuan696@gmail.com
+ * jsp的实现
  */
 public class JspDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(JspDisplayPlug.class);

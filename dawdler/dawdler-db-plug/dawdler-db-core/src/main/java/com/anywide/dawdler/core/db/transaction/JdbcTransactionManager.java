@@ -28,10 +28,7 @@ import com.anywide.dawdler.core.db.annotation.Propagation;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JdbcTransactionManager.java
- * @Description 事务管理器 参考spring的实现
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 事务管理器 参考spring的实现
  */
 public class JdbcTransactionManager implements TransactionManager {
 	private DataSource dataSource = null;

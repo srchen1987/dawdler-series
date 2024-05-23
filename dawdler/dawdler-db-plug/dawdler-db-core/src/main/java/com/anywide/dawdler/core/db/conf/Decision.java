@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.db.conf;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Decision.java
- * @Description 部署服务的配置实体类,代替XmlObject配置类
- * @date 2023年5月1日
- * @email suxuan696@gmail.com
+ * 部署服务的配置实体类,代替XmlObject配置类
  */
 public class Decision {
 	private String latentExpressionId;

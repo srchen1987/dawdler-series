@@ -28,10 +28,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SlideTimeWindows.java
- * @Description 滑动窗口
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 滑动窗口
  */
 public class SlideTimeWindows {
 	private final int intervalInMs;

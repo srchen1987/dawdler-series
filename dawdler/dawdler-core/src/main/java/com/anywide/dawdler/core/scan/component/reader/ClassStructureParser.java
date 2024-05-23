@@ -33,10 +33,7 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClassStructureParser.java
- * @Description asm实现的类解析器
- * @date 2023年7月19日
- * @email suxuan696@gmail.com
+ * asm实现的类解析器
  */
 public class ClassStructureParser {
 

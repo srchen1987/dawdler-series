@@ -33,10 +33,7 @@ import com.anywide.dawdler.util.TimerTask;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractServerDiscoveryCenterLifeCycle.java
- * @Description 服务端注册中心抽象类
- * @date 2023年4月22日
- * @email suxuan696@gmail.com
+ * 服务端注册中心抽象类
  */
 public abstract class AbstractServerDiscoveryCenterLifeCycle implements ComponentLifeCycle {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractServerDiscoveryCenterLifeCycle.class);

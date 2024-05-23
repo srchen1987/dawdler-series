@@ -50,10 +50,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title VelocityDisplayPlug.java
- * @Description velocity的实现
- * @date 2009年6月22日
- * @email suxuan696@gmail.com
+ * velocity的实现
  */
 public class VelocityDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(VelocityDisplayPlug.class);

@@ -22,10 +22,7 @@ import java.util.List;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RemoteFiles.java
- * @Description 可序列化的远程模版类传输对象
- * @date 2007年9月15日
- * @email suxuan696@gmail.com
+ * 可序列化的远程模版类传输对象
  */
 public class RemoteFiles implements Serializable {
 	private static final long serialVersionUID = 5204063780120035205L;

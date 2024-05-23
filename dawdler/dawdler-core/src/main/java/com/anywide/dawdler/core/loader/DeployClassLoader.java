@@ -42,10 +42,7 @@ import jdk.internal.perf.PerfCounter;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DeployClassLoader.java
- * @Description 通用ClassLoader接口,为了boot版本的classloader复用,将原有的类方法提到这里公用
- * @date 2023年10月8日
- * @email suxuan696@gmail.com
+ * 通用ClassLoader接口,为了boot版本的classloader复用,将原有的类方法提到这里公用
  */
 public interface DeployClassLoader extends Closeable {
 

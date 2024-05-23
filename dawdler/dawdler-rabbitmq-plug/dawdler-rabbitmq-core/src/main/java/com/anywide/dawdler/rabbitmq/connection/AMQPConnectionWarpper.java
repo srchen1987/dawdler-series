@@ -40,10 +40,7 @@ import com.rabbitmq.client.UnblockedCallback;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AMQPConnectionWarpper.java
- * @Description Rabbitmq的Connection包装类
- * @date 2021年4月11日
- * @email suxuan696@gmail.com
+ * Rabbitmq的Connection包装类
  */
 public class AMQPConnectionWarpper implements Connection {
 	private Connection target;

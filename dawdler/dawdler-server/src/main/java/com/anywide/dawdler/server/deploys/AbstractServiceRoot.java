@@ -47,10 +47,7 @@ import com.sun.net.httpserver.HttpHandler;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractServiceRoot.java
- * @Description deploy下服务模块的抽象根类
- * @date 2023年9月12日
- * @email suxuan696@gmail.com
+ * deploy下服务模块的抽象根类
  */
 public abstract class AbstractServiceRoot {
 	protected Map<String, Service> servicesHealth;

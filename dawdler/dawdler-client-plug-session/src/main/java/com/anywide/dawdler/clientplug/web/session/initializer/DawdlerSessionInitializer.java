@@ -30,10 +30,7 @@ import jakarta.servlet.ServletException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerSessionInitializer.java
- * @Description 用于初始化DawdlerSessionFilter 代替WebListener的实现
- * @date 2023年12月12日
- * @email suxuan696@gmail.com
+ * 用于初始化DawdlerSessionFilter 代替WebListener的实现
  */
 @Order(0)
 public class DawdlerSessionInitializer implements ServletContainerInitializer {

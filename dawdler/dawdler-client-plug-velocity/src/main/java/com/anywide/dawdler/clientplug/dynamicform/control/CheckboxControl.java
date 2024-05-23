@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CheckboxControl.java
- * @Description 复选框控件实现
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 复选框控件实现
  */
 public class CheckboxControl extends Control {
 	public CheckboxControl(ControlTag tag) {

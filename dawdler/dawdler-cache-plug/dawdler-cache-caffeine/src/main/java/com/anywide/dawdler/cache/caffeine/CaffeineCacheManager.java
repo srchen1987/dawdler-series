@@ -23,10 +23,7 @@ import com.anywide.dawdler.cache.CacheConfig;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CaffeineCacheManager.java
- * @Description CaffeineCacheManager 咖啡因实现的CacheManager
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * CaffeineCacheManager 咖啡因实现的CacheManager
  */
 public class CaffeineCacheManager extends AbstractCacheManager {
 

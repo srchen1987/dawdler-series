@@ -27,10 +27,7 @@ import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectMapperCreateListener.java
- * @Description 实现Service的组件注入
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * 实现Service的组件注入
  */
 public class InjectMapperCreateListener implements DawdlerServiceCreateListener {
 	private SqlSession sqlSession = SingleSqlSessionFactory.getInstance().getSqlSession();

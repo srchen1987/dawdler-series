@@ -22,10 +22,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title HandlerInterceptor.java
- * @Description 拦截器接口
- * @date 2007年4月19日
- * @email suxuan696@gmail.com
+ * 拦截器接口
  */
 public interface HandlerInterceptor {
 	boolean preHandle(Object controller, ViewForward viewForward, RequestMapping requestMapping) throws Exception;

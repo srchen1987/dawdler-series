@@ -22,10 +22,7 @@ import com.anywide.dawdler.es.restclient.pool.factory.ElasticSearchClientFactory
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ElasticSearchLifeCycle.java
- * @Description ElasticSearch释放资源
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * ElasticSearch释放资源
  */
 public class ElasticSearchLifeCycle implements ComponentLifeCycle {
 

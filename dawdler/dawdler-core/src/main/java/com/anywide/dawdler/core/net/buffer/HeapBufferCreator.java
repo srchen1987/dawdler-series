@@ -21,10 +21,7 @@ import java.nio.ByteBuffer;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title HeapBufferCreator.java
- * @Description jvm堆内分配buffer
- * @date 2015年3月14日
- * @email suxuan696@gmail.com
+ * jvm堆内分配buffer
  */
 public class HeapBufferCreator implements BufferCreator {
 	@Override

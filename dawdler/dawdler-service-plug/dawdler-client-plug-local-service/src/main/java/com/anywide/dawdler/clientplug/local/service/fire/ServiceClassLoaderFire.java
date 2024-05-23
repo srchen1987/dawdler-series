@@ -24,10 +24,7 @@ import com.anywide.dawdler.local.service.injector.LocalServiceInjector;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceClassLoaderFire.java
- * @Description 实现localService注入
- * @date 2024年2月12日
- * @email suxuan696@gmail.com
+ * 实现localService注入
  */
 @Order(0)
 public class ServiceClassLoaderFire implements RemoteClassLoaderFire {

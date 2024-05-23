@@ -23,10 +23,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MetricBase.java
- * @Description 基础度量
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 基础度量
  */
 public class MetricBase implements Metric {
 

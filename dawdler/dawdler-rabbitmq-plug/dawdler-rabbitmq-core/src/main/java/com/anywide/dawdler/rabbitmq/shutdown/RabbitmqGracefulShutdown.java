@@ -26,10 +26,7 @@ import com.anywide.dawdler.rabbitmq.consumer.RabbitListenerInit;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitmqGracefulShutdown.java
- * @Description rabbitmq消费端优雅停机 取消监听器并等待任务完成之后调用closeable.close();
- * @date 2023年11月22日
- * @email suxuan696@gmail.com
+ * rabbitmq消费端优雅停机 取消监听器并等待任务完成之后调用closeable.close();
  */
 public class RabbitmqGracefulShutdown implements ContainerGracefulShutdown {
 

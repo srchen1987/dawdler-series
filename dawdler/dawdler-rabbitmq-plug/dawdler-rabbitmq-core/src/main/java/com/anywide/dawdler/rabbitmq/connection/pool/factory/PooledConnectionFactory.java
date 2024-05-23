@@ -38,10 +38,7 @@ import com.rabbitmq.client.impl.recovery.AutorecoveringConnection;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title PooledConnectionFactory.java
- * @Description 连接池工厂 通过pool2实现
- * @date 2021年4月11日
- * @email suxuan696@gmail.com
+ * 连接池工厂 通过pool2实现
  */
 public class PooledConnectionFactory extends BasePooledObjectFactory<Connection> {
 	private static final Logger logger = LoggerFactory.getLogger(PooledConnectionFactory.class);

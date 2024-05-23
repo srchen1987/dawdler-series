@@ -21,10 +21,7 @@ import java.util.regex.Matcher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MinNumberRuleOperator.java
- * @Description 数字类小于判断
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 数字类小于判断
  */
 public class MinNumberRuleOperator extends RegexRuleOperator {
 	public static final String RULE_KEY = "^minNumber:([-+]?\\d+(\\.\\d+)?$)";

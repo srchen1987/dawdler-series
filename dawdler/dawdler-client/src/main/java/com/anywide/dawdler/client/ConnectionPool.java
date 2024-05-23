@@ -34,10 +34,7 @@ import com.anywide.dawdler.util.HashedWheelTimerSingleCreator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConnectionPool.java
- * @Description 客户端连接池
- * @date 2015年3月16日
- * @email suxuan696@gmail.com
+ * 客户端连接池
  */
 public class ConnectionPool {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);

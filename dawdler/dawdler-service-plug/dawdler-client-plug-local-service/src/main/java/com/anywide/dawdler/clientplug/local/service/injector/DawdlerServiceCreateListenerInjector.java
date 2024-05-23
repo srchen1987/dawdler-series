@@ -25,10 +25,7 @@ import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerServiceCreateListenerInjector.java
- * @Description 注入服务创建监听器
- * @date 2023年7月20日
- * @email suxuan696@gmail.com
+ * 注入服务创建监听器
  */
 @Order(1)
 public class DawdlerServiceCreateListenerInjector implements CustomComponentInjector {

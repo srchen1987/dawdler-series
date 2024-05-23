@@ -19,10 +19,7 @@ package com.anywide.dawdler.client.api.generator.data;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ContactData.java
- * @Description 联系人相关数据
- * @date 2022年3月19日
- * @email suxuan696@gmail.com
+ * 联系人相关数据
  */
 public class ContactData {
 	private String name;

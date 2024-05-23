@@ -24,10 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractCacheManager.java
- * @Description CacheManager抽象类,一般扩展CacheManager需要继承此类
- * @date 2023年7月29日
- * @email suxuan696@gmail.com
+ * CacheManager抽象类,一般扩展CacheManager需要继承此类
  */
 public abstract class AbstractCacheManager implements CacheManager {
 	protected final Map<String, Cache> cacheMap = new ConcurrentHashMap<>();

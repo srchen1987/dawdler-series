@@ -23,10 +23,7 @@ import com.anywide.dawdler.cache.CacheConfig;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisCacheManager.java
- * @Description JedisCacheManagerJedis实现的CacheManager
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * JedisCacheManagerJedis实现的CacheManager
  */
 public class JedisCacheManager extends AbstractCacheManager {
 	@Override

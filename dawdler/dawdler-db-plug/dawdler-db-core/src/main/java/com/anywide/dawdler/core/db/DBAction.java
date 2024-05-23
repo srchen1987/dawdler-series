@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.db;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DBAction.java
- * @Description 读写动作
- * @date 2007年8月6日
- * @email suxuan696@gmail.com
+ * 读写动作
  */
 public enum DBAction {
 	READ, WRITE

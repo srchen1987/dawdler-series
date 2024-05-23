@@ -21,10 +21,7 @@ import java.io.IOException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CompressionAlgorithm.java
- * @Description 压缩接口
- * @date 2015年7月16日
- * @email suxuan696@gmail.com
+ * 压缩接口
  */
 public interface CompressionAlgorithm {
 	byte[] compress(byte[] buffer) throws IOException;

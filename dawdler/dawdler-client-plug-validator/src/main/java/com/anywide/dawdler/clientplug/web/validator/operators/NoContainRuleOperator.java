@@ -21,10 +21,7 @@ import java.util.regex.Matcher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title NoContainRuleOperator.java
- * @Description 不包含验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 不包含验证
  */
 public class NoContainRuleOperator extends RegexRuleOperator {
 	public static final String RULE_KEY = "^noContain:\\[(.+)\\]$";

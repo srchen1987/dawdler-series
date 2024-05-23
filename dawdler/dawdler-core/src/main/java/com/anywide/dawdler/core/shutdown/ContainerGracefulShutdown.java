@@ -22,10 +22,7 @@ import java.io.Closeable;
  *
  * @author jackson.song
  * @version V1.0
- * @Title ContainerGracefulShutdown.java
- * @Description 优雅停机接口 需要调用保证进程内任务执行完成后调用closeable.close();
- * @date 2023年11月22日
- * @email suxuan696@gmail.com
+ * 优雅停机接口 需要调用保证进程内任务执行完成后调用closeable.close();
  */
 public interface ContainerGracefulShutdown {
 

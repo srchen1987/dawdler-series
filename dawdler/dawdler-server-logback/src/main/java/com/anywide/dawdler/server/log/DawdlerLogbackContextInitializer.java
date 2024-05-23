@@ -38,10 +38,7 @@ import ch.qos.logback.core.util.StatusListenerConfigHelper;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerLogbackContextInitializer.java
- * @Description logback 上下文初始化
- * @date 2022年6月11日
- * @email suxuan696@gmail.com
+ * logback 上下文初始化
  */
 public class DawdlerLogbackContextInitializer {
 

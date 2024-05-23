@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConvertException.java
- * @Description 类型转换异常
- * @date 2023年3月18日
- * @email suxuan696@gmail.com
+ * 类型转换异常
  */
 public class ConvertException extends RuntimeException {
 

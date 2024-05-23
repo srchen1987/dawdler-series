@@ -33,10 +33,7 @@ import com.anywide.dawdler.util.CertificateOperator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConnectorHandler.java
- * @Description aio实现连接处理器，初始化session，同时做身份校验
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * aio实现连接处理器，初始化session，同时做身份校验
  */
 public class ConnectorHandler implements CompletionHandler<Void, SocketSession> {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectorHandler.class);

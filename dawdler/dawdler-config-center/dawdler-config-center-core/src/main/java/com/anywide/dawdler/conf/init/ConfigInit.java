@@ -36,10 +36,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigInit.java
- * @Description 配置中心初始化,SPI方式加载不同配置中心的client实现
- * @date 2021年5月30日
- * @email suxuan696@gmail.com
+ * 配置中心初始化,SPI方式加载不同配置中心的client实现
  */
 public class ConfigInit {
 	private static Logger logger = LoggerFactory.getLogger(ConfigInit.class);

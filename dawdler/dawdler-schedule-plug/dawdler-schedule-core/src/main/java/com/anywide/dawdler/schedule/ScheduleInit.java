@@ -28,10 +28,7 @@ import com.anywide.dawdler.schedule.annotation.Schedule;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ScheduleInit.java
- * @Description Schedule初始化
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * Schedule初始化
  */
 public class ScheduleInit {
 

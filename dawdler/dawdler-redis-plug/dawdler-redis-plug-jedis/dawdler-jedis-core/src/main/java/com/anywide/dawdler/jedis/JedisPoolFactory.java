@@ -36,10 +36,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisPoolFactory.java
- * @Description jedispool jedis 连接池工厂 支持多个池
- * @date 2021年6月18日
- * @email suxuan696@gmail.com
+ * jedispool jedis 连接池工厂 支持多个池
  */
 public final class JedisPoolFactory {
 	private final static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();

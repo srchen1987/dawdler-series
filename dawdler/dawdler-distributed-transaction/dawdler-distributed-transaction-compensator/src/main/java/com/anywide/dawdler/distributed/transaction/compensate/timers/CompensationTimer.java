@@ -36,10 +36,7 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CompensationTimer.java
- * @Description 定时补偿器
- * @date 2021年4月17日
- * @email suxuan696@gmail.com
+ * 定时补偿器
  */
 public class CompensationTimer implements Runnable {
 	private static Logger logger = LoggerFactory.getLogger(CompensationTimer.class);

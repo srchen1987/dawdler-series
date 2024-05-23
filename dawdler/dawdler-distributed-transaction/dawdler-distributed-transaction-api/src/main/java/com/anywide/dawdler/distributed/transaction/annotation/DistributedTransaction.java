@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DistributedTransaction.java
- * @Description 分布式事务注解
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 分布式事务注解
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })

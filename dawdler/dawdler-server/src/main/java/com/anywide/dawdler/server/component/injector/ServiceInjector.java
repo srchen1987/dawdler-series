@@ -29,10 +29,7 @@ import com.anywide.dawdler.server.context.DawdlerContext;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceInjector.java
- * @Description 注入服务
- * @date 2023年7月20日
- * @email suxuan696@gmail.com
+ * 注入服务
  */
 @Order(1)
 public class ServiceInjector implements CustomComponentInjector {

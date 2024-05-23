@@ -35,10 +35,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CircuitBreakerFilter.java
- * @Description 过滤器用来做熔断拦截
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 过滤器用来做熔断拦截
  */
 @Order(1)
 public class CircuitBreakerFilter implements DawdlerClientFilter {

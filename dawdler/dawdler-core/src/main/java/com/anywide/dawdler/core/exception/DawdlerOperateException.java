@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerOperateException.java
- * @Description 操作异常
- * @date 2015年6月12日
- * @email suxuan696@gmail.com
+ * 操作异常
  */
 public class DawdlerOperateException extends RuntimeException {
 	private static final long serialVersionUID = -3550553336288122682L;

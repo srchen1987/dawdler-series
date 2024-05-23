@@ -10,7 +10,7 @@
 <dependencyManagement>
   <dependencies>
    <dependency>
-    <groupId>dawdler</groupId>
+    <groupId>io.github.dawdler-series</groupId>
     <artifactId>dawdler-services-dependencies</artifactId>
     <version>${dawdler.build.version}</version>
     <type>pom</type>

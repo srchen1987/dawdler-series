@@ -23,10 +23,7 @@ import com.anywide.dawdler.core.serializer.SerializeDecider.SerializeType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CacheConfig.java
- * @Description CacheConfig接口,用于声明cache配置
- * @date 2023年7月29日
- * @email suxuan696@gmail.com
+ * CacheConfig接口,用于声明cache配置
  */
 public interface CacheConfig {
 

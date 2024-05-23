@@ -19,10 +19,7 @@ package com.anywide.dawdler.cache;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Cache.java
- * @Description Cache接口
- * @date 2023年7月29日
- * @email suxuan696@gmail.com
+ * Cache接口
  */
 public interface Cache {
 

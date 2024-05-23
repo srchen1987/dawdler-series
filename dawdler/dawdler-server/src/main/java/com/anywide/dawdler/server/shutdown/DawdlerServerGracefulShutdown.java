@@ -25,11 +25,8 @@ import com.anywide.dawdler.server.bootstrap.ServerConnectionManager;
  *
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerServerGracefulShutdown.java
- * @Description dawdlerServer优雅停机 等待任务完成之后调用closeable.close();
+ * dawdlerServer优雅停机 等待任务完成之后调用closeable.close();
  *              原有代码在DawdlerServer.java中实现,现在通过SPI接口方式统一实现.
- * @date 2023年11月22日
- * @email suxuan696@gmail.com
  */
 public class DawdlerServerGracefulShutdown implements ContainerGracefulShutdown {
 

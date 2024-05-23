@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.dynamicform.control;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ControlContent.java
- * @Description 常量类
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 常量类
  */
 public interface ControlContent {
 	String CONTROLNAMEREPLACE = "controlNamereplace";

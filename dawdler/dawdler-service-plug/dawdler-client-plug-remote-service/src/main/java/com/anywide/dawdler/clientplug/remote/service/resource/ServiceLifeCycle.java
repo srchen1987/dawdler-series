@@ -26,10 +26,7 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceLifeCycle.java
- * @Description service销毁后关闭ConnectionPool(老版本在com.anywide.dawdler.clientplug.web.listener.WebListener中关闭)
- * @date 2024年2月9日
- * @email suxuan696@gmail.com
+ * service销毁后关闭ConnectionPool(老版本在com.anywide.dawdler.clientplug.web.listener.WebListener中关闭)
  */
 @Order(Integer.MAX_VALUE)
 public class ServiceLifeCycle implements ComponentLifeCycle {

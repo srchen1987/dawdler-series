@@ -30,10 +30,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LocalServiceLifeCycle.java
- * @Description 服务器端初始化与销毁
- * @date 2021年5月30日
- * @email suxuan696@gmail.com
+ * 服务器端初始化与销毁
  */
 @Order(1)
 public class LocalServiceLifeCycle implements ComponentLifeCycle {

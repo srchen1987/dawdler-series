@@ -21,10 +21,7 @@ import com.anywide.dawdler.breaker.state.CircuitBreakerState;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CircuitBreaker.java
- * @Description 熔断器接口
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 熔断器接口
  */
 public interface CircuitBreaker {
 

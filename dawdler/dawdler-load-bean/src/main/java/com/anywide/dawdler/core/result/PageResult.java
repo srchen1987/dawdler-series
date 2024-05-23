@@ -23,10 +23,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title PageResult.java
- * @Description 返回支持分页结果包装类
- * @date 2021年3月5日
- * @email suxuan696@gmail.com
+ * 返回支持分页结果包装类
  */
 public class PageResult<T> extends BaseResult<T> {
 

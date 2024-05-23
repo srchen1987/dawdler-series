@@ -22,10 +22,7 @@ import com.rabbitmq.client.Envelope;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Message.java
- * @Description mq消费信息包装类
- * @date 2022年4月14日
- * @email suxuan696@gmail.com
+ * mq消费信息包装类
  */
 public class Message {
 	private String consumerTag;

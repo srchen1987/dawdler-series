@@ -34,10 +34,7 @@ import com.anywide.dawdler.util.spring.antpath.ResourcePatternResolver;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractSqlSessionFactory.java
- * @Description SqlSession抽象工厂
- * @date 2021年5月8日
- * @email suxuan696@gmail.com
+ * SqlSession抽象工厂
  */
 public abstract class AbstractSqlSessionFactory {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractSqlSessionFactory.class);

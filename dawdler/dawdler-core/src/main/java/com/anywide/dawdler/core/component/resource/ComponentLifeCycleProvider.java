@@ -29,10 +29,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ComponentLifeCycleProvider.java
- * @Description 组件生命周期接口提供者
- * @date 2022年4月12日
- * @email suxuan696@gmail.com
+ * 组件生命周期接口提供者
  */
 public class ComponentLifeCycleProvider {
 	private static Map<String, ComponentLifeCycleProvider> instances = new ConcurrentHashMap<>();

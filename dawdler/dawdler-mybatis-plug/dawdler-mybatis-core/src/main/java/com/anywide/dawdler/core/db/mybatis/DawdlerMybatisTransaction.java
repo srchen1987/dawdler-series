@@ -28,10 +28,7 @@ import com.anywide.dawdler.util.TLS;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerMybatisTransaction.java
- * @Description dawdler实现Mybatis事务支持
- * @date 2021年5月8日
- * @email suxuan696@gmail.com
+ * dawdler实现Mybatis事务支持
  */
 public class DawdlerMybatisTransaction implements Transaction {
 	public static final String CURRENT_CONNECTION = "dmt_CURRENT_CONNECTION";

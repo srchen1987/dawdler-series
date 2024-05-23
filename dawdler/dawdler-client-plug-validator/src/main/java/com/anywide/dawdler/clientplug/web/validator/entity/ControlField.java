@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.entity;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ControlField.java
- * @Description 控制基础对应属性
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 控制基础对应属性
  */
 public class ControlField {
 	private String fieldName;

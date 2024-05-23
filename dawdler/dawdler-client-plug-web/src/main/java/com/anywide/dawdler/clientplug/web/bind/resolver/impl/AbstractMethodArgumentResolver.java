@@ -23,10 +23,7 @@ import com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractMethodArgumentResolver.java
- * @Description 获取参数值的决策者的抽象类，实现getParameterName 方便子类使用
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * 获取参数值的决策者的抽象类，实现getParameterName 方便子类使用
  */
 public abstract class AbstractMethodArgumentResolver implements MethodArgumentResolver {
 

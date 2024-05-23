@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RegularCharacterRuleOperator.java
- * @Description 汉字字母或数字验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 汉字字母或数字验证
  */
 public class RegularCharacterRuleOperator extends StringRuleOperator {
 

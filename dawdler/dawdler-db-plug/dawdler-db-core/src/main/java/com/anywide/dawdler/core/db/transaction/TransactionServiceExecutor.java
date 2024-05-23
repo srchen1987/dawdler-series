@@ -40,10 +40,7 @@ import com.anywide.dawdler.util.reflectasm.MethodAccess;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionServiceExecutor.java
- * @Description 实现dawdler的执行器，将事务绑定到Service的执行过程中
- * @date 2015年10月9日
- * @email suxuan696@gmail.com
+ * 实现dawdler的执行器，将事务绑定到Service的执行过程中
  */
 public class TransactionServiceExecutor implements ServiceExecutor {
 	private static final Logger logger = LoggerFactory.getLogger(TransactionServiceExecutor.class);

@@ -32,10 +32,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EsOperatorFactory.java
- * @Description Es操作类工厂
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * Es操作类工厂
  */
 public class EsOperatorFactory {
 	private static Map<String, EsOperator> esRestHighLevelOperators = new ConcurrentHashMap<>();

@@ -19,10 +19,7 @@ package com.anywide.dawdler.client.api.generator.data;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ControllerData.java
- * @Description ControllerData
- * @date 2022年3月19日
- * @email suxuan696@gmail.com
+ * ControllerData
  */
 public class ControllerData {
 	private String name;

@@ -22,10 +22,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SchemaData.java
- * @Description SchemaData
- * @date 2022年3月19日
- * @email suxuan696@gmail.com
+ * SchemaData
  */
 public class SchemaData {
 	@JsonInclude(Include.NON_NULL)

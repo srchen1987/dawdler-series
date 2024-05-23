@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.handler;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ViewControllerContext.java
- * @Description view层的上下层
- * @date 2007年4月17日
- * @email suxuan696@gmail.com
+ * view层的上下层
  */
 public class ViewControllerContext {
 	private ViewControllerContext() {

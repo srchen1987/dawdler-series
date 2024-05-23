@@ -22,10 +22,7 @@ import com.anywide.dawdler.core.service.context.ServiceContext;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerClientContext.java
- * @Description dawdler web端服务上下文
- * @date 2024年2月12日
- * @email suxuan696@gmail.com
+ * dawdler web端服务上下文
  */
 public class DawdlerClientContext extends ServiceContext {
 

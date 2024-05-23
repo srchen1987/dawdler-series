@@ -22,10 +22,7 @@ import com.navercorp.pinpoint.common.trace.TraceMetadataSetupContext;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerTraceMetadataProvider.java
- * @Description pinpoint插件Metadata提供者,初始化配置
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * pinpoint插件Metadata提供者,初始化配置
  */
 public class DawdlerTraceMetadataProvider implements TraceMetadataProvider {
 	@Override

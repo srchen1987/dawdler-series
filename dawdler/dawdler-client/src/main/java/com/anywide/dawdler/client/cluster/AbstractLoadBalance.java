@@ -23,10 +23,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractLoadBalance.java
- * @Description 负载均衡通用实现者（抽象）
- * @date 2019年8月16日
- * @email suxuan696@gmail.com
+ * 负载均衡通用实现者（抽象）
  */
 public abstract class AbstractLoadBalance<T, K> implements LoadBalance<T, K> {
 	protected String name;

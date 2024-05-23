@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.service.ServicesManager;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerClientContextManager.java
- * @Description dawdler web端服务上下文管理器
- * @date 2024年2月12日
- * @email suxuan696@gmail.com
+ * dawdler web端服务上下文管理器
  */
 public class DawdlerClientContextManager {
 	private static DawdlerClientContext context;

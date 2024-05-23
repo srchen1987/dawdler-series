@@ -25,10 +25,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RoundRobinLoadBalance.java
- * @Description RoundRobin方式负载均衡实现
- * @date 2019年8月16日
- * @email suxuan696@gmail.com
+ * RoundRobin方式负载均衡实现
  */
 public class RoundRobinLoadBalance<T> extends AbstractLoadBalance<T, Integer> {
 	AtomicInteger index = new AtomicInteger(0);

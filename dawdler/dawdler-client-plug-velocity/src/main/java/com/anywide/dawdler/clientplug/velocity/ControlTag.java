@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.velocity;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CheckboxControl.java
- * @Description 控件标签 之前支持jsp标签库 目前放弃了jsp的支持
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 控件标签 之前支持jsp标签库 目前放弃了jsp的支持
  */
 public class ControlTag /* extends TagSupport */ {
 	private String controlName; // 前台控件名称

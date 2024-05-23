@@ -7,14 +7,14 @@ consul实现的统一配置中心模块.
 ### 1. web端的pom中引入依赖
 
 ```xml
-<groupId>dawdler</groupId>
+<groupId>io.github.dawdler-series</groupId>
 <artifactId>dawdler-client-plug-config-center-consul</artifactId>
 ```
 
 ### 2. dawdler服务端的pom中引入依赖
 
 ```xml
-<groupId>dawdler</groupId>
+<groupId>io.github.dawdler-series</groupId>
 <artifactId>dawdler-server-plug-config-center-consul</artifactId>
 ```
 

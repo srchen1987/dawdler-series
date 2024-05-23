@@ -29,10 +29,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisDistributedLockHolderFactory
- * @Description JedisDistributedLockHolder工厂
- * @date 2023年7月18日
- * @email suxuan696@gmail.com
+ * JedisDistributedLockHolder工厂
  */
 public class JedisDistributedLockHolderFactory {
 

@@ -29,10 +29,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigMappingDataCache.java
- * @Description 缓存path指定映射类型的对象
- * @date 2021年5月29日
- * @email suxuan696@gmail.com
+ * 缓存path指定映射类型的对象
  */
 public class ConfigMappingDataCache {
 	private static Map<String, Map<Class<?>, Object>> cache = new ConcurrentHashMap<>();
