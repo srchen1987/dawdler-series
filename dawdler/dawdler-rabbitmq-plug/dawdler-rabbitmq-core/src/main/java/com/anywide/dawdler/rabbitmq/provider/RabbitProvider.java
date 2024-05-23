@@ -81,9 +81,7 @@ public class RabbitProvider {
 
 	/**
 	 * 
-	 * @Title: publishIfFaildRetry
 	 * @author jackson.song
-	 * @date 2022年4月15日
 	 * 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况)
 	 *              (注意要在配置文件中开启confirmSelect=true)
 	 * @param exchange
@@ -143,9 +141,7 @@ public class RabbitProvider {
 
 	/**
 	 * 
-	 * @Title: getConnection
 	 * @author jackson.song
-	 * @date 2023年1月7日
 	 * 提供获取Connection的方法用于开启事务功能 通过Connection获取Channal 伪代码:
 	 * 	try {
 				channel = con.createChannel();

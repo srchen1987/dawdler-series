@@ -72,11 +72,9 @@ public class RedisSessionStore implements SessionStore {
 	 * @param session
 	 * @return void
 	 * @throws Exception
-	 * @Title saveSession
 	 * 将session序列化到redis中，由于redis不支持put与expire一起执行，lua写又没办法传入hmap结构
 	 *              所以采用了pipeline
 	 * @author jackson.song
-	 * @date 2016年6月16日
 	 */
 	@Override
 	public void saveSession(DawdlerHttpSession session) throws Exception {

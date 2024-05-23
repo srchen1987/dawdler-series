@@ -219,17 +219,13 @@ import com.anywide.dawdler.demo.api.entity.UserBank;
  * @ClassName: DemoController
  * 演示的demo
  * @author jackson.song
- * @date 2022年3月23日
- *
  */
 @Controller
 public class DemoController {
 
  /**
   * 根据用户ID查询用户
-  * @Title: get
   * @author jackson.song
-  * @date 2022年3月23日
   * @param userId 用户ID
   **/
 
@@ -241,9 +237,7 @@ public class DemoController {
 
  /**
   * 
-  * @Title: getUserByUserId
   * @author jackson.song
-  * @date 2022年3月23日
   * 根据用户id查询用户,antPath方式
   * @param id 用户ID
   **/
@@ -256,9 +250,7 @@ public class DemoController {
 
  /**
   * 
-  * @Title: getUserComposite
   * @author jackson.song
-  * @date 2022年3月23日
   * 根据用户ID查询并返回复合bean
   * @param userId 用户ID
   *
@@ -272,9 +264,7 @@ public class DemoController {
 
  /**
   * 
-  * @Title: getUserComposite2
   * @author jackson.song
-  * @date 2022年3月23日
   * 根据用户ID查询并返回复合bean 返回结果List结构
   * @param userId
   * @return
@@ -288,9 +278,7 @@ public class DemoController {
 
  /**
   * 
-  * @Title: create
   * @author jackson.song
-  * @date 2022年3月23日
   * 创建一个用户
   **/
  @RequestMapping(value = "/user/create", method = RequestMethod.POST)
@@ -301,9 +289,7 @@ public class DemoController {
 
  /**
   * 
-  * @Title: headTest
   * @author jackson.song
-  * @date 2022年3月23日
   * 头部获取信息测试
   * @param token 请求头信息
   * 
@@ -316,9 +302,7 @@ public class DemoController {
 
  /**
   * 
-  * @Title: testFileUpload
   * @author jackson.song
-  * @date 2022年3月23日
   * 测试文件上传
   * @param id   业务Id
   * @param file 文件
@@ -334,9 +318,7 @@ public class DemoController {
 
  /**
   * 
-  * @Title: createUser
   * @author jackson.song
-  * @date 2022年3月23日
   * 根据User实体对象的属性生成对应的Http param参数
   *
   */
@@ -359,11 +341,8 @@ package com.anywide.dawdler.demo.api.entity;
 /**
  * 
 * @ClassName: User 
-* @Description: 用户实体
 * @author jackson.song
-* @date 2022年3月23日
-*
- */
+*/
 public class User {
  /**
   * 用户ID
