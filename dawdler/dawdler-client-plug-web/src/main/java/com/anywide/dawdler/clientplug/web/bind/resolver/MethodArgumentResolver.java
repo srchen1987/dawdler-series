@@ -22,10 +22,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MethodArgumentResolver.java
- * @Description 获取参数值的决策接口
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * 获取参数值的决策接口
  */
 public interface MethodArgumentResolver {
 

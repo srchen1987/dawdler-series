@@ -54,10 +54,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerSessionFilter.java
- * @Description session过滤器
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * session过滤器
  */
 public class DawdlerSessionFilter implements Filter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerSessionFilter.class);

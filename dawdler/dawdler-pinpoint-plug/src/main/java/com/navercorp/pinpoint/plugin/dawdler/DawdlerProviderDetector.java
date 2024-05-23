@@ -25,10 +25,7 @@ import com.navercorp.pinpoint.common.util.CollectionUtils;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerProviderDetector.java
- * @Description dawdler服务提供者pinpoint探测器
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * dawdler服务提供者pinpoint探测器
  */
 public final class DawdlerProviderDetector {
 	private static final String DEFAULT_EXPECTED_MAIN_CLASS = "com.anywide.dawdler.server.bootstrap.Bootstrap";

@@ -22,10 +22,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DiscoveryCenter.java
- * @Description 注册中心接口，支持用这个接口来扩展不同的注册中心
- * @date 2018年8月13日
- * @email suxuan696@gmail.com
+ * 注册中心接口，支持用这个接口来扩展不同的注册中心
  */
 public interface DiscoveryCenter {
 	final String ROOT_PATH = "/dawdler";

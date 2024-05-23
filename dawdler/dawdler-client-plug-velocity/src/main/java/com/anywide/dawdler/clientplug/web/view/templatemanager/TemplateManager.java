@@ -21,10 +21,7 @@ import java.util.Properties;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TemplateManager.java
- * @Description 模版管理器接口定义
- * @date 2009年4月19日
- * @email suxuan696@gmail.com
+ * 模版管理器接口定义
  */
 public interface TemplateManager {
 	void init(Properties ps);

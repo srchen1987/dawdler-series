@@ -24,10 +24,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LocalCircuitBreadkerState.java
- * @Description 熔断器状态（LOCAL）
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 熔断器状态（LOCAL）
  */
 public class LocalCircuitBreakerState implements CircuitBreakerState {
 	private final SlideTimeWindows stw;

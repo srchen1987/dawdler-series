@@ -24,10 +24,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractDisplayPlug.java
- * @Description 抽象显示插件
- * @date 2007年4月21日
- * @email suxuan696@gmail.com
+ * 抽象显示插件
  */
 public abstract class AbstractDisplayPlug implements DisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);

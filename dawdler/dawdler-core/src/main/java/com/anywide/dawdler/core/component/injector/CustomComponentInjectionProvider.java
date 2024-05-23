@@ -29,10 +29,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CustomComponentInjectionProvider.java
- * @Description 自定义组件注入接口提供者
- * @date 2023年7月20日
- * @email suxuan696@gmail.com
+ * 自定义组件注入接口提供者
  */
 public class CustomComponentInjectionProvider {
 	private static Map<String, CustomComponentInjectionProvider> instances = new ConcurrentHashMap<>();

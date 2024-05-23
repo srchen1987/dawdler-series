@@ -44,10 +44,7 @@ import com.thoughtworks.qdox.model.JavaSource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebApiGenerator.java
- * @Description webApi生成器
- * @date 2022年3月20日
- * @email suxuan696@gmail.com
+ * webApi生成器
  */
 public class WebApiGenerator {
 	private WebApiGenerator() {

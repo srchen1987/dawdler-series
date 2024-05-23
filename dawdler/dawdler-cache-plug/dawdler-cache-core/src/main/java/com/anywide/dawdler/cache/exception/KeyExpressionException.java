@@ -19,10 +19,7 @@ package com.anywide.dawdler.cache.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title KeyExpressionException.java
- * @Description KeyExpressionException key表达式异常
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * KeyExpressionException key表达式异常
  */
 public class KeyExpressionException extends RuntimeException {
 

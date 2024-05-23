@@ -35,10 +35,7 @@ import com.anywide.dawdler.util.PropertiesUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ZkDiscoveryCenter.java
- * @Description 注册中心zk的实现
- * @date 2018年8月13日
- * @email suxuan696@gmail.com
+ * 注册中心zk的实现
  */
 public class ZkDiscoveryCenter implements DiscoveryCenter {
 

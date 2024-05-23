@@ -26,10 +26,7 @@ import com.anywide.dawdler.core.thread.InvokeFuture;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DefaultFilterChain.java
- * @Description 默认的过滤器链
- * @date 2015年4月6日
- * @email suxuan696@gmail.com
+ * 默认的过滤器链
  */
 public class DefaultFilterChain implements FilterChain {
 	@Override

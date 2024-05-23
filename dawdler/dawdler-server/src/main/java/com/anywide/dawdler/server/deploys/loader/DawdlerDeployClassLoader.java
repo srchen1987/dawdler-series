@@ -38,10 +38,7 @@ import jdk.internal.loader.URLClassPath;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerDeployClassLoader.java
- * @Description Dawdler部署在deploys下的类加载器
- * @date 2015年3月9日
- * @email suxuan696@gmail.com
+ * Dawdler部署在deploys下的类加载器
  */
 public class DawdlerDeployClassLoader extends DawdlerClassLoader implements DeployClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerDeployClassLoader.class);

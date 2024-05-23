@@ -19,10 +19,7 @@ package com.anywide.dawdler.distributed.transaction.message;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MessageSender.java
- * @Description 消息发送者
- * @date 2021年4月11日
- * @email suxuan696@gmail.com
+ * 消息发送者
  */
 public interface MessageSender {
 	public final String QUEUE_NAME = "distributed_transaction_queue";

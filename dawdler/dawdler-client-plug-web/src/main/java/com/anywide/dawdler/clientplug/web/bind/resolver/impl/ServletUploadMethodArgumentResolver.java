@@ -25,10 +25,7 @@ import com.anywide.dawdler.clientplug.web.upload.UploadFile;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServletUploadMethodArgumentResolver.java
- * @Description 获取文件上传参数值的决策者
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * 获取文件上传参数值的决策者
  */
 public class ServletUploadMethodArgumentResolver extends AbstractMethodArgumentResolver {
 

@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.compression.strategy;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CompressionWrapper.java
- * @Description 压缩包装类
- * @date 2015年6月12日
- * @email suxuan696@gmail.com
+ * 压缩包装类
  */
 public class CompressionWrapper {
 	boolean isCompressed;

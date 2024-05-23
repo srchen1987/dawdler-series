@@ -21,10 +21,7 @@ import java.lang.reflect.Method;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ParameterDiscoverer.java
- * @Description 获取方法内参数名称的接口
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 获取方法内参数名称的接口
  */
 public interface ParameterDiscoverer {
 

@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Schedule.java
- * @Description 定时任务注解
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * 定时任务注解
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

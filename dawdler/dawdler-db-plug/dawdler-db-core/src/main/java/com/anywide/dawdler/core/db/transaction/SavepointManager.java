@@ -22,10 +22,7 @@ import java.sql.Savepoint;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SavepointManager.java
- * @Description 当前连接保存点管理者
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 当前连接保存点管理者
  */
 public interface SavepointManager {
 	Savepoint createSavepoint() throws SQLException;

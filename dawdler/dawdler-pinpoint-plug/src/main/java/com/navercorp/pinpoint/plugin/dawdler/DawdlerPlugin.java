@@ -36,10 +36,7 @@ import com.navercorp.pinpoint.plugin.dawdler.interceptor.DawdlerServerIntercepto
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerPlugin.java
- * @Description pinpoint插件常量类
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * pinpoint插件常量类
  */
 public class DawdlerPlugin implements ProfilerPlugin, TransformTemplateAware {
 

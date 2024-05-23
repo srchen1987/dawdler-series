@@ -21,10 +21,7 @@ import java.io.Serializable;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Page.java
- * @Description 可序列化的page类
- * @date 2007年4月5日
- * @email suxuan696@gmail.com
+ * 可序列化的page类
  */
 public class Page implements Serializable {
 	private static final long serialVersionUID = 7024911260241474159L;

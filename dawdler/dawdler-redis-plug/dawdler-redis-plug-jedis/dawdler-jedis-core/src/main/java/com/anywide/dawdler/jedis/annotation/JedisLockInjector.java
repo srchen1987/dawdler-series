@@ -10,10 +10,7 @@ import com.anywide.dawdler.jedis.lock.JedisDistributedLockHolder;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisLockInjector
- * @Description 标注一个成员变量 注入JedisDistributedLock
- * @date 2023年7月18日
- * @email suxuan696@gmail.com
+ * 标注一个成员变量 注入JedisDistributedLock
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

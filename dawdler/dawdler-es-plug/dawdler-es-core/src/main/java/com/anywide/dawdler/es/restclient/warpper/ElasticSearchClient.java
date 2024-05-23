@@ -26,10 +26,7 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ElasticSearchClient.java
- * @Description ElasticSearchClient是ElasticsearchClient的包装类
- * @date 2021年11月14日
- * @email suxuan696@gmail.com
+ * ElasticSearchClient是ElasticsearchClient的包装类
  */
 public class ElasticSearchClient implements Closeable {
 	private ElasticsearchClient elasticsearchClient;

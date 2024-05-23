@@ -26,10 +26,7 @@ import com.anywide.dawdler.core.db.annotation.Propagation;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JdbcTransactionStatus.java
- * @Description 事务具体实现类 参考spring实现
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 事务具体实现类 参考spring实现
  */
 public class JdbcTransactionStatus implements TransactionStatus {
 	private Savepoint savepoint = null; // 事务保存点

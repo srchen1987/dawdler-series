@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitListener.java
- * @Description 标注一个方法是否是rabbitmq的消费者 此方法格式固定为void methodName(Message message)
- * @date 2022年4月14日
- * @email suxuan696@gmail.com
+ * 标注一个方法是否是rabbitmq的消费者 此方法格式固定为void methodName(Message message)
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })

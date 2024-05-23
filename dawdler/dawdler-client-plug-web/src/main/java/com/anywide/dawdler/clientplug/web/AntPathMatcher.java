@@ -33,10 +33,7 @@ import java.util.regex.Pattern;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AntPathMatcher.java
- * @Description antPath 基于springmvc的改造
- * @date 2007年4月12日
- * @email suxuan696@gmail.com
+ * antPath 基于springmvc的改造
  */
 public class AntPathMatcher {
 

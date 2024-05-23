@@ -25,10 +25,7 @@ import com.anywide.dawdler.server.filter.FilterProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Service.java
- * @Description deploy下服务模块定义的接口
- * @date 2015年3月22日
- * @email suxuan696@gmail.com
+ * deploy下服务模块定义的接口
  */
 public interface Service {
 	public static final String FILTER_PROVIDER = "filterProvider";

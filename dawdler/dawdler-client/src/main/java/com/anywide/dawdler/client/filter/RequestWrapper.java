@@ -26,10 +26,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestWrapper.java
- * @Description 一个request的包装类
- * @date 2015年4月6日
- * @email suxuan696@gmail.com
+ * 一个request的包装类
  */
 public class RequestWrapper extends RequestBean {
 	private static final long serialVersionUID = 2807385594696214109L;

@@ -22,10 +22,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceContext.java
- * @Description dawdler运行时上下文的抽象类
- * @date 2024年2月12日
- * @email suxuan696@gmail.com
+ * dawdler运行时上下文的抽象类
  */
 public class DawdlerRuntimeContext {
 	private final Map<Object, Object> attributes = new HashMap<>();

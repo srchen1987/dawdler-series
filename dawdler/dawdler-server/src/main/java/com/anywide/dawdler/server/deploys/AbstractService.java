@@ -67,10 +67,7 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractService.java
- * @Description 抽象服务
- * @date 2015年3月22日
- * @email suxuan696@gmail.com
+ * 抽象服务
  */
 public abstract class AbstractService implements Service {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractService.class);

@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Order.java
- * @Description 排序注解
- * @date 2015年6月3日
- * @email suxuan696@gmail.com
+ * 排序注解
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)

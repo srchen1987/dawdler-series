@@ -31,10 +31,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisIndicator.java
- * @Description JedisIndicator jedis健康指示器
- * @date 2022年5月1日
- * @email suxuan696@gmail.com
+ * JedisIndicator jedis健康指示器
  */
 public class JedisIndicator implements HealthIndicator {
 

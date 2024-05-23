@@ -35,10 +35,7 @@ import com.anywide.dawdler.util.XmlObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClientConfigParser.java
- * @Description xtream映射类
- * @date 2015年3月16日
- * @email suxuan696@gmail.com
+ * xtream映射类
  */
 public class ClientConfigParser {
 	private static final Logger logger = LoggerFactory.getLogger(ClientConfigParser.class);

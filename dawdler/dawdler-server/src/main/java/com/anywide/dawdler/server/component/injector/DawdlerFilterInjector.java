@@ -27,10 +27,7 @@ import com.anywide.dawdler.server.filter.FilterProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerFilterInjector.java
- * @Description 注入DawdlerFilter
- * @date 2023年7月20日
- * @email suxuan696@gmail.com
+ * 注入DawdlerFilter
  */
 @Order(1)
 public class DawdlerFilterInjector implements CustomComponentInjector {

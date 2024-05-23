@@ -23,10 +23,7 @@ import com.navercorp.pinpoint.common.trace.MethodType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerProviderMethodDescriptor.java
- * @Description dawdler服务提供者方法描述器
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * dawdler服务提供者方法描述器
  */
 public class DawdlerProviderMethodDescriptor implements MethodDescriptor {
 	private int apiId = 0;

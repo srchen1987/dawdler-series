@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title NegativeNumberOperator.java
- * @Description 负整数验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 负整数验证
  */
 public class NegativeNumberOperator extends StringRuleOperator {
 	public static final String EXPLAIN = "负整数验证";

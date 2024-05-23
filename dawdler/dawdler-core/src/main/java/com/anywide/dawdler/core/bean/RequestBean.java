@@ -23,10 +23,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestBean.java
- * @Description 远程请求信息类
- * @date 2007年11月15日
- * @email suxuan696@gmail.com
+ * 远程请求信息类
  */
 public class RequestBean implements Serializable {
 	private static final long serialVersionUID = 2432958149343667660L;

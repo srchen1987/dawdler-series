@@ -30,10 +30,7 @@ import com.anywide.dawdler.core.db.DBAction;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LocalConnectionFacotry.java
- * @Description 线程内存储Connection的工厂
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 线程内存储Connection的工厂
  */
 public class LocalConnectionFactory {
 	private final static ConcurrentMap<DataSource, TransactionManager> LOCAL_MANAGER = new ConcurrentHashMap<>();

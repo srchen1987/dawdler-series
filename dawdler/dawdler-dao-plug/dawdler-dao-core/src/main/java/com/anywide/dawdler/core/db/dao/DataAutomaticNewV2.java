@@ -33,10 +33,7 @@ import com.anywide.dawdler.util.DawdlerTool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DataAutomaticNewV2.java
- * @Description 反射实现的数据赋值工具
- * @date 2007年4月15日
- * @email suxuan696@gmail.com
+ * 反射实现的数据赋值工具
  */
 public class DataAutomaticNewV2 {
 	private static final Map<String, Class<?>[]> DATA_TYPES = new HashMap<String, Class<?>[]>(64);

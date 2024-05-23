@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.session.base;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title StandardSessionIdGenerator.java
- * @Description SessionId生成者 直接copy tomcat代码
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * SessionId生成者 直接copy tomcat代码
  */
 public class StandardSessionIdGenerator extends SessionIdGeneratorBase {
 

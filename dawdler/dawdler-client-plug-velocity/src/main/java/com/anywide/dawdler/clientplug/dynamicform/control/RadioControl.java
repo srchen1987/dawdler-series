@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RadioControl.java
- * @Description 单选框实现
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 单选框实现
  */
 public class RadioControl extends Control {
 	protected RadioControl(ControlTag tag) {

@@ -19,10 +19,7 @@ package com.anywide.dawdler.client;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionProvider.java
- * @Description Transaction提供者，传入groupName获取Transaction
- * @date 2015年3月26日
- * @email suxuan696@gmail.com
+ * Transaction提供者，传入groupName获取Transaction
  */
 public class TransactionProvider {
 

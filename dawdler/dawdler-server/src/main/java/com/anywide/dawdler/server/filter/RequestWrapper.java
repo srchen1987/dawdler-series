@@ -27,10 +27,7 @@ import com.anywide.dawdler.server.net.aio.session.SocketSession;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestWrapper.java
- * @Description request的包装类
- * @date 2015年4月8日
- * @email suxuan696@gmail.com
+ * request的包装类
  */
 public class RequestWrapper extends RequestBean {
 	private static final long serialVersionUID = 2807385594696214109L;

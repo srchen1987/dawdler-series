@@ -24,10 +24,7 @@ import com.anywide.dawdler.core.health.HealthIndicator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConsulIndicator.java
- * @Description ConsulIndicator 配置中心健康指示器
- * @date 2023年3月4日
- * @email suxuan696@gmail.com
+ * ConsulIndicator 配置中心健康指示器
  */
 public class ConsulIndicator implements HealthIndicator {
 

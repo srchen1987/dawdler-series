@@ -27,10 +27,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RemoteClassLoaderFireHolder.java
- * @Description 远程类加载时触发持有者
- * @date 2015年3月11日
- * @email suxuan696@gmail.com
+ * 远程类加载时触发持有者
  */
 public class RemoteClassLoaderFireHolder {
 	private final List<OrderData<RemoteClassLoaderFire>> remoteClassLoaderFires = new ArrayList<>();

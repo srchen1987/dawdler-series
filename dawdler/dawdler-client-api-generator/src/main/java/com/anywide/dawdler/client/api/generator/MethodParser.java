@@ -59,10 +59,7 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaWildcardType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MethodParser.java
- * @Description 方法解析器
- * @date 2022年3月20日
- * @email suxuan696@gmail.com
+ * 方法解析器
  */
 public class MethodParser {
 	private MethodParser() {

@@ -27,10 +27,7 @@ import com.anywide.dawdler.serverplug.db.mybatis.SingleSqlSessionFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectServiceCreateListener.java
- * @Description 监听器实现mapper的注入
- * @date 2021年5月8日
- * @email suxuan696@gmail.com
+ * 监听器实现mapper的注入
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 	private SqlSession sqlSession = SingleSqlSessionFactory.getInstance().getSqlSession();

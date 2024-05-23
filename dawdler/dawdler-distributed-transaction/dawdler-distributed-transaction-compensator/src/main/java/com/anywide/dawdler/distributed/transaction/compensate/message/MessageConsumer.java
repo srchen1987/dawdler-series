@@ -36,11 +36,8 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MessageConsumer.java
- * @Description 消息消费者
+ * 消息消费者
  *              将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
- * @date 2021年4月17日
- * @email suxuan696@gmail.com
  */
 public class MessageConsumer {
 	private static Logger logger = LoggerFactory.getLogger(MessageConsumer.class);

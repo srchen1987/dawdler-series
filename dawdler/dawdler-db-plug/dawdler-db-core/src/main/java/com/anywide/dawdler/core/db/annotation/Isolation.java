@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.db.transaction.TransactionDefinition;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Isolation.java
- * @Description 隔离级别的定义
- * @date 2012年9月27日
- * @email suxuan696@gmail.com
+ * 隔离级别的定义
  */
 public enum Isolation {
 	DEFAULT(TransactionDefinition.TRANSACTION_DEFAULT),

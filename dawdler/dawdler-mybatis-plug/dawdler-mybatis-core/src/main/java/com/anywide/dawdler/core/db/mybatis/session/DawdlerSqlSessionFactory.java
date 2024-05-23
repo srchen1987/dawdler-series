@@ -38,10 +38,7 @@ import com.anywide.dawdler.core.db.mybatis.executor.SimpleExecutor;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerSqlSessionFactory.java
- * @Description dawdler sqlSession工厂
- * @date 2023年11月7日
- * @email suxuan696@gmail.com
+ * dawdler sqlSession工厂
  */
 public class DawdlerSqlSessionFactory implements SqlSessionFactory {
 

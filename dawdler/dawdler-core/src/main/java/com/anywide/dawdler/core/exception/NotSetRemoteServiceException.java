@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title NotSetRemoteServiceException.java
- * @Description 未设置RemoteService注解异常
- * @date 2015年6月12日
- * @email suxuan696@gmail.com
+ * 未设置RemoteService注解异常
  */
 public class NotSetRemoteServiceException extends RuntimeException {
 	private static final long serialVersionUID = -3550553336288122682L;

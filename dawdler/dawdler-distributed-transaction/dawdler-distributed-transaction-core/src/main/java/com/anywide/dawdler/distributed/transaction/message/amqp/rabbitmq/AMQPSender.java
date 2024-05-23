@@ -30,10 +30,7 @@ import com.rabbitmq.client.Connection;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AMQPSender.java
- * @Description amqp发送者
- * @date 2021年4月11日
- * @email suxuan696@gmail.com
+ * amqp发送者
  */
 public class AMQPSender implements MessageSender {
 	private static final Logger logger = LoggerFactory.getLogger(AMQPSender.class);

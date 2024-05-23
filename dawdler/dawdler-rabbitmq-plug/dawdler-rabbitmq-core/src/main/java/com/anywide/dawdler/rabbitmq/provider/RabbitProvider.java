@@ -32,10 +32,7 @@ import com.rabbitmq.client.Connection;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitProvider.java
- * @Description rabbitmq消息提供者
- * @date 2022年4月15日
- * @email suxuan696@gmail.com
+ * rabbitmq消息提供者
  */
 public class RabbitProvider {
 	private static final Logger logger = LoggerFactory.getLogger(RabbitProvider.class);
@@ -83,11 +80,8 @@ public class RabbitProvider {
 	}
 
 	/**
-	 * 
-	 * @Title: publishIfFaildRetry
 	 * @author jackson.song
-	 * @date 2022年4月15日
-	 * @Description 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况)
+	 * 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况)
 	 *              (注意要在配置文件中开启confirmSelect=true)
 	 * @param exchange
 	 * @param routingKey
@@ -145,11 +139,8 @@ public class RabbitProvider {
 	}
 
 	/**
-	 * 
-	 * @Title: getConnection
 	 * @author jackson.song
-	 * @date 2023年1月7日
-	 * @Description 提供获取Connection的方法用于开启事务功能 通过Connection获取Channal 伪代码:
+	 * 提供获取Connection的方法用于开启事务功能 通过Connection获取Channal 伪代码:
 	 * 	try {
 				channel = con.createChannel();
 				channel.txSelect();

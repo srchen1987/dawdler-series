@@ -21,10 +21,7 @@ import com.anywide.dawdler.client.api.generator.data.ContactData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title OpenApiConfig.java
- * @Description openApi配置类
- * @date 2022年3月19日
- * @email suxuan696@gmail.com
+ * openApi配置类
  */
 public class OpenApiConfig {
 	private String version;

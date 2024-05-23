@@ -25,10 +25,7 @@ import java.util.zip.GZIPOutputStream;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title GZipCompression.java
- * @Description copy过来的GZIP实现
- * @date 2015年7月16日
- * @email suxuan696@gmail.com
+ * copy过来的GZIP实现
  */
 public class GZipCompression implements CompressionAlgorithm {
 	int size = 4096;

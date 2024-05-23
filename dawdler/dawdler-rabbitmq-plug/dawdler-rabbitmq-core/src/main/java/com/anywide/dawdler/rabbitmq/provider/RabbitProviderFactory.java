@@ -25,10 +25,7 @@ import com.anywide.dawdler.rabbitmq.provider.annotation.RabbitInjector;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitProviderFactory.java
- * @Description rabbitmq消息提供者工厂
- * @date 2022年4月15日
- * @email suxuan696@gmail.com
+ * rabbitmq消息提供者工厂
  */
 public class RabbitProviderFactory {
 	private static Map<String, RabbitProvider> providers = new ConcurrentHashMap<>();

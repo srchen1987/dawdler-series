@@ -23,10 +23,7 @@ import com.anywide.dawdler.core.service.bean.ServicesBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceExecutor.java
- * @Description 服务处理器接口
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * 服务处理器接口
  */
 public interface ServiceExecutor {
 	void execute(RequestBean requestBean, ResponseBean responseBean, ServicesBean servicesBean);

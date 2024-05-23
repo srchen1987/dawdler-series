@@ -33,10 +33,7 @@ import co.elastic.clients.transport.rest_client.RestClientTransport;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EsClientFactory.java
- * @Description EsClientFactory工厂
- * @date 2021年11月14日
- * @email suxuan696@gmail.com
+ * EsClientFactory工厂
  */
 public class EsClientFactory {
 	private String username;

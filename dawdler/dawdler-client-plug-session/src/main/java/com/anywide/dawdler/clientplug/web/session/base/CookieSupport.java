@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.session.base;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CookieSupport.java
- * @Description cookie相关操作 直接copy tomcat中的代码
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * cookie相关操作 直接copy tomcat中的代码
  */
 public final class CookieSupport {
 

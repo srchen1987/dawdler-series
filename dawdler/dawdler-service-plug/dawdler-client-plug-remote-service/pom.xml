@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>dawdler</groupId>
+		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler-service-plug</artifactId>
 		<version>17.2-jdk17-RELEASES</version>
 	</parent>
@@ -17,27 +17,27 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>dawdler</groupId>
+			<groupId>io.github.dawdler-series</groupId>
 			<artifactId>dawdler-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>dawdler</groupId>
+			<groupId>io.github.dawdler-series</groupId>
 			<artifactId>dawdler-remote-service-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>dawdler</groupId>
+			<groupId>io.github.dawdler-series</groupId>
 			<artifactId>dawdler-load-bean</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>dawdler</groupId>
+			<groupId>io.github.dawdler-series</groupId>
 			<artifactId>dawdler-jakarta-fileupload</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>dawdler</groupId>
+			<groupId>io.github.dawdler-series</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>dawdler</groupId>
+			<groupId>io.github.dawdler-series</groupId>
 			<artifactId>dawdler-client-plug-web</artifactId>
 		</dependency>
 	</dependencies>

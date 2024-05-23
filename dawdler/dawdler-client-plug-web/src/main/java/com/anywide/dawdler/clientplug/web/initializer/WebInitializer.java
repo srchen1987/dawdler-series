@@ -31,10 +31,7 @@ import jakarta.servlet.ServletException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WebInitializer.java
- * @Description web初始化
- * @date 2015年3月11日
- * @email suxuan696@gmail.com
+ * web初始化
  */
 @Order(1)
 public class WebInitializer implements ServletContainerInitializer {

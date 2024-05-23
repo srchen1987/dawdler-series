@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ControlFactory.java
- * @Description 控件工厂
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 控件工厂
  */
 public class ControlFactory {
 	public static final Control getControl(ControlTag tag) {

@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title IllegalConnectionException.java
- * @Description 不合规连接异常
- * @date 2022年4月8日
- * @email suxuan696@gmail.com
+ * 不合规连接异常
  */
 public class IllegalConnectionException extends RuntimeException {
 

@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EsInjector.java
- * @Description 标注一个成员变量 注入EsOperator
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * 标注一个成员变量 注入EsOperator
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)

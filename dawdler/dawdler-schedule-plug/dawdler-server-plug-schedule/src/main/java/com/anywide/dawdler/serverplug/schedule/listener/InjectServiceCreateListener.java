@@ -22,10 +22,7 @@ import com.anywide.dawdler.schedule.ScheduleInit;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectServiceCreateListener.java
- * @Description 实现定时器的注入
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * 实现定时器的注入
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 

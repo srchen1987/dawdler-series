@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DisplaySwitcher.java
- * @Description 显示器选择者
- * @date 2007年4月21日
- * @email suxuan696@gmail.com
+ * 显示器选择者
  */
 public class DisplaySwitcher {
 	public static void switchDisplay(ViewForward wf) {

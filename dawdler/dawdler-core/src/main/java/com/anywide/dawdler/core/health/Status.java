@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.health;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Status.java
- * @Description 状态标识类
- * @date 2022年5月3日
- * @email suxuan696@gmail.com
+ * 状态标识类
  */
 public final class Status {
 

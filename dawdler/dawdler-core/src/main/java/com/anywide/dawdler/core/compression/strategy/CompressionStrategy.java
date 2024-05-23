@@ -21,10 +21,7 @@ import java.io.IOException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CompressionStrategy.java
- * @Description 压缩策略，返回压缩包装类
- * @date 2015年6月12日
- * @email suxuan696@gmail.com
+ * 压缩策略，返回压缩包装类
  */
 public interface CompressionStrategy {
 	CompressionWrapper compress(byte[] buffer) throws IOException;

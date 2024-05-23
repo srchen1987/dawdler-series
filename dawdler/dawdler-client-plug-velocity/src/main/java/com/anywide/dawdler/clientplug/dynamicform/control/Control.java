@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Control.java
- * @Description 抽象控件
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 抽象控件
  */
 public abstract class Control {
 	private static boolean showcolon;

@@ -22,10 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigDataCache.java
- * @Description 缓存配置中心中的数据和版本号
- * @date 2021年5月29日
- * @email suxuan696@gmail.com
+ * 缓存配置中心中的数据和版本号
  */
 public class ConfigDataCache {
 

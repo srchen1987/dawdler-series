@@ -24,10 +24,7 @@ import com.anywide.dawdler.core.compression.ZLibCompression;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ThresholdCompressionStrategy.java
- * @Description 基于数据包大小的压缩策略，返回压缩包装类
- * @date 2015年6月12日
- * @email suxuan696@gmail.com
+ * 基于数据包大小的压缩策略，返回压缩包装类
  */
 public class ThresholdCompressionStrategy implements CompressionStrategy {
 

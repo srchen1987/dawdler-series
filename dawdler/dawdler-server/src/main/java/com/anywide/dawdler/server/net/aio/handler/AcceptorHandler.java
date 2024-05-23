@@ -34,10 +34,7 @@ import com.anywide.dawdler.server.net.aio.session.SocketSession;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AcceptorHandler.java
- * @Description aio接收请求的处理者
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * aio接收请求的处理者
  */
 public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChannel, DawdlerServerContext> {
 	private static final Logger logger = LoggerFactory.getLogger(AcceptorHandler.class);

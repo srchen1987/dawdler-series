@@ -19,10 +19,7 @@ package com.anywide.dawdler.breaker.metric;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Metric.java
- * @Description 度量接口
- * @date 2018年3月16日
- * @email suxuan696@gmail.com
+ * 度量接口
  */
 public interface Metric {
 	void totalIncrt();

@@ -23,10 +23,7 @@ import java.util.UUID;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DistributedTransactionContext.java
- * @Description 事务上下文
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 事务上下文
  */
 public class DistributedTransactionContext implements Serializable, Cloneable {
 	public static final String DISTRIBUTED_TRANSACTION_CONTEXT_KEY = "dtc_key";

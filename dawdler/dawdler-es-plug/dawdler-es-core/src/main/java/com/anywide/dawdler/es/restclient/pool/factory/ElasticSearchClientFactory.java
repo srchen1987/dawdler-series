@@ -31,10 +31,7 @@ import com.anywide.dawdler.util.PropertiesUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ElasticSearchClientFactory.java
- * @Description ElasticSearchClient多例工厂
- * @date 2021年11月14日
- * @email suxuan696@gmail.com
+ * ElasticSearchClient多例工厂
  */
 public class ElasticSearchClientFactory {
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;

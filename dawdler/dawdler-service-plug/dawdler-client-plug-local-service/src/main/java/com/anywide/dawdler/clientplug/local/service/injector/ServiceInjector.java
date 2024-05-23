@@ -28,10 +28,7 @@ import com.anywide.dawdler.core.service.annotation.Service;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceInjector.java
- * @Description 注入Service组件
- * @date 2024年2月12日
- * @email suxuan696@gmail.com
+ * 注入Service组件
  */
 @Order(1)
 public class ServiceInjector implements CustomComponentInjector {

@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ValidationException.java
- * @Description 验证失败异常
- * @date 2022年3月22日
- * @email suxuan696@gmail.com
+ * 验证失败异常
  */
 public class ValidationException extends RuntimeException {
 	private static final long serialVersionUID = 2059492442768881097L;

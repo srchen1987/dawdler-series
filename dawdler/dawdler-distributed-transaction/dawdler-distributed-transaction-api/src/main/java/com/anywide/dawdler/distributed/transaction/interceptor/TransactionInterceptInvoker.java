@@ -23,10 +23,7 @@ import com.anywide.dawdler.distributed.transaction.context.DistributedTransactio
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionInterceptInvoker.java
- * @Description 事务执行拦截器，主要是针对不同的响应结果做拦截
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 事务执行拦截器，主要是针对不同的响应结果做拦截
  */
 public interface TransactionInterceptInvoker {
 

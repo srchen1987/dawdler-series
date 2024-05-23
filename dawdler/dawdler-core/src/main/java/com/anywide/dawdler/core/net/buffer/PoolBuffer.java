@@ -26,10 +26,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title PoolBuffer.java
- * @Description Buffer池，极端情况才会使用到， 初始化了一些buffer，池的配置可以根据实际业务的使用情况进行调整
- * @date 2015年3月14日
- * @email suxuan696@gmail.com
+ * Buffer池，极端情况才会使用到， 初始化了一些buffer，池的配置可以根据实际业务的使用情况进行调整
  */
 public class PoolBuffer {
 	private static final ConcurrentHashMap<Integer, PoolBuffer> POOL_BUFFERS = new ConcurrentHashMap<>();

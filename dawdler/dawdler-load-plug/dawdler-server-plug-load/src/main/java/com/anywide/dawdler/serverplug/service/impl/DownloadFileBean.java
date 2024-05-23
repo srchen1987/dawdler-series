@@ -26,10 +26,7 @@ import com.anywide.dawdler.serverplug.service.DownloadFile;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DownloadFileBean.java
- * @Description 下载模版类文件的接口的具体实现类
- * @date 2007年9月18日
- * @email suxuan696@gmail.com
+ * 下载模版类文件的接口的具体实现类
  */
 public class DownloadFileBean implements DownloadFile {
 	private static final Logger logger = LoggerFactory.getLogger(DownloadFileBean.class);

@@ -37,10 +37,7 @@ import com.anywide.dawdler.util.XmlObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServicesConfigParser.java
- * @Description 服务配置解析类 (抛弃老版本的xstream实现. 使用dom4j实现,最后抛弃dom4j实现)
- * @date 2023年5月1日
- * @email suxuan696@gmail.com
+ * 服务配置解析类 (抛弃老版本的xstream实现. 使用dom4j实现,最后抛弃dom4j实现)
  */
 public class ServicesConfigParser {
 	private ServicesConfig servicesConfig = new ServicesConfig();

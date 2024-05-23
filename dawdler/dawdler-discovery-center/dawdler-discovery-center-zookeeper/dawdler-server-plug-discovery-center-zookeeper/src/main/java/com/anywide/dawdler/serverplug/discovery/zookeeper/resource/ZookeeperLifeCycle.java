@@ -24,10 +24,7 @@ import com.anywide.dawdler.server.plug.discoverycenter.AbstractServerDiscoveryCe
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ZookeeperLifeCycle.java
- * @Description Zookeeper注册中心初始化与销毁
- * @date 2022年9月30日
- * @email suxuan696@gmail.com
+ * Zookeeper注册中心初始化与销毁
  */
 @Order(com.anywide.dawdler.core.order.Order.LOWEST_PRECEDENCE)
 public class ZookeeperLifeCycle extends AbstractServerDiscoveryCenterLifeCycle {
