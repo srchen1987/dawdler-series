@@ -105,4 +105,16 @@ public class DawdlerWebDeployClassLoader extends SecureClassLoader implements De
 		return null;
 	}
 
+	@Override
+	public Class<?> loadClass(String name) throws ClassNotFoundException {
+		try {
+			return super.loadClass(name);
+		} catch (Exception e) {
+			return parent.loadClass(name);
+		}
+		
+	}
+
+	
+
 }
