@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RealNumberRuleOperator.java
- * @Description 实数验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 实数验证
  */
 public class RealNumberRuleOperator extends StringRuleOperator {
 

@@ -32,10 +32,7 @@ import com.anywide.dawdler.util.ClassUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisInnerCache.java
- * @Description JedisInnerCache Jedis实现的内部操作Cache类
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * JedisInnerCache Jedis实现的内部操作Cache类
  */
 public class JedisInnerCache {
 	private JedisOperator jedisOperator;

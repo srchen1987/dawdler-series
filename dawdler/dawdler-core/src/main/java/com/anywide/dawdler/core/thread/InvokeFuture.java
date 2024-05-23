@@ -30,10 +30,7 @@ import com.anywide.dawdler.core.exception.DawdlerOperateException;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InvokeFuture.java
- * @Description 执行结果
- * @date 2015年4月3日
- * @email suxuan696@gmail.com
+ * 执行结果
  */
 public class InvokeFuture<V> {
 	protected Logger logger = LoggerFactory.getLogger(getClass());

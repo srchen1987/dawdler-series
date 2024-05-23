@@ -31,10 +31,7 @@ import com.anywide.dawdler.core.db.transaction.SynReadConnectionObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title BaseDataImpl.java
- * @Description jdbc常用操作的具体实现
- * @date 2007年4月15日
- * @email suxuan696@gmail.com
+ * jdbc常用操作的具体实现
  */
 public class BaseDataImpl implements BaseData {
 	private Connection con;

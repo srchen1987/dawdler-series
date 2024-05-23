@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title NumberRuleOperator.java
- * @Description 整数验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 整数验证
  */
 public class NumberRuleOperator extends StringRuleOperator {
 	public static final String RULE_KEY = "number";

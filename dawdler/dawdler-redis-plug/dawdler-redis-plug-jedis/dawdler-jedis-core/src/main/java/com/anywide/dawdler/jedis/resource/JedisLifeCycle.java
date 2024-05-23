@@ -22,10 +22,7 @@ import com.anywide.dawdler.jedis.JedisPoolFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisLifeCycle.java
- * @Description jedis资源释放类
- * @date 2022年4月17日
- * @email suxuan696@gmail.com
+ * jedis资源释放类
  */
 public class JedisLifeCycle implements ComponentLifeCycle {
 

@@ -19,10 +19,7 @@ package com.anywide.dawdler.distributed.transaction;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionStatus.java
- * @Description 事务状态
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 事务状态
  */
 public class TransactionStatus {
 	public static final String TRYING = "trying";

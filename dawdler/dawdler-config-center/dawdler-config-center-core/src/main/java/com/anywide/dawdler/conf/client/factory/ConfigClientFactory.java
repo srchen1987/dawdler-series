@@ -24,10 +24,7 @@ import com.anywide.dawdler.conf.client.ConfigClient;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConfigClientFactory.java
- * @Description ConfigClient的工厂，通过SPI初始化之后会加入到此工厂中
- * @date 2021年5月30日
- * @email suxuan696@gmail.com
+ * ConfigClient的工厂，通过SPI初始化之后会加入到此工厂中
  */
 public class ConfigClientFactory {
 	private static Map<String, ConfigClient> clients = new ConcurrentHashMap<String, ConfigClient>();

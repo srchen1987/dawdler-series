@@ -22,10 +22,7 @@ import java.util.Map;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RpcContext.java
- * @Description rpc上下文
- * @date 2020年4月22日
- * @email suxuan696@gmail.com
+ * rpc上下文
  */
 public class RpcContext {
 

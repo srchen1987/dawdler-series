@@ -30,10 +30,7 @@ import sun.misc.Resource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerWebDeployClassLoader.java
- * @Description web模块类加载器
- * @date 2023年11月15日
- * @email suxuan696@gmail.com
+ * web模块类加载器
  */
 public class DawdlerWebDeployClassLoader extends SecureClassLoader implements DeployClassLoader {
 	private ClassLoader parent;

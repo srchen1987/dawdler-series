@@ -26,10 +26,7 @@ import com.anywide.dawdler.local.service.annotation.LocalService;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LocalServiceInjector.java
- * @Description 注入本地服务通用类
- * @date 2024年2月8日
- * @email suxuan696@gmail.com
+ * 注入本地服务通用类
  */
 public class LocalServiceInjector {
 

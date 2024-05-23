@@ -37,10 +37,7 @@ import com.anywide.dawdler.util.JsonProcessUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractUrlHandler.java
- * @Description urlHendler父类
- * @date 2007年4月18日
- * @email suxuan696@gmail.com
+ * urlHendler父类
  */
 public abstract class AbstractUrlHandler {
 	private final List<OrderData<HandlerInterceptor>> handlerInterceptors = InterceptorProvider

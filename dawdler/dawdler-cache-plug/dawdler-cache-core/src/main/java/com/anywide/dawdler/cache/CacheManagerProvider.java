@@ -25,10 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CacheManagerProvider.java
- * @Description CacheManager提供者,通过SPI实现加载
- * @date 2023年7月29日
- * @email suxuan696@gmail.com
+ * CacheManager提供者,通过SPI实现加载
  */
 public class CacheManagerProvider {
 	private static final Map<String, CacheManager> CACHE_MANAGERS = new ConcurrentHashMap<>();

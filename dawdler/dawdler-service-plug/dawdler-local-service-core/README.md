@@ -7,7 +7,7 @@ LocalService核心模块,用于标注一个被注入的服务是本地服务.
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>dawdler</groupId>
+ <groupId>io.github.dawdler-series</groupId>
  <artifactId>dawdler-local-service-core</artifactId>
 ```
 

@@ -21,10 +21,7 @@ import com.anywide.dawdler.core.bean.RequestBean;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title FilterChain.java
- * @Description 过滤器链
- * @date 2015年4月6日
- * @email suxuan696@gmail.com
+ * 过滤器链
  */
 public interface FilterChain {
 	Object doFilter(RequestBean request) throws Exception;

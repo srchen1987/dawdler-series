@@ -23,10 +23,7 @@ import java.lang.reflect.Type;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestParamFieldData.java
- * @Description 存储参数基本信息的类
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 存储参数基本信息的类
  */
 public class RequestParamFieldData {
 

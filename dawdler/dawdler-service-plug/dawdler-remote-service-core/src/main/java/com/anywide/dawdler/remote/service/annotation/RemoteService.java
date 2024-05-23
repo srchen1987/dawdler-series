@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RemoteService.java
- * @Description 注入服务的注解
- * @date 2015年4月26日
- * @email suxuan696@gmail.com
+ * 注入服务的注解
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })

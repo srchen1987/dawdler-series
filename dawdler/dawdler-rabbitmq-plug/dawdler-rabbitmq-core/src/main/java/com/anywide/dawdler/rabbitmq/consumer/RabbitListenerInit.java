@@ -36,10 +36,7 @@ import com.rabbitmq.client.Envelope;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RabbitListenerInit.java
- * @Description 初始化Listener
- * @date 2022年4月14日
- * @email suxuan696@gmail.com
+ * 初始化Listener
  */
 public class RabbitListenerInit {
 	private static final Logger logger = LoggerFactory.getLogger(RabbitListenerInit.class);

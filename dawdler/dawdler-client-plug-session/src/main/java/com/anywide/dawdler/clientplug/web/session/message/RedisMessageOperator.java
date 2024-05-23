@@ -39,10 +39,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MessageOperator.java
- * @Description redis实现的消息操作者
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * redis实现的消息操作者
  */
 public class RedisMessageOperator implements MessageOperator {
 	public static final String CHANNEL_ATTRIBUTE_CHANGE_RELOAD = "__keyevent__:attribute_change_reload";

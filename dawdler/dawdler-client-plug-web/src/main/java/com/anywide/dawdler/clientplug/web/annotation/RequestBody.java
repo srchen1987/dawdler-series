@@ -24,10 +24,7 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RequestBody.java
- * @Description 获取body体转换对象的注解
- * @date 2021年3月6日
- * @email suxuan696@gmail.com
+ * 获取body体转换对象的注解
  */
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

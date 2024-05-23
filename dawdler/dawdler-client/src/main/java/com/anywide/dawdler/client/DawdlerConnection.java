@@ -61,10 +61,7 @@ import com.anywide.dawdler.core.serializer.Serializer;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerConnection.java
- * @Description dawdler连接
- * @date 2015年3月16日
- * @email suxuan696@gmail.com
+ * dawdler连接
  */
 public class DawdlerConnection {
 	private static final ConnectorHandler CONNECTOR_HANDLER = new ConnectorHandler();

@@ -34,10 +34,7 @@ import com.anywide.dawdler.util.ClassUtil;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Refresher.java
- * @Description 刷新者，配置中心有变更时会调用此类刷新相关对象
- * @date 2021年5月30日
- * @email suxuan696@gmail.com
+ * 刷新者，配置中心有变更时会调用此类刷新相关对象
  */
 public class Refresher {
 	private static Logger logger = LoggerFactory.getLogger(Refresher.class);

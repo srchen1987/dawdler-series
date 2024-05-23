@@ -26,10 +26,7 @@ import org.apache.commons.fileupload.FileItem;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title UploadFile.java
- * @Description 上传文件时包装的类
- * @date 2007年4月17日
- * @email suxuan696@gmail.com
+ * 上传文件时包装的类
  */
 public class UploadFile {
 	private final FileItem file;

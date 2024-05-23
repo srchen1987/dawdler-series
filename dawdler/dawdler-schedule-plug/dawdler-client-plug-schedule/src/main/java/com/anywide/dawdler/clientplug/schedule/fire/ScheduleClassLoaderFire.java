@@ -23,10 +23,7 @@ import com.anywide.dawdler.schedule.ScheduleInit;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ScheduleClassLoaderFire.java
- * @Description 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入Schedule标注的方法
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入Schedule标注的方法
  */
 @Order(1)
 public class ScheduleClassLoaderFire implements RemoteClassLoaderFire {

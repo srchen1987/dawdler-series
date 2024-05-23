@@ -32,10 +32,7 @@ import com.anywide.dawdler.util.spring.antpath.StringUtils;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ServiceBase.java
- * @Description deploy下服务模块具体实现类
- * @date 2015年3月22日
- * @email suxuan696@gmail.com
+ * deploy下服务模块具体实现类
  */
 public class ServiceBase extends AbstractService {
 	private static final String CLASSES_PATH = "classes";

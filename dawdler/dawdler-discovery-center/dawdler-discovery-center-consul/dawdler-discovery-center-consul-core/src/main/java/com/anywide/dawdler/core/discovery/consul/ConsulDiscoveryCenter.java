@@ -48,10 +48,7 @@ import com.ecwid.consul.v1.health.model.Check.CheckStatus;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConsulDiscoveryCenter.java
- * @Description consul注册中心的实现的实现
- * @date 2023年3月4日
- * @email suxuan696@gmail.com
+ * consul注册中心的实现的实现
  */
 public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	private AtomicBoolean destroyed = new AtomicBoolean();

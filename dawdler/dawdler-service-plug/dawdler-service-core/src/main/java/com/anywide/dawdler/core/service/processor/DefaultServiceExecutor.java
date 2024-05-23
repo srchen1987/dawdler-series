@@ -29,10 +29,7 @@ import com.anywide.dawdler.util.reflectasm.MethodAccess;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DefaultServiceExecutor.java
- * @Description 默认服务处理器，不包含事务
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * 默认服务处理器，不包含事务
  */
 public class DefaultServiceExecutor implements ServiceExecutor {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultServiceExecutor.class);

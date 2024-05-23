@@ -28,10 +28,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V2.0
- * @Title FilterProvider.java
- * @Description 过滤器提供者
- * @date 2015年4月6日
- * @email suxuan696@gmail.com
+ * 过滤器提供者
  */
 public class FilterProvider {
 	private static final List<OrderData<DawdlerClientFilter>> filters = new ArrayList<>();

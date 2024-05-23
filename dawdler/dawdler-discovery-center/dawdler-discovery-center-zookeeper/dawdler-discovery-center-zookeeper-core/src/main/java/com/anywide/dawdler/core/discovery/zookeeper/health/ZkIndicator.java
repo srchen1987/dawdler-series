@@ -27,10 +27,7 @@ import com.anywide.dawdler.core.health.HealthIndicator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ZkIndicator.java
- * @Description zookeeper 健康指示器
- * @date 2022年10月13日
- * @email suxuan696@gmail.com
+ * zookeeper 健康指示器
  */
 public class ZkIndicator implements HealthIndicator {
 	private final static int TRYTIME = 3;

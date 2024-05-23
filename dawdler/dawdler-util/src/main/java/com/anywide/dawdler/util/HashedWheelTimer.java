@@ -50,10 +50,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title HashedWheelTimerSingleCreator.java
- * @Description netty中挪用过来的定时器
- * @date 2015年5月13日
- * @email suxuan696@gmail.com
+ * netty中挪用过来的定时器
  */
 public class HashedWheelTimer implements Timer {
 

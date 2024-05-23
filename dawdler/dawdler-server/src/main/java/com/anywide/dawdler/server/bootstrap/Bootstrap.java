@@ -39,10 +39,7 @@ import com.anywide.dawdler.util.DawdlerTool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title Bootstrap.java
- * @Description dawdler服务器启动类
- * @date 2015年4月9日
- * @email suxuan696@gmail.com
+ * dawdler服务器启动类
  */
 public class Bootstrap {
 	public final static Logger logger = LoggerFactory.getLogger("system.out");

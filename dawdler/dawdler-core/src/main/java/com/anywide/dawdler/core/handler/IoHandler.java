@@ -22,10 +22,7 @@ import com.anywide.dawdler.core.net.aio.session.SessionIdleType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title IoHandler.java
- * @Description 网络IO事件 客户端，服务器端接收，发送，开关连接，空闲，异常事件的接口
- * @date 2015年3月12日
- * @email suxuan696@gmail.com
+ * 网络IO事件 客户端，服务器端接收，发送，开关连接，空闲，异常事件的接口
  */
 public interface IoHandler {
 	void messageReceived(AbstractSocketSession socketSession, Object msg);

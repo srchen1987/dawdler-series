@@ -21,10 +21,7 @@ import java.io.Serializable;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AuthRequestBean.java
- * @Description 验证身份请求信息
- * @date 2015年5月23日
- * @email suxuan696@gmail.com
+ * 验证身份请求信息
  */
 public class AuthRequestBean implements Serializable {
 	private static final long serialVersionUID = -5433605973913222653L;

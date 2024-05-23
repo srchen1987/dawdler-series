@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TextareaControl.java
- * @Description 文本域的实现
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 文本域的实现
  */
 public class TextareaControl extends Control {
 	protected TextareaControl(ControlTag tag) {

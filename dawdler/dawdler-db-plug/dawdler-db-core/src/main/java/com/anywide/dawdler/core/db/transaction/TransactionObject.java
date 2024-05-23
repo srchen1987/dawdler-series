@@ -25,10 +25,7 @@ import com.anywide.dawdler.core.db.annotation.Isolation;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionObject.java
- * @Description 事务类相关信息的存储类
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 事务类相关信息的存储类
  */
 public class TransactionObject {
 	private WriteConnectionHolder holder = null;

@@ -24,10 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ConnectManager.java
- * @Description 连接管理器
- * @date 2015年3月16日
- * @email suxuan696@gmail.com
+ * 连接管理器
  */
 public class ConnectManager {
 	private final ConcurrentHashMap<SocketAddress, AtomicInteger> disconnAddress = new ConcurrentHashMap<>();
