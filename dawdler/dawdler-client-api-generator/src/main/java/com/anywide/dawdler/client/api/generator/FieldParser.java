@@ -37,10 +37,7 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title FieldParser.java
- * @Description 类属性解析器
- * @date 2022年3月20日
- * @email suxuan696@gmail.com
+ * 类属性解析器
  */
 public class FieldParser {
 

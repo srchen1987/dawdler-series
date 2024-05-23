@@ -34,10 +34,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerHttpSession.java
- * @Description DawdlerSession的实现
- * @date 2016年6月16日
- * @email suxuan696@gmail.com
+ * DawdlerSession的实现
  */
 public class DawdlerHttpSession implements HttpSession {
 	public static final String CREATION_TIME_KEY = "creationTime";

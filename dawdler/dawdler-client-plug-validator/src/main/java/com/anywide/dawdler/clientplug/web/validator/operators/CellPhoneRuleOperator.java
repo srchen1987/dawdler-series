@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CellPhoneRuleOperator.java
- * @Description 手机号验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 手机号验证
  */
 public class CellPhoneRuleOperator extends StringRuleOperator {
 	public static final String RULE_KEY = "cellPhone";

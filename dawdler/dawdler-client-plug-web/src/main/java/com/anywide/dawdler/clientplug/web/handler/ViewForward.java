@@ -29,10 +29,7 @@ import com.anywide.dawdler.clientplug.web.upload.UploadFile;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ViewForward.java
- * @Description viewForward定义父类
- * @date 2007年4月18日
- * @email suxuan696@gmail.com
+ * viewForward定义父类
  */
 public class ViewForward {
 	private String errorPage = "error.html";// 错误地址

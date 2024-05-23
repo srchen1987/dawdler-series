@@ -28,10 +28,7 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SuperDAO.java
- * @Description dao基类
- * @date 2007年4月15日
- * @email suxuan696@gmail.com
+ * dao基类
  */
 public class SuperDAO implements BaseData {
 	protected Connection con;

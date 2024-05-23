@@ -35,10 +35,7 @@ import com.anywide.dawdler.server.deploys.loader.DawdlerDeployClassLoader;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DeployClassesScanner.java
- * @Description 部署项目扫描类
- * @date 2013年3月11日
- * @email suxuan696@gmail.com
+ * 部署项目扫描类
  */
 public class DeployClassesScanner {
 	private static final Logger logger = LoggerFactory.getLogger(DeployClassesScanner.class);

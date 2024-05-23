@@ -26,10 +26,7 @@ import com.anywide.dawdler.server.deploys.AbstractServiceRoot;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerServerContext.java
- * @Description dawdler服务器上下文
- * @date 2015年3月21日
- * @email suxuan696@gmail.com
+ * dawdler服务器上下文
  */
 public class DawdlerServerContext {
 	private final AbstractServiceRoot abstractServiceRoot;

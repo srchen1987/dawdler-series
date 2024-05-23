@@ -23,10 +23,7 @@ import org.w3c.dom.Document;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title XmlBean.java
- * @Description 序列化传输的bean
- * @date 2007年3月5日
- * @email suxuan696@gmail.com
+ * 序列化传输的bean
  */
 public class XmlBean implements Serializable {
 	private static final long serialVersionUID = -4472800116121363695L;

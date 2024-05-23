@@ -29,10 +29,7 @@ import java.util.List;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title NetworkUtil.java
- * @Description 网络接口的工具类
- * @date 2018年8月13日
- * @email suxuan696@gmail.com
+ * 网络接口的工具类
  */
 public class NetworkUtil {
 	public static final String IPV6 = "::";
@@ -42,7 +39,7 @@ public class NetworkUtil {
 	 * @return List<NetworkInterface>
 	 * @throws SocketException
 	 * @Title selectActiveNetworkInterfaces
-	 * @Description 获取可用网络接口
+	 * 获取可用网络接口
 	 * @author jackson.song
 	 * @date 2018年8月13日
 	 */

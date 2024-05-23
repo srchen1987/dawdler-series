@@ -23,10 +23,7 @@ import com.anywide.dawdler.jedis.lock.JedisDistributedLockHolderFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title InjectServiceCreateListener.java
- * @Description 实现JedisOperator,JedisDistributedLock的注入
- * @date 2022年4月16日
- * @email suxuan696@gmail.com
+ * 实现JedisOperator,JedisDistributedLock的注入
  */
 public class InjectServiceCreateListener implements DawdlerServiceCreateListener {
 

@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CapitalLettersRuleOperator.java
- * @Description 大写字母验证
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 大写字母验证
  */
 public class CapitalLettersRuleOperator extends StringRuleOperator {
 	public static final String RULE_KEY = "capitalLetters";

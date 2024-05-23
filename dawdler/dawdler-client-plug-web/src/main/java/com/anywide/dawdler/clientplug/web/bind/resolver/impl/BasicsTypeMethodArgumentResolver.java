@@ -31,10 +31,7 @@ import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title BasicsTypeMethodArgumentResolver.java
- * @Description 获取基础类型或Model相关参数值的决策者
- * @date 2021年4月3日
- * @email suxuan696@gmail.com
+ * 获取基础类型或Model相关参数值的决策者
  */
 public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentResolver {
 

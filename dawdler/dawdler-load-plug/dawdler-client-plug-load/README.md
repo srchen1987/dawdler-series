@@ -17,7 +17,7 @@
 ### 1. pom中引入依赖
 
 ```xml
-<groupId>dawdler</groupId>
+<groupId>io.github.dawdler-series</groupId>
 <artifactId>dawdler-client-plug-load</artifactId>
 ```
 

@@ -29,10 +29,7 @@ import com.anywide.dawdler.core.serializer.SerializeDecider.SerializeType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JDKDefaultSerializer.java
- * @Description jdk序列化实现
- * @date 2014年12月22日
- * @email suxuan696@gmail.com
+ * jdk序列化实现
  */
 public class JDKDefaultSerializer implements Serializer {
 

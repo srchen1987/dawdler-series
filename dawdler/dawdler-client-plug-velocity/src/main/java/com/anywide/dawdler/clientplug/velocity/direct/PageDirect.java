@@ -32,10 +32,7 @@ import com.anywide.dawdler.serverplug.load.bean.Page;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ControlDirect.java
- * @Description 自定义控件的指令
- * @date 2007年4月18日
- * @email suxuan696@gmail.com
+ * 自定义控件的指令
  */
 public class PageDirect extends Directive {
 	@Override

@@ -22,10 +22,7 @@ import com.anywide.dawdler.core.db.datasource.RWSplittingDataSourceManager.Mappi
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SynReadConnectionObject.java
- * @Description 存放读连接与事务配置的类
- * @date 2015年9月29日
- * @email suxuan696@gmail.com
+ * 存放读连接与事务配置的类
  */
 public class SynReadConnectionObject {
 	private MappingDecision mappingDecision;

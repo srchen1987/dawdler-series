@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title NatureNumberRuleOperator.java
- * @Description 自然数验证
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 自然数验证
  */
 public class NatureNumberRuleOperator extends StringRuleOperator {
 

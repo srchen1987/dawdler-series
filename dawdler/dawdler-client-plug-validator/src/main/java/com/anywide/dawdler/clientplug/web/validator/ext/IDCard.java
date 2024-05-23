@@ -28,10 +28,7 @@ import java.util.regex.Pattern;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title IDCard.java
- * @Description 身份证验证
- * @date 2007年7月21日
- * @email suxuan696@gmail.com
+ * 身份证验证
  */
 public class IDCard {
 	private static final Map<String, String> HASHTABLE = new HashMap<>();

@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.db.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DataSourceExpressionException.java
- * @Description 表达式异常
- * @date 2022年6月19日
- * @email suxuan696@gmail.com
+ * 表达式异常
  */
 public class DataSourceExpressionException extends Exception {
 

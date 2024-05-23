@@ -45,10 +45,7 @@ import com.anywide.dawdler.util.TimerTask;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AbstractSocketSession.java
- * @Description 抽象session类 提供读写超时重连、心跳处理等方式。
- * @date 2015年3月11日
- * @email suxuan696@gmail.com
+ * 抽象session类 提供读写超时重连、心跳处理等方式。
  */
 public abstract class AbstractSocketSession {
 	public final static int CAPACITY = 1024 * 64;

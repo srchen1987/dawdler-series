@@ -19,10 +19,7 @@ package com.anywide.dawdler.clientplug.velocity;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title VelocityToolBox.java
- * @Description velocity工具包
- * @date 2007年4月18日
- * @email suxuan696@gmail.com
+ * velocity工具包
  */
 public abstract class VelocityToolBox {
 	private final String name;

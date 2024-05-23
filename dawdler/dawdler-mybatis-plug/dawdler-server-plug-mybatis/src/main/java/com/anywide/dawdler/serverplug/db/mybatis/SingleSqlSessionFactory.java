@@ -28,10 +28,7 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SingleSqlSessionFactory.java
- * @Description dawdler实现session单例工厂
- * @date 2021年5月8日
- * @email suxuan696@gmail.com
+ * dawdler实现session单例工厂
  */
 public class SingleSqlSessionFactory extends AbstractSqlSessionFactory {
 

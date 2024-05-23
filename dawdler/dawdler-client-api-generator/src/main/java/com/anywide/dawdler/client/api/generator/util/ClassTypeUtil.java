@@ -24,10 +24,7 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClassTypeUtil.java
- * @Description 类型操作工具类
- * @date 2022年3月20日
- * @email suxuan696@gmail.com
+ * 类型操作工具类
  */
 public class ClassTypeUtil {
 	private ClassTypeUtil() {
@@ -43,7 +40,7 @@ public class ClassTypeUtil {
 	 * @Title: isArray
 	 * @author jackson.song
 	 * @date 2022年3月27日 下午1:41:02
-	 * @Description 是否是List,Set,Collection,Vector
+	 * 是否是List,Set,Collection,Vector
 	 * @param binaryName
 	 * @return boolean
 	 *

@@ -45,10 +45,7 @@ import com.anywide.dawdler.util.DawdlerTool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ScheduleOperator.java
- * @Description Schedule操作者
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * Schedule操作者
  */
 public class ScheduleOperator {
 	private static Logger logger = LoggerFactory.getLogger(ScheduleOperator.class);

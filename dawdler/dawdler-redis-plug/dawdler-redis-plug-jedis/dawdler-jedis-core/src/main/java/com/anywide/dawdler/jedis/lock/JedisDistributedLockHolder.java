@@ -22,10 +22,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisDistributedLockHolder.java
- * @Description JedisDistributedLock持有者
- * @date 2023年7月18日
- * @email suxuan696@gmail.com
+ * JedisDistributedLock持有者
  */
 public class JedisDistributedLockHolder {
 	private int intervalInMillis; // 下一次重试等待，单位毫秒

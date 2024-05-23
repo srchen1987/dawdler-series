@@ -21,10 +21,7 @@ import java.util.regex.Matcher;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title MaxSelectRuleOperator.java
- * @Description 选项大于判断
- * @date 2007年7月22日
- * @email suxuan696@gmail.com
+ * 选项大于判断
  */
 public class MaxSelectRuleOperator extends RegexRuleOperator {
 	public static final String RULE_KEY = "^maxSelect:([1-9]{1}\\d*$)";

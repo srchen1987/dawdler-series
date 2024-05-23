@@ -39,10 +39,7 @@ import sun.misc.URLClassPath;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ClientClassLoader.java
- * @Description 客户端的类加载器，主要用来加载远端模版类
- * @date 2007年9月13日
- * @email suxuan696@gmail.com
+ * 客户端的类加载器，主要用来加载远端模版类
  */
 
 public class ClientClassLoader extends URLClassLoader {

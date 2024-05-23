@@ -24,11 +24,8 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title RemoteServiceAssistant.java
- * @Description 应用在服务接口的方法上. 为服务的方法做特定的异步,超时时间,模糊匹配,负载均衡方式的设置.
+ * 应用在服务接口的方法上. 为服务的方法做特定的异步,超时时间,模糊匹配,负载均衡方式的设置.
  *  一般不会使用,有特殊需要时配置即可.
- * @date 2015年4月26日
- * @email suxuan696@gmail.com
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD })

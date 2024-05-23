@@ -32,10 +32,7 @@ import com.anywide.dawdler.core.health.HealthIndicator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DataSourceIndicator.java
- * @Description DataSourceIndicator DataSource健康指示器
- * @date 2022年5月2日
- * @email suxuan696@gmail.com
+ * DataSourceIndicator DataSource健康指示器
  */
 public class DataSourceIndicator implements HealthIndicator {
 

@@ -25,10 +25,7 @@ import javax.sql.DataSource;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title WriteConnectionHolder.java
- * @Description 写连接持有者
- * @date 2015年9月28日
- * @email suxuan696@gmail.com
+ * 写连接持有者
  */
 public class WriteConnectionHolder implements SavepointManager {
 	public static final String SAVEPOINT_NAME_PREFIX = "SAVEPOINT_";

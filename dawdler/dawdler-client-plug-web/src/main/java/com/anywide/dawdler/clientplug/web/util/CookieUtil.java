@@ -21,10 +21,7 @@ import javax.servlet.http.Cookie;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CookieUtil.java
- * @Description Cookie工具
- * @date 2006年9月22日
- * @email suxuan696@gmail.com
+ * Cookie工具
  */
 public class CookieUtil {
 	private static final String VERSION = "Version=";

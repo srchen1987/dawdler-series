@@ -26,10 +26,7 @@ import com.anywide.dawdler.core.order.OrderData;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title DawdlerListenerProvider.java
- * @Description 监听器提供者
- * @date 2015年4月19日
- * @email suxuan696@gmail.com
+ * 监听器提供者
  */
 public class DawdlerListenerProvider {
 	private final List<OrderData<DawdlerServiceListener>> listeners = new ArrayList<>();

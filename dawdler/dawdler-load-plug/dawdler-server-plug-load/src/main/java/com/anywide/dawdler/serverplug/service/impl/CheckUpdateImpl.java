@@ -24,10 +24,7 @@ import com.anywide.dawdler.util.XmlObject;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title CheckUpdateImpl.java
- * @Description 用于获取更新服务器端模版类列表的服务实现
- * @date 2007年9月18日
- * @email suxuan696@gmail.com
+ * 用于获取更新服务器端模版类列表的服务实现
  */
 public class CheckUpdateImpl implements CheckUpdate {
 	public XmlBean check(String host) {

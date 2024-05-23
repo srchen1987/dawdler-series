@@ -31,10 +31,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisOperatorFactory.java
- * @Description jedis操作类工厂
- * @date 2022年4月17日
- * @email suxuan696@gmail.com
+ * jedis操作类工厂
  */
 public class JedisOperatorFactory {
 	private final static Map<String, JedisOperator> JEDIS_OPERATORS = new ConcurrentHashMap<>();

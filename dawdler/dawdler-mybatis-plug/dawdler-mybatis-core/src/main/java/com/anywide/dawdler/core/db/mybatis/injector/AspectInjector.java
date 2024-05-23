@@ -24,10 +24,7 @@ import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title AspectInjector.java
- * @Description 加载需要被aspect织入的组件
- * @date 2023年7月30日
- * @email suxuan696@gmail.com
+ * 加载需要被aspect织入的组件
  */
 @Order(0)
 public class AspectInjector implements CustomComponentInjector {

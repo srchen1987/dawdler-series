@@ -24,10 +24,7 @@ import com.anywide.dawdler.schedule.ScheduleOperator;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title ScheduleGracefulShutdown.java
- * @Description Schedule优雅停机 等待任务完成之后调用closeable.close(); 
- * @date 2022年7月12日
- * @email suxuan696@gmail.com
+ * Schedule优雅停机 等待任务完成之后调用closeable.close(); 
  */
 public class ScheduleGracefulShutdown implements ContainerGracefulShutdown {
 

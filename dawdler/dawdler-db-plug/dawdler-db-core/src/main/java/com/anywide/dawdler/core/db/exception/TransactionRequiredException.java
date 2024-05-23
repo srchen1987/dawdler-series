@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.db.exception;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title TransactionRequiredException.java
- * @Description 代替javax.transaction.TransactionRequiredException
- * @date 2021年12月18日
- * @email suxuan696@gmail.com
+ * 代替javax.transaction.TransactionRequiredException
  */
 public class TransactionRequiredException extends RuntimeException {
 

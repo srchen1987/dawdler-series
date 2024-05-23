@@ -33,10 +33,7 @@ import co.elastic.clients.elasticsearch.cluster.HealthResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title EsIndicator.java
- * @Description EsIndicator es健康指示器
- * @date 2022年5月1日
- * @email suxuan696@gmail.com
+ * EsIndicator es健康指示器
  */
 public class EsIndicator implements HealthIndicator {
 

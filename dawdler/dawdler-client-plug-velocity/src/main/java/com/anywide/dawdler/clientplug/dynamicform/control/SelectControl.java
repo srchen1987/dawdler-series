@@ -21,10 +21,7 @@ import com.anywide.dawdler.clientplug.velocity.ControlTag;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title SelectControl.java
- * @Description 下拉列表框的实现
- * @date 2006年8月10日
- * @email suxuan696@gmail.com
+ * 下拉列表框的实现
  */
 public class SelectControl extends Control {
 	protected SelectControl(ControlTag tag) {

@@ -34,10 +34,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title JedisDistributedLock.java
- * @Description jedis实现的分布式锁,支持watch dog与重入锁
- * @date 2023年7月17日
- * @email suxuan696@gmail.com
+ * jedis实现的分布式锁,支持watch dog与重入锁
  */
 public class JedisDistributedLock {
 

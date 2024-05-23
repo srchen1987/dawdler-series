@@ -19,10 +19,7 @@ package com.anywide.dawdler.core.net.buffer;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title BufferFactory.java
- * @Description Buffer工厂
- * @date 2015年3月14日
- * @email suxuan696@gmail.com
+ * Buffer工厂
  */
 public class BufferFactory {
 	private static final BufferCreator DIRECT_BUFFER_CREATOR = new DirectBufferCreator();

@@ -24,10 +24,7 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 /**
  * @author jackson.song
  * @version V1.0
- * @Title LocalVariableTableParameterDiscoverer.java
- * @Description 基于asm获取方法参数名称的实现类
- * @date 2021年4月10日
- * @email suxuan696@gmail.com
+ * 基于asm获取方法参数名称的实现类
  */
 public class LocalVariableTableParameterDiscoverer implements ParameterDiscoverer {
 
