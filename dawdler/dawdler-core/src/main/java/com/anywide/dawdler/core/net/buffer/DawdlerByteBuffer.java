@@ -22,7 +22,6 @@ import java.nio.ByteBuffer;
 /**
  * @author jackson.song
  * @version V1.0
- * @Description
  */
 public class DawdlerByteBuffer {
 	private ByteBuffer byteBuffer;

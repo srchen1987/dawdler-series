@@ -37,9 +37,7 @@ public class ClassTypeUtil {
 
 	/**
 	 * 
-	 * @Title: isArray
 	 * @author jackson.song
-	 * @date 2022年3月27日 下午1:41:02
 	 * 是否是List,Set,Collection,Vector
 	 * @param binaryName
 	 * @return boolean
