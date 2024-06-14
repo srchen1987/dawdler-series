@@ -19,8 +19,6 @@ package com.anywide.dawdler.clientplug.web.session.store;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,28 +93,6 @@ public class RedisSessionStore implements SessionStore {
 	@Override
 	public void removeSession(String sessionKey) throws Exception {
 		execute(jedisPool, removeSessionJedisExecutor, sessionKey);
-	}
-
-	public void reloadAttributes(Map<byte[], byte[]> data, DawdlerHttpSession session) {
-		ConcurrentHashMap<String, Object> attribute = new ConcurrentHashMap<>();
-		for (Entry<byte[], byte[]> entry : data.entrySet()) {
-			String key = new String(entry.getKey());
-			try {
-				Object obj = serializer.deserialize(entry.getValue());
-				if (key.equals(DawdlerHttpSession.CREATION_TIME_KEY)) {
-					session.setCreationTime((Long) obj);
-				} else if (key.equals(DawdlerHttpSession.LAST_ACCESSED_TIME_KEY)) {
-					session.setLastAccessedTime((Long) obj);
-				} else {
-					attribute.put(key, obj);
-				}
-			} catch (Exception e) {
-				logger.error("", e);
-				session.getAttributesRemoveNewKeys().add(key);
-			}
-		}
-		session.setNew(false);
-		session.setAttributes(attribute);
 	}
 
 	public Pool<Jedis> getJedisPool() {
