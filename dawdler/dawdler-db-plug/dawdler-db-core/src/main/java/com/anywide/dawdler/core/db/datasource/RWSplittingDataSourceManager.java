@@ -49,14 +49,14 @@ public class RWSplittingDataSourceManager {
 	private final Map<String, MappingDecision> packages = new HashMap<>();
 	private final Map<String, MappingDecision> packagesAntPath = new LinkedHashMap<>();
 	private final DbConfig dbConfig;
-	private final AntPathMatcher antPathMatcher = AntPathMatcher.DEFAULT_INSTANCE;
+	private static final AntPathMatcher antPathMatcher = AntPathMatcher.DEFAULT_INSTANCE;
 	private static RWSplittingDataSourceManager instance;
 
-	public final static RWSplittingDataSourceManager getInstance() {
+	public static final RWSplittingDataSourceManager getInstance() {
 		return instance;
 	}
 
-	public final static void init(DbConfig dbConfig) throws Exception {
+	public static final void init(DbConfig dbConfig) throws Exception {
 		instance = new RWSplittingDataSourceManager(dbConfig);
 	}
 
@@ -70,24 +70,11 @@ public class RWSplittingDataSourceManager {
 	}
 
 	public void init() throws Exception {
-		// Map<String, Map<String, Object>> dataSources = dbConfig.getDataSources();
-		// if(dataSources != null) {
-		// dataSources.forEach((id, attributes) -> {
-		// try {
-		// initDataSources(id, attributes);
-		// } catch (ClassNotFoundException | InstantiationException |
-		// IllegalAccessException | IllegalArgumentException
-		// | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-		// throw new RuntimeException(e);
-		// }
-		// });
-		// }
-
 		List<DataSourceExpression> dataSourceExpressionList = dbConfig.getDataSourceExpressions();
 		if (dataSourceExpressionList != null) {
-			for (DataSourceExpression dataourceExpression : dataSourceExpressionList) {
-				String id = dataourceExpression.getId();
-				String latentExpression = dataourceExpression.getLatentExpression();
+			for (DataSourceExpression dataSourceExpression : dataSourceExpressionList) {
+				String id = dataSourceExpression.getId();
+				String latentExpression = dataSourceExpression.getLatentExpression();
 				this.dataSourceExpression.put(id, latentExpression);
 			}
 		}
@@ -110,17 +97,9 @@ public class RWSplittingDataSourceManager {
 				}
 				for (String readDataSource : mappingDecision.readExpression) {
 					initDataSourcesfromPropertiesIfNotExistLoadConfigCenter(readDataSource);
-					// initDataSourcesFromProperties(readDataSource);
-					// if (useConfig) {
-					// initDataSourcesFromConfigServer(readDataSource);
-					// }
 				}
 				for (String writeDataSource : mappingDecision.writeExpression) {
 					initDataSourcesfromPropertiesIfNotExistLoadConfigCenter(writeDataSource);
-					// initDataSourcesFromProperties(writeDataSource);
-					// if (useConfig) {
-					// initDataSourcesFromConfigServer(writeDataSource);
-					// }
 				}
 			}
 		}
@@ -165,24 +144,14 @@ public class RWSplittingDataSourceManager {
 		dataSources.put(id, ds);
 	}
 
-	// public void initDataSourcesFromConfigServer(String id) throws Exception {
-	// Map<String, Object> attributes =
-	// com.anywide.dawdler.conf.cache.ConfigMappingDataCache.getMappingDataCache(id);
-	// if (attributes != null) {
-	// initDataSources(id, attributes);
-	// }
-	// }
-
 	public void initDataSourcesfromPropertiesIfNotExistLoadConfigCenter(String id) throws Exception {
 		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter(id);
 		if (ps != null) {
-			Map<String, Object> attributes = new HashMap<String, Object>();
+			Map<String, Object> attributes = new HashMap<>();
 			ps.forEach((k, v) -> {
 				attributes.put(k.toString(), v);
 			});
-			if (attributes != null) {
-				initDataSources(id, attributes);
-			}
+			initDataSources(id, attributes);
 		}
 	}
 

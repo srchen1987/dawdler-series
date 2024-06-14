@@ -83,7 +83,6 @@ minimumPoolSize: 2
 
 type 数据库连接池类,其余属性为连接池中的属性,不同池有不同实现.
 
-
 ### 4. 数据源规则配置
 
 dawdler支持读写分离的配置,由datasource-expression节点来进行配置.
