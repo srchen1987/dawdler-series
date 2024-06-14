@@ -45,7 +45,7 @@ import com.anywide.dawdler.core.db.transaction.TransactionStatus;
 /**
  * @author jackson.song
  * @version V1.0
- * 事务传播器(aop方式实现代替TransactionServiceExecutor)
+ *          事务传播器(aop方式实现代替TransactionServiceExecutor)
  */
 @Aspect
 public class TransactionAspect {
@@ -78,13 +78,11 @@ public class TransactionAspect {
 						// FIXME aspectjweaver bug 以下字符串 packageName + " transaction needs to be set."
 						// 会导致织入失败.
 						// 尝试 Mar 13, 2024 最新版 1.9.21.2 问题依旧 另外还引发了转换字节位数组为空的问题. 结论1.9.21 是小版本不稳定
-//					throw new TransactionRequiredException(
-//							 packageName + " transaction needs to be set." );
+						// throw new TransactionRequiredException(
+						// packageName + " transaction needs to be set." );
 						throw new TransactionRequiredException(builder.toString());
 					}
-					if (mappingDecision.needBalance()) {
-						index = Math.abs(INDEX.getAndIncrement());
-					}
+
 					readStatus = new JdbcReadConnectionStatus(dbt);
 					if (dbt.readConfig() == READ_CONFIG.idem) {
 						if (synReadObj == null) {
@@ -96,6 +94,9 @@ public class TransactionAspect {
 								synReadObj.setReadConnectionHolder(readConnectionHolder);
 								readStatus.setCurrentConn(readConnectionHolder);
 							} else {
+								if (mappingDecision.needBalance()) {
+									index = Math.abs(INDEX.getAndIncrement());
+								}
 								DataSource dataSource = mappingDecision.getReadDataSource(index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
 								readConnectionHolder.requested();
@@ -118,6 +119,9 @@ public class TransactionAspect {
 								synReadObj.setReadConnectionHolder(readConnectionHolder);
 								readStatus.setCurrentConn(readConnectionHolder);
 							} else {
+								if (mappingDecision.needBalance()) {
+									index = Math.abs(INDEX.getAndIncrement());
+								}
 								DataSource dataSource = mappingDecision.getReadDataSource(index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
 								readConnectionHolder.requested();
@@ -137,6 +141,9 @@ public class TransactionAspect {
 									synReadObj.getReadConnectionHolder().requested();
 									readStatus.setCurrentConn(synReadObj.getReadConnectionHolder());
 								} else {
+									if (mappingDecision.needBalance()) {
+										index = Math.abs(INDEX.getAndIncrement());
+									}
 									DataSource dataSource = mappingDecision.getReadDataSource(index);
 									readStatus.setOldConn(synReadObj.getReadConnectionHolder());
 									ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
@@ -151,6 +158,9 @@ public class TransactionAspect {
 					}
 					synReadObj.requested();
 					if (mode != MODE.readOnly && mappingDecision != null) {
+						if (mappingDecision.needBalance()) {
+							index = Math.abs(INDEX.getAndIncrement());
+						}
 						DataSource dataSource = mappingDecision.getWriteDataSource(index);
 						manager = LocalConnectionFactory.getManager(dataSource);
 						tranStatus = manager.getTransaction(dbt);
@@ -173,7 +183,8 @@ public class TransactionAspect {
 		} finally {
 			doCommit(tranStatus, manager);
 			if (synReadObj != null) {
-				if (synReadObj.getReadConnectionHolder() != null && !synReadObj.getReadConnectionHolder().isUseWriteConnection()) {
+				if (synReadObj.getReadConnectionHolder() != null
+						&& !synReadObj.getReadConnectionHolder().isUseWriteConnection()) {
 					try {
 						readStatus.getCurrentConn().released();
 					} catch (SQLException e) {
