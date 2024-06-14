@@ -92,7 +92,7 @@ public class RabbitProvider {
 	 *
 	 * 
 	 */
-	public void publishIfFaildRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
+	public void publishIfFailedRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
 			throws Exception {
 		Connection con = null;
 		Channel channel = null;
@@ -110,7 +110,7 @@ public class RabbitProvider {
 					LocalCacheMessage message = localCacheMessages.get(deliveryTag);
 					if (message != null) {
 						try {
-							publishIfFaildRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
+							publishIfFailedRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
 									message.getBody());
 						} catch (Exception e) {
 							logger.error("", e);
