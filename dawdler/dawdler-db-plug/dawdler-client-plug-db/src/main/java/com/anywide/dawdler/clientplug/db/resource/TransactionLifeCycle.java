@@ -57,7 +57,6 @@ public class TransactionLifeCycle implements ComponentLifeCycle {
 		}
 		dbConfig.setDecisions(decisions);
 		dbConfig.setDataSourceExpressions(dataSourceExpressions);
-//		dbConfig.setDataSources(webConfig.getDataSources());
 		RWSplittingDataSourceManager.init(dbConfig);
 	}
 }
