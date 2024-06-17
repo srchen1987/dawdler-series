@@ -22,7 +22,7 @@ import org.apache.commons.pool2.impl.DefaultPooledObject;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
 import com.anywide.dawdler.es.restclient.factory.EsClientFactory;
-import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
+import com.anywide.dawdler.es.restclient.wrapper.ElasticSearchClient;
 
 import co.elastic.clients.transport.rest_client.RestClientTransport;
 

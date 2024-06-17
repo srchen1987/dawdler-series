@@ -67,7 +67,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	private String healthCheckType = HealthCheckTypes.TCP.name;
 
-	public static enum HealthCheckTypes {
+	public enum HealthCheckTypes {
 		TCP("tcp"), HTTP("http");
 
 		private String name;

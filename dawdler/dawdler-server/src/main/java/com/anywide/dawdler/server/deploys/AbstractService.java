@@ -85,7 +85,7 @@ public abstract class AbstractService implements Service {
 	protected HealthCheck healthCheck;
 	protected ExecutorService healthCheckExecutor;
 
-	public AbstractService(ServerConfig serverConfig, String deployName, Semaphore startSemaphore,
+	protected AbstractService(ServerConfig serverConfig, String deployName, Semaphore startSemaphore,
 			AtomicBoolean started) throws Exception {
 		this.deployName = deployName;
 		this.healthCheck = serverConfig.getHealthCheck();
@@ -366,7 +366,7 @@ public abstract class AbstractService implements Service {
 
 	@Override
 	public ServiceHealth getServiceHealth() {
-		if (status == Status.DOWN) {
+		if (status.equals(Status.DOWN)) {
 			ServiceHealth serviceHealth = new ServiceHealth(deployName);
 			serviceHealth.setStatus(status);
 			serviceHealth.addComponent("error", cause.getClass().getName() + ":" + cause.getMessage());

@@ -44,13 +44,9 @@ public class ConfigIndicator implements HealthIndicator {
 			for (ConfigClient configClient : configClients) {
 				String key = configClient.type();
 				Builder childBuilder = Health.up();
-				try {
-					String info = configClient.info();
-					childBuilder.withDetail("info", info);
-					builder.withDetail(key, childBuilder.build().getData());
-				} catch (Exception e) {
-					throw e;
-				}
+				String info = configClient.info();
+				childBuilder.withDetail("info", info);
+				builder.withDetail(key, childBuilder.build().getData());
 			}
 		}
 		return builder.build();

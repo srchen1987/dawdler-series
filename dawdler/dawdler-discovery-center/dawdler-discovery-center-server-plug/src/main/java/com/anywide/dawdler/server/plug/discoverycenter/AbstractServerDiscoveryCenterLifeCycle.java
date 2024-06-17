@@ -109,8 +109,10 @@ public abstract class AbstractServerDiscoveryCenterLifeCycle implements Componen
 			} catch (Exception e) {
 				logger.error("", e);
 			}
-			AbstractServerDiscoveryCenterLifeCycle.this.timeout = timeout.timer().newTimeout(this, checkTime,
+			if(hashedWheelTimer.getWorkerState().get() == HashedWheelTimer.WORKER_STATE_STARTED){
+				AbstractServerDiscoveryCenterLifeCycle.this.timeout = timeout.timer().newTimeout(this, checkTime,
 					TimeUnit.MILLISECONDS);
+			}
 		}
 
 	}

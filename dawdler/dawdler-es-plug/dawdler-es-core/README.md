@@ -67,7 +67,7 @@ public ElasticSearchClientFactory(String fileName);
 
 1、7.15之后不推荐使用RestHighLevelClient 吐槽RestHighLevelClient类的设计
 
-RestHighLevelClient类很多方法被设置成了final,特别是close这种方法,导致开发者无法应用cglib这种动态代理的模式来拦截close方法(因为没有实现接口更没办法应用jdk的动态代理来实现).如果想重写close方法就必须用warpper这种方式,又不能继承这个RestHighLevelClient,不伦不类这个词比较适合这种情况.
+RestHighLevelClient类很多方法被设置成了final,特别是close这种方法,导致开发者无法应用cglib这种动态代理的模式来拦截close方法(因为没有实现接口更没办法应用jdk的动态代理来实现).如果想重写close方法就必须用wrapper这种方式,又不能继承这个RestHighLevelClient,不伦不类这个词比较适合这种情况.
 
 2、7.15之后推荐使用elasticsearch-java
 
