@@ -150,13 +150,13 @@ public class RedisMessageOperator implements MessageOperator {
 
 		@Override
 		public void onMessage(String channel, String message) {
-			if (!message.startsWith(RedisSessionStore.SESSIONKEY_PREFIX)) {
+			if (!message.startsWith(RedisSessionStore.SESSION_KEY_PREFIX)) {
 				return;
 			}
 			boolean ischange = CHANNEL_ATTRIBUTE_CHANGE.equals(channel);
 			if (ischange || CHANNEL_ATTRIBUTE_CHANGE_DEL.equals(channel)) {
 				String[] data = splitMessage(message);
-				String sessionKey = data[0].replace(RedisSessionStore.SESSIONKEY_PREFIX, "");
+				String sessionKey = data[0].replace(RedisSessionStore.SESSION_KEY_PREFIX, "");
 				String attribute = data[1];
 				DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionKey);
 				if (session != null) {
@@ -175,7 +175,7 @@ public class RedisMessageOperator implements MessageOperator {
 				}
 			} else {
 				String[] data = splitMessage(message);
-				String sessionKey = data[0].replace(RedisSessionStore.SESSIONKEY_PREFIX, "");
+				String sessionKey = data[0].replace(RedisSessionStore.SESSION_KEY_PREFIX, "");
 				DawdlerHttpSession session = abstractDistributedSessionManager.getSession(sessionKey);
 				if (session != null) {
 					if (CHANNEL_ATTRIBUTE_CHANGE_RELOAD.equals(channel)) {

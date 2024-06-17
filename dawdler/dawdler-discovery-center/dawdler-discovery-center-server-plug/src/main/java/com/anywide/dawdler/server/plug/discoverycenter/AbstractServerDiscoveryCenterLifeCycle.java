@@ -26,6 +26,7 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.health.Status;
 import com.anywide.dawdler.server.context.DawdlerContext;
+import com.anywide.dawdler.server.plug.discoverycenter.AbstractServerDiscoveryCenterLifeCycle.ProviderTimeoutTask;
 import com.anywide.dawdler.util.HashedWheelTimer;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
@@ -109,8 +110,10 @@ public abstract class AbstractServerDiscoveryCenterLifeCycle implements Componen
 			} catch (Exception e) {
 				logger.error("", e);
 			}
-			AbstractServerDiscoveryCenterLifeCycle.this.timeout = timeout.timer().newTimeout(this, checkTime,
+			if(hashedWheelTimer.getWorkerState().get() == HashedWheelTimer.WORKER_STATE_STARTED){
+				AbstractServerDiscoveryCenterLifeCycle.this.timeout = timeout.timer().newTimeout(this, checkTime,
 					TimeUnit.MILLISECONDS);
+			}
 		}
 
 	}

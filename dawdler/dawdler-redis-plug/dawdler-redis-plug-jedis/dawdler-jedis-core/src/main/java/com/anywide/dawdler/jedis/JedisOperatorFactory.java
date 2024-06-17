@@ -34,7 +34,7 @@ import redis.clients.jedis.util.Pool;
  * jedis操作类工厂
  */
 public class JedisOperatorFactory {
-	private final static Map<String, JedisOperator> JEDIS_OPERATORS = new ConcurrentHashMap<>();
+	private static final Map<String, JedisOperator> JEDIS_OPERATORS = new ConcurrentHashMap<>();
 
 	public static class JedisHandler implements InvocationHandler {
 		private Pool<Jedis> pool;

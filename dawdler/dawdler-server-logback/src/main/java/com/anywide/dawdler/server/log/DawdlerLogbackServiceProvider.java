@@ -41,7 +41,7 @@ import ch.qos.logback.core.util.StatusPrinter;
  */
 public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 
-	final static String NULL_CS_URL = CoreConstants.CODES_URL + "#null_CS";
+	static final String NULL_CS_URL = CoreConstants.CODES_URL + "#null_CS";
 
 	private IMarkerFactory markerFactory;
 	private LogbackMDCAdapter mdcAdapter;

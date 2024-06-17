@@ -79,7 +79,6 @@ public class DataProcessor {
 			} else {
 				throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
 			}
-			data = null;
 		}
 	}
 }

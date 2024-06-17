@@ -25,7 +25,7 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
 import com.anywide.dawdler.es.restclient.factory.EsClientFactory;
-import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
+import com.anywide.dawdler.es.restclient.wrapper.ElasticSearchClient;
 import com.anywide.dawdler.util.PropertiesUtil;
 
 /**
@@ -35,7 +35,7 @@ import com.anywide.dawdler.util.PropertiesUtil;
  */
 public class ElasticSearchClientFactory {
 	private GenericObjectPool<ElasticSearchClient> genericObjectPool;
-	private final static Map<String, ElasticSearchClientFactory> INSTANCES = new ConcurrentHashMap<>();
+	private static final Map<String, ElasticSearchClientFactory> INSTANCES = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 
 	public static ElasticSearchClientFactory getInstance(String fileName) throws Exception {

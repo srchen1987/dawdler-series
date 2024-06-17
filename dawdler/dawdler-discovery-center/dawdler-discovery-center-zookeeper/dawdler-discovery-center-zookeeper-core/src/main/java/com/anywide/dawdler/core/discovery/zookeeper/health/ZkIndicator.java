@@ -30,7 +30,7 @@ import com.anywide.dawdler.core.health.HealthIndicator;
  * zookeeper 健康指示器
  */
 public class ZkIndicator implements HealthIndicator {
-	private final static int TRYTIME = 3;
+	private static final int TRYTIME = 3;
 
 	@Override
 	public String name() {
