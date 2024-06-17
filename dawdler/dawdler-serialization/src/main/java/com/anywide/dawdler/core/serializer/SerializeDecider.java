@@ -57,7 +57,7 @@ public class SerializeDecider {
 		});
 	}
 
-	public static enum SerializeType {
+	public enum SerializeType {
 		JDK((byte) 1), KRYO((byte) 2);
 
 		private byte type;

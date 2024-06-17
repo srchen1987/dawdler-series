@@ -55,8 +55,6 @@ public class DataSourceIndicator implements HealthIndicator {
 				con = dataSource.getConnection();
 				con.getAutoCommit();
 				builder.withDetail(key, childBuilder.build().getData());
-			} catch (Exception e) {
-				throw e;
 			} finally {
 				if (con != null) {
 					try {

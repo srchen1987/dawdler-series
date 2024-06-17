@@ -24,7 +24,7 @@ import com.anywide.dawdler.core.health.Health;
 import com.anywide.dawdler.core.health.Health.Builder;
 import com.anywide.dawdler.core.health.HealthIndicator;
 import com.anywide.dawdler.es.restclient.pool.factory.ElasticSearchClientFactory;
-import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
+import com.anywide.dawdler.es.restclient.wrapper.ElasticSearchClient;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.elasticsearch.cluster.HealthRequest;
@@ -77,8 +77,6 @@ public class EsIndicator implements HealthIndicator {
 				childBuilder.withDetail("initializingShards", response.initializingShards());
 				childBuilder.withDetail("unassignedShards", response.unassignedShards());
 				builder.withDetail(key, childBuilder.build().getData());
-			} catch (Exception e) {
-				throw e;
 			} finally {
 				if (elasticSearchClient != null) {
 					elasticSearchClient.close();

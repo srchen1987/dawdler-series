@@ -28,12 +28,12 @@ import com.rabbitmq.client.Channel;
  * @version V1.0
  * Channel动态代理类
  */
-public class ChannelWarpperHandler implements InvocationHandler {
+public class ChannelWrapperHandler implements InvocationHandler {
 
 	private Channel target;
 	private LinkedList<Channel> channels;
 	private Semaphore semaphore;
-	public ChannelWarpperHandler(Channel target,
+	public ChannelWrapperHandler(Channel target,
 			LinkedList<Channel> channels, Semaphore semaphore) {
 		this.target = target;
 		this.channels = channels;

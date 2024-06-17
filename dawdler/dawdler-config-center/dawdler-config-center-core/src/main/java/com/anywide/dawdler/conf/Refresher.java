@@ -39,7 +39,7 @@ import com.anywide.dawdler.util.ClassUtil;
 public class Refresher {
 	private static Logger logger = LoggerFactory.getLogger(Refresher.class);
 
-	private final static JexlEngine ENGINE = new Engine();
+	private static final JexlEngine ENGINE = new Engine();
 
 	public static void refreshAllConfig(Object target, boolean addPathMapping) {
 		Class<?> clazz = target.getClass();

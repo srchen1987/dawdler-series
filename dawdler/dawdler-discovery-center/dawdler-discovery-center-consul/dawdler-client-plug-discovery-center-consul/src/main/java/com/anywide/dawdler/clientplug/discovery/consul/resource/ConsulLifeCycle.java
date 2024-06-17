@@ -41,7 +41,7 @@ import com.ecwid.consul.v1.health.model.Check.CheckStatus;
 /**
  * @author jackson.song
  * @version V1.0
- * consul注册中心初始化与销毁
+ *          consul注册中心初始化与销毁
  */
 @Order(com.anywide.dawdler.core.order.Order.LOWEST_PRECEDENCE)
 public class ConsulLifeCycle implements ComponentLifeCycle {
@@ -84,6 +84,18 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 								newSet.add(serviceId);
 							}
 						}
+						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
+						for (String k : newSet) {
+							if (!oldSet.contains(k) && cp != null) {
+								cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
+							}
+						}
+						for (String k : oldSet) {
+							if (!newSet.contains(k) && cp != null) {
+								cp.doChange(gid, Action.ACTION_DEL, getServiceAddress(k));
+							}
+						}
+						oldSet = newSet;
 					} catch (Exception e) {
 						if (!consulDiscoveryCenter.getDestroyed().get()) {
 							try {
@@ -95,18 +107,6 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 							return;
 						}
 					}
-					ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-					for (String k : newSet) {
-						if (!oldSet.contains(k) && cp != null) {
-							cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
-						}
-					}
-					for (String k : oldSet) {
-						if (!newSet.contains(k) && cp != null) {
-							cp.doChange(gid, Action.ACTION_DEL, getServiceAddress(k));
-						}
-					}
-					oldSet = newSet;
 					lastIndex = currentLastIndex;
 				}
 			});

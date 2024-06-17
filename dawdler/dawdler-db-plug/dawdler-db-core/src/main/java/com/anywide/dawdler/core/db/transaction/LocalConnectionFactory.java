@@ -33,9 +33,9 @@ import com.anywide.dawdler.core.db.DBAction;
  * 线程内存储Connection的工厂
  */
 public class LocalConnectionFactory {
-	private final static ConcurrentMap<DataSource, TransactionManager> LOCAL_MANAGER = new ConcurrentHashMap<>();
-	private final static ThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>> LOCAL_WRITE_CONNECTION_HOLDER;
-	private final static ThreadLocal<SynReadConnectionObject> SYN_READ_CONNECTION = new ThreadLocal<>();
+	private static final ConcurrentMap<DataSource, TransactionManager> LOCAL_MANAGER = new ConcurrentHashMap<>();
+	private static final ThreadLocal<ConcurrentMap<DataSource, WriteConnectionHolder>> LOCAL_WRITE_CONNECTION_HOLDER;
+	private static final ThreadLocal<SynReadConnectionObject> SYN_READ_CONNECTION = new ThreadLocal<>();
 	private static final ThreadLocal<Map<DBAction, Connection>> LOCAL_CONNECTION = new ThreadLocal<Map<DBAction, Connection>>() {
 		protected java.util.Map<DBAction, Connection> initialValue() {
 			return new HashMap<DBAction, Connection>(2);

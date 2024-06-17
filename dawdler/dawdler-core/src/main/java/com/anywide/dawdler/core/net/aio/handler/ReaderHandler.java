@@ -37,7 +37,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
  * aio读包的处理者，相对比较复杂 实现粘包等功能
  */
 public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketSession> {
-	private final static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
 	private static final int HEADER_FIELD_LENGTH = Integer.BYTES;
 	private final AtomicInteger INFERIOR_COUNT = new AtomicInteger();
 	private static final int AUTH_DATA_SIZE = 2048;
@@ -101,7 +101,6 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 						session.messageCompleted();
 						session.setNeedNext(true);
 						completed(buffer.remaining(), session);
-						return;
 					} else if (buffer.remaining() == dataLength) {
 						session.parseHead(buffer);
 						session.appendReadLength(dataLength);
@@ -134,7 +133,6 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 						session.messageCompleted();
 						session.setNeedNext(true);
 						completed(buffer.remaining(), session);
-						return;
 					} else {
 						if (readLength == remanentDataLength) {
 							session.appendReadLength(remanentDataLength);
@@ -161,14 +159,14 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 				}
 				process(session);
 			}
-		} catch (Throwable throwble) {
-			failed(throwble, session);
+		} catch (Throwable throwable) {
+			failed(throwable, session);
 		}
 	}
 
 	@Override
-	public void failed(Throwable exc, AbstractSocketSession session) {
-		logger.error("", exc);
+	public void failed(Throwable throwable, AbstractSocketSession session) {
+		logger.error("", throwable);
 		if (!session.isClose()) {
 			session.close();
 		}

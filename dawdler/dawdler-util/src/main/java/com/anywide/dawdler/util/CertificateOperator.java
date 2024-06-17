@@ -249,7 +249,7 @@ public class CertificateOperator {
 		return verifyCertificate(new Date(), keyStore);
 	}
 
-	public static enum KeyStoreConfig {
+	public enum KeyStoreConfig {
 
 		JCEKS("jceks"), JKS("jks"), DKS("dks"), PKCS11("pkcs11"), PKCS12("pkcs12");
 

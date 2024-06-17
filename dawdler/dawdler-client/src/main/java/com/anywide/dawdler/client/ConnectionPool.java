@@ -41,7 +41,6 @@ public class ConnectionPool {
 	private static final ConcurrentHashMap<String, ConnectionPool> GROUPS = new ConcurrentHashMap<>();
 	private static final Map<String, ServerChannelGroup> SERVER_CHANNEL_GROUPS = new HashMap<>();
 	private List<DawdlerConnection> connections = new CopyOnWriteArrayList<>();
-	private Semaphore semaphore = new Semaphore(0);
 	private String groupName;
 
 	public enum Action {
@@ -122,13 +121,6 @@ public class ConnectionPool {
 
 	public List<DawdlerConnection> getConnections() {
 		if (connections.isEmpty()) {
-			try {
-				if (semaphore.tryAcquire(6000, TimeUnit.MILLISECONDS)) {
-					return connections;
-				}
-
-			} catch (InterruptedException e) {
-			}
 			throw new IllegalArgumentException("not find " + groupName + " provider!");
 		}
 		return connections;
@@ -145,7 +137,6 @@ public class ConnectionPool {
 		synchronized (this) {
 			if (connections.isEmpty()) {
 				initConnection(gid);
-				semaphore.release(Byte.MAX_VALUE);
 			}
 		}
 		connections.forEach(con -> {

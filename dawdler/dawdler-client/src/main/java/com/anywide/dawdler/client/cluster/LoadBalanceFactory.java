@@ -27,7 +27,7 @@ import java.util.ServiceLoader;
  */
 public class LoadBalanceFactory<T, K> {
 	@SuppressWarnings("rawtypes")
-	private final static Map<String, LoadBalance> LOAD_BALANCES = new HashMap<>();
+	private static final Map<String, LoadBalance> LOAD_BALANCES = new HashMap<>();
 	static {
 		@SuppressWarnings("rawtypes")
 		ServiceLoader<LoadBalance> loader = ServiceLoader.load(LoadBalance.class);

@@ -96,10 +96,10 @@ public class RWSplittingDataSourceManager {
 							+ " can't be null or must conform to write=[writeDataSource],read=[readDataSource1|readDataSource2] !");
 				}
 				for (String readDataSource : mappingDecision.readExpression) {
-					initDataSourcesfromPropertiesIfNotExistLoadConfigCenter(readDataSource);
+					initDataSourcesFromPropertiesIfNotExistLoadConfigCenter(readDataSource);
 				}
 				for (String writeDataSource : mappingDecision.writeExpression) {
-					initDataSourcesfromPropertiesIfNotExistLoadConfigCenter(writeDataSource);
+					initDataSourcesFromPropertiesIfNotExistLoadConfigCenter(writeDataSource);
 				}
 			}
 		}
@@ -144,7 +144,7 @@ public class RWSplittingDataSourceManager {
 		dataSources.put(id, ds);
 	}
 
-	public void initDataSourcesfromPropertiesIfNotExistLoadConfigCenter(String id) throws Exception {
+	public void initDataSourcesFromPropertiesIfNotExistLoadConfigCenter(String id) throws Exception {
 		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter(id);
 		if (ps != null) {
 			Map<String, Object> attributes = new HashMap<>();

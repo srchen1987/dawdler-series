@@ -53,8 +53,6 @@ public class RabbitIndicator implements HealthIndicator {
 				String version = con.getServerProperties().get("version").toString();
 				childBuilder.withDetail("version", version);
 				builder.withDetail(key, childBuilder.build().getData());
-			} catch (Exception e) {
-				throw e;
 			} finally {
 				if (con != null) {
 					try {
