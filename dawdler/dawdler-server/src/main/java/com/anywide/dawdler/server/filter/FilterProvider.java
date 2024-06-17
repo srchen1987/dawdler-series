@@ -37,7 +37,7 @@ import com.anywide.dawdler.core.order.OrderData;
 public class FilterProvider {
 	private static final Logger logger = LoggerFactory.getLogger(FilterProvider.class);
 	private final List<OrderData<DawdlerFilter>> filters = new ArrayList<>();
-	public FilterChain lastChain;
+	private FilterChain lastChain;
 
 	public FilterProvider() {
 	}
@@ -64,7 +64,6 @@ public class FilterProvider {
 
 	FilterChain buildChain(final FilterChain chain) {
 		FilterChain last = chain;
-		List<OrderData<DawdlerFilter>> filters = this.filters;
 		if (!filters.isEmpty()) {
 			for (int i = filters.size() - 1; i >= 0; i--) {
 				final DawdlerFilter filter = filters.get(i).getData();
