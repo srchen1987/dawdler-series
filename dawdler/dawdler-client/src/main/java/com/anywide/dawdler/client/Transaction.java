@@ -190,7 +190,7 @@ public class Transaction {
 
 	public void checkIfNullCreateAttachment() {
 		if (attachments == null) {
-			attachments = new HashMap<String, Object>(8);
+			attachments = new HashMap<>(8);
 		}
 	}
 

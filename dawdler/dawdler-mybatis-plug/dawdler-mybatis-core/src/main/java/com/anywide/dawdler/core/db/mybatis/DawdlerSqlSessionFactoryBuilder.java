@@ -53,7 +53,7 @@ import com.anywide.dawdler.util.spring.antpath.Resource;
  * dawdler实现session工厂构建器
  */
 public class DawdlerSqlSessionFactoryBuilder extends SqlSessionFactoryBuilder {
-	private final static Logger logger = LoggerFactory.getLogger(DawdlerSqlSessionFactoryBuilder.class);
+	private static final Logger logger = LoggerFactory.getLogger(DawdlerSqlSessionFactoryBuilder.class);
 
 	private String configLocation;
 

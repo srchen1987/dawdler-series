@@ -37,6 +37,7 @@ import com.anywide.dawdler.core.service.processor.ServiceExecutor;
 import com.anywide.dawdler.core.thread.InvokeFuture;
 import com.anywide.dawdler.server.bootstrap.ServerConnectionManager;
 import com.anywide.dawdler.server.conf.ServerConfig;
+import com.anywide.dawdler.server.deploys.AbstractServiceRoot;
 import com.anywide.dawdler.server.deploys.Service;
 import com.anywide.dawdler.server.deploys.ServiceRoot;
 import com.anywide.dawdler.server.filter.RequestWrapper;
@@ -78,7 +79,7 @@ public class DataProcessor implements Runnable {
 
 	public void process() throws Exception {
 		String path = socketSession.getPath();
-		Service service = ServiceRoot.getService(path);
+		Service service = AbstractServiceRoot.getService(path);
 		if (compress) {
 			data = ThresholdCompressionStrategy.staticSingle().decompress(data);
 		}
@@ -92,10 +93,7 @@ public class DataProcessor implements Runnable {
 				throw new IllegalAccessException("unauthorized access ！");
 			}
 			String serviceName = requestBean.getServiceName();
-			ServicesBean servicesBean = null;
-			if (service != null) {
-				servicesBean = service.getServicesBean(serviceName);
-			}
+			ServicesBean servicesBean = service.getServicesBean(serviceName);
 			ResponseBean responseBean = new ResponseBean();
 			responseBean.setSeq(requestBean.getSeq());
 			InvokeFuture<Object> invoke = new InvokeFuture<>();

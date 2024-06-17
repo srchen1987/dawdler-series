@@ -149,7 +149,7 @@ public class ScheduleOperator {
 	public static class SchedulerFactory {
 		private Scheduler scheduler;
 		private static final String PREFIX = ".properties";
-		private final static SchedulerFactory INSTANCE = new SchedulerFactory();
+		private static final SchedulerFactory INSTANCE = new SchedulerFactory();
 		private Map<String, org.quartz.SchedulerFactory> INSTANCES = new ConcurrentHashMap<String, org.quartz.SchedulerFactory>(
 				8);
 
