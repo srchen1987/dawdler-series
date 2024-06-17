@@ -39,7 +39,7 @@ import redis.clients.jedis.util.Pool;
  * jedispool jedis 连接池工厂 支持多个池
  */
 public final class JedisPoolFactory {
-	private final static Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
+	private static final Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
 
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 

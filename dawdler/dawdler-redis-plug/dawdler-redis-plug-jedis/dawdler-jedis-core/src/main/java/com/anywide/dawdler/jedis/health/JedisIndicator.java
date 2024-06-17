@@ -31,7 +31,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * JedisIndicator jedis健康指示器
+ *          JedisIndicator jedis健康指示器
  */
 public class JedisIndicator implements HealthIndicator {
 
@@ -54,8 +54,6 @@ public class JedisIndicator implements HealthIndicator {
 				String version = jedis.info("Server").split("\r\n")[1];
 				childBuilder.withDetail("version", version);
 				builder.withDetail(key, childBuilder.build().getData());
-			} catch (Exception e) {
-				throw e;
 			} finally {
 				if (jedis != null) {
 					jedis.close();

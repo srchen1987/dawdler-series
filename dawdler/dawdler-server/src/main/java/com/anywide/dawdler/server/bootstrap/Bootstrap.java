@@ -42,7 +42,7 @@ import com.anywide.dawdler.util.DawdlerTool;
  * dawdler服务器启动类
  */
 public class Bootstrap {
-	public final static Logger logger = LoggerFactory.getLogger("system.out");
+	public static final Logger logger = LoggerFactory.getLogger("system.out");
 	public static final String DAWDLER_BASE_PATH = "DAWDLER_BASE_PATH";
 	private static final String DAWDLER_BIN_PATH = "bin";
 

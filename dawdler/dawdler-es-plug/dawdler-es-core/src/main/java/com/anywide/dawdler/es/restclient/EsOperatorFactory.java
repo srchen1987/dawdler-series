@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.anywide.dawdler.es.annotation.EsInjector;
 import com.anywide.dawdler.es.restclient.pool.factory.ElasticSearchClientFactory;
-import com.anywide.dawdler.es.restclient.warpper.ElasticSearchClient;
+import com.anywide.dawdler.es.restclient.wrapper.ElasticSearchClient;
 
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 
@@ -89,7 +89,7 @@ public class EsOperatorFactory {
 	}
 
 	public static void initField(Object target, Class<?> clazz)
-			throws IllegalArgumentException, IllegalAccessException, Exception {
+			throws IllegalArgumentException, Exception {
 		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			EsInjector esInjector = field.getAnnotation(EsInjector.class);
