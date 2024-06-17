@@ -31,7 +31,7 @@ public class ControlValidator {
 	private Map<MappingFeildType, Map<String, ControlField>> globalControlFieldsCache;
 	private final Map<String, Map<MappingFeildType, Map<String, ControlField>>> mappings = new HashMap<>();
 
-	public static enum MappingFeildType {
+	public enum MappingFeildType {
 		header, body, param, path
 	}
 

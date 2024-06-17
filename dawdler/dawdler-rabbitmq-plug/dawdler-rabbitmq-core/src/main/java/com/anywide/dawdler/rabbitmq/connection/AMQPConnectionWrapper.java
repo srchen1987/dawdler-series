@@ -27,7 +27,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 
-import com.anywide.dawdler.rabbitmq.channel.ChannelWarpperHandler;
+import com.anywide.dawdler.rabbitmq.channel.ChannelWrapperHandler;
 import com.rabbitmq.client.BlockedCallback;
 import com.rabbitmq.client.BlockedListener;
 import com.rabbitmq.client.Channel;
@@ -42,7 +42,7 @@ import com.rabbitmq.client.UnblockedCallback;
  * @version V1.0
  * Rabbitmq的Connection包装类
  */
-public class AMQPConnectionWarpper implements Connection {
+public class AMQPConnectionWrapper implements Connection {
 	private Connection target;
 	private GenericObjectPool<Connection> genericObjectPool;
 	private int channelSize;
@@ -51,7 +51,7 @@ public class AMQPConnectionWarpper implements Connection {
 	private boolean confirmSelect;
 	LinkedList<Channel> channels = new LinkedList<>();
 
-	public AMQPConnectionWarpper(Connection target, GenericObjectPool<Connection> genericObjectPool, int channelSize,
+	public AMQPConnectionWrapper(Connection target, GenericObjectPool<Connection> genericObjectPool, int channelSize,
 			int getChannelTimeOut, boolean confirmSelect) {
 		this.target = target;
 		this.genericObjectPool = genericObjectPool;
@@ -141,10 +141,10 @@ public class AMQPConnectionWarpper implements Connection {
 				if (confirmSelect) {
 					channel.confirmSelect();
 				}
-				ChannelWarpperHandler channelWarpperHandler = new ChannelWarpperHandler(channel,
+				ChannelWrapperHandler channelWrapperHandler = new ChannelWrapperHandler(channel,
 						channels, semaphore);
 				return (Channel) Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), channelClass,
-						channelWarpperHandler);
+						channelWrapperHandler);
 			} else {
 				throw new IOException(new TimeoutException("timed out after " + getChannelTimeOut + " milliseconds !"));
 			}

@@ -37,7 +37,7 @@ import com.anywide.dawdler.util.JVMTimeProvider;
  * aio读包的处理者，相对比较复杂 实现粘包等功能
  */
 public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketSession> {
-	private final static Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(ReaderHandler.class);
 	private static final int HEADER_FIELD_LENGTH = Integer.BYTES;
 	private final AtomicInteger INFERIOR_COUNT = new AtomicInteger();
 	private static final int AUTH_DATA_SIZE = 2048;

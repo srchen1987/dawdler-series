@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
@@ -109,7 +110,7 @@ public class DawdlerConnection {
 		return connectManager;
 	}
 
-	public ConcurrentHashMap<SocketAddress, List<SocketSession>> getSessionGroup() {
+	public ConcurrentMap<SocketAddress, List<SocketSession>> getSessionGroup() {
 		return sessionGroup;
 	}
 

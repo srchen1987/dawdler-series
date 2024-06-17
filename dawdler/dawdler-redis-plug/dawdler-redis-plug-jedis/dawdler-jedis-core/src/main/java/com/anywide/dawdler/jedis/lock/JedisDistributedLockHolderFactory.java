@@ -33,7 +33,7 @@ import redis.clients.jedis.util.Pool;
  */
 public class JedisDistributedLockHolderFactory {
 
-	private final static Map<String, JedisDistributedLockHolder> JEDIS_DISTRIBUTED_LOCK_HOLDERS = new ConcurrentHashMap<>();
+	private static final Map<String, JedisDistributedLockHolder> JEDIS_DISTRIBUTED_LOCK_HOLDERS = new ConcurrentHashMap<>();
 
 	private static JedisDistributedLockHolder getJedisDistributedLockHolder(JedisLockInjector jedisLockInjector)
 			throws Exception {

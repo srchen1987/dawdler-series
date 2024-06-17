@@ -93,7 +93,7 @@ public class DataAutomaticNewV2 {
 		return list;
 	}
 
-	private final static void init() {
+	private static final void init() {
 		Class<?>[] byteclass = new Class[] { byte[].class };
 		DATA_TYPES.put("TINYINT", new Class[] { boolean.class, Boolean.class, short.class, Short.class });
 		DATA_TYPES.put("MEDIUMINT", new Class[] { int.class, Integer.class });
@@ -123,7 +123,7 @@ public class DataAutomaticNewV2 {
 		DATA_TYPES.put("SMALLINT", new Class[] { short.class, Short.class, int.class, Integer.class });
 	}
 
-	private final static void invoke(String columntypename, Class<?> type, String setMethodName, Object obj,
+	private static final void invoke(String columntypename, Class<?> type, String setMethodName, Object obj,
 			Object object) {
 		Map<String, Method> methods = CACHE_METHOD.get(type);
 		if (methods == null) {

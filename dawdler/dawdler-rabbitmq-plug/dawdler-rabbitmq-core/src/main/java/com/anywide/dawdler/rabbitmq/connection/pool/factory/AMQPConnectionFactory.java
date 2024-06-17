@@ -37,18 +37,18 @@ import com.rabbitmq.client.ConnectionFactory;
  */
 public class AMQPConnectionFactory {
 	private GenericObjectPool<Connection> genericObjectPool;
-	private final static Map<String, AMQPConnectionFactory> INSTANCES = new ConcurrentHashMap<>();
+	private static final Map<String, AMQPConnectionFactory> INSTANCES = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
 	private int channelSize;
 
 	// 重试交换器
-	public final static String RABBIT_RETRY_EXCHANGE = "rabbit_retry_exchange";
+	public static final String RABBIT_RETRY_EXCHANGE = "rabbit_retry_exchange";
 	// 重试队列（重试队列会设置过期时间，过期后会再次发送到正常工作队列中）
-	private final static String RABBIT_RETRY_QUEUE = "rabbit_retry_queue";
+	private static final String RABBIT_RETRY_QUEUE = "rabbit_retry_queue";
 	// 消息重试几次后未成功发送至异常交换器
-	public final static String RABBIT_FAIL_EXCHANGE = "rabbit_fail_exchange";
+	public static final String RABBIT_FAIL_EXCHANGE = "rabbit_fail_exchange";
 	// 异常信息存储队列
-	private final static String RABBIT_FAIL_QUEUE = "rabbit_fail_queue";
+	private static final String RABBIT_FAIL_QUEUE = "rabbit_fail_queue";
 
 	public static AMQPConnectionFactory getInstance(String fileName) throws Exception {
 		AMQPConnectionFactory connectionFactory = INSTANCES.get(fileName);

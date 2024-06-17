@@ -26,7 +26,7 @@ pool.maxTotal=32 #最大连接
 pool.maxWaitMillis=5000 #最大等待时长(单位毫秒)
 pool.minIdle=0 #最小空闲数
 pool.maxIdle=4 #最大空闲数
-confirmSelect=true #开启confirm模式 一般配合ConfirmListener使用,参考RabbitProvider中publishIfFaildRetry方法
+confirmSelect=true #开启confirm模式 一般配合ConfirmListener使用,参考RabbitProvider中publishIfFailedRetry方法
 channel.size=16 #每个connection中的channel数量
 channel.getTimeout=15000 #获取channel的超时事件(单位毫秒)
 ttlTime=5000 #消费者消费失败后重试的时间 单位ms,需要配合@RabbitListener来使用 
@@ -149,7 +149,7 @@ public void publish(String exchange, String routingKey, BasicProperties props, b
   *
   * 
   */
- public void publishIfFaildRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
+ public void publishIfFailedRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
    throws Exception {
   Connection con = null;
   Channel channel = null;
@@ -167,7 +167,7 @@ public void publish(String exchange, String routingKey, BasicProperties props, b
      LocalCacheMessage message = localCacheMessages.get(deliveryTag);
      if (message != null) {
       try {
-       publishIfFaildRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
+       publishIfFailedRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
          message.getBody());
       } catch (Exception e) {
        logger.error("", e);
