@@ -80,6 +80,7 @@ public class RabbitProvider {
 	}
 
 	/**
+	 * 
 	 * @author jackson.song
 	 * 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况)
 	 *              (注意要在配置文件中开启confirmSelect=true)
@@ -91,7 +92,7 @@ public class RabbitProvider {
 	 *
 	 * 
 	 */
-	public void publishIfFaildRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
+	public void publishIfFailedRetry(String exchange, String routingKey, BasicProperties props, byte[] body)
 			throws Exception {
 		Connection con = null;
 		Channel channel = null;
@@ -109,7 +110,7 @@ public class RabbitProvider {
 					LocalCacheMessage message = localCacheMessages.get(deliveryTag);
 					if (message != null) {
 						try {
-							publishIfFaildRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
+							publishIfFailedRetry(message.getExchange(), message.getRoutingKey(), message.getProps(),
 									message.getBody());
 						} catch (Exception e) {
 							logger.error("", e);
@@ -139,6 +140,7 @@ public class RabbitProvider {
 	}
 
 	/**
+	 * 
 	 * @author jackson.song
 	 * 提供获取Connection的方法用于开启事务功能 通过Connection获取Channal 伪代码:
 	 * 	try {

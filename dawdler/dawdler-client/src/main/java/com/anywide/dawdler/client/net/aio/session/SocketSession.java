@@ -150,7 +150,6 @@ public class SocketSession extends AbstractSocketSession {
 			if (markClose.get() && futures.isEmpty()) {
 				close(false);
 			}
-			data = null;
 			toPrepare();
 		}
 	}

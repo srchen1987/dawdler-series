@@ -28,7 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.core.thread.DefaultThreadFactory;
-import com.anywide.dawdler.rabbitmq.connection.AMQPConnectionWarpper;
+import com.anywide.dawdler.rabbitmq.connection.AMQPConnectionWrapper;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import com.rabbitmq.client.Recoverable;
@@ -97,12 +97,12 @@ public class PooledConnectionFactory extends BasePooledObjectFactory<Connection>
 				logger.info("amqp connection recovery:" + recoverable);
 			}
 		});
-		return new AMQPConnectionWarpper(con, genericObjectPool, channelSize, getChannelTimeOut, confirmSelect);
+		return new AMQPConnectionWrapper(con, genericObjectPool, channelSize, getChannelTimeOut, confirmSelect);
 	}
 
 	@Override
 	public void destroyObject(PooledObject<Connection> p) throws Exception {
-		((AMQPConnectionWarpper) p.getObject()).physicsClose();
+		((AMQPConnectionWrapper) p.getObject()).physicsClose();
 	}
 
 	@Override

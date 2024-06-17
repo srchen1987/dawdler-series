@@ -35,8 +35,7 @@ public abstract class AbstractLoadBalance<T, K> implements LoadBalance<T, K> {
 	@Override
 	public T select(RequestBean request, List<T> connections) {
 		// 此处如果暴力下线 通过 服务端stopnow方式或者kill -9 方式 会有概率抛出数组下标越界异常
-		T con = connections.size() > 1 ? doSelect(request, connections) : connections.get(0);
-		return con;
+		return connections.size() > 1 ? doSelect(request, connections) : connections.get(0);
 	}
 
 	public String getName() {

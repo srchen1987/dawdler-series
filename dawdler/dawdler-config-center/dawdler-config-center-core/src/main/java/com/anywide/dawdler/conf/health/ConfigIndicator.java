@@ -27,7 +27,7 @@ import com.anywide.dawdler.core.health.HealthIndicator;
 /**
  * @author jackson.song
  * @version V1.0
- * ConfigIndicator 配置中心健康指示器
+ *          ConfigIndicator 配置中心健康指示器
  */
 public class ConfigIndicator implements HealthIndicator {
 
@@ -44,13 +44,9 @@ public class ConfigIndicator implements HealthIndicator {
 			for (ConfigClient configClient : configClients) {
 				String key = configClient.type();
 				Builder childBuilder = Health.up();
-				try {
-					String info = configClient.info();
-					childBuilder.withDetail("info", info);
-					builder.withDetail(key, childBuilder.build().getData());
-				} catch (Exception e) {
-					throw e;
-				}
+				String info = configClient.info();
+				childBuilder.withDetail("info", info);
+				builder.withDetail(key, childBuilder.build().getData());
 			}
 		}
 		return builder.build();
