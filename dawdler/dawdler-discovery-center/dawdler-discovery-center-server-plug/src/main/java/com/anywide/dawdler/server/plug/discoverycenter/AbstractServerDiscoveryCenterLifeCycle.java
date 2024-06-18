@@ -26,7 +26,6 @@ import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 import com.anywide.dawdler.core.discoverycenter.DiscoveryCenter;
 import com.anywide.dawdler.core.health.Status;
 import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.server.plug.discoverycenter.AbstractServerDiscoveryCenterLifeCycle.ProviderTimeoutTask;
 import com.anywide.dawdler.util.HashedWheelTimer;
 import com.anywide.dawdler.util.Timeout;
 import com.anywide.dawdler.util.TimerTask;
