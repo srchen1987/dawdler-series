@@ -37,6 +37,8 @@
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.target>21</maven.compiler.target>
+		<maven.compiler.source>21</maven.compiler.source>
 		<dawdler.build.version>21.2-jdk21-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.6</slf4j.version>
 		<ch.qos.logback.version>1.4.14</ch.qos.logback.version>
@@ -612,8 +614,6 @@
 				<version>3.6.3</version>
 				<configuration>
 					<additionalparam>-Xdoclint:none</additionalparam>
-					<source>17</source>
-					<target>17</target>
 					<additionalJOptions>
 						<additionalJOption>--add-exports=java.base/jdk.internal.loader=dawdler.util</additionalJOption>
 						<additionalJOption>-X</additionalJOption>
@@ -634,8 +634,6 @@
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<source>17</source>
-					<target>17</target>
 					<!--debug>true</debug>-->
 				</configuration>
 			</plugin>
@@ -654,17 +652,6 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version>
-				<configuration>
-					<encoding>${project.build.sourceEncoding}</encoding>
-					<source>21</source>
-					<target>21</target>
-					<!--debug>true</debug>-->
-				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
