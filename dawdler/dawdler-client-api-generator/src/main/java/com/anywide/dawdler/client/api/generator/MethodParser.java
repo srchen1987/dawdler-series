@@ -87,7 +87,7 @@ public class MethodParser {
 		}
 	};
 
-	public static void generateMethodParamCode(Map<String, Object> rootMap, Map<String, Object> pathMap,
+	public static void generateMethodParamCode(Map<String, Object> pathMap,
 			Map<String, ClassStruct> classStructs, Map<String, Object> definitionsMap, JavaClass javaClass,
 			JavaAnnotation requestMappingAnnotation) {
 		List<JavaMethod> methods = javaClass.getMethods();
