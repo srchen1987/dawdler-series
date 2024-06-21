@@ -88,11 +88,8 @@ public class DefaultResourceLoader implements ResourceLoader {
 				URI uri = new URI(location);
 				URL url = uri.toURL();
 				return (ResourceUtils.isFileURL(url) ? new FileUrlResource(url) : new UrlResource(url));
-			} catch (MalformedURLException ex) {
-				// No URL -> resolve as resource path.
+			} catch (MalformedURLException | URISyntaxException ex) {
 				return getResourceByPath(location);
-			} catch (URISyntaxException e) {
-				return getResourceByPath(location);	
 			}
 		}
 	}

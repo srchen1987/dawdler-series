@@ -123,7 +123,7 @@ public class WebApiGenerator {
 				data.setName(javaClass.getBinaryName());
 				data.setDescription(summary);
 				controllers.add(data);
-				MethodParser.generateMethodParamCode(rootMap, pathMap, classStructs, definitionsMap, javaClass,
+				MethodParser.generateMethodParamCode(pathMap, classStructs, definitionsMap, javaClass,
 						requestMappingAnnotation);
 			}
 
