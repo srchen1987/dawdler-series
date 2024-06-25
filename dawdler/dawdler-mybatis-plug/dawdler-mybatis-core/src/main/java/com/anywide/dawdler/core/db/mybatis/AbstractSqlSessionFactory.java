@@ -17,6 +17,7 @@
 package com.anywide.dawdler.core.db.mybatis;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +42,7 @@ public abstract class AbstractSqlSessionFactory {
 	protected SqlSession sqlSession;
 	protected ResourcePatternResolver resolver = PathMatchingResourcePatternResolver.getInstance();
 
-	public List<Resource> getMapperLocations() throws IOException {
+	public List<Resource> getMapperLocations() throws IOException, URISyntaxException {
 		Set<String> mappers = getMappers();
 		if (mappers != null) {
 			List<Resource> resourceList = new ArrayList<>();
@@ -69,7 +70,7 @@ public abstract class AbstractSqlSessionFactory {
 		try {
 			List<Resource> mapperLocations = getMapperLocations();
 			sessionBuilder.setMapperLocations(mapperLocations);
-		} catch (IOException e) {
+		} catch (IOException | URISyntaxException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		}

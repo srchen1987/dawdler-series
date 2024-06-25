@@ -17,6 +17,7 @@
 package com.anywide.dawdler.serverplug.db.mybatis;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -36,7 +37,7 @@ public class SingleSqlSessionFactory extends AbstractSqlSessionFactory {
 		private static SingleSqlSessionFactory instance = new SingleSqlSessionFactory();
 	}
 
-	public List<Resource> getMapperLocations() throws IOException {
+	public List<Resource> getMapperLocations() throws IOException, URISyntaxException {
 		Set<String> mappers = DawdlerContext.getDawdlerContext().getServicesConfig().getMappers();
 		if (mappers != null) {
 			List<Resource> resourceList = new ArrayList<>();

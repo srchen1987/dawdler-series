@@ -17,6 +17,7 @@
 package com.anywide.dawdler.core.scan;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import com.anywide.dawdler.util.spring.antpath.PathMatchingResourcePatternResolver;
 import com.anywide.dawdler.util.spring.antpath.Resource;
@@ -34,7 +35,7 @@ public class DawdlerComponentScanner {
 		return resolver.getResource(location.replace(".", "/").concat(".class"));
 	}
 
-	public static Resource[] getClasses(String location) throws IOException {
+	public static Resource[] getClasses(String location) throws IOException, URISyntaxException {
 		return resolver.getResources("classpath*:" + location.replace(".", "/") + "/*.class");
 	}
 

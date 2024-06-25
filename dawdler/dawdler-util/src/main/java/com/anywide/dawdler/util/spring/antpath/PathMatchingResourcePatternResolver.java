@@ -84,7 +84,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	}
 
 	@Override
-	public Resource[] getResources(String locationPattern) throws IOException {
+	public Resource[] getResources(String locationPattern) throws IOException, URISyntaxException {
 		if (locationPattern.startsWith(CLASSPATH_ALL_URL_PREFIX)) {
 			if (getPathMatcher().isPattern(locationPattern.substring(CLASSPATH_ALL_URL_PREFIX.length()))) {
 				return findPathMatchingResources(locationPattern);
@@ -191,12 +191,12 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 		try {
 			return result.contains(new UrlResource(ResourceUtils.JAR_URL_PREFIX + ResourceUtils.FILE_URL_PREFIX
 					+ duplicatePath + ResourceUtils.JAR_URL_SEPARATOR));
-		} catch (MalformedURLException ex) {
+		} catch (MalformedURLException | URISyntaxException ex) {
 			return false;
 		}
 	}
 
-	protected Resource[] findPathMatchingResources(String locationPattern) throws IOException {
+	protected Resource[] findPathMatchingResources(String locationPattern) throws IOException, URISyntaxException {
 		String rootDirPath = determineRootDir(locationPattern);
 		String subPattern = locationPattern.substring(rootDirPath.length());
 		Resource[] rootDirResources = getResources(rootDirPath);
@@ -241,7 +241,7 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 	}
 
 	protected Set<Resource> doFindPathMatchingJarResources(Resource rootDirResource, URL rootDirURL, String subPattern)
-			throws IOException {
+			throws IOException, URISyntaxException {
 
 		URLConnection con = rootDirURL.openConnection();
 		JarFile jarFile;

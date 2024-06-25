@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 import java.nio.channels.ReadableByteChannel;
@@ -157,7 +158,7 @@ public class FileSystemResource extends WritableResource {
 	}
 
 	@Override
-	public long lastModified() throws IOException {
+	public long lastModified() throws IOException, URISyntaxException {
 		if (this.file != null) {
 			return super.lastModified();
 		} else {
