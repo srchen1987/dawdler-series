@@ -42,8 +42,8 @@ import ch.qos.logback.core.util.StatusListenerConfigHelper;
  */
 public class DawdlerLogbackContextInitializer {
 
-	final public static String AUTOCONFIG_FILE = "logback.xml";
-	final public static String TEST_AUTOCONFIG_FILE = "logback-test.xml";
+	public static final String AUTOCONFIG_FILE = "logback.xml";
+	public static final String TEST_AUTOCONFIG_FILE = "logback-test.xml";
 
 	final LoggerContext loggerContext;
 
@@ -94,7 +94,7 @@ public class DawdlerLogbackContextInitializer {
 				}
 			} finally {
 				if (updateStatus) {
-					statusOnResourceSearch(logbackConfigFile, classLoader, result);
+					statusOnResourceSearch(logbackConfigFile, result);
 				}
 			}
 		}
@@ -119,7 +119,7 @@ public class DawdlerLogbackContextInitializer {
 	private URL getResource(String filename, ClassLoader myClassLoader, boolean updateStatus) {
 		URL url = Loader.getResource(filename, myClassLoader);
 		if (updateStatus) {
-			statusOnResourceSearch(filename, myClassLoader, url);
+			statusOnResourceSearch(filename, url);
 		}
 		return url;
 	}
@@ -152,32 +152,14 @@ public class DawdlerLogbackContextInitializer {
 		}
 	}
 
-	private void statusOnResourceSearch(String resourceName, ClassLoader classLoader, URL url) {
+	private void statusOnResourceSearch(String resourceName, URL url) {
 		StatusManager sm = loggerContext.getStatusManager();
 		if (url == null) {
 			sm.add(new InfoStatus("Could NOT find resource [" + resourceName + "]", loggerContext));
 		} else {
 			sm.add(new InfoStatus("Found resource [" + resourceName + "] at [" + url.toString() + "]", loggerContext));
-//			multiplicityWarning(resourceName, classLoader);
 		}
 	}
 
-//	private void multiplicityWarning(String resourceName, ClassLoader classLoader) {
-//		Set<URL> urlSet = null;
-//		StatusManager sm = loggerContext.getStatusManager();
-//		try {
-//			urlSet = Loader.getResources(resourceName, classLoader);
-//		} catch (IOException e) {
-//			sm.add(new ErrorStatus("Failed to get url list for resource [" + resourceName + "]", loggerContext, e));
-//		}
-//		if (urlSet != null && urlSet.size() > 1) {
-//			sm.add(new WarnStatus("Resource [" + resourceName + "] occurs multiple times on the classpath.",
-//					loggerContext));
-//			for (URL url : urlSet) {
-//				sm.add(new WarnStatus("Resource [" + resourceName + "] occurs at [" + url.toString() + "]",
-//						loggerContext));
-//			}
-//		}
-//	}
 
 }
