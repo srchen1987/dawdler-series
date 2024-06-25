@@ -17,7 +17,6 @@
 package com.anywide.dawdler.clientplug.web.classloader;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -67,7 +66,7 @@ public class ClientPlugClassLoader {
 		updateLoad(path);
 	}
 
-	public synchronized static ClientPlugClassLoader newInstance(String path) {
+	public static synchronized ClientPlugClassLoader newInstance(String path) {
 		if (classloader == null) {
 			classloader = new ClientPlugClassLoader(path);
 		}
@@ -172,11 +171,6 @@ public class ClientPlugClassLoader {
 										classData = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj,
 												className, classData, classLoader, null);
 										Class<?> clazz = clientClassLoader.defineClass(className, classData);
-										FileOutputStream out = new FileOutputStream(
-												"/home/srchen/logs/" + className + ".class");
-										out.write(classData);
-										out.flush();
-										out.close();
 										clientClassLoader.toResolveClass(clazz);
 									}
 								} catch (Exception e) {

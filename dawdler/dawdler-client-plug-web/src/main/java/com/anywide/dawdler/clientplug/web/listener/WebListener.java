@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,10 +40,6 @@ import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.core.serializer.SerializeDecider;
 import com.anywide.dawdler.core.shutdown.ContainerGracefulShutdown;
 import com.anywide.dawdler.core.shutdown.ContainerShutdownProvider;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.ServletException;
 
 /**
  * @author jackson.song
@@ -81,11 +80,7 @@ public class WebListener implements ServletContextListener {
 		try {
 			for (int i = 0; i < lifeCycleList.size(); i++) {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-				try {
-					lifeCycle.getData().prepareInit();
-				} catch (Throwable e) {
-					throw new ServletException(e);
-				}
+				lifeCycle.getData().prepareInit();
 			}
 			if (webConfig == null) {
 				return;
