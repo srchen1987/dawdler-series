@@ -44,9 +44,9 @@ public class UrlResource extends AbstractFileResolvingResource {
 		this.url = url;
 	}
 
-	public UrlResource(String path) throws MalformedURLException {
+	public UrlResource(String path) throws MalformedURLException, URISyntaxException {
 		this.uri = null;
-		this.url = new URL(path);
+		this.url = new URI(path).toURL();
 		this.cleanedUrl = getCleanedUrl(this.url, path);
 	}
 
@@ -69,8 +69,8 @@ public class UrlResource extends AbstractFileResolvingResource {
 		String cleanedPath = StringUtils.cleanPath(originalPath);
 		if (!cleanedPath.equals(originalPath)) {
 			try {
-				return new URL(cleanedPath);
-			} catch (MalformedURLException ex) {
+				return new URI(cleanedPath).toURL();
+			} catch (MalformedURLException | URISyntaxException ex) {
 			}
 		}
 		return originalUrl;
@@ -134,18 +134,18 @@ public class UrlResource extends AbstractFileResolvingResource {
 	}
 
 	@Override
-	public Resource createRelative(String relativePath) throws MalformedURLException {
+	public Resource createRelative(String relativePath) throws MalformedURLException, URISyntaxException {
 		return new UrlResource(createRelativeURL(relativePath));
 	}
 
-	protected URL createRelativeURL(String relativePath) throws MalformedURLException {
+	protected URL createRelativeURL(String relativePath) throws MalformedURLException, URISyntaxException {
 		if (relativePath.startsWith("/")) {
 			relativePath = relativePath.substring(1);
 		}
 		// # can appear in filenames, java.net.URL should not treat it as a fragment
 		relativePath = StringUtils.replace(relativePath, "#", "%23");
 		// Use the URL constructor for applying the relative path as a URL spec
-		return new URL(this.url, relativePath);
+		return this.url.toURI().resolve(relativePath).toURL();
 	}
 
 	@Override

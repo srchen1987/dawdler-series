@@ -19,6 +19,7 @@ package com.anywide.dawdler.util.spring.antpath;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 
@@ -46,9 +47,9 @@ public abstract class Resource extends jdk.internal.loader.Resource implements I
 		return Channels.newChannel(getInputStream());
 	}
 
-	public abstract long lastModified() throws IOException;
+	public abstract long lastModified() throws IOException, URISyntaxException;
 
-	public abstract Resource createRelative(String relativePath) throws IOException;
+	public abstract Resource createRelative(String relativePath) throws IOException, URISyntaxException;
 
 	public abstract String getFilename();
 
