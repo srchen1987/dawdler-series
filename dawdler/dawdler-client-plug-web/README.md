@@ -326,17 +326,17 @@ dawdler内部提供[JsonDisplayPlug](src/main/java/com/anywide/dawdler/clientplu
 
 web-conf.xml是web端核心配置文件. 包含组件扫描,配置据源定义,指定目标包定义数据源,读写分离配置.
 
-package-path配置当前的web环境中的包扫描路径(部署在web容器中的lib或classes中的包路径并支持antpath). 
+package-path配置当前的web环境中的包扫描路径(部署在web容器中的lib或classes中的包路径并支持antpath).
 
 示例：
 
 ```xml
-	<scanner>
-		<package-paths>
-			<package-path>com.dawdler.order.controller</package-path>
-			<package-path>com.dawdler.**.service.impl</package-path>
-		</package-paths>
-	</scanner>
+ <scanner>
+  <package-paths>
+   <package-path>com.dawdler.order.controller</package-path>
+   <package-path>com.dawdler.**.service.impl</package-path>
+  </package-paths>
+ </scanner>
 ```
 
 ### 11. aop使用方式
