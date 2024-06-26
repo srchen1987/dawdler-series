@@ -17,12 +17,11 @@
 package com.anywide.dawdler.util.spring.antpath;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 public interface ResourcePatternResolver extends ResourceLoader {
 
 	String CLASSPATH_ALL_URL_PREFIX = "classpath*:";
 
-	Resource[] getResources(String locationPattern) throws IOException, URISyntaxException;
+	Resource[] getResources(String locationPattern) throws IOException;
 
 }

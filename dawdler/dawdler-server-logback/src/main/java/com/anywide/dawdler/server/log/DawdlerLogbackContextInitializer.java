@@ -18,6 +18,8 @@ package com.anywide.dawdler.server.log;
 
 import java.io.File;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
@@ -77,9 +79,9 @@ public class DawdlerLogbackContextInitializer {
 		if (logbackConfigFile != null) {
 			URL result = null;
 			try {
-				result = new URL(logbackConfigFile);
+				result = new URI(logbackConfigFile).toURL();
 				return result;
-			} catch (MalformedURLException e) {
+			} catch (MalformedURLException | IllegalArgumentException | URISyntaxException e) {
 				result = Loader.getResource(logbackConfigFile, classLoader);
 				if (result != null) {
 					return result;
