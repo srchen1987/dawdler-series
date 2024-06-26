@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
@@ -135,10 +137,10 @@ public class ClientPlugClassLoader {
 	public void updateLoad(String path) {
 		URLClassLoader oldUrlCL = clientClassLoader;
 		try {
-			URL url = new URL("file:" + path + "/");
+			URL url = new URI("file", path+"/", null).toURL();
 			this.clientClassLoader = ClientClassLoader.newInstance(new URL[] { url }, getClass().getClassLoader());
 			loadAspectj();
-		} catch (MalformedURLException e) {
+		} catch (MalformedURLException | URISyntaxException | IllegalArgumentException e) {
 			logger.error("", e);
 		} finally {
 			try {

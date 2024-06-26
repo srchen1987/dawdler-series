@@ -99,7 +99,7 @@ public abstract class AbstractResource extends Resource {
 	}
 
 	@Override
-	public long lastModified() throws IOException, URISyntaxException {
+	public long lastModified() throws IOException {
 		File fileToCheck = getFileForLastModifiedCheck();
 		long lastModified = fileToCheck.lastModified();
 		if (lastModified == 0L && !fileToCheck.exists()) {
@@ -109,12 +109,12 @@ public abstract class AbstractResource extends Resource {
 		return lastModified;
 	}
 
-	protected File getFileForLastModifiedCheck() throws IOException, URISyntaxException {
+	protected File getFileForLastModifiedCheck() throws IOException {
 		return getFile();
 	}
 
 	@Override
-	public Resource createRelative(String relativePath) throws IOException, URISyntaxException {
+	public Resource createRelative(String relativePath) throws IOException {
 		throw new FileNotFoundException("Cannot create a relative resource for " + getDescription());
 	}
 

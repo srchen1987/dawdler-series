@@ -17,8 +17,6 @@
 package com.anywide.dawdler.util.spring.antpath;
 
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -85,10 +83,10 @@ public class DefaultResourceLoader implements ResourceLoader {
 		} else {
 			try {
 				// Try to parse the location as a URL...
-				URI uri = new URI(location);
-				URL url = uri.toURL();
+				URL url = new URL(location);
 				return (ResourceUtils.isFileURL(url) ? new FileUrlResource(url) : new UrlResource(url));
-			} catch (MalformedURLException | URISyntaxException ex) {
+			} catch (MalformedURLException ex) {
+				// No URL -> resolve as resource path.
 				return getResourceByPath(location);
 			}
 		}
