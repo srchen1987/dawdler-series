@@ -266,16 +266,6 @@
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>
-				<artifactId>dawdler-mybatis-core</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
-				<artifactId>dawdler-db-core</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
 				<artifactId>dawdler-client-plug-remote-service</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
@@ -296,7 +286,27 @@
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>
+				<artifactId>dawdler-db-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.dawdler-series</groupId>
+				<artifactId>dawdler-client-plug-db</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.dawdler-series</groupId>
 				<artifactId>dawdler-server-plug-db</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.dawdler-series</groupId>
+				<artifactId>dawdler-mybatis-core</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.github.dawdler-series</groupId>
+				<artifactId>dawdler-client-plug-mybatis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
