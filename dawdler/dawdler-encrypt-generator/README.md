@@ -19,7 +19,7 @@ mvn install
 安装后, 可以通过命令行运行dawdler-encrypt-generator生成密钥与加密内容.
 
 ```shell
-java -jar dawdler-encrypt-generator-17.4-jdk17-RELEASES.jar
+java -jar dawdler-encrypt-generator-1.0.2-jdk17-RELEASES.jar
 ```
 
 运行后会生成加密用的密钥并存储在dawlder.password文件中.
@@ -57,7 +57,7 @@ mv /home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/d
 设置完成环境变量之后加密内容.
 
 ```shell
-java -jar dawdler-encrypt-generator-17.4-jdk17-RELEASES.jar 123456
+java -jar dawdler-encrypt-generator-1.0.2-jdk17-RELEASES.jar 123456
 #123456为原始密码
 ```
 

@@ -1,6 +1,6 @@
 # dawdler-series
 
-![version](https://img.shields.io/badge/dawdler--series-0.17.1--jdk17--RELEASES-brightgreen)&nbsp;
+![version](https://img.shields.io/badge/dawdler--series-1.0.2--jdk17--RELEASES-brightgreen)&nbsp;
 [![License](https://img.shields.io/badge/license-apache2.0-green)](LICENSE)&nbsp;
 ![jdk](https://img.shields.io/badge/jdk-17%2B-green)
 
@@ -24,7 +24,7 @@ mvc框架: 与spring mvc几乎一致.
 
 验证框架: 前后台通用表达式支持后台生成前端表达式,灵活扩展.
 
-RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服务动态注册,心跳探测,断网重连,优雅关机,自定义序列化协议,rpc请求负载均衡,容器级生命周期监听器、过滤器、服务创建监听器,服务权限管理(支持全局用户、特定模块用户,可控制调用者调用指定服务),jndi数据源,高性能编译型aop实现,多服务部署(公用一个dawdler服务器).
+RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服务动态注册,心跳探测,断网重连,优雅关机,自定义序列化协议,rpc请求负载均衡,容器级生命周期监听器、过滤器、服务创建监听器,服务权限管理(支持全局用户、特定模块用户,可控制调用者调用指定服务),高性能编译型aop实现,多服务部署(公用一个dawdler服务器).
 
 事务框架: 与spring transaction一致并支持读写分离.
 
@@ -64,9 +64,9 @@ RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服�
 
 4. dawdler启动速度快,运行效率高,依赖三方jar包少,体积小.
 
-5. 高效的编译型aop实现(spring是通过cglib实现).
+5. 高效的编译型aop实现.
 
-6. 功能齐全,学习成本低,几乎兼容springmvc与事务管理方式,无须使用spring也能使用同样的springmvc与事务的功能,同时提供各种常用组件的能力,请参考dawdler模块.
+6. 功能齐全,学习成本低,几乎兼容spring mvc与事务管理方式,无须使用spring也能使用同样的spring mvc与事务的功能,同时提供各种常用组件的能力,请参考dawdler模块.
 
 7. 动态加载类Filter实现网关提升性能(减少一次网关到聚合服务的调用),非常适合对性能要求高的互联网应用.
 
@@ -226,7 +226,7 @@ dawdler需要三方组件的支持,如下:
 | tomcat-10+ | x | web服务时需要 |
 | redis5x \| 6x | x | 缓存服务时需要 |
 | mysql5x \| 8x | x | 数据库服务时需要 |
-| elastic-seach 7x | x | es服务时需要 |
+| elastic-search 7x | x | es服务时需要 |
 | rabbitmq 3.8x | x | 消息服务时需要 |
 | consul 1.10.x | x | 统一配置中心或注册中心时需要 |
 
@@ -248,7 +248,7 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
 
 ##### 2.3 服务提供者
 
-用于提供service定义接口的具体实现,部署在dawdler的deplays目录下运行.
+用于提供service定义接口的具体实现,部署在dawdler的deploys目录下运行.
 
 涉及数据库调用的也部署在这层,如mybatis的Mapper.直接注入到ServiceImpl即可.
 
