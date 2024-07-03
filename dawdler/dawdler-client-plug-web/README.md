@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-webmvc模块,使用上基本与springmvc一致.提供远程加载组件的客户端,远程加载组件通知器,web监听器,web拦截器,aop实现.
+web mvc模块,使用上基本与spring mvc一致.提供远程加载组件的客户端,远程加载组件通知器,web监听器,web拦截器,aop实现.
 
 ### 1. pom中引入依赖
 
@@ -11,7 +11,7 @@ webmvc模块,使用上基本与springmvc一致.提供远程加载组件的客户
 <artifactId>dawdler-client-plug-web</artifactId>
 ```
 
-### 2. webmvc框架使用方法
+### 2. web mvc框架使用方法
 
 #### 2.1 创建Controller
 
@@ -197,7 +197,7 @@ public class OrderController {
 
 ### 5. HandlerInterceptor 拦截器
 
-拦截器的作用与springmvc的一样,实现接口HandlerInterceptor,如果有多个拦截器,支持@Order注解进行升序排序,拦截请求api之前,之后,渲染模板之后的方法.
+拦截器的作用与spring mvc的一样,实现接口HandlerInterceptor,如果有多个拦截器,支持@Order注解进行升序排序,拦截请求api之前,之后,渲染模板之后的方法.
 
 示例：
 

@@ -57,17 +57,11 @@ RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服�
 ### dawdler之美
 
 1. 支持模块化部署公用一个jvm,理解成多个服务可以部署在一个容器中,启动一个jvm即可.
-
 2. 无需在客户端(消费者)定义服务端(服务器提供者)提供相同的接口定义,比如操作用户的service,UserService 这个接口客户端与服务器端需要存放两份,一般rpc框架或ejb3都用打jar包的方式来解决,在dawdler中完美的解决了此问题,dawdler的客户端(web端,服务调用者)没有代码,调用时无需打包(如今有了maven,可以无须将bean和api通过这种方式加载).
-
 3. controller 调试模式,不需要重启tomcat,dawdler容器,随时调试api接口(只限于web端,这种实现方式与tomcat热加载完全不同,tomcat的相当于重新启动了,而dawdler是直接通过类加载器热更新类的方式实现).
-
 4. dawdler启动速度快,运行效率高,依赖三方jar包少,体积小.
-
 5. 高效的编译型aop实现(spring是通过cglib实现).
-
-6. 功能齐全,学习成本低,几乎兼容springmvc与事务管理方式,无须使用spring也能使用同样的springmvc与事务的功能,同时提供各种常用组件的能力,请参考dawdler模块.
-
+6. 功能齐全,学习成本低,几乎兼容spring mvc与事务管理方式,无须使用spring也能使用同样的spring mvc与事务的功能,同时提供各种常用组件的能力,请参考dawdler模块.
 7. 动态加载类Filter实现网关提升性能(减少一次网关到聚合服务的调用),非常适合对性能要求高的互联网应用.
 
 ### dawdler模块介绍(具体文档可以点击标题连接进入子模块查看详细说明)
@@ -102,7 +96,7 @@ dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现�
 
 #### 8. [dawdler-client-plug-web](dawdler/dawdler-client-plug-web/README.md)
 
-客户端插件,webmvc,远程加载组件的客户端,远程加载组件的通知器,web监听器,web拦截器等.
+客户端插件,web mvc,远程加载组件的客户端,远程加载组件的通知器,web监听器,web拦截器等.
 
 #### 9. [dawdler-client-plug-session](dawdler/dawdler-client-plug-session/README.md)
 
@@ -195,12 +189,10 @@ service模块的支持,包含客户端,服务器端,service核心模块.
 ### 安装教程
 
 1. 下载[dawdler-runtime-jdk21](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/dawdler-runtime-jdk21.zip)
-
 2. 启动注册中心,zookeeper执行 `sh zkServer.sh start`  启动zookeeper或启动consul.
+3. 进入dawdler的bin目录,通过 `sh dawdler.sh run` 启动(win环境 `dawdler.bat` linux或mac环境 `sh dawdler.sh`).
 
-3. 进入dawdler的bin目录,通过 `sh dawdler.sh run` 启动(win环境`dawdler.bat` linux或mac环境`sh dawdler.sh`).
-
-    运行`sh dawdler.sh`会有以下输出:
+   运行 `sh dawdler.sh`会有以下输出:
 
 ```shell
 commands:
@@ -219,16 +211,16 @@ stopnow           Stop dawdler immediately 立刻停止dawdler,如果客户端�
 
 dawdler需要三方组件的支持,如下:
 
-| 软件 | 是否必须 | 备注 |
-| :-: | :-: | :-: |  
-| jdk-17 | √ | 建议使用openjdk17 |
-| apache-zookeeper-3.6+ | x | 注册中心时需要 |
-| tomcat-10+ | x | web服务时需要 |
-| redis5x \| 6x | x | 缓存服务时需要 |
-| mysql5x \| 8x | x | 数据库服务时需要 |
-| elastic-seach 7x | x | es服务时需要 |
-| rabbitmq 3.8x | x | 消息服务时需要 |
-| consul 1.10.x | x | 统一配置中心或注册中心时需要 |
+|         软件         | 是否必须 |             备注             |
+| :-------------------: | :------: | :--------------------------: |
+|        jdk-17        |    √    |      建议使用openjdk17      |
+| apache-zookeeper-3.6+ |    x    |        注册中心时需要        |
+|      tomcat-10+      |    x    |        web服务时需要        |
+|     redis5x\| 6x     |    x    |        缓存服务时需要        |
+|     mysql5x\| 8x     |    x    |       数据库服务时需要       |
+|  elastic-search 7x  |    x    |         es服务时需要         |
+|     rabbitmq 3.8x     |    x    |        消息服务时需要        |
+|     consul 1.10.x     |    x    | 统一配置中心或注册中心时需要 |
 
 #### 2. 项目结构说明(建议采用此规范定义项目结构)
 
@@ -248,7 +240,7 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
 
 ##### 2.3 服务提供者
 
-用于提供service定义接口的具体实现,部署在dawdler的deplays目录下运行.
+用于提供service定义接口的具体实现,部署在dawdler的deploys目录下运行.
 
 涉及数据库调用的也部署在这层,如mybatis的Mapper.直接注入到ServiceImpl即可.
 
