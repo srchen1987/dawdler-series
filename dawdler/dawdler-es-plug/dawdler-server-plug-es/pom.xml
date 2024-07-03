@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler-es-plug</artifactId>
-		<version>1.8.4-jdk1.8-RELEASES</version>
+		<version>1.0.2-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug-es</artifactId>
 	<name>dawdler-server-plug-es</name>
