@@ -128,9 +128,6 @@ public class ClientClassLoader extends URLClassLoader {
 		if (useAop && AspectHolder.aj != null) {
 			try {
 				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, codeBytes, this, null);
-				FileOutputStream fileOut = new FileOutputStream("/home/srchen/logs/" + name + ".class");
-				fileOut.write(codeBytes);
-				fileOut.close();
 			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
 				logger.error("", e);
