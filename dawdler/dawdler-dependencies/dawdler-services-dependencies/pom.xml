@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>1.0.4-jdk21-RELEASES</version>
+		<version>1.0.6-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<name>dawdler-services-dependencies</name>
