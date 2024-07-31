@@ -1,20 +1,4 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-package com.anywide.dawdler.clientplug.load;
+package com.anywide.dawdler.clientplug.load.resource;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -26,27 +10,32 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.anywide.dawdler.client.ConnectionPool;
 import com.anywide.dawdler.client.conf.ClientConfigParser;
+import com.anywide.dawdler.clientplug.load.LoadCore;
 import com.anywide.dawdler.clientplug.web.classloader.ClientPlugClassLoader;
+import com.anywide.dawdler.core.annotation.Order;
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
+import com.anywide.dawdler.core.order.OrderData;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 import com.anywide.dawdler.util.XmlTool;
 
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-
 /**
  * @author jackson.song
  * @version V1.0
- * 加载模版类的监听器
+ * 远程加载初始化与销毁 代替LoadListener
  */
-public class LoadListener implements ServletContextListener {
-	private static final Logger logger = LoggerFactory.getLogger(LoadListener.class);
+@Order(OrderData.LOWEST_PRECEDENCE)
+public class LoadLifeCycle implements ComponentLifeCycle {
+	private static final Logger logger = LoggerFactory.getLogger(LoadLifeCycle.class);
 	private long sleep = 600000;
+	private static final int TRY_TIME=16;
 	private final Map<LoadCore, Thread> threads = new ConcurrentHashMap<>();
 	private ClientPlugClassLoader classLoader;
 
-	public void contextDestroyed(ServletContextEvent arg0) {
+	@Override
+	public void afterDestroy() throws Throwable {
 		for (Iterator<Entry<LoadCore, Thread>> it = threads.entrySet().iterator(); it.hasNext();) {
 			Entry<LoadCore, Thread> entry = it.next();
 			entry.getKey().stop();
@@ -59,7 +48,8 @@ public class LoadListener implements ServletContextListener {
 		}
 	}
 
-	public void contextInitialized(ServletContextEvent arg0) {
+	@Override
+	public void prepareInit() throws Throwable {
 		XmlObject xmlo = ClientConfigParser.getXmlObject();
 		classLoader = ClientPlugClassLoader.newInstance(DawdlerTool.getCurrentPath());
 		try {
@@ -73,6 +63,10 @@ public class LoadListener implements ServletContextListener {
 
 				String channelGroupId = XmlTool.getElementAttribute(attributes, "channel-group-id");
 				LoadCore loadCore = new LoadCore(host, sleep, channelGroupId, classLoader);
+				int tryCount = 0;
+				while (!ConnectionPool.getConnectionPool(channelGroupId).hasConnection() && tryCount++ < TRY_TIME) {
+					Thread.sleep(200);
+				}
 				loadCore.toCheck();
 				String mode = XmlTool.getElementAttribute(attributes, "mode");
 				boolean run = mode != null && (mode.trim().equals("run"));

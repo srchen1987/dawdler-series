@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>1.0.6-jdk1.8-RELEASES</version>
+		<version>1.0.7-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-rabbitmq-plug</artifactId>
 	<name>dawdler-rabbitmq-plug</name>

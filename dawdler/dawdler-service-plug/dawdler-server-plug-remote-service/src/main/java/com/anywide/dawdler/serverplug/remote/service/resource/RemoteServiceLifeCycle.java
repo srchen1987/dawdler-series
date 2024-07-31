@@ -33,7 +33,7 @@ import com.anywide.dawdler.server.listener.DawdlerServiceListener;
  * 服务器端初始化与销毁
  */
 @Order(1)
-public class LocalServiceLifeCycle implements ComponentLifeCycle {
+public class RemoteServiceLifeCycle implements ComponentLifeCycle {
 
 	@Override
 	public void init() throws Throwable {

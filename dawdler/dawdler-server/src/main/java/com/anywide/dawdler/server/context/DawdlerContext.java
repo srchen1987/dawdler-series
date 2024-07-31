@@ -82,9 +82,9 @@ public class DawdlerContext extends ServiceContext {
 		String configPath;
 		String activeProfile = System.getProperty("dawdler.profiles.active");
 		String prefix = "services-conf";
-		String subfix = ".xml";
-		configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		InputStream xmlInput = DawdlerTool.getResourceFromClassPath(prefix, subfix);
+		String suffix = ".xml";
+		configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + suffix;
+		InputStream xmlInput = DawdlerTool.getResourceFromClassPath(prefix, suffix);
 		if (xmlInput == null) {
 			throw new IOException("not found " + configPath + " in classPath!");
 		}

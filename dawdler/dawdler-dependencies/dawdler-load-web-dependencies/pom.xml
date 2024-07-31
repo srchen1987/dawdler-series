@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>1.0.6-jdk1.8-RELEASES</version>
+		<version>1.0.7-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-load-web-dependencies</artifactId>
 	<name>dawdler-load-web-dependencies</name>
@@ -60,7 +60,7 @@
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>
-				<artifactId>dawdler-server-plug-local-service</artifactId>
+				<artifactId>dawdler-remote-service-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
@@ -71,7 +71,7 @@
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>
-				<artifactId>dawdler-server-plug-remote-service</artifactId>
+				<artifactId>dawdler-local-service-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
 					<exclusion>
