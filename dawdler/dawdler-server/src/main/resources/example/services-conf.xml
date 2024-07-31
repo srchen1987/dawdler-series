@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://github.com/srchen1987/dawdler-series https://cdn.jsdelivr.net/gh/srchen1987/dawdler-series-xsd@main/services-conf.xsd">
 
-	<remote-load package="${classpath}/com/dawdler/user/load/load-config.xml"></remote-load><!--
+	<remote-load package="com/dawdler/user/load/load-config.xml"></remote-load><!--
 	远端加载类模版的配置文件-->
 	<scanner>
 		<loads>
