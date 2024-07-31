@@ -43,7 +43,7 @@ import com.ecwid.consul.v1.health.model.Check.CheckStatus;
  * @version V1.0
  *          consul注册中心初始化与销毁
  */
-@Order(com.anywide.dawdler.core.order.Order.LOWEST_PRECEDENCE)
+@Order(com.anywide.dawdler.core.order.Order.LOWEST_PRECEDENCE-1)
 public class ConsulLifeCycle implements ComponentLifeCycle {
 	private ConsulDiscoveryCenter consulDiscoveryCenter = null;
 	private ExecutorService executor = null;
