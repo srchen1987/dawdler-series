@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler-db-plug</artifactId>
-		<version>1.0.6-jdk21-RELEASES</version>
+		<version>1.0.7-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-db</artifactId>
 	<name>dawdler-client-plug-db</name>
@@ -14,10 +14,6 @@
 		<dependency>
 			<groupId>io.github.dawdler-series</groupId>
 			<artifactId>dawdler-db-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
-			<artifactId>dawdler-service-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.github.dawdler-series</groupId>

@@ -27,8 +27,8 @@
 dawdler提供远程加载组件的服务,在项目中的resources下的services-conf.xml中有remote-load节点,用于指定配置文件.
 
 ```xml
-<!--${classpath}是当前项目的class节点-->
-<remote-load package="${classpath}/load-config.xml"></remote-load>
+<!--是当前项目的class节点-->
+<remote-load package="load-config.xml"></remote-load>
 ```
 
 load-config.xml文件是用来配置本服务中哪些包是可以被远程加载的,支持的组件有controller,listener,interceptor.

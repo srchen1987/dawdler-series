@@ -9,7 +9,6 @@ module dawdler.client.plug.db {
 	requires java.naming;
 	requires org.slf4j;
 	requires dawdler.db.core;
-	requires dawdler.service.core;
 	requires dawdler.client.plug.local.service;
 	requires dawdler.client.plug.web;
 
