@@ -15,24 +15,43 @@ jedis实现redis的插件,支持单机模式与哨兵模式.
 
 ```properties
 #######################
-masterName=masterName #哨兵模式下的masterName (注意：哨兵与单机只能用一种,用单机就不能配置此项)
-sentinels=192.168.0.2:26379,192.168.0.3:26379,192.168.0.4:26379 #哨兵列表(注意：哨兵与单机只能用一种,用单机就不能配置此项)
+#哨兵模式下的masterName (注意：哨兵与单机只能用一种,用单机就不能配置此项)
+masterName=masterName
+#哨兵列表(注意：哨兵与单机只能用一种,用单机就不能配置此项)
+sentinels=192.168.0.2:26379,192.168.0.3:26379,192.168.0.4:26379
+#sentinel用户名
+sentinelUser=sentinelUser
+#sentinel密码
+sentinelPassword=sentinelPassword
 #######################
-addr=127.0.0.1 #单机ip
-port=6379 #单机端口
-######################
+#单机ip
+host=127.0.0.1
+#单机端口
+port=6379
+#######################
 
-userName=redis_user #redis6之后支持设置用户名,如果不需要注释掉此项
-auth=password #密码
-pool.maxTotal=20 #最大连接数
-pool.minIdle=2 #最小空闲数
-pool.maxIdle=8 #最大空闲数
-pool.maxWaitMillis=10000 #最大等待时长(单位毫秒)
-pool.testOnBorrow=false #获取连接时是否验证连接有效 默认为false
-pool.testOnCreate=false #创建连接时是否验证连接有效 默认为false
-pool.testOnReturn=false #反还连接时是否验证连接有效 默认为false
-timeout=10000 #超时时间(单位毫秒)
-database=0 #使用指定数据槽
+#redis6之后支持设置用户名,如果不需要注释掉此项
+user=redis_user
+#密码
+password=password
+#最大连接数
+pool.maxTotal=20
+#最小空闲数
+pool.minIdle=2
+#最大空闲数
+pool.maxIdle=8
+#最大等待时长(单位毫秒)
+pool.maxWaitMillis=10000
+#获取连接时是否验证连接有效 默认为false
+pool.testOnBorrow=false
+#创建连接时是否验证连接有效 默认为false
+pool.testOnCreate=false
+#反还连接时是否验证连接有效 默认为false
+pool.testOnReturn=false
+#超时时间(单位毫秒)
+timeout=10000
+#使用指定数据槽
+database=0
 ```
 
 ### 3. JedisInjector注解

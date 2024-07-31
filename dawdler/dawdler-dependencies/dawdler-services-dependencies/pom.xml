@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>1.0.6-jdk1.8-RELEASES</version>
+		<version>1.0.7-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<name>dawdler-services-dependencies</name>
@@ -76,34 +76,16 @@
 				<groupId>io.github.dawdler-series</groupId>
 				<artifactId>dawdler-server-plug-remote-service</artifactId>
 				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>
 				<artifactId>dawdler-server-plug-local-service</artifactId>
 				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>
 				<artifactId>dawdler-server-plug-db</artifactId>
 				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>
@@ -114,12 +96,6 @@
 				<groupId>io.github.dawdler-series</groupId>
 				<artifactId>dawdler-server-plug-dao</artifactId>
 				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>io.github.dawdler-series</groupId>

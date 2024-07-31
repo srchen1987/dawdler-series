@@ -49,10 +49,10 @@ public class WebConfigParser {
 		String fileName;
 		String activeProfile = System.getProperty("dawdler.profiles.active");
 		String prefix = "web-conf";
-		String subfix = ".xml";
+		String suffix = ".xml";
 		InputStream xsdInput = WebConfigParser.class.getResourceAsStream("/web-conf.xsd");
-		fileName = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
-		InputStream input = DawdlerTool.getResourceFromClassPath(prefix, subfix);
+		fileName = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + suffix;
+		InputStream input = DawdlerTool.getResourceFromClassPath(prefix, suffix);
 		if (input == null) {
 			logger.error("not found " + fileName);
 		} else {
