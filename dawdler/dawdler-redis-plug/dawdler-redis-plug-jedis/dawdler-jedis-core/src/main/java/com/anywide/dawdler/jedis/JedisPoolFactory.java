@@ -36,7 +36,7 @@ import redis.clients.jedis.util.Pool;
 /**
  * @author jackson.song
  * @version V1.0
- * jedispool jedis 连接池工厂 支持多个池
+ *          jedispool jedis 连接池工厂 支持多个池
  */
 public final class JedisPoolFactory {
 	private static final Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
@@ -46,8 +46,12 @@ public final class JedisPoolFactory {
 	private static Pool<Jedis> createJedisPool(String fileName) throws Exception {
 		Pool<Jedis> jedisPool = null;
 		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter(fileName);
-		String auth = ps.getProperty("auth");
-		String userName = ps.getProperty("userName");
+		String user = ps.getProperty("user");
+		String password = ps.getProperty("password");
+		String clientName = ps.getProperty("clientName");
+		String sentinelUser = ps.getProperty("sentinelUser");
+		String sentinelPassword = ps.getProperty("sentinelPassword");
+		String sentinelClientName = ps.getProperty("sentinelClientName");
 		int database = PropertiesUtil.getIfNullReturnDefaultValueInt("database", 0, ps);
 
 		int minIdle = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.minIdle", JedisPoolConfig.DEFAULT_MIN_IDLE,
@@ -65,7 +69,6 @@ public final class JedisPoolFactory {
 				JedisPoolConfig.DEFAULT_TEST_ON_CREATE, ps);
 		boolean testOnReturn = PropertiesUtil.getIfNullReturnDefaultValueBoolean("pool.testOnReturn",
 				JedisPoolConfig.DEFAULT_TEST_ON_RETURN, ps);
-
 		JedisPoolConfig poolConfig = new JedisPoolConfig();
 		poolConfig.setMaxTotal(maxTotal);
 		poolConfig.setMaxIdle(maxIdle);
@@ -79,23 +82,20 @@ public final class JedisPoolFactory {
 		if (masterName != null && sentinels != null) {
 			String[] sentinelsArray = sentinels.split(",");
 			Set<String> sentinelsSet = Arrays.stream(sentinelsArray).collect(Collectors.toSet());
-			if (userName != null) {
-				jedisPool = new JedisSentinelPool(masterName, sentinelsSet, poolConfig, timeout, userName, auth,
-						database);
-			} else {
-				jedisPool = new JedisSentinelPool(masterName, sentinelsSet, poolConfig, timeout, auth, database);
-			}
+			jedisPool = new JedisSentinelPool(masterName, sentinelsSet,
+					poolConfig,
+					timeout, timeout, 0,
+					user, password, database, clientName,
+					timeout, timeout, sentinelUser,
+					sentinelPassword, sentinelClientName);
 		} else {
-			String addr = ps.getProperty("addr");
+			String host = ps.getProperty("host");
 			int port = PropertiesUtil.getIfNullReturnDefaultValueInt("port", 5672, ps);
-			if (userName != null) {
-				jedisPool = new JedisPool(poolConfig, addr, port, timeout, userName, auth, database);
-			} else {
-				jedisPool = new JedisPool(poolConfig, addr, port, timeout, auth, database);
-			}
+			jedisPool = new JedisPool(poolConfig, host, port,
+					timeout, timeout, user, password,
+					database, clientName);
 		}
 		return jedisPool;
-
 	}
 
 	public static Pool<Jedis> getJedisPool(String fileName) throws Exception {

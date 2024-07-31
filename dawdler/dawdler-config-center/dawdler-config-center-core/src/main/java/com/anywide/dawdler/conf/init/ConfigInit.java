@@ -59,8 +59,8 @@ public class ConfigInit {
 	public void init() {
 		initConfigClients();
 		String prefix = "dawdler-config";
-		String subfix = ".yml";
-		InputStream input = DawdlerTool.getResourceFromClassPath(prefix, subfix);
+		String suffix = ".yml";
+		InputStream input = DawdlerTool.getResourceFromClassPath(prefix, suffix);
 		YAMLMapper YAMLMapper = YAMLMapperFactory.getYAMLMapper();
 		Map<String, Map<String, Object>> data = null;
 		if (input == null) {

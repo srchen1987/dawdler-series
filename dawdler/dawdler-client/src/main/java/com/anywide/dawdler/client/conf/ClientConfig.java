@@ -19,8 +19,6 @@ package com.anywide.dawdler.client.conf;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.anywide.dawdler.util.DawdlerTool;
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -41,9 +39,6 @@ public class ClientConfig {
 	}
 
 	public String getCertificatePath() {
-		if (certificatePath != null) {
-			certificatePath = certificatePath.replace("${CLASSPATH}", DawdlerTool.getCurrentPath());
-		}
 		return certificatePath;
 	}
 

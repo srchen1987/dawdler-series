@@ -1,6 +1,5 @@
-import com.anywide.dawdler.clientplug.load.initializer.LoadInitializer;
-
-import jakarta.servlet.ServletContainerInitializer;
+import com.anywide.dawdler.clientplug.load.resource.LoadLifeCycle;
+import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
 
 module dawdler.client.plug.load {
 	requires java.base;
@@ -18,8 +17,8 @@ module dawdler.client.plug.load {
 
 	exports com.anywide.dawdler.clientplug.load;
 
-	uses ServletContainerInitializer;
+	uses ComponentLifeCycle;
 
-	provides ServletContainerInitializer with LoadInitializer;
+	provides ComponentLifeCycle with LoadLifeCycle;
 
 }
