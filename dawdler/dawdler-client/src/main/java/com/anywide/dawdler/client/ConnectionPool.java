@@ -124,6 +124,10 @@ public class ConnectionPool {
 		return connections;
 	}
 
+	public boolean hasConnection(){
+		return !connections.isEmpty();
+	}
+
 	public void close() {
 		connections.forEach(con -> {
 			con.shutdownAll();

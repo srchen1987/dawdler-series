@@ -10,7 +10,6 @@ module dawdler.server.plug.db {
 	requires java.naming;
 	requires org.slf4j;
 	requires dawdler.db.core;
-	requires dawdler.service.core;
 
 	provides ComponentLifeCycle with TransactionLifeCycle;
 

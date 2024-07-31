@@ -25,7 +25,7 @@
 
 | 配置文件 | 所属模块 | 所在位置 | 支持统一配置中心 | 支持加密 | 备注 |
 | :-: | :-: | :-: | :-: | :-: | :-: |
-| client-conf.xml | dawdler-client | web端{classPath}/client/ | 否 | 否 | web端请求配置 |
+| client-conf.xml | dawdler-client | web端{classPath}/ | 否 | 否 | web端请求配置 |
 | dawdler-config.yml | dawdler-config-center | web端与服务端{classPath}/ | 否 |  否 | 统一配置中心配置 |
 | services-conf.xml | dawdler-server | 服务端{classPath}/ | 否 |  否 | 服务相关配置 |
 | zookeeper.properties | dawdler-discovery-center-zookeeper-core | web端与服务端{classPath}/ | 是 |  是 | 基于zk实现注册中心配置 |

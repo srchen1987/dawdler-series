@@ -18,7 +18,7 @@
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <certificatePath>${CLASSPATH}key/dawdler.cer</certificatePath><!-- 身份验证 公钥路径 -->
+    <certificatePath>key/dawdler.cer</certificatePath><!-- 身份验证 公钥路径 -->
     <server-channel-group channel-group-id="user"
                             connection-num="2"
                           session-num="4" serializer="2"

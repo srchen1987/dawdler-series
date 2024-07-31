@@ -40,7 +40,6 @@ import com.anywide.dawdler.core.shutdown.ContainerShutdownProvider;
 
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
-import jakarta.servlet.ServletException;
 
 /**
  * @author jackson.song
@@ -81,17 +80,13 @@ public class WebListener implements ServletContextListener {
 		try {
 			for (int i = 0; i < lifeCycleList.size(); i++) {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
-				try {
-					lifeCycle.getData().prepareInit();
-				} catch (Throwable e) {
-					throw new ServletException(e);
-				}
+				lifeCycle.getData().prepareInit();
 			}
-			if (webConfig == null) {
-				return;
-			}
-			CustomComponentOperator.scanAndInject(classLoader, customComponentInjectorList,
+			if (webConfig != null) {
+				CustomComponentOperator.scanAndInject(classLoader, customComponentInjectorList,
 					webConfig.getPackagePaths());
+			}
+			
 			for (int i = 0; i < lifeCycleList.size(); i++) {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 				lifeCycle.getData().init();

@@ -49,9 +49,9 @@ public class DawdlerTool {
 		return Thread.currentThread().getContextClassLoader().getResource("");
 	}
 
-	public static InputStream getResourceFromClassPath(String prefix, String subfix) {
+	public static InputStream getResourceFromClassPath(String prefix, String suffix) {
 		String activeProfile = System.getProperty("dawdler.profiles.active");
-		String configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + subfix;
+		String configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + suffix;
 		InputStream input = null;
 		if (startClass != null) {
 			if (!configPath.startsWith("/")) {
@@ -63,7 +63,7 @@ public class DawdlerTool {
 					if (!prefix.startsWith("/")) {
 						prefix = "/" + prefix;
 					}
-					input = startClass.getResourceAsStream(prefix.concat(subfix));
+					input = startClass.getResourceAsStream(prefix.concat(suffix));
 				} catch (Exception e) {
 				}
 			}
@@ -71,7 +71,7 @@ public class DawdlerTool {
 			input = Thread.currentThread().getContextClassLoader().getResourceAsStream(configPath);
 			if (input == null) {
 				try {
-					input = Thread.currentThread().getContextClassLoader().getResourceAsStream(prefix.concat(subfix));
+					input = Thread.currentThread().getContextClassLoader().getResourceAsStream(prefix.concat(suffix));
 				} catch (Exception e) {
 				}
 			}
