@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>io.github.dawdler-series</groupId>
 		<artifactId>dawdler-discovery-center</artifactId>
-		<version>1.0.7-jdk17-RELEASES</version>
+		<version>1.0.8-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-discovery-center-server-plug</artifactId>
 	<name>dawdler-discovery-center-server-plug</name>
