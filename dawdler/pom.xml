@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.dawdler-series</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>1.0.7-jdk21-RELEASES</version>
+	<version>1.0.8-jdk21-RELEASES</version>
 	<name>dawdler</name>
 	<description>Micro service solutions</description>
 	<url>https://github.com/srchen1987/dawdler-series</url>
@@ -39,7 +39,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.source>21</maven.compiler.source>
-		<dawdler.build.version>1.0.7-jdk21-RELEASES</dawdler.build.version>
+		<dawdler.build.version>1.0.8-jdk21-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.6</slf4j.version>
 		<ch.qos.logback.version>1.4.14</ch.qos.logback.version>
 		<org.ow2.asm.version>9.7</org.ow2.asm.version>
