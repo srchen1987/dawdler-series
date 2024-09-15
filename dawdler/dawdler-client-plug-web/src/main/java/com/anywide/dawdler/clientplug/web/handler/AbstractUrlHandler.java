@@ -37,7 +37,7 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * urlHendler父类
+ * urlHandler父类
  */
 public abstract class AbstractUrlHandler {
 	private final List<OrderData<HandlerInterceptor>> handlerInterceptors = InterceptorProvider

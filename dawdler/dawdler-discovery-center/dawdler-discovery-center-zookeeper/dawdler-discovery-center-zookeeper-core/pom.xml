@@ -3,16 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.github.dawdler-series</groupId>
+		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-discovery-center-zookeeper</artifactId>
-		<version>1.0.8-jdk17-RELEASES</version>
+		<version>0.0.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-discovery-center-zookeeper-core</artifactId>
 	<name>dawdler-discovery-center-zookeeper-core</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-discovery-center-core</artifactId>
 		</dependency>
 		<dependency>
@@ -32,7 +32,7 @@
 			<artifactId>zookeeper</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
 	</dependencies>

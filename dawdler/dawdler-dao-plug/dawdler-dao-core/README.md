@@ -7,7 +7,7 @@ dao核心模块,通过反射实现的一套简易操作数据库的一套组件.
 ### 1. pom中引入依赖
 
 ```xml
-<groupId>io.github.dawdler-series</groupId>
+<groupId>club.dawdler</groupId>
 <artifactId>dawdler-dao-core</artifactId>
 ```
 

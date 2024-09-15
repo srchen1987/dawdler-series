@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.github.dawdler-series</groupId>
+		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>1.0.8-jdk17-RELEASES</version>
+		<version>0.0.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-session</artifactId>
 	<name>dawdler-client-plug-session</name>
@@ -21,15 +21,15 @@
 			<artifactId>caffeine</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-serialization</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-jedis-core</artifactId>
 		</dependency>
 	</dependencies>

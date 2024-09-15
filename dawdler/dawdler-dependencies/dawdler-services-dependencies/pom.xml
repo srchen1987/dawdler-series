@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.github.dawdler-series</groupId>
+		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>1.0.8-jdk17-RELEASES</version>
+		<version>0.0.1-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<name>dawdler-services-dependencies</name>
@@ -13,7 +13,7 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-core</artifactId>
 				<scope>provided</scope>
 				<version>${dawdler.build.version}</version>
@@ -25,7 +25,7 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-util</artifactId>
 				<scope>provided</scope>
 				<version>${dawdler.build.version}</version>
@@ -37,7 +37,7 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server</artifactId>
 				<scope>provided</scope>
 				<version>${dawdler.build.version}</version>
@@ -49,7 +49,7 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-load-bean</artifactId>
 				<version>${dawdler.build.version}</version>
 				<scope>provided</scope>
@@ -61,7 +61,7 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-serialization</artifactId>
 				<version>${dawdler.build.version}</version>
 				<scope>provided</scope>
@@ -73,67 +73,67 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-remote-service</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-local-service</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-db</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-mybatis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-dao</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-discovery-center-zookeeper</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-client-plug-discovery-center-zookeeper</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-discovery-center-zookeeper-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-discovery-center-consul</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-client-plug-discovery-center-consul</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-discovery-center-consul-core</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-config-center-consul</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-config-center-consul-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
@@ -144,37 +144,37 @@
 				</exclusions>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-jedis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-rabbitmq</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-es</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-schedule</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-cache-caffeine</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-cache-jedis</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>io.github.dawdler-series</groupId>
+				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-service-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<scope>provided</scope>
