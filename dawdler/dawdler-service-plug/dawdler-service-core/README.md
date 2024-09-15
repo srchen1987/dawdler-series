@@ -7,7 +7,7 @@ service核心模块.
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>io.github.dawdler-series</groupId>
+ <groupId>club.dawdler</groupId>
  <artifactId>dawdler-service-core</artifactId>
 ```
 
