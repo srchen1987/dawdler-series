@@ -7,7 +7,7 @@ web端事务模块,提供事务管理器,提供与spring基本一致的事务应
 ### 1. pom中引入依赖
 
 ```xml
-<groupId>io.github.dawdler-series</groupId>
+<groupId>club.dawdler</groupId>
 <artifactId>dawdler-client-plug-db</artifactId>
 ```
 

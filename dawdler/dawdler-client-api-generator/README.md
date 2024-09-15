@@ -7,7 +7,7 @@
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>io.github.dawdler-series</groupId>
+ <groupId>club.dawdler</groupId>
  <artifactId>dawdler-client-api-generator</artifactId>
 ```
 
@@ -64,7 +64,7 @@ scanPath配置一定要配置正确,确保路径下有Controller(必须使用@Co
 #### 3.3 生成api文件
 
 ```shell
-java -jar dawdler-client-api-generator-1.0.8-jdk17-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
+java -jar dawdler-client-api-generator-0.0.1-jdk17-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
 ```
 
 运行后会生成demo-api.json(outPath配置的路径).
