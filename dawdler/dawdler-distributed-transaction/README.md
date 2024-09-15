@@ -27,21 +27,21 @@
 ### 1. web端的pom中引入依赖
 
 ```xml
-<groupId>io.github.dawdler-series</groupId>
+<groupId>club.dawdler</groupId>
 <artifactId>dawdler-distributed-transaction-client</artifactId>
 ```
 
 ### 2. dawdler服务端的pom中引入依赖
 
 ```xml
-<groupId>io.github.dawdler-series</groupId>
+<groupId>club.dawdler</groupId>
 <artifactId>dawdler-distributed-transaction-server</artifactId>
 ```
 
 ### 3. web端补偿器模块的pom中引入依赖
 
 ```xml
-<groupId>io.github.dawdler-series</groupId>
+<groupId>club.dawdler</groupId>
 <artifactId>dawdler-distributed-transaction-compensator</artifactId>
 ```
 

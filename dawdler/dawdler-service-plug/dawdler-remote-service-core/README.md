@@ -7,7 +7,7 @@ RemoteService核心模块,用于标注一个被注入的服务是远程服务.
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>io.github.dawdler-series</groupId>
+ <groupId>club.dawdler</groupId>
  <artifactId>dawdler-remote-service-core</artifactId>
 ```
 

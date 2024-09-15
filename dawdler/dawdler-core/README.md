@@ -7,7 +7,7 @@ dawdler-server与dawdler-client公用的核心模块.包含网络,服务发现�
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>io.github.dawdler-series</groupId>
+ <groupId>club.dawdler</groupId>
  <artifactId>dawdler-core</artifactId>
 ```
 

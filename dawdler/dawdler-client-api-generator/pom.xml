@@ -3,16 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.github.dawdler-series</groupId>
+		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>1.0.8-jdk21-RELEASES</version>
+		<version>0.0.1-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-api-generator</artifactId>
 	<name>dawdler-client-api-generator</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-client-plug-web</artifactId>
 			<exclusions>
 				<exclusion>
@@ -27,12 +27,12 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-client-plug-validator</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 			<exclusions>
 				<exclusion>
