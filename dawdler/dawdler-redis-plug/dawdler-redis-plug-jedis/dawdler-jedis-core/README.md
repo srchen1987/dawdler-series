@@ -7,7 +7,7 @@ jedis实现redis的插件,支持单机模式与哨兵模式.
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>io.github.dawdler-series</groupId>
+ <groupId>club.dawdler</groupId>
  <artifactId>dawdler-jedis-core</artifactId>
 ```
 

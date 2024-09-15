@@ -10,7 +10,7 @@ load-web引用的maven依赖.
 <dependencyManagement>
   <dependencies>
    <dependency>
-    <groupId>io.github.dawdler-series</groupId>
+    <groupId>club.dawdler</groupId>
     <artifactId>dawdler-load-web-dependencies</artifactId>
     <version>${dawdler.build.version}</version>
     <type>pom</type>
