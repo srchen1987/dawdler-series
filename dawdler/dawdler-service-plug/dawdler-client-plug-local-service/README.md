@@ -7,7 +7,7 @@ web端本地服务模块.
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>io.github.dawdler-series</groupId>
+ <groupId>club.dawdler</groupId>
  <artifactId>dawdler-client-plug-local-service</artifactId>
 ```
 

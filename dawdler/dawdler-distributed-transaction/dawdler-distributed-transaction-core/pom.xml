@@ -3,28 +3,28 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.github.dawdler-series</groupId>
+		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-distributed-transaction</artifactId>
-		<version>1.0.8-jdk1.8-RELEASES</version>
+		<version>0.0.1-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-distributed-transaction-core</artifactId>
 	<name>dawdler-distributed-transaction-core</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-distributed-transaction-api</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-rabbitmq-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-jedis-core</artifactId>
 		</dependency>
 	</dependencies>
