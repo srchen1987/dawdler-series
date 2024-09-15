@@ -7,7 +7,7 @@ velocity模板的一个插件,目前升到最新版本2.3.(之前经历过1.6,1.
 ### 1. pom中引入依赖
 
 ```xml
- <groupId>io.github.dawdler-series</groupId>
+ <groupId>club.dawdler</groupId>
  <artifactId>dawdler-client-plug-velocity</artifactId>
 ```
 

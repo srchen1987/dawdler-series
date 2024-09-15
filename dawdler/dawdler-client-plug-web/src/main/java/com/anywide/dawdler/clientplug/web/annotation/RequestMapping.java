@@ -66,9 +66,9 @@ public @interface RequestMapping {
 	long uploadPerSizeMax() default 0L;
 
 	/**
-	 * 异常处理者，系统内提供三种处理者json、jsp、
+	 * 异常处理者，系统内提供三种处理者json、jsp、velocity。
 	 */
-	String exceptionHandler() default "";// velocity，会根据ViewType自动选择，如果有需要可以扩展，参考HttpExceptionHolder的register方法，可以在监听器启动时扩展，一般不会考虑扩展所以没采用SPI方式配置
+	String exceptionHandler() default "";//会根据ViewType自动选择，如果有需要可以扩展，参考HttpExceptionHolder的register方法，可以在监听器启动时扩展，一般不会考虑扩展所以没采用SPI方式配置
 
 	enum ViewType {
 		json, jsp, velocity

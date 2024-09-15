@@ -3,9 +3,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>io.github.dawdler-series</groupId>
+		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-service-plug</artifactId>
-		<version>1.0.8-jdk1.8-RELEASES</version>
+		<version>0.0.1-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-remote-service</artifactId>
 	<name>dawdler-client-plug-service</name>
@@ -17,15 +17,15 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-client</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-remote-service-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-load-bean</artifactId>
 		</dependency>
 		<dependency>
@@ -33,11 +33,11 @@
 			<artifactId>commons-fileupload</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>io.github.dawdler-series</groupId>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-client-plug-web</artifactId>
 		</dependency>
 	</dependencies>
