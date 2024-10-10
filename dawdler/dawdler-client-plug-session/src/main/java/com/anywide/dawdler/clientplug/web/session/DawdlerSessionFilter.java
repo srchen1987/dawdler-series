@@ -159,7 +159,7 @@ public class DawdlerSessionFilter implements Filter {
 		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize, defense,
 				ipMaxInactiveInterval, ipMaxSize);
 		Object listener = servletContext
-				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTPSESSION_LISTENER);
+				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTP_SESSION_LISTENER);
 		if (listener instanceof HttpSessionListener httpSessionListener) {
 			abstractDistributedSessionManager.setHttpSessionListener(httpSessionListener);
 		}
@@ -177,10 +177,10 @@ public class DawdlerSessionFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		HttpServletResponse httpReponse = (HttpServletResponse) response;
+		HttpServletResponse httpResponse = (HttpServletResponse) response;
 		try {
-			httpRequest = new HttpServletRequestWrapper(httpRequest, httpReponse);
-			chain.doFilter(httpRequest, httpReponse);
+			httpRequest = new HttpServletRequestWrapper(httpRequest, httpResponse);
+			chain.doFilter(httpRequest, httpResponse);
 		} finally {
 			DawdlerHttpSession session = (DawdlerHttpSession) httpRequest.getSession(false);
 			if (session != null) {
@@ -199,20 +199,20 @@ public class DawdlerSessionFilter implements Filter {
 					Cookie cookie = new Cookie(cookieName, null);
 					cookie.setMaxAge(0);
 					cookie.setPath("/");
-					httpReponse.addCookie(cookie);
+					httpResponse.addCookie(cookie);
 				}
 			}
 		}
 
 	}
 
-	public String getCookieValue(Cookie[] cookies, String cookiename) {
+	public String getCookieValue(Cookie[] cookies, String cookieName) {
 		if (cookies == null) {
 			return null;
 		}
 		try {
 			for (int i = 0; i < cookies.length; i++) {
-				if (cookies[i].getName().equals(cookiename)) {
+				if (cookies[i].getName().equals(cookieName)) {
 					return cookies[i].getValue();
 				}
 			}

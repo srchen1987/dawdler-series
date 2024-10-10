@@ -34,13 +34,16 @@ import com.anywide.dawdler.client.api.generator.data.ResponseData;
 import com.anywide.dawdler.client.api.generator.data.SchemaData;
 import com.anywide.dawdler.client.api.generator.util.AnnotationUtils;
 import com.anywide.dawdler.client.api.generator.util.ClassTypeUtil;
+import com.anywide.dawdler.clientplug.web.annotation.CookieValue;
 import com.anywide.dawdler.clientplug.web.annotation.PathVariable;
+import com.anywide.dawdler.clientplug.web.annotation.RequestAttribute;
 import com.anywide.dawdler.clientplug.web.annotation.RequestBody;
 import com.anywide.dawdler.clientplug.web.annotation.RequestHeader;
 import com.anywide.dawdler.clientplug.web.annotation.RequestMapping;
 import com.anywide.dawdler.clientplug.web.annotation.RequestMapping.RequestMethod;
 import com.anywide.dawdler.clientplug.web.annotation.RequestParam;
 import com.anywide.dawdler.clientplug.web.annotation.ResponseBody;
+import com.anywide.dawdler.clientplug.web.annotation.SessionAttribute;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.thoughtworks.qdox.builder.impl.EvaluatingVisitor;
 import com.thoughtworks.qdox.model.DocletTag;
@@ -153,9 +156,14 @@ public class MethodParser {
 				String in = "query";
 				SchemaData schema = null;
 				boolean required = false;
+				boolean add = true;
 				if (!paramAnnotationList.isEmpty()) {
 					for (JavaAnnotation paramAnnotation : paramAnnotationList) {
 						String annotationName = paramAnnotation.getType().getFullyQualifiedName();
+						if (annotationName.equals(SessionAttribute.class.getName()) || annotationName.equals(RequestAttribute.class.getName()) || annotationName.equals(CookieValue.class.getName())) {
+							add = false;
+							break;
+						}
 						if (annotationName.equals(RequestParam.class.getName())) {
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
 							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
@@ -173,6 +181,9 @@ public class MethodParser {
 							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
 						}
 					}
+				}
+				if(!add){
+					continue;
 				}
 				if (alias == null || alias.trim().equals("")) {
 					alias = javaParameter.getName();

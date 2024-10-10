@@ -46,7 +46,7 @@ import com.anywide.dawdler.util.XmlObject;
 public class LoadCore implements Runnable {
 	private static final Logger logger = LoggerFactory.getLogger(LoadCore.class);
 	private static final Pattern CLASS_PATTERN = Pattern.compile("(.*)\\.class$");
-	private static final String CLASSP_REFIX = ".class";
+	private static final String CLASS_REFIX = ".class";
 	private XmlObject xmlObjectPreCache;
 
 	private final String host;
@@ -127,7 +127,7 @@ public class LoadCore implements Runnable {
 				Element remoteEle = (Element) remoteItem;
 				String checkName = remoteEle.getAttribute("checkname");
 				String className = toClassName(checkName);
-				needLoad.add(className + CLASSP_REFIX);
+				needLoad.add(className + CLASS_REFIX);
 			}
 		}
 
@@ -142,7 +142,7 @@ public class LoadCore implements Runnable {
 				allClass.add(checkName);
 				if (!ele.getAttribute("update").equals(remoteEle.getAttribute("update"))) {
 					remark = true;
-					needLoad.add(className + CLASSP_REFIX);
+					needLoad.add(className + CLASS_REFIX);
 					if (ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null) {
 						this.classLoader.remove(host + "-" + className);
 					}
@@ -174,7 +174,7 @@ public class LoadCore implements Runnable {
 					loadCache.add(checkName);
 					remark = true;
 					String className = toClassName(checkName);
-					needLoad.add(className + CLASSP_REFIX);
+					needLoad.add(className + CLASS_REFIX);
 					if (ClientPlugClassLoader.getRemoteClass((host + "-" + className)) != null) {
 						this.classLoader.remove(host + "-" + className);
 					}

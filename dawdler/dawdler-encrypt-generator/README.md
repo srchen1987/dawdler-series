@@ -19,7 +19,7 @@ mvn install
 安装后, 可以通过命令行运行dawdler-encrypt-generator生成密钥与加密内容.
 
 ```shell
-java -jar dawdler-encrypt-generator-0.0.1-jdk17-RELEASES.jar
+java -jar dawdler-encrypt-generator-0.0.2-jdk17-RELEASES.jar
 ```
 
 运行后会生成加密用的密钥并存储在dawlder.password文件中.
@@ -28,18 +28,18 @@ java -jar dawdler-encrypt-generator-0.0.1-jdk17-RELEASES.jar
 
 generated file:[/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password]
 
-please set DAWDLER_ENCRYP_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password to environment!
+please set DAWDLER_ENCRYPT_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password to environment!
 
 linux中设置环境变量
 
 ```shell
-export DAWDLER_ENCRYP_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password
+export DAWDLER_ENCRYPT_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password
 ```
 
 或者在.bashrc中添加
 
 ```shell
-export DAWDLER_ENCRYP_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password
+export DAWDLER_ENCRYPT_FILE=/home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/dawdler.password
 ```
 
 建议改变dawdler.password文件位置.
@@ -57,7 +57,7 @@ mv /home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/d
 设置完成环境变量之后加密内容.
 
 ```shell
-java -jar dawdler-encrypt-generator-0.0.1-jdk17-RELEASES.jar 123456
+java -jar dawdler-encrypt-generator-0.0.2-jdk17-RELEASES.jar 123456
 #123456为原始密码
 ```
 

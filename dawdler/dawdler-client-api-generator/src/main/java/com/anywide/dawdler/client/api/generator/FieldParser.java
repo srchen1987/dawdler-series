@@ -111,13 +111,13 @@ public class FieldParser {
 							boolean array = false;
 							if (javaTypes != null) {
 								JavaType javaType = javaTypes.get(binaryName);
-								if (javaType != null && javaType instanceof DefaultJavaParameterizedType dt) {
+								if (javaType instanceof DefaultJavaParameterizedType dt) {
 									array = ClassTypeUtil.isArray(dt.getBinaryName());
 									List<JavaType> typeArguments = dt.getActualTypeArguments();
 									genericFullyQualifiedFieldName = dt.getGenericFullyQualifiedName();
-									MethodParameterData fieldparameterData = new MethodParameterData();
-									fieldparameterData.setType(genericFullyQualifiedFieldName);
-									propertiesMap.put(javaField.getName(), fieldparameterData);
+									MethodParameterData fieldParameterData = new MethodParameterData();
+									fieldParameterData.setType(genericFullyQualifiedFieldName);
+									propertiesMap.put(javaField.getName(), fieldParameterData);
 									if (dt.getBinaryName().equals("java.util.Map")) {
 										continue;
 									} else {
@@ -166,13 +166,13 @@ public class FieldParser {
 									schema.setItems(items);
 									propertiesMap.put(javaField.getName(), schema);
 								} else {
-									MethodParameterData fieldparameterData = new MethodParameterData();
-									fieldparameterData.setType(typeData.getType());
-									fieldparameterData.setFormat(typeData.getFormat());
+									MethodParameterData fieldParameterData = new MethodParameterData();
+									fieldParameterData.setType(typeData.getType());
+									fieldParameterData.setFormat(typeData.getFormat());
 									if (comment != null) {
-										fieldparameterData.setDescription(comment);
+										fieldParameterData.setDescription(comment);
 									}
-									propertiesMap.put(javaField.getName(), fieldparameterData);
+									propertiesMap.put(javaField.getName(), fieldParameterData);
 								}
 							} else {
 								if (ClassTypeUtil.isArray(originalFieldTypeName)) {
@@ -194,7 +194,7 @@ public class FieldParser {
 									if (count.getAndIncrement() > 2)
 										return;
 								} else if (originalFieldTypeName.equals(originalFullyQualifiedName)) {
-									counter = new HashMap<String, AtomicInteger>();
+									counter = new HashMap<>();
 									counter.put(originalFullyQualifiedName, new AtomicInteger(1));
 								}
 								if (classStructs.get(originalFieldTypeName) != null) {
