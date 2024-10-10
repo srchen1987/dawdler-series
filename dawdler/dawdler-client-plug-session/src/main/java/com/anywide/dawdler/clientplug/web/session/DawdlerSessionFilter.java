@@ -160,7 +160,7 @@ public class DawdlerSessionFilter implements Filter {
 		abstractDistributedSessionManager = new DistributedCaffeineSessionManager(maxInactiveInterval, maxSize, defense,
 				ipMaxInactiveInterval, ipMaxSize);
 		Object listener = servletContext
-				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTPSESSION_LISTENER);
+				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTP_SESSION_LISTENER);
 		if (listener instanceof HttpSessionListener) {
 			abstractDistributedSessionManager.setHttpSessionListener((HttpSessionListener)listener);
 		}
