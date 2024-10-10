@@ -26,7 +26,7 @@ import com.anywide.dawdler.clientplug.web.session.http.DawdlerHttpSession;
  * 抽象分布式session管理器
  */
 public abstract class AbstractDistributedSessionManager {
-	public static final String DISTRIBUTED_SESSION_HTTPSESSION_LISTENER = "distributed_session_httpsession_listener";
+	public static final String DISTRIBUTED_SESSION_HTTP_SESSION_LISTENER = "DISTRIBUTED_SESSION_HTTP_SESSION_LISTENER";
 	/**
 	 * session监听器 目前只监听 创建session 销毁session
 	 */
