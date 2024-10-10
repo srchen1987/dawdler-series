@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.clientplug.web.classloader;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
@@ -162,7 +161,7 @@ public class ClientPlugClassLoader {
 						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
 							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
 							if (className != null) {
-								String fileName = className.replace(".", File.separator) + ".class";
+								String fileName = className.replace(".", "/") + ".class";
 								try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
 									if (classInput == null) {
 										logger.error(fileName + " not found !");

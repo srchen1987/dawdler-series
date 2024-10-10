@@ -32,14 +32,14 @@ import org.slf4j.LoggerFactory;
 public class ConfigContentDecryptor {
 	private static final Logger logger = LoggerFactory.getLogger(ConfigContentDecryptor.class);
 	private static Pattern pattern = Pattern.compile("ENC\\((.+)\\)");
-	public static final String DAWDLER_ENCRYP_FILE = "DAWDLER_ENCRYP_FILE";
+	public static final String DAWDLER_ENCRYPT_FILE = "DAWDLER_ENCRYPT_FILE";
 	private static AesSecurityPlus aesSecurityPlus = null;
 	private static final String[] SPECIFIC_SYMBOL = { "\\", "$", "(", ")", "*", "+", ".", "[", "]", "?", "^", "{", "}",
 			"|" };
 
 	static {
 		try {
-			String encryptFile = getDawdlerEncrypFilePath();
+			String encryptFile = getDawdlerEncryptFilePath();
 			if (encryptFile != null) {
 				String key;
 				try (InputStream input = new FileInputStream(encryptFile)) {
@@ -82,9 +82,9 @@ public class ConfigContentDecryptor {
 
 	private static void checkAesSecurityPlus(AesSecurityPlus aesSecurityPlus) {
 		if (aesSecurityPlus == null) {
-			String encryptFile = getDawdlerEncrypFilePath();
+			String encryptFile = getDawdlerEncryptFilePath();
 			if (encryptFile == null) {
-				logger.error("not found DAWDLER_ENCRYP_FILE in environment!");
+				logger.error("not found DAWDLER_ENCRYPT_FILE in environment!");
 			}
 			throw new NullPointerException(
 					"aesSecurityPlus is null because DecryptConfigContent initialization failed!");
@@ -93,11 +93,11 @@ public class ConfigContentDecryptor {
 	}
 
 	public static boolean useDecrypt() {
-		return getDawdlerEncrypFilePath() != null;
+		return getDawdlerEncryptFilePath() != null;
 	}
 
-	public static String getDawdlerEncrypFilePath() {
-		return System.getenv(DAWDLER_ENCRYP_FILE);
+	public static String getDawdlerEncryptFilePath() {
+		return System.getenv(DAWDLER_ENCRYPT_FILE);
 	}
 
 }

@@ -42,7 +42,7 @@ public class PropertiesUtil {
 				
 				Map<String, Object> attributes = (Map<String, Object>) method.invoke(null, getProfilesPathOrDefault(fileName));
 				if (attributes == null) {
-					attributes = (Map<String, Object>) method.invoke(null, getProfilesPathOrDefault(fileName));
+					attributes = (Map<String, Object>) method.invoke(null, fileName);
 					if(attributes == null) {
 						throw e;
 					}
@@ -55,6 +55,7 @@ public class PropertiesUtil {
 					}
 				}
 			} catch (ClassNotFoundException ignore) {
+				throw e;
 			}
 		}
 		return ps;
