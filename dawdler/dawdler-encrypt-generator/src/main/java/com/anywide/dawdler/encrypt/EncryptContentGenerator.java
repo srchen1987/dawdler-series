@@ -30,10 +30,10 @@ import com.anywide.dawdler.util.ConfigContentDecryptor;
  * 用于加密内容的类(同时生成密钥文件)
  */
 public class EncryptContentGenerator {
-	public static final String DAWDLER_ENCRYP_FILE = "DAWDLER_ENCRYP_FILE";
+	public static final String DAWDLER_ENCRYPT_FILE = "DAWDLER_ENCRYPT_FILE";
 
 	public static void main(String[] args) throws Exception {
-		String path = ConfigContentDecryptor.getDawdlerEncrypFilePath();
+		String path = ConfigContentDecryptor.getDawdlerEncryptFilePath();
 		if (path == null) {
 			generate();
 			return;
@@ -56,7 +56,7 @@ public class EncryptContentGenerator {
 		AesSecurityPlus ap = AesSecurityPlus.DEFAULT_INSTANCE;
 		File file = new File("dawdler.password");
 		System.out.println("generated file:[" + file.getAbsolutePath() + "]");
-		System.out.println("please set DAWDLER_ENCRYP_FILE=" + file.getAbsolutePath() + " to environment!");
+		System.out.println("please set DAWDLER_ENCRYPT_FILE=" + file.getAbsolutePath() + " to environment!");
 		try (OutputStream out = new FileOutputStream(file)) {
 			out.write(ap.encrypt(UUID.randomUUID().toString()).getBytes());
 			out.flush();
