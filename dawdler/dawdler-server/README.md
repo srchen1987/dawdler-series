@@ -317,7 +317,9 @@ dawdler服务端提供健康检测功能,uri为/status,参考[health-check节点
 
 示例:
 
-<https://192.168.43.137:19001/status>
+```shell
+wget https://192.168.43.137:19001/status
+```
 
 返回:
 
