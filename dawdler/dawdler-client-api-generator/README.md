@@ -186,7 +186,7 @@ public class User {
 
 3. BigDecimal及数组
 
-4. List<类型>/Set<类型>/Collection<类型>/Vector<类型>
+4. List/<类型/>/Set/<类型/>/Collection/<类型/>/Vector/<类型/>
 
 5. 自定义类,支持泛型.
 
