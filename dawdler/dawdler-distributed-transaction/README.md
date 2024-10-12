@@ -231,7 +231,7 @@ public class OrderCompensator extends DistributedTransactionCustomProcessor {
 
 将以上的处理器通过SPI方式进行注入,META-INF/services/com.anywide.dawdler.distributed.transaction.compensate.process.DistributedTransactionCustomProcessor 文件中内容如下:
 
-```spi
+```java
 com.anywide.shop.compensator.OrderCompensator
 com.anywide.shop.compensator.ProductCompensator
 com.anywide.shop.compensator.UserCompensator

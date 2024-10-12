@@ -1,7 +1,7 @@
 # dawdler-series
 
 ![version](https://img.shields.io/badge/dawdler--series-0.0.2--jdk21--RELEASES-brightgreen)&nbsp;
-[![License](https://img.shields.io/badge/license-apache2.0-green)](LICENSE)&nbsp;
+[![License](https://img.shields.io/badge/license-apache2.0-green)](./LICENSE)&nbsp;
 ![jdk](https://img.shields.io/badge/jdk-21%2B-green)
 
 ## 项目介绍
@@ -274,4 +274,4 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
     |   --product-web-api
 ```
 
-需要帮助可以发送email到 <suxuan696@gmail.com> .
+需要帮助可以发送email到[jackson.song@dawdler.club](mailto:jackson.song@dawdler.club) .

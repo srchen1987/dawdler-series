@@ -62,9 +62,9 @@ JedisInjector注解中的value传入fileName为配置文件名(不包含.propert
 
 具体参考:
 
-[dawdler-server-plug-redis 实现dawdler-server端注入功能.](../dawdler-server-plug-redis/README.md)
+[dawdler-server-plug-redis 实现dawdler-server端注入功能.](../dawdler-server-plug-jedis/README.md)
 
-[dawdler-client-plug-redis 实现web端注入功能.](../dawdler-client-plug-redis/README.md)
+[dawdler-client-plug-redis 实现web端注入功能.](../dawdler-client-plug-jedis/README.md)
 
 ### 4. 在非dawdler架构下的使用方式
 
@@ -79,6 +79,6 @@ public static Pool<Jedis> getJedisPool(String fileName);
 
 ```
 
-注意：Pool<Jedis>在客户端和服务器端中运行无需手动关闭,dawder会自动进行关闭相关资源.
+注意：Pool\<Jedis\>在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
 
 在非dawdler架构下使用需要调用 JedisPoolFactory.shutdownAll(); 释放资源.

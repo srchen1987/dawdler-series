@@ -59,7 +59,7 @@ runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDir
 
 自定义样式扩展
 
-参考[PageStyle](src/main/java/com/anywide/dawdler/clientplug/velocity/PageStyle.java)源代码中的export方法：
+参考[PageStyle](./src/main/java/com/anywide/dawdler/clientplug/velocity/PageStyle.java)源代码中的export方法：
 
 ```java
 //相关注释可以看源代码
@@ -106,7 +106,7 @@ export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
 具体代码：
 
 ```java
-String templatePath = servletContext.getInitParameter("template-path");
+  String templatePath = servletContext.getInitParameter("template-path");
   VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
   String path;
   if (templatePath != null && !templatePath.trim().equals(""))
