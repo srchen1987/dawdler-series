@@ -25,7 +25,7 @@
     RabbitProvider rabbitProvider;
 
     public void pushMssage(String message) {
-        rabbitProvider.publish("", "queueName", null, message.getBytes());//使用rabbitProvider对象
+        rabbitProvider.publish("", "test", null, message.getBytes());//使用rabbitProvider对象
         return null;
     }
 

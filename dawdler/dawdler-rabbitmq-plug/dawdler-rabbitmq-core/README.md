@@ -211,6 +211,6 @@ public static AMQPConnectionFactory getInstance(String fileName);
 
 ```
 
-注意：AMQPConnectionFactory在客户端和服务器端中运行无需手动关闭,dawder会自动进行关闭相关资源.
+注意：AMQPConnectionFactory在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
 
 在非dawdler架构下使用需要调用 AMQPConnectionFactory.shutdownAll(); 释放资源.
