@@ -270,4 +270,4 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
     |   --product-web-api
 ```
 
-需要帮助可以发送email到 <suxuan696@gmail.com> .
+需要帮助可以发送email到[jackson.song@dawdler.club](mailto:jackson.song@dawdler.club) .

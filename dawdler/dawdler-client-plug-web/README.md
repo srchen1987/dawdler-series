@@ -270,6 +270,7 @@ ViewForward可以注入到方法参数列表中.
 
 常用方法：
 
+```java
 String getUriShort() //获取请求uri
 
 void setInvokeException(Throwable invokeException) //设置执行异常,设置异常后会记录错误日志,如果是jsp或velocity响应视图会通过response进行响应http状态码为500,具体实现：response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error!");
@@ -285,6 +286,7 @@ public void setData(Map<String, Object> data); //直接将参数data覆盖到con
 public String getHeader(String headerName); //获取请求Header,等同于request.getHeader(String name);
 
 public void setTemplatePath(String templatePath); //设置模板路径,velocity或jsp的路径,velocity模板和jsp根路径默认为 WEB-INF/template/.
+```
 
 param*系列方法如下：
 
