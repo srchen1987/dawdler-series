@@ -51,7 +51,7 @@
 
 #### 2.2 配置验证器
 
-在controller同级目录创建一个{controllerName}-validator.xml结尾的文件.
+在controller同级目录创建一个\{controllerName\}-validator.xml结尾的文件.
 
 验证器支持对 application/x-www-form-urlencoded、multipart/form-data、application/json(@RequestBody)、http-header(@RequestHeader)、antPath中的@PathVariable变量进行校验.
 
