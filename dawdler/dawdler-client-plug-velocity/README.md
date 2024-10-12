@@ -106,7 +106,7 @@ export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
 具体代码：
 
 ```java
-String templatePath = servletContext.getInitParameter("template-path");
+  String templatePath = servletContext.getInitParameter("template-path");
   VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
   String path;
   if (templatePath != null && !templatePath.trim().equals(""))
