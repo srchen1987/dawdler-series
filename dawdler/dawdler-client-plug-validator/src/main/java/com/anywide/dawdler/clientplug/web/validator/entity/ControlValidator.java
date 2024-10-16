@@ -28,46 +28,46 @@ import java.util.Map;
 public class ControlValidator {
 	private Map<String, ControlField> controlFields;
 	private Map<String, Map<String, ControlField>> fieldGroups;
-	private Map<MappingFeildType, Map<String, ControlField>> globalControlFieldsCache;
-	private final Map<String, Map<MappingFeildType, Map<String, ControlField>>> mappings = new HashMap<>();
+	private Map<MappingFieldType, Map<String, ControlField>> globalControlFieldsCache;
+	private final Map<String, Map<MappingFieldType, Map<String, ControlField>>> mappings = new HashMap<>();
 
-	public enum MappingFeildType {
+	public enum MappingFieldType {
 		header, body, param, path
 	}
 
-	public static MappingFeildType getMappingFeildType(String type) {
+	public static MappingFieldType getMappingFieldType(String type) {
 		if (type == null) {
-			return MappingFeildType.param;
+			return MappingFieldType.param;
 		}
-		return MappingFeildType.valueOf(type);
+		return MappingFieldType.valueOf(type);
 	}
 
-	public Map<String, Map<MappingFeildType, Map<String, ControlField>>> getMappings() {
+	public Map<String, Map<MappingFieldType, Map<String, ControlField>>> getMappings() {
 		return mappings;
 	}
 
-	private Map<String, ControlField> getMappingFields(MappingFeildType mappingFeildType, String uri) {
-		Map<MappingFeildType, Map<String, ControlField>> mapping = mappings.get(uri);
+	private Map<String, ControlField> getMappingFields(MappingFieldType mappingFieldType, String uri) {
+		Map<MappingFieldType, Map<String, ControlField>> mapping = mappings.get(uri);
 		if (mapping != null) {
-			return mapping.get(mappingFeildType);
+			return mapping.get(mappingFieldType);
 		}
 		return null;
 	}
 
 	public Map<String, ControlField> getParamFields(String uri) {
-		return getMappingFields(MappingFeildType.param, uri);
+		return getMappingFields(MappingFieldType.param, uri);
 	}
 
 	public Map<String, ControlField> getHeaderFields(String uri) {
-		return getMappingFields(MappingFeildType.header, uri);
+		return getMappingFields(MappingFieldType.header, uri);
 	}
 
 	public Map<String, ControlField> getBodyFields(String uri) {
-		return getMappingFields(MappingFeildType.body, uri);
+		return getMappingFields(MappingFieldType.body, uri);
 	}
 
 	public Map<String, ControlField> getPathVariableFields(String uri) {
-		return getMappingFields(MappingFeildType.path, uri);
+		return getMappingFields(MappingFieldType.path, uri);
 	}
 
 	public Map<String, Map<String, ControlField>> getFieldGroups() {
@@ -78,7 +78,7 @@ public class ControlValidator {
 		this.fieldGroups = fieldGroups;
 	}
 
-	public Map<MappingFeildType, Map<String, ControlField>> getGlobalControlFields() {
+	public Map<MappingFieldType, Map<String, ControlField>> getGlobalControlFields() {
 		return globalControlFieldsCache;
 	}
 
@@ -88,11 +88,11 @@ public class ControlValidator {
 		}
 	}
 
-	public void addGlobalControlFields(MappingFeildType mappingFeildType,
+	public void addGlobalControlFields(MappingFieldType mappingFieldType,
 			Map<String, ControlField> globalControlFields) {
-		Map<String, ControlField> fieldMap = globalControlFieldsCache.get(mappingFeildType);
+		Map<String, ControlField> fieldMap = globalControlFieldsCache.get(mappingFieldType);
 		if (fieldMap == null) {
-			globalControlFieldsCache.put(mappingFeildType, globalControlFields);
+			globalControlFieldsCache.put(mappingFieldType, globalControlFields);
 		} else {
 			fieldMap.putAll(globalControlFields);
 		}
