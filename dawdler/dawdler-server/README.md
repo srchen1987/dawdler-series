@@ -114,6 +114,8 @@ username="jackson" 用户名,未填写该属性则不开启认证模块.
 
 password="jackson.song" 密码,未填写该属性则不开启认证模块.
 
+uri="/health" 健康检测的uri,默认是/health.
+
 以下为已支持健康检测的组件节点,check设为off或不填此节点则不会触发健康检测.
 
 elasticSearch es检测
@@ -313,12 +315,12 @@ dawdler-server-plug-mybatis中的读写分离也是基于aop实现的,请参考[
 
 ### 7. 健康检测
 
-dawdler服务端提供健康检测功能,uri为/status,参考[health-check节点](#health-check节点)配置.
+dawdler服务端提供健康检测功能,uri为/health,参考[health-check节点](#health-check节点)配置.
 
 示例:
 
 ```shell
-wget https://192.168.43.137:19001/status
+wget https://192.168.43.137:19001/health
 ```
 
 返回:
