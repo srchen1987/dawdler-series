@@ -91,7 +91,7 @@ public class ViewFilter implements Filter {
 		PlugFactory.initFactory(servletContext);
 		healthCheck = WebConfigParser.getWebConfig().getHealthCheck();
 		if (healthCheck != null && healthCheck.isCheck()) {
-			healthUri = healthCheck.getUri();
+			healthUri = healthCheck.getUri() == null ? "/health" : healthCheck.getUri();
 			webHealth = new WebHealth(servletContext.getContextPath(), healthCheck);
 		}
 
