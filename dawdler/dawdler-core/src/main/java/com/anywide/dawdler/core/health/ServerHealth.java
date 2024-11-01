@@ -25,7 +25,7 @@ import java.util.Map;
  * ServerHealth 实体类
  */
 public class ServerHealth {
-	private Map<String, Object> data = new LinkedHashMap<String, Object>();
+	private Map<String, Object> data = new LinkedHashMap<>();
 
 	public void setStatus(String status) {
 		data.put("status", status);
