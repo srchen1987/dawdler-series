@@ -1,6 +1,6 @@
 # dawdler-series
 
-![version](https://img.shields.io/badge/dawdler--series-0.0.2--jdk21--RELEASES-brightgreen)&nbsp;
+![version](https://img.shields.io/badge/dawdler--series-0.0.3--jdk21--RELEASES-brightgreen)&nbsp;
 [![License](https://img.shields.io/badge/license-apache2.0-green)](./LICENSE)&nbsp;
 ![jdk](https://img.shields.io/badge/jdk-21%2B-green)
 

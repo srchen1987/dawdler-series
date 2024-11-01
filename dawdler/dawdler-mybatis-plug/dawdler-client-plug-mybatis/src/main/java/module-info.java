@@ -1,4 +1,6 @@
+import com.anywide.dawdler.clientplug.db.mybatis.classloader.MybatisClassLoaderMatcher;
 import com.anywide.dawdler.clientplug.db.mybatis.injector.AspectInjector;
+import com.anywide.dawdler.clientplug.web.classloader.DawdlerClassLoaderMatcher;
 import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
 
 module dawdler.client.plug.mybatis {
@@ -18,5 +20,7 @@ module dawdler.client.plug.mybatis {
 	opens com.anywide.dawdler.clientplug.db.mybatis;
 
 	provides CustomComponentInjector with AspectInjector;
+
+	provides DawdlerClassLoaderMatcher with MybatisClassLoaderMatcher;
 
 }

@@ -17,11 +17,18 @@
 package com.anywide.dawdler.clientplug.web.filter;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Base64;
 
+import com.anywide.dawdler.clientplug.web.conf.WebConfigParser;
 import com.anywide.dawdler.clientplug.web.handler.AbstractUrlHandler;
 import com.anywide.dawdler.clientplug.web.handler.AnnotationUrlHandler;
+import com.anywide.dawdler.clientplug.web.health.HealthCheck;
+import com.anywide.dawdler.clientplug.web.health.WebHealth;
+import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.plugs.PlugFactory;
 import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
+import com.anywide.dawdler.util.JsonProcessUtil;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -36,10 +43,13 @@ import jakarta.servlet.http.HttpServletResponse;
 /**
  * @author jackson.song
  * @version V1.0
- * 请求处理过滤器
+ *          请求处理过滤器
  */
 public class ViewFilter implements Filter {
-	private AbstractUrlHandler annotationUrlHander;
+	private AbstractUrlHandler annotationUrlHandler;
+	private WebHealth webHealth;
+	private String healthUri;
+	private HealthCheck healthCheck;
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
@@ -57,13 +67,16 @@ public class ViewFilter implements Filter {
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath() + "/";
 		String uriShort = uri.substring(uri.indexOf(contextPath) + contextPath.length() - 1);
+		if (isHealthCheck(uriShort, request, response)) {
+			return;
+		}
 		String type = request.getHeader("Content-Type");
 		boolean isJson = type != null && type.contains("application/json");
 		if (isJson) {
 			request = new BodyReaderHttpServletRequestWrapper(request);
 		}
 		try {
-			boolean status = annotationUrlHander.handleUrl(uriShort, method, request, response);
+			boolean status = annotationUrlHandler.handleUrl(uriShort, method, request, response);
 			if (!status) {
 				chain.doFilter(request, response);
 			}
@@ -74,13 +87,53 @@ public class ViewFilter implements Filter {
 
 	public void init(FilterConfig config) throws ServletException {
 		ServletContext servletContext = config.getServletContext();
-		annotationUrlHander = new AnnotationUrlHandler();
+		annotationUrlHandler = new AnnotationUrlHandler();
 		PlugFactory.initFactory(servletContext);
+		healthCheck = WebConfigParser.getWebConfig().getHealthCheck();
+		if (healthCheck != null && healthCheck.isCheck()) {
+			healthUri = healthCheck.getUri();
+			webHealth = new WebHealth(servletContext.getContextPath(), healthCheck);
+		}
+
 	}
 
 	@Override
 	public void destroy() {
 
+	}
+
+	private boolean isHealthCheck(String uriShort, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
+		if (healthUri != null && healthUri.equals(uriShort)) {
+			if (healthCheck.getUsername() != null && healthCheck.getPassword() != null) {
+				String header = request.getHeader("authorization");
+				if (header != null && header.startsWith("Basic ")) {
+					String base64String = header.substring(header.indexOf(" ") + 1);
+					String localBase64String = Base64.getEncoder()
+							.encodeToString((healthCheck.getUsername() + ":" + healthCheck.getPassword()).getBytes());
+					if (base64String.equals(localBase64String)) {
+						printHealth(response);
+						return true;
+					}
+				}
+				response.setStatus(401);
+				response.setHeader("Cache-Control", "no-store");
+				response.setDateHeader("Expires", 0);
+				response.setHeader("WWW-authenticate", "Basic Realm=\"need auth!\"");
+				return true;
+			}
+			printHealth(response);
+			return true;
+		}
+		return false;
+	}
+
+	private void printHealth(HttpServletResponse response) throws IOException {
+		response.setContentType(AbstractDisplayPlug.MIME_TYPE_JSON);
+		OutputStream out = response.getOutputStream();
+		JsonProcessUtil.beanToJson(out, webHealth.getServiceHealth());
+		out.flush();
+		out.close();
 	}
 
 }

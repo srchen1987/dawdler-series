@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.anywide.dawdler.clientplug.web.health.HealthCheck;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -32,6 +34,8 @@ public class WebConfig {
 	private List<Map<String, String>> decisions;
 
 	private Set<String> mappers;
+
+	private HealthCheck healthCheck;
 
 	/**
 	 * 扫描路径
@@ -69,5 +73,14 @@ public class WebConfig {
 	public void setPackagePaths(Set<String> packagePaths) {
 		this.packagePaths = packagePaths;
 	}
+
+	public HealthCheck getHealthCheck() {
+		return healthCheck;
+	}
+
+	public void setHealthCheck(HealthCheck healthCheck) {
+		this.healthCheck = healthCheck;
+	}
+	
 
 }
