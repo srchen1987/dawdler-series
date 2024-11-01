@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-discovery-center</artifactId>
-		<version>0.0.2-jdk21-RELEASES</version>
+		<version>0.0.3-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-discovery-center-server-plug</artifactId>
 	<name>dawdler-discovery-center-server-plug</name>

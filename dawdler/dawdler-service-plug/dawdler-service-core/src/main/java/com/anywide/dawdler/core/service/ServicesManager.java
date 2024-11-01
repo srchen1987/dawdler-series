@@ -16,7 +16,6 @@
  */
 package com.anywide.dawdler.core.service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -35,7 +34,7 @@ import com.anywide.dawdler.core.service.listener.DawdlerServiceCreateProvider;
 public class ServicesManager {
 
 	private static final Logger logger = LoggerFactory.getLogger(ServicesManager.class);
-	private final DawdlerServiceCreateProvider DAWDLER_SERVICECREATE_PROVIDER = new DawdlerServiceCreateProvider();
+	private final DawdlerServiceCreateProvider dawdlerServiceCreateProvider = new DawdlerServiceCreateProvider();
 	private final ConcurrentHashMap<String, ServicesBean> services;
 
 	public ServicesManager() {
@@ -55,7 +54,7 @@ public class ServicesManager {
 	}
 
 	public DawdlerServiceCreateProvider getDawdlerServiceCreateProvider() {
-		return DAWDLER_SERVICECREATE_PROVIDER;
+		return dawdlerServiceCreateProvider;
 	}
 
 	public void fireCreate() throws Throwable {
@@ -78,7 +77,7 @@ public class ServicesManager {
 	}
 
 	public ServicesBean createServicesBean(String serviceName, Object service, boolean single) {
-		return new ServicesBean(serviceName, service, DAWDLER_SERVICECREATE_PROVIDER, single);
+		return new ServicesBean(serviceName, service, dawdlerServiceCreateProvider, single);
 	}
 
 	public void registerService(Class<?> serviceInterface, Object service, boolean single) {
@@ -90,8 +89,7 @@ public class ServicesManager {
 		services.clear();
 	}
 
-	public void smartRegister(Class<?> type, Object target) throws InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public void smartRegister(Class<?> type, Object target) throws IllegalArgumentException, SecurityException  {
 		Service service = type.getAnnotation(Service.class);
 		if (service != null) {
 			String serviceName = service.serviceName();

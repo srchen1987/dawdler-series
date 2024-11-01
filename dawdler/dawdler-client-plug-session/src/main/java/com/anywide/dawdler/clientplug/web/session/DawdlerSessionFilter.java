@@ -78,11 +78,11 @@ public class DawdlerSessionFilter implements Filter {
 		try {
 			ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter("identityConfig");
 		} catch (Exception e) {
-			logger.warn("use default identityConfig in dawdler-client-plug-session jar!");
+			logger.warn("use defaultIdentityConfig in dawdler-client-plug-session jar!");
 		}
 		InputStream inStream = null;
 		if (ps == null) {
-			inStream = DawdlerSessionFilter.class.getResourceAsStream("/identityConfig.properties");
+			inStream = DawdlerSessionFilter.class.getResourceAsStream("/defaultIdentityConfig.properties");
 			ps = new Properties();
 			try {
 				ps.load(inStream);
