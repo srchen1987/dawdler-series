@@ -116,7 +116,8 @@
 								</xs:complexType>
 							</xs:element>
 						</xs:all>
-						<xs:attribute name="check" type="t_check" />
+						<xs:attribute name="check" type="t_check" default="on" use="optional"/>
+						<xs:attribute name="uri" type="xs:string" default="/health" use="optional" />
 						<xs:attribute name="scheme" type="t_scheme" />
 						<xs:attribute name="port" type="t_port" />
 						<xs:attribute name="backlog" type="xs:int" />

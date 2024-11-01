@@ -3,7 +3,6 @@
 	targetNamespace="https://github.com/srchen1987/dawdler-series"
 	xmlns="https://github.com/srchen1987/dawdler-series"
 	elementFormDefault="qualified">
-
 	<xs:element name="config">
 		<xs:complexType>
 			<xs:sequence>
@@ -69,7 +68,71 @@
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>
+				<xs:element name="health-check" minOccurs="0"
+					maxOccurs="1">
+					<xs:complexType>
+						<xs:all minOccurs="0">
+							<xs:element name="elasticSearch" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="jedis" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="rabbit" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="dataSource" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="config" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="zookeeper" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="consul" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="check" type="t_check"></xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:all>
+						<xs:attribute name="check" type="t_check" default="on" use="optional"/>
+						<xs:attribute name="username" type="xs:string" />
+						<xs:attribute name="password" type="xs:string" />
+						<xs:attribute name="uri" type="xs:string" default="/health" use="optional" />
+					</xs:complexType>
+				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+	<xs:simpleType name="t_scheme">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="http" />
+			<xs:enumeration value="https" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="t_check">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="on" />
+			<xs:enumeration value="off" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="t_port">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="65535" />
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

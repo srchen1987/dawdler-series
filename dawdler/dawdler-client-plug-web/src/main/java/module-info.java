@@ -6,6 +6,7 @@ import com.anywide.dawdler.clientplug.web.bind.resolver.impl.AnnotationMethodArg
 import com.anywide.dawdler.clientplug.web.bind.resolver.impl.BasicsTypeMethodArgumentResolver;
 import com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletMethodArgumentResolver;
 import com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletUploadMethodArgumentResolver;
+import com.anywide.dawdler.clientplug.web.classloader.DawdlerClassLoaderMatcher;
 import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 import com.anywide.dawdler.clientplug.web.component.injector.WebComponentInjector;
 import com.anywide.dawdler.clientplug.web.fire.WebComponentClassLoaderFire;
@@ -64,5 +65,7 @@ module dawdler.client.plug.web {
 	uses ServletContainerInitializer;
 
 	provides ServletContainerInitializer with WebInitializer;
+
+	uses DawdlerClassLoaderMatcher;
 
 }

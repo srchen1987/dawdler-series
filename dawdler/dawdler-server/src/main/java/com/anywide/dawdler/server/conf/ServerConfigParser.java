@@ -122,17 +122,26 @@ public class ServerConfigParser {
 			String scheme = namedNodeMap.getNamedItem("scheme").getNodeValue();
 			healthCheck.setScheme(scheme);
 
-			int backlog = Integer.parseInt(namedNodeMap.getNamedItem("backlog").getNodeValue());
+			int backlog = 0;
+			try {
+				backlog = Integer.parseInt(namedNodeMap.getNamedItem("backlog").getNodeValue());
+			} catch (Exception e) {
+			}
 			healthCheck.setBacklog(backlog);
 			Node usernameNode = namedNodeMap.getNamedItem("username");
 			if (usernameNode != null) {
-				String username = usernameNode.getNodeValue();
+				String username = usernameNode.getNodeValue().trim();
 				healthCheck.setUsername(username);
 			}
 			Node passwordNode = namedNodeMap.getNamedItem("password");
 			if (passwordNode != null) {
-				String password = passwordNode.getNodeValue();
+				String password = passwordNode.getNodeValue().trim();
 				healthCheck.setPassword(password);
+			}
+			Node uriNode = namedNodeMap.getNamedItem("uri");
+			if (uriNode != null) {
+				String uri = uriNode.getNodeValue().trim();
+				healthCheck.setUri(uri);
 			}
 			List<Node> componentElements = getNodes(healthCheckEle.getChildNodes());
 			for (Node componentElement : componentElements) {

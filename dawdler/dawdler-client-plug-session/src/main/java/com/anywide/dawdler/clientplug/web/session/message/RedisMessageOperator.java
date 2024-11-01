@@ -16,7 +16,7 @@
  */
 package com.anywide.dawdler.clientplug.web.session.message;
 
-import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,8 +64,8 @@ public class RedisMessageOperator implements MessageOperator {
 
 	private static void config(Jedis jedis) {
 		String parameter = "notify-keyspace-events";
-		List<String> notify = jedis.configGet(parameter);
-		if (notify.get(1).equals("")) {
+		Map<String, String> notify = jedis.configGet(parameter);
+		if (notify.containsKey(parameter) && notify.get(parameter).equals("")) {
 			jedis.configSet(parameter, "gxE");// 过期与删除
 		}
 	}
