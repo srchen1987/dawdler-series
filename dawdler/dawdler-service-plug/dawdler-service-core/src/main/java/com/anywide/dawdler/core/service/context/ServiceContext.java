@@ -30,7 +30,7 @@ public abstract class ServiceContext extends DawdlerRuntimeContext {
 	protected final ServicesManager servicesManager;
 	
 
-	public ServiceContext(ServicesManager servicesManager) {
+	protected ServiceContext(ServicesManager servicesManager) {
 		this.servicesManager = servicesManager;
 	}
 

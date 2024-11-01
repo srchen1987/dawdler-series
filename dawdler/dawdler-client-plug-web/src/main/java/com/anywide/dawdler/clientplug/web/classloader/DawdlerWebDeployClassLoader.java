@@ -20,10 +20,14 @@ import java.io.IOException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.SecureClassLoader;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.ServiceLoader;
 import java.util.jar.Manifest;
 
 import com.anywide.dawdler.core.loader.DeployClassLoader;
+import com.anywide.dawdler.core.scan.DawdlerComponentScanner;
 
 import sun.misc.Resource;
 
@@ -35,8 +39,14 @@ import sun.misc.Resource;
 public class DawdlerWebDeployClassLoader extends SecureClassLoader implements DeployClassLoader {
 	private ClassLoader parent;
 
+	private List<DawdlerClassLoaderMatcher> dawdlerClassLoaderMatchers = new ArrayList<>();
+
 	public DawdlerWebDeployClassLoader(ClassLoader parent) throws Exception {
+		super(parent);
 		this.parent = parent;
+		ServiceLoader.load(DawdlerClassLoaderMatcher.class).forEach(resolver -> {
+			dawdlerClassLoaderMatchers.add(resolver);
+		});
 		loadAspectj();
 	}
 
@@ -57,10 +67,14 @@ public class DawdlerWebDeployClassLoader extends SecureClassLoader implements De
 	}
 
 	@Override
-	public Class<?> findClassForDawdler(String name, Resource res, boolean useAop, boolean storeVariableNameByASM) throws ClassNotFoundException {
+	public Class<?> findClassForDawdler(String name, Resource res, boolean useAop, boolean storeVariableNameByASM)
+			throws ClassNotFoundException {
 		Class<?> clazz = findLoadedClass(name);
 		if (clazz != null) {
 			return clazz;
+		}
+		if (res == null) {
+			res = DawdlerComponentScanner.getClass(name);
 		}
 		if (res != null) {
 			try {
@@ -104,14 +118,14 @@ public class DawdlerWebDeployClassLoader extends SecureClassLoader implements De
 
 	@Override
 	public Class<?> loadClass(String name) throws ClassNotFoundException {
-		try {
-			return super.loadClass(name);
-		} catch (Exception e) {
-			return parent.loadClass(name);
+		for (DawdlerClassLoaderMatcher dawdlerClassLoaderMatcher : dawdlerClassLoaderMatchers) {
+			for (String matchPackageName : dawdlerClassLoaderMatcher.matchPackageName()) {
+				if (name.startsWith(matchPackageName)) {
+					return findClassForDawdler(name, false, false);
+				}
+			}
 		}
-		
+		return parent.loadClass(name);
 	}
-
-	
 
 }

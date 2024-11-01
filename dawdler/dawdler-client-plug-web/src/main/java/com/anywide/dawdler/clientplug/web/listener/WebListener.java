@@ -118,9 +118,9 @@ public class WebListener implements ServletContextListener {
 		WebContextListenerProvider.listenerRun(false, sce.getServletContext());
 		List<OrderData<ContainerGracefulShutdown>> containerShutdownList = ContainerShutdownProvider.getInstance()
 				.getContainerShutdownList();
-		Boolean gracefullShutdown = (Boolean) sce.getServletContext()
+		Boolean gracefulShutdown = (Boolean) sce.getServletContext()
 				.getAttribute(ContainerGracefulShutdown.class.getName());
-		if (gracefullShutdown != null && gracefullShutdown) {
+		if (gracefulShutdown != null && gracefulShutdown) {
 			CountDownLatch countDownLatch = new CountDownLatch(containerShutdownList.size());
 			for (OrderData<ContainerGracefulShutdown> data : containerShutdownList) {
 				try {

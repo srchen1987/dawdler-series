@@ -23,7 +23,7 @@ import com.anywide.dawdler.core.service.ServicesManager;
 /**
  * @author jackson.song
  * @version V1.0
- * 实现向监听器,过滤器注入JedisOperator,JedisDistributedLock
+ * Service层注入组件
  */
 public class ServiceCreateListenerLifeCycle implements ComponentLifeCycle {
 

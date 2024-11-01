@@ -33,13 +33,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
+import com.anywide.dawdler.clientplug.web.health.HealthCheck;
 import com.anywide.dawdler.util.DawdlerTool;
 import com.anywide.dawdler.util.XmlObject;
 
 /**
  * @author jackson.song
  * @version V1.0
- * web配置解析器
+ *          web配置解析器
  */
 public class WebConfigParser {
 	private static final Logger logger = LoggerFactory.getLogger(WebConfigParser.class);
@@ -78,6 +79,8 @@ public class WebConfigParser {
 						loadDataSourceExpressions(childNode);
 					} else if (childNodeName.equals("decisions")) {
 						loadDecisions(childNode);
+					} else if (childNodeName.equals("health-check")) {
+						loadHealthCheck(childNode);
 					}
 				}
 			} catch (Exception e) {
@@ -146,6 +149,38 @@ public class WebConfigParser {
 			}
 			webConfig.setDecisions(decisionList);
 		}
+	}
+
+	public static void loadHealthCheck(Node node) {
+		HealthCheck healthCheck = new HealthCheck();
+		NamedNodeMap healthCheckAttributes = node.getAttributes();
+		Node checkNode = healthCheckAttributes.getNamedItem("check");
+		boolean check = checkNode != null && checkNode.getNodeValue().equals("on");
+		healthCheck.setCheck(check);
+		Node usernameNode = healthCheckAttributes.getNamedItem("username");
+		if(usernameNode !=null && !usernameNode.getNodeValue().trim().equals("")){
+			healthCheck.setUsername(usernameNode.getNodeValue().trim());
+		}
+		Node passwordNode = healthCheckAttributes.getNamedItem("password");
+		if(passwordNode !=null && !passwordNode.getNodeValue().trim().equals("")){
+			healthCheck.setPassword(passwordNode.getNodeValue().trim());
+		}
+		Node uriNode = healthCheckAttributes.getNamedItem("uri");
+		if(uriNode !=null && !uriNode.getNodeValue().trim().equals("")){
+			healthCheck.setUri(uriNode.getNodeValue().trim());
+		}
+		webConfig.setHealthCheck(healthCheck);
+
+		List<Node> componentElements = getNodes(node.getChildNodes());
+			for (Node componentElement : componentElements) {
+				Node componentCheckNode = componentElement.getAttributes().getNamedItem("check");
+				if (componentCheckNode != null) {
+					String componentCheck = componentCheckNode.getNodeValue();
+					if (componentCheck.trim().equals("on")) {
+						healthCheck.addComponentCheck(componentElement.getNodeName());
+					}
+				}
+			}
 	}
 
 }
