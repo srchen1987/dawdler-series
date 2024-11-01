@@ -326,7 +326,7 @@ dawdler内部提供[JsonDisplayPlug](src/main/java/com/anywide/dawdler/clientplu
 
 ### 10. 扫描组件包配置
 
-web-conf.xml是web端核心配置文件. 包含组件扫描,配置据源定义,指定目标包定义数据源,读写分离配置.
+web-conf.xml是web端核心配置文件. 包含组件扫描,配置据源定义,指定目标包定义数据源,读写分离配置,健康检测.
 
 package-path配置当前的web环境中的包扫描路径(部署在web容器中的lib或classes中的包路径并支持antpath).
 
@@ -412,3 +412,53 @@ public class UserControllerAspect {
 ```
 
 拦截api接口(Service接口)的示例,请参考[分布式事务拦截注解的实现](../dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/com/anywide/dawdler/distributed/transaction/aspect/DistributedTransactionAspect.java),拦截api定义的DistributedTransaction注解.
+
+### 12. 健康检测
+
+健康检测是指系统在启动时,检查系统的各个组件是否正常工作,可以为k8s的liveness,readiness提供该服务.
+
+如果设有带(Basic Authentication)的认证,请通过head头加入Authorization头信息.
+
+配置位于web-conf.xml的health-check节点,示例:
+
+```xml
+	<health-check check="on" uri="/health" username="jackson" password="jackson.song">
+		<config check="on"/>
+		<dataSource check="on" />
+		<rabbit check="on" />
+		<jedis check="on" />
+		<elasticSearch check="on" />
+	</health-check>
+```
+
+check="on" 为开启健康检测,off为关闭.关闭后不会开启http/https服务.
+
+username="jackson" 用户名,未填写该属性则不开启认证模块.
+
+password="jackson.song" 密码,未填写该属性则不开启认证模块.
+
+uri="/health" 健康检测的uri,默认是/health.
+
+以下为已支持健康检测的组件节点,check设为off或不填此节点则不会触发健康检测.
+
+elasticSearch es检测
+
+jedis redis检测
+
+rabbit rabbitmq检测
+
+dataSource 数据源检测
+
+config 配置中心检测
+
+通过wget验证:
+
+```shell
+wget http://localhost:8082/health
+```
+
+返回:
+
+```json
+{"data":{"status":"UP","dataSource":{"user_writeDataSource":{"status":"UP"},"user_readDataSource":{"status":"UP"},"status":"UP"},"config":{"consul":{"info":"srchen-dc1-1.20.1","status":"UP"},"status":"UP"}},"name":"","status":"UP"}
+```
