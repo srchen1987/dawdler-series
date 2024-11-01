@@ -4,18 +4,16 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>club.dawdler</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>0.0.2-jdk17-RELEASES</version>
+	<version>0.0.3-jdk17-RELEASES</version>
 	<name>dawdler</name>
 	<description>Micro service solutions</description>
 	<url>https://github.com/srchen1987/dawdler-series</url>
-
 	<licenses>
 		<license>
 			<name>The Apache Software License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
 		</license>
 	</licenses>
-
 	<developers>
 		<developer>
 			<id>srchen1987</id>
@@ -27,19 +25,17 @@
 			</roles>
 		</developer>
 	</developers>
-
 	<scm>
 		<connection>https://github.com/srchen1987/dawdler-series.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com:srchen1987/dawdler-series.git</developerConnection>
 		<url>https://github.com/srchen1987/dawdler-series</url>
 	</scm>
-
 	<packaging>pom</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.source>17</maven.compiler.source>
-		<dawdler.build.version>0.0.2-jdk17-RELEASES</dawdler.build.version>
+		<dawdler.build.version>0.0.3-jdk17-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.6</slf4j.version>
 		<ch.qos.logback.version>1.4.14</ch.qos.logback.version>
 		<org.ow2.asm.version>9.2</org.ow2.asm.version>
@@ -50,8 +46,8 @@
 		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
 		<jackson-core.version>2.17.2</jackson-core.version>
 		<jackson-databind.version>2.17.2</jackson-databind.version>
-		<velocity.version>2.3</velocity.version>
-		<jedis.version>4.3.1</jedis.version>
+		<velocity.version>2.4</velocity.version>
+		<jedis.version>5.2.0</jedis.version>
 		<rabbitmq.version>5.18.0</rabbitmq.version>
 		<caffeine.version>3.0.5</caffeine.version>
 		<jsoup.version>1.16.1</jsoup.version>
@@ -685,18 +681,18 @@
 					<generateBackupPoms>false</generateBackupPoms>
 				</configuration>
 			</plugin>
-			<!--		<plugin>
+			<!-- 			<plugin>
 				<groupId>org.owasp</groupId>
-			<artifactId>dependency-check-maven</artifactId>
-			<version>8.1.2</version>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>8.1.2</version>
 				<executions>
 					<execution>
 						<goals>
-			<goal>check</goal>
+							<goal>check</goal>
 						</goals>
 					</execution>
 				</executions>
-			</plugin>-->
+			</plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

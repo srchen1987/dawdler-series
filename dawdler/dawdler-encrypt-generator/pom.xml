@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.2-jdk17-RELEASES</version>
+		<version>0.0.3-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-encrypt-generator</artifactId>
 	<name>dawdler-encrypt-generator</name>

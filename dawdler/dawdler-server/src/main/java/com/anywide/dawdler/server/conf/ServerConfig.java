@@ -108,11 +108,11 @@ public class ServerConfig {
 	}
 
 	public class Scanner {
-		private Set<String> jarFiles = new LinkedHashSet<String>();
-		private Set<String> jarAntPathFiles = new LinkedHashSet<String>();
+		private Set<String> jarFiles = new LinkedHashSet<>();
+		private Set<String> jarAntPathFiles = new LinkedHashSet<>();
 
-		private Set<String> packagePathInJar = new LinkedHashSet<String>();
-		private Set<String> packageAntPathInJar = new LinkedHashSet<String>();
+		private Set<String> packagePathInJar = new LinkedHashSet<>();
+		private Set<String> packageAntPathInJar = new LinkedHashSet<>();
 
 		public void splitAndAddJarFiles(String jarFilePath) {
 			if (!StringUtils.hasLength(jarFilePath)) {
@@ -324,6 +324,7 @@ public class ServerConfig {
 		private int backlog;
 		private String username;
 		private String password;
+		private String uri;
 		private Set<String> componentCheck;
 
 		public HealthCheck() {
@@ -384,6 +385,14 @@ public class ServerConfig {
 
 		void setPassword(String password) {
 			this.password = password;
+		}
+
+		public String getUri() {
+			return uri;
+		}
+
+		void setUri(String uri) {
+			this.uri = uri;
 		}
 
 	}
