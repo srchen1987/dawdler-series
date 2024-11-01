@@ -14,37 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.core.health;
+package com.anywide.dawdler.clientplug.db.mybatis.classloader;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.anywide.dawdler.clientplug.web.classloader.DawdlerClassLoaderMatcher;
 
 /**
  * @author jackson.song
  * @version V1.0
- * ServerHealth 实体类
+ * mybatis匹配器 针对部署在web容器中的类做Dawdler自定义类加载匹配
  */
-public class ServerHealth {
-	private Map<String, Object> data = new LinkedHashMap<>();
+public class MybatisClassLoaderMatcher implements DawdlerClassLoaderMatcher{
 
-	public void setStatus(String status) {
-		data.put("status", status);
-	}
-
-	public void setError(String message) {
-		data.put("error", message);
-	}
-
-	public void addService(ServiceHealth serviceHealth) {
-		data.put(serviceHealth.getName(), serviceHealth.getData());
-	}
-
-	public Map<String, Object> getData() {
-		return data;
-	}
-
-	public String getStatus() {
-		return (String) data.get("status");
+	@Override
+	public String[] matchPackageName() {
+		return new String[] {"org.apache.ibatis","com.anywide.dawdler.core.db.mybatis","com.anywide.dawdler.clientplug.db.mybatis"};
 	}
 
 }
