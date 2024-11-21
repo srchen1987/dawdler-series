@@ -18,10 +18,16 @@ hosts=192.168.1.111:9200,192.168.1.112:9200,192.168.1.113:9200 #es主机列表�
 username=myusername #用户名 如果没有设置,设空即可
 password=mypassword #密码   如果没有设置,设空即可
 
+#开启https连接后需要配置以下参数
+keystorePath=my.jks或my.p12 #证书路径 证书文件需在项目的classPath中
+keystorePassword=mypassword #证书密码
+
+#超时设置
 connectionRequestTimeout=-1 #connetcion pool中获得一个connection的超时时间 默认-1 单位秒
 connectTimeout=-1 #链接建立的超时时间 默认-1 单位秒
 socketTimeout=-1 #响应超时时间 默认-1 单位秒
 
+#连接池设置
 pool.maxTotal=20 #最大连接数
 pool.minIdle=2 #最小空闲数
 pool.maxIdle=8 #最大空闲数
@@ -29,7 +35,6 @@ pool.maxWaitMillis=10000 #最大等待时长(单位毫秒)
 pool.testOnBorrow=false #获取连接时是否验证连接有效 默认为false
 pool.testOnCreate=false #创建连接时是否验证连接有效 默认为false
 pool.testOnReturn=false #反还连接时是否验证连接有效 默认为false
-
 ```
 
 ### 3. EsInjector注解
