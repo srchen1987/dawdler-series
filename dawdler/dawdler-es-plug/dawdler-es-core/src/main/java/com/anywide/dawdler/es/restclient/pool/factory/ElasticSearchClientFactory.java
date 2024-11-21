@@ -57,6 +57,8 @@ public class ElasticSearchClientFactory {
 		String username = ps.getProperty("username", "");
 		String password = ps.getProperty("password", "");
 		String hosts = ps.getProperty("hosts");
+		String keystorePath = ps.getProperty("keystorePath");
+		String keystorePassword = ps.getProperty("keystorePassword");
 		int connectionRequestTimeout = PropertiesUtil.getIfNullReturnDefaultValueInt("connectionRequestTimeout", -1,
 				ps);
 		int connectTimeout = PropertiesUtil.getIfNullReturnDefaultValueInt("connectTimeout", -1, ps);
@@ -85,7 +87,7 @@ public class ElasticSearchClientFactory {
 		config.setTestOnCreate(testOnCreate);
 		config.setTestOnReturn(testOnReturn);
 		EsClientFactory esClientFactory = new EsClientFactory(username, password, hosts, connectionRequestTimeout,
-				connectTimeout, socketTimeout);
+				connectTimeout, socketTimeout, keystorePath, keystorePassword);
 		PooledEsClientFactory pooledConnectionFactory = new PooledEsClientFactory(esClientFactory);
 		genericObjectPool = new GenericObjectPool<ElasticSearchClient>(pooledConnectionFactory, config);
 		pooledConnectionFactory.setGenericObjectPool(genericObjectPool);

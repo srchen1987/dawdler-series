@@ -36,13 +36,6 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
  */
 public class EsOperatorFactory {
 	private static Map<String, EsOperator> esRestHighLevelOperators = new ConcurrentHashMap<>();
-	private static Map<String, Method> methodCache = new ConcurrentHashMap<>();
-	static {
-		Method[] methods = ElasticsearchClient.class.getMethods();
-		for (Method method : methods) {
-			methodCache.put(method.getName(), method);
-		}
-	}
 
 	public static class EsHandler implements InvocationHandler {
 		private ElasticSearchClientFactory factory;
@@ -54,7 +47,7 @@ public class EsOperatorFactory {
 		// 不加入任何判断是否是基础方法 必定基础方法调用的比较少
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			Method clientMethod = methodCache.get(method.getName());
+			Method clientMethod = ElasticsearchClient.class.getMethod(method.getName(), method.getParameterTypes());
 			if (clientMethod == null) {
 				throw new java.lang.NoSuchMethodException(method.toString());
 			}
