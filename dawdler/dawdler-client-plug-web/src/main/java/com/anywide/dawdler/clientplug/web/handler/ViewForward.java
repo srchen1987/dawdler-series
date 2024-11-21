@@ -72,11 +72,11 @@ public class ViewForward {
 		this.requestUrlData = requestUrlData;
 	}
 
-	public boolean isCreateontext() {
+	public boolean isCreateContext() {
 		return createContext;
 	}
 
-	void setCreateontext(boolean createContext) {
+	void setCreateContext(boolean createContext) {
 		this.createContext = createContext;
 	}
 
@@ -194,11 +194,11 @@ public class ViewForward {
 		}
 	}
 
-	public int paramInt(String paramName, int defaultvalue) {
+	public int paramInt(String paramName, int defaultValue) {
 		try {
 			return Integer.parseInt(getRequest().getParameter(paramName));
 		} catch (Exception e) {
-			return defaultvalue;
+			return defaultValue;
 		}
 	}
 
@@ -294,10 +294,10 @@ public class ViewForward {
 		return getRequest().getParameter(paramName);
 	}
 
-	public String paramString(String paramName, String defaultvalue) {
+	public String paramString(String paramName, String defaultValue) {
 		String value = getRequest().getParameter(paramName);
 		if (value == null) {
-			return defaultvalue;
+			return defaultValue;
 		}
 		return value;
 	}

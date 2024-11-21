@@ -24,8 +24,8 @@ import com.navercorp.pinpoint.bootstrap.context.Trace;
 import com.navercorp.pinpoint.bootstrap.context.TraceContext;
 import com.navercorp.pinpoint.bootstrap.context.TraceId;
 import com.navercorp.pinpoint.bootstrap.interceptor.AroundInterceptor;
-import com.navercorp.pinpoint.bootstrap.logging.PLogger;
-import com.navercorp.pinpoint.bootstrap.logging.PLoggerFactory;
+import com.navercorp.pinpoint.bootstrap.logging.PluginLogManager;
+import com.navercorp.pinpoint.bootstrap.logging.PluginLogger;
 import com.navercorp.pinpoint.plugin.dawdler.DawdlerConstants;
 
 /**
@@ -34,8 +34,9 @@ import com.navercorp.pinpoint.plugin.dawdler.DawdlerConstants;
  * 基于pinpoint实现客户端拦截器
  */
 public class DawdlerClientInterceptor implements AroundInterceptor {
-	private final PLogger logger = PLoggerFactory.getLogger(this.getClass());
-	private final boolean isDebug = logger.isDebugEnabled();
+	private final PluginLogger logger = PluginLogManager.getLogger(getClass());
+
+	private final boolean isDebug = this.logger.isDebugEnabled();
 
 	private final MethodDescriptor descriptor;
 	private final TraceContext traceContext;
