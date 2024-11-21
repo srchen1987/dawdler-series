@@ -72,11 +72,11 @@ public class ViewForward {
 		this.requestUrlData = requestUrlData;
 	}
 
-	public boolean isCreateontext() {
+	public boolean isCreateContext() {
 		return createContext;
 	}
 
-	void setCreateontext(boolean createContext) {
+	void setCreateContext(boolean createContext) {
 		this.createContext = createContext;
 	}
 

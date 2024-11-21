@@ -71,7 +71,7 @@ public abstract class AbstractUrlHandler {
 		}
 	}
 
-	public abstract boolean handleUrl(String urishort, String method, HttpServletRequest request,
+	public abstract boolean handleUrl(String uriShort, String method, HttpServletRequest request,
 			HttpServletResponse response) throws ServletException;
 
 	protected boolean invokeMethod(Object target, Method method, RequestMapping requestMapping, ViewForward viewForward,

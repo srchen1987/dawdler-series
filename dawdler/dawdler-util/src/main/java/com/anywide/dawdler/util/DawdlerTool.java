@@ -79,6 +79,52 @@ public class DawdlerTool {
 		return input;
 	}
 
+	public static URL getResourceURLFromClassPath(String prefix, String suffix) {
+		String activeProfile = System.getProperty("dawdler.profiles.active");
+		String configPath = (prefix + (activeProfile != null ? "-" + activeProfile : "")) + suffix;
+		URL url = null;
+		if (startClass != null) {
+			if (!configPath.startsWith("/")) {
+				configPath = "/" + configPath;
+			}
+			url = startClass.getResource(configPath);
+			if (url == null && activeProfile != null) {
+				try {
+					if (!prefix.startsWith("/")) {
+						prefix = "/" + prefix;
+					}
+					url = startClass.getResource(prefix.concat(suffix));
+				} catch (Exception e) {
+				}
+			}
+		} else {
+			url = Thread.currentThread().getContextClassLoader().getResource(configPath);
+			if (url == null) {
+				try {
+					url = Thread.currentThread().getContextClassLoader().getResource(prefix.concat(suffix));
+				} catch (Exception e) {
+				}
+			}
+		}
+		return url;
+	}
+
+	public static URL getResourceURLFromClassPath(String configPath) {
+		if (configPath == null) {
+			return null;
+		}
+		if (!configPath.startsWith("/")) {
+			configPath = "/" + configPath;
+		}
+		URL url = null;
+		if (startClass != null) {
+			url = startClass.getResource(configPath);
+		} else {
+			url = Thread.currentThread().getContextClassLoader().getResource(configPath);
+		}
+		return url;
+	}
+
 	public static String getEnv(String key) {
 		return System.getenv(key);
 	}
