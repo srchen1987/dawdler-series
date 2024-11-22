@@ -26,13 +26,17 @@ import java.util.List;
  * 排序(升序)
  */
 public class OrderComparator<T> implements Comparator<OrderData<T>> {
+	@SuppressWarnings("rawtypes")
 	public static final OrderComparator INSTANCE = new OrderComparator<>();
 
 	public static <T> void sort(List<OrderData<T>> list) {
 		if (list != null && list.size() > 1) {
-			Collections.sort(list, INSTANCE);
+			@SuppressWarnings("unchecked")
+			OrderComparator<T> comparator = INSTANCE;
+			Collections.sort(list, comparator);
 		}
 	}
+
 
 	@Override
 	public int compare(OrderData<T> o1, OrderData<T> o2) {
