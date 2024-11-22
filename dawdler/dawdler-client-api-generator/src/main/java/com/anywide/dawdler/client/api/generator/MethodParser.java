@@ -116,6 +116,7 @@ public class MethodParser {
 					} else if (annotationMethodObj.getClass() == String.class) {
 						httpMethods.add(requestMethodCache.get(getHttpMethod(annotationMethodObj.toString())));
 					} else if (annotationMethodObj.getClass() == LinkedList.class) {
+						@SuppressWarnings("unchecked")
 						List<String> httpMethodList = (List<String>) annotationMethodObj;
 						for (String httpMethod : httpMethodList) {
 							httpMethods.add(requestMethodCache.get(getHttpMethod(httpMethod)));
