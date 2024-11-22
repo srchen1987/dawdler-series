@@ -71,6 +71,7 @@ public class ConsulConfigClient implements ConfigClient {
 	private Map<String, Object> conf;
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void init(Map<String, Object> conf) {
 		this.conf = conf;
 		watchKeys = (List<String>) conf.get("watch-keys");
@@ -87,7 +88,8 @@ public class ConsulConfigClient implements ConfigClient {
 		Object tlsConfig = conf.get("TLSConfig");
 		TLSConfig config = null;
 		if (tlsConfig != null && Map.class.isAssignableFrom(tlsConfig.getClass())) {
-			Map tlsConfigMap = (Map) tlsConfig;
+			@SuppressWarnings("unchecked")
+			Map<String, Object> tlsConfigMap = (Map<String, Object>) tlsConfig;
 			String keyStoreInstanceType = (String) tlsConfigMap.get("keyStoreInstanceType");
 			String certificatePath = (String) tlsConfigMap.get("certificatePath");
 			String certificatePassword = (String) tlsConfigMap.get("certificatePassword");
