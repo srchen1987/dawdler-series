@@ -81,9 +81,9 @@ public abstract class ResourceUtils {
 			return true;
 		}
 		try {
-			new URL(resourceLocation);
+			URI.create(resourceLocation).toURL();
 			return true;
-		} catch (MalformedURLException ex) {
+		} catch (IllegalArgumentException | MalformedURLException ex) {
 			return false;
 		}
 	}
@@ -113,8 +113,8 @@ public abstract class ResourceUtils {
 		}
 		try {
 			// try URL
-			return new URL(resourceLocation);
-		} catch (MalformedURLException ex) {
+			return URI.create(resourceLocation).toURL();
+		} catch (MalformedURLException | IllegalArgumentException ex) {
 			// no URL -> treat as file path
 			try {
 				return new File(resourceLocation).toURI().toURL();
@@ -153,8 +153,8 @@ public abstract class ResourceUtils {
 		}
 		try {
 			// try URL
-			return getFile(new URL(resourceLocation));
-		} catch (MalformedURLException ex) {
+			return getFile(URI.create(resourceLocation).toURL());
+		} catch (MalformedURLException | IllegalArgumentException ex) {
 			// no URL -> treat as file path
 			return new File(resourceLocation);
 		}
@@ -284,14 +284,14 @@ public abstract class ResourceUtils {
 		if (separatorIndex != -1) {
 			String jarFile = urlFile.substring(0, separatorIndex);
 			try {
-				return new URL(jarFile);
-			} catch (MalformedURLException ex) {
+				return URI.create(jarFile).toURL();
+			} catch (MalformedURLException | IllegalArgumentException ex) {
 				// Probably no protocol in original jar URL, like "jar:C:/mypath/myjar.jar".
 				// This usually indicates that the jar file resides in the file system.
 				if (!jarFile.startsWith("/")) {
 					jarFile = "/" + jarFile;
 				}
-				return new URL(FILE_URL_PREFIX + jarFile);
+				return URI.create(FILE_URL_PREFIX + jarFile).toURL();
 			}
 		} else {
 			return jarUrl;
@@ -319,11 +319,11 @@ public abstract class ResourceUtils {
 			// Tomcat's "war:file:...mywar.war*/WEB-INF/lib/myjar.jar!/myentry.txt"
 			String warFile = urlFile.substring(0, endIndex);
 			if (URL_PROTOCOL_WAR.equals(jarUrl.getProtocol())) {
-				return new URL(warFile);
+				return URI.create(warFile).toURL();
 			}
 			int startIndex = warFile.indexOf(WAR_URL_PREFIX);
 			if (startIndex != -1) {
-				return new URL(warFile.substring(startIndex + WAR_URL_PREFIX.length()));
+				return URI.create(warFile.substring(startIndex + WAR_URL_PREFIX.length())).toURL();
 			}
 		}
 

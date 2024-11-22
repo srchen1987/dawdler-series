@@ -46,7 +46,7 @@ public class UrlResource extends AbstractFileResolvingResource {
 
 	public UrlResource(String path) throws MalformedURLException {
 		this.uri = null;
-		this.url = new URL(path);
+		this.url = URI.create(path).toURL();
 		this.cleanedUrl = getCleanedUrl(this.url, path);
 	}
 
@@ -69,7 +69,7 @@ public class UrlResource extends AbstractFileResolvingResource {
 		String cleanedPath = StringUtils.cleanPath(originalPath);
 		if (!cleanedPath.equals(originalPath)) {
 			try {
-				return new URL(cleanedPath);
+				return URI.create(cleanedPath).toURL();
 			} catch (MalformedURLException ex) {
 			}
 		}
@@ -142,10 +142,12 @@ public class UrlResource extends AbstractFileResolvingResource {
 		if (relativePath.startsWith("/")) {
 			relativePath = relativePath.substring(1);
 		}
-		// # can appear in filenames, java.net.URL should not treat it as a fragment
 		relativePath = StringUtils.replace(relativePath, "#", "%23");
-		// Use the URL constructor for applying the relative path as a URL spec
-		return new URL(this.url, relativePath);
+		try {
+			return this.url.toURI().resolve(relativePath).toURL();
+		} catch (URISyntaxException ex) {
+			throw new MalformedURLException(ex.getMessage());
+		}
 	}
 
 	@Override
