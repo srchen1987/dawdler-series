@@ -1,7 +1,7 @@
 import com.anywide.dawdler.client.cluster.LoadBalance;
 import com.anywide.dawdler.client.cluster.impl.RandomLoadBalance;
 import com.anywide.dawdler.client.cluster.impl.RoundRobinLoadBalance;
-
+@SuppressWarnings("rawtypes")
 module dawdler.client {
 	requires java.base;
 	requires transitive dawdler.util;
