@@ -29,6 +29,8 @@ import org.apache.velocity.app.VelocityEngine;
 public class VelocityTemplateManager implements TemplateManager {
 	private static VelocityTemplateManager templateManager;
 	private final VelocityEngine engine = new VelocityEngine();
+	private String suffix;
+	private String templatePath;
 
 	private VelocityTemplateManager() {
 	}
@@ -41,10 +43,21 @@ public class VelocityTemplateManager implements TemplateManager {
 	}
 
 	public Template getTemplate(String vmName) {
+		if(templatePath != null){
+			vmName = templatePath + vmName;
+		}
+		if (suffix!= null) {
+			vmName = vmName + suffix;
+		}
 		return engine.getTemplate(vmName, "UTF-8");
 	}
 
 	public void init(Properties ps) {
+		templatePath = ps.getProperty("template.path");
+		if(templatePath != null && !templatePath.endsWith("/")){
+			templatePath = templatePath + "/";
+		}
+		suffix = ps.getProperty("template.suffix");
 		engine.init(ps);
 	}
 

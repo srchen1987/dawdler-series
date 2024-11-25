@@ -32,6 +32,8 @@ import java.util.zip.GZIPOutputStream;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
+import org.apache.velocity.runtime.RuntimeConstants;
+import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -184,14 +186,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 				logger.error("", e);
 			}
 		}
-		String templatePath = servletContext.getInitParameter("template-path");
 		VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
-		String path;
-		if (templatePath != null && !templatePath.trim().equals("")) {
-			path = servletContext.getRealPath("WEB-INF/" + templatePath);
-		} else {
-			path = servletContext.getRealPath("WEB-INF/template");
-		}
 
 		Properties ps = null;
 		try {
@@ -199,8 +194,8 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		} catch (Exception e) {
 			ps = new Properties();
 		}
-		ps.put("resource.loader.file.path", path);
-		ps.put("resource.loader.file.cache", true);
+		ps.setProperty(RuntimeConstants.RESOURCE_LOADERS, "class");
+        ps.setProperty("resource.loader.class.class", ClasspathResourceLoader.class.getName());
 		tm.init(ps);
 
 	}
