@@ -33,6 +33,7 @@ import com.anywide.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -56,26 +57,26 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 			}
 			return;
 		}
-		String tpath = null;
+		String tPath = null;
 		switch (wf.getStatus()) {
 		case SUCCESS:
-			tpath = wf.getTemplatePath();
+			tPath = wf.getTemplatePath();
 			break;
 		case ERROR:
-			tpath = wf.getErrorPage();
+			tPath = wf.getErrorPage();
 			break;
 		case REDIRECT:
-			tpath = wf.getForwardAndRedirectPath();
+			tPath = wf.getForwardAndRedirectPath();
 			try {
-				response.sendRedirect(tpath);
+				response.sendRedirect(tPath);
 			} catch (IOException e) {
 				logger.error("", e);
 			}
 			return;
 		case FORWARD:
-			tpath = wf.getForwardAndRedirectPath();
+			tPath = wf.getForwardAndRedirectPath();
 			try {
-				request.getRequestDispatcher(tpath).forward(request, response);
+				request.getRequestDispatcher(tPath).forward(request, response);
 			} catch (ServletException | IOException e) {
 				logger.error("", e);
 			}
@@ -86,12 +87,12 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 		try {
 			Map<String, Object> data = wf.getData();
 			if (data != null) {
-				Set<Entry<String, Object>> entrys = data.entrySet();
-				for (Entry<String, Object> entry : entrys) {
+				Set<Entry<String, Object>> entries = data.entrySet();
+				for (Entry<String, Object> entry : entries) {
 					request.setAttribute(entry.getKey(), entry.getValue());
 				}
 			}
-			request.getRequestDispatcher(path + tpath).forward(request, response);
+			request.getRequestDispatcher(path + tPath).forward(request, response);
 		} catch (ServletException | IOException e) {
 			logger.error("", e);
 		}
