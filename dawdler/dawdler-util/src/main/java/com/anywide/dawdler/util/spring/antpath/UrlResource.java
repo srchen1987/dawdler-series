@@ -45,9 +45,20 @@ public class UrlResource extends AbstractFileResolvingResource {
 	}
 
 	public UrlResource(String path) throws MalformedURLException {
-		this.uri = null;
-		this.url = URI.create(path).toURL();
+		URI uri;
+		URL url;
+		try {
+			uri = ResourceUtils.toURI(path);
+			url = uri.toURL();
+		} catch (URISyntaxException | IllegalArgumentException ex) {
+			uri = null;
+			url = ResourceUtils.toURL(path);
+		}
+
+		this.uri = uri;
+		this.url = url;
 		this.cleanedUrl = getCleanedUrl(this.url, path);
+		;
 	}
 
 	public UrlResource(String protocol, String location) throws MalformedURLException {
@@ -69,8 +80,8 @@ public class UrlResource extends AbstractFileResolvingResource {
 		String cleanedPath = StringUtils.cleanPath(originalPath);
 		if (!cleanedPath.equals(originalPath)) {
 			try {
-				return URI.create(cleanedPath).toURL();
-			} catch (MalformedURLException ex) {
+				return new URI(cleanedPath).toURL();
+			} catch (MalformedURLException | URISyntaxException ex) {
 			}
 		}
 		return originalUrl;
@@ -139,15 +150,11 @@ public class UrlResource extends AbstractFileResolvingResource {
 	}
 
 	protected URL createRelativeURL(String relativePath) throws MalformedURLException {
+		relativePath = StringUtils.replace(relativePath, "#", "%23");
 		if (relativePath.startsWith("/")) {
 			relativePath = relativePath.substring(1);
 		}
-		relativePath = StringUtils.replace(relativePath, "#", "%23");
-		try {
-			return this.url.toURI().resolve(relativePath).toURL();
-		} catch (URISyntaxException ex) {
-			throw new MalformedURLException(ex.getMessage());
-		}
+		return ResourceUtils.toRelativeURL(this.url, relativePath);
 	}
 
 	@Override

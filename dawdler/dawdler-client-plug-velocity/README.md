@@ -17,13 +17,14 @@ velocity模板的一个插件,目前升到最新版本2.3.(之前经历过1.6,1.
 
 ```properties
 velocimacro.library.autoreload=true
-resource.loader.cache=true
+resource.loader.cache=false
+resource.loader.class.cache=false
 resource.default_encoding=utf-8
 output.encoding=utf-8
-#resource.loaders=jar
-resource.loader.jar.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
-resource.loader.jar.cache=true
-runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDirect,com.anywide.dawdler.clientplug.velocity.direct.ControlDirect #自定义指令,需要扩展请参考velocity官方文档
+template.path=/templates/
+template.suffix=.vm
+#自定义指令,需要扩展请参考velocity官方文档
+runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDirect,com.anywide.dawdler.clientplug.velocity.direct.ControlDirect
 ```
 
 ### 3. dawdler内置常用的指令
@@ -102,21 +103,12 @@ export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
 
 ### 4. 关于模板路径的设置
 
-参考[VelocityDisplayPlug](src/main/java/com/anywide/dawdler/clientplug/web/plugs/impl/VelocityDisplayPlug.java)类中的init方法,在init方法中定义了模板的路径.
-具体代码：
+velocity.properties 文件中配置模板路径和后缀
 
-```java
-  String templatePath = servletContext.getInitParameter("template-path");
-  VelocityTemplateManager tm = VelocityTemplateManager.getInstance();
-  String path;
-  if (templatePath != null && !templatePath.trim().equals(""))
-   path = servletContext.getRealPath("WEB-INF/" + templatePath);
-  else
-   path = servletContext.getRealPath("WEB-INF/template");
-  
+```properties
+template.path=/templates/
+template.suffix=.vm
 ```
-
-如果在servletContext指定了初始化参数则按指定的来设置,如果没设置默认则为WEB-INF/template.
 
 ### 5. VelocityToolBox的使用
 
