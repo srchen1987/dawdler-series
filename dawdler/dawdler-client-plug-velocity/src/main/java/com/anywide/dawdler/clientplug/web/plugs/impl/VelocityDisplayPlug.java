@@ -56,14 +56,14 @@ import com.anywide.dawdler.util.PropertiesUtil;
  */
 public class VelocityDisplayPlug extends AbstractDisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(VelocityDisplayPlug.class);
-	private Map<String, VelocityToolBox> toolboxs = new HashMap<>();
+	private Map<String, VelocityToolBox> toolBoxes = new HashMap<>();
 
-	public Map<String, VelocityToolBox> getToolboxs() {
-		return toolboxs;
+	public Map<String, VelocityToolBox> getToolBoxes() {
+		return toolBoxes;
 	}
 
-	public void setToolboxs(Map<String, VelocityToolBox> toolboxs) {
-		this.toolboxs = toolboxs;
+	public void setToolBoxes(Map<String, VelocityToolBox> toolBoxes) {
+		this.toolBoxes = toolBoxes;
 	}
 
 	@Override
@@ -80,37 +80,37 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 			}
 			return;
 		}
-		String tpath = null;
+		String tPath = null;
 		switch (wf.getStatus()) {
-			case SUCCESS:
-				tpath = wf.getTemplatePath();
-				break;
-			case ERROR:
-				tpath = wf.getErrorPage();
-				break;
-			case REDIRECT:
-				tpath = wf.getForwardAndRedirectPath();
-				try {
-					response.sendRedirect(tpath);
-				} catch (IOException e) {
-					logger.error("", e);
-				}
-				return;
-			case FORWARD:
-				tpath = wf.getForwardAndRedirectPath();
-				try {
-					request.getRequestDispatcher(tpath).forward(request, response);
-				} catch (ServletException | IOException e) {
-					logger.error("", e);
-				}
-				return;
-			case STOP:
-				return;
-			default:
-				break;
+		case SUCCESS:
+			tPath = wf.getTemplatePath();
+			break;
+		case ERROR:
+			tPath = wf.getErrorPage();
+			break;
+		case REDIRECT:
+			tPath = wf.getForwardAndRedirectPath();
+			try {
+				response.sendRedirect(tPath);
+			} catch (IOException e) {
+				logger.error("", e);
+			}
+			return;
+		case FORWARD:
+			tPath = wf.getForwardAndRedirectPath();
+			try {
+				request.getRequestDispatcher(tPath).forward(request, response);
+			} catch (ServletException | IOException e) {
+				logger.error("", e);
+			}
+			return;
+		case STOP:
+			return;
+		default:
+			break;
 		}
 		try {
-			mergeTemplate(request, response, tpath, wf);
+			mergeTemplate(request, response, tPath, wf);
 		} catch (Exception e) {
 			logger.error("", e);
 			return;
@@ -135,8 +135,8 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 					context.put(key, obj);
 				}
 			}
-			if (!toolboxs.isEmpty()) {
-				Set<Entry<String, VelocityToolBox>> vts = toolboxs.entrySet();
+			if (!toolBoxes.isEmpty()) {
+				Set<Entry<String, VelocityToolBox>> vts = toolBoxes.entrySet();
 				for (Entry<String, VelocityToolBox> en : vts) {
 					context.put(en.getKey(), en.getValue());
 				}
@@ -162,17 +162,17 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 
 	@Override
 	public void init(ServletContext servletContext) {
-		Properties pstool = null;
+		Properties psTool = null;
 		try {
-			pstool = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties("toolboxs");
+			psTool = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties("toolBoxes");
 		} catch (Exception e) {
 			logger.error("", e);
 			return;
 		}
-		Set<Object> set = pstool.keySet();
+		Set<Object> set = psTool.keySet();
 		for (Object o : set) {
 			String name = o.toString();
-			String className = pstool.get(name).toString();
+			String className = psTool.get(name).toString();
 			try {
 				Class<?> c = Class.forName(className);
 				if (!VelocityToolBox.class.isAssignableFrom(c)) {
@@ -181,7 +181,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 				}
 				Constructor<?> cs = c.getConstructor(String.class);
 				VelocityToolBox obj = (VelocityToolBox) cs.newInstance(name);
-				toolboxs.put(name, obj);
+				toolBoxes.put(name, obj);
 			} catch (Exception e) {
 				logger.error("", e);
 			}
@@ -195,7 +195,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 			ps = new Properties();
 		}
 		ps.setProperty(RuntimeConstants.RESOURCE_LOADERS, "class");
-		ps.setProperty("resource.loader.class.class", ClasspathResourceLoader.class.getName());
+        ps.setProperty("resource.loader.class.class", ClasspathResourceLoader.class.getName());
 		tm.init(ps);
 
 	}
