@@ -38,7 +38,7 @@ runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDir
 ```html
 //其中~p 是一个标识 固定写法,用来传递动态页的标识
 //生成 首页 上一页 1 2 3 4 5 6 7 8 9 下一页 尾页
-#page("user/list.html?page=~p")
+#pages("user/list.html?page=~p")
 
 ```
 
@@ -46,7 +46,7 @@ runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDir
 
 ```html
 //生成 首页 上一页 1 2 3 4 5 6 7 8 9 下一页 尾页 增加额外参数visible
-#page("user/list.html?page=~p&visible=1")
+#pages("user/list.html?page=~p&visible=1")
 
 ```
 
@@ -54,7 +54,7 @@ runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDir
 
 ```html
 //adminStyle是自定义的一种样式,示例1、示例2中未传入样式则采用系统默认.
-#page("user/list.html?page=~p&visible=1","adminStyle")
+#pages("user/list.html?page=~p&visible=1","adminStyle")
 
 ```
 
@@ -73,12 +73,12 @@ runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDir
 ```java
 //adminStyle扩展实现
 
-export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
-    "<a class=\"prev\" href=\"" + CONTENTMARK + "\"></a>",
-    "<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a>",
-    "<strong><font color=\"red\">" + PMARK + "</font></strong>",
-    "<a class=\"nxt\" href=\"" + CONTENTMARK + "\"></a>",
-    "<span><a href=\"" + CONTENTMARK + "\">尾页</a></span>", null);
+export("adminStyle", "<span><a href=\"" + CONTENT_MARK + "\">首页</a></span>",
+    "<a class=\"prev\" href=\"" + CONTENT_MARK + "\"></a>",
+    "<a href=\"" + CONTENT_MARK + "\">" + P_MARK + "</a>",
+    "<strong><font color=\"red\">" + P_MARK + "</font></strong>",
+    "<a class=\"nxt\" href=\"" + CONTENT_MARK + "\"></a>",
+    "<span><a href=\"" + CONTENT_MARK + "\">尾页</a></span>", null);
 
 ```
 
@@ -133,9 +133,9 @@ public class MyTool extends VelocityToolBox{
 }
 ```
 
-2、在resources下创建toolboxs.properties文件并配置,properties中的key为别名,value为类名.
+2、在resources下创建toolBoxes.properties文件并配置,properties中的key为别名,value为类名.
 
-toolboxs.properties 支持多环境配置 参考[统一配置中心与多环境支持](../../doc/dawdler-profiles.active-README.md).
+toolBoxes.properties 支持多环境配置 参考[统一配置中心与多环境支持](../../doc/dawdler-profiles.active-README.md).
 
 ```properties
 myTool=com.anywide.yyg.user.velocity.tool.MyTool

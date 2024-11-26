@@ -42,44 +42,44 @@ public class SelectControl extends Control {
 			throw new NullPointerException("show item can't null!");
 		}
 		StringBuffer sbt = new StringBuffer(32);
-		sbt.append(ControlContent.SELECTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
-				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
-				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
+		sbt.append(ControlContent.SELECT_START.replace(ControlContent.CONTROL_NAME_REPLACE, controlName)
+				.replace(ControlContent.CONTROL_TYPE_REPLACE, controlType)
+				.replace(ControlContent.VIEW_NAME_REPLACE, viewName));
 		if (css != null && !css.trim().equals("")) {
-			sbt.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
+			sbt.append(ControlContent.TAG_CSS.replace(ControlContent.CSS_REPLACE, css));
 		}
 		if (validateRule != null && !validateRule.trim().equals("")) {
-			sbt.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
+			sbt.append(ControlContent.TAG_VALIDATE.replace(ControlContent.VALIDATE_RULE_REPLACE, validateRule));
 		}
 		if (additional != null) {
 			sbt.append(" " + additional);
 		}
 		sbt.append(">");
-		String[] showitem = showItems.split(",");
+		String[] showItem = showItems.split(",");
 		StringBuffer sb = new StringBuffer(150);
-		sb.append(ControlContent.OPTIONSTART.replace(ControlContent.VALUEREPLACE, "")
-				.replace(ControlContent.CHECKEDREPLACE, value == null ? ControlContent.SELECTED : ""));
+		sb.append(ControlContent.OPTION_START.replace(ControlContent.VALUE_REPLACE, "")
+				.replace(ControlContent.CHECKED_REPLACE, value == null ? ControlContent.SELECTED : ""));
 		sb.append("请选择");
-		sb.append(ControlContent.OPTIONOVER);
-		for (int i = 0; i < showitem.length; i++) {
-			String optionstart = ControlContent.OPTIONSTART.replace(ControlContent.VALUEREPLACE, "" + i);
+		sb.append(ControlContent.OPTION_OVER);
+		for (int i = 0; i < showItem.length; i++) {
+			String optionStart = ControlContent.OPTION_START.replace(ControlContent.VALUE_REPLACE, "" + i);
 			if (value == null) {
-				optionstart = optionstart.replace(ControlContent.CHECKEDREPLACE, "");
+				optionStart = optionStart.replace(ControlContent.CHECKED_REPLACE, "");
 			} else {
 				String[] values = value.split(",");
 				for (String v : values) {
 					if (v.equals("" + i)) {
-						optionstart = optionstart.replace(ControlContent.CHECKEDREPLACE, ControlContent.SELECTED);
+						optionStart = optionStart.replace(ControlContent.CHECKED_REPLACE, ControlContent.SELECTED);
 					} else {
-						optionstart = optionstart.replace(ControlContent.CHECKEDREPLACE, "");
+						optionStart = optionStart.replace(ControlContent.CHECKED_REPLACE, "");
 					}
 				}
 			}
-			sb.append(optionstart);
-			sb.append(showitem[i]);
-			sb.append(ControlContent.OPTIONOVER);
+			sb.append(optionStart);
+			sb.append(showItem[i]);
+			sb.append(ControlContent.OPTION_OVER);
 		}
-		sbt.append(sb.toString() + ControlContent.SELECTOVER);
+		sbt.append(sb.toString() + ControlContent.SELECT_OVER);
 		return sbt.toString();
 	}
 }
