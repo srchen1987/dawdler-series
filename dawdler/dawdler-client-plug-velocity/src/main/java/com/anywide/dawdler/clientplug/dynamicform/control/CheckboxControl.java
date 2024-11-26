@@ -43,16 +43,16 @@ public class CheckboxControl extends Control {
 		String[] showItem = showItems.split(",");
 		StringBuffer sb = new StringBuffer(150);
 		for (int i = 0; i < showItem.length; i++) {
-			sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
-					.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
-					.replace(ControlContent.VIEWNAMEREPLACE, viewName));
+			sb.append(ControlContent.INPUT_START.replace(ControlContent.CONTROL_NAME_REPLACE, controlName)
+					.replace(ControlContent.CONTROL_TYPE_REPLACE, controlType)
+					.replace(ControlContent.VIEW_NAME_REPLACE, viewName));
 			if (css != null && !css.trim().equals("")) {
-				sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
+				sb.append(ControlContent.TAG_CSS.replace(ControlContent.CSS_REPLACE, css));
 			}
 			if (validateRule != null && !validateRule.trim().equals("")) {
-				sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
+				sb.append(ControlContent.TAG_VALIDATE.replace(ControlContent.VALIDATE_RULE_REPLACE, validateRule));
 			}
-			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, i + ""));
+			sb.append(ControlContent.TAG_VALUE.replace(ControlContent.VALUE_REPLACE, i + ""));
 			if (value != null) {
 				for (String v : value.split(",")) {
 					if (v.equals("" + i)) {
@@ -63,7 +63,7 @@ public class CheckboxControl extends Control {
 			if (additional != null) {
 				sb.append(" " + additional);
 			}
-			sb.append(ControlContent.INPUTEND);
+			sb.append(ControlContent.INPUT_END);
 			sb.append(showItem[i] + "   ");
 		}
 		return sb.toString();

@@ -38,15 +38,15 @@ public class TextareaControl extends Control {
 		String value = tag.getValue();
 		String additional = tag.getAdditional();
 		StringBuilder sb = new StringBuilder(128);
-		sb.append(ControlContent.TEXTAREASTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
-				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
-				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
+		sb.append(ControlContent.TEXTAREA_START.replace(ControlContent.CONTROL_NAME_REPLACE, controlName)
+				.replace(ControlContent.CONTROL_TYPE_REPLACE, controlType)
+				.replace(ControlContent.VIEW_NAME_REPLACE, viewName));
 		if (css != null && !css.trim().equals("")) {
-			sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
+			sb.append(ControlContent.TAG_CSS.replace(ControlContent.CSS_REPLACE, css));
 		}
 
 		if (validateRule != null && !validateRule.trim().equals("")) {
-			sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
+			sb.append(ControlContent.TAG_VALIDATE.replace(ControlContent.VALIDATE_RULE_REPLACE, validateRule));
 		}
 
 		if (additional != null) {
@@ -56,7 +56,7 @@ public class TextareaControl extends Control {
 		if (value != null && !value.trim().equals("")) {
 			sb.append(value);
 		}
-		sb.append(ControlContent.TEXTAREAOVER);
+		sb.append(ControlContent.TEXTAREA_OVER);
 		return sb.toString();
 	}
 
