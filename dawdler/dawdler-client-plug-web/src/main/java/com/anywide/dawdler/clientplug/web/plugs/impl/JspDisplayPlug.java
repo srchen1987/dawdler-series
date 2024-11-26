@@ -33,7 +33,6 @@ import com.anywide.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -59,30 +58,30 @@ public class JspDisplayPlug extends AbstractDisplayPlug {
 		}
 		String tPath = null;
 		switch (wf.getStatus()) {
-		case SUCCESS:
-			tPath = wf.getTemplatePath();
-			break;
-		case ERROR:
-			tPath = wf.getErrorPage();
-			break;
-		case REDIRECT:
-			tPath = wf.getForwardAndRedirectPath();
-			try {
-				response.sendRedirect(tPath);
-			} catch (IOException e) {
-				logger.error("", e);
-			}
-			return;
-		case FORWARD:
-			tPath = wf.getForwardAndRedirectPath();
-			try {
-				request.getRequestDispatcher(tPath).forward(request, response);
-			} catch (ServletException | IOException e) {
-				logger.error("", e);
-			}
-			return;
-		case STOP:
-			return;
+			case SUCCESS:
+				tPath = wf.getTemplatePath();
+				break;
+			case ERROR:
+				tPath = wf.getErrorPage();
+				break;
+			case REDIRECT:
+				tPath = wf.getForwardAndRedirectPath();
+				try {
+					response.sendRedirect(tPath);
+				} catch (IOException e) {
+					logger.error("", e);
+				}
+				return;
+			case FORWARD:
+				tPath = wf.getForwardAndRedirectPath();
+				try {
+					request.getRequestDispatcher(tPath).forward(request, response);
+				} catch (ServletException | IOException e) {
+					logger.error("", e);
+				}
+				return;
+			case STOP:
+				return;
 		}
 		try {
 			Map<String, Object> data = wf.getData();
