@@ -22,27 +22,27 @@ package com.anywide.dawdler.clientplug.dynamicform.control;
  * 常量类
  */
 public interface ControlContent {
-	String CONTROLNAMEREPLACE = "controlNamereplace";
-	String CONTROLTYPEREPLACE = "controlTypereplace";
-	String CSSREPLACE = "cssreplace";
-	String VALIDATERULEREPLACE = "validateRulereplace";
-	String VALUEREPLACE = "valuereplace";
-	String VIEWNAMEREPLACE = "viewNamereplace";
-	String TAGVALUE = " value=\"" + VALUEREPLACE + "\"";
-	String TAGVALIDATE = " validateRule=\"" + VALIDATERULEREPLACE + "\"";
-	String TAGCSS = " style=\"" + CSSREPLACE + "\"";
+	String CONTROL_NAME_REPLACE = "controlNameReplace";
+	String CONTROL_TYPE_REPLACE = "controlTypeReplace";
+	String CSS_REPLACE = "cssReplace";
+	String VALIDATE_RULE_REPLACE = "validateRuleReplace";
+	String VALUE_REPLACE = "valueReplace";
+	String VIEW_NAME_REPLACE = "viewNameReplace";
+	String TAG_VALUE = " value=\"" + VALUE_REPLACE + "\"";
+	String TAG_VALIDATE = " validateRule=\"" + VALIDATE_RULE_REPLACE + "\"";
+	String TAG_CSS = " style=\"" + CSS_REPLACE + "\"";
 	String CHECKED = " checked=\"checked\"";
 	String SELECTED = " selected";
-	String CHECKEDREPLACE = "checkedreplace";
-	String INPUTSTART = "<input type=\"" + CONTROLTYPEREPLACE + "\"" + " name=\"" + CONTROLNAMEREPLACE + "\"" + " id=\""
-			+ CONTROLNAMEREPLACE + "\" viewName=\"" + VIEWNAMEREPLACE + "\"";
-	String INPUTEND = "/>";
-	String SELECTSTART = "<select name=\"" + CONTROLNAMEREPLACE + "\" id=\"" + CONTROLNAMEREPLACE + "\" viewName=\""
-			+ VIEWNAMEREPLACE + "\"";
-	String SELECTOVER = "</select>";
-	String OPTIONSTART = "<option value=\"" + VALUEREPLACE + "\"" + CHECKEDREPLACE + ">";
-	String OPTIONOVER = "</option>";
-	String TEXTAREASTART = "<textarea name=\"" + CONTROLNAMEREPLACE + "\"" + " id=\"" + CONTROLNAMEREPLACE
-			+ "\" viewName=\"" + VIEWNAMEREPLACE + "\"";
-	String TEXTAREAOVER = "</textarea>";
+	String CHECKED_REPLACE = "checkedReplace";
+	String INPUT_START = "<input type=\"" + CONTROL_TYPE_REPLACE + "\"" + " name=\"" + CONTROL_NAME_REPLACE + "\"" + " id=\""
+			+ CONTROL_NAME_REPLACE + "\" viewName=\"" + VIEW_NAME_REPLACE + "\"";
+	String INPUT_END = "/>";
+	String SELECT_START = "<select name=\"" + CONTROL_NAME_REPLACE + "\" id=\"" + CONTROL_NAME_REPLACE + "\" viewName=\""
+			+ VIEW_NAME_REPLACE + "\"";
+	String SELECT_OVER = "</select>";
+	String OPTION_START = "<option value=\"" + VALUE_REPLACE + "\"" + CHECKED_REPLACE + ">";
+	String OPTION_OVER = "</option>";
+	String TEXTAREA_START = "<textarea name=\"" + CONTROL_NAME_REPLACE + "\"" + " id=\"" + CONTROL_NAME_REPLACE
+			+ "\" viewName=\"" + VIEW_NAME_REPLACE + "\"";
+	String TEXTAREA_OVER = "</textarea>";
 }
