@@ -38,22 +38,22 @@ public class TextControl extends Control {
 		String value = tag.getValue();
 		String additional = tag.getAdditional();
 		StringBuilder sb = new StringBuilder(128);
-		sb.append(ControlContent.INPUTSTART.replace(ControlContent.CONTROLNAMEREPLACE, controlName)
-				.replace(ControlContent.CONTROLTYPEREPLACE, controlType)
-				.replace(ControlContent.VIEWNAMEREPLACE, viewName));
+		sb.append(ControlContent.INPUT_START.replace(ControlContent.CONTROL_NAME_REPLACE, controlName)
+				.replace(ControlContent.CONTROL_TYPE_REPLACE, controlType)
+				.replace(ControlContent.VIEW_NAME_REPLACE, viewName));
 		if (css != null && !css.trim().equals("")) {
-			sb.append(ControlContent.TAGCSS.replace(ControlContent.CSSREPLACE, css));
+			sb.append(ControlContent.TAG_CSS.replace(ControlContent.CSS_REPLACE, css));
 		}
 		if (validateRule != null && !validateRule.trim().equals("")) {
-			sb.append(ControlContent.TAGVALIDATE.replace(ControlContent.VALIDATERULEREPLACE, validateRule));
+			sb.append(ControlContent.TAG_VALIDATE.replace(ControlContent.VALIDATE_RULE_REPLACE, validateRule));
 		}
 		if (value != null && !value.trim().equals("")) {
-			sb.append(ControlContent.TAGVALUE.replace(ControlContent.VALUEREPLACE, value));
+			sb.append(ControlContent.TAG_VALUE.replace(ControlContent.VALUE_REPLACE, value));
 		}
 		if (additional != null) {
 			sb.append(" " + additional);
 		}
-		sb.append(ControlContent.INPUTEND);
+		sb.append(ControlContent.INPUT_END);
 		return sb.toString();
 	}
 }

@@ -46,14 +46,14 @@ public class PageDirect extends Directive {
 	}
 
 	@Override
-	public boolean render(InternalContextAdapter arg0, Writer arg1, Node arg2)
+	public boolean render(InternalContextAdapter context, Writer writer, Node node)
 			throws IOException, ResourceNotFoundException, ParseErrorException, MethodInvocationException {
-		String stylename = null;
-		String linkcontent = arg2.jjtGetChild(0).value(arg0) + "";
-		if (arg2.jjtGetNumChildren() > 1) {
-			stylename = arg2.jjtGetChild(1).value(arg0) + "";
+		String styleName = null;
+		String linkContent = node.jjtGetChild(0).value(context) + "";
+		if (node.jjtGetNumChildren() > 1) {
+			styleName = node.jjtGetChild(1).value(context) + "";
 		}
-		Object pageObj = arg0.get("page");
+		Object pageObj = context.get("page");
 		Page page = null;
 		if (pageObj != null) {
 			page = (Page) pageObj;
@@ -61,7 +61,7 @@ public class PageDirect extends Directive {
 		if (page == null) {
 			throw new ParseErrorException("not set page in action !");
 		}
-		PageStyle.printPage(page.getPageOn(), page.getPageCount(), page.getPageNumber(), linkcontent, stylename, arg1);
+		PageStyle.printPage(page.getPageOn(), page.getPageCount(), page.getPageNumber(), linkContent, styleName, writer);
 		return true;
 	}
 

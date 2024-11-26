@@ -27,36 +27,36 @@ import java.util.Map;
  * 分页样式
  */
 public class PageStyle {
-	public static final String PMARK = "~p";
-	public static final String PAGEONMARK = "(pageOne)";
-	public static final String PAGECOUNTMARK = "(pageCount)";
-	public static final String CONTENTMARK = "~content_mark";
+	public static final String P_MARK = "~p";
+	public static final String PAGE_ON_MARK = "(pageOne)";
+	public static final String PAGE_COUNT_MARK = "(pageCount)";
+	public static final String CONTENT_MARK = "~content_mark";
 
 	private static final Map<String, PageStyleContent> STYLE_CONTENTS = new HashMap<>();
 	private static final PageStyle PAGE_STYLE = new PageStyle();
 
 	static {
-		PageStyleContent pcont = PAGE_STYLE.new PageStyleContent();
-		pcont.setFirstpage("<a href=\"" + CONTENTMARK + "\">首页</a> ");
-		pcont.setUppage("<a href=\"" + CONTENTMARK + "\">上一页</a> ");
-		pcont.setPages("<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a> ");
-		pcont.setPageOn(PMARK + " ");
-		pcont.setLastpage("<a href=\"" + CONTENTMARK + "\">下一页</a> ");
-		pcont.setEndpage("<a href=\"" + CONTENTMARK + "\">尾页</a>");
-		STYLE_CONTENTS.put("default", pcont);
-		export("adminStyle", "<span><a href=\"" + CONTENTMARK + "\">首页</a></span>",
-				"<a class=\"prev\" href=\"" + CONTENTMARK + "\"></a>",
-				"<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a>",
-				"<strong><font color=\"red\">" + PMARK + "</font></strong>",
-				"<a class=\"nxt\" href=\"" + CONTENTMARK + "\"></a>",
-				"<span><a href=\"" + CONTENTMARK + "\">尾页</a></span>", null);
-		export("bbsStyle", "<a href=\"" + CONTENTMARK + "\">首页</a>", "<a href=\"" + CONTENTMARK + "\">上一页</a>",
-				"<a href=\"" + CONTENTMARK + "\">" + PMARK + "</a>", "<strong>" + PMARK + "</strong>",
-				"<a href=\"" + CONTENTMARK + "\">下一页</a>", "<a href=\"" + CONTENTMARK + "\">尾页</a>",
-				"<label><input type=\"text\" value=\"" + PAGEONMARK
-						+ "\" onkeydown=\"if(event.keyCode==13) {window.location='" + CONTENTMARK
+		PageStyleContent pageStyleContent = PAGE_STYLE.new PageStyleContent();
+		pageStyleContent.setFirstPage("<a href=\"" + CONTENT_MARK + "\">首页</a> ");
+		pageStyleContent.setUpPage("<a href=\"" + CONTENT_MARK + "\">上一页</a> ");
+		pageStyleContent.setPages("<a href=\"" + CONTENT_MARK + "\">" + P_MARK + "</a> ");
+		pageStyleContent.setPageOn(P_MARK + " ");
+		pageStyleContent.setLastPage("<a href=\"" + CONTENT_MARK + "\">下一页</a> ");
+		pageStyleContent.setEndPage("<a href=\"" + CONTENT_MARK + "\">尾页</a>");
+		STYLE_CONTENTS.put("default", pageStyleContent);
+		export("adminStyle", "<span><a href=\"" + CONTENT_MARK + "\">首页</a></span>",
+				"<a class=\"prev\" href=\"" + CONTENT_MARK + "\"></a>",
+				"<a href=\"" + CONTENT_MARK + "\">" + P_MARK + "</a>",
+				"<strong><font color=\"red\">" + P_MARK + "</font></strong>",
+				"<a class=\"nxt\" href=\"" + CONTENT_MARK + "\"></a>",
+				"<span><a href=\"" + CONTENT_MARK + "\">尾页</a></span>", null);
+		export("bbsStyle", "<a href=\"" + CONTENT_MARK + "\">首页</a>", "<a href=\"" + CONTENT_MARK + "\">上一页</a>",
+				"<a href=\"" + CONTENT_MARK + "\">" + P_MARK + "</a>", "<strong>" + P_MARK + "</strong>",
+				"<a href=\"" + CONTENT_MARK + "\">下一页</a>", "<a href=\"" + CONTENT_MARK + "\">尾页</a>",
+				"<label><input type=\"text\" value=\"" + PAGE_ON_MARK
+						+ "\" onkeydown=\"if(event.keyCode==13) {window.location='" + CONTENT_MARK
 						+ "'; doane(event);}\" title=\"输入页码，按回车快速跳转\" size=\"2\" class=\"px\" name=\"custompage\"><span title=\"共 "
-						+ PAGECOUNTMARK + "页\"> / " + PAGECOUNTMARK + " 页</span></label>");
+						+ PAGE_COUNT_MARK + "页\"> / " + PAGE_COUNT_MARK + " 页</span></label>");
 	}
 
 	private PageStyle() {
@@ -67,42 +67,42 @@ public class PageStyle {
 		return PAGE_STYLE;
 	}
 
-	public static void printPage(int pageOn, int pageCount, int pagenumber, String linkcontent, String stylename,
+	public static void printPage(int pageOn, int pageCount, int pageNumber, String linkContent, String styleName,
 			Writer out) throws IOException {
-		PageStyleContent pc = getPageStyle().getPageStyleContent(stylename);
+		PageStyleContent pc = getPageStyle().getPageStyleContent(styleName);
 		int start = 1;
 		int end;
 		if (pageOn < 0) {
 			pageOn = 1;
 		}
-		if (pagenumber > pageCount) {
-			pagenumber = pageCount;
+		if (pageNumber > pageCount) {
+			pageNumber = pageCount;
 		}
 		if (pageOn > pageCount) {
 			pageOn = pageCount;
 		}
-		int pagenumber2 = pagenumber / 2;// 取 pagenumber的一半
-		boolean sig = pagenumber % 2 == 0;// 取余是否为整数
-		if (pageOn > pagenumber2) {// 如果当前页大于了 pagenumber的一半
-			start = pageOn - pagenumber2;// 起始值 从 pageOn减去pagenumber2的数开始
+		int pageNumber2 = pageNumber / 2;// 取 pageNumber的一半
+		boolean sig = pageNumber % 2 == 0;// 取余是否为整数
+		if (pageOn > pageNumber2) {// 如果当前页大于了 pageNumber的一半
+			start = pageOn - pageNumber2;// 起始值 从 pageOn减去pageNumber2的数开始
 			if (sig) {
 				start += 1;// 如果没有余数 起始值加一
 			}
 		}
-		if (pageOn + pagenumber2 > pageCount) {// 如果 当前页面加上pagenumber2大于了总页数
-			start -= (pageOn + pagenumber2) - pageCount;// 起始值减去 （当前页数加上pagenumber2） 减去 pageCount的值
+		if (pageOn + pageNumber2 > pageCount) {// 如果 当前页面加上pageNumber2大于了总页数
+			start -= (pageOn + pageNumber2) - pageCount;// 起始值减去 （当前页数加上pageNumber2） 减去 pageCount的值
 			if (start < 1) {
 				start = 1;// 起始值小于1则等于1
 			}
 			end = pageCount;// 结束值为 总页数
 		} else {
-			end = pageOn + pagenumber2;
-			if (pageOn <= pagenumber2) {
-				end += pagenumber2 - (pageOn - 1);
+			end = pageOn + pageNumber2;
+			if (pageOn <= pageNumber2) {
+				end += pageNumber2 - (pageOn - 1);
 			}
 			if (sig) {
-				if (end - start < pagenumber) {
-					end += pagenumber - (end - start);// 最主要就是这块比较难理解 因为上面的判断 if(sig)start+=1; 为了 将大数后移一位 在这里找平
+				if (end - start < pageNumber) {
+					end += pageNumber - (end - start);// 最主要就是这块比较难理解 因为上面的判断 if(sig)start+=1; 为了 将大数后移一位 在这里找平
 				}
 				end -= 1;
 			}
@@ -112,39 +112,40 @@ public class PageStyle {
 			}
 		}
 		if (pageOn > 1) {
-			out.write(pc.getFirstpage(linkcontent, 1));
-			out.write(pc.getUppage(linkcontent, (pageOn - 1)));
+			out.write(pc.getFirstPage(linkContent, 1));
+			out.write(pc.getUpPage(linkContent, (pageOn - 1)));
 		}
 		if (pageCount > 1) {
 			for (; start <= end; start++) {
 				if (start == pageOn) {
 					out.write(pc.getPageOn(pageOn));
 				} else {
-					out.write(pc.getPages(linkcontent, start));
+					out.write(pc.getPages(linkContent, start));
 				}
 			}
 		}
 		if (pageOn < pageCount) {
-			out.write(pc.getLastpage(linkcontent, (pageOn + 1)));
-			out.write(pc.getEndpage(linkcontent, pageCount));
+			out.write(pc.getLastPage(linkContent, (pageOn + 1)));
+			out.write(pc.getEndPage(linkContent, pageCount));
 		}
-		String steppage = pc.getSteppage(linkcontent, pageOn, pageCount);
-		if (steppage != null) {
-			out.write(steppage);
+		String stepPage = pc.getStepPage(linkContent, pageOn, pageCount);
+		if (stepPage != null) {
+			out.write(stepPage);
 		}
+		out.flush();
 	}
 
 	public static void export(String prefix, String first, String up, String pages, String pageOn, String last,
 			String end, String stepPage) {
-		PageStyleContent pcont = PAGE_STYLE.new PageStyleContent();
-		pcont.setFirstpage(first);
-		pcont.setUppage(up);
-		pcont.setPages(pages);
-		pcont.setPageOn(pageOn);
-		pcont.setLastpage(last);
-		pcont.setEndpage(end);
-		pcont.setSteppage(stepPage);
-		STYLE_CONTENTS.put(prefix, pcont);
+		PageStyleContent pageStyleContent = PAGE_STYLE.new PageStyleContent();
+		pageStyleContent.setFirstPage(first);
+		pageStyleContent.setUpPage(up);
+		pageStyleContent.setPages(pages);
+		pageStyleContent.setPageOn(pageOn);
+		pageStyleContent.setLastPage(last);
+		pageStyleContent.setEndPage(end);
+		pageStyleContent.setStepPage(stepPage);
+		STYLE_CONTENTS.put(prefix, pageStyleContent);
 
 	}
 
@@ -152,11 +153,11 @@ public class PageStyle {
 		return STYLE_CONTENTS.get("default");
 	}
 
-	public PageStyleContent getPageStyleContent(String stylename) {
-		if (stylename == null) {
+	public PageStyleContent getPageStyleContent(String styleName) {
+		if (styleName == null) {
 			return getPageStyleContentDefault();
 		}
-		PageStyleContent pc = STYLE_CONTENTS.get(stylename);
+		PageStyleContent pc = STYLE_CONTENTS.get(styleName);
 		if (pc == null) {
 			return getPageStyleContentDefault();
 		}
@@ -166,74 +167,74 @@ public class PageStyle {
 
 	public class PageStyleContent {
 		private String pageOn;// 当前页
-		private String firstpage;// 首页
-		private String uppage;// 上一页
+		private String firstPage;// 首页
+		private String upPage;// 上一页
 		private String pages;// 循环中的页面
-		private String lastpage;// 下一页
-		private String endpage;// 结束页
-		private String steppage;// 追加
+		private String lastPage;// 下一页
+		private String endPage;// 结束页
+		private String stepPage;// 追加
 
 		public String getPageOn(int pageOn) {
-			return this.pageOn.replace(PMARK, pageOn + "");
+			return this.pageOn.replace(P_MARK, pageOn + "");
 		}
 
 		public void setPageOn(String pageOn) {
 			this.pageOn = pageOn;
 		}
 
-		public String getSteppage(String linkcontent, int pageOn, int pageCount) {
-			return steppage != null
-					? steppage.replace(CONTENTMARK, linkcontent).replace(PMARK, "'+this.value+'")
-							.replace(PAGEONMARK, pageOn + "").replace(PAGECOUNTMARK, pageCount + "")
+		public String getStepPage(String linkContent, int pageOn, int pageCount) {
+			return stepPage != null
+					? stepPage.replace(CONTENT_MARK, linkContent).replace(P_MARK, "'+this.value+'")
+							.replace(PAGE_ON_MARK, pageOn + "").replace(PAGE_COUNT_MARK, pageCount + "")
 					: null;
 		}
 
-		public void setSteppage(String steppage) {
-			this.steppage = steppage;
+		public void setStepPage(String stepPage) {
+			this.stepPage = stepPage;
 		}
 
-		public String getFirstpage(String linkcontent, int page) {
-			return replaceLinkMark(firstpage, linkcontent, page);
+		public String getFirstPage(String linkContent, int page) {
+			return replaceLinkMark(firstPage, linkContent, page);
 		}
 
-		public void setFirstpage(String firstpage) {
-			this.firstpage = firstpage;
+		public void setFirstPage(String firstPage) {
+			this.firstPage = firstPage;
 		}
 
-		public String getUppage(String linkcontent, int page) {
-			return replaceLinkMark(uppage, linkcontent, page);
+		public String getUpPage(String linkContent, int page) {
+			return replaceLinkMark(upPage, linkContent, page);
 		}
 
-		public void setUppage(String uppage) {
-			this.uppage = uppage;
+		public void setUpPage(String upPage) {
+			this.upPage = upPage;
 		}
 
-		public String getPages(String linkcontent, int page) {
-			return replaceLinkMark(pages, linkcontent, page);
+		public String getPages(String linkContent, int page) {
+			return replaceLinkMark(pages, linkContent, page);
 		}
 
 		public void setPages(String pages) {
 			this.pages = pages;
 		}
 
-		public String getLastpage(String linkcontent, int page) {
-			return replaceLinkMark(lastpage, linkcontent, page);
+		public String getLastPage(String linkContent, int page) {
+			return replaceLinkMark(lastPage, linkContent, page);
 		}
 
-		public void setLastpage(String lastpage) {
-			this.lastpage = lastpage;
+		public void setLastPage(String lastPage) {
+			this.lastPage = lastPage;
 		}
 
-		public String getEndpage(String linkcontent, int page) {
-			return replaceLinkMark(endpage, linkcontent, page);
+		public String getEndPage(String linkContent, int page) {
+			return replaceLinkMark(endPage, linkContent, page);
 		}
 
-		public void setEndpage(String endpage) {
-			this.endpage = endpage;
+		public void setEndPage(String endPage) {
+			this.endPage = endPage;
 		}
-		
-		private String replaceLinkMark(String content, String linkcontent, int page) {
-			return content.replace(CONTENTMARK, linkcontent).replace(PMARK, "" + page);
+
+		private String replaceLinkMark(String content, String linkContent, int page) {
+			return content.replace(CONTENT_MARK, linkContent).replace(P_MARK, "" + page);
 		}
 	}
 }

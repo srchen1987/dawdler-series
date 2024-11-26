@@ -24,7 +24,7 @@ package com.anywide.dawdler.clientplug.velocity;
 public class ControlTag /* extends TagSupport */ {
 	private String controlName; // 前台控件名称
 	private String viewName; // 前台显示名称
-	private String controlType; // 控件的类型，如text,hiden,password,textarea,radio,checkbox,select等
+	private String controlType; // 控件的类型，如text,hidden,password,textarea,radio,checkbox,select等
 	private String showItems;// 显示项目
 	private String value;// 值
 	private String validateRule; // 验证规则
@@ -33,7 +33,7 @@ public class ControlTag /* extends TagSupport */ {
 	private String additional; // 追加信息
 	private boolean radioDefault;// 为radio类型时默认选中第一位
 	private boolean autoAddViewName;// 是否自动添加前面的viewName
-	private boolean autoAddViewDescription;// 是否自动添加后面的viewdescription
+	private boolean autoAddViewDescription;// 是否自动添加后面的viewDescription
 
 	public String getControlName() {
 		return controlName;
