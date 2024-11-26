@@ -102,7 +102,7 @@ public class WebValidateExecutor {
 				}
 				sb.append(JsonProcessUtil.beanToJson(list));
 				sb.append(");\n");
-				sb.append("sir_validator.buildFormValidate($formid);");
+				sb.append("sir_validator.buildFormValidate($formId);");
 				System.out.println("######################################");
 				System.out.println(sb.toString());
 				System.out.println("######################################");

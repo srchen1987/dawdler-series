@@ -25,18 +25,18 @@ public class ViewControllerContext {
 	private ViewControllerContext() {
 	}
 
-	private static final ThreadLocal<ViewForward> VIEWFORWARD = new ThreadLocal<>();
+	private static final ThreadLocal<ViewForward> VIEW_FORWARD = new ThreadLocal<>();
 
 	public static ViewForward getViewForward() {
-		return VIEWFORWARD.get();
+		return VIEW_FORWARD.get();
 	}
 
 	static void setViewForward(ViewForward vd) {
-		VIEWFORWARD.set(vd);
+		VIEW_FORWARD.set(vd);
 	}
 
 	public static void removeViewForward() {
-		VIEWFORWARD.remove();
+		VIEW_FORWARD.remove();
 	}
 
 }
