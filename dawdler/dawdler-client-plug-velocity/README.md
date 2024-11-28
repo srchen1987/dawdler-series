@@ -155,3 +155,22 @@ myTool=com.anywide.yyg.user.velocity.tool.MyTool
 
 </html> 
 ```
+
+### 6. controller中使用velocity
+
+```java
+	@ResponseBody
+	@RequestMapping(value = "/list.html", method = RequestMethod.GET, viewType = ViewType.velocity)
+	public void list(Integer pageOn, Integer hostId, ViewForward viewForward) {
+		if (pageOn == null) {
+			pageOn = 1;
+		}
+		viewForward.setTemplatePath("/vm/list");
+		PageResult<List<Vm>> pageResult = vmService.selectPageList(hostId, pageOn, 10);
+		Map<String, Object> data = new HashMap<>();
+		data.put("data", pageResult.getData());
+		data.put("page", pageResult.getPage());
+		viewForward.setData(data);
+	}
+  ```
+  
