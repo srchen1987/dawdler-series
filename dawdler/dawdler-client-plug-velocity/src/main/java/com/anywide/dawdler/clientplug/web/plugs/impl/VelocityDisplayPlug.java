@@ -33,15 +33,15 @@ import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.context.Context;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.velocity.VelocityToolBox;
+import com.anywide.dawdler.clientplug.velocity.resource.loader.DawdlerVelocityResourceLoader;
+import com.anywide.dawdler.clientplug.velocity.template.manager.VelocityTemplateManager;
 import com.anywide.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
-import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
 import com.anywide.dawdler.util.PropertiesUtil;
 
 import jakarta.servlet.ServletContext;
@@ -117,14 +117,14 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		}
 	}
 
-	private void mergeTemplate(HttpServletRequest request, HttpServletResponse response, String tpath, ViewForward wf)
+	private void mergeTemplate(HttpServletRequest request, HttpServletResponse response, String tPath, ViewForward wf)
 			throws IOException, ServletException {
-		if (tpath == null) {
+		if (tPath == null) {
 			throw new ServletException("not set template!");
 		}
 		PrintWriter out = null;
 		try {
-			Template template = VelocityTemplateManager.getInstance().getTemplate(tpath);
+			Template template = VelocityTemplateManager.getInstance().getTemplate(tPath);
 			Map<String, Object> data = wf.getData();
 			Context context = new VelocityContext(data);
 			if (wf.isAddRequestAttribute()) {
@@ -195,7 +195,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 			ps = new Properties();
 		}
 		ps.setProperty(RuntimeConstants.RESOURCE_LOADERS, "class");
-        ps.setProperty("resource.loader.class.class", ClasspathResourceLoader.class.getName());
+		ps.setProperty("resource.loader.class.class", DawdlerVelocityResourceLoader.class.getName());
 		tm.init(ps);
 
 	}

@@ -109,20 +109,34 @@ public class DawdlerTool {
 		return url;
 	}
 
-	public static URL getResourceURLFromClassPath(String configPath) {
-		if (configPath == null) {
+	public static URL getResourceURLFromClassPath(String resourcePath) {
+		if (resourcePath == null) {
 			return null;
 		}
-		if (!configPath.startsWith("/")) {
-			configPath = "/" + configPath;
+		if (!resourcePath.startsWith("/")) {
+			resourcePath = "/" + resourcePath;
 		}
 		URL url = null;
 		if (startClass != null) {
-			url = startClass.getResource(configPath);
+			url = startClass.getResource(resourcePath);
 		} else {
-			url = Thread.currentThread().getContextClassLoader().getResource(configPath);
+			url = Thread.currentThread().getContextClassLoader().getResource(resourcePath);
 		}
 		return url;
+	}
+
+
+	public static InputStream getResourceFromClassPath(String resourcePath) {
+		InputStream input = null;
+		if (startClass != null) {
+			if (!resourcePath.startsWith("/")) {
+				resourcePath = "/" + resourcePath;
+			}
+			input = startClass.getResourceAsStream(resourcePath);
+		} else {
+			input = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath);
+		}
+		return input;
 	}
 
 	public static String getEnv(String key) {
@@ -133,11 +147,11 @@ public class DawdlerTool {
 		return System.getProperty(key);
 	}
 
-	public static String fnameToUpper(String fieldname) {
-		char c = fieldname.charAt(0);
+	public static String fnameToUpper(String fieldName) {
+		char c = fieldName.charAt(0);
 		c = (char) (c - 32);
-		fieldname = c + fieldname.substring(1, fieldname.length());
-		return fieldname;
+		fieldName = c + fieldName.substring(1, fieldName.length());
+		return fieldName;
 	}
 
 	public static String getSha1(String str) {
@@ -213,11 +227,11 @@ public class DawdlerTool {
 		double totalMemory = (double) runtime.totalMemory();
 		System.out.println("Jvm totalMemory: " + totalMemory + "(" + kbFormat.format(totalMemory / 1024) + "K)");
 		System.out.println("Jvm freeMemory: " + freeMemory + "(" + kbFormat.format(freeMemory / 1024) + "K)");
-		MemoryMXBean memorymbean = ManagementFactory.getMemoryMXBean();
+		MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
 		System.out.println("Heap Memory Usage:");
-		System.out.println(memorymbean.getHeapMemoryUsage());
+		System.out.println(memoryMXBean.getHeapMemoryUsage());
 		System.out.println("Non-Heap Memory Usage:");
-		System.out.println(memorymbean.getNonHeapMemoryUsage());
+		System.out.println(memoryMXBean.getNonHeapMemoryUsage());
 		List<String> inputArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
 		System.out.println("Java options:");
 		System.out.println(inputArguments);
