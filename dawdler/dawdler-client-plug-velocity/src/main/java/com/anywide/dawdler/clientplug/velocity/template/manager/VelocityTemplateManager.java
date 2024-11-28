@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.anywide.dawdler.clientplug.web.view.templatemanager;
+package com.anywide.dawdler.clientplug.velocity.template.manager;
 
 import java.util.Properties;
 
@@ -54,9 +54,6 @@ public class VelocityTemplateManager implements TemplateManager {
 
 	public void init(Properties ps) {
 		templatePath = ps.getProperty("template.path");
-		if(templatePath != null && !templatePath.endsWith("/")){
-			templatePath = templatePath + "/";
-		}
 		suffix = ps.getProperty("template.suffix");
 		engine.init(ps);
 	}
