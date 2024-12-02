@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Implementation-Title: pinpoint-dawdler-plugin
 Implementation-Version: 3.0.1
 Pinpoint-Plugin-Id: com.navercorp.pinpoint:pinpoint-dawdler-plugin
-Pinpoint-Plugin-Compiler-Version: 1.8
-Build-Jdk-Spec: 1.8
+Pinpoint-Plugin-Compiler-Version: 21
+Build-Jdk-Spec: 21
 Created-By: Maven Jar Plugin 3.2.0
 Implementation-Vendor: Naver Corporation
