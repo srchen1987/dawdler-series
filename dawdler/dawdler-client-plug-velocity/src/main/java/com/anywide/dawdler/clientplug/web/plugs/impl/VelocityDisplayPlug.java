@@ -43,10 +43,10 @@ import org.slf4j.LoggerFactory;
 
 import com.anywide.dawdler.clientplug.velocity.VelocityToolBox;
 import com.anywide.dawdler.clientplug.velocity.resource.loader.DawdlerVelocityResourceLoader;
+import com.anywide.dawdler.clientplug.velocity.template.manager.VelocityTemplateManager;
 import com.anywide.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
-import com.anywide.dawdler.clientplug.web.view.templatemanager.VelocityTemplateManager;
 import com.anywide.dawdler.util.PropertiesUtil;
 
 /**
