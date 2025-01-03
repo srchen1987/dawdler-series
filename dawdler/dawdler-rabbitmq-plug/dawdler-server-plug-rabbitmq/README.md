@@ -25,11 +25,11 @@
     RabbitProvider rabbitProvider;
 
     public void pushMssage(String message) {
-        rabbitProvider.publish("", "queueName", null, message.getBytes());//使用rabbitProvider对象
+        rabbitProvider.publish("", "test", null, message.getBytes());//使用rabbitProvider对象
         return null;
     }
 
-    @RabbitListener(fileName = "myRabbitmq",queueName = "test") //监听test队列
+    @RabbitListener(fileName = "myRabbitmq", queueName = "test") //监听test队列
     public void consumer(Message message) {
         System.out.println(new String(message.getBody()));
     }

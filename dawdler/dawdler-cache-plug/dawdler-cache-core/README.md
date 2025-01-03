@@ -20,7 +20,7 @@
 public @interface Cacheable {
  
  /**
-  * 指定cacheManager 如:ceffeine或jedis
+  * 指定cacheManager 如:caffeine或jedis
   */
  String cacheManager();
 
@@ -69,7 +69,7 @@ public @interface CacheEvict {
  String[] cacheNames();
 
  /**
-  * 指定cacheManager 如:ceffeine或jedis
+  * 指定cacheManager 如:caffeine或jedis
   */
  String cacheManager() default "";
 
@@ -110,7 +110,7 @@ public @interface CachePut {
  String cacheName();
 
  /**
-  * 指定cacheManager 如:ceffeine或jedis
+  * 指定cacheManager 如:caffeine或jedis
   */
  String cacheManager() default "";
 
@@ -184,3 +184,7 @@ public interface CacheConfig {
 2、通过SPI配置com.anywide.dawdler.cache.CacheManager具体实现.
 
 具体实现可以参考CaffeineCacheManager或JedisCacheManager.
+
+### 4. 使用范围
+
+适用于controller层,service层使用缓存注解.

@@ -78,7 +78,9 @@ public class SocketSession extends AbstractSocketSession {
 					logger.error("", e);
 				}
 				try {
-					channel.close();
+					if (channel.isOpen()) {
+						channel.close();
+					}
 				} catch (IOException e) {
 					logger.error("", e);
 				}
