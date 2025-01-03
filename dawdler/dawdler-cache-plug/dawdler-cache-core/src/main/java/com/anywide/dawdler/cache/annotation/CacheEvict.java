@@ -41,7 +41,7 @@ public @interface CacheEvict {
 	String[] cacheNames();
 
 	/**
-	 * 指定cacheManager 如:ceffeine或jedis
+	 * 指定cacheManager 如:caffeine或jedis
 	 */
 	String cacheManager() default "";
 
