@@ -37,13 +37,13 @@ separator:分割符 一般无须配置,只在keys的场景有意义,如以下请
 访问 ```http://localhost:8500/v1/kv/config?keys&separator=-&wait=5s&index=2``` 返回 [
 "config/config", "config/config-" ].
 
-token:用于身份校验
+token: 用于身份校验
 
-wait-time:轮询超时长,单位秒数
+wait-time: 轮询超时长,单位秒数
 
- watch-keys: 监控的key,是一个list列表,只有被监控的key有变化才会刷新相关配置,也可以通过 ```/``` 来监控所有的keys.
+watch-keys: 监控的key,是一个list列表,只有被监控的key有变化才会刷新相关配置,也可以通过 ```/``` 来监控所有的keys.
 
- TLSConfig:证书相关配置,如果有敏感数据并且consul需要部署在互联网中使用,建议采用此配置. 具体参考:[consul encryption](https://www.consul.io/docs/security/encryption)
+TLSConfig: 证书相关配置,如果有敏感数据并且consul需要部署在互联网中使用,建议采用此配置. 具体参考:[consul encryption](https://www.consul.io/docs/security/encryption)
 
 ### 2. 安装consul
 
@@ -144,4 +144,6 @@ ui: 可以访问UI界面
 
 #### 2.4 安全方面
 
-要注意consul不要开放端口给互联网使用,建议通过nginx Basic HTTP authentication做授权后反向代理到局域网的consul端口上.
+要注意consul不要开放端口给互联网使用,简单使用可以通过nginx Basic HTTP authentication做授权后反向代理到局域网的consul端口上.
+
+建议采用token方式来进行身份校验,token可以在consul的配置文件中配置,也可以通过consul acl来进行管理. consul支持ACL(Access Control List)访问控制列表,可以对consul的服务进行细粒度的控制,包括读写权限,token,服务注册,服务发现等.
