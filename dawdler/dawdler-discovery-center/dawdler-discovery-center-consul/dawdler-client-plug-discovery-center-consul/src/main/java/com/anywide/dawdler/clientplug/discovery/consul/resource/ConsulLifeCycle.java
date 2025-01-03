@@ -34,8 +34,7 @@ import com.anywide.dawdler.core.thread.DefaultThreadFactory;
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.Response;
-import com.ecwid.consul.v1.health.HealthChecksForServiceRequest;
-import com.ecwid.consul.v1.health.model.Check;
+import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.Check.CheckStatus;
 
 /**
@@ -65,25 +64,38 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 				long lastIndex = -1;
 				Set<String> oldSet = new HashSet<>();
 				while (!consulDiscoveryCenter.getDestroyed().get()) {
-					HealthChecksForServiceRequest hr = HealthChecksForServiceRequest.newBuilder()
-							.setQueryParams(new QueryParams(30, lastIndex)).build();
+					HealthServicesRequest healthServicesRequest = HealthServicesRequest.newBuilder()
+							.setQueryParams(new QueryParams(30, lastIndex))
+							.setToken(consulDiscoveryCenter.getToken())
+							.setPassing(true).build();
 					Set<String> newSet = new HashSet<>();
 					long currentLastIndex = 0;
 					try {
-						Response<List<Check>> listCheck = consulClient.getHealthChecksForService(gid, hr);
-						currentLastIndex = listCheck.getConsulIndex();
-						for (Check c : listCheck.getValue()) {
-							String serviceId = c.getServiceId();
-							if (c.getStatus() == CheckStatus.CRITICAL || c.getStatus() == CheckStatus.UNKNOWN) {
-								try {
-									consulClient.agentServiceDeregister(serviceId);
-								} catch (Exception e) {
+						Response<List<com.ecwid.consul.v1.health.model.HealthService>> response = consulClient
+								.getHealthServices(
+										gid,
+										healthServicesRequest);
+						currentLastIndex = response.getConsulIndex();
+						response.getValue().forEach((c) -> {
+							c.getChecks().forEach((check) -> {
+								String serviceId = check.getServiceId();
+								if (!serviceId.equals("")) {
+									if (check.getStatus() == CheckStatus.CRITICAL
+											|| check.getStatus() == CheckStatus.UNKNOWN) {
+										try {
+											consulClient.agentServiceDeregister(serviceId,
+													consulDiscoveryCenter.getToken());
+										} catch (Exception e) {
+										}
+									}
+									if (check.getStatus() == CheckStatus.PASSING) {
+										newSet.add(serviceId);
+									}
 								}
-							}
-							if (c.getStatus() == CheckStatus.PASSING) {
-								newSet.add(serviceId);
-							}
-						}
+							});
+
+						});
+
 						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 						for (String k : newSet) {
 							if (!oldSet.contains(k) && cp != null) {

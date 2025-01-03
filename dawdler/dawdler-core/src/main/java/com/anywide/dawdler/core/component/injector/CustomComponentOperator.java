@@ -34,6 +34,7 @@ import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser;
 import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser.ClassStructure;
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 import com.anywide.dawdler.util.spring.antpath.Resource;
+
 /**
  * @author jackson.song
  * @version V1.0

@@ -142,7 +142,7 @@ public class RabbitProvider {
 	/**
 	 * 
 	 * @author jackson.song
-	 * 提供获取Connection的方法用于开启事务功能 通过Connection获取Channal 伪代码:
+	 * 提供获取Connection的方法用于开启事务功能 通过Connection获取Channel 伪代码:
 	 * 	try {
 				channel = con.createChannel();
 				channel.txSelect();
