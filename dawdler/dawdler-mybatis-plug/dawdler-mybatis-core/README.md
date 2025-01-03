@@ -53,3 +53,21 @@ public class OrderServiceImpl implements OrderService{
 
 }
 ```
+
+### 3. 打印SQL日志
+
+在mybatis-config.xml中添加如下配置即可打印SQL日志：
+
+```xml
+<settings>
+ <setting name="logImpl" value="STDOUT_LOGGING"/>
+</settings>
+```
+
+在logback.xml中添加如下配置：
+
+```xml
+<logger name="org.apache.ibatis.logging.jdbc">
+ <level value="DEBUG"/>
+</logger>
+```

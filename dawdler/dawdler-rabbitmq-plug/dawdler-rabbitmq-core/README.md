@@ -30,9 +30,6 @@ confirmSelect=true #开启confirm模式 一般配合ConfirmListener使用,参考
 channel.size=16 #每个connection中的channel数量
 channel.getTimeout=15000 #获取channel的超时事件(单位毫秒)
 ttlTime=5000 #消费者消费失败后重试的时间 单位ms,需要配合@RabbitListener来使用 
-testOnBorrow=true #获取之前校验连接
-testOnCreate=false #创建后校验连接
-testOnReturn=true #返回到池之前校验连接
 ```
 
 ### 3. RabbitInjector注解
@@ -62,40 +59,55 @@ RabbitInjector注解中的value传入fileName为配置文件名(不包含.proper
 @Target({ ElementType.METHOD })
 public @interface RabbitListener {
  
- /**
-  * 指定rabbitmq的配置文件名
-  */
- String fileName();
- 
- /**
-  * 队列名
-  */
- String queueName();
- 
- /**
-  * 是否自动ack
-  */
- boolean autoAck() default true;
- 
- /**
-  * 是否重试
-  */
- boolean retry() default false;
- 
- /**
-  * 重试次数
-  */
- int retryCount() default 12;
- 
- /**
-  * 当前消费者个数 不能大于channel.size=16 #每个connection中的channel数量
-  */
- int concurrentConsumers() default 1;
- 
- /**
-  * prefetchCount来限制服务器端每次发送给每个消费者的消息数.
-  */
- int prefetchCount() default 1;
+	/**
+	 * 指定rabbitmq的配置文件名
+	 */
+	String fileName();
+
+	/**
+	 * 队列名
+	 */
+	String queueName();
+	
+	/**
+	 * routingKey
+	 */
+	String[] routingKey() default {};
+	
+	/**
+	 * 交换器
+	 */
+	String[] exchange() default {};
+
+	/**
+	 * 是否自动ack
+	 */
+	boolean autoAck() default true;
+
+	/**
+	 * 是否重试
+	 */
+	boolean retry() default false;
+
+	/**
+	 * 失败后进入死信队列
+	 */
+	boolean failedToDLQ() default true;
+
+	/**
+	 * 重试次数
+	 */
+	int retryCount() default 12;
+
+	/**
+	 * 当前消费者个数 不能大于channel.size=16 #每个connection中的channel数量
+	 */
+	int concurrentConsumers() default 1;
+
+	/**
+	 * prefetchCount来限制服务器端每次发送给每个消费者的消息数.
+	 */
+	int prefetchCount() default 1;
  
 }
 
@@ -104,7 +116,7 @@ public @interface RabbitListener {
 ### 5. RabbitProvider类
 
 ```java
-//推送一条消息到队列 如: publish("", "queueName", null, "hello world".getBytes());
+//推送一条消息到队列 如: publish("", "routingKey", null, "hello world".getBytes());
 public void publish(String exchange, String routingKey, BasicProperties props, byte[] body) throws Exception {
   Connection con = null;
   Channel channel = null;
@@ -121,7 +133,7 @@ public void publish(String exchange, String routingKey, BasicProperties props, b
    }
   }
  }
-//推送一条消息到队列传入listener自行处理confirm事件(注意要在配置文件中开启confirmSelect=true) 如: publish("", "queueName", null, "hello world".getBytes(),listener);
+//推送一条消息到队列传入listener自行处理confirm事件(注意要在配置文件中开启confirmSelect=true) 如: publish("", "routingKey", null, "hello world".getBytes(),listener);
  public void publish(String exchange, String routingKey, BasicProperties props, byte[] body,
    ConfirmListener listener) throws Exception {
   Connection con = null;
@@ -142,7 +154,6 @@ public void publish(String exchange, String routingKey, BasicProperties props, b
  }
 
  /**
-  * 
   * @author jackson.song
   * 推送支持失败重试(发送到mq后没有获取到ack而获取到了nack这种情况) (注意要在配置文件中开启confirmSelect=true)
   * @param exchange

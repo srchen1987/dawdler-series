@@ -204,11 +204,6 @@ public class ClientPlugClassLoader {
 		}
 	}
 
-	public Class<?> inject(Resource resource, ClassStructure classStructure,
-			CustomComponentInjector customComponentInjector) throws Throwable {
-		return inject(resource, null, classStructure, customComponentInjector);
-	}
-
 	public Class<?> inject(byte[] codeBytes, ClassStructure classStructure,
 			CustomComponentInjector customComponentInjector) throws Throwable {
 		return inject(null, codeBytes, classStructure, customComponentInjector);

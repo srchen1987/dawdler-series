@@ -17,7 +17,6 @@
 package com.anywide.dawdler.core.discovery.consul;
 
 import java.io.Closeable;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -42,7 +41,7 @@ import com.ecwid.consul.v1.agent.model.NewService.Check;
 import com.ecwid.consul.v1.agent.model.Self.Config;
 import com.ecwid.consul.v1.catalog.CatalogServiceRequest;
 import com.ecwid.consul.v1.catalog.model.CatalogService;
-import com.ecwid.consul.v1.health.HealthChecksForServiceRequest;
+import com.ecwid.consul.v1.health.HealthServicesRequest;
 import com.ecwid.consul.v1.health.model.Check.CheckStatus;
 
 /**
@@ -78,8 +77,6 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	}
 
 	private CatalogServiceRequest catalogServiceRequest;
-	private HealthChecksForServiceRequest healthChecksForServiceRequest = HealthChecksForServiceRequest.newBuilder()
-			.build();
 
 	public static synchronized ConsulDiscoveryCenter getInstance() throws Exception {
 		if (consulDiscoveryCenter == null) {
@@ -90,9 +87,6 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	private ConsulDiscoveryCenter() throws Exception {
 		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter("consul");
-		if(ps == null) {
-			throw new FileNotFoundException("not found consul in path , please check your configuration.");
-		}
 		this.host = ps.getProperty("host");
 		String healthCheckType = ps.getProperty("healthCheckType");
 		if (healthCheckType != null && (healthCheckType.equals(HealthCheckTypes.TCP.name)
@@ -149,13 +143,17 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public List<String> getServiceList(String path) throws Exception {
-		Response<List<com.ecwid.consul.v1.health.model.Check>> response = client.getHealthChecksForService(path,
-				healthChecksForServiceRequest);
+		HealthServicesRequest healthServicesRequest = HealthServicesRequest.newBuilder().setToken(token)
+				.setPassing(true).build();
+		Response<List<com.ecwid.consul.v1.health.model.HealthService>> response = client.getHealthServices(path,
+				healthServicesRequest);
 		List<String> serviceList = new ArrayList<>();
 		response.getValue().forEach((c) -> {
-			if (c.getStatus() == CheckStatus.PASSING) {
-				serviceList.add(c.getServiceId());
-			}
+			c.getChecks().forEach((check) -> {
+				if (!check.getServiceId().equals("") && check.getStatus() == CheckStatus.PASSING) {
+					serviceList.add(check.getServiceId());
+				}
+			});
 		});
 		return serviceList;
 	}
