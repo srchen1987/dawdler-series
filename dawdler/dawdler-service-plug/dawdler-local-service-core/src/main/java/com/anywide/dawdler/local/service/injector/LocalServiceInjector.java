@@ -79,7 +79,7 @@ public class LocalServiceInjector {
 				}
 				return serviceName;
 			}
-			return null;
+			return type.getName();
 		}
 	}
 

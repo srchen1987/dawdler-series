@@ -15,6 +15,7 @@ consul.properties文件位于项目classpath下.
 ```properties
 host=127.0.0.1
 port=8500
+#token=2e6dccf2-3f9b-d8e9-e20d-0d5979bf0f23
 #healthCheckType=tcp
 #checkTime=90s
 #keyStoreInstanceType=JKS
@@ -33,7 +34,8 @@ consul里面的path为 /consul
 ```yml
 host: 127.0.0.1
 port: 8500
-#healthCheckType=tcp
+#token: 2e6dccf2-4f9b-d8d9-e20d-0d5979bf0f23
+#healthCheckType: tcp
 #checkTime: 90s
 #keyStoreInstanceType: JKS
 #certificatePath: /home/srchen/certificatePath/xxx
@@ -48,9 +50,11 @@ host consul的ip地址
 
 port consul的端口号
 
+token consul的token,如果没有配置则不需要token
+
 healthCheckType 服务端的健康检测方式,默认为tcp. 另外支持http,使用http需要配置 [服务端健康检测](../../../dawdler-server/README.md#7-健康检测)
 
-checkTime 健康检测时间(默认为90秒).
+checkTime 健康检测时间(默认为90秒)
 
 keyStoreInstanceType 证书类型 目前支持JKS, JCEKS, PKCS12, PKCS11, DKS
 
