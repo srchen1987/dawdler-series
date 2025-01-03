@@ -29,7 +29,7 @@
         return null;
     }
 
-    @RabbitListener(fileName = "myRabbitmq",queueName = "test") //监听test队列
+    @RabbitListener(fileName = "myRabbitmq", queueName = "test") //监听test队列
     public void consumer(Message message) {
         System.out.println(new String(message.getBody()));
     }
