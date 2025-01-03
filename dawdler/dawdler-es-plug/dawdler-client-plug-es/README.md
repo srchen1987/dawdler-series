@@ -17,23 +17,55 @@
 
 ```java
  @Controller
- public class UserController{
+ public class ProductController{
 
     @EsInjector("myEs")//myEs为配置文件的名称,不包含后缀properties
     EsOperator esOperator;
 
-    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
-    public User getUser(String userId) {
-        SearchRequest searchRequest = new SearchRequest();
-        searchRequest.indices("product");
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        MatchQueryBuilder matchQueryBuilder = new MatchQueryBuilder("name", "电冰箱");
-        searchSourceBuilder.query(matchQueryBuilder);
-        searchRequest.source(searchSourceBuilder);
-        SearchResponse response = esOperator.search(searchRequest, Product.class);//使用esOperator对象
-        System.out.println(response);
-        return null;
+    @RequestMapping(value = "/product/search", method = RequestMethod.GET)
+    public List<Product> productSearch(String userId) {
+        List<Product> list = termQuery("product", "name", "电冰箱", "addTime", 0, 10, false, Product.class);
+        return list;
     }
+
+	public <T> List<T> termQuery(
+			String indexName,
+            String searchField,
+			String searchText,
+			String sortedField,
+			int fromIndex,
+			int pageSize,
+			boolean isDesc,
+			Class<T> clazz)
+			throws IOException {
+		SearchResponse<T> response = esOperator.search(
+				s -> s.index(indexName)
+						.query(q -> q.match(t -> t.field(searchField).query(searchText)))
+						// 分页查询，从第fromIndex页开始查询pageSize个document
+						.from(fromIndex)
+						.size(pageSize)
+						// 按要排序字段进行降序排序
+						.sort(f -> f.field(o -> o.field(sortedField).order(isDesc ? SortOrder.Desc : SortOrder.Asc))),
+				clazz);
+
+		return getSources(response);
+	}
+
+	private <T> List<T> getSources(SearchResponse<T> response) {
+		List<T> result = new ArrayList<>();
+		for (Hit<T> hit : getHitList(response)) {
+			result.add(hit.source());
+		}
+		return result;
+	}
+
+	private <T> List<Hit<T>> getHitList(SearchResponse<T> response) {
+		List<Hit<T>> hitList = response.hits().hits();
+		if (hitList == null || hitList.isEmpty()) {
+			return new ArrayList<>();
+		}
+		return hitList;
+	}
  
  }
 

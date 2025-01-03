@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 public @interface Cacheable {
 
 	/**
-	 * 指定cacheManager 如:ceffeine或jedis
+	 * 指定cacheManager 如:caffeine或jedis
 	 */
 	String cacheManager();
 

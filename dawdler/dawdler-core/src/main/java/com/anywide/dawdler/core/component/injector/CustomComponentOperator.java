@@ -35,6 +35,11 @@ import com.anywide.dawdler.core.scan.component.reader.ClassStructureParser.Class
 import com.anywide.dawdler.util.SunReflectionFactoryInstantiator;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 
+/**
+ * @author jackson.song
+ * @version V1.0
+ * CustomComponentOperator 自定义组件操作类
+ */
 public class CustomComponentOperator {
 
 	public static void scanAndInject(DeployClassLoader classLoader,

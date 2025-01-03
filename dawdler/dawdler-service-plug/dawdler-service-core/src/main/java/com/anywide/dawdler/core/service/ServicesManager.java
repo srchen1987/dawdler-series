@@ -89,12 +89,47 @@ public class ServicesManager {
 		services.clear();
 	}
 
-	public void smartRegister(Class<?> type, Object target) throws IllegalArgumentException, SecurityException  {
+	public void smartRegister(Class<?> type, Object target) throws IllegalArgumentException, SecurityException {
 		Service service = type.getAnnotation(Service.class);
 		if (service != null) {
 			String serviceName = service.serviceName();
 			if (serviceName.trim().equals("")) {
-				registerService(type, target, service.single());
+				if (type.isInterface()) {
+					registerService(type, target, service.single());
+				} else {
+					Class<?>[] interfaceList = type.getInterfaces();
+					for (Class<?> clazz : interfaceList) {
+						Service interfaceService = clazz.getAnnotation(Service.class);
+						if (interfaceService != null) {
+							serviceName = interfaceService.serviceName();
+						} else {
+							serviceName = "";
+						}
+						if (serviceName.trim().equals("")) {
+							registerService(clazz, target,
+									interfaceService != null ? interfaceService.single() : service.single());
+						} else {
+							register(serviceName, target,
+									interfaceService != null ? interfaceService.single() : service.single());
+						}
+					}
+					Class<?> superClass = type.getSuperclass();
+					if (superClass != null && superClass != Object.class) {
+						Service superClassService = superClass.getAnnotation(Service.class);
+						if (superClassService != null) {
+							serviceName = superClassService.serviceName();
+						} else {
+							serviceName = "";
+						}
+						if (serviceName.trim().equals("")) {
+							registerService(superClass, target,
+									superClassService != null ? superClassService.single() : service.single());
+						} else {
+							register(serviceName, target,
+									superClassService != null ? superClassService.single() : service.single());
+						}
+					}
+				}
 			} else {
 				register(serviceName, target, service.single());
 			}
@@ -110,6 +145,18 @@ public class ServicesManager {
 					registerService(clazz, target, service.single());
 				} else {
 					register(serviceName, target, service.single());
+				}
+			}
+			Class<?> superClass = type.getSuperclass();
+			if (superClass != null && superClass != Object.class) {
+				service = superClass.getAnnotation(Service.class);
+				if (service != null) {
+					String serviceName = service.serviceName();
+					if (serviceName.trim().equals("")) {
+						registerService(superClass, target, service.single());
+					} else {
+						register(serviceName, target, service.single());
+					}
 				}
 			}
 		}
