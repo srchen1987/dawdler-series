@@ -60,39 +60,52 @@ public class RabbitListenerInit {
 							con = factory.getConnection();
 							connections.put(target, con);
 						}
-						Channel channel = con.createChannel();
-						channel.queueDeclare(listener.queueName(), true, false, false, null);
-						for (String routingKey : listener.routingKey()) {
-							for (String exchange : listener.exchange()) {
-								channel.queueBind(listener.queueName(), exchange, routingKey);
+						for (int i = 0; i < listener.concurrentConsumers(); i++) {
+							try {
+								Channel channel = con.createChannel();
+								channel.queueDeclare(listener.queueName(), true, false, false, null);
+								for (String routingKey : listener.routingKey()) {
+									for (String exchange : listener.exchange()) {
+										channel.queueBind(listener.queueName(), exchange, routingKey);
+									}
+								}
+								if (listener.prefetchCount() > 0) {
+									channel.basicQos(listener.prefetchCount());
+								}
+								String consumerTag = channel.basicConsume(listener.queueName(), listener.autoAck(),
+										new DefaultConsumer(channel) {
+											public void handleDelivery(String consumerTag, Envelope envelope,
+													AMQP.BasicProperties properties, byte[] body)
+													throws IOException {
+												Message message = new Message(consumerTag, envelope, properties,
+														body);
+												try {
+													method.invoke(listenerCache.get(key), message);
+												} catch (Throwable e) {
+													logger.error("", e);
+													if (listener.retry()) {
+														communalRetryMethod(message, channel, listener.retryCount(),
+																listener.failedToDLQ());
+													} else if (listener.failedToDLQ()) {
+														String routingKey = message.getEnvelope().getRoutingKey();
+														channel.basicPublish(
+																AMQPConnectionFactory.RABBIT_FAIL_EXCHANGE,
+																routingKey,
+																(AMQP.BasicProperties) message.getProperties(),
+																message.getBody());
+													}
+												}
+												if (!listener.autoAck()) {
+													long deliveryTag = envelope.getDeliveryTag(); // autoACK
+													channel.basicAck(deliveryTag, false);
+												}
+											}
+										});
+								channels.put(consumerTag, channel);
+							} catch (Exception e) {
+								logger.error("", e);
 							}
 						}
-						String consumerTag = channel.basicConsume(listener.queueName(), listener.autoAck(),
-								new DefaultConsumer(channel) {
-									public void handleDelivery(String consumerTag, Envelope envelope,
-											AMQP.BasicProperties properties, byte[] body) throws IOException {
-										Message message = new Message(consumerTag, envelope, properties, body);
-										try {
-											method.invoke(listenerCache.get(key), message);
-										} catch (Throwable e) {
-											logger.error("", e);
-											if (listener.retry()) {
-												communalRetryMethod(message, channel, listener.retryCount(),
-														listener.failedToDLQ());
-											} else if (listener.failedToDLQ()) {
-												String routingKey = message.getEnvelope().getRoutingKey();
-												channel.basicPublish(AMQPConnectionFactory.RABBIT_FAIL_EXCHANGE,
-														routingKey, (AMQP.BasicProperties) message.getProperties(),
-														message.getBody());
-											}
-										}
-										if (!listener.autoAck()) {
-											long deliveryTag = envelope.getDeliveryTag(); // autoACK
-											channel.basicAck(deliveryTag, false);
-										}
-									}
-								});
-						channels.put(consumerTag, channel);
 					} catch (Exception e) {
 						logger.error("", e);
 					}
@@ -116,7 +129,7 @@ public class RabbitListenerInit {
 
 	public static void communalRetryMethod(Message message, Channel channel, int retryCount, boolean intoDLQ)
 			throws IOException {
-		// 获取该次消息的routingkey
+		// 获取该次消息的routingKey
 		String routingKey = message.getEnvelope().getRoutingKey();
 		if (getRetryCount(message) < retryCount) {
 			// 发送到重试队列中
