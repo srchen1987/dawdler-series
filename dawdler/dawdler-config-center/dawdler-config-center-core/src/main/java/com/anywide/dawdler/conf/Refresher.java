@@ -22,7 +22,6 @@ import java.util.Map;
 import org.apache.commons.jexl3.JexlContext;
 import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.MapContext;
-import org.apache.commons.jexl3.internal.Engine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +29,7 @@ import com.anywide.dawdler.conf.annotation.FieldConfig;
 import com.anywide.dawdler.conf.cache.ConfigMappingDataCache;
 import com.anywide.dawdler.conf.cache.PathMappingTargetCache;
 import com.anywide.dawdler.util.ClassUtil;
+import com.anywide.dawdler.util.JexlEngineFactory;
 
 /**
  * @author jackson.song
@@ -39,7 +39,7 @@ import com.anywide.dawdler.util.ClassUtil;
 public class Refresher {
 	private static Logger logger = LoggerFactory.getLogger(Refresher.class);
 
-	private static final JexlEngine ENGINE = new Engine();
+	private static final JexlEngine ENGINE = JexlEngineFactory.getJexlEngine();
 
 	public static void refreshAllConfig(Object target, boolean addPathMapping) {
 		Class<?> clazz = target.getClass();

@@ -29,6 +29,6 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface LocalService {
-	//服务的类名,默认为空,则为注解所在类或接口的全称(类优先). 与@Service中serviceName对应
+	//服务的类名,默认为空,则为注解所在父类或接口的全称. 与@Service中serviceName对应
 	String serviceName() default "";
 }

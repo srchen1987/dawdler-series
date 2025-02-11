@@ -16,14 +16,10 @@
  */
 package com.anywide.dawdler.serverplug.db.mybatis;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import com.anywide.dawdler.core.db.mybatis.AbstractSqlSessionFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
-import com.anywide.dawdler.util.spring.antpath.Resource;
 
 /**
  * @author jackson.song
@@ -34,21 +30,6 @@ public class SingleSqlSessionFactory extends AbstractSqlSessionFactory {
 
 	public static class SingletonHoler {
 		private static SingleSqlSessionFactory instance = new SingleSqlSessionFactory();
-	}
-
-	public List<Resource> getMapperLocations() throws IOException {
-		Set<String> mappers = DawdlerContext.getDawdlerContext().getServicesConfig().getMappers();
-		if (mappers != null) {
-			List<Resource> resourceList = new ArrayList<>();
-			for (String mapper : mappers) {
-				Resource[] resources = resolver.getResources(mapper);
-				for (Resource resource : resources) {
-					resourceList.add(resource);
-				}
-			}
-			return resourceList;
-		}
-		return null;
 	}
 
 	private SingleSqlSessionFactory() {

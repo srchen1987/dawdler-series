@@ -22,11 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.core.db.mybatis.interceptor.SubTableInterceptor;
 import com.anywide.dawdler.util.spring.antpath.PathMatchingResourcePatternResolver;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 import com.anywide.dawdler.util.spring.antpath.ResourcePatternResolver;
@@ -75,6 +77,7 @@ public abstract class AbstractSqlSessionFactory {
 		}
 		SqlSessionFactory sqlSessionFactory;
 		try {
+			sessionBuilder.setPlugins(new Interceptor[]	{new SubTableInterceptor()});
 			sqlSessionFactory = sessionBuilder.buildSqlSessionFactory();
 			this.sqlSession = sqlSessionFactory.openSession();
 		} catch (Exception e) {
