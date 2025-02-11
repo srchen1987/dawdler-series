@@ -40,7 +40,7 @@ public class LocalServiceInjector {
 			Object obj = null;
 			Class<?> serviceClass = field.getType();
 			if (localServiceAnnotation != null) {
-				String serviceName = "";
+				String serviceName = localServiceAnnotation.serviceName();
 				if ("".equals(serviceName) || serviceName == null) {
 					serviceName = getServiceName(serviceClass);
 				}
@@ -75,9 +75,20 @@ public class LocalServiceInjector {
 				}
 				serviceName = service.serviceName();
 				if (serviceName.equals("")) {
-					serviceName = type.getName();
+					serviceName = clazz.getName();
 				}
 				return serviceName;
+			}
+			Class<?> superClass = type.getSuperclass();
+			if (superClass != null && superClass != Object.class) {
+				Service superClassService = superClass.getAnnotation(Service.class);
+				if (superClassService != null) {
+					serviceName = superClassService.serviceName();
+					if (serviceName.trim().equals("")) {
+						serviceName = superClass.getName();
+					}
+					return serviceName;
+				}
 			}
 			return type.getName();
 		}

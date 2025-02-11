@@ -14,6 +14,7 @@ module dawdler.mybatis.core {
 
 	exports com.anywide.dawdler.core.db.mybatis;
 	exports com.anywide.dawdler.core.db.mybatis.session;
+	exports com.anywide.dawdler.core.db.mybatis.annotation;
 
 	provides CustomComponentInjector with AspectInjector;
 }

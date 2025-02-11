@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-config-center</artifactId>
-		<version>0.0.5-jdk21-RELEASES</version>
+		<version>0.0.6-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-config-center-core</artifactId>
 	<name>dawdler-config-center-core</name>
@@ -14,10 +14,6 @@
 		<dependency>
 			<groupId>com.ecwid.consul</groupId>
 			<artifactId>consul-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.dataformat</groupId>
-			<artifactId>jackson-dataformat-yaml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>club.dawdler</groupId>

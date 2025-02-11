@@ -18,6 +18,8 @@ module dawdler.db.core {
 	exports com.anywide.dawdler.core.db.transaction;
 	exports com.anywide.dawdler.core.db.exception;
 	exports com.anywide.dawdler.core.db.datasource;
+	exports com.anywide.dawdler.core.db.sub;
+	exports com.anywide.dawdler.core.db.sub.rule;
 
 	uses HealthIndicator;
 

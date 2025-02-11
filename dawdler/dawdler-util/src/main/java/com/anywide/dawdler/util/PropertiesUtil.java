@@ -27,13 +27,13 @@ import java.util.Set;
 /**
  * @author jackson.song
  * @version V1.0
- * Class操作类
+ * properties文件操作类 支持统一配置中心配置
  */
 public class PropertiesUtil {
 	public static Properties loadPropertiesIfNotExistLoadConfigCenter(String fileName) throws Exception {
 		Properties ps = null;
 		try {
-			ps = PropertiesUtil.loadActiveProfileIfNotExistUseDefaultProperties(fileName);
+			ps = loadActiveProfileIfNotExistUseDefaultProperties(fileName);
 		} catch (Exception e) {
 			try {
 				Class<?> configMappingDataCacheClass = Thread.currentThread().getContextClassLoader()

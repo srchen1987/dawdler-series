@@ -17,17 +17,18 @@
 package com.anywide.dawdler.core.db.mybatis;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.anywide.dawdler.core.db.mybatis.interceptor.SubTableInterceptor;
 import com.anywide.dawdler.util.spring.antpath.PathMatchingResourcePatternResolver;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 import com.anywide.dawdler.util.spring.antpath.ResourcePatternResolver;
@@ -42,7 +43,7 @@ public abstract class AbstractSqlSessionFactory {
 	protected SqlSession sqlSession;
 	protected ResourcePatternResolver resolver = PathMatchingResourcePatternResolver.getInstance();
 
-	public List<Resource> getMapperLocations() throws IOException, URISyntaxException {
+	public List<Resource> getMapperLocations() throws IOException {
 		Set<String> mappers = getMappers();
 		if (mappers != null) {
 			List<Resource> resourceList = new ArrayList<>();
@@ -70,12 +71,13 @@ public abstract class AbstractSqlSessionFactory {
 		try {
 			List<Resource> mapperLocations = getMapperLocations();
 			sessionBuilder.setMapperLocations(mapperLocations);
-		} catch (IOException | URISyntaxException e) {
+		} catch (IOException e) {
 			logger.error("", e);
 			throw new RuntimeException(e);
 		}
 		SqlSessionFactory sqlSessionFactory;
 		try {
+			sessionBuilder.setPlugins(new Interceptor[]	{new SubTableInterceptor()});
 			sqlSessionFactory = sessionBuilder.buildSqlSessionFactory();
 			this.sqlSession = sqlSessionFactory.openSession();
 		} catch (Exception e) {
