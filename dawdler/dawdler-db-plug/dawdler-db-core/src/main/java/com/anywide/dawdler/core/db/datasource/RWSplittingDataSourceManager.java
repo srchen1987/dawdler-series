@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,9 +45,9 @@ import com.anywide.dawdler.util.spring.antpath.AntPathMatcher;
 public class RWSplittingDataSourceManager {
 	public static final String DATASOURCE_MANAGER_PREFIX = "DATASOURCE_MANAGER_PREFIX";
 	private static final Pattern EXPRESSION = Pattern.compile("write=\\[(.+)\\],read=\\[(.+)\\]");
-	private final Map<String, DataSource> dataSources = new HashMap<>();
+	private final Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
 	private final Map<String, String> dataSourceExpression = new HashMap<>();
-	private final Map<String, MappingDecision> packages = new HashMap<>();
+	private final Map<String, MappingDecision> packages = new HashMap<>(128);
 	private final Map<String, MappingDecision> packagesAntPath = new LinkedHashMap<>();
 	private final DbConfig dbConfig;
 	private static final AntPathMatcher antPathMatcher = AntPathMatcher.DEFAULT_INSTANCE;
@@ -108,9 +109,6 @@ public class RWSplittingDataSourceManager {
 	private void initDataSources(String id, Map<String, Object> attributes)
 			throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, NoSuchMethodException, SecurityException {
-		if (dataSources.containsKey(id)) {
-			return;
-		}
 		String type = (String) attributes.get("type");
 		if (type == null) {
 			throw new NullPointerException("dataSource attribute [type] can't be null!");
@@ -135,7 +133,11 @@ public class RWSplittingDataSourceManager {
 					try {
 						ReflectionUtil.invoke(obj, "set" + attributeName, Long.parseLong(v.toString()));
 					} catch (Exception e) {
-						throw new RuntimeException("not found " + attributeName);
+						try {
+							ReflectionUtil.invoke(obj, "set" + attributeName, Boolean.parseBoolean(v.toString()));
+						} catch (Exception ec) {
+							throw new RuntimeException("not found " + attributeName);
+						}
 					}
 				}
 			}
@@ -145,6 +147,9 @@ public class RWSplittingDataSourceManager {
 	}
 
 	public void initDataSourcesFromPropertiesIfNotExistLoadConfigCenter(String id) throws Exception {
+		if (dataSources.containsKey(id)) {
+			return;
+		}
 		Properties ps = PropertiesUtil.loadPropertiesIfNotExistLoadConfigCenter(id);
 		if (ps != null) {
 			Map<String, Object> attributes = new HashMap<>();
@@ -158,7 +163,19 @@ public class RWSplittingDataSourceManager {
 	public DataSource getDataSource(String id) {
 		DataSource dataSource = dataSources.get(id);
 		if (dataSource == null) {
-			throw new RuntimeException("not found dataSource " + id + "!");
+			try {
+				synchronized (this) {
+					dataSource = dataSources.get(id);
+					if (dataSource == null) {
+						initDataSourcesFromPropertiesIfNotExistLoadConfigCenter(id);
+					}
+				}
+			} catch (Exception e) {
+			}
+			dataSource = dataSources.get(id);
+			if (dataSource == null) {
+				throw new RuntimeException("not found dataSource " + id + "!");
+			}
 		}
 		return dataSource;
 	}
@@ -170,7 +187,7 @@ public class RWSplittingDataSourceManager {
 			for (String key : keys) {
 				if (antPathMatcher.match(key, packageName)) {
 					mappingDecision = packagesAntPath.get(key);
-					packages.putIfAbsent(key, mappingDecision);// ignored concurrent access
+					packages.putIfAbsent(packageName, mappingDecision);// ignored concurrent access
 					break;
 				}
 			}
@@ -180,40 +197,40 @@ public class RWSplittingDataSourceManager {
 
 	public class MappingDecision {
 		private String[] readExpression;
-		private int rlength;
+		private int rLength;
 		private String[] writeExpression;
-		private int wlength;
+		private int wLength;
 		private String originalReadExpression;
 
 		public MappingDecision(String latentExpression) {
 			String[] expression = explainExpression(latentExpression);
 			if (expression != null) {
 				writeExpression = expression[0].split("\\|");
-				wlength = writeExpression.length;
+				wLength = writeExpression.length;
 				originalReadExpression = expression[1];
 				readExpression = expression[1].split("\\|");
-				rlength = readExpression.length;
+				rLength = readExpression.length;
 			}
 		}
 
-		public DataSource getWriteDataSource(long index) {
+		public DataSource getWriteDataSource(String subfix, long index) {
 			int position = 0;
 			String write;
-			if (wlength > 1) {
-				position = (int) (index % wlength);
+			if (wLength > 1) {
+				position = (int) (index % wLength);
 			}
 			write = writeExpression[position];
-			return getDataSource(write);
+			return getDataSource(subfix == null ? write : write.concat(subfix));
 		}
 
-		public DataSource getReadDataSource(long index) {
+		public DataSource getReadDataSource(String subfix, long index) {
 			int position = 0;
 			String read;
-			if (rlength > 1) {
-				position = (int) (index % rlength);
+			if (rLength > 1) {
+				position = (int) (index % rLength);
 			}
 			read = readExpression[position];
-			return getDataSource(read);
+			return getDataSource(subfix == null ? read : read.concat(subfix));
 		}
 
 		public String[] explainExpression(String expression) {
@@ -221,18 +238,18 @@ public class RWSplittingDataSourceManager {
 				return null;
 			}
 			Matcher mc = EXPRESSION.matcher(expression);
-			String[] rdstring = null;
+			String[] rdString = null;
 			if (mc.matches()) {
-				rdstring = new String[2];
-				rdstring[0] = mc.group(1);
-				rdstring[1] = mc.group(2);
-				return rdstring;
+				rdString = new String[2];
+				rdString[0] = mc.group(1);
+				rdString[1] = mc.group(2);
+				return rdString;
 			}
 			return null;
 		}
 
 		public boolean needBalance() {
-			return rlength > 1 || wlength > 1;
+			return rLength > 1 || wLength > 1;
 		}
 
 		@Override

@@ -32,9 +32,13 @@ import org.slf4j.LoggerFactory;
 import com.anywide.dawdler.core.db.annotation.DBTransaction;
 import com.anywide.dawdler.core.db.annotation.DBTransaction.MODE;
 import com.anywide.dawdler.core.db.annotation.DBTransaction.READ_CONFIG;
+import com.anywide.dawdler.core.db.annotation.SubDatabase;
 import com.anywide.dawdler.core.db.datasource.RWSplittingDataSourceManager;
 import com.anywide.dawdler.core.db.datasource.RWSplittingDataSourceManager.MappingDecision;
 import com.anywide.dawdler.core.db.exception.TransactionRequiredException;
+import com.anywide.dawdler.core.db.sub.SubRuleCache;
+import com.anywide.dawdler.core.db.sub.rule.RemainderSubRule;
+import com.anywide.dawdler.core.db.sub.rule.SubRule;
 import com.anywide.dawdler.core.db.transaction.JdbcReadConnectionStatus;
 import com.anywide.dawdler.core.db.transaction.LocalConnectionFactory;
 import com.anywide.dawdler.core.db.transaction.ReadConnectionHolder;
@@ -45,13 +49,14 @@ import com.anywide.dawdler.core.db.transaction.TransactionStatus;
 /**
  * @author jackson.song
  * @version V1.0
- *          事务传播器(aop方式实现代替TransactionServiceExecutor)
+ * 事务传播器(aop方式实现代替TransactionServiceExecutor)
  */
 @Aspect
 public class TransactionAspect {
 	private static final Logger logger = LoggerFactory.getLogger(TransactionAspect.class);
 	private RWSplittingDataSourceManager dataSourceManager = RWSplittingDataSourceManager.getInstance();
 	private static final AtomicInteger INDEX = new AtomicInteger(0);
+	SubRule subRule = new RemainderSubRule();
 
 	@Around("@annotation(com.anywide.dawdler.core.db.annotation.DBTransaction)")
 	public Object execute(ProceedingJoinPoint pjp) throws Throwable {
@@ -60,6 +65,7 @@ public class TransactionAspect {
 		Object target = pjp.getTarget();
 		String packageName = target.getClass().getPackage().getName();
 		DBTransaction dbt = method.getAnnotation(DBTransaction.class);
+		SubDatabase subDatabase = method.getAnnotation(SubDatabase.class);
 		TransactionStatus tranStatus = null;
 		TransactionManager manager = null;
 		SynReadConnectionObject synReadObj = null;
@@ -82,7 +88,24 @@ public class TransactionAspect {
 						// packageName + " transaction needs to be set." );
 						throw new TransactionRequiredException(builder.toString());
 					}
-
+					String subfix = null;
+					if (subDatabase != null) {
+						String parameterName = subDatabase.parameterName();
+						Object parameterValue = null;
+						String[] parameterNames = methodSignature.getParameterNames();
+						for (int i = 0; i < parameterNames.length; i++) {
+							if (parameterNames[i].equals(parameterName)) {
+								parameterValue = pjp.getArgs()[i];
+								break;
+							}
+						}
+						if (parameterValue == null) {
+							throw new TransactionRequiredException(
+									"subDatabase parameterName or value not found in method arguments.");
+						}
+						subRule = SubRuleCache.getSubRule(subDatabase.configPath(), subDatabase.subRuleType());
+						subfix = subRule.delimiter().concat(subRule.getRuleSubfix(parameterValue));
+					}
 					readStatus = new JdbcReadConnectionStatus(dbt);
 					if (dbt.readConfig() == READ_CONFIG.idem) {
 						if (synReadObj == null) {
@@ -97,7 +120,7 @@ public class TransactionAspect {
 								if (mappingDecision.needBalance()) {
 									index = Math.abs(INDEX.getAndIncrement());
 								}
-								DataSource dataSource = mappingDecision.getReadDataSource(index);
+								DataSource dataSource = mappingDecision.getReadDataSource(subfix, index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
 								readConnectionHolder.requested();
 								readStatus.setCurrentConn(readConnectionHolder);
@@ -122,7 +145,7 @@ public class TransactionAspect {
 								if (mappingDecision.needBalance()) {
 									index = Math.abs(INDEX.getAndIncrement());
 								}
-								DataSource dataSource = mappingDecision.getReadDataSource(index);
+								DataSource dataSource = mappingDecision.getReadDataSource(subfix, index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
 								readConnectionHolder.requested();
 								readStatus.setCurrentConn(readConnectionHolder);
@@ -137,14 +160,14 @@ public class TransactionAspect {
 								synReadObj.setReadConnectionHolder(readConnectionHolder);
 							} else {
 								if (synReadObj.getMappingDecision().equals(mappingDecision)
-										&& !synReadObj.getReadConnectionHolder().isUseWriteConnection()) {// 来自同一个数据源配置
+										&& !synReadObj.getReadConnectionHolder().isUseWriteConnection()) {
 									synReadObj.getReadConnectionHolder().requested();
 									readStatus.setCurrentConn(synReadObj.getReadConnectionHolder());
 								} else {
 									if (mappingDecision.needBalance()) {
 										index = Math.abs(INDEX.getAndIncrement());
 									}
-									DataSource dataSource = mappingDecision.getReadDataSource(index);
+									DataSource dataSource = mappingDecision.getReadDataSource(subfix, index);
 									readStatus.setOldConn(synReadObj.getReadConnectionHolder());
 									ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
 									readConnectionHolder.requested();
@@ -161,7 +184,7 @@ public class TransactionAspect {
 						if (mappingDecision.needBalance()) {
 							index = Math.abs(INDEX.getAndIncrement());
 						}
-						DataSource dataSource = mappingDecision.getWriteDataSource(index);
+						DataSource dataSource = mappingDecision.getWriteDataSource(subfix, index);
 						manager = LocalConnectionFactory.getManager(dataSource);
 						tranStatus = manager.getTransaction(dbt);
 					}

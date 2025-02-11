@@ -21,12 +21,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.jexl3.JexlBuilder;
 import org.apache.commons.jexl3.JexlContext;
 import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.jexl3.MapContext;
-import org.apache.commons.jexl3.internal.Engine;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -41,6 +39,7 @@ import com.anywide.dawdler.cache.annotation.CachePut;
 import com.anywide.dawdler.cache.annotation.Cacheable;
 import com.anywide.dawdler.cache.exception.ConditionTypeException;
 import com.anywide.dawdler.cache.exception.KeyExpressionException;
+import com.anywide.dawdler.util.JexlEngineFactory;
 import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
 /**
@@ -50,12 +49,7 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
  */
 @Aspect
 public class CacheAspect {
-	private static final JexlEngine JEXL_ENGINE;
-	static {
-		JexlBuilder jexlBuilder = new JexlBuilder();
-		jexlBuilder.options().setStrictArithmetic(false);
-		JEXL_ENGINE = new Engine(jexlBuilder);
-	}
+	private static final JexlEngine JEXL_ENGINE = JexlEngineFactory.getJexlEngine();
 
 	@Pointcut("@annotation(com.anywide.dawdler.cache.annotation.Cacheable)")
 	public void cacheable() {
@@ -86,10 +80,10 @@ public class CacheAspect {
 			paramsContext = initParamsContext(clazz, method, args);
 			JexlExpression expression = JEXL_ENGINE.createExpression(condition);
 			Object conditionObjResult = expression.evaluate(paramsContext);
-			if (!(conditionObjResult instanceof Boolean)) {
+			if (conditionObjResult == null || !(conditionObjResult instanceof Boolean)) {
 				throw new ConditionTypeException(condition + " result not Boolean type! ");
 			}
-			conditionResult = (boolean) conditionObjResult;
+			conditionResult = (Boolean) conditionObjResult;
 		}
 
 		String key = cacheable.key();
@@ -128,7 +122,7 @@ public class CacheAspect {
 				if (!(unlessObjResult instanceof Boolean)) {
 					throw new ConditionTypeException(condition + " result not Boolean type! ");
 				}
-				if ((boolean) unlessObjResult) {
+				if ((Boolean) unlessObjResult) {
 					return result;
 				}
 			}

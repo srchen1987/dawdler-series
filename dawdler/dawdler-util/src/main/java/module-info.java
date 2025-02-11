@@ -5,6 +5,7 @@ module dawdler.util {
 	requires com.fasterxml.jackson.databind;
 	requires org.objectweb.asm;
 	requires org.objectweb.asm.tree;
+	requires commons.jexl3;
 	requires transitive java.xml;
 	requires org.slf4j;
 	requires com.fasterxml.jackson.dataformat.yaml;

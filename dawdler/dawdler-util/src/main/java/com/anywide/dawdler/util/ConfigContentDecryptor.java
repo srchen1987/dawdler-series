@@ -80,6 +80,10 @@ public class ConfigContentDecryptor {
 		return aesSecurityPlus.encrypt(content);
 	}
 
+	public static String decrypt(String content) throws Exception {
+		return aesSecurityPlus.decrypt(content);
+	}
+
 	private static void checkAesSecurityPlus(AesSecurityPlus aesSecurityPlus) {
 		if (aesSecurityPlus == null) {
 			String encryptFile = getDawdlerEncryptFilePath();
