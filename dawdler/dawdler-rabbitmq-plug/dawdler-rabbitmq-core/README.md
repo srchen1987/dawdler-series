@@ -46,7 +46,11 @@ RabbitInjector注解中的value传入fileName为配置文件名(不包含.proper
 
 ### 4. RabbitListener注解
 
+<<<<<<< HEAD
 用于标识一个方法监听指定队列的消息
+=======
+用于标识一个方法监听指定队列的消息,dawdler的实现是一个类中可以又多个方法被RabbitListener注解标识. 需要注意的是一个类公用一个Connection,需要注意Channel数量设置.
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 
 ```java
 /**

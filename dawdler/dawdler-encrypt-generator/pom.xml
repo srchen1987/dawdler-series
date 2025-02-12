@@ -5,7 +5,11 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler</artifactId>
+<<<<<<< HEAD
 		<version>0.0.5-jdk1.8-RELEASES</version>
+=======
+		<version>0.0.6-jdk1.8-RELEASES</version>
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 	</parent>
 	<artifactId>dawdler-encrypt-generator</artifactId>
 	<name>dawdler-encrypt-generator</name>
@@ -24,12 +28,18 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-access</artifactId>
+<<<<<<< HEAD
 			<scope>provided</scope>
+=======
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
+<<<<<<< HEAD
 			<scope>provided</scope>
+=======
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 		</dependency>
 	</dependencies>
 	<build>

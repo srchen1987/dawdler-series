@@ -22,11 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+<<<<<<< HEAD
+=======
+import org.apache.ibatis.plugin.Interceptor;
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+<<<<<<< HEAD
+=======
+import com.anywide.dawdler.core.db.mybatis.interceptor.SubTableInterceptor;
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 import com.anywide.dawdler.util.spring.antpath.PathMatchingResourcePatternResolver;
 import com.anywide.dawdler.util.spring.antpath.Resource;
 import com.anywide.dawdler.util.spring.antpath.ResourcePatternResolver;
@@ -75,6 +83,10 @@ public abstract class AbstractSqlSessionFactory {
 		}
 		SqlSessionFactory sqlSessionFactory;
 		try {
+<<<<<<< HEAD
+=======
+			sessionBuilder.setPlugins(new Interceptor[]	{new SubTableInterceptor()});
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 			sqlSessionFactory = sessionBuilder.buildSqlSessionFactory();
 			this.sqlSession = sqlSessionFactory.openSession();
 		} catch (Exception e) {

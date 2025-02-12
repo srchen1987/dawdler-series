@@ -40,7 +40,11 @@ public class LocalServiceInjector {
 			Object obj = null;
 			Class<?> serviceClass = field.getType();
 			if (localServiceAnnotation != null) {
+<<<<<<< HEAD
 				String serviceName = "";
+=======
+				String serviceName = localServiceAnnotation.serviceName();
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 				if ("".equals(serviceName) || serviceName == null) {
 					serviceName = getServiceName(serviceClass);
 				}
@@ -75,10 +79,28 @@ public class LocalServiceInjector {
 				}
 				serviceName = service.serviceName();
 				if (serviceName.equals("")) {
+<<<<<<< HEAD
 					serviceName = type.getName();
 				}
 				return serviceName;
 			}
+=======
+					serviceName = clazz.getName();
+				}
+				return serviceName;
+			}
+			Class<?> superClass = type.getSuperclass();
+			if (superClass != null && superClass != Object.class) {
+				Service superClassService = superClass.getAnnotation(Service.class);
+				if (superClassService != null) {
+					serviceName = superClassService.serviceName();
+					if (serviceName.trim().equals("")) {
+						serviceName = superClass.getName();
+					}
+					return serviceName;
+				}
+			}
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 			return type.getName();
 		}
 	}

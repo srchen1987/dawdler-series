@@ -44,7 +44,11 @@ public class JedisDistributedLock {
 	private long lockExpiryInMillis;
 	private Timeout timeout;
 	private boolean useWatchDog = true;
+<<<<<<< HEAD
 	private static final ThreadLocal<Lock> LOCK_THREADLOCAL = new ThreadLocal<Lock>();
+=======
+	private static final ThreadLocal<Lock> LOCK_THREAD_LOCAL = new ThreadLocal<Lock>();
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 
 	private static final HashedWheelTimer HASHED_WHEEL_TIMER = HashedWheelTimerSingleCreator.getHashedWheelTimer();
 
@@ -82,7 +86,11 @@ public class JedisDistributedLock {
 	}
 
 	private boolean tryLock(Jedis jedis) {
+<<<<<<< HEAD
 		Lock lock = LOCK_THREADLOCAL.get();
+=======
+		Lock lock = LOCK_THREAD_LOCAL.get();
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 		if (lock == null) {
 			lock = new Lock(nextUid());
 			final String lockUid = lock.uid;
@@ -117,7 +125,11 @@ public class JedisDistributedLock {
 						}
 					}, lockExpiryInMillis / 3, TimeUnit.MILLISECONDS);
 				}
+<<<<<<< HEAD
 				LOCK_THREADLOCAL.set(lock);
+=======
+				LOCK_THREAD_LOCAL.set(lock);
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 				return true;
 			}
 			return false;
@@ -177,7 +189,11 @@ public class JedisDistributedLock {
 	}
 
 	private boolean unlock(Jedis jedis) {
+<<<<<<< HEAD
 		Lock lock = LOCK_THREADLOCAL.get();
+=======
+		Lock lock = LOCK_THREAD_LOCAL.get();
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 		if (lock == null) {
 			return false;
 		} else {
@@ -189,7 +205,11 @@ public class JedisDistributedLock {
 				Object result = jedis.eval(luaScript, Collections.singletonList(this.LOCK_KEY),
 						Collections.singletonList(lock.toString()));
 				if (((Long) result) == 1L) {
+<<<<<<< HEAD
 					LOCK_THREADLOCAL.remove();
+=======
+					LOCK_THREAD_LOCAL.remove();
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 					return true;
 				}
 				return false;

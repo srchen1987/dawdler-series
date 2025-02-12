@@ -21,12 +21,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+<<<<<<< HEAD
 import org.apache.commons.jexl3.JexlBuilder;
+=======
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 import org.apache.commons.jexl3.JexlContext;
 import org.apache.commons.jexl3.JexlEngine;
 import org.apache.commons.jexl3.JexlExpression;
 import org.apache.commons.jexl3.MapContext;
+<<<<<<< HEAD
 import org.apache.commons.jexl3.internal.Engine;
+=======
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -41,6 +47,10 @@ import com.anywide.dawdler.cache.annotation.CachePut;
 import com.anywide.dawdler.cache.annotation.Cacheable;
 import com.anywide.dawdler.cache.exception.ConditionTypeException;
 import com.anywide.dawdler.cache.exception.KeyExpressionException;
+<<<<<<< HEAD
+=======
+import com.anywide.dawdler.util.JexlEngineFactory;
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
 
 /**
@@ -50,12 +60,16 @@ import com.anywide.dawdler.util.reflectasm.ParameterNameReader;
  */
 @Aspect
 public class CacheAspect {
+<<<<<<< HEAD
 	private static final JexlEngine JEXL_ENGINE;
 	static {
 		JexlBuilder jexlBuilder = new JexlBuilder();
 		jexlBuilder.options().setStrictArithmetic(false);
 		JEXL_ENGINE = new Engine(jexlBuilder);
 	}
+=======
+	private static final JexlEngine JEXL_ENGINE = JexlEngineFactory.getJexlEngine();
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 
 	@Pointcut("@annotation(com.anywide.dawdler.cache.annotation.Cacheable)")
 	public void cacheable() {

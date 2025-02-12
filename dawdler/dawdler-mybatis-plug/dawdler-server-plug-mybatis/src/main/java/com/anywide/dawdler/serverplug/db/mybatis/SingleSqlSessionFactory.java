@@ -16,14 +16,20 @@
  */
 package com.anywide.dawdler.serverplug.db.mybatis;
 
+<<<<<<< HEAD
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+=======
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 import java.util.Set;
 
 import com.anywide.dawdler.core.db.mybatis.AbstractSqlSessionFactory;
 import com.anywide.dawdler.server.context.DawdlerContext;
+<<<<<<< HEAD
 import com.anywide.dawdler.util.spring.antpath.Resource;
+=======
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 
 /**
  * @author jackson.song
@@ -36,6 +42,7 @@ public class SingleSqlSessionFactory extends AbstractSqlSessionFactory {
 		private static SingleSqlSessionFactory instance = new SingleSqlSessionFactory();
 	}
 
+<<<<<<< HEAD
 	public List<Resource> getMapperLocations() throws IOException {
 		Set<String> mappers = DawdlerContext.getDawdlerContext().getServicesConfig().getMappers();
 		if (mappers != null) {
@@ -51,6 +58,8 @@ public class SingleSqlSessionFactory extends AbstractSqlSessionFactory {
 		return null;
 	}
 
+=======
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 	private SingleSqlSessionFactory() {
 		init();
 	}

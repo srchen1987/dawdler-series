@@ -5,7 +5,11 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-service-plug</artifactId>
+<<<<<<< HEAD
 		<version>0.0.5-jdk1.8-RELEASES</version>
+=======
+		<version>0.0.6-jdk1.8-RELEASES</version>
+>>>>>>> 0.0.6-jdk1.8-RELEASES
 	</parent>
 	<artifactId>dawdler-remote-service-core</artifactId>
 	<name>dawdler-remote-service-core</name>
