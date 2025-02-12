@@ -17,10 +17,6 @@
 package com.anywide.dawdler.clientplug.web.session.http;
 
 import java.util.Enumeration;
-<<<<<<< HEAD
-import java.util.HashMap;
-=======
->>>>>>> 0.0.6-jdk1.8-RELEASES
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,11 +39,7 @@ public class DawdlerHttpSession implements HttpSession {
 	public static final String CREATION_TIME_KEY = "creationTime";
 	public static final String LAST_ACCESSED_TIME_KEY = "lastAccessedTime";
 	public static final ThreadLocal<Boolean> FLUSH_IMMEDIATELY = new ThreadLocal<>();
-<<<<<<< HEAD
-	private final Map<String, Object> attributesAddNew = new HashMap<>();
-=======
 	private final Map<String, Object> attributesAddNew = new ConcurrentHashMap<>();
->>>>>>> 0.0.6-jdk1.8-RELEASES
 	private final SessionOperator sessionOperator;
 	private final MessageOperator messageOperator;
 	private final List<String> attributesRemoveNewKeys = new CopyOnWriteArrayList<>();
