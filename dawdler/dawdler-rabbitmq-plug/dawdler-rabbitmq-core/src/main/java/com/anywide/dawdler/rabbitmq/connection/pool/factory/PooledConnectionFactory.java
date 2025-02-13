@@ -42,16 +42,10 @@ import com.rabbitmq.client.impl.recovery.AutorecoveringConnection;
  */
 public class PooledConnectionFactory extends BasePooledObjectFactory<Connection> {
 	private static final Logger logger = LoggerFactory.getLogger(PooledConnectionFactory.class);
-<<<<<<< HEAD
-	public static final int DEFAULT_NUM_THREADS = Runtime.getRuntime().availableProcessors()*2+1;
-	private ThreadPoolExecutor executor = new ThreadPoolExecutor(DEFAULT_NUM_THREADS, DEFAULT_NUM_THREADS, 0, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>(), new DefaultThreadFactory("rabbit-consumer#"));
-=======
 	public static final int DEFAULT_NUM_THREADS = Runtime.getRuntime().availableProcessors() * 2 + 1;
 	private ThreadPoolExecutor executor = new ThreadPoolExecutor(DEFAULT_NUM_THREADS, DEFAULT_NUM_THREADS, 0,
 			TimeUnit.MILLISECONDS,
 			new LinkedBlockingQueue<Runnable>(), new DefaultThreadFactory("rabbit-consumer#"));
->>>>>>> 0.0.6-jdk1.8-RELEASES
 	private ConnectionFactory connectionFactory;
 	private GenericObjectPool<Connection> genericObjectPool;
 	private int channelSize;
@@ -120,9 +114,4 @@ public class PooledConnectionFactory extends BasePooledObjectFactory<Connection>
 	public ThreadPoolExecutor getExecutor() {
 		return executor;
 	}
-<<<<<<< HEAD
-	
-=======
-
->>>>>>> 0.0.6-jdk1.8-RELEASES
 }

@@ -24,11 +24,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-<<<<<<< HEAD
-=======
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
->>>>>>> 0.0.6-jdk1.8-RELEASES
 
 import com.anywide.dawdler.util.PropertiesUtil;
 import com.rabbitmq.client.Channel;
@@ -41,10 +38,7 @@ import com.rabbitmq.client.ConnectionFactory;
  * AMQP连接多例工厂
  */
 public class AMQPConnectionFactory {
-<<<<<<< HEAD
-=======
 	private static final Logger logger = LoggerFactory.getLogger(AMQPConnectionFactory.class);
->>>>>>> 0.0.6-jdk1.8-RELEASES
 	private GenericObjectPool<Connection> genericObjectPool;
 	private static final Map<String, AMQPConnectionFactory> INSTANCES = new ConcurrentHashMap<>();
 	private static AtomicBoolean stopped = new AtomicBoolean(false);
@@ -91,11 +85,8 @@ public class AMQPConnectionFactory {
 			channel.queueDeclare(RABBIT_FAIL_QUEUE, true, false, false, null);
 			channel.queueBind(RABBIT_RETRY_QUEUE, RABBIT_RETRY_EXCHANGE, RABBIT_FAIL_QUEUE);
 			channel.queueBind(RABBIT_FAIL_QUEUE, RABBIT_FAIL_EXCHANGE, RABBIT_FAIL_QUEUE);
-<<<<<<< HEAD
-=======
 		}catch (Exception e) {
 			logger.error("", e);
->>>>>>> 0.0.6-jdk1.8-RELEASES
 		} finally {
 			if (channel != null) {
 				channel.close();
@@ -115,10 +106,7 @@ public class AMQPConnectionFactory {
 		connectionFactory.setUsername(ps.getProperty("username"));
 		connectionFactory.setPassword(ps.getProperty("password"));
 		connectionFactory.setAutomaticRecoveryEnabled(true);
-<<<<<<< HEAD
-=======
 		connectionFactory.setRequestedHeartbeat(PropertiesUtil.getIfNullReturnDefaultValueInt("requestedHeartbeat", 30, ps));
->>>>>>> 0.0.6-jdk1.8-RELEASES
 		connectionFactory.setShutdownTimeout(PropertiesUtil.getIfNullReturnDefaultValueInt("shutdownTimeout", 30000, ps));
 		connectionFactory.setNetworkRecoveryInterval(
 				PropertiesUtil.getIfNullReturnDefaultValueInt("networkRecoveryInterval", 3000, ps));

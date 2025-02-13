@@ -1733,8 +1733,4 @@ public interface EsOperator {
 			Function<UpdateByQueryRethrottleRequest.Builder, ObjectBuilder<UpdateByQueryRethrottleRequest>> fn)
 			throws IOException, ElasticsearchException;
 
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 0.0.6-jdk1.8-RELEASES
