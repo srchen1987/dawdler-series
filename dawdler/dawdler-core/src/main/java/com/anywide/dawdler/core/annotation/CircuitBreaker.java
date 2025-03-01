@@ -53,7 +53,7 @@ public @interface CircuitBreaker {
 	/**
 	 * @return int
 	 * 熔断器打开后，所有的请求都会直接失败，熔断器打开时会在经过一段时间后就放行一条请求成功则关闭熔断器，此配置就为指定的这段时间，默认值是
-	 *              5000，单位为毫秒。
+	 * 5000，单位为毫秒。
 	 */
 	int sleepWindowInMilliseconds() default 5000;
 

@@ -24,8 +24,7 @@ import com.anywide.dawdler.rabbitmq.provider.RabbitProviderFactory;
 /**
  * @author jackson.song
  * @version V1.0
- * 客户端加载类通知类，初始化各种监听器 拦截器
- *              controller,注入RabbitProvider与RabbitListener标注的方法
+ * 客户端加载类通知类，初始化各种监听器 拦截器 controller,注入RabbitProvider与RabbitListener标注的方法
  */
 @Order(1)
 public class RabbitClassLoaderFire implements RemoteClassLoaderFire {

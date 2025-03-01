@@ -333,7 +333,7 @@ public class ServerConfig {
 		private int backlog;
 		private String username;
 		private String password;
-		private String uri;
+		private String uri = "/health";
 		private Set<String> componentCheck;
 
 		public HealthCheck() {

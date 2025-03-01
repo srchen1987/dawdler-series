@@ -1,6 +1,6 @@
 # dawdler-series
 
-![version](https://img.shields.io/badge/dawdler--series-0.0.6--jdk21--RELEASES-brightgreen)&nbsp;
+![version](https://img.shields.io/badge/dawdler--series-0.0.7--jdk21--RELEASES-brightgreen)&nbsp;
 [![License](https://img.shields.io/badge/license-apache2.0-green)](./LICENSE)&nbsp;
 ![jdk](https://img.shields.io/badge/jdk-21%2B-green)
 
@@ -35,6 +35,10 @@ RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服�
 分布式事务框架: 高性能异步tcc实现.
 
 数据库操作框架: 提供封装jdbc的一套操作框架同时支持集成mybatis来操作数据库.
+
+水平分库分表: 支持读写分离的分库分表.
+
+缓存框架: 提供缓存接口及实现,支持redis,caffeine缓存实现.
 
 统一配置中心: 支持扩展的统一配置中心.
 

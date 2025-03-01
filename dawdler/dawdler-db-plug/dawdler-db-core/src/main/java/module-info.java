@@ -10,6 +10,7 @@ module dawdler.db.core {
 	requires org.slf4j;
 	requires dawdler.service.core;
 	requires transitive org.aspectj.weaver;
+	requires commons.jexl3;
 
 	exports com.anywide.dawdler.core.db;
 	exports com.anywide.dawdler.core.db.aspect;

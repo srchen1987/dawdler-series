@@ -22,6 +22,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.jexl3.JexlContext;
+import org.apache.commons.jexl3.JexlEngine;
+import org.apache.commons.jexl3.JexlExpression;
+import org.apache.commons.jexl3.MapContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -37,7 +41,6 @@ import com.anywide.dawdler.core.db.datasource.RWSplittingDataSourceManager;
 import com.anywide.dawdler.core.db.datasource.RWSplittingDataSourceManager.MappingDecision;
 import com.anywide.dawdler.core.db.exception.TransactionRequiredException;
 import com.anywide.dawdler.core.db.sub.SubRuleCache;
-import com.anywide.dawdler.core.db.sub.rule.RemainderSubRule;
 import com.anywide.dawdler.core.db.sub.rule.SubRule;
 import com.anywide.dawdler.core.db.transaction.JdbcReadConnectionStatus;
 import com.anywide.dawdler.core.db.transaction.LocalConnectionFactory;
@@ -45,6 +48,7 @@ import com.anywide.dawdler.core.db.transaction.ReadConnectionHolder;
 import com.anywide.dawdler.core.db.transaction.SynReadConnectionObject;
 import com.anywide.dawdler.core.db.transaction.TransactionManager;
 import com.anywide.dawdler.core.db.transaction.TransactionStatus;
+import com.anywide.dawdler.util.JexlEngineFactory;
 
 /**
  * @author jackson.song
@@ -56,7 +60,8 @@ public class TransactionAspect {
 	private static final Logger logger = LoggerFactory.getLogger(TransactionAspect.class);
 	private RWSplittingDataSourceManager dataSourceManager = RWSplittingDataSourceManager.getInstance();
 	private static final AtomicInteger INDEX = new AtomicInteger(0);
-	SubRule subRule = new RemainderSubRule();
+	private static final JexlEngine JEXL_ENGINE = JexlEngineFactory.getJexlEngine();
+	private SubRule subRule;
 
 	@Around("@annotation(com.anywide.dawdler.core.db.annotation.DBTransaction)")
 	public Object execute(ProceedingJoinPoint pjp) throws Throwable {
@@ -90,7 +95,14 @@ public class TransactionAspect {
 					}
 					String subfix = null;
 					if (subDatabase != null) {
-						String parameterName = subDatabase.parameterName();
+						String expression = subDatabase.expression();
+						int expressionIndex = expression.indexOf(".");
+						String parameterName;
+						if (expressionIndex != -1) {
+							parameterName = expression.substring(0, expressionIndex);
+						} else {
+							parameterName = expression;
+						}
 						Object parameterValue = null;
 						String[] parameterNames = methodSignature.getParameterNames();
 						for (int i = 0; i < parameterNames.length; i++) {
@@ -99,10 +111,18 @@ public class TransactionAspect {
 								break;
 							}
 						}
+						System.out.println(parameterName+"="+parameterValue);
+						if (expressionIndex != -1) {
+							JexlExpression jexlExpression = JEXL_ENGINE.createExpression(expression);
+							JexlContext jexlContext = new MapContext();
+							jexlContext.set(parameterName, parameterValue);
+							parameterValue = jexlExpression.evaluate(jexlContext);
+						}
 						if (parameterValue == null) {
 							throw new TransactionRequiredException(
-									"subDatabase parameterName or value not found in method arguments.");
+									"subDatabase expression parameter not found.");
 						}
+
 						subRule = SubRuleCache.getSubRule(subDatabase.configPath(), subDatabase.subRuleType());
 						subfix = subRule.delimiter().concat(subRule.getRuleSubfix(parameterValue));
 					}

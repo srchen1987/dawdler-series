@@ -24,29 +24,24 @@ import jakarta.servlet.http.HttpServletRequest;
  * 常用工具
  */
 public class DawdlerClientTool {
-	public static String get_onlineip(HttpServletRequest request) {
+
+	public static String getOnlineIp(HttpServletRequest request) {
 		String ip = request.getHeader("X-Real-IP");
-		String forward_header = request.getHeader("X-Forwarded-For");
-		if (forward_header != null && !forward_header.trim().equals("")) {
-			String[] forward_headers = forward_header.split(",");
-			for (String s : forward_headers) {
+		String forwardHeader = request.getHeader("X-Forwarded-For");
+		if (forwardHeader != null && !forwardHeader.trim().equals("")) {
+			String[] forwardHeaders = forwardHeader.split(",");	
+			for (String s : forwardHeaders) {
 				if (!s.trim().equalsIgnoreCase("unknown")) {
 					return s;
 				}
 			}
 		}
-		/*
-		 * if(isempty(ip) || "unknown".equalsIgnoreCase(ip)) { ip =
-		 * request.getHeader("x-forwarded-for"); } if(isempty(ip) ||
-		 * "unknown".equalsIgnoreCase(ip)) { ip =
-		 * request.getHeader("WL-Proxy-Client-IP"); } if(isempty(ip) ||
-		 * "unknown".equalsIgnoreCase(ip)) { ip = request.getRemoteAddr(); }
-		 */
 		if (empty(ip)) {
 			return request.getRemoteAddr();
 		}
 		return ip;
 	}
+
 
 	public static boolean empty(String parameter) {
 		return parameter == null || parameter.trim().equals("");
