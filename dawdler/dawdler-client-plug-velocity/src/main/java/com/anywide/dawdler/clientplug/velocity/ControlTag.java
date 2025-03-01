@@ -21,7 +21,7 @@ package com.anywide.dawdler.clientplug.velocity;
  * @version V1.0
  * 控件标签 之前支持jsp标签库 目前放弃了jsp的支持
  */
-public class ControlTag /* extends TagSupport */ {
+public class ControlTag {
 	private String controlName; // 前台控件名称
 	private String viewName; // 前台显示名称
 	private String controlType; // 控件的类型，如text,hidden,password,textarea,radio,checkbox,select等

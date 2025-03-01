@@ -40,7 +40,7 @@ public class ConsulLifeCycle extends AbstractServerDiscoveryCenterLifeCycle {
 		ConsulDiscoveryCenter discoveryCenter = ConsulDiscoveryCenter.getInstance();
 		DawdlerContext dawdlerContext = DawdlerContext.getDawdlerContext();
 		Map<String, Object> attributes = new HashMap<>();
-		if (discoveryCenter.getHealthCheckType().equals(HealthCheckTypes.HTTP.name())) {
+		if (discoveryCenter.getHealthCheckType().equals(HealthCheckTypes.HTTP.getName())) {
 			HealthCheck healthCheck = dawdlerContext.getHealthCheck();
 			if (!healthCheck.isCheck()) {
 				throw new java.lang.IllegalArgumentException(
@@ -50,6 +50,7 @@ public class ConsulLifeCycle extends AbstractServerDiscoveryCenterLifeCycle {
 			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_SCHEME, healthCheck.getScheme());
 			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_USERNAME, healthCheck.getUsername());
 			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_PASSWORD, healthCheck.getPassword());
+			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_URI, healthCheck.getUri());
 		}
 		addProvider(attributes);
 	}
@@ -58,5 +59,4 @@ public class ConsulLifeCycle extends AbstractServerDiscoveryCenterLifeCycle {
 	public DiscoveryCenter getDiscoveryCenter() throws Exception {
 		return ConsulDiscoveryCenter.getInstance();
 	}
-
 }

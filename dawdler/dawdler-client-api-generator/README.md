@@ -64,7 +64,7 @@ scanPath配置一定要配置正确,确保路径下有Controller(必须使用@Co
 #### 3.3 生成api文件
 
 ```shell
-java -jar dawdler-client-api-generator-0.0.6-jdk17-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
+java -jar dawdler-client-api-generator-0.0.7-jdk17-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
 ```
 
 运行后会生成demo-api.json(outPath配置的路径).

@@ -103,7 +103,19 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 		if (instance == null) {
 			instance = SunReflectionFactoryInstantiator.newInstance(type);
 		}
-		Field[] fields = type.getDeclaredFields();
+
+		do {
+			Field[] fields = type.getDeclaredFields();
+			setField(fields, type, viewForward, instance, uri);
+			type = type.getSuperclass();
+		} while (type != null && type != Object.class);
+
+		return instance;
+	}
+
+	public void setField(Field[] fields, Class<?> type, ViewForward viewForward, Object instance, String uri)
+			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
+			NoSuchMethodException, SecurityException {
 		for (Field field : fields) {
 			if ((Modifier.isFinal(field.getModifiers())) || Modifier.isStatic(field.getModifiers())) {
 				continue;
@@ -146,7 +158,6 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 				field.set(instance, setField(fieldType, viewForward, null, uri));
 			}
 		}
-		return instance;
 	}
 
 }

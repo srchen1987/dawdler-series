@@ -83,8 +83,7 @@ public abstract class MethodAccess {
 	}
 
 	/**
-	 * @param type Must not be the Object class, an interface, a primitive type, or
-	 *             void.
+	 * @param type Must not be the Object class, an interface, a primitive type, or void.
 	 */
 	static public MethodAccess get(Class<?> type) {
 		if (type.getSuperclass() == null)

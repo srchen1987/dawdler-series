@@ -93,10 +93,7 @@ public abstract class ResourceUtils {
 	 * <p>
 	 * Does not check whether the URL actually exists; simply returns the URL that
 	 * the given location would correspond to.
-	 * 
-	 * @param resourceLocation the resource location to resolve: either a
-	 *                         "classpath:" pseudo URL, a "file:" URL, or a plain
-	 *                         file path
+	 * @param resourceLocation the resource location to resolve: either a  "classpath:" pseudo URL, a "file:" URL, or a plain file path
 	 * @return a corresponding URL object
 	 * @throws FileNotFoundException if the resource cannot be resolved to a URL
 	 */

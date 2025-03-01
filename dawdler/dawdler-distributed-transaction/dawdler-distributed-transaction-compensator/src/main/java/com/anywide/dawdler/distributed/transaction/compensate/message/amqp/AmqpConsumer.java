@@ -35,8 +35,7 @@ import com.rabbitmq.client.Envelope;
 /**
  * @author jackson.song
  * @version V1.0
- * Amqp消息消费者
- *              将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
+ * Amqp消息消费者 将消息分发到不同的处理者上去执行，处理者需要继承DistributedTransactionCustomProcessor
  */
 public class AmqpConsumer extends MessageConsumer {
 	private static Logger logger = LoggerFactory.getLogger(AmqpConsumer.class);

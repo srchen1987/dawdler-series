@@ -33,7 +33,7 @@ import com.anywide.dawdler.core.db.sub.rule.SubRule;
 @java.lang.annotation.Inherited
 public @interface SubDatabase {
 
-	String parameterName();
+	String expression();
 
 	String configPath();
 

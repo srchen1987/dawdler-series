@@ -40,7 +40,7 @@ import com.anywide.dawdler.util.XmlObject;
 /**
  * @author jackson.song
  * @version V1.0
- *          web配置解析器
+ * web配置解析器
  */
 public class WebConfigParser {
 	private static final Logger logger = LoggerFactory.getLogger(WebConfigParser.class);
