@@ -124,7 +124,7 @@ public abstract class AbstractServiceRoot {
 			}
 
 		};
-		httpServer.addPath(healthCheck.getUri() == null ? "/health" : healthCheck.getUri(), handler);
+		httpServer.addPath(healthCheck.getUri(), handler);
 		httpServer.start();
 	}
 

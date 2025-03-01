@@ -147,8 +147,7 @@ import co.elastic.clients.util.ObjectBuilder;
 /**
  * @author jackson.song
  * @version V1.0
- * es EsOperator客户端接口
- *              es官方的7.15之后RestHighLevelClient不再使用,采用ElasticsearchClient代替.
+ * es EsOperator客户端接口 es官方的7.15之后RestHighLevelClient不再使用,采用ElasticsearchClient代替.
  */
 public interface EsOperator {
 

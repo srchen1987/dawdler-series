@@ -55,11 +55,12 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	private ConsulClient client;
 	private String host;
 	private int port;
-	private String checkTime = "90s";
+	private String checkTime = "6s";
 	public static final String HEALTH_CHECK_PORT = "health_check_port";
 	public static final String HEALTH_CHECK_SCHEME = "health_check_scheme";
 	public static final String HEALTH_CHECK_USERNAME = "health_check_username";
 	public static final String HEALTH_CHECK_PASSWORD = "health_check_password";
+	public static final String HEALTH_CHECK_URI = "health_check_uri";
 	private ConsulRawClient consulRawClient;
 	private TLSConfig config;
 	private String token;
@@ -73,6 +74,9 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 		private HealthCheckTypes(String name) {
 			this.name = name;
+		}
+		public String getName() {
+			return name;
 		}
 	}
 
@@ -171,7 +175,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 		Check check = new Check();
 		if (healthCheckType.equals(HealthCheckTypes.HTTP.name)) {
 			check.setHttp(attributes.get(HEALTH_CHECK_SCHEME) + "://" + ipAddress + ":"
-					+ attributes.get(HEALTH_CHECK_PORT) + "/status");
+					+ attributes.get(HEALTH_CHECK_PORT) + attributes.get(HEALTH_CHECK_URI));
 			String username = (String) attributes.get(HEALTH_CHECK_USERNAME);
 			String password = (String) attributes.get(HEALTH_CHECK_PASSWORD);
 			if (username != null && password != null) {

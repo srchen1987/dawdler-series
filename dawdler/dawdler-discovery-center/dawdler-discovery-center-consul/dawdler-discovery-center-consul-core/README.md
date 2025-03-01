@@ -17,7 +17,7 @@ host=127.0.0.1
 port=8500
 #token=2e6dccf2-3f9b-d8e9-e20d-0d5979bf0f23
 #healthCheckType=tcp
-#checkTime=90s
+#checkTime=6s
 #keyStoreInstanceType=JKS
 #certificatePath=/home/srchen/certificatePath/xxx
 #certificatePassword=password
@@ -36,7 +36,7 @@ host: 127.0.0.1
 port: 8500
 #token=2e6dccf2-3f9b-d8e9-e20d-0d5979bf0f23
 #healthCheckType=tcp
-#checkTime: 90s
+#checkTime: 6s
 #keyStoreInstanceType: JKS
 #certificatePath: /home/srchen/certificatePath/xxx
 #certificatePassword: password
@@ -54,7 +54,7 @@ token consul的token,如果没有配置则不需要token
 
 healthCheckType 服务端的健康检测方式,默认为tcp. 另外支持http,使用http需要配置 [服务端健康检测](../../../dawdler-server/README.md#7-健康检测)
 
-checkTime 健康检测时间(默认为90秒)
+checkTime 健康检测时间(默认为6秒)
 
 keyStoreInstanceType 证书类型 目前支持JKS, JCEKS, PKCS12, PKCS11, DKS
 

@@ -32,7 +32,7 @@ import com.anywide.dawdler.core.db.sub.rule.SubRule;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SubTable {
 
-	String expression() default "";
+	String expression();
 
 	String[] tables();
 
