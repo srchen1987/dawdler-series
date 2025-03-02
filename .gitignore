@@ -24,3 +24,4 @@ bin/
 .project
 .settings
 .vscode/settings.json
+eclipse-formatter.xml

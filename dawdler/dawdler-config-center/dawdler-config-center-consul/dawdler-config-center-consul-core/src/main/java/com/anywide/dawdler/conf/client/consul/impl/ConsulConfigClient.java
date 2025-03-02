@@ -131,6 +131,7 @@ public class ConsulConfigClient implements ConfigClient {
 							}
 						}
 					} catch (Throwable e) {
+						logger.error("", e);
 						if (!destroyed.get()) {
 							try {
 								Thread.sleep(1000);

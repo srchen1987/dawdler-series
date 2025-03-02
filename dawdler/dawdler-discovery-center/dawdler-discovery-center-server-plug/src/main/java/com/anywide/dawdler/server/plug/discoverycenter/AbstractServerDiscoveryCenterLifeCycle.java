@@ -61,7 +61,7 @@ public abstract class AbstractServerDiscoveryCenterLifeCycle implements Componen
 					throw new RuntimeException(e);
 				}
 				hashedWheelTimer = new HashedWheelTimer();
-				timeout = hashedWheelTimer.newTimeout(new ProviderTimeoutTask(path, value), checkTime,
+				timeout = hashedWheelTimer.newTimeout(new ProviderTimeoutTask(path, value, attributes), checkTime,
 						TimeUnit.MILLISECONDS);
 			}
 		}, "addProviderThread").start();
@@ -90,10 +90,13 @@ public abstract class AbstractServerDiscoveryCenterLifeCycle implements Componen
 	public class ProviderTimeoutTask implements TimerTask {
 		private String path;
 		private String value;
+		private Map<String, Object> attributes;
 
-		public ProviderTimeoutTask(String path, String value) {
+
+		public ProviderTimeoutTask(String path, String value, Map<String, Object> attributes) {
 			this.path = path;
 			this.value = value;
+			this.attributes = attributes;
 		}
 
 		@Override
@@ -104,7 +107,7 @@ public abstract class AbstractServerDiscoveryCenterLifeCycle implements Componen
 			try {
 				DiscoveryCenter discoveryCenter = getDiscoveryCenter();
 				if (!discoveryCenter.isExist(path, value)) {
-					discoveryCenter.addProvider(path, value, null);
+					discoveryCenter.addProvider(path, value, attributes);
 				}
 			} catch (Exception e) {
 				logger.error("", e);

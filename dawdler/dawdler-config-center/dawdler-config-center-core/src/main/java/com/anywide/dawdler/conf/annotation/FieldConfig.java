@@ -24,9 +24,10 @@ import java.lang.annotation.Target;
 /**
  * @author jackson.song
  * @version V1.0
- * 统一配置中心配置注解 支持用在服务器端 service listener(DawdlerServiceListener)
- *              filter(DawdlerFilter) 调用者（客户端） controller(TransactionController)
- *              listener(WebContextListener) interceptor(HandlerInterceptor)
+ * 统一配置中心配置注解 支持用在服务器端
+ * service listener(DawdlerServiceListener)
+ * filter(DawdlerFilter) 调用者（客户端） controller
+ * listener(WebContextListener) interceptor(HandlerInterceptor)
  */
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE, ElementType.FIELD })

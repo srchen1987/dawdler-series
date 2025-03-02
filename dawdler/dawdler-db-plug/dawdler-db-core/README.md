@@ -109,3 +109,92 @@ dawdler支持读写分离的配置,由datasource-expression节点来进行配置
   <!-- mapping支持antpath,被匹配到的包下所有的service实现类都会采用latent-expression-id所配置的规则,优先级没有直接指定非antpath的高 -->
 </decisions>
 ```
+
+### 6. 水平分库配置
+
+dawdler支持水平分库的配置,由SubDatabase注解来进行配置.
+
+注意: 需要配置分库规则对应的数据源,否则会导找不到对应的数据库. 如 userDataSource_write_0,userDataSource_write_1,userDataSource_write_2. userDataSource_read_0,userDataSource_read_1,userDataSource_read_2. 如果没有用读写分离,则只需要配置userDataSource_0,userDataSource_1,userDataSource_2.
+
+```java
+/**
+ * @author jackson.song
+ * @version V1.0
+ * 分库注解,应用于service方法中
+ */
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@java.lang.annotation.Inherited
+public @interface SubDatabase {
+
+	String expression();
+
+	String configPath();
+
+	Class<? extends SubRule> subRuleType();
+
+}
+```
+
+参数说明:
+
+expression: 用于指定分库参数的名称,例如:分库字段id,则该参数名称为id,同时支持对象参数,例如:分库字段为对象user,则该参数名称为user.id.
+
+configPath: 用于指定分库规则配置文件的路径,该配置文件为yml格式(支持统一配置中心).
+
+subRuleType: 用于指定分库规则的实现类,该类必须实现SubRule接口.
+
+
+dawdler提供的分库分表规则实现类有: ConsistentHashSubRule,RemainderSubRule.有其他需求可以自行扩展.
+
+ConsistentHashSubRule: 一致性hash算法实现的分库规则,该规则需要配置副本数量与节点列表.
+
+示例: 
+
+```yml
+numberOfReplicas: 3
+nodes: 
+  - 0
+  - 1
+  - 2
+```
+
+RemainderSubRule: 取模算法实现的分库规则,该规则需要配置除数.
+
+示例:
+
+```yml
+divisor: 3
+```
+
+以下演示通过用户id进行余3取模分库的例子.
+
+userById.yml
+
+```yml
+divisor: 3
+```
+
+```java
+@Service
+public class UserServiceImpl implements UserService {
+    @Repository
+    private UserMapper userMapper;
+
+    @Override
+    @DBTransaction(mode=MODE.readOnly)
+    @SubDatabase(expression = "id",configPath = "userById",subRuleType = RemainderSubRule.class)
+    public BaseResult<User> selectByPrimaryKey(Integer id) {
+        User user = userMapper.selectByPrimaryKey(id);
+        return new BaseResult<>(user);
+    }
+
+    @Override
+    @DBTransaction(mode=MODE.readOnly)
+    @SubDatabase(expression = "user.id",configPath = "userById",subRuleType = RemainderSubRule.class)
+    public BaseResult<User> selectByPrimaryKey(User user) {
+        User result = userMapper.selectByPrimaryKey(user);
+        return new BaseResult<>(result);
+    }
+}
+```

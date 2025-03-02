@@ -40,8 +40,7 @@ import org.apache.ibatis.transaction.Transaction;
 /**
  * @author jackson.song
  * @version V1.0
- * 无缓存执行器 因为优化将session改为single模式 所以不支持其他的BatchExecutor,
- *              ReuseExecutor 有batch的需求可以采用jdbc batch方式处理 效率更高
+ * 无缓存执行器 因为优化将session改为single模式 所以不支持其他的BatchExecutor, ReuseExecutor 有batch的需求可以采用jdbc batch方式处理 效率更高
  */
 public abstract class NoCacheBaseExecutor implements Executor {
 

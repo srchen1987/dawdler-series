@@ -46,8 +46,7 @@ public interface Timer {
 	 * specified delay.
 	 *
 	 * @return a handle which is associated with the specified task
-	 * @throws IllegalStateException if this timer has been {@linkplain #stop()
-	 *                               stopped} already
+	 * @throws IllegalStateException if this timer has been {@linkplain #stop() stopped} already
 	 */
 	Timeout newTimeout(TimerTask task, long delay, TimeUnit unit);
 
@@ -55,8 +54,7 @@ public interface Timer {
 	 * Releases all resources acquired by this {@link Timer} and cancels all tasks
 	 * which were scheduled but not executed yet.
 	 *
-	 * @return the handles associated with the tasks which were canceled by this
-	 *         method
+	 * @return the handles associated with the tasks which were canceled by this method
 	 */
 	Set<Timeout> stop();
 }
