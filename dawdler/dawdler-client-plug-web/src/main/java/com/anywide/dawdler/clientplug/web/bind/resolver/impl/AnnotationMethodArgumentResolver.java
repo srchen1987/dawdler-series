@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.anywide.dawdler.clientplug.web.annotation.CookieValue;
 import com.anywide.dawdler.clientplug.web.annotation.PathVariable;
@@ -36,6 +37,7 @@ import com.anywide.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import com.anywide.dawdler.clientplug.web.exception.ConvertException;
 import com.anywide.dawdler.clientplug.web.handler.ViewForward;
 import com.anywide.dawdler.clientplug.web.handler.WebValidateExecutor;
+import com.anywide.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.anywide.dawdler.clientplug.web.util.CookieUtil;
 import com.anywide.dawdler.clientplug.web.validator.ValidateParser;
 import com.anywide.dawdler.clientplug.web.validator.entity.ControlField;
@@ -103,9 +105,21 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					Object target = null;
 					if (request.getClass() == BodyReaderHttpServletRequestWrapper.class) {
 						BodyReaderHttpServletRequestWrapper requestWrapper = (BodyReaderHttpServletRequestWrapper) request;
-						target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(), new TypeReferenceType(requestParamFieldData.getParameterType()));
+						if (requestParamFieldData.getType() == String.class) {
+							target = requestWrapper.getBody();
+						} else if (request.getContentType() != null
+								&& request.getContentType().contains(AbstractDisplayPlug.MIME_TYPE_JSON)) {
+							target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(),
+									new TypeReferenceType(requestParamFieldData.getParameterType()));
+						}
 					} else {
-						target = JsonProcessUtil.jsonToBean(request.getInputStream(), new TypeReferenceType(requestParamFieldData.getParameterType()));
+						if (requestParamFieldData.getType() == String.class) {
+							target = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
+						} else if (request.getContentType() != null
+								&& request.getContentType().contains(AbstractDisplayPlug.MIME_TYPE_JSON)) {
+							target = JsonProcessUtil.jsonToBean(request.getInputStream(),
+									new TypeReferenceType(requestParamFieldData.getParameterType()));
+						}
 					}
 					if (controlValidator != null) {
 						Map<String, ControlField> bodyFields = controlValidator.getBodyFields(uri);

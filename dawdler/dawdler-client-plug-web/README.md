@@ -41,7 +41,7 @@ web mvc模块,使用上基本与spring mvc一致.提供远程加载组件的客�
 | @SessionAttribute | 参数 | 获取session作用域下的属性值,其中value为属性名 | 不支持 |
 | @RequestHeader | 参数 | 获取http请求头值,其中value为请求头名 | 只支持String或String[] |
 | @CookieValue | 参数 | 获取cookie值,其中value为cookie名 | 只支持String |
-| @RequestBody | 参数 | 将一个自定义的对象通过json方式进行映射,前端提交必须以body中传递json体的方式提交 | 不支持 |
+| @RequestBody | 参数 | String接收json请求体或自定义的对象通过json方式进行映射(前端提交必须以body中传递json体的方式提交) | 只支持String |
 
 #### 3.3 RequestMapping源码注释
 
