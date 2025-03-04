@@ -158,13 +158,13 @@ redis用于存储事务状态,防止服务意外崩溃或停机造成事务状�
 
 如果在服务端(分布式事务框架也支持将发起者放在服务端做,服务端再调用多个服务,一般不建议这么做)则需要在dawdler服务端的classpath下定义distributed-transaction-redis.properties.
 
-redis的配置参考[dawdler-redis-plug](../dawdler-redis-plug/README.md#2-properties文件说明)
+redis的配置参考[dawdler-redis-plug](../dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md#2-properties文件说明
 
 #### 4.3 配置rabbitmq
 
 mq用于实时消息通知事务参与者去执行对应的服务.配置文件为distributed-transaction-rabbitmq.properties.
 
-rabbitmq的配置参考[dawdler-rabbitmq-plug](../dawdler-rabbitmq-plug/README.md#2-properties文件说明)
+rabbitmq的配置参考[dawdler-rabbitmq-plug](../dawdler-rabbitmq-plug/dawdler-rabbitmq-core/README.md#2-properties文件说明)
 
 #### 4.4 配置事务补偿器
 

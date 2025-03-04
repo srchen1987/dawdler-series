@@ -289,7 +289,7 @@ dawdler的aop支持采用aspjectJ来实现,没有采用Load-time weaving和cglib
 </aspectj>
 ```
 
-2、创建com.anywide.yyg.user.controller.UserControllerAspect
+2、创建com.anywide.yyg.user.aop.UserServiceAspect类
 
 ```java
 @Aspect
@@ -311,7 +311,7 @@ public class UserServiceAspect {
 }
 ```
 
-dawdler-server-plug-mybatis中的读写分离也是基于aop实现的,请参考[通过aop切换数据库连接](../dawdler-server-plug-mybatis/src/main/java/com/anywide/dawdler/serverplug/db/mybatis/aspect/SwitchConnectionAspect.java).
+dawdler-server-plug-mybatis中的读写分离也是基于aop实现的,请参考[通过aop切换数据库连接](../dawdler-mybatis-plug/dawdler-mybatis-core/src/main/java/com/anywide/dawdler/core/db/mybatis/aspect/SwitchConnectionAspect.java).
 
 ### 7. 健康检测
 

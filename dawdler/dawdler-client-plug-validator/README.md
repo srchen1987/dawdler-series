@@ -301,7 +301,7 @@ public class UserWebContextListener2 implements WebContextListener{
 
 #### 5.2 通过扫描组件包添加扫描验证器
 
-通过配置扫描组件包的验证器会被注入,参考 [扫描组件包配置](../dawdler-client-plug-web/README.md#11-扫描组件包配置).
+通过配置扫描组件包的验证器会被注入,参考 [扫描组件包配置](../dawdler-client-plug-web/README.md#10-扫描组件包配置).
 
 ### 6. 前端js验证框架
 

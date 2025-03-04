@@ -33,7 +33,7 @@ ipLimit=8 #最大一个ip可以创建的session个数
 
 ### 3. session-redis.properties文件说明
 
-分布式session基于redis实现,redis客户端配置参考[dawdler-redis-plug](../dawdler-redis-plug/README.md#2-properties文件说明)
+分布式session基于redis实现,redis客户端配置参考[dawdler-redis-plug](../dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md#2-properties文件说明)
 
 ### 4. 统一配置中心与多环境支持
 
