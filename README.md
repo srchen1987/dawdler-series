@@ -1,7 +1,7 @@
 # dawdler-series
 
 ![version](https://img.shields.io/badge/dawdler--series-0.0.7--jdk21--RELEASES-brightgreen)&nbsp;
-[![License](https://img.shields.io/badge/license-apache2.0-green)](./LICENSE)&nbsp;
+[![License](https://img.shields.io/badge/license-apache2.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)&nbsp;
 ![jdk](https://img.shields.io/badge/jdk-21%2B-green)
 
 ## 项目介绍
