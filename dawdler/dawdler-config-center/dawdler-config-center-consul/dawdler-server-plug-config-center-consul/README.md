@@ -23,5 +23,5 @@
 
 #### 2.2 FieldConfig注解
 
-参考[FieldConfig注解使用](../../dawdler-config-center-core/README.md#1-FieldConfig注解)
+参考[FieldConfig注解使用](../../dawdler-config-center-core/README.md#1-fieldconfig注解)
 
