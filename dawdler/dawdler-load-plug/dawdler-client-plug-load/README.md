@@ -9,7 +9,7 @@
 
 1、 [web端controller](../../dawdler-client-plug-web/README.md#3-controller注解)
 
-2、 [web端拦截器HandlerInterceptor](../../dawdler-client-plug-web/README.md#5-HandlerInterceptor-拦截器)
+2、 [web端拦截器HandlerInterceptor](../../dawdler-client-plug-web/README.md#5-handlerinterceptor-拦截器)
 
 3、 [web端监听器WebContextListener](../../dawdler-client-plug-web/README.md#6-webcontextlistener-监听器)
 
@@ -24,7 +24,7 @@
 
 ### 2. 配置需要加载的组件
 
-参考以下示例,loads-on是配置加载项,其中channel-group-id对应上面server-channel-group中声明的server-channel-group.关于示例中其他配置请参考[client-conf.xml配置文件说明](../../dawdler-client/README.md#2-client-confxml配置文件说明). 注意: 这里的远程加载配置可以与[扫描组件包配置](../../dawdler-client-plug-web/README.md#11-扫描组件包配置)并存.
+参考以下示例,loads-on是配置加载项,其中channel-group-id对应上面server-channel-group中声明的server-channel-group.关于示例中其他配置请参考[client-conf.xml配置文件说明](../../dawdler-client/README.md#2-client-confxml配置文件说明). 注意: 这里的远程加载配置可以与[扫描组件包配置](../../dawdler-client-plug-web/README.md#10-扫描组件包配置并存.
 
 示例：
 

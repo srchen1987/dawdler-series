@@ -115,13 +115,13 @@ web端将发起者声明在web接口中(分布式事务框架也支持将发起�
 @RequestMapping(value = "/order")
 @Controller
 public class OrderController {
- @Service
+ @RemoteService
  UserService userService;//注入用户服务
 
- @Service
+ @RemoteService
  OrderService orderService;//注入订单服务
 
- @Service
+ @RemoteService
  ProductService productService;//注入商品库存服务
  
  
@@ -158,13 +158,13 @@ redis用于存储事务状态,防止服务意外崩溃或停机造成事务状�
 
 如果在服务端(分布式事务框架也支持将发起者放在服务端做,服务端再调用多个服务,一般不建议这么做)则需要在dawdler服务端的classpath下定义distributed-transaction-redis.properties.
 
-redis的配置参考[dawdler-redis-plug](../dawdler-redis-plug/README.md#2-properties文件说明)
+redis的配置参考[dawdler-redis-plug](../dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md#2-properties文件说明
 
 #### 4.3 配置rabbitmq
 
 mq用于实时消息通知事务参与者去执行对应的服务.配置文件为distributed-transaction-rabbitmq.properties.
 
-rabbitmq的配置参考[dawdler-rabbitmq-plug](../dawdler-rabbitmq-plug/README.md#2-properties文件说明)
+rabbitmq的配置参考[dawdler-rabbitmq-plug](../dawdler-rabbitmq-plug/dawdler-rabbitmq-core/README.md#2-properties文件说明)
 
 #### 4.4 配置事务补偿器
 
@@ -182,7 +182,7 @@ Processor是分布式事务参与者的处理器.
 
 ```java
 public class UserCompensator extends DistributedTransactionCustomProcessor {
- @Service //注入用户服务
+ @RemoteService  //注入用户服务
  UserService userService;
  public UserCompensator() {
   super("user");//定义Processor的别名,DistributedTransaction注解中的action与其对应
@@ -199,7 +199,7 @@ public class UserCompensator extends DistributedTransactionCustomProcessor {
 
 ```java
 public class ProductCompensator extends DistributedTransactionCustomProcessor {
- @Service
+ @RemoteService
  ProductService productService;
  public ProductCompensator() {
   super("product");
@@ -216,7 +216,7 @@ public class ProductCompensator extends DistributedTransactionCustomProcessor {
 
 ```java
 public class OrderCompensator extends DistributedTransactionCustomProcessor {
- @Service
+ @RemoteService
  OrderService orderService;
  public OrderCompensator() {
   super("order");
