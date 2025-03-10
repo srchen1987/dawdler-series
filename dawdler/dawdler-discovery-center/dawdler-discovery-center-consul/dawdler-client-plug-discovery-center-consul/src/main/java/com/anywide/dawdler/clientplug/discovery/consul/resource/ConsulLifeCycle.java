@@ -46,6 +46,7 @@ import com.ecwid.consul.v1.health.model.Check.CheckStatus;
 public class ConsulLifeCycle implements ComponentLifeCycle {
 	private ConsulDiscoveryCenter consulDiscoveryCenter = null;
 	private ExecutorService executor = null;
+	private static final int DEFAULT_WAIT_TIME = 10000;
 
 	@Override
 	public void prepareInit() throws Throwable {
@@ -111,7 +112,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 					} catch (Exception e) {
 						if (!consulDiscoveryCenter.getDestroyed().get()) {
 							try {
-								Thread.sleep(200);
+								Thread.sleep(DEFAULT_WAIT_TIME);
 							} catch (InterruptedException e1) {
 								Thread.currentThread().interrupt();
 							}
