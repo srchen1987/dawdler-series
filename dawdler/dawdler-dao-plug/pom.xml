@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.7-jdk17-RELEASES</version>
+		<version>0.0.8-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-dao-plug</artifactId>
 	<name>dawdler-dao-plug</name>
