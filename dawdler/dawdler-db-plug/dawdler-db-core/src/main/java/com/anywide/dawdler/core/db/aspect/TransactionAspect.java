@@ -111,7 +111,6 @@ public class TransactionAspect {
 								break;
 							}
 						}
-						System.out.println(parameterName+"="+parameterValue);
 						if (expressionIndex != -1) {
 							JexlExpression jexlExpression = JEXL_ENGINE.createExpression(expression);
 							JexlContext jexlContext = new MapContext();

@@ -69,6 +69,7 @@ public class ConsulConfigClient implements ConfigClient {
 	private AtomicBoolean destroyed = new AtomicBoolean();
 	private static Logger logger = LoggerFactory.getLogger(ConsulConfigClient.class);
 	private Map<String, Object> conf;
+	private static final int DEFAULT_WAIT_TIME = 10000;
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -77,7 +78,12 @@ public class ConsulConfigClient implements ConfigClient {
 		watchKeys = (List<String>) conf.get("watch-keys");
 		separator = (String) conf.get("separator");
 		token = (String) conf.get("token");
-		waitTime = Integer.parseInt(conf.get("wait-time").toString());
+		try {
+			waitTime = Integer.parseInt(conf.get("wait-time").toString());
+		} catch (Exception e) {
+			waitTime = DEFAULT_WAIT_TIME;
+		}
+
 		initConsulClient();
 		if (watchKeys != null) {
 			executor = Executors.newFixedThreadPool(watchKeys.size(), new DefaultThreadFactory("consul-watcher", true));
@@ -114,13 +120,13 @@ public class ConsulConfigClient implements ConfigClient {
 			for (String watchKey : watchKeys) {
 				long updateIndex = flushCache(watchKey);
 				executor.execute(() -> {
-					try {
-						long index = updateIndex;
-						while (!destroyed.get()) {
+					long index = updateIndex;
+					while (!destroyed.get()) {
+						try {
 							Response<List<String>> responseKeys = client.getKVKeysOnly(watchKey, separator, token,
 									new QueryParams(waitTime, index));
 							if (responseKeys == null) {
-								Thread.sleep(waitTime * 1000);
+								Thread.sleep(waitTime * DEFAULT_WAIT_TIME);
 								logger.error("not found watchKey {} !", watchKey);
 								continue;
 							}
@@ -129,16 +135,15 @@ public class ConsulConfigClient implements ConfigClient {
 								index = currentIndex;
 								flushCache(watchKey);
 							}
-						}
-					} catch (Throwable e) {
-						logger.error("", e);
-						if (!destroyed.get()) {
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException interruptedException) {
-								Thread.currentThread().interrupt();
+						} catch (Throwable e) {
+							logger.error("", e);
+							if (!destroyed.get()) {
+								try {
+									Thread.sleep(DEFAULT_WAIT_TIME);
+								} catch (InterruptedException interruptedException) {
+									Thread.currentThread().interrupt();
+								}
 							}
-							initConsulClient();
 						}
 					}
 				});
