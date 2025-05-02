@@ -34,18 +34,26 @@ public class RemoteServiceInjector {
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		Field[] fields = target.getClass().getDeclaredFields();
 		for (Field field : fields) {
-			RemoteService remoteService = field.getAnnotation(RemoteService.class);
 			if (field.getType().isPrimitive() || !field.getType().isInterface()) {
 				continue;
 			}
+			RemoteService remoteService = field.getAnnotation(RemoteService.class);
 			Object obj = null;
 			Class<?> serviceClass = field.getType();
 			if (remoteService != null) {
+				String groupName;
 				Service service = serviceClass.getAnnotation(Service.class);
 				if (service == null) {
 					throw new NotSetRemoteServiceException("not found @Service on " + serviceClass.getName());
 				}
-				String groupName = service.value();
+				groupName = service.value();
+				if (groupName.trim().isEmpty() || !remoteService.value().trim().isEmpty()) {
+					groupName = remoteService.value();
+				}
+				if (groupName.trim().isEmpty()) {
+					throw new NotSetRemoteServiceException(
+							"groupName must be set,  @Service.value() is empty or @RemoteService.value() is empty!");
+				}
 				obj = ServiceFactory.getService(serviceClass, remoteService.serviceName(), groupName,
 						service.loadBalance(), classLoader);
 			}
