@@ -29,5 +29,8 @@ import java.lang.annotation.Target;
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface RemoteService {
-	String serviceName() default "";
+	
+	String value() default "";// 在调用端有效,指定服务端部署的服务名.
+
+	String serviceName() default "";// 服务的类名,默认为空,则为注解所在类的父类名称或接口的全称.
 }

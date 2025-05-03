@@ -96,9 +96,21 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
-	
+
 	public static Object jsonToBean(String json, TypeReferenceType typeReferenceType) {
 		Object obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		try {
+			obj = mapper.readValue(json, typeReferenceType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+
+	public static <T> T jsonToBean(String json, TypeReferenceGenerics<T> typeReferenceType) {
+		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
 			obj = mapper.readValue(json, typeReferenceType);
@@ -120,9 +132,21 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
-	
+
 	public static Object jsonToBean(byte[] json, TypeReferenceType typeReferenceType) {
 		Object obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		try {
+			obj = mapper.readValue(json, typeReferenceType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+
+	public static <T> T jsonToBean(byte[] json, TypeReferenceGenerics<T> typeReferenceType) {
+		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
 			obj = mapper.readValue(json, typeReferenceType);
@@ -144,9 +168,21 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
-	
+
 	public static Object jsonToBean(InputStream jsonStream, TypeReferenceType typeReferenceType) {
 		Object obj = null;
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		try {
+			obj = mapper.readValue(jsonStream, typeReferenceType);
+		} catch (JsonMappingException e) {
+		} catch (JsonParseException e) {
+		} catch (IOException e) {
+		}
+		return obj;
+	}
+
+	public static <T> T jsonToBean(InputStream jsonStream, TypeReferenceGenerics<T> typeReferenceType) {
+		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
 			obj = mapper.readValue(jsonStream, typeReferenceType);
@@ -222,16 +258,32 @@ public class JsonProcessUtil {
 		}
 		return obj;
 	}
-	
-	public static class TypeReferenceType extends TypeReference<Object>{
+
+	public static class TypeReferenceType extends TypeReference<Object> {
 		private Type type;
+
 		public TypeReferenceType(Type type) {
 			this.type = type;
 		}
+
 		@Override
 		public Type getType() {
 			return type;
 		}
-		
+
+	}
+
+	public static class TypeReferenceGenerics<T> extends TypeReference<T> {
+		private Type type;
+
+		public TypeReferenceGenerics(Type type) {
+			this.type = type;
+		}
+
+		@Override
+		public Type getType() {
+			return type;
+		}
+
 	}
 }

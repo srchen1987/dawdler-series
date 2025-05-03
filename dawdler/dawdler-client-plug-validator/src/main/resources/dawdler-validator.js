@@ -31,8 +31,7 @@ function cellPhone(cellPhone) {
 
 // email
 function email(email) {
-	//var reg = /^([-_A-Za-z0-9\.]+)@([_A-Za-z0-9\-]+\.)[A-Za-z0-9]{2,3}$/;
-	var reg = /^(\w)+(\.\w+)*@(\w)+((\.\w{2,4}){1,3})$/;
+	var reg = /^\b[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,6}\b$/;
 	return email.match(reg) ? true : "请输入E-Mail地址！";
 }
 
