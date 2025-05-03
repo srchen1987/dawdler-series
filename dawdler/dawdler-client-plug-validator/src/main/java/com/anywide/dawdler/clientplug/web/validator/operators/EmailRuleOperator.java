@@ -22,22 +22,22 @@ package com.anywide.dawdler.clientplug.web.validator.operators;
  * 邮箱验证
  */
 public class EmailRuleOperator extends StringRuleOperator {
-	public static final String RULE_KEY = "email";
-	public static final String REGEX = "^(\\w)+(\\.\\w+)*@(\\w)+((\\.\\w{2,4}){1,3})$";
-	public static final String EXPLAIN = "邮箱验证";
+    public static final String RULE_KEY = "email";
+    public static final String REGEX = "^[\\w.%+-]+@[\\w.-]+\\.[a-zA-Z]{2,6}$";
+    public static final String EXPLAIN = "邮箱验证";
 
-	public EmailRuleOperator() {
-		super(RULE_KEY, REGEX, EXPLAIN);
-	}
+    public EmailRuleOperator() {
+        super(RULE_KEY, REGEX, EXPLAIN);
+    }
 
-	@Override
-	public String validate(Object value) {
-		return validate(value, "请输入E-Mail地址!");
-	}
+    @Override
+    public String validate(Object value) {
+        return validate(value, "请输入E-Mail地址!");
+    }
 
-	@Override
-	public String toString() {
-		return EXPLAIN;
-	}
+    @Override
+    public String toString() {
+        return EXPLAIN;
+    }
 
 }
