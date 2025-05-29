@@ -1,4 +1,4 @@
-# dawdler-series
+# dawdler-series-jdk1.8
 
 ![version](https://img.shields.io/badge/dawdler--series-0.0.9--jdk1.8--RELEASES-brightgreen)&nbsp;
 [![License](https://img.shields.io/badge/license-apache2.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)&nbsp;
