@@ -46,7 +46,7 @@ pool.maxWaitMillis=10000
 pool.testOnBorrow=false
 #创建连接时是否验证连接有效 默认为false
 pool.testOnCreate=false
-#反还连接时是否验证连接有效 默认为false
+#返还连接时是否验证连接有效 默认为false
 pool.testOnReturn=false
 #超时时间(单位毫秒)
 timeout=10000
@@ -79,6 +79,50 @@ public static Pool<Jedis> getJedisPool(String fileName);
 
 ```
 
-注意：Pool\<Jedis\>在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
+注意：Pool```<Jedis>```在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
 
 在非dawdler架构下使用需要调用 JedisPoolFactory.shutdownAll(); 释放资源.
+
+### 5. 分布式锁的使用方式
+
+分布式锁基于redis的lua脚本实现.
+
+JedisLockInjector注解用于注入JedisDistributedLockHolder.
+
+```java
+/**
+ * @author jackson.song
+ * @version V1.0
+ * 标注一个成员变量 注入JedisDistributedLock
+ */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface JedisLockInjector {
+	/**
+	 * 配置文件名
+	 */
+	String fileName();
+
+	/**
+	 * 下一次重试等待，单位毫秒
+	 */
+	int intervalInMillis() default JedisDistributedLockHolder.DEFAULT_INTERVAL_IN_MILLIS;
+
+	/**
+	 * 锁的过期时长，单位毫秒
+	 */
+	long lockExpiryInMillis() default JedisDistributedLockHolder.DEFAULT_LOCK_EXPIRY_IN_MILLIS;
+
+	/**
+	 * 是否启用看门狗,用于延时未处理完的操作,默认开启
+	 */
+	boolean useWatchDog() default true;
+
+}
+```
+
+具体参考:
+
+[dawdler-server-plug-redis 实现dawdler-server端注入功能.](../dawdler-server-plug-jedis/README.md)
+
+[dawdler-client-plug-redis 实现web端注入功能.](../dawdler-client-plug-jedis/README.md)

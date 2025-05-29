@@ -91,7 +91,7 @@ public class AesSecurityPlus {
 			decipher.init(Cipher.DECRYPT_MODE, skeySpec, iv);
 			decrypted = decipher.doFinal(decrypted);
 		}
-		return new String(decrypted);
+		return new String(decrypted, CHARSET);
 	}
 
 	public byte[] encryptByteArray(byte[] data) throws Exception {

@@ -61,7 +61,7 @@ pool.testOnBorrow=false
 #创建连接时是否验证连接有效 默认为false
 pool.testOnCreate=false
 
-#反还连接时是否验证连接有效 默认为false
+#返还连接时是否验证连接有效 默认为false
 pool.testOnReturn=false
 ```
 

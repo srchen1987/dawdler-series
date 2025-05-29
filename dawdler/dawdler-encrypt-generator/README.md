@@ -81,7 +81,7 @@ pool.maxIdle=8 #最大空闲数
 pool.maxWaitMillis=10000 #最大等待时长(单位毫秒)
 pool.testOnBorrow=false #获取连接时是否验证连接有效 默认为false
 pool.testOnCreate=false #创建连接时是否验证连接有效 默认为false
-pool.testOnReturn=false #反还连接时是否验证连接有效 默认为false
+pool.testOnReturn=false #返还连接时是否验证连接有效 默认为false
 timeout=10000
 ```
 
