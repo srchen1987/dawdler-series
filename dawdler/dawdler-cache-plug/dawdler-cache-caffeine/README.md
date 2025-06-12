@@ -17,7 +17,7 @@
 
 ```java
 /**
- * 定义缓存,注意 web端需要在load-web中,service需要在扫描的包路径下
+ * 定义缓存,注意需要在web端或service扫描的包路径中定义.
  */
 public class CacheConfigImpl implements CacheConfig {
 
