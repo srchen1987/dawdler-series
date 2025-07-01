@@ -60,8 +60,8 @@ public class ControlDirect extends Directive {
 		ControlTag ct = new ControlTag();
 		Field[] fs = ControlTag.class.getDeclaredFields();
 		for (int i = 0; i < count; i++) {
-			Node nodetemp = arg2.jjtGetChild(i);
-			Object obj = nodetemp.value(arg0);
+			Node nodeTemp = arg2.jjtGetChild(i);
+			Object obj = nodeTemp.value(arg0);
 			if (!obj.toString().equals("")) {
 				try {
 					fs[i].setAccessible(true);
