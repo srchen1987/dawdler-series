@@ -131,9 +131,13 @@ public class WebApiGenerator {
 		rootMap.put("definitions", definitionsMap);
 		String openApiText = JsonProcessUtil.beanToJson(rootMap);
 		OutputStream out = new FileOutputStream(new File(openApi.getOutPath()).getAbsoluteFile());
-		out.write(openApiText.getBytes());
-		out.flush();
-		out.close();
+		try {
+			out.write(openApiText.getBytes("utf-8"));
+			out.flush();
+		} finally {
+			out.close();
+		}
+
 	}
 
 	public static void generate(String configPath) throws IOException {

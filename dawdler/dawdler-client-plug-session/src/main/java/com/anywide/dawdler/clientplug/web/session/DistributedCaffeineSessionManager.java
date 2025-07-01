@@ -36,10 +36,10 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 			int ipMaxInactiveInterval, int ipMaxSize) {
 		this.maxInactiveInterval = maxInactiveInterval;
 		sessions = Caffeine.newBuilder().maximumSize(maxSize).expireAfterAccess(maxInactiveInterval, TimeUnit.SECONDS)
-				.build(this::createExpensiveGraph);
+				.build(key -> null);
 		if (defense) {
 			ipBlacklist = Caffeine.newBuilder().maximumSize(maxSize)
-					.expireAfterWrite(maxInactiveInterval, TimeUnit.SECONDS).build(this::createipBlacklist);
+					.expireAfterWrite(maxInactiveInterval, TimeUnit.SECONDS).build(key -> null);
 		}
 	}
 
@@ -49,14 +49,6 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 
 	public int getMaxInactiveInterval() {
 		return maxInactiveInterval;
-	}
-
-	private Boolean createipBlacklist(String key) {
-		return null;
-	}
-
-	private DawdlerHttpSession createExpensiveGraph(String key) {
-		return null;
 	}
 
 	@Override
