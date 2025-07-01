@@ -1,42 +1,42 @@
 /**
  * date : 2007-2-25 11:05 author jackson.song
  */
-var isNullNoSkip = new Array("notEmpty", "maxSelect", "minSelect");
-var debug = true;
-var success_prefix = "";
-var success_suffix = "";
-var error_prefix = "";
-var error_suffix = "";
+const isNullNoSkipRules = ["notEmpty", "maxSelect", "minSelect"];
+let debug = true;
+let successPrefix = "";
+let successSuffix = "";
+let errorPrefix = "";
+let errorSuffix = "";
 
 function print(text) {
 	if (debug) alert(text);
 }
 
-var regs = new Array(/maxSize:([0-9]+)/, /minSize:([0-9]+)/,
-	/maxNumber:([0-9]+)/, /minNumber:([0-9]+)/, /maxSelect:([0-9]+)/,
-	/minSelect:([0-9]+)/);
+const validationRegExps = [
+    /maxSize:([0-9]+)/, /minSize:([0-9]+)/,
+    /maxNumber:([0-9]+)/, /minNumber:([0-9]+)/, /maxSelect:([0-9]+)/,
+    /minSelect:([0-9]+)/
+];
 
 function notEmpty(none) {
-	if (none == "" || none.trim() == "") {
+	if (none == null || none == "" || none.trim() == "") {
 		return "不能为空!";
 	}
 	return true;
 }
 
 function cellPhone(cellPhone) {
-	//var reg = /(^[1][3,5,8][0-9]{9}$)|(^0[1][3,5][0-9]{9}$)/;
-	var reg = /(^(16[0-9]|17[0-9]|13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)|(^0(13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)/;
-	return cellPhone.match(reg) ? true : "请输入手机号码！";
+    const reg = /(^(16[0-9]|17[0-9]|13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)|(^0(13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)/;
+	return cellPhone.match(reg) ? true : "请输入手机号码！"; 
 }
 
-// email
 function email(email) {
-	var reg = /^\b[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,6}\b$/;
+    const reg = /^\b[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,6}\b$/;
 	return email.match(reg) ? true : "请输入E-Mail地址！";
 }
 
 function number(number) {
-	var reg = /(^\d+$)|(^-\d+$)/;
+    const reg = /(^\d+$)|(^-\d+$)/;
 	return number.match(reg) ? true : "请输入数字！";
 }
 
@@ -101,28 +101,26 @@ function lowercaseLetters(lowercaseLetters) {
 }
 
 function capitalLetters(capitalLetters) {
-	var reg = /^[a-z]+$/;
+	var reg = /^[A-Z]+$/;
 	return capitalLetters.match(reg) ? true : "请正确输入大写字母";
 }
 
-// 负整数
 function negativeNumber(negativeNumber) {
 	var reg = /^-[1-9]{1}\d*$/;
 	return negativeNumber.match(reg) ? true : "请正确输入负整数";
 }
 
-// 正整数
 function positiveNumber(positiveNumber) {
 	var reg = /(^[1-9]{1}\d*$)/;
 	return positiveNumber.match(reg) ? true : "请正确输入正整数！";
 }
 
 function IDCard(IDCard) {
-	num = IDCard.toUpperCase();
+	let num = IDCard.toUpperCase();zzzzzzzzz
 	if (!(/(^\d{15}$)|(^\d{17}([0-9]|X)$)/.test(num))) {
-		return '输入的身份证号长度不对，或者号码不符合规定！\n15位号码应全为数字，18位号码末位可以为数字或X。';
+		return '输入的身份证号长度不对，或者号码不符合规定! 15位号码应全为数字,18位号码末位可以为数字或X!';
 	}
-	var len, re;
+	let len, re;
 	len = num.length;
 	if (len == 15) {
 		re = new RegExp(/^(\d{6})(\d{2})(\d{2})(\d{2})(\d{3})$/);
@@ -162,7 +160,7 @@ function IDCard(IDCard) {
 		if (!bGoodDay) {
 			return '输入的身份证号里出生日期不对！';
 		} else {
-			var valnum;
+			var valNum;
 			var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5,
 				8, 4, 2);
 			var arrCh = new Array('1', '0', 'X', '9', '8', '7', '6', '5', '4',
@@ -172,9 +170,9 @@ function IDCard(IDCard) {
 			for (i = 0; i < 17; i++) {
 				nTemp += num.substr(i, 1) * arrInt[i];
 			}
-			valnum = arrCh[nTemp % 11];
-			if (valnum != num.substr(17, 1)) {
-				return '18位身份证的校验码不正确！应该为：' + valnum;
+			valNum = arrCh[nTemp % 11];
+			if (valNum != num.substr(17, 1)) {
+				return '18位身份证的校验码不正确！应该为：' + valNum;
 			}
 			return true;
 		}
@@ -187,18 +185,17 @@ String.prototype.trim = function() {
 };
 
 function contains(a, e) {
-	var j = 0;
+    let j = 0;
 	for (j = 0; j < a.length; j++) {
 		if (getParamType(a[j]) == 'array') {
-			for (var rg in regs) {
-				var reg = regs[rg];
+			for (const rg in validationRegExps) {
+				const reg = validationRegExps[rg];
 				if (e.match(reg)) {
-					var str = e.substr(0, e.indexOf(":"));
+					const str = e.substr(0, e.indexOf(":"));
 					if (a[j][0] == str)
 						return true;
 				}
 			}
-
 		} else {
 			if (a[j] == e)
 				return true;
@@ -208,27 +205,27 @@ function contains(a, e) {
 }
 
 function uniqueArr(a) {
-	var temp = new Array();
-	for (var i = 0; i < a.length; i++) {
-		if (a[i] != '')
+    const temp = [];
+	for (let i = 0; i < a.length; i++) {
+		if (a[i] !== '') {
 			if (!contains(temp, a[i])) {
-				var rmk = false;
-				for (var j = 0; j < regs.length; j++) {
-					var reg = regs[j];
-					var fs = a[i].match(reg);
+				let rmk = false;
+				for (let j = 0; j < validationRegExps.length; j++) {
+					const reg = validationRegExps[j];
+					const fs = a[i].match(reg);
 					if (fs) {
 						rmk = true;
-						var vs = reg.exec(a[i]);
-						//var de = RegExp.$+;
-						var str = a[i].substr(0, a[i].indexOf(":"));
-						temp[temp.length] = new Array(str, vs);
+						const vs = reg.exec(a[i]);
+						const str = a[i].substr(0, a[i].indexOf(":"));
+						temp.push([str, vs]);
 						break;
 					}
 				}
-				if (!rmk)
-					temp[temp.length] = a[i];
-
+				if (!rmk) {
+					temp.push(a[i]);
+				}
 			}
+		}
 	}
 	return temp;
 }
@@ -239,20 +236,28 @@ function getParamType(param) {
 }
 
 function executeFunction(fname, value) {
-	var execute = false;
-	for (var i = 0; i < isNullNoSkip.length; i++) {
-		if (isNullNoSkip[i] == fname) {
+    let execute = false;
+	for (let i = 0; i < isNullNoSkipRules.length; i++) {
+		if (isNullNoSkipRules[i] === fname) {
 			execute = true;
 			break;
 		}
 	}
-	if (execute || (value != null && value != '')) {
-		if (typeof arguments[2] != 'undefined') {
-			return eval(fname + "('" + value + "',arguments[2]);");
-		} else {
-			return eval(fname + "('" + value + "');");
+	if (execute || (value !== null && value !== '')) {
+		try {
+			if (typeof window[fname] !== 'function') {
+				print(`验证函数${fname}不存在`);
+				return true;
+			}
+			if (typeof arguments[2] !== 'undefined') {
+				return window[fname].apply(null, [value, arguments[2]]);
+			} else {
+				return window[fname].call(null, value);
+			}
+		} catch (e) {
+			print(`执行函数${fname}出错：${e.message}`);
+			return true;
 		}
-
 	}
 	return true;
 }
@@ -406,7 +411,7 @@ function parse(parseRule, obj) {
 
 function invoke(obj, type, validateRule, tagName, fromId) {
 	if (type == 'text' || tagName == 'TEXTAREA' || type == 'password' ||
-		type == 'hidden') {
+		type == 'hidden' || type == 'email' || type == 'number' || type == 'tel' || type == 'url' || type == 'date' || type == 'datetime-local' || type == 'month' || type == 'week' || type == 'time' || type == 'color') {
 		return parse(validateRule, obj, fromId);
 	} else if (type == 'radio' || type == 'checkbox') {
 		return parse(validateRule, obj, type);
@@ -453,15 +458,13 @@ function validate(param) {
 	}
 	//alertFunction only support user-defined  object not support html object
 	if (typeof error != 'undefined' && typeof error != 'boolean') {
-		//invokeObj.style="border: 1px solid rgb(255, 0, 0);";
-		//	invokeObj.focus();
 		if (typeof param.alertFunction == 'string') {
 			var af = document.getElementById(param.alertFunction);
 			if (typeof af == 'undefined' || af == null) {
 				print("can't find id: " + param.alertFunction);
 				return false;
 			}
-			af.innerHTML = error_prefix + viewName + error + error_suffix;
+			af.innerHTML = errorPrefix + viewName + error + errorSuffix;
 			return false;
 		} else if (typeof param.alertFunction == 'function') {
 			param.alertFunction(invokeObj, viewName + error);
@@ -476,7 +479,7 @@ function validate(param) {
 					print("can't find id: " + param.id + globalAlertFunction);
 					return false;
 				}
-				af.innerHTML = error_prefix + viewName + error + error_suffix;
+				af.innerHTML = errorPrefix + viewName + error + errorSuffix;
 				return false;
 			} else {
 				alert(viewName + error);
@@ -490,14 +493,14 @@ function validate(param) {
 				print("can't find id: " + param.alertFunction);
 				return false;
 			}
-			af.innerHTML = success_prefix + viewName + "通过验证" + success_suffix;
+			af.innerHTML = successPrefix + viewName + "通过验证" + successSuffix;
 		} else if (typeof globalAlertFunction == 'string') {
 			var af = document.getElementById(param.id + globalAlertFunction);
 			if (typeof af == 'undefined' || af == null) {
 				print("can't find id: " + param.id + globalAlertFunction);
 				return false;
 			}
-			af.innerHTML = success_prefix + viewName + "通过验证!" + success_suffix;
+			af.innerHTML = successPrefix + viewName + "通过验证!" + successSuffix;
 		}
 		return true;
 	}
@@ -530,13 +533,13 @@ function Validator() {
 			return null;
 		},
 		addRegExp: function(exp) {
-			regs.push(exp);
+			validationRegExps.push(exp);
 		},
 		addNoSkip: function(fname) {
-			isNullNoSkip.push(fname);
+			isNullNoSkipRules.push(fname);
 		},
 		appendRule: function(id, rule) {
-			var obj = getValidateObjById(id);
+			var obj = this.getValidateObjById(id);
 			if (obj != null) {
 				var ary = null;
 				if (obj.validateRule == null) ary = new Array();
@@ -726,7 +729,6 @@ function loadNeedElement(ele, vData) {
 	var tagName = ele.tagName;
 	if (tagName != 'INPUT' && tagName != 'TEXTAREA' && tagName != 'SELECT') return;
 	var type = ele.type;
-	if (tagName == 'INPUT' && type != 'text' && type != 'password' && type != 'radio' && type != 'checkbox' && type != 'hidden') return;
 	vData.push(ele);
 }
 
@@ -741,10 +743,10 @@ function goodNodeHTML(objHtml) {
 }
 
 function removeHTMLTag(str) {
-	str = str.replace(/<\/?[^>]*>/g, ''); //去除HTML tag
-	str = str.replace(/[ | ]*\n/g, '\n'); //去除行尾空白
-	str = str.replace(/\n[\s| | ]*\r/g, '\n'); //去除多余空行
-	str = str.replace(/&nbsp;/ig, ''); //去掉&nbsp;
+	str = str.replace(/<\/?[^>]*>/g, '');
+	str = str.replace(/[ | ]*\n/g, '\n');
+	str = str.replace(/\n[\s| | ]*\r/g, '\n');
+	str = str.replace(/&nbsp;/ig, '');
 	return str;
 }
 
