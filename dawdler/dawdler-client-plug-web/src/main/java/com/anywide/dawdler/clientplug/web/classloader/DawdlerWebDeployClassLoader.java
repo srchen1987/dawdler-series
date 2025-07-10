@@ -28,9 +28,7 @@ import java.util.jar.Manifest;
 
 import com.anywide.dawdler.core.loader.DeployClassLoader;
 import com.anywide.dawdler.core.scan.DawdlerComponentScanner;
-
 import jdk.internal.loader.Resource;
-
 /**
  * @author jackson.song
  * @version V1.0

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.0.9-jdk17-RELEASES</version>
+		<version>0.1.0-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-load-web-dependencies</artifactId>
 	<name>dawdler-load-web-dependencies</name>
@@ -197,6 +197,7 @@
 			<dependency>
 				<groupId>com.google.code.gson</groupId>
 				<artifactId>gson</artifactId>
+				<version>${gson.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -244,6 +245,7 @@
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
+				<version>${aspectj.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			

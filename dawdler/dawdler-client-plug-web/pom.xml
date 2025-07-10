@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.0.9-jdk17-RELEASES</version>
+		<version>0.1.0-jdk17-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-web</artifactId>
 	<name>dawdler-client-plug-web</name>
@@ -49,8 +49,7 @@
 					<target>17</target>
 					<compilerArgs>
 						<arg>--add-exports</arg>
-						<arg>
-							java.base/jdk.internal.loader=dawdler.client.plug.web</arg>
+						<arg>java.base/jdk.internal.loader=dawdler.client.plug.web</arg>
 						<arg>--add-exports</arg>
 						<arg>java.base/jdk.internal.perf=dawdler.client.plug.web</arg>
 						<arg>--add-exports</arg>
