@@ -108,7 +108,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (requestParamFieldData.getType() == String.class) {
 							target = requestWrapper.getBody();
 						} else if (request.getContentType() != null
-								&& request.getContentType().contains(AbstractDisplayPlug.MIME_TYPE_JSON)) {
+								&& AbstractDisplayPlug.MIME_TYPE_JSON.contains(request.getContentType())) {
 							target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(),
 									new TypeReferenceType(requestParamFieldData.getParameterType()));
 						}
@@ -116,7 +116,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (requestParamFieldData.getType() == String.class) {
 							target = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 						} else if (request.getContentType() != null
-								&& request.getContentType().contains(AbstractDisplayPlug.MIME_TYPE_JSON)) {
+								&& AbstractDisplayPlug.MIME_TYPE_JSON.contains(request.getContentType())) {
 							target = JsonProcessUtil.jsonToBean(request.getInputStream(),
 									new TypeReferenceType(requestParamFieldData.getParameterType()));
 						}

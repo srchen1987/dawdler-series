@@ -272,7 +272,7 @@ registerRuleOperatorScanPackage接收参数为Class对象,添加这个Class所�
 ```java
 package com.anywide.yyg.user.web.listener;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
 import com.anywide.dawdler.clientplug.web.validator.RuleOperatorProvider;
@@ -309,7 +309,7 @@ dawdler-validator.js 是一套兼容后台验证表达式的前端框架.
 
 #### 6.1 使用方式
 
-引入dawdler-validator.js,内部提供了一个实例sir_validate(sir是为了纪念linuxsir,linuxsir当年就采用这个这个变量名).
+引入dawdler-validator.js,内部提供了一个实例sir_validator(sir是为了纪念linuxsir,linuxsir当年就采用这个这个变量名).
 
 可以重新声明一个对象
 
@@ -347,7 +347,7 @@ buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-bu
 
 ```javascript
 //添加单个控件的验证规则
- sir_validate.addRule({
+ sir_validator.addRule({
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty"
@@ -358,7 +358,7 @@ buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-bu
 
 ```javascript
 //添加多个控件的验证规则,数组方式
-sir_validate.addRule([{
+sir_validator.addRule([{
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty&maxSize:16"
@@ -382,7 +382,7 @@ sir_validate.addRule([{
     alert("password_alert_function:" + obj + ":" + error);
  } 
 
- sir_validate.addRule({
+ sir_validator.addRule({
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty",
@@ -401,7 +401,7 @@ sir_validate.addRule([{
 ```
 
 ```javascript
- sir_validate.addRule({
+ sir_validator.addRule({
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty",
@@ -415,7 +415,7 @@ sir_validate.addRule([{
 绑定了click事件与onblur事件.
 
 ```javascript
- sir_validate.addRule({
+ sir_validator.addRule({
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty",
@@ -431,7 +431,7 @@ sir_validate.addRule([{
 
 ```javascript
 //给username控件添加一个最小长度不能小于3个字符的验证规则.
-sir_validate.appendRule("username","minSize:3");
+sir_validator.appendRule("username","minSize:3");
 ```
 
 #### 6.4 移除指定控件与验证规则
@@ -442,7 +442,7 @@ sir_validate.appendRule("username","minSize:3");
 
 ```javascript
 //移除username控件最小长度不能小于3个字符的验证规则.
-sir_validate.removeRule("username","minSize:3");
+sir_validator.removeRule("username","minSize:3");
 ```
 
 #### 6.5 移除指定控件的所有验证规则
@@ -453,7 +453,7 @@ sir_validate.removeRule("username","minSize:3");
 
 ```javascript
 //移除username控件下所有的验证规则.
-sir_validate.removeAllRule("username");
+sir_validator.removeAllRule("username");
 ```
 
 #### 6.6 设置指定控件的验证规则
@@ -464,7 +464,7 @@ sir_validate.removeAllRule("username");
 
 ```javascript
 //设置username控件的验证规则,不能为空.
-sir_validate.setRule("username","notEmpty");
+sir_validator.setRule("username","notEmpty");
 ```
 
 #### 6.7 添加不跳过空校验的表达式
@@ -487,7 +487,7 @@ addNoSkip("email");
 ```javascript
 //一般会用于ajax提交表单调用此方法
 
-if(!sir_validate.validateAll())return;//验证不通过,直接return;
+if(!sir_validator.validateAll())return;//验证不通过,直接return;
 
 //验证通过,ajax调用后台
 ```
@@ -509,7 +509,7 @@ if(!sir_validate.validateAll())return;//验证不通过,直接return;
 
 ```javascript
 //  添加验证规则
-sir_validate.addRule([{
+sir_validator.addRule([{
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty&maxSize:16"
@@ -519,7 +519,7 @@ sir_validate.addRule([{
         "validateRule": "notEmpty&maxSize:16"
 }]);
 // 绑定验证表单 id= myform
-sir_validate.buildFormValidate("myform");
+sir_validator.buildFormValidate("myform");
 ```
 
 #### 6.10 加载通过html属性配置的验证规则(不常用)
@@ -542,7 +542,7 @@ sir_validate.buildFormValidate("myform");
 
 ```javascript
 // 加载dom属性的验证配置,第二个参数true,绑定onsubmit事件.
-sir_validate.buildFormValidateAutoRule("myform", true);
+sir_validator.buildFormValidateAutoRule("myform", true);
 ```
 
 #### 6.11 全局提醒方法
@@ -575,7 +575,7 @@ function global_validate_error_function(obj, error) {
 
 ```javascript
 var global_validate_error_function = "_error";
-sir_validate.addRule([{
+sir_validator.addRule([{
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty&maxSize:16"
@@ -585,7 +585,7 @@ sir_validate.addRule([{
         "validateRule": "notEmpty&maxSize:16"
 }]);
 // 绑定验证表单 id= myform
-sir_validate.buildFormValidate("myform");
+sir_validator.buildFormValidate("myform");
 
 ```
 
@@ -605,7 +605,7 @@ function hello(text){
     return "必须输入hello !";
 }
 
-sir_validate.addRule({
+sir_validator.addRule({
         "id": "username",
         "viewName": "用户名",
         "validateRule": "notEmpty&hello"//不允许为空并且必须为hello
@@ -628,7 +628,7 @@ sir_validate.addRule({
 ```javascript
 
 //添加表达式
-sir_validate.addRegExp(/range:([0-9]+)-([0-9]+)/);
+sir_validator.addRegExp(/range:([0-9]+)-([0-9]+)/);
   
 //定义验证方法名为:前的字符串,args 数组第一位为正则匹配到的第一个group,第二位为第二个group,支持N个.
 function range(value,args){
@@ -636,7 +636,7 @@ function range(value,args){
     if(value>args[2])return "必须小于"+args[2];
 }
 
-sir_validate.addRule({
+sir_validator.addRule({
         "id": "age",
         "viewName": "年龄",
         "validateRule": "notEmpty&range:18-108"//不允许为空并且范围在18到108之间
