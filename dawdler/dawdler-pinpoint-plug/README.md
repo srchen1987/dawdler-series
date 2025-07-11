@@ -102,7 +102,7 @@ pinpoint-hbase2-web-boot-2.5.2.jar 位置在 /lib/pinpoint-web-2.5.2.jar META-IN
 
 添加方式通过 jar -uvf0 或 zip -r0 方式
 
-### 4. 配置dawlder与tomcat的启动脚本
+### 4. 配置dawdler与tomcat的启动脚本
 
 pinpoint是通过javaagent方式运行,所以需要配置相关的启动参数,下面给出具体操作步骤.
 
@@ -111,18 +111,6 @@ pinpoint是通过javaagent方式运行,所以需要配置相关的启动参数,�
 将pinpoint-dawdler-plugin-2.5.2.jar 放入pinpoint-agent-2.5.2/plugin下.
 
 编辑pinpoint-agent-2.5.2/profiles/release/pinpoint.config
-
-dawlder-0.0.2(jdk8)版本加入:
-
-```config
-###########################################################
-# DAWDLER                                                   #
-###########################################################
-profiler.dawdler.enable=true
-# Classes for detecting application server type. Comma separated list of fully qualified class names. Wildcard not supported.
-profiler.dawdler.bootstrap.main=com.anywide.dawdler.server.bootstrap.Bootstrap
-
-```
 
 dawdler-jdk21版本加入:
 
