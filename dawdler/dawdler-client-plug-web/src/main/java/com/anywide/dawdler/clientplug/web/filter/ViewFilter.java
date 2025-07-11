@@ -71,7 +71,7 @@ public class ViewFilter implements Filter {
 			return;
 		}
 		String type = request.getHeader("Content-Type");
-		boolean isJson = type != null && type.contains(AbstractDisplayPlug.MIME_TYPE_JSON);
+		boolean isJson = type != null && AbstractDisplayPlug.MIME_TYPE_JSON.contains(type);
 		if (isJson) {
 			request = new BodyReaderHttpServletRequestWrapper(request);
 		}

@@ -22,7 +22,7 @@ mvn install
 java -jar dawdler-encrypt-generator-0.0.5-jdk1.8-RELEASES.jar
 ```
 
-运行后会生成加密用的密钥并存储在dawlder.password文件中.
+运行后会生成加密用的密钥并存储在dawdler.password文件中.
 
 提醒如下：
 

@@ -124,7 +124,7 @@ import co.elastic.clients.elasticsearch.migration.ElasticsearchMigrationClient;
 import co.elastic.clients.elasticsearch.ml.ElasticsearchMlClient;
 import co.elastic.clients.elasticsearch.monitoring.ElasticsearchMonitoringClient;
 import co.elastic.clients.elasticsearch.nodes.ElasticsearchNodesClient;
-import co.elastic.clients.elasticsearch.query_ruleset.ElasticsearchQueryRulesetClient;
+import co.elastic.clients.elasticsearch.query_rules.ElasticsearchQueryRulesClient;
 import co.elastic.clients.elasticsearch.rollup.ElasticsearchRollupClient;
 import co.elastic.clients.elasticsearch.search_application.ElasticsearchSearchApplicationClient;
 import co.elastic.clients.elasticsearch.searchable_snapshots.ElasticsearchSearchableSnapshotsClient;
@@ -197,7 +197,7 @@ public interface EsOperator {
 
 	public ElasticsearchNodesClient nodes();
 
-	public ElasticsearchQueryRulesetClient queryRuleset();
+	public ElasticsearchQueryRulesClient queryRules();
 
 	public ElasticsearchRollupClient rollup();
 

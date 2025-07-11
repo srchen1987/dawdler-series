@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.anywide.dawdler.clientplug.web.annotation.CookieValue;
 import com.anywide.dawdler.clientplug.web.annotation.PathVariable;
 import com.anywide.dawdler.clientplug.web.annotation.RequestAttribute;
@@ -46,8 +48,6 @@ import com.anywide.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWr
 import com.anywide.dawdler.util.ClassUtil;
 import com.anywide.dawdler.util.JsonProcessUtil;
 import com.anywide.dawdler.util.JsonProcessUtil.TypeReferenceType;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author jackson.song
@@ -108,7 +108,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (requestParamFieldData.getType() == String.class) {
 							target = requestWrapper.getBody();
 						} else if (request.getContentType() != null
-								&& request.getContentType().contains(AbstractDisplayPlug.MIME_TYPE_JSON)) {
+								&& AbstractDisplayPlug.MIME_TYPE_JSON.contains(request.getContentType())) {
 							target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(),
 									new TypeReferenceType(requestParamFieldData.getParameterType()));
 						}
@@ -116,7 +116,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (requestParamFieldData.getType() == String.class) {
 							target = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 						} else if (request.getContentType() != null
-								&& request.getContentType().contains(AbstractDisplayPlug.MIME_TYPE_JSON)) {
+								&& AbstractDisplayPlug.MIME_TYPE_JSON.contains(request.getContentType())) {
 							target = JsonProcessUtil.jsonToBean(request.getInputStream(),
 									new TypeReferenceType(requestParamFieldData.getParameterType()));
 						}
