@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>club.dawdler</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>0.1.0-jdk17-RELEASES</version>
+	<version>0.1.1-jdk17-RELEASES</version>
 	<name>dawdler</name>
 	<description>Micro service solutions</description>
 	<url>https://github.com/srchen1987/dawdler-series</url>
@@ -35,20 +35,20 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>17</maven.compiler.target>
 		<maven.compiler.source>17</maven.compiler.source>
-		<dawdler.build.version>0.1.0-jdk17-RELEASES</dawdler.build.version>
+		<dawdler.build.version>0.1.1-jdk17-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.16</slf4j.version>
 		<ch.qos.logback.version>1.5.18</ch.qos.logback.version>
-		<org.ow2.asm.version>9.2</org.ow2.asm.version>
+		<org.ow2.asm.version>9.8</org.ow2.asm.version>
 		<commons-pool2.version>2.10.0</commons-pool2.version>
-		<kryo.version>5.6.0</kryo.version>
+		<kryo.version>5.6.2</kryo.version>
 		<org.apache.curator.version>5.7.0</org.apache.curator.version>
 		<zookeeper.version>3.9.2</zookeeper.version>
 		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
 		<jackson-core.version>2.19.0</jackson-core.version>
 		<jackson-databind.version>2.19.0</jackson-databind.version>
-		<velocity.version>2.4</velocity.version>
-		<jedis.version>5.2.0</jedis.version>
-		<rabbitmq.version>5.18.0</rabbitmq.version>
+		<velocity.version>2.4.1</velocity.version>
+		<jedis.version>6.0.0</jedis.version>
+		<rabbitmq.version>5.25.0</rabbitmq.version>
 		<caffeine.version>3.2.0</caffeine.version>
 		<jsoup.version>1.21.1</jsoup.version>
 		<aspectj.version>1.9.20</aspectj.version>
@@ -63,7 +63,7 @@
 		<pinpoint.version>3.0.1</pinpoint.version>
 		<qdox.version>2.0.3</qdox.version>
 		<quartz.version>2.5.0</quartz.version>
-		<gson.version>2.10.1</gson.version>
+		<gson.version>2.13.1</gson.version>
 		<portlet-api.version>3.0.1</portlet-api.version>
 		<mybatis.version>3.5.19</mybatis.version>
 		<maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
