@@ -11,5 +11,5 @@ module dawdler.server.plug.mybatis {
 	requires dawdler.mybatis.core;
 	requires dawdler.server;
 	
-	exports com.anywide.dawdler.serverplug.db.mybatis.listener;
+	exports club.dawdler.serverplug.db.mybatis.listener;
 }

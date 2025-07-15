@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.discovery.consul.resource.ConsulLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.discovery.consul.resource.ConsulLifeCycle;
 
 module dawdler.server.plug.discovery.center.consul {
 	requires org.slf4j;

@@ -1,0 +1,2 @@
+club.dawdler.clientplug.web.plugs.impl.JsonDisplayPlug
+club.dawdler.clientplug.web.plugs.impl.JspDisplayPlug

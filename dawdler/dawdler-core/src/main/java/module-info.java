@@ -1,7 +1,7 @@
-import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.core.health.HealthIndicator;
-import com.anywide.dawdler.core.shutdown.ContainerGracefulShutdown;
+import club.dawdler.core.component.injector.CustomComponentInjector;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.core.health.HealthIndicator;
+import club.dawdler.core.shutdown.ContainerGracefulShutdown;
 
 module dawdler.core {
 	requires jdk.unsupported;
@@ -15,29 +15,29 @@ module dawdler.core {
 	requires org.objectweb.asm.tree;
 	requires transitive java.xml;
 	
-	exports com.anywide.dawdler.core.order;
-	exports com.anywide.dawdler.core.component.injector;
-	exports com.anywide.dawdler.core.bean;
-	exports com.anywide.dawdler.core.thread;
-	exports com.anywide.dawdler.core.rpc.context;
-	exports com.anywide.dawdler.core.exception;
-	exports com.anywide.dawdler.core.net.aio.session;
-	exports com.anywide.dawdler.core.handler;
-	exports com.anywide.dawdler.core.net.buffer;
-	exports com.anywide.dawdler.core.compression.strategy;
-	exports com.anywide.dawdler.core.annotation;
-	exports com.anywide.dawdler.core.net.aio.handler;
-	exports com.anywide.dawdler.core.component.resource;
-	exports com.anywide.dawdler.core.health;
-	exports com.anywide.dawdler.core.httpserver;
-	exports com.anywide.dawdler.core.scan;
-	exports com.anywide.dawdler.core.scan.component.reader;
-	exports com.anywide.dawdler.core.shutdown;
-	exports com.anywide.dawdler.core.loader;
-	exports com.anywide.dawdler.core.context;
+	exports club.dawdler.core.order;
+	exports club.dawdler.core.component.injector;
+	exports club.dawdler.core.bean;
+	exports club.dawdler.core.thread;
+	exports club.dawdler.core.rpc.context;
+	exports club.dawdler.core.exception;
+	exports club.dawdler.core.net.aio.session;
+	exports club.dawdler.core.handler;
+	exports club.dawdler.core.net.buffer;
+	exports club.dawdler.core.compression.strategy;
+	exports club.dawdler.core.annotation;
+	exports club.dawdler.core.net.aio.handler;
+	exports club.dawdler.core.component.resource;
+	exports club.dawdler.core.health;
+	exports club.dawdler.core.httpserver;
+	exports club.dawdler.core.scan;
+	exports club.dawdler.core.scan.component.reader;
+	exports club.dawdler.core.shutdown;
+	exports club.dawdler.core.loader;
+	exports club.dawdler.core.context;
 
-	opens com.anywide.dawdler.core.bean;
-	opens com.anywide.dawdler.core.shutdown;
+	opens club.dawdler.core.bean;
+	opens club.dawdler.core.shutdown;
 
 	uses HealthIndicator;
 	uses ComponentLifeCycle;

@@ -3,5 +3,5 @@ module dawdler.discovery.center.core {
 	requires dawdler.core;
 	requires transitive dawdler.util;
 
-	exports com.anywide.dawdler.core.discoverycenter;
+	exports club.dawdler.core.discoverycenter;
 }

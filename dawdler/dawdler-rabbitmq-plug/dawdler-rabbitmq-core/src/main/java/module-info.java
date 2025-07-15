@@ -1,9 +1,9 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.core.health.HealthIndicator;
-import com.anywide.dawdler.core.shutdown.ContainerGracefulShutdown;
-import com.anywide.dawdler.rabbitmq.health.RabbitIndicator;
-import com.anywide.dawdler.rabbitmq.resource.RabbitLifeCycle;
-import com.anywide.dawdler.rabbitmq.shutdown.RabbitmqGracefulShutdown;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.core.health.HealthIndicator;
+import club.dawdler.core.shutdown.ContainerGracefulShutdown;
+import club.dawdler.rabbitmq.health.RabbitIndicator;
+import club.dawdler.rabbitmq.resource.RabbitLifeCycle;
+import club.dawdler.rabbitmq.shutdown.RabbitmqGracefulShutdown;
 
 module dawdler.rabbitmq.core {
 	requires java.base;
@@ -13,11 +13,11 @@ module dawdler.rabbitmq.core {
 	requires org.apache.commons.pool2;
 	requires org.slf4j;
 
-	exports com.anywide.dawdler.rabbitmq.connection.pool.factory;
-	exports com.anywide.dawdler.rabbitmq.consumer;
-	exports com.anywide.dawdler.rabbitmq.consumer.annotation;
-	exports com.anywide.dawdler.rabbitmq.provider;
-	exports com.anywide.dawdler.rabbitmq.provider.annotation;
+	exports club.dawdler.rabbitmq.connection.pool.factory;
+	exports club.dawdler.rabbitmq.consumer;
+	exports club.dawdler.rabbitmq.consumer.annotation;
+	exports club.dawdler.rabbitmq.provider;
+	exports club.dawdler.rabbitmq.provider.annotation;
 
 	uses ComponentLifeCycle;
 	provides ComponentLifeCycle with RabbitLifeCycle;

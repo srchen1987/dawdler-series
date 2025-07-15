@@ -1,4 +1,4 @@
-import com.anywide.dawdler.clientplug.web.session.initializer.DawdlerSessionInitializer;
+import club.dawdler.clientplug.web.session.initializer.DawdlerSessionInitializer;
 
 import jakarta.servlet.ServletContainerInitializer;
 
@@ -13,11 +13,11 @@ module dawdler.client.plug.session {
 	requires jakarta.servlet;
 	requires dawdler.core;
 
-	exports com.anywide.dawdler.clientplug.web.session;
-	exports com.anywide.dawdler.clientplug.web.session.http;
-	exports com.anywide.dawdler.clientplug.web.session.message;
-	exports com.anywide.dawdler.clientplug.web.session.base;
-	exports com.anywide.dawdler.clientplug.web.session.store;
+	exports club.dawdler.clientplug.web.session;
+	exports club.dawdler.clientplug.web.session.http;
+	exports club.dawdler.clientplug.web.session.message;
+	exports club.dawdler.clientplug.web.session.base;
+	exports club.dawdler.clientplug.web.session.store;
 
 	uses ServletContainerInitializer;
 

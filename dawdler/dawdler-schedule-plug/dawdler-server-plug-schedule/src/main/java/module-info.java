@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.schedule.resource.ScheduleLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.schedule.resource.ScheduleLifeCycle;
 
 module dawdler.server.plug.schedule {
 	requires java.base;

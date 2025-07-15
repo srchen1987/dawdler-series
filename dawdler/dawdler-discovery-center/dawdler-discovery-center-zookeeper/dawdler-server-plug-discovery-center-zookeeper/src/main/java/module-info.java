@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.discovery.zookeeper.resource.ZookeeperLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.discovery.zookeeper.resource.ZookeeperLifeCycle;
 
 module dawdler.server.plug.discovery.center.zookeeper {
 	requires org.slf4j;

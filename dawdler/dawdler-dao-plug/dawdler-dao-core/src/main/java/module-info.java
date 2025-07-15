@@ -6,5 +6,5 @@ module dawdler.dao.core {
 	requires transitive java.sql;
 	requires dawdler.db.core;
 	
-	exports com.anywide.dawdler.core.db.dao;
+	exports club.dawdler.core.db.dao;
 }

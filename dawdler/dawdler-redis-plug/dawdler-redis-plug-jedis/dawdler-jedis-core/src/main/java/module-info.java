@@ -1,7 +1,7 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.core.health.HealthIndicator;
-import com.anywide.dawdler.jedis.health.JedisIndicator;
-import com.anywide.dawdler.jedis.resource.JedisLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.core.health.HealthIndicator;
+import club.dawdler.jedis.health.JedisIndicator;
+import club.dawdler.jedis.resource.JedisLifeCycle;
 
 module dawdler.jedis.core {
 	requires java.base;
@@ -11,8 +11,8 @@ module dawdler.jedis.core {
 	requires org.apache.commons.pool2;
 	requires transitive redis.clients.jedis;
 
-	exports com.anywide.dawdler.jedis;
-	exports com.anywide.dawdler.jedis.lock;
+	exports club.dawdler.jedis;
+	exports club.dawdler.jedis.lock;
 
 	uses ComponentLifeCycle;
 	provides ComponentLifeCycle with JedisLifeCycle;

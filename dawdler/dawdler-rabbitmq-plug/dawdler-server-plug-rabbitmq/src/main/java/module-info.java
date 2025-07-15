@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.rabbitmq.resource.RabbitLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.rabbitmq.resource.RabbitLifeCycle;
 
 module dawdler.server.plug.rabbitmq {
 	requires java.base;

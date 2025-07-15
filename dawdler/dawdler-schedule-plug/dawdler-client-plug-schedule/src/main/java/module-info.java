@@ -1,5 +1,5 @@
-import com.anywide.dawdler.clientplug.schedule.fire.ScheduleClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
+import club.dawdler.clientplug.schedule.fire.ScheduleClassLoaderFire;
+import club.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 
 module dawdler.client.plug.schedule {
 	requires java.base;

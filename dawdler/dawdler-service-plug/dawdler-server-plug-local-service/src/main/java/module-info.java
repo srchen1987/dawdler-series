@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.local.service.resource.LocalServiceLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.local.service.resource.LocalServiceLifeCycle;
 
 module dawdler.server.plug.local.service {
 	requires java.base;

@@ -1,5 +1,5 @@
-import com.anywide.dawdler.breaker.filter.CircuitBreakerFilter;
-import com.anywide.dawdler.client.filter.DawdlerClientFilter;
+import club.dawdler.breaker.filter.CircuitBreakerFilter;
+import club.dawdler.client.filter.DawdlerClientFilter;
 
 module dawdler.circuit.breaker {
 	requires java.base;

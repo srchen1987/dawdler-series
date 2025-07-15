@@ -19,7 +19,7 @@ mvn install
 安装后, 可以通过命令行运行dawdler-encrypt-generator生成密钥与加密内容.
 
 ```shell
-java -jar dawdler-encrypt-generator-0.1.1-jdk21-RELEASES.jar
+java -jar dawdler-encrypt-generator-0.1.2-jdk21-RELEASES.jar
 ```
 
 运行后会生成加密用的密钥并存储在dawdler.password文件中.
@@ -57,7 +57,7 @@ mv /home/srchen/github/dawdler-series/dawdler/dawdler-encrypt-generator/target/d
 设置完成环境变量之后加密内容.
 
 ```shell
-java -jar dawdler-encrypt-generator-0.1.1-jdk21-RELEASES.jar 123456
+java -jar dawdler-encrypt-generator-0.1.2-jdk21-RELEASES.jar 123456
 #123456为原始密码
 ```
 
@@ -85,7 +85,7 @@ pool.testOnReturn=false #返还连接时是否验证连接有效 默认为false
 timeout=10000
 ```
 
-目前支持的模块有rabbitmq,redis,elasticSearch以及所有使用com.anywide.dawdler.util.PropertiesUtil来读取的自定义properties应用.
+目前支持的模块有rabbitmq,redis,elasticSearch以及所有使用club.dawdler.util.PropertiesUtil来读取的自定义properties应用.
 
 #### 1.5 在配置中心中使用加密后的密码
 

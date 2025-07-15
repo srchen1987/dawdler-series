@@ -1,7 +1,7 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.core.health.HealthIndicator;
-import com.anywide.dawdler.es.health.EsIndicator;
-import com.anywide.dawdler.es.restclient.resource.ElasticSearchLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.core.health.HealthIndicator;
+import club.dawdler.es.health.EsIndicator;
+import club.dawdler.es.restclient.resource.ElasticSearchLifeCycle;
 
 module dawdler.es.core {
 	requires java.base;
@@ -15,7 +15,7 @@ module dawdler.es.core {
 	requires transitive elasticsearch.java;
 	requires transitive elasticsearch.rest.client;
 
-	exports com.anywide.dawdler.es.restclient;
+	exports club.dawdler.es.restclient;
 
 	uses ComponentLifeCycle;
 

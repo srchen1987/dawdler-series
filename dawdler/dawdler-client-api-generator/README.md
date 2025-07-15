@@ -64,7 +64,7 @@ scanPath配置一定要配置正确,确保路径下有Controller(必须使用@Co
 #### 3.3 生成api文件
 
 ```shell
-java -jar dawdler-client-api-generator-0.1.1-jdk21-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
+java -jar dawdler-client-api-generator-0.1.2-jdk21-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
 ```
 
 运行后会生成demo-api.json(outPath配置的路径).
@@ -195,22 +195,22 @@ DemoController是Controller的一个例子.
 
 ```java
 
-package com.anywide.dawdler.demo.api.controller;
+package club.dawdler.demo.api.controller;
 
 import java.util.List;
 
-import com.anywide.dawdler.clientplug.annotation.Controller;
-import com.anywide.dawdler.clientplug.annotation.PathVariable;
-import com.anywide.dawdler.clientplug.annotation.RequestBody;
-import com.anywide.dawdler.clientplug.annotation.RequestHeader;
-import com.anywide.dawdler.clientplug.annotation.RequestMapping;
-import com.anywide.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
-import com.anywide.dawdler.clientplug.annotation.ResponseBody;
-import com.anywide.dawdler.clientplug.web.upload.UploadFile;
-import com.anywide.dawdler.demo.api.BaseResult;
-import com.anywide.dawdler.demo.api.InnerResult;
-import com.anywide.dawdler.demo.api.entity.User;
-import com.anywide.dawdler.demo.api.entity.UserBank;
+import club.dawdler.clientplug.annotation.Controller;
+import club.dawdler.clientplug.annotation.PathVariable;
+import club.dawdler.clientplug.annotation.RequestBody;
+import club.dawdler.clientplug.annotation.RequestHeader;
+import club.dawdler.clientplug.annotation.RequestMapping;
+import club.dawdler.clientplug.annotation.RequestMapping.RequestMethod;
+import club.dawdler.clientplug.annotation.ResponseBody;
+import club.dawdler.clientplug.web.upload.UploadFile;
+import club.dawdler.demo.api.BaseResult;
+import club.dawdler.demo.api.InnerResult;
+import club.dawdler.demo.api.entity.User;
+import club.dawdler.demo.api.entity.UserBank;
 
 /**
  * 
@@ -327,7 +327,7 @@ public class DemoController {
 User 实体类
 
 ```java
-package com.anywide.dawdler.demo.api.entity;
+package club.dawdler.demo.api.entity;
 
 /**
  * 
@@ -382,7 +382,7 @@ public class User {
 UserBank实体类
 
 ```java
-package com.anywide.dawdler.demo.api.entity;
+package club.dawdler.demo.api.entity;
 
 public class UserBank {
 
@@ -469,7 +469,7 @@ public class UserBank {
 BaseResult 返回基础类
 
 ```java
-package com.anywide.dawdler.demo.api;
+package club.dawdler.demo.api;
 
 public class BaseResult<T, S> {
 
@@ -528,11 +528,11 @@ InnerResult 为了测试多层泛型建的临时测试类
 
 ```java
 
-package com.anywide.dawdler.demo.api;
+package club.dawdler.demo.api;
 
 import java.util.List;
 
-import com.anywide.dawdler.demo.api.entity.UserBank;
+import club.dawdler.demo.api.entity.UserBank;
 
 public class InnerResult<F> {
  private F datas;

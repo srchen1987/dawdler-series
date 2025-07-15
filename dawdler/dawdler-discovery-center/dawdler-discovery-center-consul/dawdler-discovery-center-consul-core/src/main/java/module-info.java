@@ -7,5 +7,5 @@ module dawdler.discovery.center.consul.core {
 	requires transitive consul.api;
 	requires org.apache.httpcomponents.httpclient;
 
-	exports com.anywide.dawdler.core.discovery.consul;
+	exports club.dawdler.core.discovery.consul;
 }

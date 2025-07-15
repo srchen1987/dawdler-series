@@ -1,5 +1,5 @@
-import com.anywide.dawdler.clientplug.jedis.fire.JedisClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
+import club.dawdler.clientplug.jedis.fire.JedisClassLoaderFire;
+import club.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 
 module dawdler.client.plug.jedis {
 	requires java.base;

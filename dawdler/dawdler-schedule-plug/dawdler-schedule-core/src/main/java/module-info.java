@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.shutdown.ContainerGracefulShutdown;
-import com.anywide.dawdler.schedule.shutdown.ScheduleGracefulShutdown;
+import club.dawdler.core.shutdown.ContainerGracefulShutdown;
+import club.dawdler.schedule.shutdown.ScheduleGracefulShutdown;
 
 module dawdler.schedule.core {
 	requires java.base;
@@ -7,7 +7,7 @@ module dawdler.schedule.core {
 	requires org.slf4j;
 	requires org.quartz;
 
-	exports com.anywide.dawdler.schedule;
+	exports club.dawdler.schedule;
 	
 	uses ContainerGracefulShutdown;
 	provides ContainerGracefulShutdown with ScheduleGracefulShutdown;

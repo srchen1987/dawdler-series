@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.jedis.resource.JedisLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.jedis.resource.JedisLifeCycle;
 
 module dawdler.server.plug.jedis {
 	requires java.base;

@@ -1,7 +1,7 @@
 ﻿<aspectj>
 	<aspects>
 		<aspect
-			name="com.anywide.dawdler.distributed.transaction.aspect.DistributedTransactionAspect" />
+			name="club.dawdler.distributed.transaction.aspect.DistributedTransactionAspect" />
 	</aspects>
 	<!--  
   <weaver options="-verbose">

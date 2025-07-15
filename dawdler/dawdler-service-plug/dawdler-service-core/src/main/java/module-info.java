@@ -4,10 +4,10 @@ module dawdler.service.core {
 	requires transitive dawdler.core;
 	requires org.slf4j;
 
-	exports com.anywide.dawdler.core.service.annotation;
-	exports com.anywide.dawdler.core.service;
-	exports com.anywide.dawdler.core.service.context;
-	exports com.anywide.dawdler.core.service.bean;
-	exports com.anywide.dawdler.core.service.listener;
-	exports com.anywide.dawdler.core.service.processor;
+	exports club.dawdler.core.service.annotation;
+	exports club.dawdler.core.service;
+	exports club.dawdler.core.service.context;
+	exports club.dawdler.core.service.bean;
+	exports club.dawdler.core.service.listener;
+	exports club.dawdler.core.service.processor;
 }
