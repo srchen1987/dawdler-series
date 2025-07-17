@@ -85,7 +85,7 @@ pool.testOnReturn=false #返还连接时是否验证连接有效 默认为false
 timeout=10000
 ```
 
-目前支持的模块有rabbitmq,redis,elasticSearch以及所有使用com.anywide.dawdler.util.PropertiesUtil来读取的自定义properties应用.
+目前支持的模块有rabbitmq,redis,elasticSearch以及所有使用club.dawdler.util.PropertiesUtil来读取的自定义properties应用.
 
 #### 1.5 在配置中心中使用加密后的密码
 

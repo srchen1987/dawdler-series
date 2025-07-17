@@ -1,0 +1,4 @@
+club.dawdler.clientplug.web.bind.resolver.impl.AnnotationMethodArgumentResolver
+club.dawdler.clientplug.web.bind.resolver.impl.ServletMethodArgumentResolver
+club.dawdler.clientplug.web.bind.resolver.impl.ServletUploadMethodArgumentResolver
+club.dawdler.clientplug.web.bind.resolver.impl.BasicsTypeMethodArgumentResolver

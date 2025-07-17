@@ -1,0 +1,4 @@
+club.dawdler.server.component.injector.DawdlerFilterInjector
+club.dawdler.server.component.injector.DawdlerServiceCreateListenerInjector
+club.dawdler.server.component.injector.DawdlerServiceListenerInjector
+club.dawdler.server.component.injector.ServiceInjector

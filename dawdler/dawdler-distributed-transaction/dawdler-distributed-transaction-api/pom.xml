@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-distributed-transaction</artifactId>
-		<version>0.1.1-jdk1.8-RELEASES</version>
+		<version>0.1.2-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-distributed-transaction-api</artifactId>
 	<name>dawdler-distributed-transaction-api</name>

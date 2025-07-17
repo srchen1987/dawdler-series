@@ -1,4 +1,0 @@
-com.anywide.dawdler.clientplug.web.bind.resolver.impl.AnnotationMethodArgumentResolver
-com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletMethodArgumentResolver
-com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletUploadMethodArgumentResolver
-com.anywide.dawdler.clientplug.web.bind.resolver.impl.BasicsTypeMethodArgumentResolver

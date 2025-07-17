@@ -1,7 +1,7 @@
 ﻿<aspectj>
 	<aspects>
 		<aspect
-			name="com.anywide.dawdler.core.db.mybatis.aspect.SwitchConnectionAspect" />
+			name="club.dawdler.core.db.mybatis.aspect.SwitchConnectionAspect" />
 	</aspects>
 	<!-- <weaver options="-verbose"> <include within="*"/> </weaver> -->
 </aspectj>

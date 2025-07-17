@@ -165,7 +165,7 @@ email控件名的规则,使用了globalRules,nm32为validate-global-variable.pro
 
 继承StringRuleOperator类,实现validate与toString方法即可.
 
-通过com.anywide.dawdler.clientplug.web.validator.operators.NumberRuleOperator 举例,NumberRuleOperator是系统内的number验证规则实现的类,用于验证一个字符串或数组中的值是否为整数.
+通过club.dawdler.clientplug.web.validator.operators.NumberRuleOperator 举例,NumberRuleOperator是系统内的number验证规则实现的类,用于验证一个字符串或数组中的值是否为整数.
 
 示例:
 
@@ -196,7 +196,7 @@ public class NumberRuleOperator extends StringRuleOperator {
 
 继承RegexRuleOperator类,实现validate与toString方法即可.
 
-通过 com.anywide.dawdler.clientplug.web.validator.operators.MaxSizeRuleOperator 举例,MaxSizeRuleOperator是系统内提供验证字符个数不能大于指定范围的规则实现类,用法：maxSize:32,不能大于32个字符个数.
+通过 club.dawdler.clientplug.web.validator.operators.MaxSizeRuleOperator 举例,MaxSizeRuleOperator是系统内提供验证字符个数不能大于指定范围的规则实现类,用法：maxSize:32,不能大于32个字符个数.
 
 示例:
 
@@ -274,9 +274,9 @@ package com.anywide.yyg.user.web.listener;
 
 import javax.servlet.ServletContext;
 
-import com.anywide.dawdler.clientplug.web.listener.WebContextListener;
-import com.anywide.dawdler.clientplug.web.validator.RuleOperatorProvider;
-import com.anywide.dawdler.core.annotation.Order;
+import club.dawdler.clientplug.web.listener.WebContextListener;
+import club.dawdler.clientplug.web.validator.RuleOperatorProvider;
+import club.dawdler.core.annotation.Order;
 import com.anywide.yyg.user.validator.operators.RegPasswordRuleOperator;
 
 @Order(1)

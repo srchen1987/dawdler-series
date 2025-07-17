@@ -1,0 +1,2 @@
+club.dawdler.clientplug.web.bind.discoverer.impl.CompileParameterDiscoverer
+club.dawdler.clientplug.web.bind.discoverer.impl.LocalVariableTableParameterDiscoverer

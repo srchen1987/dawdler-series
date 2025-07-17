@@ -68,8 +68,8 @@ public class DawdlerPlugin implements ProfilerPlugin, TransformTemplateAware {
 	}
 
 	private void addTransformers() {
-		transformTemplate.transform("com.anywide.dawdler.client.filter.DefaultFilterChain", ClientTransform.class);
-		transformTemplate.transform("com.anywide.dawdler.server.filter.DefaultFilterChain", ServerTransform.class);
+		transformTemplate.transform("club.dawdler.client.filter.DefaultFilterChain", ClientTransform.class);
+		transformTemplate.transform("club.dawdler.server.filter.DefaultFilterChain", ServerTransform.class);
 	}
 
 	public static class ClientTransform implements TransformCallback {
@@ -79,7 +79,7 @@ public class DawdlerPlugin implements ProfilerPlugin, TransformTemplateAware {
 				throws InstrumentException {
 			final InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
 			InstrumentMethod invokeMethod = target.getDeclaredMethod("doFilter",
-					"com.anywide.dawdler.core.bean.RequestBean");
+					"club.dawdler.core.bean.RequestBean");
 			if (invokeMethod != null) {
 				invokeMethod.addInterceptor(DawdlerClientInterceptor.class);
 			}
@@ -94,7 +94,7 @@ public class DawdlerPlugin implements ProfilerPlugin, TransformTemplateAware {
 				throws InstrumentException {
 			final InstrumentClass target = instrumentor.getInstrumentClass(loader, className, classfileBuffer);
 			InstrumentMethod invokeMethod = target.getDeclaredMethod("doFilter",
-					"com.anywide.dawdler.core.bean.RequestBean", "com.anywide.dawdler.core.bean.ResponseBean");
+					"club.dawdler.core.bean.RequestBean", "club.dawdler.core.bean.ResponseBean");
 			if (invokeMethod != null) {
 				invokeMethod.addInterceptor(DawdlerServerInterceptor.class);
 			}

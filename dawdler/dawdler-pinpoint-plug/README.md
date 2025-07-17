@@ -120,7 +120,7 @@ dawdler-jdk1.8版本加入:
 ###########################################################
 profiler.dawdler.enable=true
 # Classes for detecting application server type. Comma separated list of fully qualified class names. Wildcard not supported.
-profiler.dawdler.bootstrap.main=com.anywide.dawdler.server.bootstrap.Bootstrap
+profiler.dawdler.bootstrap.main=club.dawdler.server.bootstrap.Bootstrap
 
 ```
 

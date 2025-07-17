@@ -16,8 +16,8 @@
  */
 package com.navercorp.pinpoint.plugin.dawdler.interceptor;
 
-import com.anywide.dawdler.core.bean.ResponseBean;
-import com.anywide.dawdler.server.filter.RequestWrapper;
+import club.dawdler.core.bean.ResponseBean;
+import club.dawdler.server.filter.RequestWrapper;
 import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
 import com.navercorp.pinpoint.bootstrap.context.SpanEventRecorder;
 import com.navercorp.pinpoint.bootstrap.context.SpanId;
