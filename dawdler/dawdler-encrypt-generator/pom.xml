@@ -42,7 +42,7 @@
 					<archive>
 						<manifest>
 							<mainClass>
-								com.anywide.dawdler.encrypt.EncryptContentGenerator</mainClass>
+								club.dawdler.encrypt.EncryptContentGenerator</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

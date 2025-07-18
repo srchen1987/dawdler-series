@@ -1,5 +1,5 @@
-import com.anywide.dawdler.clientplug.load.resource.LoadLifeCycle;
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.clientplug.load.resource.LoadLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
 
 module dawdler.client.plug.load {
 	requires java.base;
@@ -15,7 +15,7 @@ module dawdler.client.plug.load {
 	requires com.fasterxml.jackson.annotation;
 	requires dawdler.client.plug.web;
 
-	exports com.anywide.dawdler.clientplug.load;
+	exports club.dawdler.clientplug.load;
 
 	uses ComponentLifeCycle;
 

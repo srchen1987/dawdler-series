@@ -1,6 +1,6 @@
-import com.anywide.dawdler.cache.CacheManager;
-import com.anywide.dawdler.cache.component.injector.CacheConfigInjector;
-import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import club.dawdler.cache.CacheManager;
+import club.dawdler.cache.component.injector.CacheConfigInjector;
+import club.dawdler.core.component.injector.CustomComponentInjector;
 
 module dawdler.cache.core {
 	requires java.base;
@@ -10,9 +10,9 @@ module dawdler.cache.core {
 	requires dawdler.serialization;
 	requires org.aspectj.weaver;
 
-	exports com.anywide.dawdler.cache;
-	exports com.anywide.dawdler.cache.annotation;
-	exports com.anywide.dawdler.cache.exception;
+	exports club.dawdler.cache;
+	exports club.dawdler.cache.annotation;
+	exports club.dawdler.cache.exception;
 
 	uses CustomComponentInjector;
 	

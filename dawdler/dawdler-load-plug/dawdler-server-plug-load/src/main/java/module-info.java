@@ -9,5 +9,5 @@ module dawdler.server.plug.load {
 	requires org.objectweb.asm.tree;
 	requires dawdler.service.core;
 
-	exports com.anywide.dawdler.serverplug.service;
+	exports club.dawdler.serverplug.service;
 }

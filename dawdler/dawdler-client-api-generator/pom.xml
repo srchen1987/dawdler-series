@@ -92,7 +92,7 @@
 					<archive>
 						<manifest>
 							<mainClass>
-								com.anywide.dawdler.client.api.generator.MainGenerator</mainClass>
+								club.dawdler.client.api.generator.MainGenerator</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

@@ -1,7 +1,7 @@
-import com.anywide.dawdler.clientplug.db.mybatis.classloader.MybatisClassLoaderMatcher;
-import com.anywide.dawdler.clientplug.db.mybatis.injector.AspectInjector;
-import com.anywide.dawdler.clientplug.web.classloader.DawdlerClassLoaderMatcher;
-import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import club.dawdler.clientplug.db.mybatis.classloader.MybatisClassLoaderMatcher;
+import club.dawdler.clientplug.db.mybatis.injector.AspectInjector;
+import club.dawdler.clientplug.web.classloader.DawdlerClassLoaderMatcher;
+import club.dawdler.core.component.injector.CustomComponentInjector;
 
 module dawdler.client.plug.mybatis {
 	requires java.base;
@@ -14,10 +14,10 @@ module dawdler.client.plug.mybatis {
 	requires dawdler.client.plug.web;
 	requires dawdler.mybatis.core;
 
-	exports com.anywide.dawdler.clientplug.db.mybatis;
-	exports com.anywide.dawdler.clientplug.db.mybatis.create.listener;
+	exports club.dawdler.clientplug.db.mybatis;
+	exports club.dawdler.clientplug.db.mybatis.create.listener;
 
-	opens com.anywide.dawdler.clientplug.db.mybatis;
+	opens club.dawdler.clientplug.db.mybatis;
 
 	provides CustomComponentInjector with AspectInjector;
 

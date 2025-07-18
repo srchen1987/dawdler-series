@@ -13,15 +13,15 @@
 
 ### 2. 通过SPI方式扩展
 
-实现com.anywide.dawdler.core.serializer.Serializer接口
+实现club.dawdler.core.serializer.Serializer接口
 注意：key方法返回一个byte值,不可以重复,目前系统提供jdk,kryo两种方式,jdk的标识为1,kryo的标识为2.
 
 标识用于client-conf.xml中的server-channel-group节点下的serializer属性.
 
 在resources/META-INF/services下创建文件
-com.anywide.dawdler.core.serializer.Serializer
+club.dawdler.core.serializer.Serializer
 
-参考dawdler-serialization源码中的resources/META-INF/services/com.anywide.dawdler.core.serializer.Serializer
+参考dawdler-serialization源码中的resources/META-INF/services/club.dawdler.core.serializer.Serializer
 
 另外需要将新增类打入dawdler-serialization.jar中或将新扩展的jar放置到dawdler-server/bin下,client端也需要放置.
 

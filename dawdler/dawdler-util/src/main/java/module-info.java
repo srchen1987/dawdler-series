@@ -10,10 +10,10 @@ module dawdler.util {
 	requires org.slf4j;
 	requires com.fasterxml.jackson.dataformat.yaml;
 	
-	exports com.anywide.dawdler.util;
-	exports com.anywide.dawdler.util.aspect;
-	exports com.anywide.dawdler.util.reflectasm;
-	exports com.anywide.dawdler.util.spring.antpath;
+	exports club.dawdler.util;
+	exports club.dawdler.util.aspect;
+	exports club.dawdler.util.reflectasm;
+	exports club.dawdler.util.spring.antpath;
 
-	opens com.anywide.dawdler.util;
+	opens club.dawdler.util;
 }

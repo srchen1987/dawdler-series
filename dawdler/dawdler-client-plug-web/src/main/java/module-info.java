@@ -1,20 +1,20 @@
-import com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
-import com.anywide.dawdler.clientplug.web.bind.discoverer.impl.CompileParameterDiscoverer;
-import com.anywide.dawdler.clientplug.web.bind.discoverer.impl.LocalVariableTableParameterDiscoverer;
-import com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
-import com.anywide.dawdler.clientplug.web.bind.resolver.impl.AnnotationMethodArgumentResolver;
-import com.anywide.dawdler.clientplug.web.bind.resolver.impl.BasicsTypeMethodArgumentResolver;
-import com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletMethodArgumentResolver;
-import com.anywide.dawdler.clientplug.web.bind.resolver.impl.ServletUploadMethodArgumentResolver;
-import com.anywide.dawdler.clientplug.web.classloader.DawdlerClassLoaderMatcher;
-import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.component.injector.WebComponentInjector;
-import com.anywide.dawdler.clientplug.web.fire.WebComponentClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.initializer.WebInitializer;
-import com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
-import com.anywide.dawdler.clientplug.web.plugs.impl.JsonDisplayPlug;
-import com.anywide.dawdler.clientplug.web.plugs.impl.JspDisplayPlug;
-import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
+import club.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
+import club.dawdler.clientplug.web.bind.discoverer.impl.CompileParameterDiscoverer;
+import club.dawdler.clientplug.web.bind.discoverer.impl.LocalVariableTableParameterDiscoverer;
+import club.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
+import club.dawdler.clientplug.web.bind.resolver.impl.AnnotationMethodArgumentResolver;
+import club.dawdler.clientplug.web.bind.resolver.impl.BasicsTypeMethodArgumentResolver;
+import club.dawdler.clientplug.web.bind.resolver.impl.ServletMethodArgumentResolver;
+import club.dawdler.clientplug.web.bind.resolver.impl.ServletUploadMethodArgumentResolver;
+import club.dawdler.clientplug.web.classloader.DawdlerClassLoaderMatcher;
+import club.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
+import club.dawdler.clientplug.web.component.injector.WebComponentInjector;
+import club.dawdler.clientplug.web.fire.WebComponentClassLoaderFire;
+import club.dawdler.clientplug.web.initializer.WebInitializer;
+import club.dawdler.clientplug.web.plugs.DisplayPlug;
+import club.dawdler.clientplug.web.plugs.impl.JsonDisplayPlug;
+import club.dawdler.clientplug.web.plugs.impl.JspDisplayPlug;
+import club.dawdler.core.component.injector.CustomComponentInjector;
 
 import jakarta.servlet.ServletContainerInitializer;
 
@@ -30,27 +30,27 @@ module dawdler.client.plug.web {
 	requires dawdler.jakarta.fileupload;
 	requires com.fasterxml.jackson.annotation;
 
-	exports com.anywide.dawdler.clientplug.web.annotation;
-	exports com.anywide.dawdler.clientplug.web.handler;
-	exports com.anywide.dawdler.clientplug.web.plugs;
-	exports com.anywide.dawdler.clientplug.web;
-	exports com.anywide.dawdler.clientplug.web.interceptor;
-	exports com.anywide.dawdler.clientplug.web.listener;
-	exports com.anywide.dawdler.clientplug.web.upload;
-	exports com.anywide.dawdler.clientplug.web.filter;
-	exports com.anywide.dawdler.clientplug.web.classloader;
-	exports com.anywide.dawdler.clientplug.web.conf;
+	exports club.dawdler.clientplug.web.annotation;
+	exports club.dawdler.clientplug.web.handler;
+	exports club.dawdler.clientplug.web.plugs;
+	exports club.dawdler.clientplug.web;
+	exports club.dawdler.clientplug.web.interceptor;
+	exports club.dawdler.clientplug.web.listener;
+	exports club.dawdler.clientplug.web.upload;
+	exports club.dawdler.clientplug.web.filter;
+	exports club.dawdler.clientplug.web.classloader;
+	exports club.dawdler.clientplug.web.conf;
 
-	uses com.anywide.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
+	uses club.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 
 	provides MethodArgumentResolver with AnnotationMethodArgumentResolver, BasicsTypeMethodArgumentResolver,
 			ServletMethodArgumentResolver, ServletUploadMethodArgumentResolver;
 
-	uses com.anywide.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
+	uses club.dawdler.clientplug.web.bind.discoverer.ParameterDiscoverer;
 
 	provides ParameterDiscoverer with CompileParameterDiscoverer, LocalVariableTableParameterDiscoverer;
 
-	uses com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
+	uses club.dawdler.clientplug.web.plugs.DisplayPlug;
 
 	provides DisplayPlug with JsonDisplayPlug, JspDisplayPlug;
 

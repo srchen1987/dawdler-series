@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.injector.CustomComponentInjector;
-import com.anywide.dawdler.core.db.mybatis.injector.AspectInjector;
+import club.dawdler.core.component.injector.CustomComponentInjector;
+import club.dawdler.core.db.mybatis.injector.AspectInjector;
 
 module dawdler.mybatis.core {
 	requires java.base;
@@ -12,9 +12,9 @@ module dawdler.mybatis.core {
 	requires dawdler.service.core;
 	requires dawdler.db.core;
 
-	exports com.anywide.dawdler.core.db.mybatis;
-	exports com.anywide.dawdler.core.db.mybatis.session;
-	exports com.anywide.dawdler.core.db.mybatis.annotation;
+	exports club.dawdler.core.db.mybatis;
+	exports club.dawdler.core.db.mybatis.session;
+	exports club.dawdler.core.db.mybatis.annotation;
 
 	provides CustomComponentInjector with AspectInjector;
 }

@@ -16,8 +16,8 @@
  */
 package com.navercorp.pinpoint.plugin.dawdler.interceptor;
 
-import com.anywide.dawdler.client.filter.RequestWrapper;
-import com.anywide.dawdler.core.rpc.context.RpcContext;
+import club.dawdler.client.filter.RequestWrapper;
+import club.dawdler.core.rpc.context.RpcContext;
 import com.navercorp.pinpoint.bootstrap.context.MethodDescriptor;
 import com.navercorp.pinpoint.bootstrap.context.SpanEventRecorder;
 import com.navercorp.pinpoint.bootstrap.context.Trace;

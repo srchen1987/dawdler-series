@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.es.resource.ElasticSearchLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.es.resource.ElasticSearchLifeCycle;
 
 module dawdler.server.plug.es {
 	requires java.base;

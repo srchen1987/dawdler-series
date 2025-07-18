@@ -1,6 +1,6 @@
-import com.anywide.dawdler.conf.client.ConfigClient;
-import com.anywide.dawdler.conf.health.ConfigIndicator;
-import com.anywide.dawdler.core.health.HealthIndicator;
+import club.dawdler.conf.client.ConfigClient;
+import club.dawdler.conf.health.ConfigIndicator;
+import club.dawdler.core.health.HealthIndicator;
 
 module dawdler.config.center.core {
 	requires java.base;
@@ -12,11 +12,11 @@ module dawdler.config.center.core {
 	requires com.fasterxml.jackson.dataformat.yaml;
 	requires dawdler.core;
 
-	exports com.anywide.dawdler.conf;
-	exports com.anywide.dawdler.conf.client;
-	exports com.anywide.dawdler.conf.cache;
-	exports com.anywide.dawdler.conf.init;
-	exports com.anywide.dawdler.conf.annotation;
+	exports club.dawdler.conf;
+	exports club.dawdler.conf.client;
+	exports club.dawdler.conf.cache;
+	exports club.dawdler.conf.init;
+	exports club.dawdler.conf.annotation;
 
 	uses HealthIndicator;
 

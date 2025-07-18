@@ -1,5 +1,5 @@
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
-import com.anywide.dawdler.serverplug.db.resource.TransactionLifeCycle;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.serverplug.db.resource.TransactionLifeCycle;
 
 module dawdler.server.plug.db {
 	requires java.base;

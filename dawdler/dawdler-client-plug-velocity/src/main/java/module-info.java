@@ -1,5 +1,5 @@
-import com.anywide.dawdler.clientplug.web.plugs.DisplayPlug;
-import com.anywide.dawdler.clientplug.web.plugs.impl.VelocityDisplayPlug;
+import club.dawdler.clientplug.web.plugs.DisplayPlug;
+import club.dawdler.clientplug.web.plugs.impl.VelocityDisplayPlug;
 
 module dawdler.client.plug.velocity {
 	requires java.base;

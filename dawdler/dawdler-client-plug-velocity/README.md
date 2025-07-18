@@ -24,7 +24,7 @@ output.encoding=utf-8
 template.path=/templates/
 template.suffix=.vm
 #自定义指令,需要扩展请参考velocity官方文档
-runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDirect,com.anywide.dawdler.clientplug.velocity.direct.ControlDirect
+runtime.custom_directives=club.dawdler.clientplug.velocity.direct.PageDirect,club.dawdler.clientplug.velocity.direct.ControlDirect
 ```
 
 ### 3. dawdler内置常用的指令
@@ -60,7 +60,7 @@ runtime.custom_directives=com.anywide.dawdler.clientplug.velocity.direct.PageDir
 
 自定义样式扩展
 
-参考[PageStyle](./src/main/java/com/anywide/dawdler/clientplug/velocity/PageStyle.java)源代码中的export方法：
+参考[PageStyle](./src/main/java/club/dawdler/clientplug/velocity/PageStyle.java)源代码中的export方法：
 
 ```java
 //相关注释可以看源代码

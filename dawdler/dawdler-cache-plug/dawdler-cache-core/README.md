@@ -181,7 +181,7 @@ public interface CacheConfig {
 
 1、创建项目并创建类继承AbstractCacheManager抽象类,实现 createCacheNative抽象方法.
 
-2、通过SPI配置com.anywide.dawdler.cache.CacheManager具体实现.
+2、通过SPI配置club.dawdler.cache.CacheManager具体实现.
 
 具体实现可以参考CaffeineCacheManager或JedisCacheManager.
 
@@ -368,7 +368,7 @@ public interface CacheConfig {
 
 1、创建项目并创建类继承AbstractCacheManager抽象类,实现 createCacheNative抽象方法.
 
-2、通过SPI配置com.anywide.dawdler.cache.CacheManager具体实现.
+2、通过SPI配置club.dawdler.cache.CacheManager具体实现.
 
 具体实现可以参考CaffeineCacheManager或JedisCacheManager.
 

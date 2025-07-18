@@ -41,7 +41,7 @@ client-conf.xml支持多环境配置 参考[统一配置中心与多环境支持
 ```java
 public static void main(String[] args) throws Exception {
   Transaction tr = TransactionProvider.getTransaction("simple-service");//simple-servic为服务名
-  tr.setServiceName("com.anywide.dawdler.demo.service.HelloService");//接口全名
+  tr.setServiceName("club.dawdler.demo.service.HelloService");//接口全名
   tr.setMethod("say");//方法名
   tr.addString("jackson");//参数 String类型并传值 Transaction有一系列传参方法 具体查看Transaction
   Object obj = tr.executeResult();//执行
@@ -72,13 +72,13 @@ public interface HelloService {
 
 ### 5. 调用端过滤器 DawdlerClientFilter
 
-实现DawdlerClientFilter接口,同时通过SPI方式扩展,支持@Order注解进行升序排序,具体可参考[dawdler-circuit-breaker模块下的CircuitBreakerFilter](../dawdler-circuit-breaker/src/main/java/com/anywide/dawdler/breaker/filter/CircuitBreakerFilter.java).
+实现DawdlerClientFilter接口,同时通过SPI方式扩展,支持@Order注解进行升序排序,具体可参考[dawdler-circuit-breaker模块下的CircuitBreakerFilter](../dawdler-circuit-breaker/src/main/java/club/dawdler/breaker/filter/CircuitBreakerFilter.java).
 
 ### 6. 调用端负载均衡SPI扩展
 
 目前提供随机负载与轮询负载.
 
-继承AbstractLoadBalance抽象类,参考[RoundRobinLoadBalance](src/main/java/com/anywide/dawdler/client/cluster/impl/RoundRobinLoadBalance.java).构造方法中传入的name对应Service注解中的loadBalance(默认为roundRobin).通过SPI方式配置[LoadBalance文件中](src/main/resources/META-INF/services/com.anywide.dawdler.client.cluster.LoadBalance).
+继承AbstractLoadBalance抽象类,参考[RoundRobinLoadBalance](src/main/java/club/dawdler/client/cluster/impl/RoundRobinLoadBalance.java).构造方法中传入的name对应Service注解中的loadBalance(默认为roundRobin).通过SPI方式配置[LoadBalance文件中](src/main/resources/META-INF/services/club.dawdler.client.cluster.LoadBalance).
 
 ### 7. 异步调用
 
@@ -89,7 +89,7 @@ dawdler提供异步调用rpc的方式.
 ```java
 public static void main(String[] args) throws Exception {
   Transaction tr = TransactionProvider.getTransaction("user");
-  tr.setServiceName("com.anywide.dawdler.demo.service.HelloService");//接口全名
+  tr.setServiceName("club.dawdler.demo.service.HelloService");//接口全名
   tr.setMethod("say");//方法名
   tr.addString("jackson");//参数 String类型并传值 Transaction有一系列传参方法 具体查看Transaction
   tr.setAsync(true);//设置为异步执行

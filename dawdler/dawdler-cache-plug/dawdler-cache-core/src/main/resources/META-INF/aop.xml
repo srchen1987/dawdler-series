@@ -1,6 +1,6 @@
 ﻿<aspectj>
 	<aspects>
-		<aspect name="com.anywide.dawdler.cache.aspect.CacheAspect" />
+		<aspect name="club.dawdler.cache.aspect.CacheAspect" />
 	</aspects>
 	<!--  
   <weaver options="-verbose">

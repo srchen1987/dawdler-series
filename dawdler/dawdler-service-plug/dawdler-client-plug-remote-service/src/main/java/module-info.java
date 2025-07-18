@@ -1,7 +1,7 @@
-import com.anywide.dawdler.clientplug.remote.service.fire.ServiceClassLoaderFire;
-import com.anywide.dawdler.clientplug.remote.service.resource.ServiceLifeCycle;
-import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
-import com.anywide.dawdler.core.component.resource.ComponentLifeCycle;
+import club.dawdler.clientplug.remote.service.fire.ServiceClassLoaderFire;
+import club.dawdler.clientplug.remote.service.resource.ServiceLifeCycle;
+import club.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
+import club.dawdler.core.component.resource.ComponentLifeCycle;
 
 module dawdler.client.plug.remote.service {
 	requires java.base;

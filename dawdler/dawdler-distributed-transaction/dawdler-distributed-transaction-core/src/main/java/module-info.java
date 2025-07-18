@@ -12,9 +12,9 @@ module dawdler.distributed.transaction.core {
 	requires dawdler.jedis.core;
 	requires org.apache.commons.pool2;
 
-	exports com.anywide.dawdler.distributed.transaction.release;
-	exports com.anywide.dawdler.distributed.transaction.message;
-	exports com.anywide.dawdler.distributed.transaction.message.amqp.rabbitmq;
-	exports com.anywide.dawdler.distributed.transaction.repository;
+	exports club.dawdler.distributed.transaction.release;
+	exports club.dawdler.distributed.transaction.message;
+	exports club.dawdler.distributed.transaction.message.amqp.rabbitmq;
+	exports club.dawdler.distributed.transaction.repository;
 
 }

@@ -5,5 +5,5 @@ module dawdler.discovery.center.server.plug {
 	requires dawdler.server;
 	requires dawdler.discovery.center.core;
 
-	exports com.anywide.dawdler.server.plug.discoverycenter;
+	exports club.dawdler.server.plug.discoverycenter;
 }

@@ -1,5 +1,5 @@
-import com.anywide.dawdler.clientplug.rabbitmq.fire.RabbitClassLoaderFire;
-import com.anywide.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
+import club.dawdler.clientplug.rabbitmq.fire.RabbitClassLoaderFire;
+import club.dawdler.clientplug.web.classloader.RemoteClassLoaderFire;
 
 module dawdler.client.plug.rabbitmq {
 	requires java.base;

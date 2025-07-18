@@ -1,5 +1,5 @@
-import com.anywide.dawdler.conf.client.ConfigClient;
-import com.anywide.dawdler.conf.client.consul.impl.ConsulConfigClient;
+import club.dawdler.conf.client.ConfigClient;
+import club.dawdler.conf.client.consul.impl.ConsulConfigClient;
 
 module dawdler.config.center.consul.core {
 	requires org.slf4j;

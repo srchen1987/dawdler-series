@@ -12,7 +12,7 @@ module dawdler.distributed.transaction.compensator {
 	requires dawdler.service.core;
 	requires dawdler.remote.service.core;
 
-	exports com.anywide.dawdler.distributed.transaction.compensate.process;
+	exports club.dawdler.distributed.transaction.compensate.process;
 
-	uses com.anywide.dawdler.distributed.transaction.compensate.process.DistributedTransactionCustomProcessor;
+	uses club.dawdler.distributed.transaction.compensate.process.DistributedTransactionCustomProcessor;
 }

@@ -1,6 +1,6 @@
 import org.slf4j.spi.SLF4JServiceProvider;
 
-import com.anywide.dawdler.server.log.DawdlerLogbackServiceProvider;
+import club.dawdler.server.log.DawdlerLogbackServiceProvider;
 
 module dawdler.server.logback {
 	requires java.base;

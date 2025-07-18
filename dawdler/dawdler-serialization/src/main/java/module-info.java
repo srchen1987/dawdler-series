@@ -1,6 +1,6 @@
-import com.anywide.dawdler.core.serializer.JDKDefaultSerializer;
-import com.anywide.dawdler.core.serializer.KryoSerializer;
-import com.anywide.dawdler.core.serializer.Serializer;
+import club.dawdler.core.serializer.JDKDefaultSerializer;
+import club.dawdler.core.serializer.KryoSerializer;
+import club.dawdler.core.serializer.Serializer;
 
 module dawdler.serialization {
 	requires java.base;
@@ -9,7 +9,7 @@ module dawdler.serialization {
 	requires transitive com.esotericsoftware.kryo;
 	requires jdk.unsupported;
 
-	exports com.anywide.dawdler.core.serializer;
+	exports club.dawdler.core.serializer;
 
 	uses Serializer;
 
