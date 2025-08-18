@@ -11,6 +11,7 @@ module dawdler.mybatis.core {
 	requires transitive org.mybatis;
 	requires dawdler.service.core;
 	requires dawdler.db.core;
+	requires transitive commons.jexl3;
 
 	exports club.dawdler.core.db.mybatis;
 	exports club.dawdler.core.db.mybatis.session;
