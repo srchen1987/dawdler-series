@@ -17,11 +17,9 @@
 package club.dawdler.client;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.StandardSocketOptions;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousSocketChannel;
@@ -31,7 +29,6 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -80,14 +77,12 @@ public class DawdlerConnection {
 	private DawdlerForkJoinWorkerThreadFactory dawdlerForkJoinWorkerThreadFactory = new DawdlerForkJoinWorkerThreadFactory();
 	protected Semaphore semaphore = new Semaphore(0);
 	AsynchronousChannelGroup asynchronousChannelGroup;
-	private final String groupName;
 	private int serializer;
 	private List<List<SocketSession>> socketSessions;
 
 	public DawdlerConnection(String gid, int serializer, int sessionNum, String user, String password)
 			throws IOException {
 		this.gid = gid;
-		this.groupName = getDefaultGroupName();
 		this.sessionNum = sessionNum;
 		this.serializer = serializer;
 		this.user = user;
@@ -120,21 +115,6 @@ public class DawdlerConnection {
 
 	public void setSerializer(int serializer) {
 		this.serializer = serializer;
-	}
-
-	public String getGroupName() {
-		return groupName;
-	}
-
-	private String getDefaultGroupName() {
-		String host = "localhost";
-		try {
-			host = InetAddress.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			host = "UnknownHost";
-		}
-
-		return host + "#ID:" + UUID.randomUUID().toString();
 	}
 
 	public void startReconnect() {
@@ -176,7 +156,6 @@ public class DawdlerConnection {
 				client = AsynchronousSocketChannel.open(asynchronousChannelGroup);
 				// config(client);
 				socketSession = new SocketSession(client);
-				socketSession.setGroupName(getGroupName());
 				socketSession.setDawdlerConnection(this);
 				socketSession.setRemoteAddress(address);
 				socketSession.setUser(user);
