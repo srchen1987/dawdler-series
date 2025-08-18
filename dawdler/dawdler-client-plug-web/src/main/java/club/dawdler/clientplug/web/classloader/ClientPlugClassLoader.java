@@ -82,25 +82,21 @@ public class ClientPlugClassLoader {
 		if (logger.isDebugEnabled()) {
 			logger.debug("loading %%%" + host + "%%%module  \t" + className + ".class");
 		}
-		try {
-			ClassStructure classStructure = ClassStructureParser.parser(codeBytes);
-			for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
-				Class<?> clazz = inject(codeBytes, classStructure, data.getData());
-				if (clazz == null) {
-					continue;
-				}
-				Class<?> oldClazz = REMOTE_CLASSES.get(host.trim() + "-" + className);
-				if (oldClazz == null || oldClazz != clazz) {
-					REMOTE_CLASSES.put(host.trim() + "-" + className, clazz);
-					try {
-						ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, codeBytes);
-					} catch (IOException e) {
-						logger.error("", e);
-					}
+		ClassStructure classStructure = ClassStructureParser.parser(codeBytes);
+		for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
+			Class<?> clazz = inject(codeBytes, classStructure, data.getData());
+			if (clazz == null) {
+				continue;
+			}
+			Class<?> oldClazz = REMOTE_CLASSES.get(host.trim() + "-" + className);
+			if (oldClazz == null || oldClazz != clazz) {
+				REMOTE_CLASSES.put(host.trim() + "-" + className, clazz);
+				try {
+					ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, codeBytes);
+				} catch (IOException e) {
+					logger.error("", e);
 				}
 			}
-		} catch (Exception e) {
-			logger.error("", e);
 		}
 	}
 
@@ -252,8 +248,15 @@ public class ClientPlugClassLoader {
 				customComponentInjector.inject(c, target);
 			}
 			return c;
+		} else {
+			Class<?> c;
+			if (codeBytes != null) {
+				c = defineClass(classStructure.getClassName(), codeBytes, false);
+			} else {
+				c = defineClass(classStructure.getClassName(), resource, false);
+			}
+			return c;
 		}
-		return null;
 	}
 
 }

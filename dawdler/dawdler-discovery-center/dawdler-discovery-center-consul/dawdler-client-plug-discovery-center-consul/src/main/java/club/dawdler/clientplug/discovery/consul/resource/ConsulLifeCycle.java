@@ -21,6 +21,15 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+import com.ecwid.consul.v1.ConsulClient;
+import com.ecwid.consul.v1.QueryParams;
+import com.ecwid.consul.v1.Response;
+import com.ecwid.consul.v1.health.HealthServicesRequest;
+import com.ecwid.consul.v1.health.model.Check.CheckStatus;
+import com.ecwid.consul.v1.health.model.HealthService;
 
 import club.dawdler.client.ConnectionPool;
 import club.dawdler.client.ConnectionPool.Action;
@@ -31,11 +40,6 @@ import club.dawdler.core.annotation.Order;
 import club.dawdler.core.component.resource.ComponentLifeCycle;
 import club.dawdler.core.discovery.consul.ConsulDiscoveryCenter;
 import club.dawdler.core.thread.DefaultThreadFactory;
-import com.ecwid.consul.v1.ConsulClient;
-import com.ecwid.consul.v1.QueryParams;
-import com.ecwid.consul.v1.Response;
-import com.ecwid.consul.v1.health.HealthServicesRequest;
-import com.ecwid.consul.v1.health.model.Check.CheckStatus;
 
 /**
  * @author jackson.song
@@ -47,6 +51,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 	private ConsulDiscoveryCenter consulDiscoveryCenter = null;
 	private ExecutorService executor = null;
 	private static final int DEFAULT_WAIT_TIME = 10000;
+
 	@Override
 	public void prepareInit() throws Throwable {
 		ClientConfig clientConfig = ClientConfigParser.getClientConfig();
@@ -57,6 +62,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 		consulDiscoveryCenter = ConsulDiscoveryCenter.getInstance();
 		ConsulClient consulClient = consulDiscoveryCenter.getClient();
 		executor = Executors.newFixedThreadPool(sgs.size(), new DefaultThreadFactory("consulPullThread#"));
+		Semaphore semaphore = new Semaphore(sgs.size());
 		for (ServerChannelGroup sg : sgs) {
 			String gid = sg.getGroupId();
 			ConnectionPool.addServerChannelGroup(gid, sg);
@@ -71,7 +77,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 					Set<String> newSet = new HashSet<>();
 					long currentLastIndex = 0;
 					try {
-						Response<List<com.ecwid.consul.v1.health.model.HealthService>> response = consulClient
+						Response<List<HealthService>> response = consulClient
 								.getHealthServices(
 										gid,
 										healthServicesRequest);
@@ -108,6 +114,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 							}
 						}
 						oldSet = newSet;
+						semaphore.release();
 					} catch (Exception e) {
 						if (!consulDiscoveryCenter.getDestroyed().get()) {
 							try {
@@ -123,6 +130,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 				}
 			});
 		}
+		semaphore.tryAcquire(sgs.size(), 5000, TimeUnit.MILLISECONDS);
 	}
 
 	private String getServiceAddress(String serviceId) {

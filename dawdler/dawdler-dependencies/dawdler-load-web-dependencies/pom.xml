@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.1.2-jdk21-RELEASES</version>
+		<version>0.1.3-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-load-web-dependencies</artifactId>
 	<name>dawdler-load-web-dependencies</name>

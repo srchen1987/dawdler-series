@@ -80,7 +80,6 @@ public abstract class AbstractSocketSession {
 	protected int position;
 	protected Map<Long, InvokeFuture<Object>> futures = new ConcurrentHashMap<>();
 	protected IoHandler ioHandler = IoHandlerFactory.getHandler();
-	private String groupName;
 	private boolean authored;
 	private SessionState state = SessionState.RECEIVE;
 	private boolean server;
@@ -99,14 +98,6 @@ public abstract class AbstractSocketSession {
 
 	public void setAuthored(boolean authored) {
 		this.authored = authored;
-	}
-
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
 	}
 
 	public Map<Long, InvokeFuture<Object>> getFutures() {
