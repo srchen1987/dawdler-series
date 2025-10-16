@@ -25,3 +25,4 @@ bin/
 .settings
 .vscode/settings.json
 /.metadata/
+.vscode/mcp.json

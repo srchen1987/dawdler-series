@@ -88,7 +88,7 @@ public class DataProcessor implements Runnable {
 		}
 		if (obj instanceof RequestBean requestBean) {
 			if (!socketSession.isAuthored()) {
-				throw new IllegalAccessException("unauthorized access ！");
+				throw new IllegalAccessException("unauthorized access !");
 			}
 			String serviceName = requestBean.getServiceName();
 			ServicesBean servicesBean = null;

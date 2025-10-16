@@ -29,10 +29,10 @@ public class ControlValidator {
 	private Map<String, ControlField> controlFields;
 	private Map<String, Map<String, ControlField>> fieldGroups;
 	private Map<MappingFieldType, Map<String, ControlField>> globalControlFieldsCache;
-	private final Map<String, Map<MappingFieldType, Map<String, ControlField>>> mappings = new HashMap<>();
+	private final Map<String, Map<MappingFieldType, Map<String, ControlField>>> MAPPINGS = new HashMap<>();
 
 	public enum MappingFieldType {
-		header, body, param, path
+		header, body, param, path, cookie, queryParam
 	}
 
 	public static MappingFieldType getMappingFieldType(String type) {
@@ -43,11 +43,11 @@ public class ControlValidator {
 	}
 
 	public Map<String, Map<MappingFieldType, Map<String, ControlField>>> getMappings() {
-		return mappings;
+		return MAPPINGS;
 	}
 
 	private Map<String, ControlField> getMappingFields(MappingFieldType mappingFieldType, String uri) {
-		Map<MappingFieldType, Map<String, ControlField>> mapping = mappings.get(uri);
+		Map<MappingFieldType, Map<String, ControlField>> mapping = MAPPINGS.get(uri);
 		if (mapping != null) {
 			return mapping.get(mappingFieldType);
 		}
@@ -60,6 +60,14 @@ public class ControlValidator {
 
 	public Map<String, ControlField> getHeaderFields(String uri) {
 		return getMappingFields(MappingFieldType.header, uri);
+	}
+
+	public Map<String, ControlField> getCookieFields(String uri) {
+		return getMappingFields(MappingFieldType.cookie, uri);
+	}
+
+	public Map<String, ControlField> getQueryParamFields(String uri) {
+		return getMappingFields(MappingFieldType.queryParam, uri);
 	}
 
 	public Map<String, ControlField> getBodyFields(String uri) {

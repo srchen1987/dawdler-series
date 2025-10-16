@@ -176,6 +176,11 @@
 				<version>${jackson-databind.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>${jackson-core.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${commons-io.version}</version>
@@ -624,7 +629,6 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.6.3</version>
 				<configuration>
-					<additionalparam>-Xdoclint:none</additionalparam>
 					<additionalJOptions>
 						<additionalJOption>--add-exports=java.base/jdk.internal.loader=dawdler.util</additionalJOption>
 						<additionalJOption>-X</additionalJOption>

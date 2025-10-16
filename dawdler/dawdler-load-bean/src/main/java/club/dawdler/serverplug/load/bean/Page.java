@@ -33,8 +33,11 @@ public class Page implements Serializable {
 	private int pageCount;
 	/** 每页显示行数 **/
 	private int row;
+	/** 起始数 **/
 	private int start;
+	/** 结束数 **/
 	private int end;
+	/** 页码数 **/
 	private int pageNumber = 11;
 
 	public Page(int pageOn, int row, int rowCount) {

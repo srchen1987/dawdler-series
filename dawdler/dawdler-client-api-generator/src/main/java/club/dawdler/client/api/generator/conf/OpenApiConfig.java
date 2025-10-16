@@ -17,6 +17,7 @@
 package club.dawdler.client.api.generator.conf;
 
 import club.dawdler.client.api.generator.data.ContactData;
+import club.dawdler.client.api.generator.data.ServersData;
 
 /**
  * @author jackson.song
@@ -28,9 +29,8 @@ public class OpenApiConfig {
 	private String title;
 	private String description;
 	private ContactData contact;
-	private String swagger;
-	private String host;
-	private String basePath;
+	private String openApi;
+	private ServersData[] servers;
 	private String[] scanPath;
 	private String outPath;
 
@@ -74,28 +74,12 @@ public class OpenApiConfig {
 		this.contact = contact;
 	}
 
-	public String getSwagger() {
-		return swagger;
+	public void setServers(ServersData[] servers) {
+		this.servers = servers;
 	}
 
-	public void setSwagger(String swagger) {
-		this.swagger = swagger;
-	}
-
-	public String getHost() {
-		return host;
-	}
-
-	public void setHost(String host) {
-		this.host = host;
-	}
-
-	public String getBasePath() {
-		return basePath;
-	}
-
-	public void setBasePath(String basePath) {
-		this.basePath = basePath;
+	public ServersData[] getServers() {
+		return servers;
 	}
 
 	public String getOutPath() {
@@ -104,6 +88,14 @@ public class OpenApiConfig {
 
 	public void setOutPath(String outPath) {
 		this.outPath = outPath;
+	}
+
+	public String getOpenApi() {
+		return openApi;
+	}
+
+	public void setOpenApi(String openApi) {
+		this.openApi = openApi;
 	}
 
 }

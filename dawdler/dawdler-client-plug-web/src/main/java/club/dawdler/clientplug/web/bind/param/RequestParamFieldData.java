@@ -18,7 +18,10 @@ package club.dawdler.clientplug.web.bind.param;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
+
+import club.dawdler.clientplug.web.annotation.DateTimeFormat;
 
 /**
  * @author jackson.song
@@ -37,7 +40,34 @@ public class RequestParamFieldData {
 
 	private Method method;
 
-	private Annotation[] annotations;
+	private Parameter parameter;
+
+	private String pattern;
+
+	public RequestParamFieldData(String paramName, int index, Method method,
+			Parameter parameter) {
+		this.paramName = paramName;
+		this.type = parameter.getType();
+		this.parameterType = method.getGenericParameterTypes()[index];
+		this.index = index;
+		this.method = method;
+		this.parameter = parameter;
+		DateTimeFormat dateTimeFormat = parameter.getAnnotation(DateTimeFormat.class);
+		String pattern = null;
+		if (dateTimeFormat != null) {
+			pattern = dateTimeFormat.pattern();
+			if (pattern == null || pattern.trim().equals("")) {
+				DateTimeFormat.ISO iso = dateTimeFormat.iso();
+				if (iso == DateTimeFormat.ISO.DATE) {
+					pattern = DateTimeFormat.ISO_8601_DATE_PATTERN;
+				} else if (iso == DateTimeFormat.ISO.TIME) {
+					pattern = DateTimeFormat.ISO_8601_TIME_PATTERN;
+				} else if (iso == DateTimeFormat.ISO.DATE_TIME) {
+					pattern = DateTimeFormat.ISO_8601_DATE_TIME_PATTERN;
+				}
+			}
+		}
+	}
 
 	public String getParamName() {
 		return paramName;
@@ -79,28 +109,24 @@ public class RequestParamFieldData {
 		this.method = method;
 	}
 
-	public Annotation[] getAnnotations() {
-		return annotations;
-	}
-
-	public void setAnnotations(Annotation[] annotations) {
-		this.annotations = annotations;
-	}
-
 	public <T extends Annotation> T getAnnotation(Class<T> annotation) {
-		if (annotations == null) {
-			return null;
-		}
-		for (int i = 0; i < annotations.length; i++) {
-			if (annotation == annotations[i].annotationType()) {
-				return annotation.cast(annotations[i]);
-			}
-		}
-		return null;
+		return parameter.getAnnotation(annotation);
 	}
 
 	public <T extends Annotation> boolean hasAnnotation(Class<T> annotation) {
 		return getAnnotation(annotation) != null;
+	}
+
+	public Parameter getParameter() {
+		return parameter;
+	}
+
+	public void setParameter(Parameter parameter) {
+		this.parameter = parameter;
+	}
+
+	public String getPattern() {
+		return pattern;
 	}
 
 }

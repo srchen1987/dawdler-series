@@ -3,6 +3,7 @@ module dawdler.util {
 	requires java.management;
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
+	requires com.fasterxml.jackson.datatype.jsr310;
 	requires org.objectweb.asm;
 	requires org.objectweb.asm.tree;
 	requires commons.jexl3;

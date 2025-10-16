@@ -16,74 +16,80 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 
 /**
  * @author jackson.song
  * @version V1.0
- * 数字类小于判断
+ * 数字类型小于判断
  */
-public class MinNumberRuleOperator extends RegexRuleOperator {
-	public static final String RULE_KEY = "^minNumber:([-+]?\\d+(\\.\\d+)?$)";
+public class MinimumRuleOperator extends RegexRuleOperator {
+	public static final String RULE_KEY = "^minimum:([-+]?\\d+(\\.\\d+)?([eE][-+]?\\d+)?$)";
 
-	public MinNumberRuleOperator() {
+	public MinimumRuleOperator() {
 		super(RULE_KEY);
 	}
 
 	@Override
 	public String validate(Object value, Matcher matcher) {
 		boolean flag = true;
-		double i = Double.parseDouble(matcher.group(1));
-		String error = "不能小于数字" + i + "!";
+		BigDecimal minimum = new BigDecimal(matcher.group(1));
+		String error = "不能小于数字" + minimum.toString() + "!";
+
 		if (value == null) {
 			return null;
 		}
+
 		if (value instanceof String) {
 			if (isEmpty(value.toString())) {
 				return null;
 			}
-			Double v = null;
+
+			BigDecimal v = null;
 			try {
-				v = Double.parseDouble((String) value);
+				v = new BigDecimal((String) value);
 			} catch (Exception e) {
-			}
-			if (v == null) {
+				// 无法解析为数字，跳过验证
 				return null;
 			}
-			if (v < i) {
+
+			if (v.compareTo(minimum) < 0) {
 				return error;
 			}
 		}
+
 		if (value instanceof String[]) {
 			String[] values = (String[]) value;
 			for (String v : values) {
 				if (isEmpty(v)) {
 					continue;
 				}
-				Double dv = null;
+
+				BigDecimal dv = null;
 				try {
-					dv = Double.parseDouble(v);
+					dv = new BigDecimal(v);
 				} catch (Exception e) {
-				}
-				if (dv == null) {
+					// 无法解析为数字，跳过该项
 					continue;
 				}
-				if (dv < i) {
+
+				if (dv.compareTo(minimum) < 0) {
 					flag = false;
 					break;
 				}
-
 			}
 		}
+
 		if (!flag) {
 			return error;
 		}
+
 		return null;
 	}
 
 	@Override
 	public String toString() {
-		return "最小数值不能小于指定数字如:minNumber:25或minNumber:25.32，支持整数或小数!";
+		return "最小数值不能小于指定数字如:minimum:25或minimum:25.32或minimum:1.4E-45，支持整数或小数!";
 	}
-
 }

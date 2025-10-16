@@ -39,9 +39,11 @@ web mvc模块,使用上基本与spring mvc一致.提供远程加载组件的客�
 | @PathVariable | 参数 | 获取antPath的参数,其中value为antPath变量名 | 支持类型转换 |
 | @RequestAttribute | 参数 | 获取request作用域下的属性值,其中value为属性名 | 不支持 |
 | @SessionAttribute | 参数 | 获取session作用域下的属性值,其中value为属性名 | 不支持 |
-| @RequestHeader | 参数 | 获取http请求头值,其中value为请求头名 | 只支持String或String[] |
-| @CookieValue | 参数 | 获取cookie值,其中value为cookie名 | 只支持String |
+| @RequestHeader | 参数 | 获取http请求头值,其中value为请求头名 | 支持类型转换 |
+| @CookieValue | 参数 | 获取cookie值,其中value为cookie名 | 支持类型转换 |
 | @RequestBody | 参数 | String接收json请求体或自定义的对象通过json方式进行映射(前端提交必须以body中传递json体的方式提交) | 只支持String |
+| @QueryParam | 参数 | 上传文件(multipart/form-data)获取query参数的注解 | 支持类型转换 |
+| @DateTimeFormat | 参数 | 获取日期参数,其中value为日期参数名 | 支持Date、LocalDateTime、LocalDate、LocalTime、ZonedDateTime、OffsetDateTime |
 
 #### 3.3 RequestMapping源码注释
 
@@ -113,7 +115,12 @@ getSize() //获取文件大小
 
 delete() //删除文件,此方法架构会自动调用无需开发者调用
 
-#### 4.5 其他内置对象
+#### 4.5 时间类型
+
+| Date | LocalDateTime | LocalDate | LocalTime | ZonedDateTime | OffsetDateTime |
+| :-: | :-: | :-: | :-: | :-: | :-: |
+
+#### 4.6 其他内置对象
 
 | HttpServletRequest | HttpServletResponse | HttpSession | InputStream | Reader | PrintWriter | Locale | Map | ViewForward |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
@@ -132,11 +139,20 @@ Locale 为 request.getLocale();
 
 ViewForward 提供了非常丰富的api 可以设置数据集,可以设置模板路径
 
-#### 4.6 自定义对象
+#### 4.7 大数值对象
+
+| Enum |
+| :-: | :-: |
+
+说明:
+
+自定义枚举类
+
+#### 4.8 自定义对象
 
 使用@RequestBody注解标识
 
-#### 4.7 部分示例
+#### 4.9 部分示例
 
 示例1：
 演示@RequestParam使用方式
@@ -333,12 +349,12 @@ package-path配置当前的web环境中的包扫描路径(部署在web容器中�
 示例：
 
 ```xml
-	<scanner>
-		<package-paths>
-			<package-path>com.dawdler.order.controller</package-path>
-			<package-path>com.dawdler.**.service.impl</package-path>
-		</package-paths>
-	</scanner>
+    <scanner>
+        <package-paths>
+            <package-path>com.dawdler.order.controller</package-path>
+            <package-path>com.dawdler.**.service.impl</package-path>
+        </package-paths>
+    </scanner>
 ```
 
 ### 11. aop使用方式
@@ -422,13 +438,13 @@ public class UserControllerAspect {
 配置位于web-conf.xml的health-check节点,示例:
 
 ```xml
-	<health-check check="on" uri="/health" username="jackson" password="jackson.song">
-		<config check="on"/>
-		<dataSource check="on" />
-		<rabbit check="on" />
-		<jedis check="on" />
-		<elasticSearch check="on" />
-	</health-check>
+    <health-check check="on" uri="/health" username="jackson" password="jackson.song">
+        <config check="on"/>
+        <dataSource check="on" />
+        <rabbit check="on" />
+        <jedis check="on" />
+        <elasticSearch check="on" />
+    </health-check>
 ```
 
 check="on" 为开启健康检测,off为关闭.关闭后不会开启http/https服务.

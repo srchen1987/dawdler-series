@@ -14,43 +14,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package club.dawdler.clientplug.web.validator.operators;
+package club.dawdler.client.api.generator.data;
 
-import java.util.regex.Matcher;
+import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * @author jackson.song
  * @version V1.0
- * 选择项小于判断
+ * ContentTypeData
  */
-public class MinSelectRuleOperator extends RegexRuleOperator {
-	public static final String RULE_KEY = "^minSelect:([1-9]{1}\\d*$)";
-
-	public MinSelectRuleOperator() {
-		super(RULE_KEY);
+public class ContentTypeData {
+	@JsonInclude(Include.NON_NULL)
+	private Boolean required;
+	@JsonInclude(Include.NON_NULL)
+	private Map<String, Map<String, SchemaData>> content;
+	public Boolean getRequired() {
+		return required;
+	}
+	public void setRequired(Boolean required) {
+		this.required = required;
+	}
+	public Map<String, Map<String, SchemaData>> getContent() {
+		return content;
+	}
+	public void setContent(Map<String, Map<String, SchemaData>> content) {
+		this.content = content;
 	}
 
-	@Override
-	public String validate(Object value, Matcher matcher) {
-		int i = Integer.parseInt(matcher.group(1));
-		String error = "不能小于" + i + "项!";
-		if (value == null) {
-			return error;
-		}
-		if (value instanceof String) {
-			if (i > 1) {
-				return error;
-			}
-		} else if (value instanceof String[]) {
-			if (((String[]) value).length < i) {
-				return error;
-			}
-		}
-		return null;
-	}
+	
 
-	@Override
-	public String toString() {
-		return "最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minSelect:3!";
-	}
+
 }
