@@ -14,35 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package club.dawdler.client.api.generator.data;
+package club.dawdler.client.api.generator;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.util.List;
+
+import com.thoughtworks.qdox.model.JavaClass;
 
 /**
  * @author jackson.song
  * @version V1.0
- * ControllerData
+ * ClassStruct存储结构,存储导入的包
  */
-public class ControllerData {
-	private String name;
-	@JsonInclude(Include.NON_NULL)
-	private String description;
+public class ClassStruct {
+	private List<String> importPackages;
+	private JavaClass javaClass;
 
-	public String getName() {
-		return name;
+	public JavaClass getJavaClass() {
+		return javaClass;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setJavaClass(JavaClass javaClass) {
+		this.javaClass = javaClass;
 	}
 
-	public String getDescription() {
-		return description;
+	public List<String> getImportPackages() {
+		return importPackages;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setImportPackages(List<String> importPackages) {
+		this.importPackages = importPackages;
 	}
 
 }

@@ -333,12 +333,12 @@ package-path配置当前的web环境中的包扫描路径(部署在web容器中�
 示例：
 
 ```xml
-	<scanner>
-		<package-paths>
-			<package-path>com.dawdler.order.controller</package-path>
-			<package-path>com.dawdler.**.service.impl</package-path>
-		</package-paths>
-	</scanner>
+    <scanner>
+        <package-paths>
+            <package-path>com.dawdler.order.controller</package-path>
+            <package-path>com.dawdler.**.service.impl</package-path>
+        </package-paths>
+    </scanner>
 ```
 
 ### 11. aop使用方式
@@ -422,13 +422,13 @@ public class UserControllerAspect {
 配置位于web-conf.xml的health-check节点,示例:
 
 ```xml
-	<health-check check="on" uri="/health" username="jackson" password="jackson.song">
-		<config check="on"/>
-		<dataSource check="on" />
-		<rabbit check="on" />
-		<jedis check="on" />
-		<elasticSearch check="on" />
-	</health-check>
+    <health-check check="on" uri="/health" username="jackson" password="jackson.song">
+        <config check="on"/>
+        <dataSource check="on" />
+        <rabbit check="on" />
+        <jedis check="on" />
+        <elasticSearch check="on" />
+    </health-check>
 ```
 
 check="on" 为开启健康检测,off为关闭.关闭后不会开启http/https服务.

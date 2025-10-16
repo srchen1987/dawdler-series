@@ -69,7 +69,7 @@ public class RequestMethodProcessor {
 		Object[] args = new Object[parameterCount];
 		for (RequestParamFieldData requestParamFieldData : requestParamFieldDataList) {
 			MethodArgumentResolver methodArgumentResolver = matchResolver(controllerClass, requestParamFieldData);
-			if (methodArgumentResolver != null) {
+			if (methodArgumentResolver != null && args[requestParamFieldData.getIndex()] == null) {
 				args[requestParamFieldData.getIndex()] = methodArgumentResolver.resolveArgument(requestParamFieldData,
 						viewForward, uri);
 			}
@@ -115,12 +115,8 @@ public class RequestMethodProcessor {
 		Parameter[] parameters = method.getParameters();
 		for (int i = 0; i < parameters.length; i++) {
 			Parameter parameter = parameters[i];
-			RequestParamFieldData requestParamFieldData = new RequestParamFieldData();
-			requestParamFieldData.setAnnotations(parameter.getAnnotations());
-			requestParamFieldData.setParamName(parameterNames[i]);
-			requestParamFieldData.setType(parameter.getType());
-			requestParamFieldData.setParameterType(method.getGenericParameterTypes()[i]);
-			requestParamFieldData.setIndex(i);
+			RequestParamFieldData requestParamFieldData = new RequestParamFieldData(parameterNames[i],
+					i, method, parameter);
 			requestParamFieldDataList.add(requestParamFieldData);
 		}
 	}

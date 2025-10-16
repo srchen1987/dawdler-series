@@ -20,14 +20,14 @@
 @Controller
 public class UserController{
 
-	@JedisInjector("myRedis")//myRedis为配置文件的名称,不包含后缀properties
-	JedisOperator jedisOperator;
+    @JedisInjector("myRedis")//myRedis为配置文件的名称,不包含后缀properties
+    JedisOperator jedisOperator;
 
-	@RequestMapping(value = "/getUser", method = RequestMethod.GET)
-	public User getUser(String userId) {
-		jedisOperator.set("userId", userId);//使用jedisOperator对象
-		return null;
-	}
+    @RequestMapping(value = "/getUser", method = RequestMethod.GET)
+    public User getUser(String userId) {
+        jedisOperator.set("userId", userId);//使用jedisOperator对象
+        return null;
+    }
 
  }
 ```
@@ -39,37 +39,38 @@ public class UserController{
 @Controller
 public class UserController implements UserService {
 
-	@JedisLockInjector(fileName = "myRedis")//myRedis为配置文件的名称,不包含后缀properties
-	JedisDistributedLockHolder jedisDistributedLockHolder;
+    @JedisLockInjector(fileName = "myRedis")//myRedis为配置文件的名称,不包含后缀properties
+    JedisDistributedLockHolder jedisDistributedLockHolder;
 
-	@RequestMapping(value = "/synUser", method = RequestMethod.POST)
-	public void synUser(String userId, Business business) {
-		JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
-		try {
-			lock.lock();
-			// lock.lock(3000); //3秒等待锁
-			// 模拟业务处理
-			 doSomething(business);
-		 } finally {
-			lock.unlock();
-		 }
-	}
+    @RequestMapping(value = "/synUser", method = RequestMethod.POST)
+    public void synUser(String userId, Business business) {
+        JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
+        try {
+            lock.lock();
+            // lock.lock(3000); //3秒等待锁
+            // 模拟业务处理
+             doSomething(business);
+         } finally {
+            lock.unlock();
+         }
+    }
 
-	@RequestMapping(value = "/synUserNoWait", method = RequestMethod.POST)
-	public void synUserNoWait(String userId, Business business) {
-		JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
-		try {
-			//获取不到锁 立即结束不等待
-			if(lock.tryLock()){
-				// 模拟业务处理
-				 doSomething(business);
-			}
-		 } finally {
-			lock.unlock();
-		 }
-	}
+    @RequestMapping(value = "/synUserNoWait", method = RequestMethod.POST)
+    public void synUserNoWait(String userId, Business business) {
+        JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
+        try {
+            //获取不到锁 立即结束不等待
+            if(lock.tryLock()){
+                // 模拟业务处理
+                 doSomething(business);
+            }
+         } finally {
+            lock.unlock();
+         }
+    }
 }
 ```
+
 #### 2.3 web端支持注入的三种组件
 
 1、 [web端controller](../../../dawdler-client-plug-web/README.md#3-controller注解)

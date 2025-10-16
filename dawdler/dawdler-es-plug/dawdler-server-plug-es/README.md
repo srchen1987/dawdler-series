@@ -28,44 +28,44 @@
         return list;
     }
 
-	public <T> List<T> termQuery(
-			String indexName,
+    public <T> List<T> termQuery(
+            String indexName,
             String searchField,
-			String searchText,
-			String sortedField,
-			int fromIndex,
-			int pageSize,
-			boolean isDesc,
-			Class<T> clazz)
-			throws IOException {
-		SearchResponse<T> response = esOperator.search(
-				s -> s.index(indexName)
-						.query(q -> q.match(t -> t.field(searchField).query(searchText)))
-						// 分页查询，从第fromIndex页开始查询pageSize个document
-						.from(fromIndex)
-						.size(pageSize)
-						// 按要排序字段进行降序排序
-						.sort(f -> f.field(o -> o.field(sortedField).order(isDesc ? SortOrder.Desc : SortOrder.Asc))),
-				clazz);
+            String searchText,
+            String sortedField,
+            int fromIndex,
+            int pageSize,
+            boolean isDesc,
+            Class<T> clazz)
+            throws IOException {
+        SearchResponse<T> response = esOperator.search(
+                s -> s.index(indexName)
+                        .query(q -> q.match(t -> t.field(searchField).query(searchText)))
+                        // 分页查询，从第fromIndex页开始查询pageSize个document
+                        .from(fromIndex)
+                        .size(pageSize)
+                        // 按要排序字段进行降序排序
+                        .sort(f -> f.field(o -> o.field(sortedField).order(isDesc ? SortOrder.Desc : SortOrder.Asc))),
+                clazz);
 
-		return getSources(response);
-	}
+        return getSources(response);
+    }
 
-	private <T> List<T> getSources(SearchResponse<T> response) {
-		List<T> result = new ArrayList<>();
-		for (Hit<T> hit : getHitList(response)) {
-			result.add(hit.source());
-		}
-		return result;
-	}
+    private <T> List<T> getSources(SearchResponse<T> response) {
+        List<T> result = new ArrayList<>();
+        for (Hit<T> hit : getHitList(response)) {
+            result.add(hit.source());
+        }
+        return result;
+    }
 
-	private <T> List<Hit<T>> getHitList(SearchResponse<T> response) {
-		List<Hit<T>> hitList = response.hits().hits();
-		if (hitList == null || hitList.isEmpty()) {
-			return new ArrayList<>();
-		}
-		return hitList;
-	}
+    private <T> List<Hit<T>> getHitList(SearchResponse<T> response) {
+        List<Hit<T>> hitList = response.hits().hits();
+        if (hitList == null || hitList.isEmpty()) {
+            return new ArrayList<>();
+        }
+        return hitList;
+    }
  
  }
 

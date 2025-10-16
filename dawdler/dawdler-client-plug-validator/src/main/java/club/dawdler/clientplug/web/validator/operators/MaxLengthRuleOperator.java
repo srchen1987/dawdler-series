@@ -21,20 +21,20 @@ import java.util.regex.Matcher;
 /**
  * @author jackson.song
  * @version V1.0
- * 数字类型大于判断
+ * 字符个数大于判断
  */
-public class MaxNumberRuleOperator extends RegexRuleOperator {
-	public static final String RULE_KEY = "^maxNumber:([-+]?\\d+(\\.\\d+)?$)";
+public class MaxLengthRuleOperator extends RegexRuleOperator {
+	public static final String RULE_KEY = "^maxLength:([1-9]{1}\\d*$)";
 
-	public MaxNumberRuleOperator() {
+	public MaxLengthRuleOperator() {
 		super(RULE_KEY);
 	}
 
 	@Override
 	public String validate(Object value, Matcher matcher) {
 		boolean flag = true;
-		double i = Double.parseDouble(matcher.group(1));
-		String error = "不能大于数字" + i + "!";
+		int i = Integer.parseInt(matcher.group(1));
+		String error = "不能大于" + i + "个字符!";
 		if (value == null) {
 			return null;
 		}
@@ -42,15 +42,7 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 			if (isEmpty(value.toString())) {
 				return null;
 			}
-			Double v = null;
-			try {
-				v = Double.parseDouble((String) value);
-			} catch (Exception e) {
-			}
-			if (v == null) {
-				return null;
-			}
-			if (v > i) {
+			if (((String) value).trim().length() > i) {
 				return error;
 			}
 		}
@@ -60,19 +52,10 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 				if (isEmpty(v)) {
 					continue;
 				}
-				Double dv = null;
-				try {
-					dv = Double.parseDouble(v);
-				} catch (Exception e) {
-				}
-				if (dv == null) {
-					continue;
-				}
-				if (dv > i) {
+				if (v.trim().length() > i) {
 					flag = false;
 					break;
 				}
-
 			}
 		}
 		if (!flag) {
@@ -83,6 +66,6 @@ public class MaxNumberRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "最大数值不能大于指定数字如:maxNumber:25或maxNumber:25.32，支持整数或小数!";
+		return "字符串或数组中的字符串的长度不能大于指定长度,如：maxLength:32!";
 	}
 }

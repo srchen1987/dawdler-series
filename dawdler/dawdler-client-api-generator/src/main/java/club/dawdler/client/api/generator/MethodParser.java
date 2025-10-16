@@ -25,26 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import club.dawdler.client.api.generator.TypesConverter.TypeData;
-import club.dawdler.client.api.generator.data.ClassStruct;
-import club.dawdler.client.api.generator.data.ItemsData;
-import club.dawdler.client.api.generator.data.MethodParameterData;
-import club.dawdler.client.api.generator.data.ParserTypeData;
-import club.dawdler.client.api.generator.data.ResponseData;
-import club.dawdler.client.api.generator.data.SchemaData;
-import club.dawdler.client.api.generator.util.AnnotationUtils;
-import club.dawdler.client.api.generator.util.ClassTypeUtil;
-import club.dawdler.clientplug.web.annotation.CookieValue;
-import club.dawdler.clientplug.web.annotation.PathVariable;
-import club.dawdler.clientplug.web.annotation.RequestAttribute;
-import club.dawdler.clientplug.web.annotation.RequestBody;
-import club.dawdler.clientplug.web.annotation.RequestHeader;
-import club.dawdler.clientplug.web.annotation.RequestMapping;
-import club.dawdler.clientplug.web.annotation.RequestMapping.RequestMethod;
-import club.dawdler.clientplug.web.annotation.RequestParam;
-import club.dawdler.clientplug.web.annotation.ResponseBody;
-import club.dawdler.clientplug.web.annotation.SessionAttribute;
-import club.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import com.thoughtworks.qdox.builder.impl.EvaluatingVisitor;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;
@@ -59,12 +39,36 @@ import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 import com.thoughtworks.qdox.model.impl.DefaultJavaWildcardType;
 
+import club.dawdler.client.api.generator.TypesConverter.TypeData;
+import club.dawdler.client.api.generator.data.ContentTypeData;
+import club.dawdler.client.api.generator.data.ItemsData;
+import club.dawdler.client.api.generator.data.MethodParameterData;
+import club.dawdler.client.api.generator.data.ResponseData;
+import club.dawdler.client.api.generator.data.SchemaData;
+import club.dawdler.client.api.generator.util.AnnotationUtils;
+import club.dawdler.client.api.generator.util.ClassTypeUtil;
+import club.dawdler.client.api.generator.util.CommentUtils;
+import club.dawdler.clientplug.web.annotation.CookieValue;
+import club.dawdler.clientplug.web.annotation.PathVariable;
+import club.dawdler.clientplug.web.annotation.QueryParam;
+import club.dawdler.clientplug.web.annotation.RequestAttribute;
+import club.dawdler.clientplug.web.annotation.RequestBody;
+import club.dawdler.clientplug.web.annotation.RequestHeader;
+import club.dawdler.clientplug.web.annotation.RequestMapping;
+import club.dawdler.clientplug.web.annotation.RequestMapping.RequestMethod;
+import club.dawdler.clientplug.web.annotation.RequestParam;
+import club.dawdler.clientplug.web.annotation.SessionAttribute;
+import club.dawdler.clientplug.web.upload.UploadFile;
+
 /**
  * @author jackson.song
  * @version V1.0
  * 方法解析器
  */
 public class MethodParser {
+	public static final String MIME_TYPE_TEXT_HTML = "text/html";
+	public static final String MIME_TYPE_JSON = "application/json";
+
 	private MethodParser() {
 	}
 
@@ -72,9 +76,6 @@ public class MethodParser {
 	private static final ResponseData RESPONSE_403 = new ResponseData("Forbidden");
 	private static final ResponseData RESPONSE_404 = new ResponseData("Not Found");
 	private static final String BRACKET = "[]";
-	private static String[] allTypeArray = { "*/*" };
-	private static String[] textArray = { AbstractDisplayPlug.MIME_TYPE_TEXT_HTML };
-	private static String[] jsonArray = { AbstractDisplayPlug.MIME_TYPE_JSON };
 	private static EvaluatingVisitor evaluatingVisitor = new EvaluatingVisitor();
 
 	private static Map<String, String> requestMethodCache = new HashMap<String, String>() {
@@ -95,17 +96,13 @@ public class MethodParser {
 			JavaAnnotation requestMappingAnnotation) {
 		List<JavaMethod> methods = javaClass.getMethods();
 		for (JavaMethod method : methods) {
+			Map<String, Object> elements = new LinkedHashMap<>();
 			List<JavaAnnotation> methodAnnotations = method.getAnnotations();
 			String[] requestClassMappingArray = AnnotationUtils.getAnnotationStringArrayValue(requestMappingAnnotation,
 					"value");
 			String[] requestMappingArray = null;
 			List<String> httpMethods = new ArrayList<>(8);
-			boolean responseBody = false;
-			boolean requestBody = false;
 			for (JavaAnnotation annotation : methodAnnotations) {
-				if (ResponseBody.class.getName().equals(annotation.getType().getBinaryName())) {
-					responseBody = true;
-				}
 				if (RequestMapping.class.getName().equals(annotation.getType().getBinaryName())) {
 					requestMappingArray = AnnotationUtils.getAnnotationStringArrayValue(annotation, "value");
 					Object annotationMethodObj = AnnotationUtils.getAnnotationObjectValue(annotation, "method");
@@ -128,76 +125,94 @@ public class MethodParser {
 				continue;
 			}
 
-			Map<String, MethodParameterData> params = new LinkedHashMap<>();
+			Map<String, MethodParameterData> docParams = new LinkedHashMap<>();
 			Map<String, MethodParameterData> methodParameterMap = new LinkedHashMap<>();
+			Map<String, SchemaData> multipartParameterMap = new LinkedHashMap<>();
+			boolean hasMultipart = false;
+			SchemaData requestBodyData = null;
+			List<String> requiredList = null;
 			List<DocletTag> tags = method.getTags();
 			for (DocletTag tag : tags) {
 				if (tag.getName().equals("param")) {
 					MethodParameterData parameterData = new MethodParameterData();
-					List<String> parameterList = tag.getParameters();
-					if (parameterList.size() == 1) {
-						parameterData.setName(parameterList.get(0));
-					} else if (parameterList.size() == 2) {
-						parameterData.setName(parameterList.get(0));
-						StringBuffer sb = new StringBuffer();
-						for (int i = 1; i < parameterList.size(); i++) {
-							sb.append(parameterList.get(i) + " ");
-						}
-						parameterData.setDescription(sb.toString());
+					if (tag.getValue() == null || tag.getValue().isEmpty()) {
+						continue;
 					}
-					params.put(parameterData.getName(), parameterData);
+					CommentUtils.setRule(tag.getValue(), parameterData);
+					docParams.put(parameterData.getName(), parameterData);
 				}
 			}
 			JavaType returnType = method.getReturnType();
 
 			List<JavaParameter> javaParameters = method.getParameters();
 			for (JavaParameter javaParameter : javaParameters) {
+				if (javaParameter.getType().getFullyQualifiedName().equals(UploadFile.class.getName())) {
+					hasMultipart = true;
+					break;
+				}
+			}
+			for (JavaParameter javaParameter : javaParameters) {
 				List<JavaAnnotation> paramAnnotationList = javaParameter.getAnnotations();
 				String alias = null;
 				String in = "query";
-				SchemaData schema = null;
+				boolean requestBody = false;
 				boolean required = false;
 				boolean add = true;
+				boolean isQueryParam = false;
+				boolean isEnum = javaParameter.getJavaClass().isEnum();
 				if (!paramAnnotationList.isEmpty()) {
 					for (JavaAnnotation paramAnnotation : paramAnnotationList) {
 						String annotationName = paramAnnotation.getType().getFullyQualifiedName();
-						if (annotationName.equals(SessionAttribute.class.getName()) || annotationName.equals(RequestAttribute.class.getName()) || annotationName.equals(CookieValue.class.getName())) {
+						if (annotationName.equals(SessionAttribute.class.getName())
+								|| annotationName.equals(RequestAttribute.class.getName())
+								|| annotationName.equals(CookieValue.class.getName())) {
 							add = false;
 							break;
 						}
 						if (annotationName.equals(RequestParam.class.getName())) {
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
 							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
-						}
-						if (annotationName.equals(PathVariable.class.getName())) {
+						} else if (annotationName.equals(PathVariable.class.getName())) {
 							in = "path";
+							required = true;
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
 							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
 						} else if (annotationName.equals(RequestBody.class.getName())) {
 							requestBody = true;
-							in = "body";
+							in = null;
 						} else if (annotationName.equals(RequestHeader.class.getName())) {
 							in = "header";
+							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
+							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
+						} else if (annotationName.equals(QueryParam.class.getName())) {
+							isQueryParam = true;
 							AnnotationValue annotationValue = paramAnnotation.getProperty("value");
 							alias = getAnnotationValue(annotationValue, javaClass, classStructs);
 						}
 					}
 				}
-				if(!add){
+
+				if (!add) {
 					continue;
 				}
 				if (alias == null || alias.trim().equals("")) {
 					alias = javaParameter.getName();
 				}
-				MethodParameterData parameterData = params.get(alias);
+				SchemaData schema = null;
+				MethodParameterData parameterData = docParams.get(alias);
 				if (parameterData == null) {
 					parameterData = new MethodParameterData();
 					parameterData.setName(alias);
+				} else {
+					schema = parameterData.getSchema();
 				}
-				methodParameterMap.put(parameterData.getName(), parameterData);
+				if (schema == null) {
+					schema = new SchemaData();
+					parameterData.setSchema(schema);
+				}
 				String typeName = javaParameter.getType().getFullyQualifiedName();
 				String genericFullyQualifiedName = javaParameter.getType().getGenericFullyQualifiedName();
-				if (in.equals("body")) {
+				if (requestBody) {
 					String type = null;
 					if (genericFullyQualifiedName.contains(">")) {
 						type = genericFullyQualifiedName;
@@ -212,20 +227,20 @@ public class MethodParser {
 						type = type.substring(0, type.lastIndexOf("[]"));
 						array = true;
 					}
-					FieldParser.parserFields(javaParameter.getType(), classStructs, definitionsMap, null);
+					FieldParser.parserFields(javaParameter.getType(), classStructs, definitionsMap, null,
+							parameterData.getDescription());
 					if (definitionsMap.containsKey(type)) {
-						schema = new SchemaData();
 						required = true;
 						if (array) {
 							schema.setType("array");
 							ItemsData items = new ItemsData();
-							items.set$ref("#/definitions/" + type);
+							items.set$ref("#/components/schemas/" + type);
 							schema.setItems(items);
 						} else {
-							schema.set$ref("#/definitions/" + type);
+							schema.set$ref("#/components/schemas/" + type);
 						}
+						requestBodyData = schema;
 					} else {
-						schema = new SchemaData();
 						required = true;
 						if (array) {
 							schema.setType("array");
@@ -237,17 +252,155 @@ public class MethodParser {
 							items.setFormat(typeData.getFormat());
 						}
 						schema.setItems(items);
+						requestBodyData = schema;
 					}
+					ContentTypeData requestBodyMap = new ContentTypeData();
+					requestBodyMap.setRequired(true);
+					Map<String, Map<String, SchemaData>> content = new HashMap<>();
+					Map<String, SchemaData> schemaDataMap = new HashMap<>();
+					schemaDataMap.put("schema", requestBodyData);
+					content.put(MIME_TYPE_JSON, schemaDataMap);
+					requestBodyMap.setContent(content);
+					elements.put("requestBody", requestBodyMap);
 				} else {
-					ParserTypeData.convertion(javaParameter.getType(), parameterData, classStructs, methodParameterMap,
-							false);
+					if (hasMultipart) {
+						if (isQueryParam) {
+							if (isEnum) {
+								String type = null;
+								if (genericFullyQualifiedName.contains(">")) {
+									type = genericFullyQualifiedName;
+								} else {
+									type = typeName;
+								}
+								boolean array = false;
+								if (ClassTypeUtil.isArray(javaParameter.getType().getBinaryName())) {
+									type = ClassTypeUtil.getType0(javaParameter.getType());
+									array = true;
+								} else if (type.endsWith("[]")) {
+									type = type.substring(0, type.lastIndexOf("[]"));
+									array = true;
+								}
+								FieldParser.parserFields(javaParameter.getType(), classStructs, definitionsMap, null,
+										parameterData.getDescription());
+								if (definitionsMap.containsKey(type)) {
+									required = true;
+									if (array) {
+										schema.setType("array");
+										ItemsData items = new ItemsData();
+										items.set$ref("#/components/schemas/" + type);
+										schema.setItems(items);
+									} else {
+										schema.set$ref("#/components/schemas/" + type);
+									}
+									requestBodyData = schema;
+								}
+								Map<String, SchemaData> schemaDataMap = new HashMap<>();
+								schemaDataMap.put("schema", requestBodyData);
+								parameterData.setSchema(schema);
+								methodParameterMap.put(parameterData.getName(), parameterData);
+							} else {
+								methodParameterMap.put(parameterData.getName(), parameterData);
+								TypeDataParser.convertion(javaParameter.getType(), parameterData, classStructs,
+										methodParameterMap,
+										false, definitionsMap);
+							}
+						} else {
+							schema.setDescription(parameterData.getDescription());
+							if (parameterData.getRequired() != null && parameterData.getRequired()) {
+								if (requiredList == null) {
+									requiredList = new ArrayList<>();
+								}
+								requiredList.add(parameterData.getName());
+							}
+							if (isEnum) {
+								String type = null;
+								if (genericFullyQualifiedName.contains(">")) {
+									type = genericFullyQualifiedName;
+								} else {
+									type = typeName;
+								}
+								boolean array = false;
+								if (ClassTypeUtil.isArray(javaParameter.getType().getBinaryName())) {
+									type = ClassTypeUtil.getType0(javaParameter.getType());
+									array = true;
+								} else if (type.endsWith("[]")) {
+									type = type.substring(0, type.lastIndexOf("[]"));
+									array = true;
+								}
+								FieldParser.parserFields(javaParameter.getType(), classStructs, definitionsMap, null,
+										parameterData.getDescription());
+								if (definitionsMap.containsKey(type)) {
+									required = true;
+									if (array) {
+										schema.setType("array");
+										ItemsData items = new ItemsData();
+										items.set$ref("#/components/schemas/" + type);
+										schema.setItems(items);
+									} else {
+										schema.set$ref("#/components/schemas/" + type);
+									}
+									requestBodyData = schema;
+								}
+								multipartParameterMap.put(parameterData.getName(), schema);
+							} else {
+								multipartParameterMap.put(parameterData.getName(), schema);
+								TypeDataParser.convertionMultipartParameter(parameterData.getName(),
+										javaParameter.getType(), schema, classStructs,
+										multipartParameterMap,
+										false);
+							}
+
+						}
+					} else {
+						if (isEnum) {
+							String type = null;
+							if (genericFullyQualifiedName.contains(">")) {
+								type = genericFullyQualifiedName;
+							} else {
+								type = typeName;
+							}
+							boolean array = false;
+							if (ClassTypeUtil.isArray(javaParameter.getType().getBinaryName())) {
+								type = ClassTypeUtil.getType0(javaParameter.getType());
+								array = true;
+							} else if (type.endsWith("[]")) {
+								type = type.substring(0, type.lastIndexOf("[]"));
+								array = true;
+							}
+							FieldParser.parserFields(javaParameter.getType(), classStructs, definitionsMap, null,
+									parameterData.getDescription());
+							if (definitionsMap.containsKey(type)) {
+								required = true;
+								if (array) {
+									schema.setType("array");
+									ItemsData items = new ItemsData();
+									items.set$ref("#/components/schemas/" + type);
+									schema.setItems(items);
+								} else {
+									schema.set$ref("#/components/schemas/" + type);
+								}
+								requestBodyData = schema;
+							}
+							Map<String, SchemaData> schemaDataMap = new HashMap<>();
+							schemaDataMap.put("schema", requestBodyData);
+							parameterData.setSchema(schema);
+							methodParameterMap.put(parameterData.getName(), parameterData);
+						} else {
+							methodParameterMap.put(parameterData.getName(), parameterData);
+							TypeDataParser.convertion(javaParameter.getType(), parameterData, classStructs,
+									methodParameterMap,
+									false, definitionsMap);
+						}
+
+					}
+
 				}
 				parameterData.setIn(in);
-				parameterData.setRequired(required);
-				parameterData.setSchema(schema);
+				if (parameterData.getRequired() == null) {
+					parameterData.setRequired(required);
+				}
 			}
 			MethodParameterData[] methodParameters = methodParameterMap.values().toArray(new MethodParameterData[0]);
-			Map<String, Object> elements = new LinkedHashMap<>();
 			elements.put("tags", new String[] { javaClass.getBinaryName() });
 			DocletTag descriptionTag = method.getTagByName("Description");
 			String summary = method.getComment();
@@ -255,28 +408,30 @@ public class MethodParser {
 				summary += descriptionTag.getValue();
 			}
 			elements.put("summary", summary);
-			TypeData typeData = TypesConverter.getType(returnType.getBinaryName());
-			if (responseBody) {
-				if (typeData != null && !typeData.getType().equals("file")) {
-					elements.put("produces", textArray);
-				} else {
-					elements.put("produces", jsonArray);
+			if (methodParameters != null && methodParameters.length > 0) {
+				elements.put("parameters", methodParameters);
+			}
+			if (!multipartParameterMap.isEmpty()) {
+				Map<String, Object> contentMap = new HashMap<>();
+				Map<String, Object> multipartFormData = new HashMap<>();
+				Map<String, Object> schema = new HashMap<>();
+				Map<String, Object> properties = new HashMap<>();
+				properties.put("type", "object");
+				contentMap.put("content", multipartFormData);
+				multipartFormData.put("multipart/form-data", schema);
+				schema.put("schema", properties);
+				if (requiredList != null) {
+					properties.put("required", requiredList);
 				}
-			} else {
-				elements.put("produces", allTypeArray);
+				properties.put("properties", multipartParameterMap);
+				elements.put("requestBody", contentMap);
 			}
-			if (requestBody) {
-				elements.put("consumes", jsonArray);
-			} else {
-				elements.put("consumes", allTypeArray);
-			}
-			elements.put("parameters", methodParameters);
 			if (returnType != null) {
 				Map<String, JavaType> javaTypes = getActualTypesMap(method.getReturns());
 				for (Entry<String, JavaType> entry : javaTypes.entrySet()) {
 					parseType(method, entry.getValue(), classStructs, definitionsMap, javaTypes);
 				}
-				FieldParser.parserFields(returnType, classStructs, definitionsMap, javaTypes);
+				FieldParser.parserFields(returnType, classStructs, definitionsMap, javaTypes, null);
 				elements.put("responses", getResponse(returnType, definitionsMap));
 			}
 			if (requestMappingArray != null) {
@@ -333,7 +488,7 @@ public class MethodParser {
 					}
 				}
 			}
-			FieldParser.parserFields(type, classStructs, definitionsMap, innerJavaTypes);
+			FieldParser.parserFields(type, classStructs, definitionsMap, innerJavaTypes, null);
 		} catch (Exception e) {
 			System.out.println(method + " failed");
 			e.printStackTrace();
@@ -365,6 +520,7 @@ public class MethodParser {
 	}
 
 	public static Map<String, Object> getResponse(JavaType returnType, Map<String, Object> definitionsMap) {
+		String responseType = MIME_TYPE_JSON;
 		Map<String, Object> response = new LinkedHashMap<>();
 		SchemaData schema = new SchemaData();
 		String genericFullyQualifiedName = returnType.getGenericFullyQualifiedName();
@@ -384,6 +540,7 @@ public class MethodParser {
 			} else {
 				schema.setType(type.getType());
 				schema.setFormat(type.getFormat());
+				responseType = MIME_TYPE_TEXT_HTML;
 			}
 		} else {
 			String $ref;
@@ -391,10 +548,10 @@ public class MethodParser {
 				List<JavaType> typeList = getActualTypeArguments(returnType);
 				if (!typeList.isEmpty()) {
 					schema.setType("array");
-					$ref = typeList.get(0).getGenericFullyQualifiedName();
+					$ref = typeList.get(0).getGenericFullyQualifiedName().replaceAll("<", "_").replaceAll(">", "_");
 					if (definitionsMap.containsKey($ref)) {
 						ItemsData items = new ItemsData();
-						items.set$ref("#/definitions/" + $ref);
+						items.set$ref("#/components/schemas/" + $ref);
 						schema.setItems(items);
 					} else {
 						ItemsData items = new ItemsData();
@@ -403,15 +560,19 @@ public class MethodParser {
 					}
 				}
 			} else {
-				$ref = returnType.getGenericFullyQualifiedName();
+				$ref = returnType.getGenericFullyQualifiedName().replaceAll("<", "_").replaceAll(">", "_");
 				if (definitionsMap.containsKey($ref)) {
-					schema.set$ref("#/definitions/" + $ref);
+					schema.set$ref("#/components/schemas/" + $ref);
 				} else {
 					schema.setType("object");
 				}
 			}
 		}
-		ResponseData response200 = new ResponseData("ok", schema);
+		Map<String, Map<String, SchemaData>> content = new HashMap<>();
+		Map<String, SchemaData> schemaData = new HashMap<>();
+		schemaData.put("schema", schema);
+		content.put(responseType, schemaData);
+		ResponseData response200 = new ResponseData("ok", content);
 		response.put("200", response200);
 		response.put("401", RESPONSE_401);
 		response.put("403", RESPONSE_403);

@@ -176,6 +176,11 @@
 				<version>${jackson-databind.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.fasterxml.jackson.datatype</groupId>
+				<artifactId>jackson-datatype-jsr310</artifactId>
+				<version>${jackson-core.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${commons-io.version}</version>
@@ -651,7 +656,6 @@
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<!--debug>true</debug>-->
 				</configuration>
 			</plugin>
 			<plugin>

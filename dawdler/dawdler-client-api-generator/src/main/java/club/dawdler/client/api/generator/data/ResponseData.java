@@ -16,6 +16,8 @@
  */
 package club.dawdler.client.api.generator.data;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -27,23 +29,23 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class ResponseData {
 	private String description;
 	@JsonInclude(Include.NON_NULL)
-	private SchemaData schema;
+	private Map<String, Map<String, SchemaData>> content;
 
 	public ResponseData(String description) {
 		this.description = description;
 	}
 
-	public ResponseData(String description, SchemaData schema) {
+	public ResponseData(String description, Map<String, Map<String, SchemaData>> content) {
 		this.description = description;
-		this.schema = schema;
+		this.content = content;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
-	public SchemaData getSchema() {
-		return schema;
+	public Map<String, Map<String, SchemaData>> getContent() {
+		return content;
 	}
 
 }

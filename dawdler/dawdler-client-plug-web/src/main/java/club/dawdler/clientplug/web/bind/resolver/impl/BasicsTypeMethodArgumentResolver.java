@@ -22,16 +22,18 @@ import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.Map;
 
+import club.dawdler.clientplug.web.annotation.DateTimeFormat;
 import club.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import club.dawdler.clientplug.web.exception.ConvertException;
 import club.dawdler.clientplug.web.handler.ViewForward;
 import club.dawdler.util.ClassUtil;
+import club.dawdler.util.DateUtil;
 import club.dawdler.util.SunReflectionFactoryInstantiator;
 
 /**
  * @author jackson.song
  * @version V1.0
- * 获取基础类型或Model相关参数值的决策者
+ *          获取基础类型、日期、Model相关参数值的决策者
  */
 public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentResolver {
 
@@ -39,7 +41,9 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	public boolean isSupport(RequestParamFieldData requestParamFieldData) {
 		Class<?> type = requestParamFieldData.getType();
 		if (ClassUtil.isSimpleValueType(type) || String.class == type || String[].class == type
-				|| ClassUtil.isSimpleArrayType(type) || Map.class.isAssignableFrom(type) || matchType(type)) {
+				|| ClassUtil.isSimpleArrayType(type) || Map.class.isAssignableFrom(type) || type.isEnum()
+				|| (type.isArray() && type.getComponentType().isEnum())
+				|| DateUtil.isDateType(type) || DateUtil.isDateTypeArray(type) || matchType(type)) {
 			return true;
 		}
 		return false;
@@ -52,9 +56,9 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			NoSuchMethodException, SecurityException {
 		Class<?> type = requestParamFieldData.getType();
 		String paramName = getParameterName(requestParamFieldData);
-		if (String.class == type) {
-			return viewForward.paramString(paramName);
-		} else if (ClassUtil.isSimpleValueType(type)) {
+		String pattern = requestParamFieldData.getPattern();
+		Object date = null;
+		if (type == String.class || ClassUtil.isSimpleValueType(type)) {
 			String value = viewForward.paramString(paramName);
 			try {
 				if (value == null && type.isPrimitive()) {
@@ -83,6 +87,32 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			return result;
 		} else if (Map.class.isAssignableFrom(type)) {
 			return viewForward.paramMaps();
+		} else if ((date = DateUtil.convertToDate(viewForward.paramString(paramName), pattern, type)) != null) {
+			return date;
+		} else if (DateUtil.isDateTypeArray(type)) {
+			return DateUtil.convertToDateArray(viewForward.paramValues(paramName), pattern, type.getComponentType());
+		} else if (type.isArray() && type.getComponentType().isEnum()) {
+			String[] values = viewForward.paramValues(paramName);
+			if (values == null) {
+				return null;
+			}
+			try {
+				return ClassUtil.createEnumArray((Class<Enum>) type.getComponentType(), values);
+			} catch (Exception e) {
+				throw new ConvertException(
+						uri + ":" + paramName + " " + e.getMessage());
+			}
+		} else if (type.isEnum()) {
+			String value = viewForward.paramString(paramName);
+			if (value == null) {
+				return null;
+			}
+			try {
+				return Enum.valueOf((Class<Enum>) type, value);
+			} catch (Exception e) {
+				throw new ConvertException(
+						uri + ":" + paramName + " " + e.getMessage());
+			}
 		} else {
 			return setField(type, viewForward, null, uri);
 		}
@@ -90,7 +120,10 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 	}
 
 	public boolean matchType(Class<?> type) {
-		return !(type.getPackageName().startsWith("java.") || type.isInterface() || type.isEnum()
+		if (type.isArray()) {
+			type = type.getComponentType();
+		}
+		return !(type.getPackageName().startsWith("java.") || type.isInterface()
 				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
 	}
 
@@ -123,39 +156,81 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			field.setAccessible(true);
 			String typeName = field.getName();
 			Class<?> fieldType = field.getType();
+			DateTimeFormat dateTimeFormat = fieldType.getAnnotation(DateTimeFormat.class);
+			String pattern = null;
+			if (dateTimeFormat != null) {
+				pattern = dateTimeFormat.pattern();
+				if (pattern == null || pattern.trim().equals("")) {
+					DateTimeFormat.ISO iso = dateTimeFormat.iso();
+					if (iso == DateTimeFormat.ISO.DATE) {
+						pattern = DateTimeFormat.ISO_8601_DATE_PATTERN;
+					} else if (iso == DateTimeFormat.ISO.TIME) {
+						pattern = DateTimeFormat.ISO_8601_TIME_PATTERN;
+					} else if (iso == DateTimeFormat.ISO.DATE_TIME) {
+						pattern = DateTimeFormat.ISO_8601_DATE_TIME_PATTERN;
+					}
+				}
+			}
+			Object fieldValue = null;
 			if (String.class == fieldType) {
-				field.set(instance, viewForward.paramString(typeName));
+				fieldValue = viewForward.paramString(typeName);
 			} else if (ClassUtil.isSimpleValueType(fieldType)) {
 				String value = viewForward.paramString(typeName);
 				if (value == null && type.isPrimitive()) {
 					throw new ConvertException(
-							uri + ":" + typeName + " value null can't convert " + type.getName() + "!");
+							uri + ":" + typeName + " value null can't convert " + fieldType.getName() + "!");
 				}
 				try {
-					field.set(instance, ClassUtil.convert(value, fieldType));
+					fieldValue = ClassUtil.convert(value, fieldType);
 				} catch (Exception e) {
 					throw new ConvertException(
-							uri + ":" + typeName + " value " + value + " can't convert " + type.getName() + "!");
+							uri + ":" + typeName + " value " + value + " can't convert " + fieldType.getName() + "!");
 				}
 
 			} else if (String[].class == fieldType) {
-				field.set(instance, viewForward.paramValues(typeName));
+				fieldValue = viewForward.paramValues(typeName);
 			} else if (ClassUtil.isSimpleArrayType(fieldType)) {
 				String[] values = viewForward.paramValues(typeName);
-				Object result = null;
 				try {
-					result = ClassUtil.convertArray(values, fieldType);
+					fieldValue = ClassUtil.convertArray(values, fieldType);
 				} catch (Exception e) {
 					throw new ConvertException(uri + ":" + typeName + " value " + Arrays.toString(values)
 							+ " can't convert " + type.getName() + "!");
 				}
-				if (result == null && type.getComponentType().isPrimitive()) {
+				if (fieldValue == null && type.getComponentType().isPrimitive()) {
 					throw new ConvertException(
-							uri + ":" + typeName + " value null can't convert " + type.getName() + "!");
+							uri + ":" + typeName + " value null can't convert " + fieldType.getName() + "!");
 				}
-				field.set(instance, result);
+			} else if ((fieldValue = DateUtil.convertToDate(viewForward.paramString(typeName), pattern,
+					type)) != null) {
+			} else if (DateUtil.isDateTypeArray(fieldType)) {
+				fieldValue = DateUtil.convertToDateArray(viewForward.paramValues(typeName), pattern,
+						type.getComponentType());
+			} else if (type.isArray() && type.getComponentType().isEnum()) {
+				String[] values = viewForward.paramValues(typeName);
+				if (values != null) {
+					fieldValue = ClassUtil.createEnumArray((Class<Enum>) type.getComponentType(), values);
+					try {
+					} catch (Exception e) {
+						throw new ConvertException(
+								uri + ":" + typeName + " " + e.getMessage());
+					}
+				}
+			} else if (type.isEnum()) {
+				String value = viewForward.paramString(typeName);
+				if (value != null) {
+					try {
+						fieldValue = Enum.valueOf((Class<Enum>) type, value);
+					} catch (Exception e) {
+						throw new ConvertException(
+								uri + ":" + typeName + " " + e.getMessage());
+					}
+				}
 			} else {
 				field.set(instance, setField(fieldType, viewForward, null, uri));
+			}
+			if (fieldValue != null) {
+				field.set(instance, fieldValue);
 			}
 		}
 	}

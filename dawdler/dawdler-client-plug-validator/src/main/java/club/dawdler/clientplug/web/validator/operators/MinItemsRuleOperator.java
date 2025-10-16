@@ -14,35 +14,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package club.dawdler.client.api.generator.data;
+package club.dawdler.clientplug.web.validator.operators;
 
-import java.util.List;
-
-import com.thoughtworks.qdox.model.JavaClass;
+import java.util.regex.Matcher;
 
 /**
  * @author jackson.song
  * @version V1.0
- * ClassStruct存储结构,存储导入的包
+ * 选择项小于判断
  */
-public class ClassStruct {
-	private List<String> importPackages;
-	private JavaClass javaClass;
+public class MinItemsRuleOperator extends RegexRuleOperator {
+	public static final String RULE_KEY = "^minItems:([1-9]{1}\\d*$)";
 
-	public JavaClass getJavaClass() {
-		return javaClass;
+	public MinItemsRuleOperator() {
+		super(RULE_KEY);
 	}
 
-	public void setJavaClass(JavaClass javaClass) {
-		this.javaClass = javaClass;
+	@Override
+	public String validate(Object value, Matcher matcher) {
+		int i = Integer.parseInt(matcher.group(1));
+		String error = "不能小于" + i + "项!";
+		if (value == null) {
+			return error;
+		}
+		if (value instanceof String) {
+			if (i > 1) {
+				return error;
+			}
+		} else if (value instanceof String[]) {
+			if (((String[]) value).length < i) {
+				return error;
+			}
+		}
+		return null;
 	}
 
-	public List<String> getImportPackages() {
-		return importPackages;
+	@Override
+	public String toString() {
+		return "最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minItems:3!";
 	}
-
-	public void setImportPackages(List<String> importPackages) {
-		this.importPackages = importPackages;
-	}
-
 }

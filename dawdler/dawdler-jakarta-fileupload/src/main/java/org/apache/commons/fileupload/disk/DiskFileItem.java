@@ -501,7 +501,8 @@ public class DiskFileItem implements FileItem {
 	public OutputStream getOutputStream() throws IOException {
 		if (dfos == null) {
 			File outputFile = getTempFile();
-			dfos = new DeferredFileOutputStream(sizeThreshold, outputFile);
+			dfos = DeferredFileOutputStream.builder().setThreshold(sizeThreshold).setOutputFile(outputFile).get();
+			// dfos = new DeferredFileOutputStream(sizeThreshold, outputFile);
 		}
 		return dfos;
 	}

@@ -19,7 +19,7 @@ package club.dawdler.clientplug.web.classloader;
 /**
  * @author jackson.song
  * @version V1.0
- * 远程类加载时触发接口
+ *          组件类加载时触发接口(早期只有远程加载方式所以名字Remote开头)
  */
 public interface RemoteClassLoaderFire {
 

@@ -59,55 +59,55 @@ RabbitInjector注解中的value传入fileName为配置文件名(不包含.proper
 @Target({ ElementType.METHOD })
 public @interface RabbitListener {
  
-	/**
-	 * 指定rabbitmq的配置文件名
-	 */
-	String fileName();
+    /**
+     * 指定rabbitmq的配置文件名
+     */
+    String fileName();
 
-	/**
-	 * 队列名
-	 */
-	String queueName();
-	
-	/**
-	 * routingKey
-	 */
-	String[] routingKey() default {};
-	
-	/**
-	 * 交换器
-	 */
-	String[] exchange() default {};
+    /**
+     * 队列名
+     */
+    String queueName();
+    
+    /**
+     * routingKey
+     */
+    String[] routingKey() default {};
+    
+    /**
+     * 交换器
+     */
+    String[] exchange() default {};
 
-	/**
-	 * 是否自动ack
-	 */
-	boolean autoAck() default true;
+    /**
+     * 是否自动ack
+     */
+    boolean autoAck() default true;
 
-	/**
-	 * 是否重试
-	 */
-	boolean retry() default false;
+    /**
+     * 是否重试
+     */
+    boolean retry() default false;
 
-	/**
-	 * 失败后进入死信队列
-	 */
-	boolean failedToDLQ() default true;
+    /**
+     * 失败后进入死信队列
+     */
+    boolean failedToDLQ() default true;
 
-	/**
-	 * 重试次数
-	 */
-	int retryCount() default 12;
+    /**
+     * 重试次数
+     */
+    int retryCount() default 12;
 
-	/**
-	 * 当前消费者个数 不能大于channel.size=16 #每个connection中的channel数量
-	 */
-	int concurrentConsumers() default 1;
+    /**
+     * 当前消费者个数 不能大于channel.size=16 #每个connection中的channel数量
+     */
+    int concurrentConsumers() default 1;
 
-	/**
-	 * prefetchCount来限制服务器端每次发送给每个消费者的消息数.
-	 */
-	int prefetchCount() default 1;
+    /**
+     * prefetchCount来限制服务器端每次发送给每个消费者的消息数.
+     */
+    int prefetchCount() default 1;
  
 }
 

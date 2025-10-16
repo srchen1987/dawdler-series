@@ -16,16 +16,19 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author jackson.song
  * @version V1.0
- * 不能为空验证
+ * 不能重复验证
  */
-public class NotEmptyRuleOperator extends StringRuleOperator {
-	public static final String RULE_KEY = "notEmpty";
-	public static final String EXPLAIN = "不能为空验证!";
+public class UniqueItemsRuleOperator extends StringRuleOperator {
+	public static final String RULE_KEY = "uniqueItems";
+	public static final String EXPLAIN = "不能重复验证!";
 
-	public NotEmptyRuleOperator() {
+	public UniqueItemsRuleOperator() {
 		super(RULE_KEY, null, EXPLAIN);
 
 	}
@@ -33,26 +36,21 @@ public class NotEmptyRuleOperator extends StringRuleOperator {
 	@Override
 	public String validate(Object value) {
 		if (value == null) {
-			return "不能为空!";
+			return null;
 		}
 		boolean flag = true;
-		if (value instanceof String) {
-			flag = !((String) value).trim().equals("");
-		} else if (value instanceof String[]) {
+		if (value instanceof String[]) {
 			String[] values = (String[]) value;
+			Set<String> set = new HashSet<>();
 			for (String v : values) {
-				if (v == null) {
-					flag = false;
-					break;
-				}
-				if (v.trim().equals("")) {
+				if (!set.add(v)) {
 					flag = false;
 					break;
 				}
 			}
 		}
 		if (!flag) {
-			return "不能为空!";
+			return "不允许重复!";
 		}
 		return null;
 	}

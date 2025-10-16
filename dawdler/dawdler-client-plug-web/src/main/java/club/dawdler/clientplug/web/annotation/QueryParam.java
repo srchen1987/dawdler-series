@@ -14,35 +14,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package club.dawdler.client.api.generator.data;
+package club.dawdler.clientplug.web.annotation;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * @author jackson.song
  * @version V1.0
- * ControllerData
+ * 上传文件(multipart/form-data)获取query参数的注解
  */
-public class ControllerData {
-	private String name;
-	@JsonInclude(Include.NON_NULL)
-	private String description;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface QueryParam {
+	String value() default "";
 }
