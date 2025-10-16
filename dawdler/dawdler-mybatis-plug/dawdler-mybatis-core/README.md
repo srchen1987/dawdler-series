@@ -70,13 +70,13 @@ dawdler支持水平分表的配置,由SubTable注解与@SubParam注解来配合�
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SubTable {
 
-	String expression();
+    String expression();
 
-	String[] tables();
+    String[] tables();
 
-	String configPath();
+    String configPath();
 
-	Class<? extends SubRule> subRuleType();
+    Class<? extends SubRule> subRuleType();
 
 }
 ```
@@ -139,7 +139,7 @@ divisor: 3
   /** 
    * 查询[用户表] 用户id方式水平分表
    * @version 1.0
-   * @param id	用户id
+   * @param id    用户id
    */
   @SubTable(configPath = "userById", tables = {"t_user"}, subRuleType = RemainderSubRule.class, expression = "id")
   User selectByPrimaryKey(@SubParam @Param("id")Integer id);

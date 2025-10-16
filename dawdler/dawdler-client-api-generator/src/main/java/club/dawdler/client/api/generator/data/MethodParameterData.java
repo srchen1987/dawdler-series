@@ -51,26 +51,17 @@ public class MethodParameterData {
 	private ItemsData items;
 
 	@JsonInclude(Include.NON_NULL)
-	private String collectionFormat;
+	private String example;
 
 	@JsonInclude(Include.NON_NULL)
-	private Boolean allowEmptyValue;
+	private Boolean nullable;
 
-	public String getCollectionFormat() {
-		return collectionFormat;
-	}
+	@JsonInclude(Include.NON_NULL)
+	private String style;
 
-	public void setCollectionFormat(String collectionFormat) {
-		this.collectionFormat = collectionFormat;
-	}
+	@JsonInclude(Include.NON_NULL)
+	private Boolean explode;
 
-	public Boolean getAllowEmptyValue() {
-		return allowEmptyValue;
-	}
-
-	public void setAllowEmptyValue(Boolean allowEmptyValue) {
-		this.allowEmptyValue = allowEmptyValue;
-	}
 
 	public ItemsData getItems() {
 		return items;
@@ -139,6 +130,38 @@ public class MethodParameterData {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getExample() {
+		return example;
+	}
+
+	public void setExample(String example) {
+		this.example = example;
+	}
+
+	public Boolean getNullable() {
+		return nullable;
+	}
+
+	public void setNullable(Boolean nullable) {
+		this.nullable = nullable;
+	}
+
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(String style) {
+		this.style = style;
+	}
+
+	public Boolean getExplode() {
+		return explode;
+	}
+
+	public void setExplode(Boolean explode) {
+		this.explode = explode;
 	}
 
 }

@@ -41,13 +41,6 @@ public class RuleOperatorProvider {
 	private static final Map<Pattern, RegexRuleOperator> REGEX_RULES = new HashMap<>();
 	private static final Map<String, RegexRuleOperator> CHECK_REGEX_RULES = new HashMap<>();
 
-	/**
-	 * 通过ValidatorInjector方式注入,淘汰静态块注入.
-	 */
-//	static {
-//		registerRuleOperatorScanPackage(RuleOperator.class);
-//	}
-
 	public static Map<String, StringRuleOperator> getStringRules() {
 		return STRING_RULES;
 	}

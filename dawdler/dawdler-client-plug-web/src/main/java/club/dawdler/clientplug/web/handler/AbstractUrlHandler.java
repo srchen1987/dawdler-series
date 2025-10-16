@@ -87,7 +87,9 @@ public abstract class AbstractUrlHandler {
 				PrintWriter out = response.getWriter();
 				try {
 					if (result.getClass() == String.class || ClassUtil.isSimpleValueType(result.getClass())) {
-						response.setContentType(AbstractDisplayPlug.MIME_TYPE_TEXT_HTML);
+						if (response.getContentType() == null) {
+							response.setContentType(AbstractDisplayPlug.MIME_TYPE_TEXT_HTML);
+						}
 						out.print(result);
 						out.flush();
 					} else {

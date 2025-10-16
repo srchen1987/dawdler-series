@@ -17,18 +17,24 @@
 
 ```yml
 version: 1.0
-title: "演示服务"
-description: "用于演示的文档"
+title: "订单web服务"
+description: "订单web服务文档"
 contact:
  name: "jackson.song"
  email: "suxuan696@gmail.com"
  url: "https://github.com/srchen1987"
-swagger: "2.0"
-host: "localhost"
-basePath: "/"
+openApi: "3.1.0"
+servers:
+  - url: http://localhost:8085
+    description: 本地服务器
+  - url: https://api.example.com
+    description: 生产服务器
+  - url: https://staging.example.com
+    description: 测试服务器
 scanPath:
- - "/home/srchen/github/api-demo"
-outPath: "/home/srchen/github/api-demo/demo-api.json"
+ - "/home/srchen/github/simple-single-user-web-api/src/main/java/club/dawdler/user"
+ - "/home/srchen/github/dawdler-series-jdk1.8/dawdler-series/dawdler/dawdler-load-bean/src/main/java"
+outPath: "/home/srchen/github/api-demo/upload-api.json"
 ```
 
 说明：
@@ -39,9 +45,8 @@ outPath: "/home/srchen/github/api-demo/demo-api.json"
 | title | 标题 |
 | description | 描述 |
 | contact | 联系人 相关信息|
-| swagger | swagger版本号 |
-| host | api地址,例如: 192.168.1.55:8080 |
-| basePath | web的basePath |
+| openApi | openApi版本号 |
+| servers | api地址,例如: 192.168.1.55:8080 |
 | scanPath | 扫描路径,Controller或实体对象(数组结构) |
 | outPath | 输出json的路径 |
 
@@ -64,7 +69,7 @@ scanPath配置一定要配置正确,确保路径下有Controller(必须使用@Co
 #### 3.3 生成api文件
 
 ```shell
-java -jar dawdler-client-api-generator-0.0.5-jdk1.8-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
+java -jar dawdler-client-api-generator-xxx-RELEASES.jar /home/srchen/github/api-demo/dawdler-web-api.yml
 ```
 
 运行后会生成demo-api.json(outPath配置的路径).
@@ -80,7 +85,7 @@ docker pull swaggerapi/swagger-ui
 启动
 
 ```shell
-docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v /home/srchen/github/api-demo:/foo swaggerapi/swagger-ui
+docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -e DEFAULT_RESPONSES_EXPAND_DEPTH=10  -e DEFAULT_MODELS_EXPAND_DEPTH=10 -e DEFAULT_MODEL_EXPAND_DEPTH=10  -v /home/srchen/github/api-demo:/foo swaggerapi/swagger-ui
 ```
 
 访问 [http://localhost/swagger](http://localhost/swagger) 既可使用.
@@ -89,7 +94,7 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 ##### 4.1 JavaDoc的Tag
 
-1. 用于类或方法的描述信息,支持放在类上或方法上.(同时支持javadoc标准 方法上注释,可不编写@Description)
+1. 用于类或方法的描述信息,支持放在类上或方法上.(同时支持javadoc标准 方法上注释)
 
 2. @param 用于方法参数对应的注释信息,只支持方法上.
 
@@ -99,8 +104,6 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 ```java
  /**
-  * 
- * @Title: get 
  * @author jackson.song 
  * 根据用户ID查询用户
  * @param userId 用户ID
@@ -140,7 +143,11 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -v
 
 4. BigDecimal 用于获取http请求参数,可以搭配@param来做注释.
 
-5. 自定义对象(通过@RequestBody标识时需要http body,如果没有@RequestBody标识,则自定义对象的属性会作为http param参数) 注释只支持在自定义对象中加入注解,注释采用/**注释**/ 例如:
+5. Date、LocalDateTime、LocalDate、LocalTime ZonedDateTime、OffsetDateTime 用于获取http请求参数,可以搭配@param来做注释.
+
+6. Enum 枚举类型 用于获取http请求参数,可以搭配@param来做注释.
+
+7. 自定义对象(通过@RequestBody标识时需要http body,如果没有@RequestBody标识,则自定义对象的属性会作为http param参数) 注释只支持在自定义对象中加入注解,注释采用/**注释**/ 例如:
 
 ```java
 public class User {
@@ -236,7 +243,6 @@ public class DemoController {
  }
 
  /**
-  * 
   * @author jackson.song
   * 根据用户id查询用户,antPath方式
   * @param id 用户ID
@@ -249,7 +255,6 @@ public class DemoController {
  }
 
  /**
-  * 
   * @author jackson.song
   * 根据用户ID查询并返回复合bean
   * @param userId 用户ID
@@ -263,7 +268,6 @@ public class DemoController {
  }
 
  /**
-  * 
   * @author jackson.song
   * 根据用户ID查询并返回复合bean 返回结果List结构
   * @param userId
@@ -277,7 +281,6 @@ public class DemoController {
  }
 
  /**
-  * 
   * @author jackson.song
   * 创建一个用户
   **/
@@ -288,7 +291,6 @@ public class DemoController {
  }
 
  /**
-  * 
   * @author jackson.song
   * 头部获取信息测试
   * @param token 请求头信息
@@ -301,7 +303,6 @@ public class DemoController {
  }
 
  /**
-  * 
   * @author jackson.song
   * 测试文件上传
   * @param id   业务Id
@@ -317,7 +318,6 @@ public class DemoController {
  }
 
  /**
-  * 
   * @author jackson.song
   * 根据User实体对象的属性生成对应的Http param参数
   *
@@ -341,6 +341,7 @@ package club.dawdler.demo.api.entity;
 /**
  * 
 * @ClassName: User 
+*: 用户实体
 * @author jackson.song
 */
 public class User {

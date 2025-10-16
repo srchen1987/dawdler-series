@@ -32,13 +32,13 @@
 ```java
 public class UserServiceImpl implements UserService {
 
-	@JedisInjector("myRedis")//myRedis为配置文件的名称,不包含后缀properties
-	JedisOperator jedisOperator;
+    @JedisInjector("myRedis")//myRedis为配置文件的名称,不包含后缀properties
+    JedisOperator jedisOperator;
 
-	public User getUser(String userId) {
-		jedisOperator.set("userId", userId);//使用jedisOperator对象
-		return null;
-	}
+    public User getUser(String userId) {
+        jedisOperator.set("userId", userId);//使用jedisOperator对象
+        return null;
+    }
  
 }
 ```
@@ -49,33 +49,33 @@ public class UserServiceImpl implements UserService {
 ```java
 public class UserServiceImpl implements UserService {
 
-	@JedisLockInjector(fileName = "myRedis")//myRedis为配置文件的名称,不包含后缀properties
-	JedisDistributedLockHolder jedisDistributedLockHolder;
+    @JedisLockInjector(fileName = "myRedis")//myRedis为配置文件的名称,不包含后缀properties
+    JedisDistributedLockHolder jedisDistributedLockHolder;
 
-	public void synUser(String userId, Business business) {
-		JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
-		try {
-			lock.lock();
-			// lock.lock(3000); //3秒等待锁
-			// 模拟业务处理
-			 doSomething(business);
-		 } finally {
-			lock.unlock();
-		 }
-	}
+    public void synUser(String userId, Business business) {
+        JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
+        try {
+            lock.lock();
+            // lock.lock(3000); //3秒等待锁
+            // 模拟业务处理
+             doSomething(business);
+         } finally {
+            lock.unlock();
+         }
+    }
 
-	public void synUserNoWait(String userId, Business business) {
-		JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
-		try {
-			//获取不到锁 立即结束不等待
-			if(lock.tryLock()){
-				// 模拟业务处理
-				 doSomething(business);
-			}
-		 } finally {
-			lock.unlock();
-		 }
-	}
+    public void synUserNoWait(String userId, Business business) {
+        JedisDistributedLock lock = jedisDistributedLockHolder.createLock("lockKey:"+userId);
+        try {
+            //获取不到锁 立即结束不等待
+            if(lock.tryLock()){
+                // 模拟业务处理
+                 doSomething(business);
+            }
+         } finally {
+            lock.unlock();
+         }
+    }
 }
 ```
 #### 2.3 dawdler服务端支持注入的三种组件

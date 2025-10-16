@@ -21,14 +21,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Writer;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 /**
  * @author jackson.song
@@ -44,7 +51,20 @@ public class JsonProcessUtil {
 		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		NON_EMPTY_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		NON_EMPTY_MAPPER.setSerializationInclusion(Include.NON_NULL);
+		JavaTimeModule javaTimeModule = new JavaTimeModule();
 
+		javaTimeModule.addSerializer(LocalDate.class,
+				new LocalDateSerializer(DateTimeFormatter.ofPattern(DateUtil.DEFAULT_DATE_PATTERN)));
+		javaTimeModule.addDeserializer(LocalDate.class,
+				new LocalDateDeserializer(DateTimeFormatter.ofPattern(DateUtil.DEFAULT_DATE_PATTERN)));
+
+		javaTimeModule.addSerializer(LocalDateTime.class,
+				new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DateUtil.DEFAULT_DATE_TIME_PATTERN)));
+		javaTimeModule.addDeserializer(LocalDateTime.class,
+				new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern(DateUtil.DEFAULT_DATE_TIME_PATTERN)));
+
+		MAPPER.registerModule(javaTimeModule);
+		NON_EMPTY_MAPPER.registerModule(javaTimeModule);
 	}
 
 	public static ObjectMapper getMapperInstance() {
@@ -60,7 +80,7 @@ public class JsonProcessUtil {
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -69,7 +89,7 @@ public class JsonProcessUtil {
 		try {
 			return mapper.writeValueAsBytes(obj);
 		} catch (Exception e) {
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -86,128 +106,101 @@ public class JsonProcessUtil {
 	}
 
 	public static <T> T jsonToBean(String json, Class<T> valueType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(json, valueType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, valueType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static Object jsonToBean(String json, TypeReferenceType typeReferenceType) {
-		Object obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(json, typeReferenceType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, typeReferenceType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static <T> T jsonToBean(String json, TypeReferenceGenerics<T> typeReferenceType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(json, typeReferenceType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, typeReferenceType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static <T> T jsonToBean(byte[] json, Class<T> valueType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(json, valueType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, valueType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static Object jsonToBean(byte[] json, TypeReferenceType typeReferenceType) {
-		Object obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(json, typeReferenceType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, typeReferenceType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static <T> T jsonToBean(byte[] json, TypeReferenceGenerics<T> typeReferenceType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(json, typeReferenceType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, typeReferenceType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static <T> T jsonToBean(InputStream jsonStream, Class<T> valueType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(jsonStream, valueType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(jsonStream, valueType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static Object jsonToBean(InputStream jsonStream, TypeReferenceType typeReferenceType) {
-		Object obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(jsonStream, typeReferenceType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(jsonStream, typeReferenceType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static <T> T jsonToBean(InputStream jsonStream, TypeReferenceGenerics<T> typeReferenceType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
-			obj = mapper.readValue(jsonStream, typeReferenceType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(jsonStream, typeReferenceType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static String ignoreNullBeanToJson(Object obj) {
-		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
 	public static byte[] ignoreNullBeanToJsonByte(Object obj) {
-		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
+		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
 		try {
 			return mapper.writeValueAsBytes(obj);
 		} catch (Exception e) {
-			return null;
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -224,39 +217,30 @@ public class JsonProcessUtil {
 	}
 
 	public static <T> T ignoreNullJsonToBean(String json, Class<T> valueType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		try {
-			obj = mapper.readValue(json, valueType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, valueType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static <T> T ignoreNullJsonToBean(byte[] json, Class<T> valueType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		try {
-			obj = mapper.readValue(json, valueType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(json, valueType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static <T> T ignoreNullJsonToBean(InputStream jsonStream, Class<T> valueType) {
-		T obj = null;
 		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		try {
-			obj = mapper.readValue(jsonStream, valueType);
-		} catch (JsonMappingException e) {
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
+			return mapper.readValue(jsonStream, valueType);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-		return obj;
 	}
 
 	public static class TypeReferenceType extends TypeReference<Object> {

@@ -62,3 +62,11 @@ public interface CustomComponentInjector {
 }
 
 ```
+
+### 4. ContainerGracefulShutdown 容器优雅关闭接口
+
+容器优雅关闭接口,通过SPI方式实现容器的优雅关闭功能. 参考 [DawdlerServerGracefulShutdown.java](../dawdler-server/src/main/java/club/dawdler/server/shutdown/DawdlerServerGracefulShutdown.java)
+
+### 5. HealthIndicator 健康检测接口
+
+健康检测接口,通过SPI方式实现容器的健康检测功能. 参考 [JedisIndicator.java](../dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/health/JedisIndicator.java)

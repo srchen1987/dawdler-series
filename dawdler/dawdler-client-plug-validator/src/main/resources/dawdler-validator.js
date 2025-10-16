@@ -1,7 +1,7 @@
 /**
  * date : 2007-2-25 11:05 author jackson.song
  */
-const isNullNoSkipRules = ["notEmpty", "maxSelect", "minSelect"];
+const isNullNoSkipRules = ["notEmpty", "maxItems", "minItems"];
 let debug = true;
 let successPrefix = "";
 let successSuffix = "";
@@ -13,9 +13,9 @@ function print(text) {
 }
 
 const validationRegExps = [
-    /maxSize:([0-9]+)/, /minSize:([0-9]+)/,
-    /maxNumber:([0-9]+)/, /minNumber:([0-9]+)/, /maxSelect:([0-9]+)/,
-    /minSelect:([0-9]+)/
+	/maxLength:([0-9]+)/, /minLength:([0-9]+)/,
+	/maximum:([0-9.eE+-]+)/, /minimum:([0-9.eE+-]+)/, /maxItems:([0-9]+)/,
+	/minItems:([0-9]+)/
 ];
 
 function notEmpty(none) {
@@ -26,63 +26,94 @@ function notEmpty(none) {
 }
 
 function cellPhone(cellPhone) {
-    const reg = /(^(16[0-9]|17[0-9]|13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)|(^0(13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)/;
-	return cellPhone.match(reg) ? true : "请输入手机号码！"; 
+	const reg = /(^(16[0-9]|17[0-9]|13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)|(^0(13[0-9]|15[0-9]|18[0-9]|14[7,5])\d{8}$)/;
+	return cellPhone.match(reg) ? true : "请输入手机号码!";
 }
 
 function email(email) {
-    const reg = /^\b[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,6}\b$/;
-	return email.match(reg) ? true : "请输入E-Mail地址！";
+	const reg = /^\b[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,6}\b$/;
+	return email.match(reg) ? true : "请输入E-Mail地址!";
 }
 
 function number(number) {
-    const reg = /(^\d+$)|(^-\d+$)/;
-	return number.match(reg) ? true : "请输入数字！";
+	const reg = /(^\d+$)|(^-\d+$)/;
+	return number.match(reg) ? true : "请输入数字!";
 }
 
-function maxSize(value, size) {
+function maxLength(value, size) {
 	return value.trim().length > size[1] ? ("不能大于" + size[1] + "个字符!") : true;
 }
 
-function minSize(value, size) {
+function minLength(value, size) {
 	return value.trim().length < size[1] ? ("不能小于" + size[1] + "个字符!") : true;
 }
 
-function minSelect(selectSize, size) {
+function minItems(selectSize, size) {
 	return selectSize < size[1] ? ("至少要选择或选中" + size[1] + "项!") : true;
 }
 
-function maxSelect(selectSize, size) {
+function maxItems(selectSize, size) {
 	return selectSize > size[1] ? ("最多只能选择或选中" + size[1] + "项!") : true;
 }
 
-function minNumber(value, size) {
-	return value < Number(size[1]) ? ("数值不能小于" + size[1]) : true;
+function uniqueItems(value) {
+	if (Array.isArray(value)) {
+		const uniqueValues = new Set(value);
+		return uniqueValues.size === value.length ? true : "不允许重复!";
+	}
+	return true;
 }
 
+function parseScientificToBigInt(str) {
+	if (!str.includes('e') && !str.includes('E')) {
+		return BigInt(str);
+	}
+	const num = Number(str);
+	return BigInt(Math.floor(num));
+}
+
+function maximum(value, size) {
+	try {
+		const valueNum = parseScientificToBigInt(value);
+		const sizeNum = parseScientificToBigInt(size[1]);
+		return valueNum > sizeNum ? ("数值不能大于" + size[1]) : true;
+	} catch (e) {
+		return Number(value) > Number(size[1]) ? ("数值不能大于" + size[1]) : true;
+	}
+}
+
+function minimum(value, size) {
+	try {
+		const valueNum = parseScientificToBigInt(value);
+		const sizeNum = parseScientificToBigInt(size[1]);
+		return valueNum < sizeNum ? ("数值不能小于" + size[1]) : true;
+	} catch (e) {
+		return Number(value) < Number(size[1]) ? ("数值不能小于" + size[1]) : true;
+	}
+}
 function englishWords(englishWords) {
 	var reg = /^[A-Z|a-z]+$/;
-	return englishWords.match(reg) ? true : "请输入英文字母！";
+	return englishWords.match(reg) ? true : "请输入英文字母!";
 }
 
 function chineseWords(chineseWords) {
 	var reg = /^[\u4e00-\u9fa5]+$/;
-	return chineseWords.match(reg) ? true : "请输入汉字！";
+	return chineseWords.match(reg) ? true : "请输入汉字!";
 }
 
 function webSite(webSite) {
 	var reg = /^(http(s)?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
-	return webSite.match(reg) ? true : "请输入网址！";
+	return webSite.match(reg) ? true : "请输入网址!";
 }
 
 function realNumber(realNumber) {
 	var reg = /^[-+]?\d+(\.\d+)?$/;
-	return realNumber.match(reg) ? true : "请输入实数！";
+	return realNumber.match(reg) ? true : "请输入实数!";
 }
 
 function natureNumber(natureNumber) {
 	var reg = /^[0-9]+$/;
-	return natureNumber.match(reg) ? true : "请输入自然数！";
+	return natureNumber.match(reg) ? true : "请输入自然数!";
 }
 
 function date(date) {
@@ -112,11 +143,11 @@ function negativeNumber(negativeNumber) {
 
 function positiveNumber(positiveNumber) {
 	var reg = /(^[1-9]{1}\d*$)/;
-	return positiveNumber.match(reg) ? true : "请正确输入正整数！";
+	return positiveNumber.match(reg) ? true : "请正确输入正整数!";
 }
 
 function IDCard(IDCard) {
-	let num = IDCard.toUpperCase();zzzzzzzzz
+	let num = IDCard.toUpperCase(); zzzzzzzzz
 	if (!(/(^\d{15}$)|(^\d{17}([0-9]|X)$)/.test(num))) {
 		return '输入的身份证号长度不对，或者号码不符合规定! 15位号码应全为数字,18位号码末位可以为数字或X!';
 	}
@@ -132,7 +163,7 @@ function IDCard(IDCard) {
 			((dtmBirth.getMonth() + 1) == Number(arrSplit[3])) &&
 			(dtmBirth.getDate() == Number(arrSplit[4]));
 		if (!bGoodDay) {
-			return '输入的身份证号里出生日期不正确！';
+			return '输入的身份证号里出生日期不正确!';
 		} else {
 			var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5,
 				8, 4, 2);
@@ -158,7 +189,7 @@ function IDCard(IDCard) {
 			((dtmBirth.getMonth() + 1) == Number(arrSplit[3])) &&
 			(dtmBirth.getDate() == Number(arrSplit[4]));
 		if (!bGoodDay) {
-			return '输入的身份证号里出生日期不对！';
+			return '输入的身份证号里出生日期不对!';
 		} else {
 			var valNum;
 			var arrInt = new Array(7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5,
@@ -172,7 +203,7 @@ function IDCard(IDCard) {
 			}
 			valNum = arrCh[nTemp % 11];
 			if (valNum != num.substr(17, 1)) {
-				return '18位身份证的校验码不正确！应该为：' + valNum;
+				return '18位身份证的校验码不正确!应该为：' + valNum;
 			}
 			return true;
 		}
@@ -185,7 +216,7 @@ String.prototype.trim = function() {
 };
 
 function contains(a, e) {
-    let j = 0;
+	let j = 0;
 	for (j = 0; j < a.length; j++) {
 		if (getParamType(a[j]) == 'array') {
 			for (const rg in validationRegExps) {
@@ -205,7 +236,7 @@ function contains(a, e) {
 }
 
 function uniqueArr(a) {
-    const temp = [];
+	const temp = [];
 	for (let i = 0; i < a.length; i++) {
 		if (a[i] !== '') {
 			if (!contains(temp, a[i])) {
@@ -236,7 +267,7 @@ function getParamType(param) {
 }
 
 function executeFunction(fname, value) {
-    let execute = false;
+	let execute = false;
 	for (let i = 0; i < isNullNoSkipRules.length; i++) {
 		if (isNullNoSkipRules[i] === fname) {
 			execute = true;
@@ -277,15 +308,17 @@ function parse(parseRule, obj) {
 					for (var rle in parseRule) {
 						var rlre = parseRule[rle];
 						if (getParamType(rlre) == 'array') {
-							if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
+							if ((rlre[0] != 'maxItems' && rlre[0] != 'minItems')) {
 								error = executeFunction(rlre[0], value, rlre[1]);
 								if (typeof error != 'boolean')
 									return new Array(objs[ri], error.toString());
 							}
 						} else {
-							error = executeFunction(rlre, value);
-							if (typeof error != 'boolean')
-								return new Array(objs[ri], error.toString());
+							if (rlre != 'uniqueItems') {
+								error = executeFunction(rlre, value);
+								if (typeof error != 'boolean')
+									return new Array(objs[ri], error.toString());
+							}
 						}
 					}
 				}
@@ -295,11 +328,13 @@ function parse(parseRule, obj) {
 					var rlre = parseRule[rle];
 					var error = null;
 					if (getParamType(rlre) == 'array') {
-						if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
+						if ((rlre[0] != 'maxItems' && rlre[0] != 'minItems')) {
 							error = executeFunction(rlre[0], value, rlre[1]);
 						}
 					} else {
-						error = executeFunction(rlre, value);
+						if (rlre != 'uniqueItems') {
+							error = executeFunction(rlre, value);
+						}
 					}
 					if (typeof error != 'boolean') {
 						return new Array(obj, error.toString());
@@ -316,11 +351,13 @@ function parse(parseRule, obj) {
 			var objs = document.getElementsByName(obj.name);
 			var objVar = null;
 			var value = null;
+			var valueArray = new Array();
 			var size = 0;
 			for (var ri = 0; ri < objs.length; ri++) {
 				if (objs[ri].checked) {
 					value = objs[ri].value;
 					var objVar = objs[ri];
+					valueArray.push(value);
 					size++;
 					break;
 				}
@@ -329,12 +366,16 @@ function parse(parseRule, obj) {
 				var rlre = parseRule[rle];
 				var error = null;
 				if (getParamType(rlre) == 'array') {
-					if (rlre[0] == 'maxSelect' || rlre[0] == 'minSelect')
+					if (rlre[0] == 'maxItems' || rlre[0] == 'minItems') {
 						error = executeFunction(rlre[0], size, rlre[1]);
-					else
+					} else
 						error = executeFunction(rlre[0], value, rlre[1]);
 				} else {
-					error = executeFunction(rlre, value);
+					if (rlre == 'uniqueItems') {
+						error = executeFunction(rlre, valueArray);
+					} else {
+						error = executeFunction(rlre, value);
+					}
 				}
 				if (typeof error != 'boolean') {
 					return new Array(objVar == null ? objs[0] : objVar, error.toString());
@@ -345,33 +386,44 @@ function parse(parseRule, obj) {
 			var size = 0;
 			var error = null;
 			var cObjVar = null;
+			var value = null;
+			var valueArray = new Array();
 			for (var ri = 0; ri < objs.length; ri++) {
 				if (objs[ri].checked) {
 					value = objs[ri].value;
 					cObjVar = objs[ri];
+					valueArray.push(value);
 					size++;
 					for (var rle in parseRule) {
 						var rlre = parseRule[rle];
 						if (getParamType(rlre) == 'array') {
-							if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
+							if ((rlre[0] != 'maxItems' && rlre[0] != 'minItems')) {
 								error = executeFunction(rlre[0], value, rlre[1]);
 								if (typeof error != 'boolean')
 									return new Array(objs[ri], error.toString());
 							}
 						} else {
-							error = executeFunction(rlre, value);
-							if (typeof error != 'boolean')
-								return new Array(objs[ri], error.toString());
+							if (rlre != 'uniqueItems') {
+								error = executeFunction(rlre, value);
+								if (typeof error != 'boolean')
+									return new Array(objs[ri], error.toString());
+							}
 						}
 					}
 				}
 			}
 			for (var rle in parseRule) {
 				var rlre = parseRule[rle];
-				if ((rlre[0] == 'maxSelect' || rlre[0] == 'minSelect')) {
-					error = executeFunction(rlre[0], size, rlre[1]);
+				if (getParamType(rlre) == 'array') {
+					if ((rlre[0] == 'maxItems' || rlre[0] == 'minItems')) {
+						error = executeFunction(rlre[0], size, rlre[1]);
+						if (typeof error != 'boolean')
+							return new Array(cObjVar == null ? objs[0] : cObjVar, error.toString());
+					}
+				} else if (rlre == 'uniqueItems') {
+					error = executeFunction(rlre, valueArray);
 					if (typeof error != 'boolean')
-						return new Array(cObjVar == null ? objs[0] : cObjVar, error.toString());
+						return new Array(obj, error.toString());
 				}
 			}
 		} else if (type == 'SELECT') {
@@ -383,23 +435,31 @@ function parse(parseRule, obj) {
 					for (var rle in parseRule) {
 						var rlre = parseRule[rle];
 						if (getParamType(rlre) == 'array') {
-							if ((rlre[0] != 'maxSelect' && rlre[0] != 'minSelect')) {
+							if ((rlre[0] != 'maxItems' && rlre[0] != 'minItems')) {
 								error = executeFunction(rlre[0], value, rlre[1]);
 								if (typeof error != 'boolean')
-									return error.toString();
+									return new Array(obj, error.toString());
 							}
 						} else {
-							error = executeFunction(rlre, value);
-							if (typeof error != 'boolean')
-								return new Array(obj, error.toString());
+							if (rlre != 'uniqueItems') {
+								error = executeFunction(rlre, value);
+								if (typeof error != 'boolean')
+									return new Array(obj, error.toString());
+							}
 						}
 					}
 				}
 			}
 			for (var rle in parseRule) {
 				var rlre = parseRule[rle];
-				if ((rlre[0] == 'maxSelect' || rlre[0] == 'minSelect')) {
-					error = executeFunction(rlre[0], size, rlre[1]);
+				if (getParamType(rlre) == 'array') {
+					if ((rlre[0] == 'maxItems' || rlre[0] == 'minItems')) {
+						error = executeFunction(rlre[0], size, rlre[1]);
+						if (typeof error != 'boolean')
+							return new Array(obj, error.toString());
+					}
+				} else if (rlre == 'uniqueItems') {
+					error = executeFunction(rlre, valueArray);
 					if (typeof error != 'boolean')
 						return new Array(obj, error.toString());
 				}
@@ -456,7 +516,6 @@ function validate(param) {
 		error = invokeVar[1];
 		invokeObj = invokeVar[0];
 	}
-	//alertFunction only support user-defined  object not support html object
 	if (typeof error != 'undefined' && typeof error != 'boolean') {
 		if (typeof param.alertFunction == 'string') {
 			var af = document.getElementById(param.alertFunction);
@@ -508,11 +567,11 @@ function validate(param) {
 
 function buildOn(funObj, funName, funValue) {
 	try {
-		funObj.addEventListener(funName, function() {
+		funObj.addEventListener(funName, function () {
 			return validate(funValue);
 		}, true);
 	} catch (e) {
-		funObj.attachEvent("on" + funName, function() {
+		funObj.attachEvent("on" + funName, function () {
 			return validate(funValue);
 		});
 	}
@@ -524,7 +583,7 @@ function Validator() {
 	return {
 		version: "v0.1",
 		list: new Array(),
-		getValidateObjById: function(id) {
+		getValidateObjById: function (id) {
 			var list = this.list;
 			for (var i = 0; i < list.length; i++) {
 				var obj = list[i];
@@ -532,13 +591,13 @@ function Validator() {
 			}
 			return null;
 		},
-		addRegExp: function(exp) {
+		addRegExp: function (exp) {
 			validationRegExps.push(exp);
 		},
-		addNoSkip: function(fname) {
+		addNoSkip: function (fname) {
 			isNullNoSkipRules.push(fname);
 		},
-		appendRule: function(id, rule) {
+		appendRule: function (id, rule) {
 			var obj = this.getValidateObjById(id);
 			if (obj != null) {
 				var ary = null;
@@ -556,7 +615,7 @@ function Validator() {
 			} else
 				print("can't find rule id:" + id + "!");
 		},
-		removeRule: function(id, rule) {
+		removeRule: function (id, rule) {
 			var obj = getValidateObjById(id);
 			if (obj != null) {
 				var ary = null;
@@ -586,25 +645,25 @@ function Validator() {
 				}
 			}
 		},
-		removeAllRule: function(id) {
+		removeAllRule: function (id) {
 			var obj = getValidateObjById(id);
 			if (obj != null) {
 				obj.validateRule = null;
 			}
 		},
-		setRule: function(id, rule) {
+		setRule: function (id, rule) {
 			var obj = getValidateObjById(id);
 			if (obj != null) {
 				obj.validateRule = rule;
 			}
 		},
-		setViewName: function(id, viewName) {
+		setViewName: function (id, viewName) {
 			var obj = getValidateObjById(id);
 			if (obj != null) {
 				obj.viewName = viewName;
 			}
 		},
-		push: function(eData) {
+		push: function (eData) {
 			var isHtml = goodNodeHTML(eData);
 			if (isHtml) {
 				eData.id = eData.name;
@@ -665,14 +724,14 @@ function Validator() {
 			}
 			this.list.push(eData);
 		},
-		validate_rule: function(id, viewName, validateRule, buildFunction, alertFunction) {
+		validate_rule: function (id, viewName, validateRule, buildFunction, alertFunction) {
 			this.id = id;
 			this.viewName = viewName;
 			this.validateRule = validateRule;
 			this.alertFunction = alertFunction;
 			this.buildFunction = buildFunction;
 		},
-		addRule: function(validate_rule) {
+		addRule: function (validate_rule) {
 			if (getParamType(validate_rule) == 'array') {
 				for (var rle in validate_rule) {
 					this.push(validate_rule[rle]);
@@ -683,7 +742,7 @@ function Validator() {
 				print("unknown this addRule" + getParamType(validate_rule) + ",rule must in array or object!");
 			}
 		},
-		validateAll: function() {
+		validateAll: function () {
 			for (var index in this.list) {
 				var param = this.list[index];
 				var rm = validate(param);
@@ -691,7 +750,7 @@ function Validator() {
 			}
 			return true;
 		},
-		buildFormValidateAutoRule: function(formId, build) {
+		buildFormValidateAutoRule: function (formId, build) {
 			var form = document.getElementById(formId);
 			if (typeof form == 'undefined') {
 				print("can't build on " + formId);
@@ -703,14 +762,14 @@ function Validator() {
 			if (build)
 				form.onsubmit = this.validateAll;
 		},
-		buildFormValidate: function(formId) {
+		buildFormValidate: function (formId) {
 			var form = document.getElementById(formId);
 			var validator = this;
 			if (typeof form == 'undefined') {
 				print("can't build on " + formId);
 				return;
 			}
-			form.onsubmit = function() {
+			form.onsubmit = function () {
 				return validator.validateAll();
 			}
 		}

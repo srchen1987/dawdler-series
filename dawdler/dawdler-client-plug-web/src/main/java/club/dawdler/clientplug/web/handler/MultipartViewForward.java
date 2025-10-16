@@ -45,9 +45,9 @@ public class MultipartViewForward extends ViewForward {
 	private static final Logger logger = LoggerFactory.getLogger(MultipartViewForward.class);
 	private static final DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
 
-//	static {
-//		diskFileItemFactory.setSizeThreshold(1024 * 1024 * 10);
-//	}
+	// static {
+	// diskFileItemFactory.setSizeThreshold(1024 * 1024 * 10);
+	// }
 
 	private final Map<String, List<String>> params = new HashMap<>();
 	private final Map<String, List<UploadFile>> fileParams = new HashMap<>();
@@ -65,8 +65,7 @@ public class MultipartViewForward extends ViewForward {
 		if (uploadPerSizeMax > 0) {
 			upload.setFileSizeMax(uploadPerSizeMax);
 		}
-		List<FileItem> fileItems;
-		fileItems = upload.parseRequest(request);
+		List<FileItem> fileItems = upload.parseRequest(request);
 		for (FileItem fileItem : fileItems) {
 			String fieldName = fileItem.getFieldName();
 			if (fileItem.isFormField()) {
@@ -312,12 +311,12 @@ public class MultipartViewForward extends ViewForward {
 		if (fileParams != null && !fileParams.isEmpty()) {
 			Set<Entry<String, List<UploadFile>>> enset = fileParams.entrySet();
 			for (Entry<String, List<UploadFile>> en : enset) {
-				try {
-					for (UploadFile uf : en.getValue()) {
+				for (UploadFile uf : en.getValue()) {
+					try {
 						uf.delete();
+					} catch (Exception e) {
+						logger.error("", e);
 					}
-				} catch (Exception e) {
-					logger.error("", e);
 				}
 			}
 			fileParams.clear();

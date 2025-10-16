@@ -26,22 +26,34 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class BaseResult<T> {
 
+	/**
+	 * 数据
+	 */
 	@JsonInclude(Include.NON_NULL)
 	protected T data;
 
+	/**
+	 * 是否成功
+	 */
 	@JsonInclude(Include.NON_NULL)
 	protected Boolean success;
 
+	/**
+	 * 提示信息
+	 */
 	@JsonInclude(Include.NON_NULL)
 	protected String message;
 
+	/**
+	 * 状态码
+	 */
 	@JsonInclude(Include.NON_NULL)
 	protected Integer code;
 
 	public BaseResult() {
-		
+
 	}
-	
+
 	public BaseResult(T data) {
 		this.data = data;
 		this.success = true;

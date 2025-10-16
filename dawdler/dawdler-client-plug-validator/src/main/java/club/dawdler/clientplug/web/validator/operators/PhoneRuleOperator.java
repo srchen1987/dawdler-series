@@ -32,7 +32,7 @@ public class PhoneRuleOperator extends StringRuleOperator {
 
 	@Override
 	public String validate(Object value) {
-		return validate(value, "请输入电话号码！");
+		return validate(value, "请输入电话号码!");
 	}
 
 	@Override
