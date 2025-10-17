@@ -16,56 +16,80 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.math.BigDecimal;
 import java.util.regex.Matcher;
 
 /**
  * @author jackson.song
  * @version V1.0
- * 字符个数大于判断
+ * 数字类型大于判断
  */
-public class MaxSizeRuleOperator extends RegexRuleOperator {
-	public static final String RULE_KEY = "^maxSize:([1-9]{1}\\d*$)";
+public class MaximumRuleOperator extends RegexRuleOperator {
+	public static final String RULE_KEY = "^maximum:([-+]?\\d+(\\.\\d+)?([eE][-+]?\\d+)?$)";
 
-	public MaxSizeRuleOperator() {
+	public MaximumRuleOperator() {
 		super(RULE_KEY);
 	}
 
 	@Override
 	public String validate(Object value, Matcher matcher) {
 		boolean flag = true;
-		int i = Integer.parseInt(matcher.group(1));
-		String error = "不能大于" + i + "个字符!";
+		BigDecimal maximum = new BigDecimal(matcher.group(1));
+		String error = "不能大于数字" + maximum.toString() + "!";
+
 		if (value == null) {
 			return null;
 		}
+
 		if (value instanceof String) {
 			if (isEmpty(value.toString())) {
 				return null;
 			}
-			if (((String) value).trim().length() > i) {
+
+			BigDecimal v = null;
+			try {
+				v = new BigDecimal((String) value);
+			} catch (Exception e) {
+				// 无法解析为数字，跳过验证
+				return null;
+			}
+
+			if (v.compareTo(maximum) > 0) {
 				return error;
 			}
 		}
+
 		if (value instanceof String[]) {
 			String[] values = (String[]) value;
 			for (String v : values) {
 				if (isEmpty(v)) {
 					continue;
 				}
-				if (v.trim().length() > i) {
+
+				BigDecimal dv = null;
+				try {
+					dv = new BigDecimal(v);
+				} catch (Exception e) {
+					// 无法解析为数字，跳过该项
+					continue;
+				}
+
+				if (dv.compareTo(maximum) > 0) {
 					flag = false;
 					break;
 				}
 			}
 		}
+
 		if (!flag) {
 			return error;
 		}
+
 		return null;
 	}
 
 	@Override
 	public String toString() {
-		return "字符串或数组中的字符串的长度不能大于指定长度,如：maxSize:32!";
+		return "最大数值不能大于指定数字如:maximum:25或maximum:25.32或maximum:3.4028235E38，支持整数或小数!";
 	}
 }

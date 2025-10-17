@@ -16,23 +16,27 @@
  */
 package club.dawdler.client.api.generator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import club.dawdler.client.api.generator.TypesConverter.TypeData;
-import club.dawdler.client.api.generator.data.ClassStruct;
-import club.dawdler.client.api.generator.data.ItemsData;
-import club.dawdler.client.api.generator.data.MethodParameterData;
-import club.dawdler.client.api.generator.data.ParserTypeData;
-import club.dawdler.client.api.generator.data.SchemaData;
-import club.dawdler.client.api.generator.util.ClassTypeUtil;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaField;
 import com.thoughtworks.qdox.model.JavaType;
 import com.thoughtworks.qdox.model.impl.DefaultJavaField;
 import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
+
+import club.dawdler.client.api.generator.TypesConverter.TypeData;
+import club.dawdler.client.api.generator.data.ItemsData;
+import club.dawdler.client.api.generator.data.MethodParameterData;
+import club.dawdler.client.api.generator.data.SchemaData;
+import club.dawdler.client.api.generator.util.ClassTypeUtil;
+import club.dawdler.client.api.generator.util.CommentUtils;
 
 /**
  * @author jackson.song
@@ -42,7 +46,7 @@ import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 public class FieldParser {
 
 	public static void parserFields(JavaClass javaClass, Map<String, ClassStruct> classStructs,
-			Map<String, MethodParameterData> params, boolean isArray) {
+			Map<String, MethodParameterData> params, boolean isArray, Map<String, Object> definitionsMap) {
 		List<JavaField> fields = javaClass.getFields();
 		JavaClass superJavaClass = javaClass.getSuperJavaClass();
 		while (!superJavaClass.getBinaryName().equals("java.lang.Object")) {
@@ -51,30 +55,105 @@ public class FieldParser {
 		}
 		for (JavaField field : fields) {
 			if (!field.isFinal() && !field.isStatic()) {
-				MethodParameterData parameterData = null;
-				parameterData = params.get(field.getName());
+				MethodParameterData parameterData = params.get(field.getName());
 				if (parameterData == null) {
 					parameterData = new MethodParameterData();
 					parameterData.setName(field.getName());
 					parameterData.setIn("query");
-					params.put(field.getName(), parameterData);
-					parameterData.setDescription(field.getComment());
-					ParserTypeData.convertion(field.getType(), parameterData, classStructs, params, isArray);
+					if (!field.getType().isEnum()) {
+						parameterData.setRequired(false);
+						params.put(field.getName(), parameterData);
+						String comment = field.getComment();
+						if (comment != null && !comment.trim().isEmpty()) {
+							comment = field.getName() + " " + comment;
+							CommentUtils.setRule(comment, parameterData);
+						} else {
+							parameterData.setSchema(new SchemaData());
+						}
+						TypeDataParser.convertion(field.getType(), parameterData, classStructs, params, isArray,
+								definitionsMap);
+					} else {
+						SchemaData schema = new SchemaData();
+						String typeName = field.getType().getFullyQualifiedName();
+						String genericFullyQualifiedName = field.getType().getGenericFullyQualifiedName();
+						String type = null;
+						if (genericFullyQualifiedName.contains(">")) {
+							type = genericFullyQualifiedName;
+						} else {
+							type = typeName;
+						}
+						boolean array = false;
+						if (ClassTypeUtil.isArray(field.getType().getBinaryName())) {
+							type = ClassTypeUtil.getType0(field.getType());
+							array = true;
+						} else if (type.endsWith("[]")) {
+							type = type.substring(0, type.lastIndexOf("[]"));
+							array = true;
+						}
+						FieldParser.parserFields(field.getType(), classStructs, definitionsMap, null,
+								parameterData.getDescription());
+						if (definitionsMap.containsKey(type)) {
+							parameterData.setRequired(true);
+							params.put(field.getName(), parameterData);
+							if (array) {
+								schema.setType("array");
+								ItemsData items = new ItemsData();
+								items.set$ref("#/components/schemas/" + type);
+								schema.setItems(items);
+							} else {
+								schema.set$ref("#/components/schemas/" + type);
+							}
+							parameterData.setSchema(schema);
+						}
+					}
+
+				}
+			}
+		}
+	}
+
+	public static void parserMultipartParameterFields(String paramName, JavaClass javaClass,
+			Map<String, ClassStruct> classStructs,
+			Map<String, SchemaData> params, boolean isArray) {
+		List<JavaField> fields = javaClass.getFields();
+		JavaClass superJavaClass = javaClass.getSuperJavaClass();
+		while (!superJavaClass.getBinaryName().equals("java.lang.Object")) {
+			fields.addAll(superJavaClass.getFields());
+			superJavaClass = superJavaClass.getSuperJavaClass();
+		}
+		for (JavaField field : fields) {
+			if (!field.isFinal() && !field.isStatic()) {
+				SchemaData schemaData = params.get(field.getName());
+				if (schemaData == null) {
+					schemaData = new SchemaData();
+					params.put(field.getName(), schemaData);
+					String comment = field.getComment();
+					if (comment != null && !comment.trim().isEmpty()) {
+						comment = field.getName() + " " + comment;
+						CommentUtils.setRule(comment, schemaData);
+					}
+					if (!field.getType().isEnum()) {
+						TypeDataParser.convertionMultipartParameter(paramName, field.getType(), schemaData,
+								classStructs, params, isArray);
+					}
+
 				}
 			}
 		}
 	}
 
 	public static void parserFields(JavaType fieldJavaType, Map<String, ClassStruct> classStructs,
-			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes) {
-		parserFields(fieldJavaType, classStructs, definitionsMap, javaTypes, null);
+			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes, String paramComment) {
+		parserFields(fieldJavaType, classStructs, definitionsMap, javaTypes, null, paramComment);
 	}
 
 	public static void parserFields(JavaType fieldJavaType, Map<String, ClassStruct> classStructs,
-			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes, Map<String, AtomicInteger> counter) {
+			Map<String, Object> definitionsMap, Map<String, JavaType> javaTypes, Map<String, AtomicInteger> counter,
+			String paramComment) {
 		String typeName = fieldJavaType.getBinaryName();
 		String genericFullyQualifiedName = fieldJavaType.getGenericFullyQualifiedName();
 		String originalFullyQualifiedName = fieldJavaType.getFullyQualifiedName();
+		boolean isEnum = false;
 		if (ClassTypeUtil.isArray(typeName)) {
 			DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) fieldJavaType;
 			List<JavaType> dtList = dt.getActualTypeArguments();
@@ -90,16 +169,29 @@ public class FieldParser {
 			if (typeData == null) {
 				ClassStruct classStruct = classStructs.get(typeName);
 				if (classStruct != null) {
-					Map<String, Object> objMap = new HashMap<>();
-					Map<String, Object> propertiesMap = new HashMap<>();
-					objMap.put("type", "object");
-					if (genericFullyQualifiedName.contains(">")) {
-						objMap.put("title", genericFullyQualifiedName/* .replaceAll("<", "«").replaceAll(">","»") */);
-					} else {
-						objMap.put("title", typeName);
+					isEnum = classStruct.getJavaClass().isEnum();
+					Map<String, Object> objMap = new LinkedHashMap<>();
+					Map<String, Object> propertiesMap = new LinkedHashMap<>();
+					if (!isEnum) {
+						objMap.put("type", "object");
+						if (genericFullyQualifiedName.contains(">")) {
+							objMap.put("title",
+									genericFullyQualifiedName/* .replaceAll("<", "«").replaceAll(">","»") */);
+						} else {
+							objMap.put("title", typeName);
+						}
+						objMap.put("properties", propertiesMap);
 					}
-					objMap.put("properties", propertiesMap);
-					List<JavaField> fields = getAllFields(classStruct.getJavaClass());
+					Set<String> required = new HashSet<>();
+					List<JavaField> fields;
+					SchemaData enumSchemaData = null;
+					if (isEnum) {
+						enumSchemaData = new SchemaData();
+						enumSchemaData.setType("string");
+						fields = classStruct.getJavaClass().getEnumConstants();
+					} else {
+						fields = getAllFields(classStruct.getJavaClass());
+					}
 					for (int i = 0; i < fields.size(); i++) {
 						JavaField javaField = fields.get(i);
 						if (!javaField.isStatic() && !javaField.isFinal()) {
@@ -117,7 +209,13 @@ public class FieldParser {
 									List<JavaType> typeArguments = dt.getActualTypeArguments();
 									genericFullyQualifiedFieldName = dt.getGenericFullyQualifiedName();
 									MethodParameterData fieldParameterData = new MethodParameterData();
-									fieldParameterData.setType(genericFullyQualifiedFieldName);
+									if (genericFullyQualifiedFieldName.equals("java.lang.Void")) {
+										fieldParameterData.setType("object");
+										fieldParameterData.setNullable(true);
+
+									} else {
+										fieldParameterData.setType(genericFullyQualifiedFieldName);
+									}
 									propertiesMap.put(javaField.getName(), fieldParameterData);
 									if (dt.getBinaryName().equals("java.util.Map")) {
 										continue;
@@ -161,19 +259,23 @@ public class FieldParser {
 									ItemsData items = new ItemsData();
 									items.setType(typeData.getType());
 									items.setFormat(typeData.getFormat());
-									if (comment != null) {
-										items.setDescription(comment);
-									}
 									schema.setItems(items);
+									if (comment != null) {
+										if (CommentUtils.setRuleForArray(comment, schema)) {
+											required.add(javaField.getName());
+										}
+									}
 									propertiesMap.put(javaField.getName(), schema);
 								} else {
-									MethodParameterData fieldParameterData = new MethodParameterData();
-									fieldParameterData.setType(typeData.getType());
-									fieldParameterData.setFormat(typeData.getFormat());
+									SchemaData schema = new SchemaData();
+									schema.setType(typeData.getType());
+									schema.setFormat(typeData.getFormat());
 									if (comment != null) {
-										fieldParameterData.setDescription(comment);
+										if (CommentUtils.setRule(comment, schema)) {
+											required.add(javaField.getName());
+										}
 									}
-									propertiesMap.put(javaField.getName(), fieldParameterData);
+									propertiesMap.put(javaField.getName(), schema);
 								}
 							} else {
 								if (ClassTypeUtil.isArray(originalFieldTypeName)) {
@@ -190,51 +292,82 @@ public class FieldParser {
 										}
 									}
 								}
-								AtomicInteger count = null;
-								if (counter != null && (count = counter.get(originalFieldTypeName)) != null) {
-									if (count.getAndIncrement() > 2)
-										return;
-								} else if (originalFieldTypeName.equals(originalFullyQualifiedName)) {
-									counter = new HashMap<>();
-									counter.put(originalFullyQualifiedName, new AtomicInteger(1));
+								if (!isEnum) {
+									AtomicInteger count = null;
+									if (counter != null && (count = counter.get(originalFieldTypeName)) != null) {
+										if (count.getAndIncrement() > 2)
+											continue;
+									} else if (originalFieldTypeName.equals(originalFullyQualifiedName)) {
+										counter = new HashMap<>();
+										counter.put(originalFullyQualifiedName, new AtomicInteger(1));
+									}
 								}
 								if (classStructs.get(originalFieldTypeName) != null) {
-									parserFields(javaField.getType(), classStructs, definitionsMap, null, counter);
 									SchemaData schema = new SchemaData();
-									if (array) {
-										schema.setType("array");
-										ItemsData items = new ItemsData();
-										if (genericFullyQualifiedFieldName.contains(">")) {
-											items.set$ref("#/definitions/"
-													+ genericFullyQualifiedFieldName/*
-																					 * .replaceAll("<",
-																					 * "«").replaceAll(">","»")
-																					 */);
+									if (!isEnum) {
+										parserFields(javaField.getType(), classStructs, definitionsMap, null, counter,
+												paramComment);
+										if (array) {
+											schema.setType("array");
+											ItemsData items = new ItemsData();
+											if (genericFullyQualifiedFieldName.contains(">")) {
+												items.set$ref("#/components/schemas/"
+														+ genericFullyQualifiedFieldName/*
+																						 * .replaceAll("<",
+																						 * "«").replaceAll(">","»")
+																						 */);
+											} else {
+												items.set$ref("#/components/schemas/" + originalFieldTypeName);
+											}
+											schema.setItems(items);
 										} else {
-											items.set$ref("#/definitions/" + originalFieldTypeName);
+											if (genericFullyQualifiedFieldName.contains(">")) {
+												schema.set$ref("#/components/schemas/"
+														+ genericFullyQualifiedFieldName/*
+																						 * .replaceAll("<",
+																						 * "«").replaceAll(">","»")
+																						 */);
+											} else {
+												schema.set$ref(
+														"#/components/schemas/" + genericFullyQualifiedFieldName);
+											}
 										}
-										schema.setItems(items);
+										propertiesMap.put(javaField.getName(), schema);
 									} else {
-										if (genericFullyQualifiedFieldName.contains(">")) {
-											schema.set$ref("#/definitions/"
-													+ genericFullyQualifiedFieldName/*
-																					 * .replaceAll("<",
-																					 * "«").replaceAll(">","»")
-																					 */);
-										} else {
-											schema.set$ref("#/definitions/" + genericFullyQualifiedFieldName);
+										if (enumSchemaData.getEnumList() == null) {
+											enumSchemaData.setEnumList(new ArrayList<>());
+										}
+										enumSchemaData.getEnumList().add(javaField.getName());
+										if (javaField.getComment() != null) {
+											if (enumSchemaData.getDescription() == null) {
+												enumSchemaData.setDescription(paramComment == null ? ""
+														: paramComment + " : " +
+																javaField.getName() + "->" + javaField.getComment()
+																+ " | ");
+											} else {
+												enumSchemaData.setDescription(enumSchemaData.getDescription()
+														+ javaField.getName() + "->" + javaField.getComment() + " | ");
+											}
 										}
 									}
-									propertiesMap.put(javaField.getName(), schema);
+
 								}
 							}
 						}
 					}
-					if (genericFullyQualifiedName.contains(">")) {
-						definitionsMap.putIfAbsent(
-								genericFullyQualifiedName/* .replaceAll("<", "«").replaceAll(">","»") */, objMap);
+					if (isEnum) {
+						definitionsMap.putIfAbsent(typeName, enumSchemaData);
+						if (!required.isEmpty()) {
+							objMap.put("required", required);
+						}
 					} else {
-						definitionsMap.putIfAbsent(typeName, objMap);
+						if (genericFullyQualifiedName.contains(">")) {
+							definitionsMap.putIfAbsent(
+									genericFullyQualifiedName.replaceAll("<", "_").replaceAll(">", "_"),
+									objMap);
+						} else {
+							definitionsMap.putIfAbsent(typeName, objMap);
+						}
 					}
 
 				}

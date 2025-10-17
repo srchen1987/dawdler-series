@@ -27,19 +27,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import club.dawdler.client.api.generator.conf.OpenApiConfig;
-import club.dawdler.client.api.generator.data.ClassStruct;
-import club.dawdler.client.api.generator.data.ControllerData;
-import club.dawdler.clientplug.web.annotation.Controller;
-import club.dawdler.clientplug.web.annotation.RequestMapping;
-import club.dawdler.util.JsonProcessUtil;
-import club.dawdler.util.YAMLMapperFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.DocletTag;
 import com.thoughtworks.qdox.model.JavaAnnotation;
 import com.thoughtworks.qdox.model.JavaClass;
 import com.thoughtworks.qdox.model.JavaSource;
+
+import club.dawdler.client.api.generator.conf.OpenApiConfig;
+import club.dawdler.client.api.generator.data.ControllerData;
+import club.dawdler.clientplug.web.annotation.Controller;
+import club.dawdler.clientplug.web.annotation.RequestMapping;
+import club.dawdler.util.JsonProcessUtil;
+import club.dawdler.util.YAMLMapperFactory;
 
 /**
  * @author jackson.song
@@ -71,10 +71,9 @@ public class WebApiGenerator {
 		infoMap.put("description", openApi.getDescription());
 		infoMap.put("contact", openApi.getContact());
 
-		rootMap.put("swagger", openApi.getSwagger());
+		rootMap.put("openapi", openApi.getOpenApi());
 		rootMap.put("info", infoMap);
-		rootMap.put("host", openApi.getHost());
-		rootMap.put("basePath", openApi.getBasePath());
+		rootMap.put("servers", openApi.getServers());
 		rootMap.put("paths", pathMap);
 		List<ControllerData> controllers = new ArrayList<>(128);
 		rootMap.put("tags", controllers);
@@ -128,7 +127,10 @@ public class WebApiGenerator {
 			}
 
 		}
-		rootMap.put("definitions", definitionsMap);
+
+		Map<String, Object> schemas = new LinkedHashMap<>();
+		schemas.put("schemas", definitionsMap);
+		rootMap.put("components", schemas);
 		String openApiText = JsonProcessUtil.beanToJson(rootMap);
 		OutputStream out = new FileOutputStream(new File(openApi.getOutPath()).getAbsoluteFile());
 		try {
@@ -137,7 +139,6 @@ public class WebApiGenerator {
 		} finally {
 			out.close();
 		}
-
 	}
 
 	public static void generate(String configPath) throws IOException {

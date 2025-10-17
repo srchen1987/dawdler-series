@@ -18,15 +18,15 @@ web-conf.xml是web端核心配置文件. 包含组件扫描,配置据源定义,�
 本模块中涉及事务的配置如下:
 
 ```xml
-	<datasource-expressions>
-		<datasource-expression id="order-datasource"
-			latent-expression="write=[user_writeDataSource],read=[user_readDataSource|user_readDataSource1]" /><!-- 
-			数据源表达式配置 id为标识 latent_expression为读写配置 其中write为写连接 read为读连接 读连接可以配置多个用|分开 
-			轮询方式调用 -->
-	</datasource-expressions>
-	<decisions>
-		<!-- mapping 需要注入数据源的service包 latent-expression 为数据源表达式配置中的id -->
-		<decision mapping="com.dawdler.order.service.impl"
-			latent-expression-id="order-datasource" />
-	</decisions>
+    <datasource-expressions>
+        <datasource-expression id="order-datasource"
+            latent-expression="write=[user_writeDataSource],read=[user_readDataSource|user_readDataSource1]" /><!-- 
+            数据源表达式配置 id为标识 latent_expression为读写配置 其中write为写连接 read为读连接 读连接可以配置多个用|分开 
+            轮询方式调用 -->
+    </datasource-expressions>
+    <decisions>
+        <!-- mapping 需要注入数据源的service包 latent-expression 为数据源表达式配置中的id -->
+        <decision mapping="com.dawdler.order.service.impl"
+            latent-expression-id="order-datasource" />
+    </decisions>
 ```

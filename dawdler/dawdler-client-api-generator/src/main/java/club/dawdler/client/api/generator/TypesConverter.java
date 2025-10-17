@@ -17,6 +17,11 @@
 package club.dawdler.client.api.generator;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,8 +54,12 @@ public class TypesConverter {
 			put(Float.class.getName(), new TypeData("number", "float"));
 			put(float.class.getName(), new TypeData("number", "float"));
 			put(BigDecimal.class.getName(), new TypeData("number", null));
-			put(UploadFile.class.getName(), new TypeData("file", null));
-
+			put(UploadFile.class.getName(), new TypeData("string", "binary"));
+			put(Date.class.getName(), new TypeData("string", "date-time"));
+			put(LocalDate.class.getName(), new TypeData("string", "date"));
+			put(LocalDateTime.class.getName(), new TypeData("string", "date-time"));
+			put(ZonedDateTime.class.getName(), new TypeData("string", "date-time"));
+			put(OffsetDateTime.class.getName(), new TypeData("string", "date-time"));
 		}
 	};
 

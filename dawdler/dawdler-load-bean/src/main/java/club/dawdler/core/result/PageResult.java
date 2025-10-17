@@ -16,9 +16,10 @@
  */
 package club.dawdler.core.result;
 
-import club.dawdler.serverplug.load.bean.Page;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import club.dawdler.serverplug.load.bean.Page;
 
 /**
  * @author jackson.song
@@ -27,11 +28,14 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  */
 public class PageResult<T> extends BaseResult<T> {
 
+	/**
+	 * 分页信息
+	 */
 	@JsonInclude(Include.NON_NULL)
 	private Page page;
-	
+
 	public PageResult() {
-		
+
 	}
 
 	public PageResult(T data) {

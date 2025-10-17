@@ -23,10 +23,10 @@ import java.util.regex.Matcher;
  * @version V1.0
  * 字符个数小于判断
  */
-public class MinSizeRuleOperator extends RegexRuleOperator {
-	public static final String RULE_KEY = "^minSize:([1-9]{1}\\d*$)";
+public class MinLengthRuleOperator extends RegexRuleOperator {
+	public static final String RULE_KEY = "^minLength:([1-9]{1}\\d*$)";
 
-	public MinSizeRuleOperator() {
+	public MinLengthRuleOperator() {
 		super(RULE_KEY);
 	}
 
@@ -66,6 +66,6 @@ public class MinSizeRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String toString() {
-		return "字符串或数组中的字符串的长度不能小于指定长度,如：minSize:3!";
+		return "字符串或数组中的字符串的长度不能小于指定长度,如：minLength:3!";
 	}
 }

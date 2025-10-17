@@ -47,8 +47,7 @@ public class ClassUtil {
 	}
 
 	public static boolean isSimpleValueType(Class<?> type) {
-		return ((isPrimitiveOrWrapper(type) || BigDecimal.class.isAssignableFrom(type)) && Void.class != type
-				&& void.class != type);
+		return isPrimitiveOrWrapper(type) || BigDecimal.class.isAssignableFrom(type);
 	}
 
 	public static boolean isSimpleArrayType(Class<?> type) {
@@ -332,6 +331,15 @@ public class ClassUtil {
 			return result;
 		}
 		return result;
+	}
+
+	public static <T extends Enum<T>> T[] createEnumArray(Class<T> enumClass, String... names) {
+		@SuppressWarnings("unchecked")
+		T[] array = (T[]) java.lang.reflect.Array.newInstance(enumClass, names.length);
+		for (int i = 0; i < names.length; i++) {
+			array[i] = Enum.valueOf(enumClass, names[i]);
+		}
+		return array;
 	}
 
 }

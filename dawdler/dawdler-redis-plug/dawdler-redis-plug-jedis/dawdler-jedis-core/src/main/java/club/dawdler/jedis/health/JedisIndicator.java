@@ -24,7 +24,6 @@ import club.dawdler.core.health.Health;
 import club.dawdler.core.health.Health.Builder;
 import club.dawdler.core.health.HealthIndicator;
 import club.dawdler.jedis.JedisPoolFactory;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.util.Pool;
 

@@ -16,50 +16,37 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.util.regex.Matcher;
+
 /**
  * @author jackson.song
  * @version V1.0
- * 不能为空验证
+ * 选项大于判断
  */
-public class NotEmptyRuleOperator extends StringRuleOperator {
-	public static final String RULE_KEY = "notEmpty";
-	public static final String EXPLAIN = "不能为空验证!";
+public class MaxItemsRuleOperator extends RegexRuleOperator {
+	public static final String RULE_KEY = "^maxItems:([1-9]{1}\\d*$)";
 
-	public NotEmptyRuleOperator() {
-		super(RULE_KEY, null, EXPLAIN);
-
+	public MaxItemsRuleOperator() {
+		super(RULE_KEY);
 	}
 
 	@Override
-	public String validate(Object value) {
+	public String validate(Object value, Matcher matcher) {
+		int i = Integer.parseInt(matcher.group(1));
+		String error = "不能大于" + i + "项!";
 		if (value == null) {
-			return "不能为空!";
+			return null;
 		}
-		boolean flag = true;
-		if (value instanceof String) {
-			flag = !((String) value).trim().equals("");
-		} else if (value instanceof String[]) {
-			String[] values = (String[]) value;
-			for (String v : values) {
-				if (v == null) {
-					flag = false;
-					break;
-				}
-				if (v.trim().equals("")) {
-					flag = false;
-					break;
-				}
+		if (value instanceof String[]) {
+			if (((String[]) value).length > i) {
+				return error;
 			}
-		}
-		if (!flag) {
-			return "不能为空!";
 		}
 		return null;
 	}
 
 	@Override
 	public String toString() {
-		return EXPLAIN;
+		return "最大选择数或最大参数个数或List或数组的长度不能大于指定数字如:maxItems:3!";
 	}
-
 }

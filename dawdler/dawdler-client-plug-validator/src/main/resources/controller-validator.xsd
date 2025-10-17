@@ -150,6 +150,8 @@
 			<xs:enumeration value="header" />
 			<xs:enumeration value="body" />
 			<xs:enumeration value="path" />
+			<xs:enumeration value="cookie" />
+			<xs:enumeration value="queryParam" />
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:simpleType name="t_required_string">

@@ -19,8 +19,8 @@ LocalService核心模块,用于标注一个被注入的服务是本地服务.
 @Retention(value = RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface LocalService {
-	//服务的类名,默认为空,则为注解所在类或接口的全称(类优先). 与@Service中serviceName对应
-	String serviceName() default "";
+    //服务的类名,默认为空,则为注解所在类或接口的全称(类优先). 与@Service中serviceName对应
+    String serviceName() default "";
 }
 ```
 
@@ -33,15 +33,15 @@ public @interface LocalService {
 @RequestMapping("/order")
 public class OrderController {
 
-	@LocalService
-	private OrderService orderService;
+    @LocalService
+    private OrderService orderService;
 
-	@ResponseBody
-	@RequestMapping(value = "/list", method = RequestMethod.GET)
-	public PageResult<List<Order>> list(Integer pageOn, Order order) {
-		int row = 10;
-		return orderService.selectPageList(order, pageOn, row);
-	}
+    @ResponseBody
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public PageResult<List<Order>> list(Integer pageOn, Order order) {
+        int row = 10;
+        return orderService.selectPageList(order, pageOn, row);
+    }
 
 }
 ```
@@ -52,7 +52,7 @@ public class OrderController {
 @Service("order-service")
 public interface OrderService {
  
-	BaseResult<Order> selectByPrimaryKey(Integer orderId);
+    BaseResult<Order> selectByPrimaryKey(Integer orderId);
 
 }
 ```
@@ -61,15 +61,15 @@ public interface OrderService {
 
 ```java
 public class OrderServiceImpl implements OrderService {
-	@Repository
-	private OrderMapper orderMapper;
+    @Repository
+    private OrderMapper orderMapper;
 
-	@Override
-	@DBTransaction(mode = MODE.readOnly)
-	public BaseResult<Order> selectByPrimaryKey(Integer orderId) {
-		Order order = orderMapper.selectByPrimaryKey(orderId);
-		BaseResult<Order> baseResult = new BaseResult<>(order);
-		return baseResult;
-	}
+    @Override
+    @DBTransaction(mode = MODE.readOnly)
+    public BaseResult<Order> selectByPrimaryKey(Integer orderId) {
+        Order order = orderMapper.selectByPrimaryKey(orderId);
+        BaseResult<Order> baseResult = new BaseResult<>(order);
+        return baseResult;
+    }
 }
 ```

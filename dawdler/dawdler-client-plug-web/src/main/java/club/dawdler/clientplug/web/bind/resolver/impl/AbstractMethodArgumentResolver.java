@@ -23,7 +23,7 @@ import club.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 /**
  * @author jackson.song
  * @version V1.0
- * 获取参数值的决策者的抽象类，实现getParameterName 方便子类使用
+ *          获取参数值的决策者的抽象类
  */
 public abstract class AbstractMethodArgumentResolver implements MethodArgumentResolver {
 

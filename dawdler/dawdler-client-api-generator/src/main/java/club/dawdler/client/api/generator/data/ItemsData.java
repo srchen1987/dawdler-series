@@ -16,6 +16,8 @@
  */
 package club.dawdler.client.api.generator.data;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -27,10 +29,25 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 public class ItemsData {
 	@JsonInclude(Include.NON_NULL)
 	private String $ref;
+
 	@JsonInclude(Include.NON_NULL)
 	private String type;
+
 	@JsonInclude(Include.NON_NULL)
 	private String format;
+
+	@JsonInclude(Include.NON_NULL)
+	private Integer minLength;
+
+	@JsonInclude(Include.NON_NULL)
+	private Integer maxLength;
+
+	@JsonInclude(Include.NON_NULL)
+	private BigDecimal minimum;
+
+	@JsonInclude(Include.NON_NULL)
+	private BigDecimal maximum;
+
 	@JsonInclude(Include.NON_NULL)
 	private String description;
 
@@ -62,8 +79,39 @@ public class ItemsData {
 		return $ref;
 	}
 
+	public Integer getMinLength() {
+		return minLength;
+	}
+
+	public void setMinLength(Integer minLength) {
+		this.minLength = minLength;
+	}
+
+	public Integer getMaxLength() {
+		return maxLength;
+	}
+
+	public void setMaxLength(Integer maxLength) {
+		this.maxLength = maxLength;
+	}
+
+	public BigDecimal getMinimum() {
+		return minimum;
+	}
+
+	public void setMinimum(BigDecimal minimum) {
+		this.minimum = minimum;
+	}
+
+	public BigDecimal getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(BigDecimal maximum) {
+		this.maximum = maximum;
+	}
 	public void set$ref(String $ref) {
-		this.$ref = $ref;
+		this.$ref = $ref.replaceAll("<", "_").replaceAll(">", "_");
 	}
 
 }

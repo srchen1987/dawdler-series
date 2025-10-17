@@ -40,13 +40,13 @@
 状态码:[ email ] 邮箱验证
 #regexRule list 正则类验证规则
 状态码:[ ^contain:\[(.+)\]$ ] 规定性范围内包含验证,如：contain:[China,1] ,表单中必须出现China或1 !
-状态码:[ ^minNumber:([-+]?\d+(\.\d+)?$) ] 最小数值不能小于指定数字如:minNumber:25或minNumber:25.32!
-状态码:[ ^maxSize:([1-9]{1}\d*$) ] 字符串或数组中的字符串的长度不能大于指5定长度,如：maxSize:32!
-状态码:[ ^maxSelect:([1-9]{1}\d*$) ] 最大选择数或最大参数个数或List或数组的长度不能大于指定数字如:maxSelect:3!
-状态码:[ ^minSelect:([1-9]{1}\d*$) ] 最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minSelect:3!
+状态码:[ ^minimum:([-+]?\d+(\.\d+)?$) ] 最小数值不能小于指定数字如:minimum:25或minimum:25.32!
+状态码:[ ^maxLength:([1-9]{1}\d*$) ] 字符串或数组中的字符串的长度不能大于指5定长度,如：maxLength:32!
+状态码:[ ^maxItems:([1-9]{1}\d*$) ] 最大选择数或最大参数个数或List或数组的长度不能大于指定数字如:maxItems:3!
+状态码:[ ^minItems:([1-9]{1}\d*$) ] 最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minItems:3!
 状态码:[ ^noContain:\[(.+)\]$ ] 规定性范围内不包含验证,如：noContain:[China,1] ,表单中不能出现China或1 !
-状态码:[ ^maxNumber:([-+]?\d+(\.\d+)?$) ] 最大数值不能大于指定数字如:maxNumber:25或maxNumber:25.32!
-状态码:[ ^minSize:([1-9]{1}\d*$) ] 字符串或数组中的字符串的长度不能小于指定长度,如：minSize:3!
+状态码:[ ^maximum:([-+]?\d+(\.\d+)?$) ] 最大数值不能大于指定数字如:maximum:25或maximum:25.32!
+状态码:[ ^minLength:([1-9]{1}\d*$) ] 字符串或数组中的字符串的长度不能小于指定长度,如：minLength:3!
 ```
 
 #### 2.2 配置验证器
@@ -69,10 +69,10 @@ UserController-validator.xml 内容：
             <![CDATA[notEmpty&positiveNumber]]>
         </validator-field><!-- 控件信息节点,@name 控件名称  @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合(@globalRules 需求很少不容易理,解所以废弃了 )  . <![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展) -->
         <validator-field name="username" explain="用户名">
-            <![CDATA[notEmpty&maxSize:32]]>
+            <![CDATA[notEmpty&maxLength:32]]>
         </validator-field>
         <validator-field name="password" explain="密码">
-            <![CDATA[notEmpty&maxSize:32]]>
+            <![CDATA[notEmpty&maxLength:32]]>
         </validator-field>
         <validator-field name="age" explain="年龄">
             <![CDATA[positiveNumber]]>
@@ -85,7 +85,7 @@ UserController-validator.xml 内容：
     <validator-fields-groups><!-- 控件信息组 -->
     
     <!-- 控件信息组,如果同一个Controller里 有多个api都需要验证某些控件信息 则可以建立一个组,分别refgid这个组id即可.
-    组之间也可以refgid引用,如果涉及相互依赖问题,系统会提醒错误！ -->
+    组之间也可以refgid引用,如果涉及相互依赖问题,系统会提醒错误! -->
         <validator-fields-group id="add"><!-- 控件信息组节点 @id 组的标识id,供其他组或mapping验证器进行引用 -->
             <validator ref="userid"/><!-- 组内控件 @ref 引入validator-field中的定义.
             如果不存在则到全局global-validator.xml中引用,@refgid 引入其它组,@ref与@refgid可以并存. -->
@@ -124,10 +124,10 @@ UserController-validator.xml 内容：
 用于定义全局验证规则变量的配置文件
 
 ```properties
-nm32=notEmpty&maxSize:32
+nm32=notEmpty&maxLength:32
 ```
 
-以上定义了全局的规则名字为nm32,规则为notEmpty不允许为空,maxSize:32最大长度不能大于32位字符.
+以上定义了全局的规则名字为nm32,规则为notEmpty不允许为空,maxLength:32最大长度不能大于32位字符.
 
 可以随意组装任何系统内提供的或扩展的规则,通过&符号连接即可.
 
@@ -196,15 +196,15 @@ public class NumberRuleOperator extends StringRuleOperator {
 
 继承RegexRuleOperator类,实现validate与toString方法即可.
 
-通过 club.dawdler.clientplug.web.validator.operators.MaxSizeRuleOperator 举例,MaxSizeRuleOperator是系统内提供验证字符个数不能大于指定范围的规则实现类,用法：maxSize:32,不能大于32个字符个数.
+通过 club.dawdler.clientplug.web.validator.operators.MaxLengthRuleOperator 举例,MaxLengthRuleOperator是系统内提供验证字符个数不能大于指定范围的规则实现类,用法：maxLength:32,不能大于32个字符个数.
 
 示例:
 
 ```java
-public class MaxSizeRuleOperator extends RegexRuleOperator {
- public static final String RULE_KEY = "^maxSize:([1-9]{1}\\d*$)";//正则表达式
+public class MaxLengthRuleOperator extends RegexRuleOperator {
+ public static final String RULE_KEY = "^maxLength:([1-9]{1}\\d*$)";//正则表达式
 
- public MaxSizeRuleOperator() {
+ public maxLengthRuMaxLengthRuleOperatorleOperator() {
   super(RULE_KEY);
  }
 //以下是实现
@@ -251,7 +251,7 @@ public class MaxSizeRuleOperator extends RegexRuleOperator {
 
  @Override
  public String toString() {
-  return "字符串或数组中的字符串的长度不能大于指定长度,如：maxSize:32!";
+  return "字符串或数组中的字符串的长度不能大于指定长度,如：maxLength:32!";
  }
 }
 
@@ -272,7 +272,7 @@ registerRuleOperatorScanPackage接收参数为Class对象,添加这个Class所�
 ```java
 package com.anywide.yyg.user.web.listener;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import club.dawdler.clientplug.web.listener.WebContextListener;
 import club.dawdler.clientplug.web.validator.RuleOperatorProvider;
@@ -361,11 +361,11 @@ buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-bu
 sir_validator.addRule([{
         "id": "username",
         "viewName": "用户名",
-        "validateRule": "notEmpty&maxSize:16"
+        "validateRule": "notEmpty&maxLength:16"
     },{
         "id": "password",
         "viewName": "密码",
-        "validateRule": "notEmpty&maxSize:16"
+        "validateRule": "notEmpty&maxLength:16"
     }]);
 ```
 
@@ -390,6 +390,8 @@ sir_validator.addRule([{
  });
 
 ```
+
+------------------------------------------------------
 
 传入提示组件id示例：
 
@@ -429,7 +431,7 @@ sir_validator.addRule([{
 
 ```javascript
 //给username控件添加一个最小长度不能小于3个字符的验证规则.
-sir_validator.appendRule("username","minSize:3");
+sir_validator.appendRule("username","minLength:3");
 ```
 
 #### 6.4 移除指定控件与验证规则
@@ -440,7 +442,7 @@ sir_validator.appendRule("username","minSize:3");
 
 ```javascript
 //移除username控件最小长度不能小于3个字符的验证规则.
-sir_validator.removeRule("username","minSize:3");
+sir_validator.removeRule("username","minLength:3");
 ```
 
 #### 6.5 移除指定控件的所有验证规则
@@ -467,7 +469,7 @@ sir_validator.setRule("username","notEmpty");
 
 #### 6.7 添加不跳过空校验的表达式
 
-通过调用addNoSkip来添加不跳过空验证的表达式,系统自带三个notEmpty、maxSelect、minSelect.这三个表达式都会在控件值为空的情况下执行的,因为当件值为空时默认情况下验证框架不会执行验证的表达式.
+通过调用addNoSkip来添加不跳过空验证的表达式,系统自带三个notEmpty、maxItems、minItems.这三个表达式都会在控件值为空的情况下执行的,因为当件值为空时默认情况下验证框架不会执行验证的表达式.
 
 示例：
 
@@ -510,11 +512,11 @@ if(!sir_validator.validateAll())return;//验证不通过,直接return;
 sir_validator.addRule([{
         "id": "username",
         "viewName": "用户名",
-        "validateRule": "notEmpty&maxSize:16"
+        "validateRule": "notEmpty&maxLength:16"
     },{
         "id": "password",
         "viewName": "密码",
-        "validateRule": "notEmpty&maxSize:16"
+        "validateRule": "notEmpty&maxLength:16"
 }]);
 // 绑定验证表单 id= myform
 sir_validator.buildFormValidate("myform");
@@ -532,15 +534,15 @@ sir_validator.buildFormValidate("myform");
 ```html
 <!--定义一个form id为myform, 并定义验证属性-->
 <form id="myform" action="create.do" method="POST">
-        <input type="text" name="username" viewName="用户名" validateRule="notEmpty&maxSize:16" value="" /><br/>
-        <input type="text" name="password" viewName="密码"  validateRule="notEmpty&maxSize:16"/> <br/>
+        <input type="text" name="username" viewName="用户名" validateRule="notEmpty&maxLength:16" value="" /><br/>
+        <input type="text" name="password" viewName="密码"  validateRule="notEmpty&maxLength:16"/> <br/>
         <input type="submit" id="submit_onw" value="提交" /><br/>
 </form>
 ```
 
 ```javascript
 // 加载dom属性的验证配置,第二个参数true,绑定onsubmit事件.
-sir_validat哦他人.buildFormValidateAutoRule("myform", true);
+sir_validator.buildFormValidateAutoRule("myform", true);
 ```
 
 #### 6.11 全局提醒方法
@@ -553,12 +555,12 @@ sir_validat哦他人.buildFormValidateAutoRule("myform", true);
 
 ```javascript
 //,可以通过这种方式重新定义提醒控件的样式
-function globalAlertFunction(obj, error) {
+function global_validate_error_function(obj, error) {
         alert("validate_error:" + obj + ":" + error);
 }
 ```
 
-如果定义变量,则会将错误信息或通过验证信息通过innerHTML方式赋值到控件上,控件id为验证控件id+globalAlertFunction.下面的示例中出现错误会innerHTML到user_error和password_error的控件上.
+如果定义变量,则会将错误信息或通过验证信息通过innerHTML方式赋值到控件上,控件id为验证控件id+global_validate_error_function.下面的示例中出现错误会innerHTML到user_error和password_error的控件上.
 
 定义变量的示例：
 
@@ -572,15 +574,15 @@ function globalAlertFunction(obj, error) {
 ```
 
 ```javascript
-var globalAlertFunction = "_error";
+var global_validate_error_function = "_error";
 sir_validator.addRule([{
         "id": "username",
         "viewName": "用户名",
-        "validateRule": "notEmpty&maxSize:16"
+        "validateRule": "notEmpty&maxLength:16"
     },{
         "id": "password",
         "viewName": "密码",
-        "validateRule": "notEmpty&maxSize:16"
+        "validateRule": "notEmpty&maxLength:16"
 }]);
 // 绑定验证表单 id= myform
 sir_validator.buildFormValidate("myform");
@@ -613,7 +615,7 @@ sir_validator.addRule({
 
 ##### 6.12.2 前端正则类验证规则扩展
 
-正则类验证规则与字符类不同,有这种需求的参考maxSize,minSelect系列的实现.
+正则类验证规则与字符类不同,有这种需求的参考maxLength,minItems系列的实现.
 
 实现方式：
 
@@ -640,20 +642,3 @@ sir_validator.addRule({
         "validateRule": "notEmpty&range:18-108"//不允许为空并且范围在18到108之间
  });
 ```
-
-#### 6.13 自定义提醒前缀后缀
-
-用于自定义一些提示信息的前缀和后缀
-
-如下:
-
-```javascript
- successPrefix = "成功前缀";
- successSuffix = "成功后缀";
- errorPrefix = "失败前缀";
- errorSuffix = "失败后缀";
- ```
-
-会在提醒时自动添加前缀和后缀!
-
-可以参考下源代码中这几个变量的位置即可.

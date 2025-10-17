@@ -23,7 +23,7 @@
 	<validator-fields-groups><!-- 控件信息组 -->
 
 		<!-- 控件信息组,如果同一个Controller里 有多个api都需要验证某些控件信息 则可以建立一个组,分别refgid这个组id即可. 
-			组之间也可以refgid引用,如果涉及相互依赖问题,系统会提醒错误！ -->
+			组之间也可以refgid引用,如果涉及相互依赖问题,系统会提醒错误! -->
 		<validator-fields-group id="add"><!-- 控件信息组节点 @id 组的标识id,供其他组或mapping验证器进行引用 -->
 			<validator ref="userid" /><!-- 组内控件 @ref 引入validator-field中的定义. 
 				如果不存在则到全局global-validator.xml中引用,@refgid 引入其它组,@ref与@refgid可以并存. -->

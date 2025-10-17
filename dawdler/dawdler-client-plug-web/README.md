@@ -422,13 +422,13 @@ public class UserControllerAspect {
 配置位于web-conf.xml的health-check节点,示例:
 
 ```xml
-	<health-check check="on" uri="/health" username="jackson" password="jackson.song">
-		<config check="on"/>
-		<dataSource check="on" />
-		<rabbit check="on" />
-		<jedis check="on" />
-		<elasticSearch check="on" />
-	</health-check>
+    <health-check check="on" uri="/health" username="jackson" password="jackson.song">
+        <config check="on"/>
+        <dataSource check="on" />
+        <rabbit check="on" />
+        <jedis check="on" />
+        <elasticSearch check="on" />
+    </health-check>
 ```
 
 check="on" 为开启健康检测,off为关闭.关闭后不会开启http/https服务.

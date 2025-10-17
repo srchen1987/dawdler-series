@@ -127,11 +127,11 @@ dawdler支持水平分库的配置,由SubDatabase注解来进行配置.
 @java.lang.annotation.Inherited
 public @interface SubDatabase {
 
-	String expression();
+    String expression();
 
-	String configPath();
+    String configPath();
 
-	Class<? extends SubRule> subRuleType();
+    Class<? extends SubRule> subRuleType();
 
 }
 ```

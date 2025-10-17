@@ -14,39 +14,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package club.dawdler.clientplug.web.validator.operators;
-
-import java.util.regex.Matcher;
+package club.dawdler.client.api.generator.data;
 
 /**
  * @author jackson.song
  * @version V1.0
- * 选项大于判断
+ * ServersData
  */
-public class MaxSelectRuleOperator extends RegexRuleOperator {
-	public static final String RULE_KEY = "^maxSelect:([1-9]{1}\\d*$)";
+public class ServersData {
 
-	public MaxSelectRuleOperator() {
-		super(RULE_KEY);
+	private String url;
+	private String description;
+
+	public String getUrl() {
+		return url;
 	}
 
-	@Override
-	public String validate(Object value, Matcher matcher) {
-		int i = Integer.parseInt(matcher.group(1));
-		String error = "不能大于" + i + "项!";
-		if (value == null) {
-			return null;
-		}
-		if (value instanceof String[]) {
-			if (((String[]) value).length > i) {
-				return error;
-			}
-		}
-		return null;
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
-	@Override
-	public String toString() {
-		return "最大选择数或最大参数个数或List或数组的长度不能大于指定数字如:maxSelect:3!";
+	public String getDescription() {
+		return description;
 	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}	
+
+	
 }
