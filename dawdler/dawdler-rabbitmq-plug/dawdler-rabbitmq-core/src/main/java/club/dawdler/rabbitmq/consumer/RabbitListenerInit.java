@@ -25,13 +25,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import club.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
-import club.dawdler.rabbitmq.consumer.annotation.RabbitListener;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
+
+import club.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
+import club.dawdler.rabbitmq.consumer.annotation.RabbitListener;
 
 /**
  * @author jackson.song
@@ -60,18 +61,23 @@ public class RabbitListenerInit {
 							con = factory.getConnection();
 							connections.put(target, con);
 						}
+						boolean init = false;
 						for (int i = 0; i < listener.concurrentConsumers(); i++) {
 							try {
 								Channel channel = con.createChannel();
-								channel.queueDeclare(listener.queueName(), true, false, false, null);
-								for (String routingKey : listener.routingKey()) {
-									for (String exchange : listener.exchange()) {
-										channel.queueBind(listener.queueName(), exchange, routingKey);
+								if (!init) {
+									channel.queueDeclare(listener.queueName(), true, false, false, null);
+									for (String routingKey : listener.routingKey()) {
+										for (String exchange : listener.exchange()) {
+											channel.queueBind(listener.queueName(), exchange, routingKey);
+										}
 									}
+									if (listener.prefetchCount() > 0) {
+										channel.basicQos(listener.prefetchCount());
+									}
+									init = true;
 								}
-								if (listener.prefetchCount() > 0) {
-									channel.basicQos(listener.prefetchCount());
-								}
+
 								String consumerTag = channel.basicConsume(listener.queueName(), listener.autoAck(),
 										new DefaultConsumer(channel) {
 											public void handleDelivery(String consumerTag, Envelope envelope,
