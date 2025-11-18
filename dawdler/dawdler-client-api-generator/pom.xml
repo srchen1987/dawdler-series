@@ -33,6 +33,11 @@
 		</dependency>
 		<dependency>
 			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-load-bean</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-util</artifactId>
 			<exclusions>
 				<exclusion>
