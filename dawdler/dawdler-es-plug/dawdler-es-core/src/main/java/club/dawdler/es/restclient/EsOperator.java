@@ -197,7 +197,7 @@ public interface EsOperator {
 
 	public ElasticsearchNodesClient nodes();
 
-	public ElasticsearchQueryRulesClient queryRules();
+	public ElasticsearchQueryRulesClient queryRuleset();
 
 	public ElasticsearchRollupClient rollup();
 

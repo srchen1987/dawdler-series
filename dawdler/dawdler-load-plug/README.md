@@ -18,4 +18,4 @@
 
 [dawdler-server-plug-load 服务端用于提供加载远程web组件.](./dawdler-server-plug-load/README.md)
 
-[dawdler-client-plug-load wen端远程加载模块.](./dawdler-client-plug-load/README.md)
+[dawdler-client-plug-load web端远程加载模块.](./dawdler-client-plug-load/README.md)

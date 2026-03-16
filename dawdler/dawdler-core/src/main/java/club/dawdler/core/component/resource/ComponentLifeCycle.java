@@ -40,5 +40,5 @@ public interface ComponentLifeCycle {
 
 	default void afterDestroy() throws Throwable {
 	};
-	 
+
 }

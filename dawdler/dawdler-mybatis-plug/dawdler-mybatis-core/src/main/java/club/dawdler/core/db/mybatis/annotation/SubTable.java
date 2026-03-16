@@ -32,7 +32,7 @@ import club.dawdler.core.db.sub.rule.SubRule;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface SubTable {
 
-	String expression();
+	String expression() default "";
 
 	String[] tables();
 

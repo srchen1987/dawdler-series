@@ -3,6 +3,7 @@
 ## 模块介绍
 
 远程加载模块,之前在dawdler-client-plug模块中,将dawdler-client-plug模块拆分成dawdler-client-plug-web与dawdler-client-plug-load模块.
+
 此模块最常用的场景用于做动态网关. 
 
 支持以下三种组件做远程加载
@@ -13,7 +14,6 @@
 
 3、 [web端监听器WebContextListener](../../dawdler-client-plug-web/README.md#6-webcontextlistener-监听器)
 
-
 ### 1. pom中引入依赖
 
 ```xml
@@ -21,11 +21,9 @@
 <artifactId>dawdler-client-plug-load</artifactId>
 ```
 
-
 ### 2. 配置需要加载的组件
 
-参考以下示例,loads-on是配置加载项,其中channel-group-id对应上面server-channel-group中声明的server-channel-group.关于示例中其他配置请参考[client-conf.xml配置文件说明](../../dawdler-client/README.md#2-client-confxml配置文件说明). 注意: 这里的远程加载配置可以与[扫描组件包配置](../../dawdler-client-plug-web/README.md#10-扫描组件包配置并存.
-
+参考以下示例,loads-on是配置加载项,其中channel-group-id对应上面server-channel-group中声明的server-channel-group.关于示例中其他配置请参考[client-conf.xml配置文件说明](../../dawdler-client/README.md#2-client-confxml配置文件说明).
 示例：
 
 ```xml
@@ -44,6 +42,4 @@
     </loads-on>
 
 </config>
-``` 
-
-
+```

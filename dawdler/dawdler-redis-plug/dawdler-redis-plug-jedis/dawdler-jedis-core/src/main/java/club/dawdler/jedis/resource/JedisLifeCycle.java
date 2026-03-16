@@ -17,7 +17,7 @@
 package club.dawdler.jedis.resource;
 
 import club.dawdler.core.component.resource.ComponentLifeCycle;
-import club.dawdler.jedis.JedisPoolFactory;
+import club.dawdler.jedis.UnifiedJedisFactory;
 
 /**
  * @author jackson.song
@@ -28,7 +28,7 @@ public class JedisLifeCycle implements ComponentLifeCycle {
 
 	@Override
 	public void destroy() {
-		JedisPoolFactory.shutdownAll();
+		UnifiedJedisFactory.shutdownAll();
 	}
 
 }

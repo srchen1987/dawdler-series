@@ -37,7 +37,7 @@ import club.dawdler.core.order.OrderData;
 public class FilterProvider {
 	private static final Logger logger = LoggerFactory.getLogger(FilterProvider.class);
 	private final List<OrderData<DawdlerFilter>> filters = new ArrayList<>();
-	private FilterChain lastChain;
+	public FilterChain lastChain;
 
 	public FilterProvider() {
 	}

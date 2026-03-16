@@ -19,11 +19,11 @@ package club.dawdler.clientplug.web.listener;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import javax.servlet.ServletContext;
-
 import club.dawdler.core.annotation.Order;
 import club.dawdler.core.order.OrderComparator;
 import club.dawdler.core.order.OrderData;
+
+import javax.servlet.ServletContext;
 
 /**
  * @author jackson.song
@@ -34,14 +34,14 @@ public class WebContextListenerProvider {
 	private WebContextListenerProvider() {
 	}
 
-	private static final List<OrderData<WebContextListener>> WEBCONTEXT_LISTENERS = new CopyOnWriteArrayList<>();
+	private static final List<OrderData<WebContextListener>> webContextListeners = new CopyOnWriteArrayList<>();
 
 	public static List<OrderData<WebContextListener>> getWebContextListeners() {
-		return WEBCONTEXT_LISTENERS;
+		return webContextListeners;
 	}
 
 	public static void order() {
-		OrderComparator.sort(WEBCONTEXT_LISTENERS);
+		OrderComparator.sort(webContextListeners);
 	}
 
 	public static void addWebContextListener(WebContextListener webContextListener) {
@@ -51,16 +51,16 @@ public class WebContextListenerProvider {
 		if (order != null) {
 			orderData.setOrder(order.value());
 		}
-		WEBCONTEXT_LISTENERS.add(orderData);
+		webContextListeners.add(orderData);
 	}
 
 	public static void removeWebContextListener(Class<?> webContextListenerClass) {
 		if (!WebContextListener.class.isAssignableFrom(webContextListenerClass)) {
 			return;
 		}
-		for (OrderData<WebContextListener> orderData : WEBCONTEXT_LISTENERS) {
+		for (OrderData<WebContextListener> orderData : webContextListeners) {
 			if (orderData.getData().getClass() == webContextListenerClass) {
-				WEBCONTEXT_LISTENERS.remove(orderData);
+				webContextListeners.remove(orderData);
 				return;
 			}
 		}

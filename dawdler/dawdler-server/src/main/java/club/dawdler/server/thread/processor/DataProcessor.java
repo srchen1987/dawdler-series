@@ -37,7 +37,6 @@ import club.dawdler.core.service.processor.ServiceExecutor;
 import club.dawdler.core.thread.InvokeFuture;
 import club.dawdler.server.bootstrap.ServerConnectionManager;
 import club.dawdler.server.conf.ServerConfig;
-import club.dawdler.server.deploys.AbstractServiceRoot;
 import club.dawdler.server.deploys.Service;
 import club.dawdler.server.deploys.ServiceRoot;
 import club.dawdler.server.filter.RequestWrapper;
@@ -79,7 +78,7 @@ public class DataProcessor implements Runnable {
 
 	public void process() throws Exception {
 		String path = socketSession.getPath();
-		Service service = AbstractServiceRoot.getService(path);
+		Service service = ServiceRoot.getService(path);
 		if (compress) {
 			data = ThresholdCompressionStrategy.staticSingle().decompress(data);
 		}
@@ -90,10 +89,13 @@ public class DataProcessor implements Runnable {
 		if (obj instanceof RequestBean) {
 			RequestBean requestBean = (RequestBean) obj;
 			if (!socketSession.isAuthored()) {
-				throw new IllegalAccessException("unauthorized access ！");
+				throw new IllegalAccessException("unauthorized access !");
 			}
 			String serviceName = requestBean.getServiceName();
-			ServicesBean servicesBean = service.getServicesBean(serviceName);
+			ServicesBean servicesBean = null;
+			if (service != null) {
+				servicesBean = service.getServicesBean(serviceName);
+			}
 			ResponseBean responseBean = new ResponseBean();
 			responseBean.setSeq(requestBean.getSeq());
 			InvokeFuture<Object> invoke = new InvokeFuture<>();

@@ -38,7 +38,7 @@ import club.dawdler.util.spring.antpath.Resource;
 /**
  * @author jackson.song
  * @version V1.0
- * 组件注入操作者
+ * CustomComponentOperator 自定义组件操作类
  */
 public class CustomComponentOperator {
 

@@ -88,6 +88,7 @@ tcp-keepAlive="false" 保持长链
 tcp-noDelay="false" 禁用纳格算法
 
 maxThreads=200 处理业务线程池的大小
+
 ```
 
 ##### global-auth节点
@@ -144,21 +145,21 @@ keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696
 
 Keytool是一个Java数据证书的管理工具,以下是简要说明.
 
--genkey 生成秘钥
+-genkey 生成密钥
 
 -alias 别名
 
--keyalg 秘钥算法
+-keyalg 密钥算法
 
--keysize 秘钥长度
+-keysize 密钥长度
 
 -validity 有效期
 
--keystore 生成秘钥库的存储路径和名称
+-keystore 生成密钥库的存储路径和名称
 
--keypass 秘钥口令
+-keypass 密钥口令
 
--storepass 秘钥库口令
+-storepass 密钥库口令
 
 -dname 拥有者信息,CN：姓名；OU：组织单位名称；O：组织名称；L：省/市/自治区名称；C：国家/地区代码
 
@@ -315,7 +316,7 @@ dawdler-server-plug-mybatis中的读写分离也是基于aop实现的,请参考[
 
 ### 7. 健康检测
 
-dawdler服务端提供健康检测功能,uri为/health,参考[health-check节点](#health-check节点)配置.
+dawdler服务端提供健康检测功能,uri默认为/health,参考[health-check节点](#health-check节点)配置.
 
 示例:
 

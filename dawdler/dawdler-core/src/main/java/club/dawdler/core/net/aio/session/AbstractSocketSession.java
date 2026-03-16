@@ -48,7 +48,7 @@ import club.dawdler.util.TimerTask;
  * 抽象session类 提供读写超时重连、心跳处理等方式。
  */
 public abstract class AbstractSocketSession {
-	public static final  int CAPACITY = 1024 * 64;
+	public static final int CAPACITY = 1024 * 64;
 	private static final Logger logger = LoggerFactory.getLogger(AbstractSocketSession.class);
 	private static final long WRITER_IDLE_TIMEMILLIS = 8000;
 	private static final long READER_IDLE_TIMEMILLIS = WRITER_IDLE_TIMEMILLIS * 15;

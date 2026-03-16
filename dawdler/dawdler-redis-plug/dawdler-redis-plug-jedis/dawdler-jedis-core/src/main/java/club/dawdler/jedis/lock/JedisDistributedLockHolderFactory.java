@@ -20,11 +20,9 @@ import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import club.dawdler.jedis.JedisPoolFactory;
+import club.dawdler.jedis.UnifiedJedisFactory;
 import club.dawdler.jedis.annotation.JedisLockInjector;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
+import redis.clients.jedis.UnifiedJedis;
 
 /**
  * @author jackson.song
@@ -45,8 +43,8 @@ public class JedisDistributedLockHolderFactory {
 		synchronized (JEDIS_DISTRIBUTED_LOCK_HOLDERS) {
 			jedisDistributedLockHolder = JEDIS_DISTRIBUTED_LOCK_HOLDERS.get(fileName);
 			if (jedisDistributedLockHolder == null) {
-				Pool<Jedis> pool = JedisPoolFactory.getJedisPool(fileName);
-				jedisDistributedLockHolder = new JedisDistributedLockHolder(pool,
+				UnifiedJedis unifiedJedis = UnifiedJedisFactory.getUnifiedJedis(fileName).getUnifiedJedis();
+						jedisDistributedLockHolder = new JedisDistributedLockHolder(unifiedJedis,
 						jedisLockInjector.lockExpiryInMillis(), jedisLockInjector.intervalInMillis(),
 						jedisLockInjector.useWatchDog());
 				JEDIS_DISTRIBUTED_LOCK_HOLDERS.put(fileName, jedisDistributedLockHolder);

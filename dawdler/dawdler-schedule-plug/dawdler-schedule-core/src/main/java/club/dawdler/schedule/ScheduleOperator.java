@@ -99,7 +99,7 @@ public class ScheduleOperator {
 
 		SchedulerFactory.getInstance().getInstances().forEach((k, v) -> {
 			try {
-				if(v.getScheduler() instanceof StdScheduler) {
+			if(v.getScheduler() instanceof StdScheduler) {
 					StdScheduler stdScheduler = (StdScheduler) scheduler;
 					while(!stdScheduler.getCurrentlyExecutingJobs().isEmpty()) {
 						try {

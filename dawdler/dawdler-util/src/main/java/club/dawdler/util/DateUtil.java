@@ -16,10 +16,12 @@
  */
 package club.dawdler.util;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -96,13 +98,15 @@ public class DateUtil {
 			return Date.from(((ZonedDateTime) value).toInstant());
 		} else if (value instanceof OffsetDateTime) {
 			return Date.from(((OffsetDateTime) value).toInstant());
+		} else if (value instanceof OffsetTime) {
+			return Date.from(((OffsetTime) value).atDate(LocalDate.now()).toInstant());
 		}
 		return null;
 	}
 
 	public static boolean isDateType(Class<?> type) {
 		return Date.class == type || LocalDate.class == type || LocalDateTime.class == type || LocalTime.class == type
-				|| ZonedDateTime.class == type || OffsetDateTime.class == type;
+				|| ZonedDateTime.class == type || OffsetDateTime.class == type || OffsetTime.class == type;
 	}
 
 	public static boolean isDateTypeArray(Class<?> type) {
@@ -170,41 +174,38 @@ public class DateUtil {
 		return OffsetDateTime.parse(value, DateUtil.getFormatter(pattern));
 	}
 
+	public static OffsetTime convertToOffsetTime(String value, String pattern) {
+		if (value == null || value.trim().equals("")) {
+			return null;
+		}
+		if (pattern == null) {
+			pattern = DEFAULT_TIME_PATTERN;
+		}
+		return OffsetTime.parse(value, DateUtil.getFormatter(pattern));
+	}
+
 	public static Object convertToDateArray(String[] values, String pattern, Class<?> type) {
 		if (values == null || values.length == 0) {
 			return null;
 		}
-		Object[] result = null;
-		if (type == Date.class) {
-			result = new Date[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = convertToDate(values[i], pattern);
-			}
-		} else if (type == LocalDateTime.class) {
-			result = new LocalDateTime[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = convertToLocalDateTime(values[i], pattern);
-			}
-		} else if (type == LocalDate.class) {
-			result = new LocalDate[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = convertToLocalDate(values[i], pattern);
-			}
-		} else if (type == LocalTime.class) {
-			result = new LocalTime[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = convertToLocalTime(values[i], pattern);
-			}
-		} else if (type == ZonedDateTime.class) {
-			result = new ZonedDateTime[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = convertToZonedDateTime(values[i], pattern);
-			}
-		} else if (type == OffsetDateTime.class) {
-			result = new OffsetDateTime[values.length];
-			for (int i = 0; i < values.length; i++) {
-				result[i] = convertToOffsetDateTime(values[i], pattern);
-			}
+		Object[] result = createArray(type, values.length);
+		for (int i = 0; i < values.length; i++) {
+			result[i] = convertToDate(values[i], pattern, type);
+		}
+		return result;
+	}
+
+	public static Object convertToDateArray(String[] values, String pattern, Class<?> type,
+			DateTimeFormatter formatter) {
+		if (formatter == null) {
+			return convertToDateArray(values, pattern, type);
+		}
+		if (values == null || values.length == 0) {
+			return null;
+		}
+		Object[] result = createArray(type, values.length);
+		for (int i = 0; i < values.length; i++) {
+			result[i] = convertToDate(values[i], pattern, type, formatter);
 		}
 		return result;
 	}
@@ -226,8 +227,60 @@ public class DateUtil {
 			result = convertToZonedDateTime(value, pattern);
 		} else if (type == OffsetDateTime.class) {
 			result = convertToOffsetDateTime(value, pattern);
+		} else if (type == OffsetTime.class) {
+			result = convertToOffsetTime(value, pattern);
 		}
 		return result;
+	}
+
+	public static Object convertToDate(String value, String pattern, Class<?> type, DateTimeFormatter formatter) {
+		if (formatter == null) {
+			return convertToDate(value, pattern, type);
+		}
+		if (value == null || value.trim().equals("")) {
+			return null;
+		}
+		Object result = null;
+		if (type == Date.class) {
+			result = Date.from(LocalDateTime.parse(value, formatter).atZone(ZoneId.systemDefault()).toInstant());
+		} else if (type == LocalDateTime.class) {
+			result = LocalDateTime.parse(value, formatter);
+		} else if (type == LocalDate.class) {
+			result = LocalDate.parse(value, formatter);
+		} else if (type == LocalTime.class) {
+			result = LocalTime.parse(value, formatter);
+		} else if (type == ZonedDateTime.class) {
+			result = ZonedDateTime.parse(value, formatter);
+		} else if (type == OffsetDateTime.class) {
+			result = OffsetDateTime.parse(value, formatter);
+		} else if (type == OffsetTime.class) {
+			result = OffsetTime.parse(value, formatter);
+		}
+		return result;
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> T[] createArray(Class<T> componentType, int length) {
+		return (T[]) Array.newInstance(componentType, length);
+	}
+
+	public static DateTimeFormatter getISODateTimeFormatter(Class<?> type) {
+		if (type == LocalDateTime.class) {
+			return DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		} else if (type == LocalDate.class) {
+			return DateTimeFormatter.ISO_LOCAL_DATE;
+		} else if (type == LocalTime.class) {
+			return DateTimeFormatter.ISO_LOCAL_TIME;
+		} else if (type == ZonedDateTime.class) {
+			return DateTimeFormatter.ISO_ZONED_DATE_TIME;
+		} else if (type == OffsetDateTime.class) {
+			return DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+		} else if (type == OffsetTime.class) {
+			return DateTimeFormatter.ISO_OFFSET_TIME;
+		} else if (type == Date.class) {
+			return DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+		}
+		return null;
 	}
 
 }

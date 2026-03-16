@@ -32,40 +32,13 @@ public @interface DateTimeFormat {
 
 	ISO iso() default ISO.NONE;
 
-	String pattern() default "";
+	String pattern();
 
-	/**
-	 * Common ISO date time format patterns.
-	 */
 	enum ISO {
 
-		/**
-		 * The most common ISO Date Format {@code yyyy-MM-dd},
-		 * e.g. "2000-10-31".
-		 */
-		DATE,
-
-		/**
-		 * The most common ISO Time Format {@code HH:mm:ss.SSSZ},
-		 * e.g. "01:30:00.000-05:00".
-		 */
-		TIME,
-
-		/**
-		 * The most common ISO DateTime Format {@code yyyy-MM-dd'T'HH:mm:ss.SSSZ},
-		 * e.g. "2000-10-31T01:30:00.000-05:00".
-		 * <p>
-		 * This is the default if no annotation value is specified.
-		 */
-		DATE_TIME,
-
-		/**
-		 * Indicates that no ISO-based format pattern should be applied.
-		 */
+		BASED,
+		
 		NONE
 	}
-	public final static String ISO_8601_DATE_PATTERN = "yyyy-MM-dd";
-	public final static String ISO_8601_TIME_PATTERN = "HH:mm:ss.SSSZ";
-	public final static String ISO_8601_DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
 
 }

@@ -23,7 +23,7 @@ import club.dawdler.core.service.ServicesManager;
 /**
  * @author jackson.song
  * @version V1.0
- * Service层注入组件
+ * service层注入组件
  */
 public class ServiceCreateListenerLifeCycle implements ComponentLifeCycle {
 

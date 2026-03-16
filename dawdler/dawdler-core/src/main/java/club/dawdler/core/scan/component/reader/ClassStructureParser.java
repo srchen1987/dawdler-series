@@ -44,8 +44,7 @@ public class ClassStructureParser {
 	public static ClassStructure parser(byte[] data) throws IOException {
 		return parser(new ClassReader(data), null);
 	}
-	
-	@SuppressWarnings("restriction")
+
 	private static ClassStructure parser(ClassReader cr, ClassStructure classStructure) throws IOException {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, ClassReader.SKIP_DEBUG);
