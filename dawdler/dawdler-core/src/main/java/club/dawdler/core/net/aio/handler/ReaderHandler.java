@@ -159,8 +159,8 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 				}
 				process(session);
 			}
-		} catch (Throwable throwble) {
-			failed(throwble, session);
+		} catch (Throwable throwable) {
+			failed(throwable, session);
 		}
 	}
 
