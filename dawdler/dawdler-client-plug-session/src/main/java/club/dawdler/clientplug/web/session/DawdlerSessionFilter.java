@@ -32,9 +32,9 @@ import club.dawdler.clientplug.web.session.store.RedisSessionStore;
 import club.dawdler.clientplug.web.session.store.SessionStore;
 import club.dawdler.core.serializer.SerializeDecider;
 import club.dawdler.core.serializer.Serializer;
-import club.dawdler.jedis.JedisPoolFactory;
+import club.dawdler.jedis.UnifiedJedisFactory;
+import club.dawdler.jedis.UnifiedJedisWarpper;
 import club.dawdler.util.PropertiesUtil;
-
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.FilterConfig;
@@ -48,8 +48,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
 
 /**
  * @author jackson.song
@@ -143,14 +141,14 @@ public class DawdlerSessionFilter implements Filter {
 	AbstractDistributedSessionManager abstractDistributedSessionManager;
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
-	private Pool<Jedis> jedisPool;
+	private UnifiedJedisWarpper unifiedJedisWarpper;
 	private static final String SESSION_REDIS_FILE_NAME = "session-redis";
 	private MessageOperator messageOperator;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		try {
-			jedisPool = JedisPoolFactory.getJedisPool(SESSION_REDIS_FILE_NAME);
+			unifiedJedisWarpper = UnifiedJedisFactory.getUnifiedJedis(SESSION_REDIS_FILE_NAME);
 		} catch (Exception e) {
 			logger.error("", e);
 			throw new ServletException(e);
@@ -160,14 +158,14 @@ public class DawdlerSessionFilter implements Filter {
 				ipMaxInactiveInterval, ipMaxSize);
 		Object listener = servletContext
 				.getAttribute(AbstractDistributedSessionManager.DISTRIBUTED_SESSION_HTTP_SESSION_LISTENER);
-		if (listener instanceof HttpSessionListener httpSessionListener) {
-			abstractDistributedSessionManager.setHttpSessionListener(httpSessionListener);
+		if (listener instanceof HttpSessionListener) {
+			abstractDistributedSessionManager.setHttpSessionListener((HttpSessionListener)listener);
 		}
 		// 默认为kroy 需要其他的可以自行修改或扩展
 		Serializer serializer = SerializeDecider.decide((byte) 2);
-		sessionStore = new RedisSessionStore(jedisPool, serializer);
+		sessionStore = new RedisSessionStore(unifiedJedisWarpper.getUnifiedJedis(), serializer);
 		messageOperator = new RedisMessageOperator(serializer, sessionStore, abstractDistributedSessionManager,
-				jedisPool);
+				unifiedJedisWarpper);
 		sessionOperator = new SessionOperator(abstractDistributedSessionManager, sessionIdGenerator, sessionStore,
 				messageOperator, serializer, servletContext);
 		messageOperator.listenExpireAndDelAndChange();
@@ -177,10 +175,10 @@ public class DawdlerSessionFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		HttpServletResponse httpResponse = (HttpServletResponse) response;
+		HttpServletResponse httpReponse = (HttpServletResponse) response;
 		try {
-			httpRequest = new HttpServletRequestWrapper(httpRequest, httpResponse);
-			chain.doFilter(httpRequest, httpResponse);
+			httpRequest = new HttpServletRequestWrapper(httpRequest, httpReponse);
+			chain.doFilter(httpRequest, httpReponse);
 		} finally {
 			DawdlerHttpSession session = (DawdlerHttpSession) httpRequest.getSession(false);
 			if (session != null) {
@@ -199,20 +197,20 @@ public class DawdlerSessionFilter implements Filter {
 					Cookie cookie = new Cookie(cookieName, null);
 					cookie.setMaxAge(0);
 					cookie.setPath("/");
-					httpResponse.addCookie(cookie);
+					httpReponse.addCookie(cookie);
 				}
 			}
 		}
 
 	}
 
-	public String getCookieValue(Cookie[] cookies, String cookieName) {
+	public String getCookieValue(Cookie[] cookies, String cookiename) {
 		if (cookies == null) {
 			return null;
 		}
 		try {
 			for (int i = 0; i < cookies.length; i++) {
-				if (cookies[i].getName().equals(cookieName)) {
+				if (cookies[i].getName().equals(cookiename)) {
 					return cookies[i].getValue();
 				}
 			}
@@ -227,8 +225,8 @@ public class DawdlerSessionFilter implements Filter {
 		if (abstractDistributedSessionManager != null) {
 			abstractDistributedSessionManager.close();
 		}
-		if (jedisPool != null) {
-			jedisPool.close();
+		if (unifiedJedisWarpper != null) {
+			unifiedJedisWarpper.getUnifiedJedis().close();
 		}
 
 	}

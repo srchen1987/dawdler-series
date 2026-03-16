@@ -34,6 +34,10 @@ port=6379
 user=redis_user
 #密码
 password=password
+#重连失败时重连次数 0为不开启重试 一般用于哨兵切换主节点时网络中断的情况
+failoverTryCount=0
+#重连失败时重连间隔时间(单位毫秒)
+failoverIntervalMillis=5000
 #最大连接数
 pool.maxTotal=20
 #最小空闲数

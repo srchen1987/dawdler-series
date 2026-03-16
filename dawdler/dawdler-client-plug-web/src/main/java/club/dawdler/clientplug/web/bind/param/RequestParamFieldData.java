@@ -20,8 +20,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.lang.reflect.Type;
+import java.time.format.DateTimeFormatter;
 
 import club.dawdler.clientplug.web.annotation.DateTimeFormat;
+import club.dawdler.util.DateUtil;
 
 /**
  * @author jackson.song
@@ -44,6 +46,8 @@ public class RequestParamFieldData {
 
 	private String pattern;
 
+	private DateTimeFormat.ISO iso;
+
 	public RequestParamFieldData(String paramName, int index, Method method,
 			Parameter parameter) {
 		this.paramName = paramName;
@@ -53,18 +57,9 @@ public class RequestParamFieldData {
 		this.method = method;
 		this.parameter = parameter;
 		DateTimeFormat dateTimeFormat = parameter.getAnnotation(DateTimeFormat.class);
-		String pattern = null;
 		if (dateTimeFormat != null) {
-			pattern = dateTimeFormat.pattern();
-			if (pattern == null || pattern.trim().equals("")) {
-				DateTimeFormat.ISO iso = dateTimeFormat.iso();
-				if (iso == DateTimeFormat.ISO.DATE) {
-					pattern = DateTimeFormat.ISO_8601_DATE_PATTERN;
-				} else if (iso == DateTimeFormat.ISO.TIME) {
-					pattern = DateTimeFormat.ISO_8601_TIME_PATTERN;
-				} else if (iso == DateTimeFormat.ISO.DATE_TIME) {
-					pattern = DateTimeFormat.ISO_8601_DATE_TIME_PATTERN;
-				}
+			if ((iso = dateTimeFormat.iso()) == DateTimeFormat.ISO.NONE) {
+				pattern = dateTimeFormat.pattern();
 			}
 		}
 	}
@@ -127,6 +122,17 @@ public class RequestParamFieldData {
 
 	public String getPattern() {
 		return pattern;
+	}
+
+	public DateTimeFormat.ISO getIso() {
+		return iso;
+	}
+
+	public DateTimeFormatter getFormatter() {
+		if (iso == DateTimeFormat.ISO.BASED) {
+			return DateUtil.getISODateTimeFormatter(type);
+		}
+		return null;
 	}
 
 }

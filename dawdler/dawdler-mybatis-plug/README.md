@@ -6,10 +6,8 @@
 
 ### 1. 子模块介绍
 
-[dawdler-mybaits-core](./dawdler-mybatis-core/README.md) mybatis核心模块
+[dawdler-mybatis-core](./dawdler-mybatis-core/README.md) mybatis核心模块
 
-[dawdler-client-plug-mybaits](./dawdler-client-plug-mybatis/README.md)  web端mybatis模块
+[dawdler-client-plug-mybatis](./dawdler-client-plug-mybatis/README.md)  web端mybatis模块
 
-[dawdler-server-plug-mybaits](./dawdler-server-plug-mybatis/README.md)  服务端mybatis模块
-
-
+[dawdler-server-plug-mybatis](./dawdler-server-plug-mybatis/README.md)  服务端mybatis模块

@@ -57,6 +57,10 @@ public class HttpExceptionHolder {
 		return HANDLES.get(id);
 	}
 
+	public static void overwrite(String id, HttpExceptionHandler handler) {
+		HANDLES.put(id, handler);
+	}
+
 	public static HttpExceptionHandler getJsonHttpExceptionHandler() {
 		return getHttpExceptionHandler(ViewType.json.toString());
 	}

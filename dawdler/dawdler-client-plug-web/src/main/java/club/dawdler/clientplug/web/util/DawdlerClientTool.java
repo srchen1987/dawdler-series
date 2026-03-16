@@ -24,7 +24,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * 常用工具
  */
 public class DawdlerClientTool {
-	
+
 	public static String getOnlineIp(HttpServletRequest request) {
 		String ip = request.getHeader("X-Real-IP");
 		String forwardHeader = request.getHeader("X-Forwarded-For");
@@ -41,6 +41,7 @@ public class DawdlerClientTool {
 		}
 		return ip;
 	}
+
 
 	public static boolean empty(String parameter) {
 		return parameter == null || parameter.trim().equals("");

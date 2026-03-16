@@ -36,6 +36,7 @@ public @interface Service {
 ```
 
 示例:
+
 ```java
 @Service("order-service")
 public interface OrderService {

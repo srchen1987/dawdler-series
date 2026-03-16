@@ -195,7 +195,7 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 			ps = new Properties();
 		}
 		ps.setProperty(RuntimeConstants.RESOURCE_LOADERS, "class");
-        ps.setProperty("resource.loader.class.class", DawdlerVelocityResourceLoader.class.getName());
+		ps.setProperty("resource.loader.class.class", DawdlerVelocityResourceLoader.class.getName());
 		tm.init(ps);
 
 	}

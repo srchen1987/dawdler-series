@@ -147,4 +147,3 @@ ui: 可以访问UI界面
 要注意consul不要开放端口给互联网使用,简单使用可以通过nginx Basic HTTP authentication做授权后反向代理到局域网的consul端口上.
 
 建议采用token方式来进行身份校验,token可以在consul的配置文件中配置,也可以通过consul acl来进行管理. consul支持ACL(Access Control List)访问控制列表,可以对consul的服务进行细粒度的控制,包括读写权限,token,服务注册,服务发现等.
-

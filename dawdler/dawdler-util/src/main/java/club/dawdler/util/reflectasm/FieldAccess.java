@@ -53,7 +53,7 @@ import org.objectweb.asm.Type;
 /**
  * @author jackson.song
  * @version V1.0
- * asm的改进版 已升到asm支持jdk17
+ * asm的改进版
  */
 public abstract class FieldAccess {
 	private String[] fieldNames;

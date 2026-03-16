@@ -22,7 +22,6 @@ import java.util.Set;
 import club.dawdler.clientplug.web.filter.ViewFilter;
 import club.dawdler.clientplug.web.listener.WebListener;
 import club.dawdler.core.annotation.Order;
-
 import jakarta.servlet.DispatcherType;
 import jakarta.servlet.ServletContainerInitializer;
 import jakarta.servlet.ServletContext;
@@ -38,9 +37,8 @@ public class WebInitializer implements ServletContainerInitializer {
 	@Override
 	public void onStartup(Set<Class<?>> c, ServletContext ctx) throws ServletException {
 		ctx.addListener(WebListener.class);
-		EnumSet<DispatcherType> dispatcherType = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD,
-				DispatcherType.ERROR, DispatcherType.INCLUDE);
-		ctx.addFilter(ViewFilter.class.getName(), ViewFilter.class).addMappingForUrlPatterns(dispatcherType, true,
+		ctx.addFilter(ViewFilter.class.getName(), ViewFilter.class).addMappingForUrlPatterns(
+				EnumSet.allOf(DispatcherType.class), true,
 				"/*");
 	}
 }

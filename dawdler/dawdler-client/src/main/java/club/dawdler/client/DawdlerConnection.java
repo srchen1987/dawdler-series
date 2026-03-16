@@ -116,6 +116,7 @@ public class DawdlerConnection {
 	public void setSerializer(int serializer) {
 		this.serializer = serializer;
 	}
+
 	public void startReconnect() {
 		reconnectScheduled.scheduleWithFixedDelay(() -> {
 			Set<SocketAddress> disconnAddressList = connectManager.getDisconnectAddress();
@@ -254,7 +255,7 @@ public class DawdlerConnection {
 			}
 		}
 
-		if (addList.size() > 0) {
+		if (!addList.isEmpty()) {
 			SocketAddress[] addresses = new SocketAddress[addList.size()];
 			addList.toArray(addresses);
 			connect(addresses);
@@ -373,7 +374,9 @@ public class DawdlerConnection {
 				byteBuffer.flip();
 				socketSession.write(byteBuffer);
 			} finally {
-				byteBuffer.clear();
+				if(byteBuffer != null){
+					byteBuffer.clear();
+				}
 				if (poolBuffer != null) {
 					poolBuffer.release(dawdlerByteBuffer);
 				}
@@ -418,7 +421,9 @@ public class DawdlerConnection {
 				byteBuffer.flip();
 				socketSession.write(byteBuffer);
 			} finally {
-				byteBuffer.clear();
+				if(byteBuffer != null){
+					byteBuffer.clear();
+				}
 				if (poolBuffer != null) {
 					poolBuffer.release(dawdlerByteBuffer);
 				}

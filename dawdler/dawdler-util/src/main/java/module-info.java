@@ -6,11 +6,11 @@ module dawdler.util {
 	requires com.fasterxml.jackson.datatype.jsr310;
 	requires org.objectweb.asm;
 	requires org.objectweb.asm.tree;
-	requires commons.jexl3;
+	requires org.apache.commons.jexl3;
 	requires transitive java.xml;
 	requires org.slf4j;
 	requires com.fasterxml.jackson.dataformat.yaml;
-	
+
 	exports club.dawdler.util;
 	exports club.dawdler.util.aspect;
 	exports club.dawdler.util.reflectasm;

@@ -53,7 +53,7 @@ public @interface Schedule {
 如果使用单线程可以采用以下配置
 
 ```properties
-org.quartz.threadPool.threadCount=1 #hreadCount 设置线程数为1 单线程
+org.quartz.threadPool.tthreadCount=1 #threadCount 设置线程数为1 单线程
 org.quartz.jobStore.misfireThreshold=10
 ```
 

@@ -17,7 +17,7 @@ host=127.0.0.1
 port=8500
 #token=2e6dccf2-3f9b-d8e9-e20d-0d5979bf0f23
 #healthCheckType=tcp
-#checkTime=6宋
+#checkTime=6s
 #keyStoreInstanceType=JKS
 #certificatePath=/home/srchen/certificatePath/xxx
 #certificatePassword=password
@@ -34,7 +34,7 @@ consul里面的path为 /consul
 ```yml
 host: 127.0.0.1
 port: 8500
-#token: 2e6dccf2-4f9b-d8d9-e20d-0d5979bf0f23
+#token: 2e6dccf2-3f9b-d8e9-e20d-0d5979bf0f23
 #healthCheckType: tcp
 #checkTime: 6s
 #keyStoreInstanceType: JKS

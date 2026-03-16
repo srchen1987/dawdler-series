@@ -165,8 +165,8 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 	}
 
 	@Override
-	public void failed(Throwable throwable, AbstractSocketSession session) {
-		logger.error("", throwable);
+	public void failed(Throwable exc, AbstractSocketSession session) {
+		logger.error("", exc);
 		if (!session.isClose()) {
 			session.close();
 		}

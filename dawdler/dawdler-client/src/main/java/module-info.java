@@ -1,7 +1,7 @@
 import club.dawdler.client.cluster.LoadBalance;
 import club.dawdler.client.cluster.impl.RandomLoadBalance;
 import club.dawdler.client.cluster.impl.RoundRobinLoadBalance;
-
+@SuppressWarnings("rawtypes")
 module dawdler.client {
 	requires java.base;
 	requires transitive dawdler.util;

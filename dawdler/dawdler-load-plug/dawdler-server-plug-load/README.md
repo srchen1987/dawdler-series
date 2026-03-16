@@ -12,7 +12,6 @@
 
 3、 [web端监听器WebContextListener](../../dawdler-client-plug-web/README.md#6-webcontextlistener-监听器)
 
-
 ### 1. pom中引入依赖
 
 ```xml
@@ -69,4 +68,3 @@ services-conf.xml中的扫描器
  </package-paths><!-- 需要扫描的路径，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效-->
 </scanner>
 ```
-

@@ -30,13 +30,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import club.dawdler.conf.cache.ConfigDataCache;
-import club.dawdler.conf.cache.ConfigDataCache.ConfigData;
-import club.dawdler.conf.cache.ConfigMappingDataCache;
-import club.dawdler.conf.cache.PathMappingTargetCache;
-import club.dawdler.conf.client.ConfigClient;
-import club.dawdler.core.thread.DefaultThreadFactory;
-import club.dawdler.util.ConfigContentDecryptor;
 import com.ecwid.consul.transport.TLSConfig;
 import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
@@ -45,6 +38,14 @@ import com.ecwid.consul.v1.QueryParams;
 import com.ecwid.consul.v1.Response;
 import com.ecwid.consul.v1.agent.model.Self.Config;
 import com.ecwid.consul.v1.kv.model.GetValue;
+
+import club.dawdler.conf.cache.ConfigDataCache;
+import club.dawdler.conf.cache.ConfigDataCache.ConfigData;
+import club.dawdler.conf.cache.ConfigMappingDataCache;
+import club.dawdler.conf.cache.PathMappingTargetCache;
+import club.dawdler.conf.client.ConfigClient;
+import club.dawdler.core.thread.DefaultThreadFactory;
+import club.dawdler.util.ConfigContentDecryptor;
 
 /**
  * @author jackson.song
@@ -136,7 +137,7 @@ public class ConsulConfigClient implements ConfigClient {
 								flushCache(watchKey);
 							}
 						} catch (Throwable e) {
-							logger.error("", e);
+							logger.warn("", e);
 							if (!destroyed.get()) {
 								try {
 									Thread.sleep(DEFAULT_WAIT_TIME);

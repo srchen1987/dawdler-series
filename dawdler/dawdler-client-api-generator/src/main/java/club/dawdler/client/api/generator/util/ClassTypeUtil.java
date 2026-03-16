@@ -18,8 +18,8 @@ package club.dawdler.client.api.generator.util;
 
 import java.util.List;
 
+import com.thoughtworks.qdox.model.JavaParameterizedType;
 import com.thoughtworks.qdox.model.JavaType;
-import com.thoughtworks.qdox.model.impl.DefaultJavaParameterizedType;
 
 /**
  * @author jackson.song
@@ -36,6 +36,7 @@ public class ClassTypeUtil {
 	private static final String VECTOR_NAME = "java.util.Vector";
 
 	/**
+	 * 
 	 * @author jackson.song
 	 * 是否是List,Set,Collection,Vector
 	 * @param binaryName
@@ -49,7 +50,7 @@ public class ClassTypeUtil {
 	}
 
 	public static String getType0(JavaType javaType) {
-		DefaultJavaParameterizedType dt = (DefaultJavaParameterizedType) javaType;
+		JavaParameterizedType dt = (JavaParameterizedType) javaType;
 		List<JavaType> dtList = dt.getActualTypeArguments();
 		if (!dtList.isEmpty()) {
 			JavaType actualTypeArgument = dtList.get(0);

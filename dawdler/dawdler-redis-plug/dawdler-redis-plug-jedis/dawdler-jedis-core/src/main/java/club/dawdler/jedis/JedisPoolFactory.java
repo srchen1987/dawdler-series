@@ -25,7 +25,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import club.dawdler.util.PropertiesUtil;
-
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -37,7 +36,9 @@ import redis.clients.jedis.util.Pool;
  * @author jackson.song
  * @version V1.0
  * jedispool jedis 连接池工厂 支持多个池
+ * see UnifiedJedisFactory.java
  */
+@Deprecated
 public final class JedisPoolFactory {
 	private static final Map<String, Pool<Jedis>> pools = new ConcurrentHashMap<>();
 

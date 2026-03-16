@@ -40,6 +40,7 @@ module dawdler.client.plug.web {
 	exports club.dawdler.clientplug.web.filter;
 	exports club.dawdler.clientplug.web.classloader;
 	exports club.dawdler.clientplug.web.conf;
+	exports club.dawdler.clientplug.web.health;
 
 	uses club.dawdler.clientplug.web.bind.resolver.MethodArgumentResolver;
 

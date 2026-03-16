@@ -28,7 +28,9 @@ import java.util.jar.Manifest;
 
 import club.dawdler.core.loader.DeployClassLoader;
 import club.dawdler.core.scan.DawdlerComponentScanner;
+
 import jdk.internal.loader.Resource;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -77,7 +79,7 @@ public class DawdlerWebDeployClassLoader extends SecureClassLoader implements De
 		if (res != null) {
 			try {
 				return defineClassForDawdler(name, res, useAop, storeVariableNameByASM);
-			} catch (IOException e) {
+			} catch (Exception e) {
 				throw new ClassNotFoundException(name, e);
 			}
 		} else {

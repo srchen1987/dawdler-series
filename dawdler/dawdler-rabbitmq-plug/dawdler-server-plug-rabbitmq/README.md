@@ -24,7 +24,7 @@
     @RabbitInjector("myRabbitmq")//myRabbitmq为配置文件的名称,不包含后缀properties
     RabbitProvider rabbitProvider;
 
-    public void pushMssage(String message) {
+    public void pushMessage(String message) {
         rabbitProvider.publish("", "test", null, message.getBytes());//使用rabbitProvider对象
         return null;
     }

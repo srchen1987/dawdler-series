@@ -29,14 +29,14 @@ public interface CustomComponentInjector {
 	/**
 	 * 注入方法
 	 */
-	default void inject(Class<?> type, Object target) throws Throwable {
-	}
+	default public void inject(Class<?> type, Object target) throws Throwable {
+	};
 
 	/**
 	 * 是否注入
 	 *
 	 */
-	default boolean isInject() {
+	default public boolean isInject() {
 		return true;
 	}
 

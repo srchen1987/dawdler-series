@@ -334,7 +334,8 @@ public abstract class AbstractSocketSession {
 				return;
 			}
 			long currentTime = JVMTimeProvider.currentTimeMillis();
-			long nextDelay = WRITER_IDLE_TIMEMILLIS - (currentTime - AbstractSocketSession.this.lastWriteTime);
+			long lastWriteTime = AbstractSocketSession.this.lastWriteTime;
+			long nextDelay = WRITER_IDLE_TIMEMILLIS - (currentTime - lastWriteTime);
 			if (nextDelay <= 0) {
 				if (ioHandler != null) {
 					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.WRITE);
@@ -356,7 +357,8 @@ public abstract class AbstractSocketSession {
 				return;
 			}
 			long currentTime = JVMTimeProvider.currentTimeMillis();
-			long nextDelay = READER_IDLE_TIMEMILLIS - (currentTime - AbstractSocketSession.this.lastReadTime);
+			long lastReadTime = AbstractSocketSession.this.lastReadTime;
+			long nextDelay = READER_IDLE_TIMEMILLIS - (currentTime - lastReadTime);
 			if (nextDelay <= 0) {
 				if (ioHandler != null) {
 					ioHandler.channelIdle(AbstractSocketSession.this, SessionIdleType.READ);

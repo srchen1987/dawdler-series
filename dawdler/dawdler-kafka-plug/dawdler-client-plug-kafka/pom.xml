@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>club.dawdler</groupId>
+		<artifactId>dawdler-kafka-plug</artifactId>
+		<version>0.1.4-jdk17-RELEASES</version>
+	</parent>
+	<artifactId>dawdler-client-plug-kafka</artifactId>
+	<name>dawdler-client-plug-kafka</name>
+	<packaging>jar</packaging>
+	<dependencies>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-client-plug-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-kafka-core</artifactId>
+		</dependency>
+	</dependencies>
+</project>

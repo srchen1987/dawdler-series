@@ -37,7 +37,6 @@ public class OrderComparator<T> implements Comparator<OrderData<T>> {
 		}
 	}
 
-
 	@Override
 	public int compare(OrderData<T> o1, OrderData<T> o2) {
 		return o1.getOrder() - o2.getOrder();

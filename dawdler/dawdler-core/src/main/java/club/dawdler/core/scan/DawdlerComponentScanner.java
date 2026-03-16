@@ -17,6 +17,7 @@
 package club.dawdler.core.scan;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 import club.dawdler.util.spring.antpath.PathMatchingResourcePatternResolver;
 import club.dawdler.util.spring.antpath.Resource;
@@ -29,12 +30,11 @@ import club.dawdler.util.spring.antpath.ResourcePatternResolver;
  */
 public class DawdlerComponentScanner {
 	private static ResourcePatternResolver resolver = PathMatchingResourcePatternResolver.getInstance();
-
 	public static Resource getClass(String location) {
 		return resolver.getResource(location.replace(".", "/").concat(".class"));
 	}
 
-	public static Resource[] getClasses(String location) throws IOException {
+	public static Resource[] getClasses(String location) throws IOException, URISyntaxException {
 		return resolver.getResources("classpath*:" + location.replace(".", "/") + "/*.class");
 	}
 
