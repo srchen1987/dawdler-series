@@ -173,4 +173,3 @@ myTool=com.anywide.yyg.user.velocity.tool.MyTool
         viewForward.setData(data);
     }
   ```
-  

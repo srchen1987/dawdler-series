@@ -92,8 +92,8 @@ public class SocketSession extends AbstractSocketSession {
 				ioHandler.channelClose(this);
 			}
 			Collection<InvokeFuture<Object>> invokeFuture = getFutures().values();
-				invokeFuture.forEach(
-						(future) -> future.setCause(new SessionCloseException("session closed. " + this.toString())));
+			invokeFuture.forEach(
+					(future) -> future.setCause(new SessionCloseException("session closed. " + this.toString())));
 			Map<SocketAddress, List<SocketSession>> sessionGroup = dawdlerConnection.getSessionGroup();
 			if (remoteAddress != null) {
 				List<SocketSession> sessions = sessionGroup.remove(remoteAddress);

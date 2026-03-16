@@ -44,10 +44,11 @@ public class PathMatchingResourcePatternResolver implements ResourcePatternResol
 
 	private PathMatcher pathMatcher = new AntPathMatcher();
 	private static PathMatchingResourcePatternResolver instance = new PathMatchingResourcePatternResolver();
+
 	private PathMatchingResourcePatternResolver() {
 		this.resourceLoader = new DefaultResourceLoader();
 	}
-	
+
 	public static PathMatchingResourcePatternResolver getInstance() {
 		return instance;
 	}

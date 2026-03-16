@@ -49,17 +49,6 @@
 			</dependency>
 			<dependency>
 				<groupId>club.dawdler</groupId>
-				<artifactId>dawdler-server-plug-load</artifactId>
-				<version>${dawdler.build.version}</version>
-				<exclusions>
-					<exclusion>
-						<groupId>*</groupId>
-						<artifactId>*</artifactId>
-					</exclusion>
-				</exclusions>
-			</dependency>
-			<dependency>
-				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-remote-service-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<exclusions>
@@ -130,7 +119,7 @@
 			</dependency>
 			<dependency>
 				<groupId>club.dawdler</groupId>
-				<artifactId>dawdler-jedis-core</artifactId>
+				<artifactId>dawdler-redis-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<scope>provided</scope>
 			</dependency>

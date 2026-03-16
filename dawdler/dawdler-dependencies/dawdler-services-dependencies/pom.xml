@@ -76,6 +76,12 @@
 				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-server-plug-remote-service</artifactId>
 				<version>${dawdler.build.version}</version>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
 			</dependency>
 			<dependency>
 				<groupId>club.dawdler</groupId>
@@ -224,7 +230,7 @@
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
-				<version>${aspectj.version}</version>	
+				<version>${aspectj.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>

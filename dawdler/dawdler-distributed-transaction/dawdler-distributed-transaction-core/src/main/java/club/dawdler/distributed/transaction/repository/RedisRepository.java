@@ -29,11 +29,9 @@ import org.slf4j.LoggerFactory;
 
 import club.dawdler.core.serializer.SerializeDecider;
 import club.dawdler.distributed.transaction.context.DistributedTransactionContext;
-import club.dawdler.jedis.JedisPoolFactory;
+import club.dawdler.jedis.UnifiedJedisFactory;
 import club.dawdler.util.PropertiesUtil;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
+import redis.clients.jedis.UnifiedJedis;
 
 /**
  * @author jackson.song
@@ -46,11 +44,11 @@ public class RedisRepository extends TransactionRepository {
 	private static final String TRANSACTION_CONFIG = "distributed-transaction";
 	private long expireTime = 24 * 60 * 60 * 3;
 	private int compensateLater = 60;
-	private Pool<Jedis> pool;
+	private UnifiedJedis unifiedJedis;
 
 	public RedisRepository() {
 		try {
-			pool = JedisPoolFactory.getJedisPool(REDIS_FILE_NAME);
+			unifiedJedis = UnifiedJedisFactory.getUnifiedJedis(REDIS_FILE_NAME).getUnifiedJedis();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
@@ -76,12 +74,12 @@ public class RedisRepository extends TransactionRepository {
 		byte[] data = serializer.serialize(transaction);
 		Map<byte[], byte[]> map = new HashMap<>(8);
 		map.put(transaction.getBranchTxId().getBytes(), data);
-		return execute(pool, new JedisExecutor<Integer>() {
+		return execute(unifiedJedis, new JedisExecutor<Integer>() {
 			@Override
-			public Integer execute(Jedis jedis) {
+			public Integer execute(UnifiedJedis unifiedJedis) {
 				byte[] globalKey = (PREFIX + transaction.getGlobalTxId()).getBytes();
-				jedis.hmset(globalKey, map);
-				jedis.expire(globalKey, expireTime);
+				unifiedJedis.hmset(globalKey, map);
+				unifiedJedis.expire(globalKey, expireTime);
 				return 1;
 			}
 		});
@@ -89,16 +87,16 @@ public class RedisRepository extends TransactionRepository {
 
 	@Override
 	public int update(DistributedTransactionContext transaction) throws Exception {
-		return execute(pool, new JedisExecutor<Integer>() {
+		return execute(unifiedJedis, new JedisExecutor<Integer>() {
 			@Override
-			public Integer execute(Jedis jedis) throws Exception {
+			public Integer execute(UnifiedJedis unifiedJedis) throws Exception {
 				byte[] data = serializer.serialize(transaction);
-				Map<byte[], byte[]> map = jedis.hgetAll(transaction.getGlobalTxId().getBytes());
+				Map<byte[], byte[]> map = unifiedJedis.hgetAll(transaction.getGlobalTxId().getBytes());
 				if (map != null) {
 					map.put(transaction.getBranchTxId().getBytes(), data);
 					byte[] globalKey = (PREFIX + transaction.getGlobalTxId()).getBytes();
-					jedis.hmset(globalKey, map);
-					jedis.expire(globalKey, expireTime);
+					unifiedJedis.hmset(globalKey, map);
+					unifiedJedis.expire(globalKey, expireTime);
 					return 1;
 				}
 				return 0;
@@ -108,10 +106,10 @@ public class RedisRepository extends TransactionRepository {
 
 	@Override
 	public int deleteByBranchTxId(String globalTxId, String branchTxId) throws Exception {
-		return execute(pool, new JedisExecutor<Integer>() {
+		return execute(unifiedJedis, new JedisExecutor<Integer>() {
 			@Override
-			public Integer execute(Jedis jedis) {
-				jedis.hdel((PREFIX + globalTxId), branchTxId);
+			public Integer execute(UnifiedJedis unifiedJedis) {
+				unifiedJedis.hdel((PREFIX + globalTxId), branchTxId);
 				return 1;
 			}
 		});
@@ -119,10 +117,10 @@ public class RedisRepository extends TransactionRepository {
 
 	@Override
 	public int deleteByGlobalTxId(String globalTxId) throws Exception {
-		return execute(pool, new JedisExecutor<Integer>() {
+		return execute(unifiedJedis, new JedisExecutor<Integer>() {
 			@Override
-			public Integer execute(Jedis jedis) {
-				jedis.del(globalTxId);
+			public Integer execute(UnifiedJedis unifiedJedis) {
+				unifiedJedis.del(globalTxId);
 				return 1;
 			}
 		});
@@ -130,11 +128,11 @@ public class RedisRepository extends TransactionRepository {
 
 	@Override
 	public List<DistributedTransactionContext> findAllByGlobalTxId(String globalTxId) throws Exception {
-		return execute(pool, new JedisExecutor<List<DistributedTransactionContext>>() {
+		return execute(unifiedJedis, new JedisExecutor<List<DistributedTransactionContext>>() {
 			@Override
-			public List<DistributedTransactionContext> execute(Jedis jedis) throws Exception {
+			public List<DistributedTransactionContext> execute(UnifiedJedis unifiedJedis) throws Exception {
 				List<DistributedTransactionContext> list = new ArrayList<>();
-				Collection<byte[]> collection = jedis.hgetAll((PREFIX + globalTxId).getBytes()).values();
+				Collection<byte[]> collection = unifiedJedis.hgetAll((PREFIX + globalTxId).getBytes()).values();
 				for (byte[] bs : collection) {
 					list.add((DistributedTransactionContext) serializer.deserialize(bs));
 				}
@@ -147,10 +145,10 @@ public class RedisRepository extends TransactionRepository {
 	public int updateDataByGlobalTxId(String globalTxId, Map<String, Object> data) throws Exception {
 		String status = (String) data.get("status");
 		Map<byte[], byte[]> map = new HashMap<>(8);
-		return execute(pool, new JedisExecutor<Integer>() {
+		return execute(unifiedJedis, new JedisExecutor<Integer>() {
 			@Override
-			public Integer execute(Jedis jedis) throws Exception {
-				Collection<byte[]> collection = jedis.hgetAll((PREFIX + globalTxId).getBytes()).values();
+			public Integer execute(UnifiedJedis unifiedJedis) throws Exception {
+				Collection<byte[]> collection = unifiedJedis.hgetAll((PREFIX + globalTxId).getBytes()).values();
 				for (byte[] bs : collection) {
 					DistributedTransactionContext context = (DistributedTransactionContext) serializer.deserialize(bs);
 					if (status != null) {
@@ -161,8 +159,8 @@ public class RedisRepository extends TransactionRepository {
 				}
 				if (!map.isEmpty()) {
 					byte[] globalKey = (PREFIX + globalTxId).getBytes();
-					jedis.hmset(globalKey, map);
-					jedis.expire(globalKey, expireTime);
+					unifiedJedis.hmset(globalKey, map);
+					unifiedJedis.expire(globalKey, expireTime);
 				}
 				return 1;
 			}
@@ -172,13 +170,13 @@ public class RedisRepository extends TransactionRepository {
 	@Override
 	public List<DistributedTransactionContext> findALLBySecondsLater() throws Exception {
 		final int seconds = compensateLater;
-		return execute(pool, new JedisExecutor<List<DistributedTransactionContext>>() {
+		return execute(unifiedJedis, new JedisExecutor<List<DistributedTransactionContext>>() {
 			@Override
-			public List<DistributedTransactionContext> execute(Jedis jedis) throws Exception {
+			public List<DistributedTransactionContext> execute(UnifiedJedis unifiedJedis) throws Exception {
 				List<DistributedTransactionContext> list = new ArrayList<>();
-				Set<byte[]> mkeys = jedis.keys((PREFIX + "*").getBytes());
+				Set<byte[]> mkeys = unifiedJedis.keys((PREFIX + "*").getBytes());
 				for (byte[] keys : mkeys) {
-					Collection<byte[]> collection = jedis.hgetAll(keys).values();
+					Collection<byte[]> collection = unifiedJedis.hgetAll(keys).values();
 					for (byte[] bs : collection) {
 						DistributedTransactionContext dc = (DistributedTransactionContext) serializer.deserialize(bs);
 						int now = (int) (System.currentTimeMillis() / 1000);
@@ -192,19 +190,11 @@ public class RedisRepository extends TransactionRepository {
 		});
 	}
 
-	private <T> T execute(Pool<Jedis> jedisPool, JedisExecutor<T> executor) throws Exception {
-		Jedis jedis = null;
-		try {
-			jedis = jedisPool.getResource();
-			return executor.execute(jedis);
-		} finally {
-			if (jedis != null) {
-				jedis.close();
-			}
-		}
+	private <T> T execute(UnifiedJedis unifiedJedis, JedisExecutor<T> executor) throws Exception {
+		return executor.execute(unifiedJedis);
 	}
 
 	public static interface JedisExecutor<T> {
-		public T execute(Jedis jedis) throws Exception;
+		public T execute(UnifiedJedis unifiedJedis) throws Exception;
 	}
 }

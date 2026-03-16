@@ -29,14 +29,14 @@ public interface CustomComponentInjector {
 	/**
 	 * 注入方法
 	 */
-	default void inject(Class<?> type, Object target) throws Throwable {
-	}
+	default public void inject(Class<?> type, Object target) throws Throwable {
+	};
 
 	/**
 	 * 是否注入
 	 *
 	 */
-	default boolean isInject() {
+	default public boolean isInject() {
 		return true;
 	}
 
@@ -60,17 +60,17 @@ public interface CustomComponentInjector {
 	default String[] scanLocations() {
 		return null;
 	}
-
+	
+	
 	/**
 	 * 是否对符合的组件进行aop编织
 	 */
 	default boolean useAop() {
 		return true;
 	}
-
+	
 	/**
-	 * 是否将变量名到ParameterNameReader类中(一般不需要设置,WebComponentInjector应用此特性来实现mvc的api中方法参数映射,
-	 * ServiceInjector设置此参数为了支持Cache模块)
+	 * 是否将变量名到ParameterNameReader类中(一般不需要设置,WebComponentInjector应用此特性来实现mvc的api中方法参数映射, ServiceInjector设置此参数为了支持Cache模块)
 	 */
 	default boolean storeVariableNameByASM() {
 		return false;

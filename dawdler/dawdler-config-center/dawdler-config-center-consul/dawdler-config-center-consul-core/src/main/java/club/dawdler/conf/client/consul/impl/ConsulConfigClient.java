@@ -136,7 +136,7 @@ public class ConsulConfigClient implements ConfigClient {
 								flushCache(watchKey);
 							}
 						} catch (Throwable e) {
-							logger.error("", e);
+							logger.warn("", e);
 							if (!destroyed.get()) {
 								try {
 									Thread.sleep(DEFAULT_WAIT_TIME);

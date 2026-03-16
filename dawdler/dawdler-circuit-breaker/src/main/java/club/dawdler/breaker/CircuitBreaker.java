@@ -24,6 +24,7 @@ import club.dawdler.breaker.state.CircuitBreakerState;
  * 熔断器接口
  */
 public interface CircuitBreaker {
+
 	boolean check();
 
 	void fail();

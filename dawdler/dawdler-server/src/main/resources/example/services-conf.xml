@@ -2,13 +2,7 @@
 <config xmlns="https://github.com/srchen1987/dawdler-series"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="https://github.com/srchen1987/dawdler-series https://cdn.jsdelivr.net/gh/srchen1987/dawdler-series-xsd@main/services-conf.xsd">
-
-	<remote-load package="com/dawdler/user/load/load-config.xml"></remote-load><!--
-	远端加载类模版的配置文件-->
 	<scanner>
-		<loads>
-			<pre-load>com.dawdler.user.service.aop</pre-load>
-		</loads>
 		<package-paths>
 			<package-path>com.dawdler.user.service.impl</package-path>
 		</package-paths><!--

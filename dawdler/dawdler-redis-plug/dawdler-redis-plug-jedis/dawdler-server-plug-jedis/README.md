@@ -10,18 +10,6 @@
  <groupId>club.dawdler</groupId>
  <artifactId>dawdler-server-plug-jedis</artifactId>
 ```
-# dawdler-server-plug-jedis
-
-## 模块介绍
-
-实现dawdler-server端注入JedisOperator的功能.
-
-### 1. pom中引入依赖
-
-```xml
- <groupId>club.dawdler</groupId>
- <artifactId>dawdler-server-plug-jedis</artifactId>
-```
 
 ### 2. 使用方式
 
@@ -42,6 +30,7 @@ public class UserServiceImpl implements UserService {
  
 }
 ```
+
 #### 2.2 分布式锁的使用方式
 
 通过@JedisLockInjector注解标识全局变量为 类型的变量即可.
@@ -78,6 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 }
 ```
+
 #### 2.3 dawdler服务端支持注入的三种组件
 
 1、 [DawdlerFilter服务过滤器](../../../dawdler-server/README.md#4-dawdler服务过滤器)

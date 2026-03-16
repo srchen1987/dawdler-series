@@ -101,4 +101,5 @@ public class ClientConfigParser {
 	public static XmlObject getXmlObject() {
 		return xmlObject;
 	}
+
 }

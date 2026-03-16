@@ -16,15 +16,6 @@
 				<xs:element name="scanner" maxOccurs="1" minOccurs="0">
 					<xs:complexType>
 						<xs:sequence>
-							<xs:element name="loads" maxOccurs="1" minOccurs="0">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="pre-load"
-											maxOccurs="unbounded"
-											type="xs:string" />
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
 							<xs:element name="package-paths" maxOccurs="1"
 								minOccurs="0">
 								<xs:complexType>

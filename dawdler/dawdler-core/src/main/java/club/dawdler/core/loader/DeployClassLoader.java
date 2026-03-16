@@ -158,7 +158,6 @@ public interface DeployClassLoader extends Closeable {
 		}
 		Class<?> clazz = deployDefineClass(name, codeBytes, 0, codeBytes.length, cs);
 		if(storeVariableNameByASM) {
-			// ParameterNameReader.loadAllDeclaredMethodsParameterNames(clazz, codeBytes);
 			Class<?> parameterNameReaderClass = loadClass("club.dawdler.util.reflectasm.ParameterNameReader");
 			try {
 				Method method = parameterNameReaderClass.getDeclaredMethod("loadAllDeclaredMethodsParameterNames",

@@ -116,4 +116,5 @@ public final class XmlTool {
 	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute) {
 		return getElementAttribute(namedNodeMap, attribute, null);
 	}
+
 }

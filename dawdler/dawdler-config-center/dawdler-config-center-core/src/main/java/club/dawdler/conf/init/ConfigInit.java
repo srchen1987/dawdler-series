@@ -40,8 +40,8 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
  */
 public class ConfigInit {
 	private static Logger logger = LoggerFactory.getLogger(ConfigInit.class);
-	
 	List<ConfigClient> configClients = null;
+
 	private static ConfigInit configInit = new ConfigInit();
 
 	private ConfigInit() {

@@ -24,9 +24,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import club.dawdler.jedis.annotation.JedisInjector;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
+import redis.clients.jedis.UnifiedJedis;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
  * @author jackson.song
@@ -37,26 +36,40 @@ public class JedisOperatorFactory {
 	private static final Map<String, JedisOperator> JEDIS_OPERATORS = new ConcurrentHashMap<>();
 
 	public static class JedisHandler implements InvocationHandler {
-		private Pool<Jedis> pool;
+		private UnifiedJedis unifiedJedis;
+		private int failoverTryCount;
+		private int failoverIntervalMillis;
 
-		public JedisHandler(Pool<Jedis> pool) {
-			this.pool = pool;
+		public JedisHandler(UnifiedJedisWarpper unifiedJedisWarpper) {
+			this.unifiedJedis = unifiedJedisWarpper.getUnifiedJedis();
+			this.failoverTryCount = unifiedJedisWarpper.getFailoverTryCount();
+			this.failoverIntervalMillis = unifiedJedisWarpper.getFailoverInterval();
 		}
 
 		// 不加入任何判断是否是基础方法 必定基础方法调用的比较少,调用getJedis 一定要手动调用close关闭.
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-			Jedis jedis = pool.getResource();
-			String name = method.getName();
-			if (name.equals("getJedis")) {
-				return jedis;
-			}
+			int tryCount = 0;
+			JedisConnectionException jedisConnectionException = null;
 			try {
-				return method.invoke(jedis, args);
-			} finally {
-				if (jedis != null) {
-					jedis.close();
+				return method.invoke(unifiedJedis, args);
+			} catch (JedisConnectionException e) {
+				jedisConnectionException = e;
+				while (tryCount < failoverTryCount) {
+					try {
+						Thread.sleep(failoverIntervalMillis);
+					} catch (InterruptedException e1) {
+						Thread.currentThread().interrupt();
+					}
+					try {
+						return method.invoke(unifiedJedis, args);
+					} catch (JedisConnectionException e1) {
+						tryCount++;
+					}
 				}
+				throw jedisConnectionException;
+			} catch (Throwable e) {
+				throw e;
 			}
 		}
 	}
@@ -71,7 +84,8 @@ public class JedisOperatorFactory {
 		synchronized (JEDIS_OPERATORS) {
 			operator = JEDIS_OPERATORS.get(fileName);
 			if (operator == null) {
-				JedisHandler handler = new JedisHandler(JedisPoolFactory.getJedisPool(fileName));
+				JedisHandler handler = new JedisHandler(
+						UnifiedJedisFactory.getUnifiedJedis(fileName));
 				operator = (JedisOperator) Proxy.newProxyInstance(JedisOperator.class.getClassLoader(),
 						jedisOperatorClass, handler);
 				JEDIS_OPERATORS.put(fileName, operator);

@@ -20,6 +20,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import club.dawdler.clientplug.web.session.base.SessionIdGeneratorBase;
+import club.dawdler.clientplug.web.session.base.StandardSessionIdGenerator;
+import club.dawdler.clientplug.web.session.http.DawdlerHttpSession;
+import club.dawdler.clientplug.web.session.message.MessageOperator;
+import club.dawdler.clientplug.web.session.message.RedisMessageOperator;
+import club.dawdler.clientplug.web.session.store.RedisSessionStore;
+import club.dawdler.clientplug.web.session.store.SessionStore;
+import club.dawdler.core.serializer.SerializeDecider;
+import club.dawdler.core.serializer.Serializer;
+import club.dawdler.jedis.UnifiedJedisFactory;
+import club.dawdler.jedis.UnifiedJedisWarpper;
+import club.dawdler.util.PropertiesUtil;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -33,24 +48,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import club.dawdler.clientplug.web.session.base.SessionIdGeneratorBase;
-import club.dawdler.clientplug.web.session.base.StandardSessionIdGenerator;
-import club.dawdler.clientplug.web.session.http.DawdlerHttpSession;
-import club.dawdler.clientplug.web.session.message.MessageOperator;
-import club.dawdler.clientplug.web.session.message.RedisMessageOperator;
-import club.dawdler.clientplug.web.session.store.RedisSessionStore;
-import club.dawdler.clientplug.web.session.store.SessionStore;
-import club.dawdler.core.serializer.SerializeDecider;
-import club.dawdler.core.serializer.Serializer;
-import club.dawdler.jedis.JedisPoolFactory;
-import club.dawdler.util.PropertiesUtil;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
 
 /**
  * @author jackson.song
@@ -144,14 +141,14 @@ public class DawdlerSessionFilter implements Filter {
 	AbstractDistributedSessionManager abstractDistributedSessionManager;
 	private SessionStore sessionStore;
 	private SessionOperator sessionOperator;
-	private Pool<Jedis> jedisPool;
+	private UnifiedJedisWarpper unifiedJedisWarpper;
 	private static final String SESSION_REDIS_FILE_NAME = "session-redis";
 	private MessageOperator messageOperator;
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		try {
-			jedisPool = JedisPoolFactory.getJedisPool(SESSION_REDIS_FILE_NAME);
+			unifiedJedisWarpper = UnifiedJedisFactory.getUnifiedJedis(SESSION_REDIS_FILE_NAME);
 		} catch (Exception e) {
 			logger.error("", e);
 			throw new ServletException(e);
@@ -166,9 +163,9 @@ public class DawdlerSessionFilter implements Filter {
 		}
 		// 默认为kroy 需要其他的可以自行修改或扩展
 		Serializer serializer = SerializeDecider.decide((byte) 2);
-		sessionStore = new RedisSessionStore(jedisPool, serializer);
+		sessionStore = new RedisSessionStore(unifiedJedisWarpper.getUnifiedJedis(), serializer);
 		messageOperator = new RedisMessageOperator(serializer, sessionStore, abstractDistributedSessionManager,
-				jedisPool);
+				unifiedJedisWarpper);
 		sessionOperator = new SessionOperator(abstractDistributedSessionManager, sessionIdGenerator, sessionStore,
 				messageOperator, serializer, servletContext);
 		messageOperator.listenExpireAndDelAndChange();
@@ -228,8 +225,8 @@ public class DawdlerSessionFilter implements Filter {
 		if (abstractDistributedSessionManager != null) {
 			abstractDistributedSessionManager.close();
 		}
-		if (jedisPool != null) {
-			jedisPool.close();
+		if (unifiedJedisWarpper != null) {
+			unifiedJedisWarpper.getUnifiedJedis().close();
 		}
 
 	}

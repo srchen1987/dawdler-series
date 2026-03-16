@@ -18,15 +18,15 @@ package club.dawdler.clientplug.web.exception.handler;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import club.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import club.dawdler.clientplug.web.handler.ViewForward;
 import club.dawdler.clientplug.web.plugs.DisplaySwitcher;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author jackson.song
@@ -52,6 +52,11 @@ public class HttpExceptionHolder {
 			logger.warn(handler.getClass().getName() + " : " + id + "\talready exists!");
 		}
 	}
+
+	public static void overwrite(String id, HttpExceptionHandler handler) {
+		HANDLES.put(id, handler);
+	}
+
 
 	public static HttpExceptionHandler getHttpExceptionHandler(String id) {
 		return HANDLES.get(id);

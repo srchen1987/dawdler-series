@@ -41,7 +41,7 @@
 #regexRule list 正则类验证规则
 状态码:[ ^contain:\[(.+)\]$ ] 规定性范围内包含验证,如：contain:[China,1] ,表单中必须出现China或1 !
 状态码:[ ^minimum:([-+]?\d+(\.\d+)?$) ] 最小数值不能小于指定数字如:minimum:25或minimum:25.32!
-状态码:[ ^maxLength:([1-9]{1}\d*$) ] 字符串或数组中的字符串的长度不能大于指5定长度,如：maxLength:32!
+状态码:[ ^maxLength:([1-9]{1}\d*$) ] 字符串或数组中的字符串的长度不能大于指定长度,如：maxLength:32!
 状态码:[ ^maxItems:([1-9]{1}\d*$) ] 最大选择数或最大参数个数或List或数组的长度不能大于指定数字如:maxItems:3!
 状态码:[ ^minItems:([1-9]{1}\d*$) ] 最大选择数或最小参数个数或List或数组的长度不能小于指定数字如:minItems:3!
 状态码:[ ^noContain:\[(.+)\]$ ] 规定性范围内不包含验证,如：noContain:[China,1] ,表单中不能出现China或1 !
@@ -67,7 +67,7 @@ UserController-validator.xml 内容：
     <validator-fields><!--定义控件信息的根节点--> 
         <validator-field name="userid" explain="用户Id">
             <![CDATA[notEmpty&positiveNumber]]>
-        </validator-field><!-- 控件信息节点,@name 控件名称  @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合(@globalRules 需求很少不容易理,解所以废弃了 )  . <![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展) -->
+        </validator-field><!-- 控件信息节点,@name 控件名称  @explain 控件描述  @globalRules 放置的是全局别名配置文件中的key 如果填写则和本控件内的验证规则进行组合(@globalRules 需求很少不容易理解,所以废弃了 )  . <![CDATA[]]> 为验证规则,其中的内容为系统内支持的规则(包含自定义扩展) -->
         <validator-field name="username" explain="用户名">
             <![CDATA[notEmpty&maxLength:32]]>
         </validator-field>
@@ -119,7 +119,7 @@ UserController-validator.xml 内容：
 
 ### 3. 后台校验配置说明
 
-#### 3.1 ~~validate-global-variable.properties 全局验证规则变量~~(需求很少不容易理,解所以废弃了.)
+#### 3.1 ~~validate-global-variable.properties 全局验证规则变量~~(需求很少不容易理解,所以废弃了.)
 
 用于定义全局验证规则变量的配置文件
 
@@ -133,7 +133,7 @@ nm32=notEmpty&maxLength:32
 
 使用globalRules属性来引用全局验证规则变量
 
-#### 3.2 ~~global-validator.xml 说明~~(需求很少不容易理,解所以废弃了.)
+#### 3.2 ~~global-validator.xml 说明~~(需求很少不容易理解,所以废弃了.)
 
 用于定义全局验证规则的配置文件,全局验证规则可以通过validator-fields-group来引用,也可以通过validator-mapping来引用.
 

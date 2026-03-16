@@ -24,14 +24,14 @@ import java.util.WeakHashMap;
 /**
  * @author jackson.song
  * @version V1.0
- * asm的改进版
+ * asm的改进版 
  */
 class AccessClassLoader extends ClassLoader {
-	private static  final WeakHashMap<ClassLoader, WeakReference<AccessClassLoader>> accessClassLoaders = new WeakHashMap<>();
-	private static  final ClassLoader selfContextParentClassLoader = getParentClassLoader(AccessClassLoader.class);
-	private static  volatile AccessClassLoader selfContextAccessClassLoader = new AccessClassLoader(
+	private static final WeakHashMap<ClassLoader, WeakReference<AccessClassLoader>> accessClassLoaders = new WeakHashMap<>();
+	private static final ClassLoader selfContextParentClassLoader = getParentClassLoader(AccessClassLoader.class);
+	private static volatile AccessClassLoader selfContextAccessClassLoader = new AccessClassLoader(
 			selfContextParentClassLoader);
-	private static  volatile Method defineClassMethod;
+	private static volatile Method defineClassMethod;
 
 	private AccessClassLoader(ClassLoader parent) {
 		super(parent);

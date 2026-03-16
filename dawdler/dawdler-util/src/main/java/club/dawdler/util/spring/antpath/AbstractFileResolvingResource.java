@@ -276,5 +276,5 @@ public abstract class AbstractFileResolvingResource extends AbstractResource {
 	public URL getCodeSourceURL() {
 		return getURL();
 	}
- 
+
 }

@@ -19,6 +19,7 @@ package club.dawdler.clientplug.web.bind.resolver.impl;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -33,7 +34,7 @@ import club.dawdler.util.SunReflectionFactoryInstantiator;
 /**
  * @author jackson.song
  * @version V1.0
- *          获取基础类型、日期、Model相关参数值的决策者
+ * 获取基础类型、日期、Model相关参数值的决策者
  */
 public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentResolver {
 
@@ -57,6 +58,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 		Class<?> type = requestParamFieldData.getType();
 		String paramName = getParameterName(requestParamFieldData);
 		String pattern = requestParamFieldData.getPattern();
+		DateTimeFormatter formatter = requestParamFieldData.getFormatter();
 		Object date = null;
 		if (type == String.class || ClassUtil.isSimpleValueType(type)) {
 			String value = viewForward.paramString(paramName);
@@ -87,10 +89,12 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			return result;
 		} else if (Map.class.isAssignableFrom(type)) {
 			return viewForward.paramMaps();
-		} else if ((date = DateUtil.convertToDate(viewForward.paramString(paramName), pattern, type)) != null) {
+		} else if ((date = DateUtil.convertToDate(viewForward.paramString(paramName), pattern, type,
+				formatter)) != null) {
 			return date;
 		} else if (DateUtil.isDateTypeArray(type)) {
-			return DateUtil.convertToDateArray(viewForward.paramValues(paramName), pattern, type.getComponentType());
+			return DateUtil.convertToDateArray(viewForward.paramValues(paramName), pattern, type.getComponentType(),
+					formatter);
 		} else if (type.isArray() && type.getComponentType().isEnum()) {
 			String[] values = viewForward.paramValues(paramName);
 			if (values == null) {
@@ -123,7 +127,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 		if (type.isArray()) {
 			type = type.getComponentType();
 		}
-		return !(type.getPackage().getName().startsWith("java.") || type.isInterface()
+	return !(type.getPackage().getName().startsWith("java.") || type.isInterface()
 				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
 	}
 
@@ -158,17 +162,11 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 			Class<?> fieldType = field.getType();
 			DateTimeFormat dateTimeFormat = fieldType.getAnnotation(DateTimeFormat.class);
 			String pattern = null;
+			DateTimeFormatter formatter = null;
 			if (dateTimeFormat != null) {
 				pattern = dateTimeFormat.pattern();
-				if (pattern == null || pattern.trim().equals("")) {
-					DateTimeFormat.ISO iso = dateTimeFormat.iso();
-					if (iso == DateTimeFormat.ISO.DATE) {
-						pattern = DateTimeFormat.ISO_8601_DATE_PATTERN;
-					} else if (iso == DateTimeFormat.ISO.TIME) {
-						pattern = DateTimeFormat.ISO_8601_TIME_PATTERN;
-					} else if (iso == DateTimeFormat.ISO.DATE_TIME) {
-						pattern = DateTimeFormat.ISO_8601_DATE_TIME_PATTERN;
-					}
+				if (dateTimeFormat.iso() == DateTimeFormat.ISO.BASED) {
+					formatter = DateUtil.getISODateTimeFormatter(fieldType);
 				}
 			}
 			Object fieldValue = null;
@@ -188,7 +186,7 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 				}
 
 			} else if (String[].class == fieldType) {
-				fieldValue = viewForward.paramValues(typeName);
+				fieldValue = viewForward.paramString(typeName);
 			} else if (ClassUtil.isSimpleArrayType(fieldType)) {
 				String[] values = viewForward.paramValues(typeName);
 				try {
@@ -201,11 +199,11 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 					throw new ConvertException(
 							uri + ":" + typeName + " value null can't convert " + fieldType.getName() + "!");
 				}
-			} else if ((fieldValue = DateUtil.convertToDate(viewForward.paramString(typeName), pattern,
-					type)) != null) {
+			} else if ((fieldValue = DateUtil.convertToDate(viewForward.paramString(typeName), pattern, type,
+					formatter)) != null) {
 			} else if (DateUtil.isDateTypeArray(fieldType)) {
 				fieldValue = DateUtil.convertToDateArray(viewForward.paramValues(typeName), pattern,
-						type.getComponentType());
+						type.getComponentType(), formatter);
 			} else if (type.isArray() && type.getComponentType().isEnum()) {
 				String[] values = viewForward.paramValues(typeName);
 				if (values != null) {
@@ -213,7 +211,8 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 					try {
 					} catch (Exception e) {
 						throw new ConvertException(
-								uri + ":" + typeName + " " + e.getMessage());
+								uri + ":" + typeName + " value " + Arrays.toString(values) + " can't convert "
+										+ fieldType.getName() + "!");
 					}
 				}
 			} else if (type.isEnum()) {
@@ -223,7 +222,8 @@ public class BasicsTypeMethodArgumentResolver extends AbstractMethodArgumentReso
 						fieldValue = Enum.valueOf((Class<Enum>) type, value);
 					} catch (Exception e) {
 						throw new ConvertException(
-								uri + ":" + typeName + " " + e.getMessage());
+								uri + ":" + typeName + " value " + value + " can't convert " + fieldType.getName()
+										+ "!");
 					}
 				}
 			} else {

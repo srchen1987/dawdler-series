@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-实现web端的服务层注入mybaits中Mapper的功能.
+实现web端的服务层注入mybatis中Mapper的功能.
 
 ### 1. pom中引入依赖
 
