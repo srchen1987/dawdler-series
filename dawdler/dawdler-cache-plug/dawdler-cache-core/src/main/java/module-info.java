@@ -4,7 +4,7 @@ import club.dawdler.core.component.injector.CustomComponentInjector;
 
 module dawdler.cache.core {
 	requires java.base;
-	requires commons.jexl3;
+	requires org.apache.commons.jexl3;
 	requires dawdler.util;
 	requires dawdler.core;
 	requires dawdler.serialization;

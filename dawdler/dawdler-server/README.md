@@ -29,10 +29,10 @@ server-conf.xml 是dawdler服务器的核心配置文件.
  <server host="0.0.0.0" tcp-port="9527"
   shutdownWhiteList="127.0.0.1,localhost" tcp-shutdownPort="19530"
   tcp-backlog="200" tcp-sendBuffer="163840" tcp-receiveBuffer="163840"
-  tcp-keepAlive="false" tcp-noDelay="false" maxThreads="200" queueCapacity="65536" keepAliveMilliseconds="0">
+  tcp-keepAlive="false" tcp-noDelay="false" maxThreads="200" queueCapacity="65536" keepAliveMilliseconds="0" virtualThread="false">
  </server>
  <!-- tcp-port服务器启动端口号， shutdownWhiteList允许关闭服务的白名单， tcp-shutdownPort关闭服务器的端口号 
-        maxThreads 处理业务线程池的大小 默认200，queueCapacity 线程池队列大小 默认65536，keepAliveMilliseconds 线程池中空闲线程等待工作的超时时间 默认0，其他为tcp的配置 -->
+        maxThreads 处理业务线程池的大小 默认200，queueCapacity 线程池队列大小 默认65536，keepAliveMilliseconds 线程池中空闲线程等待工作的超时时间 默认0，其他为tcp的配置 virtualThread 是否启用虚拟线程-->
  <global-auth>
   <user username="global_user" password="global_password" />
   <user username="global_user_1" password="global_password" />
@@ -88,6 +88,8 @@ tcp-keepAlive="false" 保持长链
 tcp-noDelay="false" 禁用纳格算法
 
 maxThreads=200 处理业务线程池的大小
+
+virtualThread 是否启用虚拟线程
 ```
 
 ##### global-auth节点
@@ -144,21 +146,21 @@ keytool -export -v -alias srchen -keystore dawdler.keystore -storepass suxuan696
 
 Keytool是一个Java数据证书的管理工具,以下是简要说明.
 
--genkey 生成秘钥
+-genkey 生成密钥
 
 -alias 别名
 
--keyalg 秘钥算法
+-keyalg 密钥算法
 
--keysize 秘钥长度
+-keysize 密钥长度
 
 -validity 有效期
 
--keystore 生成秘钥库的存储路径和名称
+-keystore 生成密钥库的存储路径和名称
 
--keypass 秘钥口令
+-keypass 密钥口令
 
--storepass 秘钥库口令
+-storepass 密钥库口令
 
 -dname 拥有者信息,CN：姓名；OU：组织单位名称；O：组织名称；L：省/市/自治区名称；C：国家/地区代码
 

@@ -21,11 +21,9 @@ import org.slf4j.LoggerFactory;
 
 import club.dawdler.distributed.transaction.message.amqp.rabbitmq.DistributedTransactionAMQPConnectionFactoryProvider;
 import club.dawdler.distributed.transaction.repository.RedisRepository;
-import club.dawdler.jedis.JedisPoolFactory;
+import club.dawdler.jedis.UnifiedJedisFactory;
 import club.dawdler.rabbitmq.connection.pool.factory.AMQPConnectionFactory;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
+import redis.clients.jedis.UnifiedJedis;
 
 /**
  * @author jackson.song
@@ -38,9 +36,9 @@ public class ResourceReleaser {
 	public static void release() {
 		AMQPConnectionFactory connectionFactory = DistributedTransactionAMQPConnectionFactoryProvider.getInstance()
 				.getConnectionFactory();
-		Pool<Jedis> redisPool = null;
+		UnifiedJedis unifiedJedis = null;
 		try {
-			redisPool = JedisPoolFactory.getJedisPool(RedisRepository.REDIS_FILE_NAME);
+			unifiedJedis = UnifiedJedisFactory.getUnifiedJedis(RedisRepository.REDIS_FILE_NAME).getUnifiedJedis();
 		} catch (Exception e) {
 			logger.error("", e);
 		}
@@ -49,8 +47,8 @@ public class ResourceReleaser {
 			connectionFactory.close();
 		}
 
-		if (redisPool != null) {
-			redisPool.close();
+		if (unifiedJedis != null) {
+			unifiedJedis.close();
 		}
 
 	}

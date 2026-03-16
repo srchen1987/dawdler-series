@@ -20,6 +20,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -108,7 +109,8 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						}
 						if (type == String.class || ClassUtil.isSimpleValueType(type)) {
 							return ClassUtil.convert(value, type);
-						} else if ((date = DateUtil.convertToDate(value, paramName, type)) != null) {
+						} else if ((date = DateUtil.convertToDate(value, paramName, type,
+								requestParamFieldData.getFormatter())) != null) {
 							return date;
 						}
 					} catch (Exception e) {
@@ -173,7 +175,8 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					try {
 						if (type == String.class || ClassUtil.isSimpleValueType(type)) {
 							return ClassUtil.convert(value, type);
-						} else if ((date = DateUtil.convertToDate(value, paramName, type)) != null) {
+						} else if ((date = DateUtil.convertToDate(value, paramName, type,
+								requestParamFieldData.getFormatter())) != null) {
 							return date;
 						}
 					} catch (Exception e) {
@@ -216,14 +219,14 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (type == String.class || ClassUtil.isSimpleValueType(type)) {
 							return ClassUtil.convert(value, type);
 						} else if ((date = DateUtil.convertToDate(value, requestParamFieldData.getPattern(),
-								type)) != null) {
+								type, requestParamFieldData.getFormatter())) != null) {
 							return date;
 						} else if (ClassUtil.isSimpleArrayType(type)) {
 							return ClassUtil.convertArray(values, type);
 						} else if (DateUtil.isDateTypeArray(type)) {
 							return DateUtil.convertToDateArray(viewForward.paramValues(paramName),
 									requestParamFieldData.getPattern(),
-									type.getComponentType());
+									type.getComponentType(), requestParamFieldData.getFormatter());
 						}
 					} catch (Exception e) {
 						throw new ConvertException(
@@ -232,7 +235,6 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					}
 
 				} else if (annotationClass == QueryParam.class) {
-					HttpServletRequest request = viewForward.getRequest();
 					QueryParam queryParam = (QueryParam) annotation;
 					paramName = getParameterName(queryParam.value(), requestParamFieldData);
 					Map<String, ControlField> queryParamFields = controlValidator.getQueryParamFields(uri);
@@ -243,7 +245,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					String[] values = null;
 					String value = null;
 					if (type.isArray()) {
-						values = request.getParameterValues(paramName);
+						values = viewForward.paramValues(paramName);
 						if (controlField != null) {
 							ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), values,
 									controlField.getRules());
@@ -253,7 +255,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 									uri + ":" + paramName + " value null can't convert " + type.getName() + "!");
 						}
 					} else {
-						value = request.getParameter(paramName);
+						value = viewForward.paramString(paramName);
 						if (controlField != null) {
 							ValidateParser.validateIfFailedThrow(controlField.getFieldExplain(), value,
 									controlField.getRules());
@@ -267,14 +269,14 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (type == String.class || ClassUtil.isSimpleValueType(type)) {
 							return ClassUtil.convert(value, type);
 						} else if ((date = DateUtil.convertToDate(value, requestParamFieldData.getPattern(),
-								type)) != null) {
+								type, requestParamFieldData.getFormatter())) != null) {
 							return date;
 						} else if (ClassUtil.isSimpleArrayType(type)) {
 							return ClassUtil.convertArray(values, type);
 						} else if (DateUtil.isDateTypeArray(type)) {
 							return DateUtil.convertToDateArray(values,
 									requestParamFieldData.getPattern(),
-									type.getComponentType());
+									type.getComponentType(), requestParamFieldData.getFormatter());
 						} else if (type.isArray() && type.getComponentType().isEnum()) {
 							if (values == null) {
 								return null;
@@ -301,7 +303,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 								uri + ":" + paramName + " value " + (values != null ? Arrays.toString(values) : value)
 										+ " can't convert " + type.getName() + "!");
 					}
-					return setField(type, viewForward.getRequest(), null, uri);
+					return setField(type, viewForward, null, uri);
 				}
 			}
 		}
@@ -367,7 +369,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 		return headers.toArray(new String[0]);
 	}
 
-	public Object setField(Class<?> type, HttpServletRequest request, Object instance, String uri)
+	public Object setField(Class<?> type, ViewForward viewForward, Object instance, String uri)
 			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		if (!matchType(type) || type.isArray()) {
@@ -379,14 +381,14 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 
 		do {
 			Field[] fields = type.getDeclaredFields();
-			setField(fields, type, request, instance, uri);
+			setField(fields, type, viewForward, instance, uri);
 			type = type.getSuperclass();
 		} while (type != null && type != Object.class);
 
 		return instance;
 	}
 
-	public void setField(Field[] fields, Class<?> type, HttpServletRequest request, Object instance, String uri)
+	public void setField(Field[] fields, Class<?> type, ViewForward viewForward, Object instance, String uri)
 			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
 			NoSuchMethodException, SecurityException {
 		for (Field field : fields) {
@@ -398,24 +400,18 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 			Class<?> fieldType = field.getType();
 			DateTimeFormat dateTimeFormat = fieldType.getAnnotation(DateTimeFormat.class);
 			String pattern = null;
+			DateTimeFormatter formatter = null;
 			if (dateTimeFormat != null) {
 				pattern = dateTimeFormat.pattern();
-				if (pattern == null || pattern.trim().equals("")) {
-					DateTimeFormat.ISO iso = dateTimeFormat.iso();
-					if (iso == DateTimeFormat.ISO.DATE) {
-						pattern = DateTimeFormat.ISO_8601_DATE_PATTERN;
-					} else if (iso == DateTimeFormat.ISO.TIME) {
-						pattern = DateTimeFormat.ISO_8601_TIME_PATTERN;
-					} else if (iso == DateTimeFormat.ISO.DATE_TIME) {
-						pattern = DateTimeFormat.ISO_8601_DATE_TIME_PATTERN;
-					}
+				if (dateTimeFormat.iso() == DateTimeFormat.ISO.BASED) {
+					formatter = DateUtil.getISODateTimeFormatter(fieldType);
 				}
 			}
 			Object fieldValue = null;
 			if (String.class == fieldType) {
-				fieldValue = request.getParameter(typeName);
+				fieldValue = viewForward.paramString(typeName);
 			} else if (ClassUtil.isSimpleValueType(fieldType)) {
-				String value = request.getParameter(typeName);
+				String value = viewForward.paramString(typeName);
 				if (value == null && type.isPrimitive()) {
 					throw new ConvertException(
 							uri + ":" + typeName + " value null can't convert " + fieldType.getName() + "!");
@@ -428,9 +424,9 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 				}
 
 			} else if (String[].class == fieldType) {
-				fieldValue = request.getParameter(typeName);
+				fieldValue = viewForward.paramString(typeName);
 			} else if (ClassUtil.isSimpleArrayType(fieldType)) {
-				String[] values = request.getParameterValues(typeName);
+				String[] values = viewForward.paramValues(typeName);
 				try {
 					fieldValue = ClassUtil.convertArray(values, fieldType);
 				} catch (Exception e) {
@@ -441,12 +437,13 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					throw new ConvertException(
 							uri + ":" + typeName + " value null can't convert " + fieldType.getName() + "!");
 				}
-			} else if ((fieldValue = DateUtil.convertToDate(request.getParameter(typeName), pattern, type)) != null) {
+			} else if ((fieldValue = DateUtil.convertToDate(viewForward.paramString(typeName), pattern, type,
+					formatter)) != null) {
 			} else if (DateUtil.isDateTypeArray(fieldType)) {
-				fieldValue = DateUtil.convertToDateArray(request.getParameterValues(typeName), pattern,
-						type.getComponentType());
+				fieldValue = DateUtil.convertToDateArray(viewForward.paramValues(typeName), pattern,
+						type.getComponentType(), formatter);
 			} else if (type.isArray() && type.getComponentType().isEnum()) {
-				String[] values = request.getParameterValues(typeName);
+				String[] values = viewForward.paramValues(typeName);
 				if (values != null) {
 					fieldValue = ClassUtil.createEnumArray((Class<Enum>) type.getComponentType(), values);
 					try {
@@ -457,7 +454,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					}
 				}
 			} else if (type.isEnum()) {
-				String value = request.getParameter(typeName);
+				String value = viewForward.paramString(typeName);
 				if (value != null) {
 					try {
 						fieldValue = Enum.valueOf((Class<Enum>) type, value);
@@ -468,7 +465,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					}
 				}
 			} else {
-				field.set(instance, setField(fieldType, request, null, uri));
+				field.set(instance, setField(fieldType, viewForward, null, uri));
 			}
 			if (fieldValue != null) {
 				field.set(instance, fieldValue);

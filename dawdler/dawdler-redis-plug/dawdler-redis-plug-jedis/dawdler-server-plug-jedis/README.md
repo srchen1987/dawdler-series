@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
  
 }
 ```
+
 #### 2.2 分布式锁的使用方式
 
 通过@JedisLockInjector注解标识全局变量为 类型的变量即可.

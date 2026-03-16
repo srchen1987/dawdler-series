@@ -39,7 +39,7 @@ import org.objectweb.asm.MethodVisitor;
 /**
  * @author jackson.song
  * @version V1.0
- * asm的改进版 已升到asm支持jdk17
+ * asm的改进版
  */
 public abstract class ConstructorAccess<T> {
 	boolean isNonStaticMemberClass;

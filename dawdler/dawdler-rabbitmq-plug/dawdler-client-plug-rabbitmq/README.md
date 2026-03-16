@@ -25,7 +25,7 @@
     RabbitProvider rabbitProvider;
 
     @RequestMapping(value = "/pushMessage", method = RequestMethod.POST)
-    public void pushMssage(String message) {
+    public void pushMessage(String message) {
         rabbitProvider.publish("", "test", null, message.getBytes());//使用rabbitProvider对象
         return null;
     }

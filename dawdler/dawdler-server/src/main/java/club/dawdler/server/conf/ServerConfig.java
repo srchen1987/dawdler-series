@@ -404,8 +404,6 @@ public class ServerConfig {
 			this.uri = uri;
 		}
 
-		
-
 	}
 
 	public HealthCheck getHealthCheck() {

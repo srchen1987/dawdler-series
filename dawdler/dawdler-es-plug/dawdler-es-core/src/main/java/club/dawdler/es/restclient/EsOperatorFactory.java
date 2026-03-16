@@ -36,7 +36,6 @@ import co.elastic.clients.elasticsearch.ElasticsearchClient;
  */
 public class EsOperatorFactory {
 	private static Map<String, EsOperator> esRestHighLevelOperators = new ConcurrentHashMap<>();
-	private static Map<String, Method> methodCache = new ConcurrentHashMap<>();
 
 	public static class EsHandler implements InvocationHandler {
 		private ElasticSearchClientFactory factory;

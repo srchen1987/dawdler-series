@@ -34,6 +34,10 @@ port=6379
 user=redis_user
 #密码
 password=password
+#重连失败时重连次数 0为不开启重试 一般用于哨兵切换主节点时网络中断的情况
+failoverTryCount=0
+#重连失败时重连间隔时间(单位毫秒)
+failoverIntervalMillis=5000
 #最大连接数
 pool.maxTotal=20
 #最小空闲数
@@ -81,7 +85,7 @@ public static Pool<Jedis> getJedisPool(String fileName);
 
 注意：Pool```<Jedis>```在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
 
-在非dawdler架构下使用需要调用 JedisPoolFactory.shutdownAll(); 释放资源.
+在非dawdler架构下使用需要调用 UnifiedJedisFactory.shutdownAll(); 释放资源.
 
 ### 5. 分布式锁的使用方式
 

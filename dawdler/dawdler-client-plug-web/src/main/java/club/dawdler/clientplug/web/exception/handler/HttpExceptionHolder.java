@@ -53,6 +53,10 @@ public class HttpExceptionHolder {
 		}
 	}
 
+	public static void overwrite(String id, HttpExceptionHandler handler) {
+		HANDLES.put(id, handler);
+	}
+
 	public static HttpExceptionHandler getHttpExceptionHandler(String id) {
 		return HANDLES.get(id);
 	}

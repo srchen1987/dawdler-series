@@ -23,15 +23,13 @@ import java.util.Set;
 import club.dawdler.core.health.Health;
 import club.dawdler.core.health.Health.Builder;
 import club.dawdler.core.health.HealthIndicator;
-import club.dawdler.jedis.JedisPoolFactory;
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
+import club.dawdler.jedis.UnifiedJedisFactory;
+import club.dawdler.jedis.UnifiedJedisWarpper;
 
 /**
  * @author jackson.song
  * @version V1.0
- * JedisIndicator jedis健康指示器
+ *          JedisIndicator jedis健康指示器
  */
 public class JedisIndicator implements HealthIndicator {
 
@@ -42,23 +40,15 @@ public class JedisIndicator implements HealthIndicator {
 
 	@Override
 	public Health check(Builder builder) throws Exception {
-		Map<String, Pool<Jedis>> pools = JedisPoolFactory.getPools();
-		Set<Map.Entry<String, Pool<Jedis>>> entrySet = pools.entrySet();
-		for (Entry<String, Pool<Jedis>> entry : entrySet) {
+		Map<String, UnifiedJedisWarpper> unifiedJedisCache = UnifiedJedisFactory.getUnifiedJedisCache();
+		Set<Map.Entry<String, UnifiedJedisWarpper>> entrySet = unifiedJedisCache.entrySet();
+		for (Entry<String, UnifiedJedisWarpper> entry : entrySet) {
 			String key = entry.getKey();
-			Pool<Jedis> pool = entry.getValue();
-			Jedis jedis = null;
+			UnifiedJedisWarpper unifiedJedisWarpper = entry.getValue();
 			Builder childBuilder = Health.up();
-			try {
-				jedis = pool.getResource();
-				String version = jedis.info("Server").split("\r\n")[1];
+			String version = unifiedJedisWarpper.getUnifiedJedis().info("Server").split("\r\n")[1];
 				childBuilder.withDetail("version", version);
 				builder.withDetail(key, childBuilder.build().getData());
-			} finally {
-				if (jedis != null) {
-					jedis.close();
-				}
-			}
 		}
 		return builder.build();
 	}

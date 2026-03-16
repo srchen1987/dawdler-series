@@ -11,7 +11,7 @@ dao核心模块,通过反射实现的一套简易操作数据库的一套组件.
 <artifactId>dawdler-dao-core</artifactId>
 ```
 
-### 2. SupperDAO常用api
+### 2. SuperDAO常用api
 
 query系列为查询
 
@@ -67,7 +67,7 @@ insertPrepareGetKey与insertMapGetKey 方法会返回插入信息生成的主键
 
 ### 3. 注入DAO
 
-编写自定义的DAO继承SupperDAO即可，如UserDAO。
+编写自定义的DAO继承SuperDAO即可，如UserDAO。
 
 在service层通过@Repository注入dao,即可使用注入的dao.
 
@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService{
 
 ### 4. 获取读连接与写连接
 
-需要用到Connection时可以通过SupperDAO中的getReadConnection来获取读连接,getWriteConnection来获取写连接.
+需要用到Connection时可以通过SuperDAO中的getReadConnection来获取读连接,getWriteConnection来获取写连接.
 
 底层是通过LocalConnectionFactory.getReadConnection()与LocalConnectionFactory.getWriteConnection()实现.
 

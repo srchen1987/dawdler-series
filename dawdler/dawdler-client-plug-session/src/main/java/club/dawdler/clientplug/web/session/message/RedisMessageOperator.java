@@ -27,13 +27,16 @@ import club.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import club.dawdler.clientplug.web.session.store.RedisSessionStore;
 import club.dawdler.clientplug.web.session.store.SessionStore;
 import club.dawdler.core.serializer.Serializer;
-
+import club.dawdler.jedis.UnifiedJedisWarpper;
 import jakarta.servlet.http.HttpSessionEvent;
-import jakarta.servlet.http.HttpSessionListener;
-import redis.clients.jedis.Jedis;
+import redis.clients.jedis.AbstractPipeline;
+import redis.clients.jedis.BuilderFactory;
+import redis.clients.jedis.CommandArguments;
+import redis.clients.jedis.CommandObject;
 import redis.clients.jedis.JedisPubSub;
-import redis.clients.jedis.Pipeline;
-import redis.clients.jedis.util.Pool;
+import redis.clients.jedis.Protocol.Command;
+import redis.clients.jedis.Protocol.Keyword;
+import redis.clients.jedis.UnifiedJedis;
 
 /**
  * @author jackson.song
@@ -50,23 +53,28 @@ public class RedisMessageOperator implements MessageOperator {
 	private final AbstractDistributedSessionManager abstractDistributedSessionManager;
 	private String channelExpired = "__keyevent@database__:expired";
 	private String channelDel = "__keyevent@database__:del";
-	private Pool<Jedis> jedisPool;
+	private UnifiedJedisWarpper unifiedJedisWarpper;
+	private UnifiedJedis unifiedJedis;
 	private volatile boolean start = true;
-	private Jedis jedis = null;
 
 	public RedisMessageOperator(Serializer serializer, SessionStore sessionStore,
-			AbstractDistributedSessionManager abstractDistributedSessionManager, Pool<Jedis> jedisPool) {
+			AbstractDistributedSessionManager abstractDistributedSessionManager,
+			UnifiedJedisWarpper unifiedJedisWarpper) {
 		this.serializer = serializer;
 		this.sessionStore = sessionStore;
 		this.abstractDistributedSessionManager = abstractDistributedSessionManager;
-		this.jedisPool = jedisPool;
+		this.unifiedJedisWarpper = unifiedJedisWarpper;
+		this.unifiedJedis = unifiedJedisWarpper.getUnifiedJedis();
 	}
 
-	private static void config(Jedis jedis) {
+	private static void config(UnifiedJedis unifiedJedis) {
 		String parameter = "notify-keyspace-events";
-		Map<String, String> notify = jedis.configGet(parameter);
+		CommandArguments commandArguments = new CommandArguments((Command.CONFIG));
+		CommandObject<Map<String, String>> commandObject = new CommandObject<>(
+				commandArguments.add(Keyword.GET).add(parameter), BuilderFactory.STRING_MAP);
+		Map<String, String> notify = unifiedJedis.executeCommand(commandObject);
 		if (notify.containsKey(parameter) && notify.get(parameter).equals("")) {
-			jedis.configSet(parameter, "gxE");// 过期与删除
+			unifiedJedis.configSet(parameter, "gxE");
 		}
 	}
 
@@ -74,22 +82,16 @@ public class RedisMessageOperator implements MessageOperator {
 
 	@Override
 	public void listenExpireAndDelAndChange() {
+		channelExpired = channelExpired.replace("database", unifiedJedisWarpper.getDatabase() +
+				"");
+		channelDel = channelDel.replace("database", unifiedJedisWarpper.getDatabase() + "");
 		thread = new Thread(() -> {
 			while (start) {
 				try {
-					jedis = jedisPool.getResource();
-					config(jedis);
-					channelExpired = channelExpired.replace("database", jedis.getDB() + "");
-					channelDel = channelDel.replace("database", jedis.getDB() + "");
-					subscribe(jedis);
+					config(unifiedJedis);
+					subscribe(unifiedJedis);
 				} catch (Exception e) {
 					abstractDistributedSessionManager.invalidateAll();
-					if (jedis != null) {
-						try {
-							jedis.close();
-						} catch (Exception e1) {
-						}
-					}
 					if (start) {
 						try {
 							Thread.sleep(100);
@@ -104,42 +106,32 @@ public class RedisMessageOperator implements MessageOperator {
 		thread.start();
 	}
 
-	private void subscribe(Jedis jedis) {
-		jedis.subscribe(new ResponseDataListener(), channelExpired, channelDel, CHANNEL_ATTRIBUTE_CHANGE,
+	private void subscribe(UnifiedJedis unifiedJedis) {
+				unifiedJedis.subscribe(new ResponseDataListener(), channelExpired, channelDel, CHANNEL_ATTRIBUTE_CHANGE,
 				CHANNEL_ATTRIBUTE_CHANGE_RELOAD, CHANNEL_ATTRIBUTE_CHANGE_DEL);
 	}
 
 	@Override
 	public void sendMessageToDel(String sessionKey, String attributeName) {
-		Jedis jedis = jedisPool.getResource();
 		try {
-			Pipeline pipeline = jedis.pipelined();
+			AbstractPipeline pipeline = unifiedJedis.pipelined();
 			pipeline.hdel(sessionKey, attributeName);
 			pipeline.publish(CHANNEL_ATTRIBUTE_CHANGE_DEL, sessionKey + "$" + attributeName);
 			pipeline.close();
 		} catch (Exception e) {
 			logger.error("", e);
-		} finally {
-			if (jedis != null) {
-				jedis.close();
-			}
 		}
 	}
 
 	@Override
 	public void sendMessageToSet(String sessionKey, String attributeName, Object attributeValue) {
-		Jedis jedis = jedisPool.getResource();
 		try {
-			Pipeline pipeline = jedis.pipelined();
+			AbstractPipeline pipeline = unifiedJedis.pipelined();
 			pipeline.hset(sessionKey.getBytes(), attributeName.getBytes(), serializer.serialize(attributeValue));
 			pipeline.publish(CHANNEL_ATTRIBUTE_CHANGE, sessionKey + "$" + attributeName);
 			pipeline.close();
 		} catch (Exception e) {
 			logger.error("", e);
-		} finally {
-			if (jedis != null) {
-				jedis.close();
-			}
 		}
 	}
 
@@ -189,7 +181,7 @@ public class RedisMessageOperator implements MessageOperator {
 							logger.error("", e);
 						}
 					} else {
-						HttpSessionListener httpSessionListener = abstractDistributedSessionManager
+						jakarta.servlet.http.HttpSessionListener httpSessionListener = abstractDistributedSessionManager
 								.getHttpSessionListener();
 						if (httpSessionListener != null) {
 							if (channelExpired.equals(channel)) {
@@ -210,9 +202,9 @@ public class RedisMessageOperator implements MessageOperator {
 	@Override
 	public void stop() {
 		start = false;
-		if (jedis != null) {
+		if (unifiedJedis != null) {
 			try {
-				jedis.close();
+				unifiedJedis.close();
 			} catch (Exception e) {
 			}
 		}

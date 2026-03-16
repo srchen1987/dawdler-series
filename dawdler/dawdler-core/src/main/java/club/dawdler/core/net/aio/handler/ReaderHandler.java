@@ -101,7 +101,6 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 						session.messageCompleted();
 						session.setNeedNext(true);
 						completed(buffer.remaining(), session);
-						return;
 					} else if (buffer.remaining() == dataLength) {
 						session.parseHead(buffer);
 						session.appendReadLength(dataLength);
@@ -134,7 +133,6 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 						session.messageCompleted();
 						session.setNeedNext(true);
 						completed(buffer.remaining(), session);
-						return;
 					} else {
 						if (readLength == remanentDataLength) {
 							session.appendReadLength(remanentDataLength);

@@ -52,6 +52,9 @@ public class CommentUtils {
 				parameterData.setDescription(comment[i]);
 			} else if (i == 2) {
 				String ruleString = CommentUtils.getRule(comment[i]);
+				if (ruleString == null) {
+					continue;
+				}
 				String[] rules = ruleString.split("&");
 				for (String rule : rules) {
 					if (rule.equals("notEmpty")) {

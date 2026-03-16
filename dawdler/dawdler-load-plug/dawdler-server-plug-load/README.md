@@ -12,7 +12,6 @@
 
 3、 [web端监听器WebContextListener](../../dawdler-client-plug-web/README.md#6-webcontextlistener-监听器)
 
-
 ### 1. pom中引入依赖
 
 ```xml
@@ -34,7 +33,6 @@ dawdler提供远程加载组件的服务,在项目中的resources下的services-
 load-config.xml文件是用来配置本服务中哪些包是可以被远程加载的,支持的组件有controller,listener,interceptor.
 
 load-config.xml示例：
-
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -69,4 +67,3 @@ services-conf.xml中的扫描器
  </package-paths><!-- 需要扫描的路径，支持antpath 如 com.anywide.shop.**.service.impl，被扫描的包中的组件会生效-->
 </scanner>
 ```
-

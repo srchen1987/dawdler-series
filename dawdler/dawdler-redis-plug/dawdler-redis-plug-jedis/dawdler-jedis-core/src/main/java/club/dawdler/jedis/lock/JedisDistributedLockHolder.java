@@ -16,8 +16,7 @@
  */
 package club.dawdler.jedis.lock;
 
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.util.Pool;
+import redis.clients.jedis.UnifiedJedis;
 
 /**
  * @author jackson.song
@@ -27,20 +26,20 @@ import redis.clients.jedis.util.Pool;
 public class JedisDistributedLockHolder {
 	private int intervalInMillis; // 下一次重试等待，单位毫秒
 	public static final int DEFAULT_INTERVAL_IN_MILLIS = 20;
-	private Pool<Jedis> jedisPool;
+	private UnifiedJedis unifiedJedis;
 	private long lockExpiryInMillis; // 锁的过期时长，单位毫秒
 	public static final long DEFAULT_LOCK_EXPIRY_IN_MILLIS = 3000;
 	private boolean useWatchDog;
 
-	public JedisDistributedLockHolder(Pool<Jedis> jedisPool, long lockExpiryInMillis, int intervalInMillis,
+	public JedisDistributedLockHolder(UnifiedJedis unifiedJedis, long lockExpiryInMillis, int intervalInMillis,
 			boolean useWatchDog) {
-		this.jedisPool = jedisPool;
+		this.unifiedJedis = unifiedJedis;
 		this.lockExpiryInMillis = lockExpiryInMillis;
 		this.intervalInMillis = intervalInMillis;
 		this.useWatchDog = useWatchDog;
 	}
 
 	public JedisDistributedLock createLock(String lockKey) {
-		return new JedisDistributedLock(jedisPool, lockKey, lockExpiryInMillis, intervalInMillis, useWatchDog);
+		return new JedisDistributedLock(unifiedJedis, lockKey, lockExpiryInMillis, intervalInMillis, useWatchDog);
 	}
 }

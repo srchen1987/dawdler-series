@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.1.3-jdk21-RELEASES</version>
+		<version>0.1.4-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-load-web-dependencies</artifactId>
 	<name>dawdler-load-web-dependencies</name>
@@ -202,8 +202,8 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>ch.qos.logback</groupId>
-				<artifactId>logback-access</artifactId>
+				<groupId>ch.qos.logback.access</groupId>
+				<artifactId>logback-access-common</artifactId>
 				<version>${ch.qos.logback.version}</version>
 				<scope>provided</scope>
 			</dependency>

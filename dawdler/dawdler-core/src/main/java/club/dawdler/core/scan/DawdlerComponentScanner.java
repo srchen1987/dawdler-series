@@ -30,7 +30,6 @@ import club.dawdler.util.spring.antpath.ResourcePatternResolver;
  */
 public class DawdlerComponentScanner {
 	private static ResourcePatternResolver resolver = PathMatchingResourcePatternResolver.getInstance();
-
 	public static Resource getClass(String location) {
 		return resolver.getResource(location.replace(".", "/").concat(".class"));
 	}

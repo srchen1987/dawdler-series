@@ -45,7 +45,7 @@ public class RabbitListenerInit {
 	private static Map<Object, Connection> connections = new ConcurrentHashMap<>();
 	private static Map<String, Channel> channels = new ConcurrentHashMap<>();
 
-	public static void initRabbitListener(Object target, Class<?> clazz) {
+	public static void initRabbitListener(Object target, Class<?> clazz) throws Exception {
 		Method[] methods = clazz.getDeclaredMethods();
 		for (Method method : methods) {
 			RabbitListener listener = method.getAnnotation(RabbitListener.class);
@@ -86,7 +86,7 @@ public class RabbitListenerInit {
 												Message message = new Message(consumerTag, envelope, properties,
 														body);
 												try {
-													method.invoke(listenerCache.get(key), message);
+													method.invoke(target, message);
 												} catch (Throwable e) {
 													logger.error("", e);
 													if (listener.retry()) {
@@ -109,11 +109,14 @@ public class RabbitListenerInit {
 										});
 								channels.put(consumerTag, channel);
 							} catch (Exception e) {
-								logger.error("", e);
+								if (con.isOpen()) {
+									logger.error("", e);
+								}
 							}
 						}
 					} catch (Exception e) {
 						logger.error("", e);
+						throw e;
 					}
 				}
 			}
