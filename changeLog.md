@@ -16,4 +16,6 @@
 
 - 加入boot web配置 支持https
 
+- 升级jedis客户端
+
 - 更新部分文档
