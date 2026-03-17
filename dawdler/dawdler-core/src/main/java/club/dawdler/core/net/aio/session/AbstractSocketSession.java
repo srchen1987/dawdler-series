@@ -80,6 +80,7 @@ public abstract class AbstractSocketSession {
 	protected int position;
 	protected Map<Long, InvokeFuture<Object>> futures = new ConcurrentHashMap<>();
 	protected IoHandler ioHandler = IoHandlerFactory.getHandler();
+	protected ClassLoader classLoader;
 	private boolean authored;
 	private SessionState state = SessionState.RECEIVE;
 	private boolean server;
@@ -321,6 +322,14 @@ public abstract class AbstractSocketSession {
 
 	public long getSequence() {
 		return sequence.incrementAndGet();
+	}
+
+	public ClassLoader getClassLoader() {
+		return classLoader;
+	}
+
+	public void setClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
 	}
 
 	public enum SessionState {

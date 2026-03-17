@@ -44,7 +44,6 @@ public class SocketSession extends AbstractSocketSession {
 	private String user;
 	private String password;
 	private DawdlerConnection dawdlerConnection;
-	private ClassLoader classLoader;
 
 	public SocketSession(AsynchronousSocketChannel channel) throws Exception {
 		super(channel, false);
@@ -72,14 +71,6 @@ public class SocketSession extends AbstractSocketSession {
 
 	public void setDawdlerConnection(DawdlerConnection dawdlerConnection) {
 		this.dawdlerConnection = dawdlerConnection;
-	}
-
-	public ClassLoader getClassLoader() {
-		return classLoader;
-	}
-
-	public void setClassLoader(ClassLoader classLoader) {
-		this.classLoader = classLoader;
 	}
 
 	public void close() {

@@ -156,6 +156,7 @@ public class DawdlerConnection {
 				client = AsynchronousSocketChannel.open(asynchronousChannelGroup);
 				// config(client);
 				socketSession = new SocketSession(client);
+				socketSession.setClassLoader(Thread.currentThread().getContextClassLoader());
 				socketSession.setDawdlerConnection(this);
 				socketSession.setRemoteAddress(address);
 				socketSession.setUser(user);
@@ -338,7 +339,6 @@ public class DawdlerConnection {
 		if (ioHandler != null) {
 			ioHandler.messageSent(socketSession, obj);
 		}
-		socketSession.setClassLoader(Thread.currentThread().getContextClassLoader());
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] data = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
