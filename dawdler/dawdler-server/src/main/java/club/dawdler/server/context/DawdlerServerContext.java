@@ -34,6 +34,7 @@ public class DawdlerServerContext {
 	private AsynchronousServerSocketChannel asynchronousServerSocketChannel;
 	private AtomicBoolean started;
 	private Semaphore startSemaphore;
+	private ClassLoader classLoader;
 
 	public DawdlerServerContext(ServerConfig serverConfig, AbstractServiceRoot abstractServiceRoot,
 			AtomicBoolean started, Semaphore startSemaphore) {
@@ -87,4 +88,11 @@ public class DawdlerServerContext {
 		return startSemaphore;
 	}
 
+	public ClassLoader getClassLoader() {
+		return classLoader;
+	}
+
+	public void setClassLoader(ClassLoader classLoader) {
+		this.classLoader = classLoader;
+	}
 }

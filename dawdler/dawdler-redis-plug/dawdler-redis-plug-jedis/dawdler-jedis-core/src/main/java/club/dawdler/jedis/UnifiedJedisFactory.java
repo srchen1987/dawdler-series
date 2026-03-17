@@ -152,14 +152,4 @@ public final class UnifiedJedisFactory {
 		return unifiedJedisCache;
 	}
 
-	public static void main(String[] args) {
-		String host = "192.168.1.1";
-		int port = 6379;
-		HostAndPort hostAndPort = new HostAndPort(host, port);
-		HostAndPortMapper hostAndPortMapper = (h) -> {
-			System.out.println("test:"+h);
-			return hostAndPort;
-		};
-		System.out.println(hostAndPortMapper.getHostAndPort(hostAndPort));
-	}
 }
