@@ -19,7 +19,6 @@ package club.dawdler.core.loader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.CodeSigner;
@@ -52,7 +51,8 @@ public interface DeployClassLoader extends Closeable {
 
 	ClassLoader classLoader();
 
-	default Class<?> defineClassForDawdler(String name, byte[] codeBytes, boolean useAop, boolean storeVariableNameByASM)
+	default Class<?> defineClassForDawdler(String name, byte[] codeBytes, boolean useAop,
+			boolean storeVariableNameByASM)
 			throws ClassNotFoundException, IOException {
 		return loadClassFromBytes(name, codeBytes, classLoader(), null, useAop, storeVariableNameByASM);
 	}
@@ -132,11 +132,13 @@ public interface DeployClassLoader extends Closeable {
 		return "true".equalsIgnoreCase(sealed);
 	}
 
-	default public Class<?> findClassForDawdler(final String name, boolean useAop, boolean storeVariableNameByASM) throws ClassNotFoundException {
+	default public Class<?> findClassForDawdler(final String name, boolean useAop, boolean storeVariableNameByASM)
+			throws ClassNotFoundException {
 		return findClassForDawdler(name, null, useAop, storeVariableNameByASM);
 	}
 
-	default public Class<?> findClassForDawdler(final String name, boolean resolve, Resource res, boolean useAop,  boolean storeVariableNameByASM)
+	default public Class<?> findClassForDawdler(final String name, boolean resolve, Resource res, boolean useAop,
+			boolean storeVariableNameByASM)
 			throws ClassNotFoundException {
 		Class<?> clazz = findClassForDawdler(name, res, useAop, storeVariableNameByASM);
 		if (resolve) {
@@ -147,17 +149,11 @@ public interface DeployClassLoader extends Closeable {
 
 	default public Class<?> loadClassFromBytes(String name, byte[] codeBytes, ClassLoader classLoader, CodeSource cs,
 			boolean useAop, boolean storeVariableNameByASM) throws ClassNotFoundException, IOException {
-		if (useAop && AspectHolder.aj != null) {
-			try {
-				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, codeBytes, classLoader,
-						null);
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				throw new IOException(e);
-			}
+		if (useAop) {
+			codeBytes = AspectHolder.preProcess(name, codeBytes, classLoader, null);
 		}
 		Class<?> clazz = deployDefineClass(name, codeBytes, 0, codeBytes.length, cs);
-		if(storeVariableNameByASM) {
+		if (storeVariableNameByASM) {
 			Class<?> parameterNameReaderClass = loadClass("club.dawdler.util.reflectasm.ParameterNameReader");
 			try {
 				Method method = parameterNameReaderClass.getDeclaredMethod("loadAllDeclaredMethodsParameterNames",
@@ -171,36 +167,32 @@ public interface DeployClassLoader extends Closeable {
 	}
 
 	default public void loadAspectj() throws Exception {
-		if (AspectHolder.aj != null) {
-			try {
-				Enumeration<URL> enums = getDeployResources("META-INF/aop.xml");
-				while (enums.hasMoreElements()) {
-					URL url = enums.nextElement();
-					InputStream aopXmlInput = url.openStream();
-					try {
-						XmlObject xmlo = new XmlObject(aopXmlInput);
-						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
-							if (className != null) {
-								findClassForDawdler(className, true, false);
-							}
+		try {
+			Enumeration<URL> enums = getDeployResources("META-INF/aop.xml");
+			while (enums.hasMoreElements()) {
+				URL url = enums.nextElement();
+				InputStream aopXmlInput = url.openStream();
+				try {
+					XmlObject xmlo = new XmlObject(aopXmlInput);
+					for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
+						String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
+						if (className != null) {
+							findClassForDawdler(className, true, false);
 						}
-					} catch (Exception e) {
-						throw e;
-					} finally {
-						if (aopXmlInput != null) {
-							try {
-								aopXmlInput.close();
-							} catch (IOException e) {
-							}
+					}
+				} catch (Exception e) {
+					throw e;
+				} finally {
+					if (aopXmlInput != null) {
+						try {
+							aopXmlInput.close();
+						} catch (IOException e) {
 						}
 					}
 				}
-			} catch (IOException e) {
-				throw e;
 			}
-		} else {
-			throw new IOException("not found aspectjweaver in classpath !");
+		} catch (IOException e) {
+			throw e;
 		}
 	}
 
@@ -209,9 +201,11 @@ public interface DeployClassLoader extends Closeable {
 
 	Package deployDefinePackage(String pkgname, Manifest man, URL url);
 
-	Class<?> findClassForDawdler(final String name, Resource res, boolean useAop, boolean storeVariableNameByASM) throws ClassNotFoundException;
+	Class<?> findClassForDawdler(final String name, Resource res, boolean useAop, boolean storeVariableNameByASM)
+			throws ClassNotFoundException;
 
-	default Class<?> findClassForDawdlerByte(String name, byte[] codeBytes, boolean useAop, boolean storeVariableNameByASM)
+	default Class<?> findClassForDawdlerByte(String name, byte[] codeBytes, boolean useAop,
+			boolean storeVariableNameByASM)
 			throws ClassNotFoundException {
 		try {
 			return defineClassForDawdler(name, codeBytes, useAop, storeVariableNameByASM);

@@ -16,8 +16,9 @@
  */
 package club.dawdler.util.aspect;
 
-import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
+
+import org.aspectj.weaver.loadtime.Aj;
 
 /**
  * @author jackson.song
@@ -25,20 +26,14 @@ import java.security.ProtectionDomain;
  * AspectHolder
  */
 public class AspectHolder {
-	public static Object aj;
-	public static Method preProcessMethod;
-	static {
-		Class<?> clazz = null;
-		try {
-			clazz = Class.forName("org.aspectj.weaver.loadtime.Aj");
-			aj = clazz.getDeclaredConstructor().newInstance();
-			Method initializeMethod = null;
-			initializeMethod = clazz.getMethod("initialize");
-			initializeMethod.invoke(aj);
-			preProcessMethod = clazz.getMethod("preProcess", String.class, byte[].class, ClassLoader.class,
-					ProtectionDomain.class);
-		} catch (Exception e) {
+	public static final Aj AJ =new Aj();
+	public static byte[] preProcess(String className, byte[] classfileBuffer, ClassLoader loader,
+			ProtectionDomain protectionDomain) {
+		byte[] result = AJ.preProcess(className, classfileBuffer, loader, protectionDomain);
+		if (result != null) {
+			return result;
 		}
+		return classfileBuffer;
 	}
 
 }

@@ -17,7 +17,6 @@
 package club.dawdler.clientplug.web.classloader;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSigner;
@@ -31,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import club.dawdler.util.aspect.AspectHolder;
 import club.dawdler.util.reflectasm.ParameterNameReader;
-
 import sun.misc.Resource;
 import sun.misc.URLClassPath;
 
@@ -124,13 +122,8 @@ public class ClientClassLoader extends URLClassLoader {
 		} else {
 			codeBytes = res.getBytes();
 		}
-		if (useAop && AspectHolder.aj != null) {
-			try {
-				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, codeBytes, this, null);
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				logger.error("", e);
-			}
+		if (useAop) {
+			codeBytes =  AspectHolder.preProcess(name, codeBytes, this, null);
 		}
 		clazz = defineClass(name, codeBytes, 0, codeBytes.length, cs);
 		try {
