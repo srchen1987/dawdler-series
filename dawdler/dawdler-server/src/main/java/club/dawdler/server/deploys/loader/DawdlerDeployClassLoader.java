@@ -49,7 +49,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader implements Depl
 	public DawdlerDeployClassLoader(DawdlerContext dawdlerContext, URL binPath, ClassLoader parent, URL[] urls,
 			File classesDir) {
 		super(urls, parent, binPath);
-		ucp = new URLClassPath(urls, null, null);
+		ucp = new URLClassPath(urls, null);
 		this.classesDir = classesDir;
 		this.dawdlerContext = dawdlerContext;
 	}
@@ -106,7 +106,7 @@ public class DawdlerDeployClassLoader extends DawdlerClassLoader implements Depl
 		}
 		if (res == null) {
 			String path = name.replace('.', '/').concat(".class");
-			res = ucp.getResource(path, false);
+			res = ucp.getResource(path);
 		}
 		if (res != null) {
 			try {

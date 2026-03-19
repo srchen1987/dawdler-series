@@ -1,8 +1,8 @@
-# dawdler-series-jdk21
+# dawdler-series-jdk25
 
-![version](https://img.shields.io/badge/dawdler--series-0.1.4--jdk21--RELEASES-brightgreen)&nbsp;
+![version](https://img.shields.io/badge/dawdler--series-0.1.4--jdk25--RELEASES-brightgreen)&nbsp;
 [![License](https://img.shields.io/badge/license-apache2.0-green)](https://www.apache.org/licenses/LICENSE-2.0.txt)&nbsp;
-![jdk](https://img.shields.io/badge/jdk-21%2B-green)
+![jdk](https://img.shields.io/badge/jdk-25%2B-green)
 
 ## 项目介绍
 
@@ -198,7 +198,7 @@ kafka模块的支持,包含客户端,服务器端,kafka核心模块.
 
 ### 安装教程
 
-1. 下载[dawdler-runtime-jdk21](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/dawdler-runtime-jdk21.zip)
+1. 下载[dawdler-runtime-jdk25](https://github.com/srchen1987/dawdler-runtime/archive/refs/tags/dawdler-runtime-jdk25.zip)
 2. 启动注册中心,zookeeper执行 `sh zkServer.sh start`  启动zookeeper或启动consul.
 3. 进入dawdler的bin目录,通过 `sh dawdler.sh run` 启动(win环境 `dawdler.bat` linux或mac环境 `sh dawdler.sh`).
 
@@ -223,7 +223,7 @@ dawdler需要三方组件的支持,如下:
 
 | 软件 | 是否必须 | 备注 |
 | :-: | :-: | :-: |  
-| jdk-21 | √ | 建议使用openjdk21 |
+| jdk-25 | √ | 建议使用openjdk25 |
 | apache-zookeeper-3.6+ | x | 注册中心时需要 |
 | tomcat-10+ | x | web服务时需要 |
 | redis5x\|6x\|7x+ | x | 缓存服务时需要 |

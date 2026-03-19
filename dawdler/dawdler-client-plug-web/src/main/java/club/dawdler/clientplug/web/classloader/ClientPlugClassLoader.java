@@ -19,7 +19,6 @@ package club.dawdler.clientplug.web.classloader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -101,16 +100,10 @@ public class ClientPlugClassLoader {
 	}
 
 	public Class<?> defineClass(String className, byte[] codeBytes, boolean useAop) {
-		if (useAop && AspectHolder.aj != null) {
-			try {
-				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, className, codeBytes,
-						clientClassLoader, null);
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				logger.error("", e);
-			}
+		if (useAop) {
+			codeBytes = AspectHolder.preProcess(className, codeBytes,
+					clientClassLoader, null);
 		}
-
 		return clientClassLoader.defineClass(className, codeBytes);
 	}
 
@@ -131,7 +124,7 @@ public class ClientPlugClassLoader {
 	public void updateLoad(String path) {
 		URLClassLoader oldUrlCL = clientClassLoader;
 		try {
-			URL url = new URI("file", path+"/", null).toURL();
+			URL url = new URI("file", path + "/", null).toURL();
 			this.clientClassLoader = ClientClassLoader.newInstance(new URL[] { url }, getClass().getClassLoader());
 			loadAspectj();
 		} catch (MalformedURLException | URISyntaxException | IllegalArgumentException e) {
@@ -147,50 +140,46 @@ public class ClientPlugClassLoader {
 	}
 
 	private void loadAspectj() {
-		if (AspectHolder.aj != null) {
-			ClassLoader classLoader = getClass().getClassLoader();
-			try {
-				Enumeration<URL> enums = classLoader.getResources("META-INF/aop.xml");
-				while (enums.hasMoreElements()) {
-					URL url = enums.nextElement();
-					InputStream aopXmlInput = url.openStream();
-					try {
-						XmlObject xmlo = new XmlObject(aopXmlInput);
-						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
-							if (className != null) {
-								String fileName = className.replace(".", "/") + ".class";
-								try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
-									if (classInput == null) {
-										logger.error(fileName + " not found !");
-									} else {
-										byte[] classData = IOUtil.toByteArray(classInput);
-										classData = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj,
-												className, classData, classLoader, null);
-										Class<?> clazz = clientClassLoader.defineClass(className, classData);
-										clientClassLoader.toResolveClass(clazz);
-									}
-								} catch (Exception e) {
-									logger.error("", e);
+		ClassLoader classLoader = getClass().getClassLoader();
+		try {
+			Enumeration<URL> enums = classLoader.getResources("META-INF/aop.xml");
+			while (enums.hasMoreElements()) {
+				URL url = enums.nextElement();
+				InputStream aopXmlInput = url.openStream();
+				try {
+					XmlObject xmlo = new XmlObject(aopXmlInput);
+					for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
+						String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
+						if (className != null) {
+							String fileName = className.replace(".", "/") + ".class";
+							try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {
+								if (classInput == null) {
+									logger.error(fileName + " not found !");
+								} else {
+									byte[] classData = IOUtil.toByteArray(classInput);
+									classData = AspectHolder.preProcess(
+											className, classData, classLoader, null);
+									Class<?> clazz = clientClassLoader.defineClass(className, classData);
+									clientClassLoader.toResolveClass(clazz);
 								}
-							}
-						}
-					} catch (Exception e) {
-						logger.error("", e);
-					} finally {
-						if (aopXmlInput != null) {
-							try {
-								aopXmlInput.close();
-							} catch (IOException e) {
+							} catch (Exception e) {
+								logger.error("", e);
 							}
 						}
 					}
+				} catch (Exception e) {
+					logger.error("", e);
+				} finally {
+					if (aopXmlInput != null) {
+						try {
+							aopXmlInput.close();
+						} catch (IOException e) {
+						}
+					}
 				}
-			} catch (IOException e) {
-				logger.error("", e);
 			}
-		} else {
-			logger.error("not found aspectjweaver in classpath !");
+		} catch (IOException e) {
+			logger.error("", e);
 		}
 	}
 

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-load-plug</artifactId>
-		<version>0.1.4-jdk21-RELEASES</version>
+		<version>0.1.4-jdk25-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-server-plug-load</artifactId>
 	<name>dawdler-server-plug-load</name>
@@ -32,8 +32,6 @@
 				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<encoding>${project.build.sourceEncoding}</encoding>
-					<source>21</source>
-					<target>21</target>
 					<compilerArgs>
 						<arg>--add-exports</arg>
 						<arg>java.base/jdk.internal.loader=dawdler.util</arg>

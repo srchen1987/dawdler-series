@@ -70,6 +70,7 @@ public class DawdlerServer {
 	public DawdlerServer(ServerConfig serverConfig, AbstractServiceRoot abstractServiceRoot) throws Exception {
 		this.abstractServiceRoot = abstractServiceRoot;
 		dawdlerServerContext = new DawdlerServerContext(serverConfig, abstractServiceRoot, STARTED, startSemaphore);
+		dawdlerServerContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 		Server server = serverConfig.getServer();
 		if(server.isVirtualThread()) {
 			ThreadFactory factory = Thread.ofVirtual().name("@dawdler-Server-acceptor#", 1).factory();

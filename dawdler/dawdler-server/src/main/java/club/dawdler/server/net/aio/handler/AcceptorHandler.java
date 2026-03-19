@@ -49,6 +49,7 @@ public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChan
 		SocketSession socketSession = null;
 		try {
 			socketSession = new SocketSession(channel);
+			socketSession.setClassLoader(dawdlerServerContext.getClassLoader());
 			socketSession.setDawdlerServerContext(dawdlerServerContext);
 			readerHandler.process(socketSession);
 		} catch (Exception e) {

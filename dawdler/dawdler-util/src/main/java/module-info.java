@@ -10,6 +10,7 @@ module dawdler.util {
 	requires transitive java.xml;
 	requires org.slf4j;
 	requires com.fasterxml.jackson.dataformat.yaml;
+	requires org.aspectj.weaver;
 
 	exports club.dawdler.util;
 	exports club.dawdler.util.aspect;

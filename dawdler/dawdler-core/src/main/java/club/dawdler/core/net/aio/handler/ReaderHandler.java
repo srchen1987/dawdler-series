@@ -50,6 +50,7 @@ public class ReaderHandler implements CompletionHandler<Integer, AbstractSocketS
 			return;
 		}
 		try {
+			Thread.currentThread().setContextClassLoader(session.getClassLoader());
 			session.setLastReadTime(JVMTimeProvider.currentTimeMillis());
 			if (result > 0) {
 				DawdlerByteBuffer dawdlerBuffer = session.getReadBuffer();

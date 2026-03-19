@@ -33,7 +33,7 @@ servers:
     description: 测试服务器
 scanPath:
  - "/home/srchen/github/simple-single-user-web-api/src/main/java/club/dawdler/user"
- - "/home/srchen/github/dawdler-series-jdk21/dawdler-series/dawdler/dawdler-load-bean/src/main/java"
+ - "/home/srchen/github/dawdler-series-jdk25/dawdler-series/dawdler/dawdler-load-bean/src/main/java"
 outPath: "/home/srchen/github/api-demo/upload-api.json"
 ```
 

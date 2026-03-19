@@ -46,6 +46,7 @@ public class ConnectorHandler implements CompletionHandler<Void, SocketSession> 
 		if (clientConfig == null) {
 			return;
 		}
+		Thread.currentThread().setContextClassLoader(session.getClassLoader());
 		CertificateOperator certificate = new CertificateOperator(clientConfig.getCertificatePath());
 		try {
 			session.init();

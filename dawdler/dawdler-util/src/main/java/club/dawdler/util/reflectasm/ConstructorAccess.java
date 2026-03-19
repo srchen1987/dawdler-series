@@ -28,7 +28,7 @@ import static org.objectweb.asm.Opcodes.INVOKEVIRTUAL;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.POP;
 import static org.objectweb.asm.Opcodes.RETURN;
-import static org.objectweb.asm.Opcodes.V21;
+import static org.objectweb.asm.Opcodes.V25;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
@@ -103,7 +103,7 @@ public abstract class ConstructorAccess<T> {
 							: "club/dawdler/util/reflectasm/ConstructorAccess";
 
 					ClassWriter cw = new ClassWriter(0);
-					cw.visit(V21, ACC_PUBLIC + ACC_SUPER, accessClassNameInternal, null, superclassNameInternal, null);
+					cw.visit(V25, ACC_PUBLIC + ACC_SUPER, accessClassNameInternal, null, superclassNameInternal, null);
 
 					insertConstructor(cw, superclassNameInternal);
 					insertNewInstance(cw, classNameInternal);
