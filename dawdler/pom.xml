@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>club.dawdler</groupId>
 	<artifactId>dawdler</artifactId>
-	<version>0.1.4-jdk25-RELEASES</version>
+	<version>0.1.5-jdk25-RELEASES</version>
 	<name>dawdler</name>
 	<description>Micro service solutions</description>
 	<url>https://github.com/srchen1987/dawdler-series</url>
@@ -35,7 +35,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>25</maven.compiler.target>
 		<maven.compiler.source>25</maven.compiler.source>
-		<dawdler.build.version>0.1.4-jdk25-RELEASES</dawdler.build.version>
+		<dawdler.build.version>0.1.5-jdk25-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.17</slf4j.version>
 		<ch.qos.logback.version>1.5.25</ch.qos.logback.version>
 		<ch.qos.logback.common.version>2.0.7</ch.qos.logback.common.version>

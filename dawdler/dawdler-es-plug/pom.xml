@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler</artifactId>
-		<version>0.1.4-jdk25-RELEASES</version>
+		<version>0.1.5-jdk25-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-es-plug</artifactId>
 	<name>dawdler-es-plug</name>
