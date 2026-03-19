@@ -19,7 +19,6 @@ package club.dawdler.core.loader;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.CodeSigner;
@@ -35,7 +34,6 @@ import club.dawdler.core.context.DawdlerRuntimeContext;
 import club.dawdler.util.XmlObject;
 import club.dawdler.util.XmlTool;
 import club.dawdler.util.aspect.AspectHolder;
-
 import jdk.internal.loader.Resource;
 import jdk.internal.perf.PerfCounter;
 
@@ -147,14 +145,8 @@ public interface DeployClassLoader extends Closeable {
 
 	default public Class<?> loadClassFromBytes(String name, byte[] codeBytes, ClassLoader classLoader, CodeSource cs,
 			boolean useAop, boolean storeVariableNameByASM) throws ClassNotFoundException, IOException {
-		if (useAop && AspectHolder.aj != null) {
-			try {
-				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, codeBytes, classLoader,
-						null);
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				throw new IOException(e);
-			}
+		if (useAop) {
+			codeBytes = AspectHolder.preProcess(name, codeBytes, classLoader,null);
 		}
 		Class<?> clazz = deployDefineClass(name, codeBytes, 0, codeBytes.length, cs);
 		if(storeVariableNameByASM) {
@@ -171,36 +163,32 @@ public interface DeployClassLoader extends Closeable {
 	}
 
 	default public void loadAspectj() throws Exception {
-		if (AspectHolder.aj != null) {
-			try {
-				Enumeration<URL> enums = getDeployResources("META-INF/aop.xml");
-				while (enums.hasMoreElements()) {
-					URL url = enums.nextElement();
-					InputStream aopXmlInput = url.openStream();
-					try {
-						XmlObject xmlo = new XmlObject(aopXmlInput);
-						for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-							String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
-							if (className != null) {
-								findClassForDawdler(className, true, false);
-							}
+		try {
+			Enumeration<URL> enums = getDeployResources("META-INF/aop.xml");
+			while (enums.hasMoreElements()) {
+				URL url = enums.nextElement();
+				InputStream aopXmlInput = url.openStream();
+				try {
+					XmlObject xmlo = new XmlObject(aopXmlInput);
+					for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
+						String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
+						if (className != null) {
+							findClassForDawdler(className, true, false);
 						}
-					} catch (Exception e) {
-						throw e;
-					} finally {
-						if (aopXmlInput != null) {
-							try {
-								aopXmlInput.close();
-							} catch (IOException e) {
-							}
+					}
+				} catch (Exception e) {
+					throw e;
+				} finally {
+					if (aopXmlInput != null) {
+						try {
+							aopXmlInput.close();
+						} catch (IOException e) {
 						}
 					}
 				}
-			} catch (IOException e) {
-				throw e;
 			}
-		} else {
-			throw new IOException("not found aspectjweaver in classpath !");
+		} catch (IOException e) {
+			throw e;
 		}
 	}
 
