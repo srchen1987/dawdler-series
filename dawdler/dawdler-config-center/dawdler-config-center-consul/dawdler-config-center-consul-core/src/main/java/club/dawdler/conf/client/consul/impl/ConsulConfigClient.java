@@ -137,7 +137,9 @@ public class ConsulConfigClient implements ConfigClient {
 								flushCache(watchKey);
 							}
 						} catch (Throwable e) {
-							logger.warn("", e);
+							if(!(e instanceof IllegalStateException)){
+								logger.warn("", e);
+							}
 							if (!destroyed.get()) {
 								try {
 									Thread.sleep(DEFAULT_WAIT_TIME);

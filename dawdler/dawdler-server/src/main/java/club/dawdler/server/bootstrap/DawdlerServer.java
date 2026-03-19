@@ -69,6 +69,7 @@ public class DawdlerServer {
 	public DawdlerServer(ServerConfig serverConfig, AbstractServiceRoot abstractServiceRoot) throws Exception {
 		this.abstractServiceRoot = abstractServiceRoot;
 		dawdlerServerContext = new DawdlerServerContext(serverConfig, abstractServiceRoot, STARTED, startSemaphore);
+		dawdlerServerContext.setClassLoader(Thread.currentThread().getContextClassLoader());
 		asynchronousChannelGroup = AsynchronousChannelGroup.withThreadPool(new ForkJoinPool(
 				Runtime.getRuntime().availableProcessors() * 2, dawdlerForkJoinWorkerThreadFactory, null, true));
 		Server server = serverConfig.getServer();

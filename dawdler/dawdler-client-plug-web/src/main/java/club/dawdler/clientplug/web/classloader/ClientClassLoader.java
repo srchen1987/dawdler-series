@@ -17,7 +17,6 @@
 package club.dawdler.clientplug.web.classloader;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.CodeSigner;
@@ -31,7 +30,6 @@ import org.slf4j.LoggerFactory;
 
 import club.dawdler.util.aspect.AspectHolder;
 import club.dawdler.util.reflectasm.ParameterNameReader;
-
 import jdk.internal.loader.Resource;
 import jdk.internal.loader.URLClassPath;
 
@@ -56,12 +54,12 @@ public class ClientClassLoader extends URLClassLoader {
 
 	public ClientClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);
-		ucp = new URLClassPath(urls, null, null);
+		ucp = new URLClassPath(urls, null);
 	}
 
 	public ClientClassLoader(URL[] urls) {
 		super(urls);
-		ucp = new URLClassPath(urls, null, null);
+		ucp = new URLClassPath(urls, null);
 	}
 
 	public static ClientClassLoader newInstance(final URL[] urls, final ClassLoader parent) {
@@ -71,7 +69,7 @@ public class ClientClassLoader extends URLClassLoader {
 	@Override
 	protected Class<?> findClass(final String name) throws ClassNotFoundException {
 		String path = name.replace('.', '/').concat(".class");
-		Resource res = ucp.getResource(path, false);
+		Resource res = ucp.getResource(path);
 		if (res != null) {
 			try {
 				return defineClass(name, res, true);
@@ -124,13 +122,8 @@ public class ClientClassLoader extends URLClassLoader {
 		} else {
 			codeBytes = res.getBytes();
 		}
-		if (useAop && AspectHolder.aj != null) {
-			try {
-				codeBytes = (byte[]) AspectHolder.preProcessMethod.invoke(AspectHolder.aj, name, codeBytes, this, null);
-			} catch (SecurityException | IllegalAccessException | IllegalArgumentException
-					| InvocationTargetException e) {
-				logger.error("", e);
-			}
+		if (useAop) {
+			codeBytes = AspectHolder.preProcess(name, codeBytes, this, null);
 		}
 		clazz = defineClass(name, codeBytes, 0, codeBytes.length, cs);
 		try {
