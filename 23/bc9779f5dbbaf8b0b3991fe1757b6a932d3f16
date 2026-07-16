@@ -1,0 +1,54 @@
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/src/main/java/club/dawdler/clientplug/discovery/consul/resource/ConsulLifeCycle.java
+  s_99d0f0ebaa0d8a::t_e28441e5927235 21,45-46
+  s_99d0f0ebaa0d8a::t_707c302630041a 121-127,129-133
+  s_99d0f0ebaa0d8a::t_79fc303e1b3447 64-80
+  s_99d0f0ebaa0d8a::t_62bf23226942d7 84
+  s_99d0f0ebaa0d8a::t_787d5aca20f1bd 47
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-discovery-center-consul-core/src/main/java/club/dawdler/core/discovery/consul/ConsulDiscoveryCenter.java
+  h_82990a09bc17b5 43-45
+dawdler/dawdler-client-plug-web/src/main/resources/web-conf.xsd
+  h_82990a09bc17b5 9-16
+dawdler/dawdler-web-gateway/pom.xml
+  h_82990a09bc17b5 13
+dawdler/pom.xml
+  h_82990a09bc17b5 595-599,650
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/ServiceInstancePool.java
+  s_99d0f0ebaa0d8a::t_46c743e7ae08dd 7,17,19-21,23-28,30,32,34-36,38-50,53-57,59-64
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/Test.java
+  h_82990a09bc17b5 15-17
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/src/main/java/module-info.java
+  s_99d0f0ebaa0d8a::t_031a68983d67c7 2-4,10,13-18
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/src/main/java/club/dawdler/clientplug/discovery/consul/resource/ConsulLifeCycle.java
+  h_82990a09bc17b5 117
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/RouteResolver.java
+  s_99d0f0ebaa0d8a::t_310dbc59673e6f 96-98,101
+  h_82990a09bc17b5 29-30,71
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 23-26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "23bc9779f5dbbaf8b0b3991fe1757b6a932d3f16",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  },
+  "sessions": {
+    "s_99d0f0ebaa0d8a": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_09ad9f8d9ffeScYVj2hWVMrhoh",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_09ad9f8d9ffeScYVj2hWVMrhoh",
+        "edit_kind": "file_edit",
+        "tool_use_id": "chatcmpl-tool-9b53cdc9c266f3a5"
+      }
+    }
+  }
+}
