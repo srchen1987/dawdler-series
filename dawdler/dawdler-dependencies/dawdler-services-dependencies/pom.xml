@@ -249,11 +249,6 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.commons</groupId>
-				<artifactId>commons-logging</artifactId>
-				<scope>provided</scope>
-			</dependency>
-			<dependency>
 				<groupId>org.ow2.asm</groupId>
 				<artifactId>asm</artifactId>
 				<version>${org.ow2.asm.version}</version>
