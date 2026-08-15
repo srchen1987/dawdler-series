@@ -1,0 +1,78 @@
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/README.md
+  s_56592cbc19937f::t_9e101ada4caed2 35
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/src/main/java/club/dawdler/conf/client/consul/impl/ConsulConfigClient.java
+  s_56592cbc19937f::t_1f5496a3401357 60
+dawdler/dawdler-client-api-generator/README.md
+  s_56592cbc19937f::t_84bd92cdfa5437 91
+doc/dawdler-profiles.active-README.md
+  s_affaa6c56dde2c::t_b3c49a0f6e9f36 76,78
+dawdler/dawdler-client/README.md
+  s_56592cbc19937f::t_cc61b9c2990640 30
+dawdler/dawdler-client-plug-validator/README.md
+  s_56592cbc19937f::t_6487d2a8a802e6 310
+README.md
+  s_56592cbc19937f::t_f4ab34b3347ea8 66
+  s_56592cbc19937f::t_7fbc9f9e99f0a4 61
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md
+  s_1eef82b3f68f57::t_083ab7b831980e 61
+dawdler/dawdler-server/README.md
+  s_56592cbc19937f::t_6c2393d046565c 80
+  s_56592cbc19937f::t_51d4ce395aa9e8 113
+  s_56592cbc19937f::t_06801b48245cfc 67
+  s_56592cbc19937f::t_2a95ff8b9768e7 28
+dawdler/dawdler-server/src/main/resources/example/server-conf.xml
+  s_56592cbc19937f::t_72da83d37e3f46 16
+  s_56592cbc19937f::t_0560deed5ec85e 26
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "6e3e07a23750bbf42e4475a25db6fc660800d98a",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  },
+  "sessions": {
+    "s_1eef82b3f68f57": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffa2f4df0ffeEgnSk2L4d6mlOf",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "session_id": "ses_ffa2f4df0ffeEgnSk2L4d6mlOf",
+        "tool_use_id": "chatcmpl-tool-ac1e5aec1f1167aa"
+      }
+    },
+    "s_56592cbc19937f": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffa0d466bffe1ggAzAhIFuo7hG",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_ffa0d466bffe1ggAzAhIFuo7hG",
+        "edit_kind": "file_edit",
+        "tool_use_id": "chatcmpl-tool-8b785d4797dd2c0f"
+      }
+    },
+    "s_affaa6c56dde2c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffa3398cdffe8kLw2ZX8eJZaQY",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-9a6c258bd4c2ab5f",
+        "session_id": "ses_ffa3398cdffe8kLw2ZX8eJZaQY",
+        "edit_kind": "file_edit"
+      }
+    }
+  }
+}
