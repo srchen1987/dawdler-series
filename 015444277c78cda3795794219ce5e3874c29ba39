@@ -1,0 +1,73 @@
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md
+  s_1eef82b3f68f57::t_952880d61e0537 61
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/README.md
+  s_56592cbc19937f::t_59efda8005a384 35
+dawdler/dawdler-client/README.md
+  s_56592cbc19937f::t_026132a156b00f 30
+doc/dawdler-profiles.active-README.md
+  s_affaa6c56dde2c::t_6ef33adcd67487 76,78
+dawdler/dawdler-client-api-generator/README.md
+  s_56592cbc19937f::t_c0dde5b52376f5 91
+dawdler/dawdler-client-plug-validator/README.md
+  s_56592cbc19937f::t_955ada9a1bf1d4 310
+dawdler/dawdler-server/README.md
+  s_56592cbc19937f::t_162712375795f4 67
+  s_56592cbc19937f::t_7ca106c341a239 28
+  s_56592cbc19937f::t_76a94b897a97cb 112
+  s_56592cbc19937f::t_480900b918f69b 80
+dawdler/dawdler-server/src/main/resources/example/server-conf.xml
+  s_56592cbc19937f::t_10fd9b2258ab92 26
+  s_56592cbc19937f::t_0663af37ffb764 16
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/src/main/java/club/dawdler/conf/client/consul/impl/ConsulConfigClient.java
+  s_56592cbc19937f::t_5fbbb86d0f9f48 60
+README.md
+  s_56592cbc19937f::t_1dd90d135bd2b6 61
+  s_56592cbc19937f::t_3d8534e616cdf9 66
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "015444277c78cda3795794219ce5e3874c29ba39",
+  "prompts": {},
+  "sessions": {
+    "s_1eef82b3f68f57": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffa2f4df0ffeEgnSk2L4d6mlOf",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "session_id": "ses_ffa2f4df0ffeEgnSk2L4d6mlOf",
+        "tool_use_id": "chatcmpl-tool-b70ff74ac60e6eaa"
+      }
+    },
+    "s_56592cbc19937f": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffa0d466bffe1ggAzAhIFuo7hG",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_ffa0d466bffe1ggAzAhIFuo7hG",
+        "tool_use_id": "chatcmpl-tool-a4d833607ef20879",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_affaa6c56dde2c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_ffa3398cdffe8kLw2ZX8eJZaQY",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-a95a6f00873c7889",
+        "edit_kind": "file_edit",
+        "session_id": "ses_ffa3398cdffe8kLw2ZX8eJZaQY"
+      }
+    }
+  }
+}
