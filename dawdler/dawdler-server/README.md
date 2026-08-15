@@ -25,7 +25,7 @@ server-conf.xml 是dawdler服务器的核心配置文件.
  <keyStore
   keyStorePath="dawdler.keystore"
   alias="srchen" password="jackson.song1948@anywide"></keyStore><!-- 
-        keyStorePath 私钥路径 alias帐号 password 密码 -->
+        keyStorePath 私钥路径 alias账号 password 密码 -->
  <server host="0.0.0.0" tcp-port="9527"
   shutdownWhiteList="127.0.0.1,localhost" tcp-shutdownPort="19530"
   tcp-backlog="200" tcp-sendBuffer="163840" tcp-receiveBuffer="163840"
@@ -64,7 +64,7 @@ server-conf.xml 是dawdler服务器的核心配置文件.
 
 ##### keyStore节点
 
-是证书的私钥配置,客户端连接服务器需要账号密码,账号密码在客户端通过公钥进行加密,需要提前颁发公钥给客户端.keyStorePath 私钥路径,alias 帐号,password 密码.
+是证书的私钥配置,客户端连接服务器需要账号密码,账号密码在客户端通过公钥进行加密,需要提前颁发公钥给客户端.keyStorePath 私钥路径,alias 账号,password 密码.
 
 ##### server节点配置
 
@@ -77,7 +77,7 @@ shutdownWhiteList="127.0.0.1,localhost" shutdownWhiteList允许关闭服务的�
 
 tcp-shutdownPort="19530" 关闭服务的端口号
 
-tcp-backlog="200" 指定socket链接队列的长度
+tcp-backlog="200" 指定socket连接队列的长度
 
 tcp-sendBuffer="163840" TCP发送缓存区
 
@@ -109,7 +109,7 @@ scheme="http" 提供http服务,支持设为https,使用keyStore中的keystore为
 
 port="19001" 提供http/https 服务的端口号
 
-backlog="0"  指定socket链接队列的长度,默认为0,系统级限制.
+backlog="0"  指定socket连接队列的长度,默认为0,系统级限制.
 
 username="jackson" 用户名,未填写该属性则不开启认证模块.
 

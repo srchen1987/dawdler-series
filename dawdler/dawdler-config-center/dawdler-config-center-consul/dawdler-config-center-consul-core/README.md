@@ -32,7 +32,7 @@ host: consul服务器的ip
 
 port: consul服务器暴露的端口
 
-separator:分割符 一般无须配置,只在keys的场景有意义,如以下请求:
+separator:分隔符 一般无须配置,只在keys的场景有意义,如以下请求:
  设 目前已有目录 /config/config-uat /config/config-dev /config/config
 访问 ```http://localhost:8500/v1/kv/config?keys&separator=-&wait=5s&index=2``` 返回 [
 "config/config", "config/config-" ].
