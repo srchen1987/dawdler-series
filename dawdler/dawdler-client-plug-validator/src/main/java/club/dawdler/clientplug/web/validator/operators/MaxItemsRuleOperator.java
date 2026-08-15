@@ -16,6 +16,7 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.lang.reflect.Array;
 import java.util.regex.Matcher;
 
 /**
@@ -37,8 +38,9 @@ public class MaxItemsRuleOperator extends RegexRuleOperator {
 		if (value == null) {
 			return null;
 		}
-		if (value instanceof String[]) {
-			if (((String[]) value).length > i) {
+		if (value.getClass().isArray()) {
+			int length = Array.getLength(value);
+			if (length > i) {
 				return error;
 			}
 		}

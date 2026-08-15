@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import club.dawdler.clientplug.web.session.AbstractDistributedSessionManager;
 import club.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import club.dawdler.clientplug.web.session.message.RedisMessageOperator;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.Serializer;
 import redis.clients.jedis.AbstractPipeline;
 import redis.clients.jedis.Response;
 import redis.clients.jedis.UnifiedJedis;
@@ -125,7 +125,7 @@ public class RedisSessionStore implements SessionStore {
 						logger.error("", e);
 					}
 				});
-				pipeline.hmset(id.getBytes(), addData);
+				pipeline.hset(id.getBytes(), addData);
 			}
 
 			List<String> removeKeys = session.getAttributesRemoveNewKeys();
@@ -170,7 +170,7 @@ public class RedisSessionStore implements SessionStore {
 						logger.error("", e);
 					}
 				});
-				pipeline.hmset(id.getBytes(), addData);
+				pipeline.hset(id.getBytes(), addData);
 			}
 
 			List<String> removeKeys = session.getAttributesRemoveNewKeys();

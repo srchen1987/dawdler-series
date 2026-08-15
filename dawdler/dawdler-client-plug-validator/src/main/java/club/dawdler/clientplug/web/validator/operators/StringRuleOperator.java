@@ -16,6 +16,7 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.lang.reflect.Array;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,17 +51,20 @@ public abstract class StringRuleOperator extends RuleOperator {
 			return null;
 		}
 		boolean flag = true;
-		if (value instanceof String) {
-			flag = validator.validate(value.toString());
-		} else if (value instanceof String[]) {
-			String[] values = (String[]) value;
-			for (String v : values) {
-				if (v != null) {
-					if (!validator.validate(v)) {
+		if (value.getClass().isArray()) {
+			int length = Array.getLength(value);
+			for (int i = 0; i < length; i++) {
+				Object element = Array.get(value, i);
+				if (element != null) {
+					if (!validator.validate(element.toString())) {
 						flag = false;
 						break;
 					}
 				}
+			}
+		} else {
+			if (value != null && !validator.validate(value.toString())) {
+				flag = false;
 			}
 		}
 		if (!flag) {

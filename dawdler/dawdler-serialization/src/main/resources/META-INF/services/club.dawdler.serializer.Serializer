@@ -1,0 +1,2 @@
+club.dawdler.serializer.JDKDefaultSerializer
+club.dawdler.serializer.KryoSerializer

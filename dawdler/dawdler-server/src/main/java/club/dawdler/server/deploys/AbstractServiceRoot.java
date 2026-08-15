@@ -30,12 +30,14 @@ import club.dawdler.core.health.ServerHealth;
 import club.dawdler.core.health.ServiceHealth;
 import club.dawdler.core.health.Status;
 import club.dawdler.core.httpserver.DawdlerHttpServer;
-import club.dawdler.core.serializer.SerializeDecider;
+import club.dawdler.serializer.SerializeDecider;
 import club.dawdler.core.thread.DefaultThreadFactory;
 import club.dawdler.server.conf.ServerConfig;
+import club.dawdler.util.spring.MediaType;
 import club.dawdler.server.conf.ServerConfig.HealthCheck;
 import club.dawdler.server.conf.ServerConfig.Server;
 import club.dawdler.server.context.DawdlerServerContext;
+import club.dawdler.server.thread.processor.BusyResponseRejectedExecutionHandler;
 import club.dawdler.util.DawdlerTool;
 import club.dawdler.util.HashedWheelTimerSingleCreator;
 import club.dawdler.util.JsonProcessUtil;
@@ -68,7 +70,8 @@ public abstract class AbstractServiceRoot {
 		}
 		int nThreads = server.getMaxThreads();
 		dataProcessExecutor = new ThreadPoolExecutor(nThreads, nThreads, keepAliveMilliseconds, TimeUnit.MILLISECONDS,
-				new LinkedBlockingQueue<Runnable>(queueCapacity), new DefaultThreadFactory("dataProcessWorkerPool#"));
+				new LinkedBlockingQueue<Runnable>(queueCapacity), new DefaultThreadFactory("dataProcessWorkerPool#"),
+				new BusyResponseRejectedExecutionHandler());
 	}
 
 	public void shutdownWorkPool() {
@@ -86,12 +89,7 @@ public abstract class AbstractServiceRoot {
 	public abstract void initApplication(DawdlerServerContext dawdlerServerContext) throws Exception;
 
 	public static Service getService(String path) {
-		Service service = SERVICES.get(path);
-		if (service == null) {
-			return null;
-		}
-		Thread.currentThread().setContextClassLoader(service.getClassLoader());
-		return service;
+		return SERVICES.get(path);
 	}
 
 	public void startHttpServer(ServerConfig serverConfig) throws Exception {
@@ -110,7 +108,7 @@ public abstract class AbstractServiceRoot {
 			public void handle(HttpExchange exchange) throws IOException {
 				ServerHealth serverHealth = getServerHealth();
 				byte[] data = JsonProcessUtil.beanToJsonByte(serverHealth.getData());
-				exchange.getResponseHeaders().add("Content-Type", "application/json;charset=UTF-8");
+				exchange.getResponseHeaders().add("Content-Type", MediaType.APPLICATION_JSON_UTF8_VALUE);
 				if (Status.UP.equals(serverHealth.getStatus())) {
 					exchange.sendResponseHeaders(200, data.length);
 				} else {

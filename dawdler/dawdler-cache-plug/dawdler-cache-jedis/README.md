@@ -28,7 +28,7 @@ public class CacheConfigImpl implements CacheConfig {
 
  @Override
  public Long getMaxSize() {
-  return 1024l;
+  return 1024L;
  }
 
  @Override

@@ -19,7 +19,7 @@ web mvc模块,使用上基本与spring mvc一致.提供远程加载组件的客�
 
 #### 2.2 创建API
 
-通过RequestMapping定义webApi,RequestMapping可以用在类上和方法上,也可以用在类上,用在某个类上那么所有webApi的开头都必须以用在类上定义的RequestMapping开头.(RequestMapping用在类上只有value有效,其余无效)
+通过RequestMapping定义webApi,RequestMapping可以用在类上和方法上,用在某个类上那么所有webApi的开头都必须以用在类上定义的RequestMapping开头.(RequestMapping用在类上只有value有效,其余无效)
 
 ### 3. Controller注解
 
@@ -66,8 +66,6 @@ public @interface DateTimeFormat {
 
 iso设置为BASED时 pattern不生效,会自动将日期字符串转换成ISO8601标准格式 对应格式如下:
 
-根据您提供的Java代码，生成的表格如下：
-
 | 类型 | 格式 |
 | :-: | :-: |
 | LocalDateTime | DateTimeFormatter.ISO_LOCAL_DATE_TIME |
@@ -94,17 +92,32 @@ public @interface RequestMapping {
 
  String input() default "";//配置验证框架之后验证未通过的跳转路径,默认为空,返回json类型的错误提醒,如果配置会在request域下设置属性validate_error并forward到指定的路径
 
- long uploadSizeMax() default 0l;//上传文件最大的限制,单位byte
+ long uploadSizeMax() default 0L;//上传文件最大的限制,单位byte
 
- long uploadPerSizeMax() default 0l;//上传单个文件最大的限制,单位byte
+ long uploadPerSizeMax() default 0L;//上传单个文件最大的限制,单位byte
 
  String exceptionHandler() default "";//异常处理者,系统内提供三种处理者json, jsp, velocity,会根据ViewType自动选择,如果有需要可以扩展,参考HttpExceptionHolder的register方法,可以在监听器启动时扩展,一般不会考虑扩展所以没采用SPI方式配置
+
+ String[] produces() default {};//响应的Content-Type设置,模仿springmvc的produces,支持Accept头内容协商,未匹配返回406 Not Acceptable
 
  enum ViewType {
   json, jsp, velocity
  }
 }
 ```
+
+produces详细说明:
+
+produces用于声明当前api能产出的媒体类型,框架会根据请求的Accept头进行内容协商(Content Negotiation),其行为与springmvc一致:
+
+- 未配置produces时,响应的Content-Type由ViewType或@ResponseBody的返回类型决定(默认行为不变).
+- 配置了produces时,框架在方法执行前解析Accept头与produces列表进行匹配,命中则设置响应的Content-Type并执行方法,未命中则直接返回406 Not Acceptable,不执行方法.
+- Accept头未传或为空时视为 `*/*`,与任意produces匹配.
+- 支持通配符匹配,如 `produces = "text/*"` 可匹配 `Accept: text/html`、`Accept: text/event-stream` 等.
+- 支持质量因子(q值)排序,如 `Accept: application/json;q=0.9, application/xml;q=0.8`,优先匹配q值高的类型.
+- produces设置的Content-Type优先于ViewType与@ResponseBody的默认Content-Type.
+
+常用媒体类型常量可参考 club.dawdler.util.spring.MediaType,如 MediaType.APPLICATION_JSON_VALUE、MediaType.TEXT_EVENT_STREAM_VALUE、MediaType.TEXT_HTML_VALUE 等.
 
 ### 4. Controller方法参数类型说明
 
@@ -192,7 +205,7 @@ Locale 为 request.getLocale();
 
 ViewForward 提供了非常丰富的api 可以设置数据集,可以设置模板路径
 
-#### 4.7 大数值对象
+#### 4.7 枚举类型
 
 | Enum |
 | :-: | :-: |
@@ -260,9 +273,44 @@ public class OrderController {
   return result;
  }
  
- }
+  }
 
+  ```
+
+ 示例4：produces内容协商
+
+ 示例4.1：实现SSE(Server-Sent Events),固定返回text/event-stream:
+
+ ```java
+ @Controller
+ @RequestMapping(value = "/sse")
+ public class SSEController {
+
+  @RequestMapping(value = "/push", method = RequestMethod.GET, produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  @ResponseBody
+  public String push() throws Exception {
+   return "data: hello\n\n";
+  }
+
+ }
  ```
+
+ 说明: produces = "text/event-stream" 会覆盖@ResponseBody默认的application/json,响应Content-Type为text/event-stream.若客户端Accept头不包含text/event-stream(且非*/*)则返回406.
+
+ 示例4.2：多类型协商,根据Accept头返回JSON或XML:
+
+ ```java
+ @RequestMapping(value = "/data", produces = {
+   MediaType.APPLICATION_JSON_VALUE,
+   MediaType.APPLICATION_XML_VALUE
+ })
+ @ResponseBody
+ public Object data() {
+  return result;
+ }
+ ```
+
+ 说明: 客户端 Accept: application/json 则响应Content-Type为application/json; Accept: application/xml 则为application/xml; Accept头与produces列表均不匹配时返回406.
 
 ### 5. HandlerInterceptor 拦截器
 
@@ -393,9 +441,11 @@ dawdler内部提供[JsonDisplayPlug](src/main/java/club/dawdler/clientplug/web/p
 
 注意: 如果方法标记了@ResponseBody 返回类型是基本数据类型或String类型或BigDecimal类型则直接输出类型为text/html;charset=UTF-8,其他类型会转换为json类型为application/json;charset=UTF-8.
 
+如果@RequestMapping配置了produces,则响应的Content-Type以produces协商结果为准,优先于上述@ResponseBody的默认行为及ViewType的默认设置.
+
 ### 10. 扫描组件包配置
 
-web-conf.xml是web端核心配置文件. 包含组件扫描,配置据源定义,指定目标包定义数据源,读写分离配置,健康检测.
+web-conf.xml是web端核心配置文件. 包含组件扫描,配置数据源定义,指定目标包定义数据源,读写分离配置,健康检测.
 
 package-path配置当前的web环境中的包扫描路径(部署在web容器中的lib或classes中的包路径并支持antpath).
 
@@ -412,7 +462,7 @@ package-path配置当前的web环境中的包扫描路径(部署在web容器中�
 
 ### 11. aop使用方式
 
-dawdler的aop支持采用aspjectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
+dawdler的aop支持采用aspectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
 
 适用范围：aop支持web端的Controller,HandlerInterceptor,WebContextListener,api接口(Service接口)这四种类型的切入.
 
@@ -486,7 +536,7 @@ public class UserControllerAspect {
 
 健康检测是指系统在启动时,检查系统的各个组件是否正常工作,可以为k8s的liveness,readiness提供该服务.
 
-如果设有带(Basic Authentication)的认证,请通过head头加入Authorization头信息.
+如果设置了(Basic Authentication)的认证,请通过header加入Authorization头信息.
 
 配置位于web-conf.xml的health-check节点,示例:
 

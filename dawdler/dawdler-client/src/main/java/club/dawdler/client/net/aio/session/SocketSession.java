@@ -31,7 +31,7 @@ import club.dawdler.client.DawdlerConnection;
 import club.dawdler.client.processor.DataProcessor;
 import club.dawdler.core.exception.SessionCloseException;
 import club.dawdler.core.net.aio.session.AbstractSocketSession;
-import club.dawdler.core.serializer.SerializeDecider;
+import club.dawdler.serializer.SerializeDecider;
 import club.dawdler.core.thread.InvokeFuture;
 
 /**
@@ -77,10 +77,17 @@ public class SocketSession extends AbstractSocketSession {
 		close(true);
 	}
 
-	public synchronized void close(boolean reconnect) {
-		if (close.compareAndSet(false, true)) {
+	public void close(boolean reconnect) {
+		synchronized (writeLock) {
+			if (!close.compareAndSet(false, true)) {
+				return;
+			}
 			if (ioHandler != null) {
-				ioHandler.channelClose(this);
+				try {
+					ioHandler.channelClose(this);
+				} catch (Throwable e) {
+					logger.error("ioHandler.channelClose throw exception, session:{}", describe, e);
+				}
 			}
 			Collection<InvokeFuture<Object>> invokeFuture = getFutures().values();
 			invokeFuture.forEach(

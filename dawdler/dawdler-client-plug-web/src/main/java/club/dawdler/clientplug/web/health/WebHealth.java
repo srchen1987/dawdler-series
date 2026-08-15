@@ -22,6 +22,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import club.dawdler.core.health.Health;
 import club.dawdler.core.health.HealthIndicator;
@@ -38,15 +41,36 @@ import club.dawdler.core.order.OrderData;
 public class WebHealth {
 
 	private String deployName;
-	
+
 	private HealthCheck healthCheck;
 
-	private ExecutorService healthCheckExecutor;
+	private final ExecutorService healthCheckExecutor;
 
 	public WebHealth(String deployName, HealthCheck healthCheck) {
 		this.deployName = deployName;
 		this.healthCheck = healthCheck;
-		healthCheckExecutor = Executors.newCachedThreadPool();
+		healthCheckExecutor = Executors.newCachedThreadPool(new ThreadFactory() {
+			private final AtomicInteger counter = new AtomicInteger();
+
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r, "web-health-check-" + counter.incrementAndGet());
+				t.setDaemon(true);
+				return t;
+			}
+		});
+	}
+
+	public void shutdown() {
+		healthCheckExecutor.shutdown();
+		try {
+			if (!healthCheckExecutor.awaitTermination(5, TimeUnit.SECONDS)) {
+				healthCheckExecutor.shutdownNow();
+			}
+		} catch (InterruptedException e) {
+			healthCheckExecutor.shutdownNow();
+			Thread.currentThread().interrupt();
+		}
 	}
 
 	public ServiceHealth getServiceHealth() {

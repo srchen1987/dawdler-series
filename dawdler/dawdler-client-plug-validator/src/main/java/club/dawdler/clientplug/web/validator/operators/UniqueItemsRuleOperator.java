@@ -16,6 +16,7 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,13 +40,16 @@ public class UniqueItemsRuleOperator extends StringRuleOperator {
 			return null;
 		}
 		boolean flag = true;
-		if (value instanceof String[]) {
-			String[] values = (String[]) value;
-			Set<String> set = new HashSet<>();
-			for (String v : values) {
-				if (!set.add(v)) {
-					flag = false;
-					break;
+		if (value.getClass().isArray()) {
+			int length = Array.getLength(value);
+			Set<Object> set = new HashSet<>();
+			for (int i = 0; i < length; i++) {
+				Object element = Array.get(value, i);
+				if (element != null) {
+					if (!set.add(element)) {
+						flag = false;
+						break;
+					}
 				}
 			}
 		}

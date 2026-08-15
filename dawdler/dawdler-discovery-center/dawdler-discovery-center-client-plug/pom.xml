@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>club.dawdler</groupId>
+		<artifactId>dawdler-discovery-center</artifactId>
+		<version>0.1.6-jdk17-RELEASES</version>
+	</parent>
+	<artifactId>dawdler-discovery-center-client-plug</artifactId>
+	<name>dawdler-discovery-center-client-plug</name>
+	<dependencies>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-discovery-center-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-client-plug-web</artifactId>
+		</dependency>
+	</dependencies>
+</project>

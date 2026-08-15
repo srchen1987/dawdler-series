@@ -20,7 +20,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
 import java.security.KeyStore;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -41,6 +43,7 @@ import com.sun.net.httpserver.HttpsServer;
 public class DawdlerHttpServer {
 	private Authenticator authenticator;
 	private HttpServer httpServer;
+	private ExecutorService executor;
 	private static final String HTTPS_SCHEME = "https";
 
 	public DawdlerHttpServer(String host, String scheme, int port, int backlog, String username, String password,
@@ -71,7 +74,12 @@ public class DawdlerHttpServer {
 			httpServer = HttpServer.create(address, backlog);
 		}
 
-		httpServer.setExecutor(Executors.newSingleThreadExecutor());
+		executor = Executors.newSingleThreadExecutor(r -> {
+			Thread t = new Thread(r, "dawdler-http-server");
+			t.setDaemon(true);
+			return t;
+		});
+		httpServer.setExecutor(executor);
 	}
 
 	public void addPath(String path, HttpHandler httpHandler) {
@@ -87,6 +95,17 @@ public class DawdlerHttpServer {
 
 	public void stop() {
 		httpServer.stop(0);
+		if (executor != null) {
+			executor.shutdown();
+			try {
+				if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+					executor.shutdownNow();
+				}
+			} catch (InterruptedException e) {
+				executor.shutdownNow();
+				Thread.currentThread().interrupt();
+			}
+		}
 	}
 
 }

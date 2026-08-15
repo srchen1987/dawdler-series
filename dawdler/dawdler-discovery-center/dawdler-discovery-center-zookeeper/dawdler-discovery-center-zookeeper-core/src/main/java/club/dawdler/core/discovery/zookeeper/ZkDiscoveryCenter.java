@@ -20,6 +20,8 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -28,6 +30,8 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import club.dawdler.core.discoverycenter.DiscoveryCenter;
 import club.dawdler.util.PropertiesUtil;
@@ -39,12 +43,15 @@ import club.dawdler.util.PropertiesUtil;
  */
 public class ZkDiscoveryCenter implements DiscoveryCenter {
 
+	private static final Logger logger = LoggerFactory.getLogger(ZkDiscoveryCenter.class);
 	private CuratorFramework client;
 	private String connectString;
 	private String user;
 	private String password;
+	private RetryPolicy retryPolicy;
 	private AtomicBoolean destroyed = new AtomicBoolean();
 	private static ZkDiscoveryCenter zkDiscoveryCenter = null;
+	private static final Map<String, CopyOnWriteArrayList<String>> SERVICE_DATA_CACHE = new ConcurrentHashMap<>();
 
 	public static synchronized ZkDiscoveryCenter getInstance() throws Exception {
 		if (zkDiscoveryCenter == null) {
@@ -61,13 +68,14 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 		if (connectString == null || connectString.trim().equals("")) {
 			throw new IllegalArgumentException("zookeeper connectString can not be null or empty!");
 		}
+		int baseSleepTimeMs = PropertiesUtil.getIfNullReturnDefaultValueInt("baseSleepTimeMs", 1000, ps);
+		int maxRetries = PropertiesUtil.getIfNullReturnDefaultValueInt("maxRetries", 3, ps);
+		this.retryPolicy = new ExponentialBackoffRetry(baseSleepTimeMs, maxRetries);
 		init();
 	}
 
 	@Override
 	public void init() {
-		// 连接时间 和重试次数
-		RetryPolicy retryPolicy = new ExponentialBackoffRetry(1000, 0);
 		if (user != null && !user.trim().equals("") && password != null && !password.trim().equals("")) {
 			client = CuratorFrameworkFactory.builder().connectString(connectString)
 					.authorization(ROOT_PATH, (user + ":" + password).getBytes()).retryPolicy(retryPolicy).build();
@@ -80,6 +88,7 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 	@Override
 	public void destroy() {
 		if (destroyed.compareAndSet(false, true)) {
+			SERVICE_DATA_CACHE.clear();
 			if (client != null) {
 				Field field;
 				try {
@@ -99,7 +108,32 @@ public class ZkDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public List<String> getServiceList(String path) throws Exception {
-		return client.getChildren().forPath(ROOT_PATH + "/" + path);
+		try {
+			List<String> children = client.getChildren().forPath(ROOT_PATH + "/" + path);
+			CopyOnWriteArrayList<String> snapshot = new CopyOnWriteArrayList<>(children);
+			SERVICE_DATA_CACHE.put(path, snapshot);
+			return snapshot;
+		} catch (Exception e) {
+			List<String> cached = SERVICE_DATA_CACHE.get(path);
+			if (cached != null) {
+				logger.warn("Get service list from zookeeper failed, fallback to local cache, path={}, size={}, error={}",
+						path, cached.size(), e.getMessage());
+				return cached;
+			}
+			throw e;
+		}
+	}
+
+	public void addToServiceListCache(String path, String value) {
+		(SERVICE_DATA_CACHE.computeIfAbsent(path, k -> new CopyOnWriteArrayList<>()))
+				.addIfAbsent(value);
+	}
+
+	public void removeFromServiceListCache(String path, String value) {
+		List<String> cached = SERVICE_DATA_CACHE.get(path);
+		if (cached != null) {
+			cached.remove(value);
+		}
 	}
 
 	@Override

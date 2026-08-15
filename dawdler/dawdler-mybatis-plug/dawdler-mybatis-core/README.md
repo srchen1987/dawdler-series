@@ -4,7 +4,14 @@
 
 mybatis核心模块.
 
-### 1. mybatis-config.xml配置文件说明(非必须)
+### 1. pom中引入依赖
+
+```xml
+ <groupId>club.dawdler</groupId>
+ <artifactId>dawdler-mybatis-core</artifactId>
+```
+
+### 2. mybatis-config.xml配置文件说明(非必须)
 
 mybatis-config.xml是mybatis官方支持的配置文件，其他配置参考官方说明，以下为示例：
 
@@ -15,7 +22,7 @@ mybatis-config.xml是mybatis官方支持的配置文件，其他配置参考官�
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
  <typeAliases>
-  <!-- 包扫描 以此法被扫描的实体类，别名为类名的首字母小写形式(类似于Bean -> bean) -->
+  <!-- 包扫描 以此方式扫描的实体类，别名为类名的首字母小写形式(类似于Bean -> bean) -->
   <!-- <package name="com.anywide.shop.order.entity"/> -->
 
   <!-- 逐个声明别名 -->
@@ -28,7 +35,7 @@ mybatis-config.xml是mybatis官方支持的配置文件，其他配置参考官�
 </configuration>
 ```
 
-### 2. 注入Mapper
+### 3. 注入Mapper
 
 在service层通过@Repository注入mapper，即可使用mapper.
 
@@ -54,11 +61,11 @@ public class OrderServiceImpl implements OrderService{
 }
 ```
 
-### 3. 水平分表配置
+### 4. 水平分表配置
 
 dawdler支持水平分表的配置,由SubTable注解与@SubParam注解来配合进行配置.
 
-注意: 需要创建分表规则对应的表,否则会导找不到对应的表. 如 t_user_0,t_user_1,t_user_2.
+注意: 需要创建分表规则对应的表,否则会导致找不到对应的表. 如 t_user_0,t_user_1,t_user_2.
 
 ```java
 /**
@@ -104,9 +111,9 @@ configPath: 用于指定分表规则配置文件的路径,该配置文件为yml�
 
 subRuleType: 用于指定分表规则的实现类,该类必须实现SubRule接口.
 
-dawdler提供的分库分表规则实现类有: ConsistentHashSubRule,RemainderSubRule.有其他需求可以自行扩展.
+dawdler提供的分表规则实现类有: ConsistentHashSubRule,RemainderSubRule.有其他需求可以自行扩展.
 
-ConsistentHashSubRule: 一致性hash算法实现的分库规则,该规则需要配置副本数量与节点列表.
+ConsistentHashSubRule: 一致性hash算法实现的分表规则,该规则需要配置副本数量与节点列表.
 
 示例:
 
@@ -118,7 +125,7 @@ nodes:
   - 2
 ```
 
-RemainderSubRule: 取模算法实现的分库规则,该规则需要配置除数.
+RemainderSubRule: 取模算法实现的分表规则,该规则需要配置除数.
 
 示例:
 
@@ -152,7 +159,7 @@ divisor: 3
   User selectByPrimaryKey(@SubParam @Param("user") User user);
 ```
 
-### 4. 打印SQL日志
+### 5. 打印SQL日志
 
 在mybatis-config.xml中添加如下配置即可打印SQL日志：
 

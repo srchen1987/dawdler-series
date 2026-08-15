@@ -39,8 +39,8 @@ public class ByteBufferPooledFactory implements PooledObjectFactory<DawdlerByteB
 
 	@Override
 	public void destroyObject(PooledObject<DawdlerByteBuffer> p) throws Exception {
-		DawdlerByteBuffer DawdlerByteBuffer = p.getObject();
-		DawdlerByteBuffer.close();
+		DawdlerByteBuffer dawdlerByteBuffer = p.getObject();
+		dawdlerByteBuffer.close();
 	}
 
 	@Override
@@ -55,7 +55,6 @@ public class ByteBufferPooledFactory implements PooledObjectFactory<DawdlerByteB
 
 	@Override
 	public void passivateObject(PooledObject<DawdlerByteBuffer> p) throws Exception {
-
 	}
 
 }

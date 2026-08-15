@@ -17,6 +17,7 @@
 package club.dawdler.jedis.lock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -40,15 +41,22 @@ public class JedisDistributedLock {
 	private UnifiedJedis unifiedJedis;
 	private final String LOCK_KEY;
 	private long lockExpiryInMillis;
-	private Timeout timeout;
-	private boolean useWatchDog = true;
-	private static final ThreadLocal<Lock> LOCK_THREAD_LOCAL = new ThreadLocal<Lock>();
+	private volatile Timeout timeout;
+	private volatile boolean released = true;
+	private final boolean useWatchDog;
+	private final ThreadLocal<Lock> lockThreadLocal = new ThreadLocal<Lock>();
 
 	private static final HashedWheelTimer HASHED_WHEEL_TIMER = HashedWheelTimerSingleCreator.getHashedWheelTimer();
 
 	public JedisDistributedLock(UnifiedJedis unifiedJedis, String lockKey, long lockExpiryInMillis,
 					int intervalInMillis,
 			boolean useWatchDog) {
+		if (unifiedJedis == null) {
+			throw new IllegalArgumentException("unifiedJedis can not be null");
+		}
+		if (lockKey == null || lockKey.isEmpty()) {
+			throw new IllegalArgumentException("lockKey can not be empty");
+		}
 		this.unifiedJedis = unifiedJedis;
 		this.LOCK_KEY = lockKey;
 		this.lockExpiryInMillis = lockExpiryInMillis;
@@ -58,10 +66,6 @@ public class JedisDistributedLock {
 
 	public boolean isUseWatchDog() {
 		return useWatchDog;
-	}
-
-	public void setUseWatchDog(boolean useWatchDog) {
-		this.useWatchDog = useWatchDog;
 	}
 
 	public String getLockKey() {
@@ -81,42 +85,54 @@ public class JedisDistributedLock {
 	}
 
 	private boolean tryLock(UnifiedJedis unifiedJedis) {
-		Lock lock = LOCK_THREAD_LOCAL.get();
-		if (lock == null) {
+		Lock lock = lockThreadLocal.get();
+		if (lock == null || released) {
 			lock = new Lock(nextUid());
 			final String lockUid = lock.uid;
 			SetParams setParams = SetParams.setParams().px(lockExpiryInMillis).nx();
 			String result = unifiedJedis.set(this.LOCK_KEY, lock.toString(), setParams);
 			if ("OK".equals(result)) {
+				released = false;
 				if (useWatchDog) {
 					HASHED_WHEEL_TIMER.newTimeout(new TimerTask() {
 						@Override
 						public void run(Timeout timeout) throws Exception {
-							if (timeout.isCancelled()) {
+							if (timeout.isCancelled() || released) {
 								return;
 							}
-							List<String> args = new ArrayList<>(2);
-							args.add(lockUid);
-							args.add(lockExpiryInMillis + "");
-							UnifiedJedis unifiedJedis = getClient();
+							try {
+								List<String> args = new ArrayList<>(2);
+								args.add(lockUid);
+								args.add(lockExpiryInMillis + "");
+								UnifiedJedis unifiedJedis = getClient();
 								String luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('pexpire', KEYS[1],  ARGV[2]) else return 0 end";
-							Object result = unifiedJedis.eval(luaScript,
-									Collections.singletonList(JedisDistributedLock.this.LOCK_KEY), args);
-								if (((Long) result) == 1L) {
+								Object result = unifiedJedis.eval(luaScript,
+										Collections.singletonList(JedisDistributedLock.this.LOCK_KEY), args);
+								if (result != null && ((Long) result) == 1L) {
 									JedisDistributedLock.this.timeout = timeout.timer().newTimeout(this,
 											lockExpiryInMillis / 3, TimeUnit.MILLISECONDS);
+								}
+							} catch (Exception e) {
 							}
-
 						}
 					}, lockExpiryInMillis / 3, TimeUnit.MILLISECONDS);
 				}
-				LOCK_THREAD_LOCAL.set(lock);
+				lockThreadLocal.set(lock);
 				return true;
 			}
 			return false;
 		} else {
-			lock.incrementLockTime();
-			return true;
+			String luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('pexpire', KEYS[1], ARGV[2]) else return 0 end";
+			Object renewResult = unifiedJedis.eval(luaScript,
+					Collections.singletonList(this.LOCK_KEY),
+					Arrays.asList(lock.toString(), String.valueOf(lockExpiryInMillis)));
+			if (renewResult != null && ((Long) renewResult) == 1L) {
+				lock.incrementLockTime();
+				return true;
+			}
+			lockThreadLocal.remove();
+			released = true;
+			return tryLock(unifiedJedis);
 		}
 
 	}
@@ -129,8 +145,7 @@ public class JedisDistributedLock {
 	public boolean lock(long acquireTimeoutInMillis) throws InterruptedException {
 		long expiryTime = System.currentTimeMillis() + acquireTimeoutInMillis; // 锁的请求到期时间
 		while (expiryTime >= System.currentTimeMillis()) {
-			UnifiedJedis unifiedJedis = null;
-			unifiedJedis = getClient();
+			UnifiedJedis unifiedJedis = getClient();
 			boolean result = tryLock(unifiedJedis);
 			if (result) {
 				return true;
@@ -145,30 +160,30 @@ public class JedisDistributedLock {
 	}
 
 	public boolean unlock() {
-		UnifiedJedis unifiedJedis;
-			unifiedJedis = getClient();
-			return unlock(unifiedJedis);
+		UnifiedJedis unifiedJedis = getClient();
+		return unlock(unifiedJedis);
 	}
 
 	private boolean unlock(UnifiedJedis unifiedJedis) {
-		Lock lock = LOCK_THREAD_LOCAL.get();
+		Lock lock = lockThreadLocal.get();
 		if (lock == null) {
 			return false;
 		} else {
 			if (lock.decrementAndGet() == 0) {
+				released = true;
 				if (this.timeout != null) {
 					this.timeout.cancel();
 				}
+				lockThreadLocal.remove();
 				String luaScript = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 				Object result = unifiedJedis.eval(luaScript, Collections.singletonList(this.LOCK_KEY),
 						Collections.singletonList(lock.toString()));
-				if (((Long) result) == 1L) {
-					LOCK_THREAD_LOCAL.remove();
+				if (result != null && ((Long) result) == 1L) {
 					return true;
 				}
 				return false;
 			} else {
-				return false;
+				return true;
 			}
 		}
 	}

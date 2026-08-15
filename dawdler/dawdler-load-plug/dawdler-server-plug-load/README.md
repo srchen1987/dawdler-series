@@ -34,7 +34,6 @@ load-config.xml文件是用来配置本服务中哪些包是可以被远程加�
 
 load-config.xml示例：
 
-
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <hosts>

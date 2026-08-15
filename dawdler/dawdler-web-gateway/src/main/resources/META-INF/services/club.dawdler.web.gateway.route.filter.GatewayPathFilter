@@ -1,0 +1,3 @@
+club.dawdler.web.gateway.route.filter.StripPrefixFilter
+club.dawdler.web.gateway.route.filter.RewritePathFilter
+club.dawdler.web.gateway.route.filter.SetPathFilter

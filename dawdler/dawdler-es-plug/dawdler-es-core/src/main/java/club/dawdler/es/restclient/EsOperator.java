@@ -27,8 +27,11 @@ import co.elastic.clients.elasticsearch.autoscaling.ElasticsearchAutoscalingClie
 import co.elastic.clients.elasticsearch.cat.ElasticsearchCatClient;
 import co.elastic.clients.elasticsearch.ccr.ElasticsearchCcrClient;
 import co.elastic.clients.elasticsearch.cluster.ElasticsearchClusterClient;
+import co.elastic.clients.elasticsearch.connector.ElasticsearchConnectorClient;
 import co.elastic.clients.elasticsearch.core.BulkRequest;
 import co.elastic.clients.elasticsearch.core.BulkResponse;
+import co.elastic.clients.elasticsearch.core.CancelReindexRequest;
+import co.elastic.clients.elasticsearch.core.CancelReindexResponse;
 import co.elastic.clients.elasticsearch.core.ClearScrollRequest;
 import co.elastic.clients.elasticsearch.core.ClearScrollResponse;
 import co.elastic.clients.elasticsearch.core.ClosePointInTimeRequest;
@@ -51,6 +54,8 @@ import co.elastic.clients.elasticsearch.core.ExplainRequest;
 import co.elastic.clients.elasticsearch.core.ExplainResponse;
 import co.elastic.clients.elasticsearch.core.FieldCapsRequest;
 import co.elastic.clients.elasticsearch.core.FieldCapsResponse;
+import co.elastic.clients.elasticsearch.core.GetReindexRequest;
+import co.elastic.clients.elasticsearch.core.GetReindexResponse;
 import co.elastic.clients.elasticsearch.core.GetRequest;
 import co.elastic.clients.elasticsearch.core.GetResponse;
 import co.elastic.clients.elasticsearch.core.GetScriptContextResponse;
@@ -64,8 +69,8 @@ import co.elastic.clients.elasticsearch.core.HealthReportResponse;
 import co.elastic.clients.elasticsearch.core.IndexRequest;
 import co.elastic.clients.elasticsearch.core.IndexResponse;
 import co.elastic.clients.elasticsearch.core.InfoResponse;
-import co.elastic.clients.elasticsearch.core.KnnSearchRequest;
-import co.elastic.clients.elasticsearch.core.KnnSearchResponse;
+import co.elastic.clients.elasticsearch.core.ListReindexRequest;
+import co.elastic.clients.elasticsearch.core.ListReindexResponse;
 import co.elastic.clients.elasticsearch.core.MgetRequest;
 import co.elastic.clients.elasticsearch.core.MgetResponse;
 import co.elastic.clients.elasticsearch.core.MsearchRequest;
@@ -108,6 +113,7 @@ import co.elastic.clients.elasticsearch.core.UpdateByQueryRethrottleResponse;
 import co.elastic.clients.elasticsearch.core.UpdateRequest;
 import co.elastic.clients.elasticsearch.core.UpdateResponse;
 import co.elastic.clients.elasticsearch.dangling_indices.ElasticsearchDanglingIndicesClient;
+import co.elastic.clients.elasticsearch.encryption.ElasticsearchEncryptionClient;
 import co.elastic.clients.elasticsearch.enrich.ElasticsearchEnrichClient;
 import co.elastic.clients.elasticsearch.eql.ElasticsearchEqlClient;
 import co.elastic.clients.elasticsearch.esql.ElasticsearchEsqlClient;
@@ -124,18 +130,22 @@ import co.elastic.clients.elasticsearch.migration.ElasticsearchMigrationClient;
 import co.elastic.clients.elasticsearch.ml.ElasticsearchMlClient;
 import co.elastic.clients.elasticsearch.monitoring.ElasticsearchMonitoringClient;
 import co.elastic.clients.elasticsearch.nodes.ElasticsearchNodesClient;
+import co.elastic.clients.elasticsearch.project.ElasticsearchProjectClient;
 import co.elastic.clients.elasticsearch.query_rules.ElasticsearchQueryRulesClient;
 import co.elastic.clients.elasticsearch.rollup.ElasticsearchRollupClient;
 import co.elastic.clients.elasticsearch.search_application.ElasticsearchSearchApplicationClient;
 import co.elastic.clients.elasticsearch.searchable_snapshots.ElasticsearchSearchableSnapshotsClient;
 import co.elastic.clients.elasticsearch.security.ElasticsearchSecurityClient;
 import co.elastic.clients.elasticsearch.shutdown.ElasticsearchShutdownClient;
+import co.elastic.clients.elasticsearch.simulate.ElasticsearchSimulateClient;
 import co.elastic.clients.elasticsearch.slm.ElasticsearchSlmClient;
 import co.elastic.clients.elasticsearch.snapshot.ElasticsearchSnapshotClient;
 import co.elastic.clients.elasticsearch.sql.ElasticsearchSqlClient;
 import co.elastic.clients.elasticsearch.ssl.ElasticsearchSslClient;
+import co.elastic.clients.elasticsearch.streams.ElasticsearchStreamsClient;
 import co.elastic.clients.elasticsearch.synonyms.ElasticsearchSynonymsClient;
 import co.elastic.clients.elasticsearch.tasks.ElasticsearchTasksClient;
+import co.elastic.clients.elasticsearch.text_structure.ElasticsearchTextStructureClient;
 import co.elastic.clients.elasticsearch.transform.ElasticsearchTransformClient;
 import co.elastic.clients.elasticsearch.watcher.ElasticsearchWatcherClient;
 import co.elastic.clients.elasticsearch.xpack.ElasticsearchXpackClient;
@@ -163,7 +173,11 @@ public interface EsOperator {
 
 	public ElasticsearchClusterClient cluster();
 
+	public ElasticsearchConnectorClient connector();
+
 	public ElasticsearchDanglingIndicesClient danglingIndices();
+
+	public ElasticsearchEncryptionClient encryption();
 
 	public ElasticsearchEnrichClient enrich();
 
@@ -197,7 +211,9 @@ public interface EsOperator {
 
 	public ElasticsearchNodesClient nodes();
 
-	public ElasticsearchQueryRulesClient queryRuleset();
+	public ElasticsearchProjectClient project();
+
+	public ElasticsearchQueryRulesClient queryRules();
 
 	public ElasticsearchRollupClient rollup();
 
@@ -209,6 +225,8 @@ public interface EsOperator {
 
 	public ElasticsearchShutdownClient shutdown();
 
+	public ElasticsearchSimulateClient simulate();
+
 	public ElasticsearchSlmClient slm();
 
 	public ElasticsearchSnapshotClient snapshot();
@@ -217,9 +235,13 @@ public interface EsOperator {
 
 	public ElasticsearchSslClient ssl();
 
+	public ElasticsearchStreamsClient streams();
+
 	public ElasticsearchSynonymsClient synonyms();
 
 	public ElasticsearchTasksClient tasks();
+
+	public ElasticsearchTextStructureClient textStructure();
 
 	public ElasticsearchTransformClient transform();
 
@@ -264,6 +286,33 @@ public interface EsOperator {
 	 */
 
 	public BulkResponse bulk() throws IOException, ElasticsearchException;
+
+	// ----- Endpoint: cancel_reindex
+
+	/**
+	 * Cancel an ongoing reindex task.
+	 *
+	 * @see <a href=
+	 *      "https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cancel-reindex">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public CancelReindexResponse cancelReindex(CancelReindexRequest request)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Cancel an ongoing reindex task.
+	 *
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link CancelReindexRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-cancel-reindex">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public CancelReindexResponse cancelReindex(
+			Function<CancelReindexRequest.Builder, ObjectBuilder<CancelReindexRequest>> fn)
+			throws IOException, ElasticsearchException;
 
 	// ----- Endpoint: clear_scroll
 
@@ -586,6 +635,29 @@ public interface EsOperator {
 	 *      on elastic.co</a>
 	 */
 
+	public ExplainResponse<Void> explain(ExplainRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns information about why a specific matches (or doesn't match) a query.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link ExplainRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public ExplainResponse<Void> explain(Function<ExplainRequest.Builder, ObjectBuilder<ExplainRequest>> fn)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns information about why a specific matches (or doesn't match) a query.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-explain.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
 	public <TDocument> ExplainResponse<TDocument> explain(ExplainRequest request, Type tDocumentType)
 			throws IOException, ElasticsearchException;
 
@@ -666,6 +738,29 @@ public interface EsOperator {
 
 	public <TDocument> GetResponse<TDocument> get(Function<GetRequest.Builder, ObjectBuilder<GetRequest>> fn,
 			Class<TDocument> tDocumentClass) throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns a document.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public GetResponse<Void> get(GetRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns a document.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link GetRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public GetResponse<Void> get(Function<GetRequest.Builder, ObjectBuilder<GetRequest>> fn)
+			throws IOException, ElasticsearchException;
 
 	/**
 	 * Returns a document.
@@ -773,6 +868,30 @@ public interface EsOperator {
 	 *      on elastic.co</a>
 	 */
 
+	public GetSourceResponse<Void> getSource(GetSourceRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns the source of a document.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link GetSourceRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public GetSourceResponse<Void> getSource(
+			Function<GetSourceRequest.Builder, ObjectBuilder<GetSourceRequest>> fn)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns the source of a document.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-get.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
 	public <TDocument> GetSourceResponse<TDocument> getSource(GetSourceRequest request, Type tDocumentType)
 			throws IOException, ElasticsearchException;
 
@@ -788,6 +907,32 @@ public interface EsOperator {
 
 	public <TDocument> GetSourceResponse<TDocument> getSource(
 			Function<GetSourceRequest.Builder, ObjectBuilder<GetSourceRequest>> fn, Type tDocumentType)
+			throws IOException, ElasticsearchException;
+
+	// ----- Endpoint: get_reindex
+
+	/**
+	 * Get a reindex task.
+	 *
+	 * @see <a href=
+	 *      "https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-get-reindex">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public GetReindexResponse getReindex(GetReindexRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Get a reindex task.
+	 *
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link GetReindexRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-get-reindex">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public GetReindexResponse getReindex(
+			Function<GetReindexRequest.Builder, ObjectBuilder<GetReindexRequest>> fn)
 			throws IOException, ElasticsearchException;
 
 	// ----- Endpoint: health_report
@@ -863,57 +1008,41 @@ public interface EsOperator {
 	 */
 	public InfoResponse info() throws IOException, ElasticsearchException;
 
-	// ----- Endpoint: knn_search
+	// ----- Endpoint: list_reindex
 
 	/**
-	 * Performs a kNN search.
-	 * 
+	 * List reindex tasks.
+	 *
 	 * @see <a href=
-	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html">Documentation
+	 *      "https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-list-reindex">Documentation
 	 *      on elastic.co</a>
 	 */
 
-	public <TDocument> KnnSearchResponse<TDocument> knnSearch(KnnSearchRequest request, Class<TDocument> tDocumentClass)
-			throws IOException, ElasticsearchException;
+	public ListReindexResponse listReindex(ListReindexRequest request) throws IOException, ElasticsearchException;
 
 	/**
-	 * Performs a kNN search.
-	 * 
+	 * List reindex tasks.
+	 *
 	 * @param fn a function that initializes a builder to create the
-	 *           {@link KnnSearchRequest}
+	 *           {@link ListReindexRequest}
 	 * @see <a href=
-	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html">Documentation
+	 *      "https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-list-reindex">Documentation
 	 *      on elastic.co</a>
 	 */
 
-	public <TDocument> KnnSearchResponse<TDocument> knnSearch(
-			Function<KnnSearchRequest.Builder, ObjectBuilder<KnnSearchRequest>> fn, Class<TDocument> tDocumentClass)
+	public ListReindexResponse listReindex(
+			Function<ListReindexRequest.Builder, ObjectBuilder<ListReindexRequest>> fn)
 			throws IOException, ElasticsearchException;
 
 	/**
-	 * Performs a kNN search.
-	 * 
+	 * List reindex tasks.
+	 *
 	 * @see <a href=
-	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html">Documentation
+	 *      "https://www.elastic.co/docs/api/doc/elasticsearch/operation/operation-list-reindex">Documentation
 	 *      on elastic.co</a>
 	 */
 
-	public <TDocument> KnnSearchResponse<TDocument> knnSearch(KnnSearchRequest request, Type tDocumentType)
-			throws IOException, ElasticsearchException;
-
-	/**
-	 * Performs a kNN search.
-	 * 
-	 * @param fn a function that initializes a builder to create the
-	 *           {@link KnnSearchRequest}
-	 * @see <a href=
-	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html">Documentation
-	 *      on elastic.co</a>
-	 */
-
-	public <TDocument> KnnSearchResponse<TDocument> knnSearch(
-			Function<KnnSearchRequest.Builder, ObjectBuilder<KnnSearchRequest>> fn, Type tDocumentType)
-			throws IOException, ElasticsearchException;
+	public ListReindexResponse listReindex() throws IOException, ElasticsearchException;
 
 	// ----- Endpoint: mget
 
@@ -940,6 +1069,29 @@ public interface EsOperator {
 
 	public <TDocument> MgetResponse<TDocument> mget(Function<MgetRequest.Builder, ObjectBuilder<MgetRequest>> fn,
 			Class<TDocument> tDocumentClass) throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to get multiple documents in one request.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public MgetResponse<Void> mget(MgetRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to get multiple documents in one request.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link MgetRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/docs-multi-get.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public MgetResponse<Void> mget(Function<MgetRequest.Builder, ObjectBuilder<MgetRequest>> fn)
+			throws IOException, ElasticsearchException;
 
 	/**
 	 * Allows to get multiple documents in one request.
@@ -1000,6 +1152,29 @@ public interface EsOperator {
 	 *      on elastic.co</a>
 	 */
 
+	public MsearchResponse<Void> msearch(MsearchRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to execute several search operations in one request.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link MsearchRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public MsearchResponse<Void> msearch(Function<MsearchRequest.Builder, ObjectBuilder<MsearchRequest>> fn)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to execute several search operations in one request.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-multi-search.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
 	public <TDocument> MsearchResponse<TDocument> msearch(MsearchRequest request, Type tDocumentType)
 			throws IOException, ElasticsearchException;
 
@@ -1043,6 +1218,31 @@ public interface EsOperator {
 	public <TDocument> MsearchTemplateResponse<TDocument> msearchTemplate(
 			Function<MsearchTemplateRequest.Builder, ObjectBuilder<MsearchTemplateRequest>> fn,
 			Class<TDocument> tDocumentClass) throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to execute several search template operations in one request.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public MsearchTemplateResponse<Void> msearchTemplate(MsearchTemplateRequest request)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to execute several search template operations in one request.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link MsearchTemplateRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/current/search-multi-search.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public MsearchTemplateResponse<Void> msearchTemplate(
+			Function<MsearchTemplateRequest.Builder, ObjectBuilder<MsearchTemplateRequest>> fn)
+			throws IOException, ElasticsearchException;
 
 	/**
 	 * Allows to execute several search template operations in one request.
@@ -1324,6 +1524,31 @@ public interface EsOperator {
 	 *      on elastic.co</a>
 	 */
 
+	public ScriptsPainlessExecuteResponse<Void> scriptsPainlessExecute(ScriptsPainlessExecuteRequest request)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows an arbitrary script to be executed and a result to be returned
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link ScriptsPainlessExecuteRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public ScriptsPainlessExecuteResponse<Void> scriptsPainlessExecute(
+			Function<ScriptsPainlessExecuteRequest.Builder, ObjectBuilder<ScriptsPainlessExecuteRequest>> fn)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows an arbitrary script to be executed and a result to be returned
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/painless/master/painless-execute-api.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
 	public <TResult> ScriptsPainlessExecuteResponse<TResult> scriptsPainlessExecute(
 			ScriptsPainlessExecuteRequest request, Type tResultType) throws IOException, ElasticsearchException;
 
@@ -1376,6 +1601,29 @@ public interface EsOperator {
 	 *      on elastic.co</a>
 	 */
 
+	public ScrollResponse<Void> scroll(ScrollRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to retrieve a large numbers of results from a single search request.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link ScrollRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public ScrollResponse<Void> scroll(Function<ScrollRequest.Builder, ObjectBuilder<ScrollRequest>> fn)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to retrieve a large numbers of results from a single search request.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-request-body.html#request-body-search-scroll">Documentation
+	 *      on elastic.co</a>
+	 */
+
 	public <TDocument> ScrollResponse<TDocument> scroll(ScrollRequest request, Type tDocumentType)
 			throws IOException, ElasticsearchException;
 
@@ -1418,6 +1666,29 @@ public interface EsOperator {
 
 	public <TDocument> SearchResponse<TDocument> search(
 			Function<SearchRequest.Builder, ObjectBuilder<SearchRequest>> fn, Class<TDocument> tDocumentClass)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns results matching a query.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public SearchResponse<Void> search(SearchRequest request) throws IOException, ElasticsearchException;
+
+	/**
+	 * Returns results matching a query.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link SearchRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/master/search-search.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public SearchResponse<Void> search(Function<SearchRequest.Builder, ObjectBuilder<SearchRequest>> fn)
 			throws IOException, ElasticsearchException;
 
 	/**
@@ -1537,6 +1808,31 @@ public interface EsOperator {
 	public <TDocument> SearchTemplateResponse<TDocument> searchTemplate(
 			Function<SearchTemplateRequest.Builder, ObjectBuilder<SearchTemplateRequest>> fn,
 			Class<TDocument> tDocumentClass) throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to use the Mustache language to pre-render a search definition.
+	 * 
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public SearchTemplateResponse<Void> searchTemplate(SearchTemplateRequest request)
+			throws IOException, ElasticsearchException;
+
+	/**
+	 * Allows to use the Mustache language to pre-render a search definition.
+	 * 
+	 * @param fn a function that initializes a builder to create the
+	 *           {@link SearchTemplateRequest}
+	 * @see <a href=
+	 *      "https://www.elastic.co/guide/en/elasticsearch/reference/current/search-template.html">Documentation
+	 *      on elastic.co</a>
+	 */
+
+	public SearchTemplateResponse<Void> searchTemplate(
+			Function<SearchTemplateRequest.Builder, ObjectBuilder<SearchTemplateRequest>> fn)
+			throws IOException, ElasticsearchException;
 
 	/**
 	 * Allows to use the Mustache language to pre-render a search definition.

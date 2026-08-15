@@ -79,6 +79,8 @@ kerberos.principal=kafka/client@REALM.COM
 kerberos.krb5.conf=/etc/krb5.conf
 ```
 
+配置文件支持多环境、统一配置中心、加密、变量替换,参考[多环境配置](../../../doc/dawdler-profiles.active-README.md).
+
 ### 3. SASL/Kerberos (GSSAPI) 认证配置
 
 #### 3.1 SASL/PLAIN 认证配置示例
@@ -123,7 +125,7 @@ kerberos.krb5.conf=/etc/krb5.conf
 
 **说明：**
 
-- `kerberos.keytab`和 `kerberos.keytab` 支持两种路径格式：
+- `kerberos.keytab`和 `kerberos.krb5.conf` 支持两种路径格式：
 
   - **classpath 路径**：如 `kafka.keytab`，文件需放在 `src/main/resources` 目录下
   - **绝对文件系统路径**：如 `/etc/kafka/kafka.keytab`，路径以 `/` 开头，直接使用原路径
@@ -239,10 +241,16 @@ public void handleLog(Message message) {
 
 ```java
 //推送一条消息到指定topic
-public void publish(String topic, byte[] message) throws Exception
+public RecordMetadata publish(String topic, byte[] message) throws Exception
 
 //推送一条消息到指定topic并传入key
-public void publish(String topic, String key, byte[] message) throws Exception
+public RecordMetadata publish(String topic, String key, byte[] message) throws Exception
+
+//推送一条消息到指定topic,通过callback异步回调
+public Future<RecordMetadata> publish(String topic, byte[] message, Callback callback) throws Exception
+
+//推送一条消息到指定topic并传入key,通过callback异步回调
+public Future<RecordMetadata> publish(String topic, String key, byte[] message, Callback callback) throws Exception
 ```
 
 ### 7. 在非dawdler架构下的使用方式

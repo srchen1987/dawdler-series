@@ -4,7 +4,14 @@
 
 缓存核心模块提供注解(Cacheable、CacheEvict、CachePut),CacheManager缓存管理器,CacheConfig缓存配置.
 
-### 1. 核心模块提供注解(Cacheable、CacheEvict、CachePut)
+### 1. pom中引入依赖
+
+```xml
+ <groupId>club.dawdler</groupId>
+ <artifactId>dawdler-cache-core</artifactId>
+```
+
+### 2. 核心模块提供注解(Cacheable、CacheEvict、CachePut)
 
 #### 1.1 Cacheable
 
@@ -129,7 +136,7 @@ public @interface CachePut {
 }
 ```
 
-### 2. CacheConfig缓存配置接口
+### 3. CacheConfig缓存配置接口
 
 用于配置缓存的接口,需要在web端或service端定义此接口的实现类(组件 web需要load,服务端需要扫描路径).
 
@@ -175,9 +182,9 @@ public interface CacheConfig {
 
 ```
 
-### 3. 缓存模块扩展方式
+### 4. 缓存模块扩展方式
 
-目前实现了caffeine与redis两种方式.如果需要扩展其他缓存组件按以下步骤实现.
+目前实现了caffeine与jedis两种方式.如果需要扩展其他缓存组件按以下步骤实现.
 
 1、创建项目并创建类继承AbstractCacheManager抽象类,实现 createCacheNative抽象方法.
 
@@ -185,6 +192,6 @@ public interface CacheConfig {
 
 具体实现可以参考CaffeineCacheManager或JedisCacheManager.
 
-### 4. 使用范围
+### 5. 使用范围
 
 适用于controller层,service层使用缓存注解.

@@ -44,7 +44,8 @@ public class OrderController{
  OrderService orderService;
  
  @FieldConfig(path="orderConfig",value = "order.queueName")
- private String queueName
+ private String queueName;
+}
 ```
 
 另一个示例:
@@ -61,7 +62,7 @@ order:
 
 ```java
  @FieldConfig(path="orderConfig",value = "order.payConfig.payKey")
- private String payKey
+ private String payKey;
 ```
 
 ### 2. 其他配置中心扩展
@@ -84,4 +85,4 @@ public interface ConfigClient {
 
 ```
 
-具体参考ConsulConfigClient来实现即可,如果在扩展其他配置中心的时遇到困难可以提ISSUES.
+具体参考ConsulConfigClient来实现即可,如果在扩展其他配置中心时遇到困难可以提issues.

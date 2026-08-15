@@ -26,8 +26,11 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.jar.Manifest;
 
+import club.dawdler.clientplug.web.conf.WebConfig;
+import club.dawdler.clientplug.web.conf.WebConfigParser;
 import club.dawdler.core.loader.DeployClassLoader;
 import club.dawdler.core.scan.DawdlerComponentScanner;
+import club.dawdler.util.spring.antpath.AntPathMatcher;
 
 import jdk.internal.loader.Resource;
 
@@ -123,6 +126,21 @@ public class DawdlerWebDeployClassLoader extends SecureClassLoader implements De
 				if (name.startsWith(matchPackageName)) {
 					return findClassForDawdler(name, false, false);
 				}
+			}
+		}
+		WebConfig webConfig = WebConfigParser.getWebConfig();
+		if(webConfig != null){
+			for (String packagePath : webConfig.getPackagePaths()) {
+				if(AntPathMatcher.DEFAULT_INSTANCE.isPattern(packagePath)){
+					if (AntPathMatcher.DEFAULT_INSTANCE.match(packagePath, name.replace(".", "/"))) {
+						return findClassForDawdler(name, false, false);
+					}
+				}else{
+					if (name.startsWith(packagePath)) {
+						return findClassForDawdler(name, false, false);
+					}
+				}
+				 
 			}
 		}
 		return parent.loadClass(name);

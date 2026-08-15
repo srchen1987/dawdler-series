@@ -78,11 +78,32 @@ public class AMQPConnectionFactory {
 			// fanout类型交换器会把消息发送至所有绑定的队列中
 			channel.exchangeDeclare(RABBIT_RETRY_EXCHANGE, "fanout", true);
 			channel.exchangeDeclare(RABBIT_FAIL_EXCHANGE, "fanout", true);
-			Map<String, Object> agreement = new HashMap<>();
-			agreement.put("x-dead-letter-exchange", "");
-			agreement.put("x-message-ttl", ttlTime);// 设置消息存在队列中的时间(单位秒)，时间过期后消息会发送至默认交换器中
-			channel.queueDeclare(RABBIT_RETRY_QUEUE, true, false, false, agreement);
-			channel.queueDeclare(RABBIT_FAIL_QUEUE, true, false, false, null);
+			
+			try {
+				channel.queueDeclarePassive(RABBIT_RETRY_QUEUE);
+			} catch (Exception e) {
+				try {
+					channel.close();
+				} catch (Exception exception) {
+				}
+				channel = con.createChannel();
+				Map<String, Object> agreement = new HashMap<>();
+				agreement.put("x-dead-letter-exchange", "");
+				agreement.put("x-message-ttl", ttlTime);// 设置消息存在队列中的时间(单位秒)，时间过期后消息会发送至默认交换器中
+				channel.queueDeclare(RABBIT_RETRY_QUEUE, true, false, false, agreement);
+			}
+			
+			try {
+				channel.queueDeclarePassive(RABBIT_FAIL_QUEUE);
+			} catch (Exception e) {
+				try {
+					channel.close();
+				} catch (Exception exception) {
+				}
+				channel = con.createChannel();
+				channel.queueDeclare(RABBIT_FAIL_QUEUE, true, false, false, null);
+			}
+			
 			channel.queueBind(RABBIT_RETRY_QUEUE, RABBIT_RETRY_EXCHANGE, RABBIT_FAIL_QUEUE);
 			channel.queueBind(RABBIT_FAIL_QUEUE, RABBIT_FAIL_EXCHANGE, RABBIT_FAIL_QUEUE);
 		}catch (Exception e) {

@@ -19,6 +19,8 @@ package club.dawdler.remote.service.factory;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import club.dawdler.client.Transaction;
@@ -42,7 +44,7 @@ public class ServiceFactory {
 			throw new NotSetRemoteServiceException("not found @Service on " + delegate.getName());
 		}
 		String groupName = service.value();
-		return getService(delegate, groupName, service.loadBalance());
+		return getService(delegate, service.serviceName(), groupName, service.loadBalance());
 	}
 
 	public static <T> T getService(Class<T> delegate, String serviceName, String groupName, String loadBalance, ClassLoader classLoader) {
@@ -84,37 +86,53 @@ public class ServiceFactory {
 	}
 
 	private static class MethodInterceptor implements InvocationHandler{
-		private final String groupName;
 		private final Class<?> delegate;
-		private String serviceName;
-		private boolean fuzzy;
-		private int timeout;
-		private String loadBalance;
+		private final String groupName;
+		private final String serviceName;
+		private final boolean fuzzy;
+		private final int timeout;
+		private final String loadBalance;
+		private final Map<Method, MethodMetadata> methodCache;
 
 		MethodInterceptor(Class<?> delegate, String serviceName, String groupName, String loadBalance) {
-			this.groupName = groupName;
-			this.serviceName = serviceName;
-			getServiceName(delegate);
 			this.delegate = delegate;
+			this.groupName = groupName;
 			this.loadBalance = loadBalance;
-		}
-
-		private void getServiceName(Class<?> delegate) {
+			boolean resolvedFuzzy = true;
+			int resolvedTimeout = 120;
+			String resolvedServiceName = serviceName;
 			Service service = delegate.getAnnotation(Service.class);
 			if (service != null) {
-				if("".equals(serviceName)) {
-					serviceName = service.serviceName();
+				if ("".equals(resolvedServiceName)) {
+					resolvedServiceName = service.serviceName();
 				}
-				timeout = service.timeout();
-				fuzzy = service.fuzzy();
+				resolvedTimeout = service.timeout();
+				resolvedFuzzy = service.fuzzy();
 			}
-			if ("".equals(serviceName)) {
-				serviceName = delegate.getName();
+			if ("".equals(resolvedServiceName)) {
+				resolvedServiceName = delegate.getName();
 			}
+			this.serviceName = resolvedServiceName;
+			this.timeout = resolvedTimeout;
+			this.fuzzy = resolvedFuzzy;
+			this.methodCache = buildMethodCache(delegate, resolvedFuzzy, resolvedTimeout, loadBalance);
 		}
 
-		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		private static Map<Method, MethodMetadata> buildMethodCache(Class<?> delegate, boolean defaultFuzzy,
+				int defaultTimeout, String defaultLoadBalance) {
+			Method[] methods = delegate.getMethods();
+			Map<Method, MethodMetadata> cache = new HashMap<>((int) (methods.length / 0.75f) + 1);
+			for (Method method : methods) {
+				cache.put(method, resolveMetadata(method, defaultFuzzy, defaultTimeout, defaultLoadBalance));
+			}
+			return cache;
+		}
+
+		private static MethodMetadata resolveMetadata(Method method, boolean defaultFuzzy, int defaultTimeout,
+				String defaultLoadBalance) {
+			boolean fuzzy = defaultFuzzy;
+			int timeout = defaultTimeout;
+			String loadBalance = defaultLoadBalance;
 			boolean async = false;
 			RemoteServiceAssistant remoteServiceAssistant = method.getAnnotation(RemoteServiceAssistant.class);
 			if (remoteServiceAssistant != null) {
@@ -123,21 +141,51 @@ public class ServiceFactory {
 				loadBalance = remoteServiceAssistant.loadBalance();
 				async = remoteServiceAssistant.async();
 			}
+			CircuitBreaker circuitBreaker = method.getAnnotation(CircuitBreaker.class);
+			Class<?>[] parameterTypes = method.getParameterTypes();
+			return new MethodMetadata(fuzzy, timeout, loadBalance, async, circuitBreaker, parameterTypes);
+		}
+
+		@Override
+		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+			MethodMetadata metadata = methodCache.get(method);
+			if (metadata == null) {
+				metadata = resolveMetadata(method, fuzzy, timeout, loadBalance);
+			}
 			Transaction tr = TransactionProvider.getTransaction(groupName);
 			tr.setMethod(method.getName());
 			tr.setServiceName(serviceName);
-			tr.setFuzzy(fuzzy);
-			tr.setTimeout(timeout);
-			tr.setCircuitBreaker(method.getAnnotation(CircuitBreaker.class));
+			tr.setFuzzy(metadata.fuzzy);
+			tr.setTimeout(metadata.timeout);
+			tr.setCircuitBreaker(metadata.circuitBreaker);
 			tr.setProxyInterface(delegate);
-			tr.setLoadBalance(loadBalance);
-			tr.setAsync(async);
-			Class<?>[] types = method.getParameterTypes();
+			tr.setLoadBalance(metadata.loadBalance);
+			tr.setAsync(metadata.async);
+			Class<?>[] types = metadata.parameterTypes;
 			for (int i = 0; i < types.length; i++) {
 				Class<?> typeClass = types[i];
 				tr.addObjectParam(typeClass, args[i]);
 			}
 			return tr.executeResult();
+		}
+	}
+
+	private static class MethodMetadata {
+		final boolean fuzzy;
+		final int timeout;
+		final String loadBalance;
+		final boolean async;
+		final CircuitBreaker circuitBreaker;
+		final Class<?>[] parameterTypes;
+
+		MethodMetadata(boolean fuzzy, int timeout, String loadBalance, boolean async, CircuitBreaker circuitBreaker,
+				Class<?>[] parameterTypes) {
+			this.fuzzy = fuzzy;
+			this.timeout = timeout;
+			this.loadBalance = loadBalance;
+			this.async = async;
+			this.circuitBreaker = circuitBreaker;
+			this.parameterTypes = parameterTypes;
 		}
 	}
 }

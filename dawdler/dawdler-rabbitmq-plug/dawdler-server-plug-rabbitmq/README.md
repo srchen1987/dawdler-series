@@ -13,7 +13,7 @@
 
 ### 2. 使用方式
 
-发送端者: 通过@RabbitInjector注解标识全局变量为RabbitProvider类型的变量即可.
+发送者: 通过@RabbitInjector注解标识全局变量为RabbitProvider类型的变量即可.
 
 消费者: 通过@RabbitListener标识消费者方法,方法参数为Message类型.
 
@@ -26,7 +26,6 @@
 
     public void pushMessage(String message) {
         rabbitProvider.publish("", "test", null, message.getBytes());//使用rabbitProvider对象
-        return null;
     }
 
     @RabbitListener(fileName = "myRabbitmq", queueName = "test") //监听test队列

@@ -18,8 +18,12 @@ package club.dawdler.clientplug.web.handler;
 
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -29,13 +33,14 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import club.dawdler.clientplug.web.AntPathMatcher;
 import club.dawdler.clientplug.web.annotation.RequestMapping;
-import club.dawdler.clientplug.web.annotation.RequestMapping.RequestMethod;
 import club.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import club.dawdler.clientplug.web.exception.ConvertException;
 import club.dawdler.clientplug.web.exception.handler.HttpExceptionHandler;
 import club.dawdler.clientplug.web.exception.handler.HttpExceptionHolder;
 import club.dawdler.clientplug.web.plugs.PlugFactory;
 import club.dawdler.clientplug.web.validator.exception.ValidationException;
+import club.dawdler.util.spring.MediaType;
+import club.dawdler.util.spring.MimeType;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,54 +51,82 @@ import jakarta.servlet.http.HttpServletResponse;
  * 基于Annotation的UrlHandler实现 基于xml的删除掉了 因为servlet3.0之后不建议使用web.xml了
  */
 public class AnnotationUrlHandler extends AbstractUrlHandler {
-	private static final ConcurrentHashMap<String, RequestUrlData> ANT_URL_RULES = new ConcurrentHashMap<>(64);
+	private static final ConcurrentHashMap<String, PathMappingData> ANT_URL_RULES = new ConcurrentHashMap<>(64);
 
-	private static final ConcurrentHashMap<String, RequestUrlData> URL_RULES = new ConcurrentHashMap<>(128);
+	private static final ConcurrentHashMap<String, PathMappingData> URL_RULES = new ConcurrentHashMap<>(128);
 	private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
 	public static RequestUrlData registMapping(String path, RequestUrlData data) {
-		boolean antPath = isAntPath(path);
-		if (antPath) {
-			return ANT_URL_RULES.putIfAbsent(path, data);
-		} else {
-			return URL_RULES.putIfAbsent(path, data);
-		}
+		ConcurrentHashMap<String, PathMappingData> rules = isAntPath(path) ? ANT_URL_RULES : URL_RULES;
+		PathMappingData pathMappingData = rules.computeIfAbsent(path, key -> new PathMappingData());
+		return pathMappingData.put(data);
 	}
 
-	public static RequestUrlData removeMapping(String path) {
-		boolean antPath = isAntPath(path);
-		if (antPath) {
-			return ANT_URL_RULES.remove(path);
-		} else {
-			return URL_RULES.remove(path);
+	public static boolean removeMapping(String path, RequestUrlData data) {
+		ConcurrentHashMap<String, PathMappingData> rules = isAntPath(path) ? ANT_URL_RULES : URL_RULES;
+		PathMappingData pathMappingData = rules.get(path);
+		if (pathMappingData == null) {
+			return false;
 		}
+		boolean removed = pathMappingData.remove(data);
+		if (removed && pathMappingData.isEmpty()) {
+			rules.remove(path, pathMappingData);
+		}
+		return removed;
 	}
 
 	@Override
 	public boolean handleUrl(String uriShort, String httpMethod, HttpServletRequest request,
 			HttpServletResponse response) {
-		RequestUrlData requestUrlData = URL_RULES.get(uriShort);
-		if (requestUrlData != null) {
-			return handleUrl(requestUrlData, uriShort, null, httpMethod, null, request, response);
+		PathMappingData pathMappingData = URL_RULES.get(uriShort);
+		if (pathMappingData != null) {
+			RequestUrlData requestUrlData = pathMappingData.match(httpMethod);
+			if (requestUrlData != null) {
+				return handleUrl(requestUrlData, uriShort, null, httpMethod, null, request, response);
+			}
+			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+			return true;
 		}
-		Set<Entry<String, RequestUrlData>> rules = ANT_URL_RULES.entrySet();
+		Set<Entry<String, PathMappingData>> rules = ANT_URL_RULES.entrySet();
+		List<Entry<String, PathMappingData>> matchedEntries = null;
 		Map<String, String> variables = new HashMap<>(8);
-		for (Entry<String, RequestUrlData> entry : rules) {
+		Map<String, String> matchedVariables = null;
+		for (Entry<String, PathMappingData> entry : rules) {
+			variables.clear();
 			boolean matched = ANT_PATH_MATCHER.doMatch(entry.getKey(), uriShort, true, variables);
 			if (matched) {
-				return handleUrl(entry.getValue(), uriShort, entry.getKey(), httpMethod, variables, request, response);
+				if (matchedEntries == null) {
+					matchedEntries = new ArrayList<>(8);
+					matchedVariables = new HashMap<>(variables);
+				}
+				matchedEntries.add(entry);
 			}
 		}
-		return false;
+		if (matchedEntries == null) {
+			return false;
+		}
+		Entry<String, PathMappingData> bestEntry;
+		if (matchedEntries.size() == 1) {
+			bestEntry = matchedEntries.get(0);
+		} else {
+			bestEntry = matchedEntries.stream()
+					.min(Comparator.comparing(Entry::getKey, ANT_PATH_MATCHER.getPatternComparator(uriShort)))
+					.orElse(matchedEntries.get(0));
+			matchedVariables.clear();
+			ANT_PATH_MATCHER.doMatch(bestEntry.getKey(), uriShort, true, matchedVariables);
+		}
+		RequestUrlData requestUrlData = bestEntry.getValue().match(httpMethod);
+		if (requestUrlData != null) {
+			return handleUrl(requestUrlData, uriShort, bestEntry.getKey(), httpMethod, matchedVariables, request,
+					response);
+		}
+		response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+		return true;
 	}
 
 	private boolean handleUrl(RequestUrlData requestUrlData, String uriShort, String antPath, String httpMethod,
 			Map<String, String> variables, HttpServletRequest request, HttpServletResponse response) {
 		RequestMapping requestMapping = requestUrlData.getRequestMapping();
-		if (!validateHttpMethods(requestMapping, httpMethod)) {
-			response.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
-			return true;
-		}
 		boolean multipart = ServletFileUpload.isMultipartContent(request);
 		ViewForward viewForward = createViewForward();
 		String exceptionHandler = requestMapping.exceptionHandler();
@@ -114,6 +147,9 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 		Object targetController = requestUrlData.getTarget();
 		Method method = requestUrlData.getMethod();
 		try {
+			if (!applyProduces(requestMapping, request, response)) {
+				return true;
+			}
 			if (multipart) {
 				long uploadSizeMax = requestMapping.uploadSizeMax();
 				long uploadPerSizeMax = requestMapping.uploadPerSizeMax();
@@ -162,31 +198,79 @@ public class AnnotationUrlHandler extends AbstractUrlHandler {
 
 	}
 
-	private boolean validateHttpMethods(RequestMapping requestMapping, String httpMethod) {
-		RequestMethod[] requestMethods = requestMapping.method();
-		if (requestMethods.length == 0) {
-			return true;
-		}
-		for (RequestMethod requestMethod : requestMethods) {
-			if (requestMethod.equals(RequestMethod.valueOf(httpMethod))) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	private static boolean isAntPath(String uri) {
 		return (uri.indexOf("{") != -1) || (uri.indexOf("?") != -1) || (uri.indexOf("*") != -1);
 	}
 
+	private boolean applyProduces(RequestMapping requestMapping, HttpServletRequest request,
+			HttpServletResponse response) {
+		String[] produces = requestMapping.produces();
+		if (produces.length == 0) {
+			return true;
+		}
+		List<MimeType> producibleTypes = new ArrayList<>(produces.length);
+		for (String produce : produces) {
+			if (produce != null && !produce.trim().isEmpty()) {
+				producibleTypes.add(MimeType.valueOf(produce.trim()));
+			}
+		}
+		if (producibleTypes.isEmpty()) {
+			return true;
+		}
+		String acceptHeader = request.getHeader("Accept");
+		List<MimeType> acceptableTypes;
+		if (acceptHeader == null || acceptHeader.trim().isEmpty()) {
+			acceptableTypes = Collections.singletonList(MimeType.valueOf(MediaType.ALL_VALUE));
+		} else {
+			acceptableTypes = MimeType.parseMediaTypes(acceptHeader);
+			acceptableTypes.sort(new Comparator<MimeType>() {
+				@Override
+				public int compare(MimeType a, MimeType b) {
+					int result = Double.compare(b.getQualityValue(), a.getQualityValue());
+					if (result != 0) {
+						return result;
+					}
+					if (a.isWildcardType() && !b.isWildcardType()) {
+						return 1;
+					} else if (!a.isWildcardType() && b.isWildcardType()) {
+						return -1;
+					}
+					if (a.isWildcardSubtype() && !b.isWildcardSubtype()) {
+						return 1;
+					} else if (!a.isWildcardSubtype() && b.isWildcardSubtype()) {
+						return -1;
+					}
+					return 0;
+				}
+			});
+		}
+		for (MimeType acceptable : acceptableTypes) {
+			if (acceptable.getQualityValue() <= 0D) {
+				continue;
+			}
+			for (MimeType producible : producibleTypes) {
+				if (producible.isCompatibleWith(acceptable)) {
+					response.setContentType(producible.toString());
+					return true;
+				}
+			}
+		}
+		response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+		return false;
+	}
+
 	public static Set<Object> getTransactionControllers() {
 		Set<Object> controllers = new HashSet<>(32);
-		URL_RULES.values().forEach(requestUrlData -> {
-			controllers.add(requestUrlData.getTarget());
+		URL_RULES.values().forEach(pathMappingData -> {
+			pathMappingData.allRequestUrlData().forEach(requestUrlData -> {
+				controllers.add(requestUrlData.getTarget());
+			});
 		});
 
-		ANT_URL_RULES.values().forEach(requestUrlData -> {
-			controllers.add(requestUrlData.getTarget());
+		ANT_URL_RULES.values().forEach(pathMappingData -> {
+			pathMappingData.allRequestUrlData().forEach(requestUrlData -> {
+				controllers.add(requestUrlData.getTarget());
+			});
 		});
 		return controllers;
 	}

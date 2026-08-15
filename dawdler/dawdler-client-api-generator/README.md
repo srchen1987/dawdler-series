@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-基于java源码doc生成兼容swagger-ui的OpenAPI 3.0的json工具,对源代码零侵入,上手简单,生成效率高,使用非常方便.
+基于java源码doc生成兼容swagger-ui的OpenAPI 3.1的json工具,对源代码零侵入,上手简单,生成效率高,使用非常方便.
 
 ### 1. pom中引入依赖
 
@@ -44,7 +44,7 @@ outPath: "/home/srchen/github/api-demo/upload-api.json"
 | version | 版本号 |
 | title | 标题 |
 | description | 描述 |
-| contact | 联系人 相关信息|
+| contact | 联系人 相关信息 |
 | openApi | openApi版本号 |
 | servers | api地址,例如: 192.168.1.55:8080 |
 | scanPath | 扫描路径,Controller或实体对象(数组结构) |
@@ -79,20 +79,20 @@ java -jar dawdler-client-api-generator-xxx-RELEASES.jar /home/srchen/github/api-
 拉取docker镜像
 
 ```shell
-docker pull swaggerapi/swagger-ui
+docker pull docker.swagger.io/swaggerapi/swagger-ui
 ```
 
 启动
 
 ```shell
-docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -e DEFAULT_RESPONSES_EXPAND_DEPTH=10  -e DEFAULT_MODELS_EXPAND_DEPTH=10 -e DEFAULT_MODEL_EXPAND_DEPTH=10  -v /home/srchen/github/api-demo:/foo swaggerapi/swagger-ui
+docker run -d -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -e DEFAULT_RESPONSES_EXPAND_DEPTH=10  -e DEFAULT_MODELS_EXPAND_DEPTH=10 -e DEFAULT_MODEL_EXPAND_DEPTH=10  -v {api-json所在目录}:/foo docker.swagger.io/swaggerapi/swagger-ui
 ```
 
 访问 [http://localhost/swagger](http://localhost/swagger) 既可使用.
 
-#### 4. 已支持javaDoc的Tag/注解/对象
+### 4. 已支持javaDoc的Tag/注解/对象
 
-##### 4.1 JavaDoc的Tag
+#### 4.1 JavaDoc的Tag
 
 1. 用于类或方法的描述信息,支持放在类上或方法上.(同时支持javadoc标准 方法上注释)
 
@@ -117,7 +117,7 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -e
 
 ```
 
-##### 4.2 dawdler-client-plug的注解
+#### 4.2 dawdler-client-plug的注解
 
 1. @Controller 标识一个类为Controller,只有此标识才会被扫描生成文档,用于类上.
 
@@ -133,17 +133,17 @@ docker run -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -e
 
 7. @ResponseBody 标识返回对象.
 
-##### 4.3 方法参数列表支持的对象类型(dawdler-client-plug中支持的对象)
+#### 4.3 方法参数列表支持的对象类型(dawdler-client-plug中支持的对象)
 
 1. UploadFile 用于上传文件时使用的对象,可以搭配@param来做注释.
 
-2. java8大基础类型 用于获取http请求参数,可以搭配@param来做注释.
+2. java 8种基础类型 用于获取http请求参数,可以搭配@param来做注释.
 
 3. String类型 用于获取http请求参数,可以搭配@param来做注释.
 
 4. BigDecimal 用于获取http请求参数,可以搭配@param来做注释.
 
-5. Date、LocalDateTime、LocalDate、LocalTime ZonedDateTime、OffsetDateTime 用于获取http请求参数,可以搭配@param来做注释.
+5. Date、LocalDateTime、LocalDate、LocalTime、ZonedDateTime、OffsetDateTime 用于获取http请求参数,可以搭配@param来做注释.
 
 6. Enum 枚举类型 用于获取http请求参数,可以搭配@param来做注释.
 

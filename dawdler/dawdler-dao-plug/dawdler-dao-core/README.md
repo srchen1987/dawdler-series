@@ -77,7 +77,7 @@ insertPrepareGetKey与insertMapGetKey 方法会返回插入信息生成的主键
 public class UserDAO extends SuperDAO{
 
  public int insertUser(User user) throws SQLException{
-  return insertPrepare("insert into t_user(username,`password`,age)", user.getUsername(), user.getPassword(), user.getAge());
+  return insertPrepare("insert into t_user(username,`password`,age) values(?,?,?)", user.getUsername(), user.getPassword(), user.getAge());
  }
 
 }
@@ -89,11 +89,12 @@ public class UserServiceImpl implements UserService{
  @Repository
  UserDAO userDAO;
  
- @Override
- @DBTransaction
- public boolean addUser(User user) {
-  return userDAO.insertUser(user) > 0;
- }
+  @Override
+  @DBTransaction
+  public boolean addUser(User user) {
+   return userDAO.insertUser(user) > 0;
+  }
+}
 ```
 
 ### 4. 获取读连接与写连接

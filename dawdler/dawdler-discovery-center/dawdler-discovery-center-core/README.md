@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-注册中心核心模块,提供DiscoveryCenter接口.需要扩展其他配置中心可引用此模块并实现DiscoveryCenter接口即可.
+注册中心核心模块,提供DiscoveryCenter接口.需要扩展其他注册中心可引用此模块并实现DiscoveryCenter接口即可.
 
 ### 1. pom中引入依赖
 
@@ -51,9 +51,10 @@ public interface DiscoveryCenter {
   return true;
  }
 
- /**
-  * 判断是否存在
-  */
- boolean isExist(String path) throws Exception;
+  /**
+   * 判断是否存在
+   */
+  boolean isExist(String path) throws Exception;
 
+}
 ```

@@ -25,7 +25,7 @@ import club.dawdler.core.bean.ResponseBean;
 import club.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
 import club.dawdler.core.handler.IoHandler;
 import club.dawdler.core.handler.IoHandlerFactory;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.Serializer;
 import club.dawdler.core.thread.InvokeFuture;
 
 /**

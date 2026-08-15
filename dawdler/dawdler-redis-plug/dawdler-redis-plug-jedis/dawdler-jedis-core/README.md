@@ -54,9 +54,11 @@ pool.testOnCreate=false
 pool.testOnReturn=false
 #超时时间(单位毫秒)
 timeout=10000
-#使用指定数据槽
+#使用指定数据库
 database=0
 ```
+
+配置文件支持多环境、统一配置中心、加密、变量替换,参考[多环境配置](../../../doc/dawdler-profiles.active-README.md).
 
 ### 3. JedisInjector注解
 
@@ -66,26 +68,26 @@ JedisInjector注解中的value传入fileName为配置文件名(不包含.propert
 
 具体参考:
 
-[dawdler-server-plug-redis 实现dawdler-server端注入功能.](../dawdler-server-plug-jedis/README.md)
+[dawdler-server-plug-jedis 实现dawdler-server端注入功能.](../dawdler-server-plug-jedis/README.md)
 
-[dawdler-client-plug-redis 实现web端注入功能.](../dawdler-client-plug-jedis/README.md)
+[dawdler-client-plug-jedis 实现web端注入功能.](../dawdler-client-plug-jedis/README.md)
 
 ### 4. 在非dawdler架构下的使用方式
 
 ```java
-// //通过调用JedisPoolFactory的getJedisPool方法
+//通过调用UnifiedJedisFactory的getUnifiedJedis方法
+ 
+public static UnifiedJedisWarpper getUnifiedJedis(String fileName)
 
-public static Pool<Jedis> getJedisPool(String fileName); 
-
-//通过调用此方法来获取Pool<Jedis>,fileName是不包含后缀.properties.
+//通过调用此方法来获取UnifiedJedisWarpper,fileName是不包含后缀.properties.
 
 //例如：传入fileName为myRedis,则需要在项目的classPath中创建配置文件myRedis.properties.
 
 ```
 
-注意：Pool```<Jedis>```在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
+注意：`UnifiedJedisWarpper`在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
 
-在非dawdler架构下使用需要调用 JedisPoolFactory.shutdownAll(); 释放资源.
+在非dawdler架构下使用需要调用 UnifiedJedisFactory.shutdownAll(); 释放资源.
 
 ### 5. 分布式锁的使用方式
 
@@ -97,7 +99,7 @@ JedisLockInjector注解用于注入JedisDistributedLockHolder.
 /**
  * @author jackson.song
  * @version V1.0
- * 标注一个成员变量 注入JedisDistributedLock
+ * 标注一个成员变量 注入JedisDistributedLockHolder
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -127,6 +129,6 @@ public @interface JedisLockInjector {
 
 具体参考:
 
-[dawdler-server-plug-redis 实现dawdler-server端注入功能.](../dawdler-server-plug-jedis/README.md)
+[dawdler-server-plug-jedis 实现dawdler-server端注入功能.](../dawdler-server-plug-jedis/README.md)
 
-[dawdler-client-plug-redis 实现web端注入功能.](../dawdler-client-plug-jedis/README.md)
+[dawdler-client-plug-jedis 实现web端注入功能.](../dawdler-client-plug-jedis/README.md)

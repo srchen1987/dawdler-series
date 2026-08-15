@@ -24,7 +24,6 @@ import org.slf4j.LoggerFactory;
 
 import club.dawdler.breaker.CircuitBreaker;
 import club.dawdler.breaker.LocalCircuitBreaker;
-import club.dawdler.breaker.metric.Metric;
 import club.dawdler.breaker.state.CircuitBreakerState;
 import club.dawdler.client.filter.DawdlerClientFilter;
 import club.dawdler.client.filter.FilterChain;
@@ -41,6 +40,7 @@ import club.dawdler.core.bean.RequestBean;
 public class CircuitBreakerFilter implements DawdlerClientFilter {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerClientFilter.class);
 	private final ConcurrentHashMap<String, CircuitBreaker> breakers = new ConcurrentHashMap<>();
+	private final ConcurrentHashMap<club.dawdler.core.annotation.CircuitBreaker, Method> fallbackCache = new ConcurrentHashMap<>();
 
 	@Override
 	public Object doFilter(RequestBean request, FilterChain chain) throws Exception {
@@ -61,15 +61,14 @@ public class CircuitBreakerFilter implements DawdlerClientFilter {
 			}
 		}
 		CircuitBreakerState state = circuitBreaker.getState();
-		Metric metric = state.getStw().currentMetrics();
-		metric.totalIncrt();
 		if (circuitBreaker.check()) {
+			state.getStw().currentMetrics().totalIncrt();
 			try {
 				Object result = chain.doFilter(request);
 				circuitBreaker.pass();
 				return result;
 			} catch (Throwable e) {
-				metric.failIncrt();
+				state.getStw().currentMetrics().failIncrt();
 				circuitBreaker.fail();
 				throw e;
 			}
@@ -78,7 +77,13 @@ public class CircuitBreakerFilter implements DawdlerClientFilter {
 			String fallbackMethod = cb.fallbackMethod();
 			if (c != null && !"".equals(fallbackMethod)) {
 				try {
-					Method method = c.getMethod(fallbackMethod, request.getTypes());
+					Method method = fallbackCache.computeIfAbsent(cb, annotation -> {
+						try {
+							return c.getMethod(fallbackMethod, request.getTypes());
+						} catch (NoSuchMethodException e) {
+							throw new RuntimeException("Fallback method not found: " + fallbackMethod, e);
+						}
+					});
 					return method.invoke(null, request.getArgs());
 				} catch (Throwable e) {
 					logger.error("", e);
