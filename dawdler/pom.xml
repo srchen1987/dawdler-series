@@ -35,7 +35,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.target>21</maven.compiler.target>
 		<maven.compiler.source>21</maven.compiler.source>
-		<dawdler.build.version>0.1.5-jdk21-RELEASES</dawdler.build.version>
+		<dawdler.build.version>0.1.6-jdk21-RELEASES</dawdler.build.version>
 		<slf4j.version>2.0.18</slf4j.version>
 		<ch.qos.logback.version>1.6.1</ch.qos.logback.version>
 		<ch.qos.logback.common.version>2.0.14</ch.qos.logback.common.version>
