@@ -1,0 +1,695 @@
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/club/dawdler/es/restclient/factory/EsClientFactory.java
+  s_ee0355f2c36863::t_1d98f9180ba060 24,28-35,41-43,88,90-95,97-111,120-121
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/buffer/DawdlerByteBuffer.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22-24,31,60
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/ForwardRoutingHandler.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-36,38-97
+dawdler/dawdler-kafka-plug/dawdler-kafka-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 82-83,128,244,247-253
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/classloader/DawdlerWebDeployClassLoader.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 29-30,33,131-143
+dawdler/dawdler-core/src/main/java/club/dawdler/core/loader/DeployClassLoader.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 173
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/src/main/java/club/dawdler/serverplug/i18n/filter/I18nFilter.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-42
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/UniqueItemsRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,43-52
+dawdler/dawdler-db-plug/dawdler-db-core/src/main/java/club/dawdler/core/db/aspect/TransactionAspect.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 124-125,139,164,186,203,226-228,231
+dawdler/dawdler-client/src/main/java/club/dawdler/client/Transaction.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 35,207-209,211,213,234-236
+dawdler/dawdler-mybatis-plug/dawdler-client-plug-mybatis/src/main/java/club/dawdler/clientplug/db/mybatis/create/listener/InjectMapperCreateListener.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 40-41,43
+dawdler/dawdler-server/src/main/java/club/dawdler/server/net/aio/handler/AcceptorHandler.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 46,73
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/SessionOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 30
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/src/main/resources/META-INF/services/club.dawdler.clientplug.web.classloader.RemoteClassLoaderFire
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1
+dawdler/dawdler-client/src/main/java/club/dawdler/client/net/aio/session/SocketSession.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 34,80-84,86-90
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/DawdlerJwtFilter.java
+  s_25b819bfe1a5fd::t_da4419006979fb 1-115
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/MethodParser.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 93,261,304,391,441-449,452-459,469-472,477-478
+dawdler/dawdler-client-plug-validator/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 205,342,470,525
+dawdler/dawdler-client-plug-velocity/src/main/java/club/dawdler/clientplug/velocity/direct/XssUtil.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 1-16
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/club/dawdler/distributed/transaction/repository/RedisRepository.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 31,34-35,82,95-98,108,119,158,173-187,190
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/src/main/java/club/dawdler/i18n/annotation/I18nInjector.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-43
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-6,8-26
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 7
+dawdler/dawdler-db-plug/dawdler-db-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 66,68,74,117
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/wrapper/BodyReaderHttpServletRequestWrapper.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 1-16,32-36
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebConfigParser.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 68-74
+dawdler/dawdler-web-gateway/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-38,40-45,47-152,154-322
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/WebApiGenerator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 68
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/claim/JwtClaimNames.java
+  s_25b819bfe1a5fd::t_12bc549bdde7f3 1-38
+dawdler/dawdler-service-plug/dawdler-remote-service-core/src/main/java/club/dawdler/remote/service/factory/ServiceFactory.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22-23,47,90-95,99,101-103,106-107,109-110,112-113,115-118,121-135,144-154,158-160,162-164,172-188
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/filter/GatewayFilter.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-192
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/WebSocketProxyUpgradeHandler.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-39,41-176
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/fire/WebComponentClassLoaderFire.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 117-119,145-147,150-151
+dawdler/dawdler-client/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 29,43
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/plugs/PlugFactory.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 47-48
+dawdler/dawdler-server/src/main/java/club/dawdler/server/deploys/AbstractServiceRoot.java
+  s_c04b6f8f6b5d53::t_8dbaf9cfdc5dc8 35,38,42,78-79,98
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/club/dawdler/es/restclient/pool/factory/PooledEsClientFactory.java
+  s_ee0355f2c36863::t_1d98f9180ba060 27,59
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-7,9-23
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 8
+dawdler/dawdler-core/src/main/java/club/dawdler/core/component/injector/CustomComponentOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 48-54
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/context/JwtContext.java
+  s_25b819bfe1a5fd::t_5629a77e16a046 1-65
+dawdler/dawdler-dao-plug/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 5
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/webbind/ValidateResourceLoader.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 47-48,53,78,85-87,108,115-116,123,132-134,138-140,181,191,193,197-198
+dawdler/dawdler-mybatis-plug/dawdler-mybatis-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 7-14,25,38,64,68,114,116,128,162
+dawdler/dawdler-i18n-plug/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-15
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/club/dawdler/distributed/transaction/repository/TransactionRepository.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-128
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/src/main/java/club/dawdler/client/plug/discoverycenter/AbstractServerDiscoveryCenterLifeCycle.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-123
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/initializer/DawdlerJwtInitializer.java
+  s_25b819bfe1a5fd::t_d877aff80c8767 1-46
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 17
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,42
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/src/main/java/module-info.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 11-12
+dawdler/dawdler-web-gateway/src/main/resources/META-INF/services/club.dawdler.web.gateway.route.filter.GatewayPathFilter
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-3
+dawdler/dawdler-db-plug/dawdler-client-plug-db/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 16
+dawdler/dawdler-server/src/main/java/club/dawdler/server/thread/processor/BusyResponseRejectedExecutionHandler.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-43
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/JwtConfig.java
+  s_25b819bfe1a5fd::t_2fcef8dc90e920 1-73,75-218
+  s_25b819bfe1a5fd::t_0abab3cc35a637 74
+dawdler/dawdler-rabbitmq-plug/dawdler-client-plug-rabbitmq/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 16
+dawdler/dawdler-server/src/main/java/club/dawdler/server/bootstrap/ServerConnectionManager.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,31,42,46,50,59
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/src/main/java/club/dawdler/distributed/transaction/compensate/config/CompensationConfig.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-82
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/impl/RoundRobinLoadBalance.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 31,40
+dawdler/dawdler-core/src/main/java/club/dawdler/core/thread/InvokeFuture.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 36-40,54,68-70,104-106
+dawdler/dawdler-core/src/main/java/club/dawdler/core/exception/ServerBusyException.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-30
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/src/main/resources/distributed-transaction-compensator.properties
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-7
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/src/main/java/club/dawdler/clientplug/i18n/injector/I18nWebComponentInjector.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-38
+dawdler/dawdler-pinpoint-plug/README.md
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 37,51,80,83,89,135
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/buffer/PoolBuffer.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 20,22,34,52,67-68
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-12
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/exception/JwtParseException.java
+  s_25b819bfe1a5fd::t_c15d911572548a 1-36
+dawdler/dawdler-server/README.md
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 40,50,97,101,105,276
+dawdler/dawdler-util/src/main/java/club/dawdler/util/HashedWheelTimer.java
+  h_82990a09bc17b5 68-71
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-65
+dawdler/dawdler-util/src/main/java/club/dawdler/util/JsonProcessUtil.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 53,190,199,215
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebApplicationConfig.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-73
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/FilterDefinition.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-63
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/src/main/java/club/dawdler/i18n/I18nOperator.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-45
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-6,8-29
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 7
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/GatewayConfigParser.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-47
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/src/main/java/club/dawdler/serverplug/i18n/listener/InjectServiceCreateListener.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-34
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-server-plug-jedis/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 36
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/store/RedisSessionStore.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 29,128,173
+dawdler/dawdler-cache-plug/dawdler-cache-core/src/main/java/club/dawdler/cache/CacheConfig.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 21
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/src/main/resources/META-INF/services/club.dawdler.core.component.resource.ComponentLifeCycle
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1
+dawdler/dawdler-mybatis-plug/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 5
+dawdler/dawdler-dao-plug/dawdler-dao-core/src/main/java/club/dawdler/core/db/dao/BaseDataImpl.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 227,231-239,244,263-264,266-267
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-6,8-22
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 7
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/src/main/resources/META-INF/services/club.dawdler.core.component.resource.ComponentLifeCycle
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/GatewayOptions.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-22,24-216,219-226,231-298
+dawdler/dawdler-discovery-center/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 18
+dawdler/dawdler-circuit-breaker/src/main/java/club/dawdler/breaker/metric/MetricBase.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 32
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/StringRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,54-59,65-67
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/src/main/java/club/dawdler/clientplug/discovery/consul/resource/ConsulLifeCycle.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,22,41-43,46-47,56,73,113-115,120-122,159-183
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/LoadBalanceFactory.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 21,30
+dawdler/dawdler-config-center/dawdler-config-center-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 47-48,65,88
+dawdler/dawdler-es-plug/dawdler-server-plug-es/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 26
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/ServiceInstancePool.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-26,28-69
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/src/main/java/module-info.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-14
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/MaximumRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,44-52,56-59,63-72,74-75
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/src/main/java/club/dawdler/clientplug/i18n/fire/I18nClassLoaderFire.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-45
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 13-38
+dawdler/dawdler-web-gateway/src/main/java/module-info.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-22
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/PathMappingData.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-107
+dawdler/dawdler-client-plug-jwt/src/main/resources/defaultJwtConfig.properties
+  s_25b819bfe1a5fd::t_fa3458804051e7 1-39
+dawdler/dawdler-i18n-plug/dawdler-client-i18n/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-6,8-17
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 7
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/src/main/java/club/dawdler/serverplug/i18n/injector/I18nWebComponentInjector.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-38
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/TypeDataParser.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 37,74,89
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 18-21
+dawdler/dawdler-server/src/main/java/club/dawdler/server/conf/ServerConfigParser.java
+  s_c04b6f8f6b5d53::t_2de8fcc639b27c 19-23,48,59
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/UnifiedJedisFactory.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,73,88,115,117,121
+dawdler/dawdler-core/src/main/java/club/dawdler/core/component/injector/CustomComponentInjector.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 58,63-67
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/GatewayConfig.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-49
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/RouteDefinition.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-82
+dawdler/dawdler-db-plug/dawdler-client-plug-db/src/main/java/club/dawdler/clientplug/db/resource/TransactionLifeCycle.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 43-45
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-6,8-29
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 7
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/algorithm/Algorithm.java
+  s_25b819bfe1a5fd::t_3be67302577cf9 1-32
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/DawdlerSessionFilter.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 33-34,252-253
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/claim/JwtClaims.java
+  s_25b819bfe1a5fd::t_ea1fbc1fd7fcae 108
+  s_25b819bfe1a5fd::t_c50c8168ebd785 1-107,109-240
+dawdler/dawdler-mybatis-plug/dawdler-server-plug-mybatis/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 16,18,32
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/exception/JwtException.java
+  s_25b819bfe1a5fd::t_4bd0988d3716a6 1-36
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/SetPathFilter.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-30,32-83
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/src/main/java/club/dawdler/rabbitmq/connection/pool/factory/AMQPConnectionFactory.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 81-106
+doc/dawdler-profiles.active-README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22,40,60-78
+dawdler/dawdler-i18n-plug/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-6,8-18
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 7
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/MaxItemsRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,41-43
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/GatewayPathFilterFactory.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-26,28-49
+changeLog.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 5,10
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/algorithm/HmacAlgorithm.java
+  s_25b819bfe1a5fd::t_fdd076e8cc9e54 1-79
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/operator/JwtOperator.java
+  s_25b819bfe1a5fd::t_595b2536ac212a 154-159
+  s_25b819bfe1a5fd::t_97e31db5cecd80 162,171-175
+  s_25b819bfe1a5fd::t_57adbb4ffab420 1-153,160-161,163-170,176-181
+dawdler/dawdler-client/src/main/java/club/dawdler/client/DawdlerConnection.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 26,55,58-59,159,348,359-363,368-370,377,379-380,386,388-391,396,399-400,420,426
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/src/main/java/club/dawdler/gateway/discovery/zookeeper/resource/ZookeeperLifeCycle.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-140
+dawdler/dawdler-i18n-plug/dawdler-client-i18n/src/main/java/club/dawdler/client/i18n/filter/I18nFilter.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-38
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-discovery-center-consul-core/src/main/java/club/dawdler/core/discovery/consul/ConsulDiscoveryCenter.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 30-31,44-46,68,152-160
+dawdler/dawdler-client/src/main/java/club/dawdler/client/filter/FilterProvider.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 30
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/classloader/ClientPlugClassLoader.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 151
+dawdler/dawdler-service-plug/dawdler-remote-service-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 39,41
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/ViewForward.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22,190,192,194,198-201,203,207,211,215,219,223,227,231,235,239,243,247,255,263,267,271,275,279,283,287
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/listener/WebListener.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 20,25-27,41,64-65,67,81-83
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/MinItemsRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,41-43,46-47
+dawdler/dawdler-es-plug/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 9
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/HttpProxyHandler.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-48,50-96,102-105,107-158,161,163-164,167-168,170-171,174-177,179-182,201-203,220,222-223,235,237,240-244,246-253,264,266,274-277,279,303-305,308,313-317,321,327,330-348,454-456,470-480
+  h_82990a09bc17b5 49,97-101,230
+dawdler/dawdler-distributed-transaction/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 7,21,27-35,42,49,56,58,66,79,83,101,117,155-157,159,162,172,178,184-186,245,251,263,266,269-271,320-323
+dawdler/dawdler-db-plug/dawdler-server-plug-db/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 16
+dawdler/dawdler-util/src/main/java/club/dawdler/util/ClassUtil.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 182-187
+dawdler/dawdler-server-logback/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-75
+dawdler/dawdler-circuit-breaker/src/main/java/club/dawdler/breaker/filter/CircuitBreakerFilter.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 43,65,71,80-86
+dawdler/pom.xml
+  s_efb6dc76259384::t_bf275fffa7bb26 68
+  s_efb6dc76259384::t_18a8cf68c247db 75,77-80
+  h_82990a09bc17b5 47,690
+  s_ee0355f2c36863::t_594e8759e8d93f 66
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 467-469,475-479,605-623,771-772
+  s_8e27d233373e97::t_0d79cb9b130d5d 76
+  s_25b819bfe1a5fd::t_06d23dea19e460 250-259
+  s_efb6dc76259384::t_1c6b9b16cf77b2 39-42,45,48-52,55-58,60-63,67,70,73
+  s_9b581c2adf2360::t_6131a7dd4d8487 656-676
+  s_25b819bfe1a5fd::t_23b16ef8a8160e 747
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-discovery-center-zookeeper-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19-20,32-47
+dawdler/dawdler-util/src/main/java/club/dawdler/util/XmlObject.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 439,444-448,451,456-460
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/aio/session/AbstractSocketSession.java
+  h_82990a09bc17b5 137,142
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 29,39,56,66-67,85-86,89-90,168-169,171-181,297-303,308-309,313,316,338-339
+dawdler/dawdler-client-plug-velocity/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 34,39-40,48,56
+dawdler/dawdler-service-plug/dawdler-service-core/README.md
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 29,31
+dawdler/dawdler-client-plug-web/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22,95,97,101-102,109-121,208,276-294,296-300,302-310,313-314,444-445,448,465,539
+dawdler/dawdler-rabbitmq-plug/dawdler-server-plug-rabbitmq/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 16
+dawdler/dawdler-dependencies/dawdler-load-web-dependencies/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 1
+dawdler/dawdler-serialization/src/main/java/club/dawdler/serializer/KryoSerializer.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-110
+dawdler/dawdler-serialization/src/main/java/club/dawdler/serializer/Serializer.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-34
+dawdler/dawdler-server/src/main/java/club/dawdler/server/thread/processor/DataProcessor.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 30,35,80-113,117-118,120,122-123,125-127,129-164,177-182,193-207,210-220
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/exception/JwtNotYetValidException.java
+  s_25b819bfe1a5fd::t_438a4e49629129 1-32
+dawdler/dawdler-config-center/dawdler-config-center-core/src/main/java/club/dawdler/conf/cache/ConfigDataCache.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22-27,34,51-58
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/src/main/java/club/dawdler/distributed/transaction/compensate/timers/CompensationTimer.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 30,47,50-53,55,61-62,74-77,80-87,89,99
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-discovery-center-zookeeper-core/src/main/java/club/dawdler/core/discovery/zookeeper/ZkDiscoveryCenter.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 23-24,33-34,46,51,54,71-73,91,111-136
+dawdler/dawdler-util/src/main/java/club/dawdler/util/PropertiesUtil.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 111-113
+dawdler/dawdler-i18n-plug/dawdler-client-i18n/src/main/resources/META-INF/services/club.dawdler.client.filter.DawdlerClientFilter
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/src/main/java/club/dawdler/i18n/I18nOperatorFactory.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-100
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/aio/handler/ReaderHandler.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 46-47,49-71,73-105,107-116,118-125,127,129,132-135,138,141-143,145-161,164-169,172-174,181
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 57,61-62,71,73,78-80,82,88,102,132,134
+dawdler/dawdler-cache-plug/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 7,9,11,13
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/ContainRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,38,40-47,51-53
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 7-14,25
+dawdler/dawdler-serialization/src/main/java/club/dawdler/serializer/JDKDefaultSerializer.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-95
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/club/dawdler/distributed/transaction/aspect/DistributedTransactionAspect.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 90-99
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/src/main/java/module-info.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-14
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/module-info.java
+  s_ee0355f2c36863::t_1d98f9180ba060 11-12,14
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/AnnotationUrlHandler.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 21-23,26,42-43,54,56,60-62,65-69,71-75,81-88,90-91,93-95,98-102,105-124,150-152,201-208,211-214,217-258,264-267,270-273
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-client-plug-discovery-center-zookeeper/src/main/java/club/dawdler/clientplug/discovery/zookeeper/ZkDiscoveryCenterClient.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 74-78
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/PredicateDefinition.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-63
+dawdler/dawdler-client-plug-jwt/src/main/resources/META-INF/services/jakarta.servlet.ServletContainerInitializer
+  s_25b819bfe1a5fd::t_32e8cb9dd402b9 1
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/src/main/java/module-info.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-25
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/impl/RandomLoadBalance.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 39
+dawdler/dawdler-serialization/src/main/resources/META-INF/services/club.dawdler.serializer.Serializer
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-2
+dawdler/dawdler-cache-plug/dawdler-cache-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 7-14,139,185,187,195,197
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/RewritePathFilter.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-28,30-69
+dawdler/dawdler-dependencies/dawdler-web-dependencies/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 136-149
+  s_25b819bfe1a5fd::t_f3888f0d94b236 35-44
+dawdler/dawdler-client-plug-jwt/src/main/java/module-info.java
+  s_25b819bfe1a5fd::t_b5c91ad2a4990b 1-22
+dawdler/dawdler-client-plug-jwt/src/main/resources/META-INF/web-fragment.xml
+  s_25b819bfe1a5fd::t_4033100b783eae 1-12
+dawdler/dawdler-db-plug/dawdler-db-core/src/main/java/club/dawdler/core/db/sub/rule/ConsistentHashSubRule.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 23,35,81-83,85
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/StripPrefixFilter.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-25,27-76
+dawdler/dawdler-es-plug/dawdler-client-plug-es/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 26
+dawdler/dawdler-mybatis-plug/dawdler-server-plug-mybatis/src/main/java/club/dawdler/serverplug/db/mybatis/listener/InjectServiceCreateListener.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 44-45,47
+dawdler/dawdler-db-plug/dawdler-db-core/src/main/java/club/dawdler/core/db/datasource/RWSplittingDataSourceManager.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 54
+dawdler/dawdler-i18n-plug/dawdler-client-i18n/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-18
+dawdler/dawdler-server-logback/src/main/java/club/dawdler/server/log/DawdlerLogbackServiceProvider.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 25,75,81
+dawdler/dawdler-util/src/main/java/club/dawdler/util/ConfigContentDecryptor.java
+  s_00ac3d0bc92918::t_1832c83fc14920 63
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/src/main/resources/META-INF/services/club.dawdler.core.component.resource.ComponentLifeCycle
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/src/main/java/club/dawdler/clientplug/i18n/interceptor/I18nInterceptor.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-89
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/src/main/java/club/dawdler/serverplug/i18n/resource/I18nLifeCycle.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-72
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/algorithm/RsaAlgorithm.java
+  s_25b819bfe1a5fd::t_14dda3a8ac62c8 1-136
+dawdler/dawdler-service-plug/dawdler-client-plug-remote-service/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 11
+dawdler/dawdler-server/src/main/java/club/dawdler/server/loader/DawdlerClassLoader.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 24,37
+dawdler/dawdler-util/src/main/java/club/dawdler/util/XmlTool.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 69
+dawdler/dawdler-client/src/main/java/club/dawdler/client/processor/DataProcessor.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 28
+dawdler/dawdler-client/src/main/java/club/dawdler/client/net/aio/handler/ConnectorHandler.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 42-57,61-65
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/NoContainRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,39,41-51
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 22-25
+dawdler/dawdler-web-gateway/src/main/resources/gateway-demo.yml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-99
+dawdler/dawdler-core/src/main/java/club/dawdler/core/compression/ZLibCompression.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 21,32-33,37-40,45,47-49,56-58,61-66,69-73
+dawdler/dawdler-core/src/main/java/club/dawdler/core/httpserver/DawdlerHttpServer.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 23,25,46,77-82,98-108
+dawdler/dawdler-client-plug-web/src/main/resources/web-conf.xsd
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 9-16
+dawdler/dawdler-mybatis-plug/dawdler-client-plug-mybatis/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 16,18,32
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/health/WebHealth.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 25-27,44,47,52-73
+dawdler/dawdler-serialization/src/main/java/club/dawdler/serializer/SerializeDecider.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-74
+dawdler/dawdler-circuit-breaker/src/main/java/club/dawdler/breaker/SlideTimeWindows.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 43-53,63-81,84-86,89-91,96,100
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-api/src/main/java/club/dawdler/distributed/transaction/context/DistributedTransactionContext.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 36
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/club/dawdler/es/restclient/EsOperator.java
+  s_ee0355f2c36863::t_1d98f9180ba060 30,33-34,57-58,72-73,116,133,140,145,148,176-177,180-181,214-216,228-229,238-239,244-245,290-316,638-660,750-772,871-894,912-937,1011,1014-1015,1017,1021,1024-1025,1027,1029,1033-1034,1038-1050,1053,1057,1061,1064,1066,1070-1071,1081,1093-1094,1155-1177,1230-1254,1527-1551,1604-1626,1679-1701,1817-1835
+dawdler/dawdler-server/src/main/java/club/dawdler/server/deploys/AbstractService.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 20,36,76,117-118,144-148,274-278
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/GatewayPathFilter.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-22,24-31
+dawdler/dawdler-server/src/main/java/club/dawdler/server/deploys/ServiceRoot.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 125
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/src/main/java/club/dawdler/gateway/discovery/consul/resource/ConsulLifeCycle.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-197
+dawdler/dawdler-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 37
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-76
+dawdler/dawdler-discovery-center/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22-25
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 17
+dawdler/dawdler-client-plug-jwt/pom.xml
+  s_25b819bfe1a5fd::t_df8802bb0fce24 1-28
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/message/RedisMessageOperator.java
+  s_c04b6f8f6b5d53::t_2de8fcc639b27c 29,159
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/exception/JwtExpiredException.java
+  s_25b819bfe1a5fd::t_bc04abfba3876a 1-32
+dawdler/dawdler-cache-plug/dawdler-cache-caffeine/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 31
+dawdler/dawdler-load-plug/dawdler-client-plug-load/src/main/java/club/dawdler/clientplug/load/resource/LoadLifeCycle.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 1-16,20,72-77,83,85,92
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/FieldParser.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 49,62,74
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/bind/resolver/impl/BasicsTypeMethodArgumentResolver.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 62
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-12
+dawdler/dawdler-server/src/main/java/club/dawdler/server/net/aio/session/SocketSession.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 22,28,55-59,61-65,109-113,123-131,135-136,152-153,176-187,190-194
+dawdler/dawdler-kafka-plug/dawdler-server-plug-kafka/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 5,16,25,28,31
+dawdler/dawdler-dao-plug/dawdler-dao-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 80,92-97
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/README.md
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-12
+dawdler/dawdler-serialization/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 16,22,24
+dawdler/dawdler-kafka-plug/dawdler-client-plug-kafka/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 5,16,25,29,32
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/algorithm/AlgorithmFactory.java
+  s_25b819bfe1a5fd::t_af73b9ed6e505e 1-19,22-50,56-60
+  s_25b819bfe1a5fd::t_aa7ee7dcb06c2e 20-21,51-55
+dawdler/dawdler-client-plug-jwt/README.md
+  s_25b819bfe1a5fd::t_7561c9d654afbb 1-105
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/pom.xml
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-7,9-22
+  s_c04b6f8f6b5d53::t_fbe8f07f6f14d9 8
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/src/main/resources/META-INF/services/club.dawdler.core.component.injector.CustomComponentInjector
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1
+README.md
+  s_9139ed237d321e::t_eddf72d1482e8e 195
+  s_9139ed237d321e::t_bc3a589d88043b 204-206
+  s_9139ed237d321e::t_9142782437c099 203
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 17,53,61,73,196-198,200-202,227,287
+  s_9139ed237d321e::t_1ddb0e226db7ea 199
+dawdler/dawdler-client-api-generator/README.md
+  s_c04b6f8f6b5d53::t_d927b052a94385 5,47,82,88,93,95,120,136,140,146
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/WebSocketProxyHandler.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-61,63-510
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/src/main/java/club/dawdler/rabbitmq/channel/ChannelWrapperHandler.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 48-53
+dawdler/dawdler-util/src/main/java/club/dawdler/util/YAMLUtil.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 74,76
+dawdler/dawdler-es-plug/dawdler-es-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 68-69,82,85,87,89,91
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/filter/ViewFilter.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 21,24,33,51-52,69-70,78,96-102,109-112,118-130,146-150
+dawdler/dawdler-schedule-plug/dawdler-schedule-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 5,56
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-client-plug-jedis/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 36
+dawdler/dawdler-cache-plug/dawdler-cache-jedis/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 31
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebConfig.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 32-33,47-54
+dawdler/dawdler-client-plug-jwt/src/main/java/club/dawdler/clientplug/web/jwt/exception/JwtSignatureException.java
+  s_25b819bfe1a5fd::t_c554715145c403 1-36
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/RouteResolver.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-155,157-180
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 18-21
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/annotation/JedisLockInjector.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 1-16
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/lock/JedisDistributedLock.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 20,44-47,54-59,88-89,95,100,103-107,109-111,114-115,120,125-135,148,163-164,168,173,177,181,186
+dawdler/dawdler-load-plug/dawdler-client-plug-load/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 35
+dawdler/dawdler-client-plug-jwt/.gitignore
+  s_25b819bfe1a5fd::t_0d7f6b74d7453f 1
+dawdler/dawdler-client/src/main/java/club/dawdler/client/ConnectionPool.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 39,52-56
+dawdler/dawdler-serialization/src/main/java/module-info.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 1-3,12
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/src/main/java/club/dawdler/conf/client/consul/impl/ConsulConfigClient.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 68,82,129
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/src/main/resources/META-INF/services/club.dawdler.core.component.injector.CustomComponentInjector
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/bind/resolver/impl/AbstractMethodArgumentResolver.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19-25,29-33,38,61-178
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/RouteScheme.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-139
+dawdler/dawdler-dependencies/dawdler-load-web-dependencies/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 193-203
+dawdler/dawdler-dependencies/dawdler-services-dependencies/pom.xml
+  s_c04b6f8f6b5d53::t_7cf157dc2f04fc 65-74,200-214,245-250
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/MinimumRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,44-52,56-59,63-72,74-75
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/buffer/ByteBufferPooledFactory.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 42-43
+dawdler/dawdler-cache-plug/dawdler-cache-jedis/src/main/java/club/dawdler/cache/jedis/JedisInnerCache.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19,27-28,32,64,77,81,93-94,96,98,110-111
+dawdler/dawdler-cache-plug/dawdler-cache-caffeine/src/main/java/club/dawdler/cache/caffeine/CaffeineCache.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 77-80
+dawdler/dawdler-util/src/main/java/club/dawdler/util/ResourceBundleUtil.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-44
+dawdler/dawdler-util/src/main/java/club/dawdler/util/SystemVariableUtil.java
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-66
+dawdler/dawdler-web-gateway/pom.xml
+  s_9b581c2adf2360::t_2eb9406cb51f60 36
+  s_9139ed237d321e::t_f9b090ca13f65e 8
+  h_82990a09bc17b5 11
+  s_c04b6f8f6b5d53::t_acaa29d60aaa34 1-7,9-10,12-35
+dawdler/dawdler-discovery-center/dawdler-discovery-center-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 5,54-57,59
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/operators/NotEmptyRuleOperator.java
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 19-20,43-47
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/README.md
+  s_c04b6f8f6b5d53::t_ae99d9d5b08cb5 30,34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "44955a6edfda586e392cca12b5994d7e67b46152",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  },
+  "sessions": {
+    "s_00ac3d0bc92918": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1785944421667",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool": "github-copilot-tab"
+      }
+    },
+    "s_25b819bfe1a5fd": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_0286f7804ffe1F61BRTQHoRKki",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-b397edaf50e54087",
+        "edit_kind": "file_edit",
+        "session_id": "ses_0286f7804ffe1F61BRTQHoRKki"
+      }
+    },
+    "s_8e27d233373e97": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_029e2898affeb7lOCUVbRP1cAg",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-890f2e732c62dbc3",
+        "session_id": "ses_029e2898affeb7lOCUVbRP1cAg",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_9139ed237d321e": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_ffc14e46fffeqwi8EuQrRbIdZ1",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_ffc14e46fffeqwi8EuQrRbIdZ1",
+        "tool_use_id": "chatcmpl-tool-b537161e84bebf99",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_9b581c2adf2360": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_02d173f0affeXGeOpU6ABreQ59",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-bc7f0abbe8031421",
+        "session_id": "ses_02d173f0affeXGeOpU6ABreQ59",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_c04b6f8f6b5d53": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_02d68f3d2ffelsN7xWVsdKjrzF",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_02d68f3d2ffelsN7xWVsdKjrzF",
+        "tool_use_id": "chatcmpl-tool-8ebbeee351db5e1a",
+        "edit_kind": "bash"
+      }
+    },
+    "s_ee0355f2c36863": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_028784f5bffeOEbI1jk7y4FTmA",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-ac87b8beb2cf5a3e",
+        "session_id": "ses_028784f5bffeOEbI1jk7y4FTmA",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_efb6dc76259384": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_02a261a71ffejDBChvKiHf1wop",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_02a261a71ffejDBChvKiHf1wop",
+        "tool_use_id": "chatcmpl-tool-8f1eba5ec232aed8",
+        "edit_kind": "file_edit"
+      }
+    }
+  }
+}
