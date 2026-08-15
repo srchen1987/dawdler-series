@@ -1,0 +1,14 @@
+dawdler/pom.xml
+  h_82990a09bc17b5 690-738
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "4c3acdb7b26d6f0ced14656d00d049685d212f9d",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  }
+}
