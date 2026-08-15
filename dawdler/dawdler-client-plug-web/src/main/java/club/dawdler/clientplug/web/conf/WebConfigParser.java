@@ -65,7 +65,13 @@ public class WebConfigParser {
 				List<Node> childNodes = getNodes(root.getDocumentElement().getChildNodes());
 				for (Node childNode : childNodes) {
 					String childNodeName = childNode.getNodeName();
-					if (childNodeName.equals("mybatis")) {
+					if (childNodeName.equals("application")) {
+						webConfig.setWebApplicationConfig(new WebApplicationConfig(
+								XmlObject.getElementAttribute(childNode.getAttributes(), "name"),
+								XmlObject.getElementAttribute(childNode.getAttributes(), "schema", "http"),
+								XmlObject.getElementAttribute(childNode.getAttributes(), "host"),
+								XmlObject.getElementAttribute2Int(childNode.getAttributes(), "port", 8080)));
+					} else if (childNodeName.equals("mybatis")) {
 						loadMappers(childNode);
 					} else if (childNodeName.equals("scanner")) {
 						List<Node> scannerChildNodes = getNodes(childNode.getChildNodes());

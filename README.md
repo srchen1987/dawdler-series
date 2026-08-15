@@ -14,7 +14,7 @@ dawdler-series 是一站式分布式应用、微服务架构的解决方案,其�
 
 高效: 启动运行速度快,一般一个服务大约在50ms到300ms之间,多个服务如果部署在一个dawdler容器中是并行加载,启动时长为最长的那个服务的加载时间.
 
-安全: 采用aio方式构建调用端与服务提供者间的长链接,初次连接需要身份认证与模块权限认证.
+安全: 采用aio方式构建调用端与服务提供者间的长连接,初次连接需要身份认证与模块权限认证.
 
 易扩展: 提供各种扩展接口与扩展方式.如: 负载均衡,配置中心,事务执行器,拦截器,监听器,服务创建监听器,序列化扩展,视图插件等.
 
@@ -50,7 +50,7 @@ RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服�
 
 背景: dawdler早期应用在某linux开源社区上,2008年之前采用ejb3.0通过jboss4.x版本运行,之后切过jboss7.x、wildfly.
 
-问题1: 运行在jboss中有很多问题是解决不了的,比如长链接心跳,断线重连,服务注册与发现,自定义序列化协议,调用性能,启动速度等等问题.
+问题1: 运行在jboss中有很多问题是解决不了的,比如长连接心跳,断线重连,服务注册与发现,自定义序列化协议,调用性能,启动速度等等问题.
 
 问题2: 很多应用使用了spring,启动速度和运行速度都不是很理想,特别是启动速度不方便调试开发.
 
@@ -58,7 +58,7 @@ RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服�
 
 ### dawdler的稳定性
 
-基于dawdler早先版本开发的linux开源社区中稳定运行在服务器上4年已久.dawdler还运行在了某一元购商城,某移动社区,国内某大型2b电商平台(应用部分组件),某支付平台上(tps高峰时期可以达到上千,订单量每天在800-1000万条数据左右,稳定性表现的非常出色,没出现过问题.可放心使用),通过本地测试单机下的dawdler每秒可以处理60000多次调用.
+基于dawdler早先版本开发的linux开源社区中稳定运行在服务器上4年之久.dawdler还运行在了某一元购商城,某移动社区,国内某大型2b电商平台(应用部分组件),某支付平台上(tps高峰时期可以达到上千,订单量每天在800-1000万条数据左右,稳定性表现的非常出色,没出现过问题.可放心使用),通过本地测试单机下的dawdler每秒可以处理60000多次调用.
 
 ### dawdler之美
 
@@ -70,7 +70,7 @@ RPC框架及容器: 容器部署方式,高效急速稳定的rpc实现,支持服�
 6. 功能齐全,学习成本低,几乎兼容spring mvc与事务管理方式,无须使用spring也能使用同样的spring mvc与事务的功能,同时提供各种常用组件的能力,请参考dawdler模块.
 7. 动态加载类Filter实现网关提升性能(减少一次网关到聚合服务的调用),非常适合对性能要求高的互联网应用.
 
-### dawdler模块介绍(具体文档可以点击标题连接进入子模块查看详细说明)
+### dawdler模块介绍(具体文档可以点击标题链接进入子模块查看详细说明)
 
 #### 1. [dawdler-server](dawdler/dawdler-server/README.md)
 
@@ -192,6 +192,18 @@ service模块的支持,包含客户端,服务器端,service核心模块.
 
 kafka模块的支持,包含客户端,服务器端,kafka核心模块.
 
+#### 31. [dawdler-i18n-plug](dawdler/dawdler-i18n-plug/README.md)
+
+国际化模块的支持,提供在web端和服务端注入I18nOperator的功能,实现国际化资源的动态获取.
+
+#### 32. [dawdler-web-gateway](dawdler/dawdler-web-gateway/README.md)
+
+dawdler的网关模块,基于Servlet Filter与Vert.x实现的轻量级反向代理网关.通过`gateway.yml`声明式路由,支持HTTP/HTTPS与WebSocket/wss协议代理,可与注册中心联动实现服务发现与负载均衡,内置StripPrefix、RewritePath、SetPath等路径过滤器并基于SPI可扩展.
+
+#### 33. [dawdler-client-plug-jwt](dawdler/dawdler-client-plug-jwt/README.md)
+
+jwt鉴权模块,基于dawdler-client-plug-web的web架构提供token的签发,解析,校验与请求鉴权.无需第三方依赖,使用JDK原生实现HMAC(HS256/384/512)与RSA(RS256/384/512)签名,通过SPI自动注册过滤器,支持统一配置中心与多环境.
+
 ### dawdler-runtime介绍
 
 参考[dawdler-runtime](https://github.com/srchen1987/dawdler-runtime/blob/main/README.md)
@@ -212,7 +224,7 @@ start             Start dawdler in a separate window 在后台启动dawdler
 
 stop              Stop dawdler 停止dawdler(关闭dawdler之前会从注册中心下线本容器下所有服务,不再接受请求,同时等待处理完客户端的请求之后停止服务器)
 
-stopnow           Stop dawdler immediately 立刻停止dawdler,如果客户端有请求为处理完会收到一个强制停止的异常
+stopnow           Stop dawdler immediately 立刻停止dawdler,如果客户端有请求未处理完会收到一个强制停止的异常
 ```
 
 ### 快速入门
@@ -272,7 +284,7 @@ service接口用于声明服务的接口,并用于提供者与调用者的项目
     |   --order-api #存放接口定义,dto,entity.
     |   --product-api
     --load-web #远程加载服务,包类型为pom的子模块工程.
-    |   --core-load-web #用与加载公用组件,如服代替网关的过滤器,用于被web-api模块远程加载.
+    |   --core-load-web #用于加载公用组件,如代替网关的过滤器,用于被web-api模块远程加载.
     --service #具体服务实现,部署在dawdler中,包类型为pom的子模块工程.
     |   --user-service 
     |   --order-service #存放服务实现,dao,mapper,服务启动监听器.

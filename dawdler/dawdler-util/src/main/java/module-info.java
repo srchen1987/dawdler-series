@@ -15,6 +15,7 @@ module dawdler.util {
 	exports club.dawdler.util;
 	exports club.dawdler.util.aspect;
 	exports club.dawdler.util.reflectasm;
+	exports club.dawdler.util.spring;
 	exports club.dawdler.util.spring.antpath;
 
 	opens club.dawdler.util;

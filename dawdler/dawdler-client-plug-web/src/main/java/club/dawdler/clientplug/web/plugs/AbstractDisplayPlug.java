@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import club.dawdler.clientplug.web.handler.ViewForward;
+import club.dawdler.util.spring.MediaType;
 
 /**
  * @author jackson.song
@@ -28,8 +29,12 @@ import club.dawdler.clientplug.web.handler.ViewForward;
  */
 public abstract class AbstractDisplayPlug implements DisplayPlug {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractDisplayPlug.class);
-	public static final String MIME_TYPE_TEXT_HTML = "text/html;charset=UTF-8";
-	public static final String MIME_TYPE_JSON = "application/json;charset=UTF-8";
+
+	@Deprecated
+	public static final String MIME_TYPE_TEXT_HTML = MediaType.TEXT_HTML_UTF8_VALUE;
+
+	@Deprecated
+	public static final String MIME_TYPE_JSON = MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 	protected void logException(ViewForward wf) {
 		Throwable ex = wf.getInvokeException();

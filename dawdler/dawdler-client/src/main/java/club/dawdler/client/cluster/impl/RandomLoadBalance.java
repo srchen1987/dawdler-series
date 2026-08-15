@@ -33,23 +33,10 @@ public class RandomLoadBalance<T> extends AbstractLoadBalance<T, Double> {
 		super("random");
 	}
 
-	private Double randomData;
-
 	@Override
 	public T doSelect(RequestBean request, List<T> connections) {
 		int size = connections.size();
-		return connections.get((int) (randomData * size));
-	}
-
-	@Override
-	public RandomLoadBalance<T> preSelect(RequestBean request) {
-		randomData = ThreadLocalRandom.current().nextDouble();
-		return this;
-	}
-
-	@Override
-	public Double getKey() {
-		return randomData;
+		return connections.get(ThreadLocalRandom.current().nextInt(size));
 	}
 
 }

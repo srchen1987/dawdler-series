@@ -45,6 +45,13 @@ public class CustomComponentOperator {
 	public static void scanAndInject(DeployClassLoader classLoader,
 			List<OrderData<CustomComponentInjector>> customComponentInjectorList, Set<String> packagePaths)
 			throws Throwable {
+		customComponentInjectorList.forEach(injectror -> {
+			if(injectror.getData().scanLocationsForAllInjector() != null) {
+				for (String packagePath : injectror.getData().scanLocationsForAllInjector()) {
+					packagePaths.add(packagePath);
+				}
+			}
+		});
 		Map<String, Resource> removeDuplicates = new LinkedHashMap<>();
 		for (String packageInClasses : packagePaths) {
 			Resource[] resources = DawdlerComponentScanner.getClasses(packageInClasses);

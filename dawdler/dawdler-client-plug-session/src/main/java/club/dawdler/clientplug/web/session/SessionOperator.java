@@ -27,7 +27,7 @@ import club.dawdler.clientplug.web.session.base.SessionIdGeneratorBase;
 import club.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import club.dawdler.clientplug.web.session.message.MessageOperator;
 import club.dawdler.clientplug.web.session.store.SessionStore;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.Serializer;
 
 import jakarta.servlet.ServletContext;
 

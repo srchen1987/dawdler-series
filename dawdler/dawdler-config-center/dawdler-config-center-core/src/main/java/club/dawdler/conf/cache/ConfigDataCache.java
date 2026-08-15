@@ -19,12 +19,19 @@ package club.dawdler.conf.cache;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import club.dawdler.util.ConfigContentDecryptor;
+import club.dawdler.util.SystemVariableUtil;
+
 /**
  * @author jackson.song
  * @version V1.0
  * 缓存配置中心中的数据和版本号
  */
 public class ConfigDataCache {
+	private static Logger logger = LoggerFactory.getLogger(ConfigDataCache.class);
 
 	private static Map<String, ConfigData> configDataCache = new ConcurrentHashMap<>();
 
@@ -41,6 +48,14 @@ public class ConfigDataCache {
 		private long version;
 
 		public ConfigData(String content, long version) {
+			content = SystemVariableUtil.resolveStringPlaceholders(content);
+			if (ConfigContentDecryptor.useDecrypt()) {
+				try {
+					content = ConfigContentDecryptor.decryptAndReplaceTag(content);
+				} catch (Exception e) {
+					logger.error("", e);
+				}
+			}
 			this.content = content;
 			this.version = version;
 		}

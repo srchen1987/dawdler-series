@@ -16,11 +16,11 @@
  */
 package club.dawdler.server.conf;
 
-import static club.dawdler.util.XmlTool.getElementAttribute;
-import static club.dawdler.util.XmlTool.getElementAttribute2Boolean;
-import static club.dawdler.util.XmlTool.getElementAttribute2Int;
-import static club.dawdler.util.XmlTool.getElementAttribute2Long;
-import static club.dawdler.util.XmlTool.getNodes;
+import static club.dawdler.util.XmlObject.getElementAttribute;
+import static club.dawdler.util.XmlObject.getElementAttribute2Boolean;
+import static club.dawdler.util.XmlObject.getElementAttribute2Int;
+import static club.dawdler.util.XmlObject.getElementAttribute2Long;
+import static club.dawdler.util.XmlObject.getNodes;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -45,7 +45,7 @@ import club.dawdler.util.XmlObject;
 public class ServerConfigParser {
 	private ServerConfig serverConfig = new ServerConfig();
 
-	public void loadKeyStore(Node keyStoreEle) {
+	public void loadKeyStore(Node keyStoreEle) throws Exception {
 		NamedNodeMap namedNodeMap = keyStoreEle.getAttributes();
 		String keyStorePath = getElementAttribute(namedNodeMap, "keyStorePath");
 		String alias = getElementAttribute(namedNodeMap, "alias");
@@ -56,7 +56,7 @@ public class ServerConfigParser {
 		keyStore.setPassword(password);
 	}
 
-	public void loadServer(Node serverEle) {
+	public void loadServer(Node serverEle) throws Exception {
 		NamedNodeMap namedNodeMap = serverEle.getAttributes();
 		Server server = serverConfig.getServer();
 		server.setHost(getElementAttribute(namedNodeMap, "host", server.getHost()));

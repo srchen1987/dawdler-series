@@ -16,9 +16,7 @@
  */
 package club.dawdler.server.bootstrap;
 
-import java.net.SocketAddress;
-import java.util.Collection;
-import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import club.dawdler.server.net.aio.session.SocketSession;
@@ -30,7 +28,7 @@ import club.dawdler.server.net.aio.session.SocketSession;
  */
 public class ServerConnectionManager {
 	private static final ServerConnectionManager serverConnectionManager = new ServerConnectionManager();
-	public Map<SocketAddress, SocketSession> connections = new ConcurrentHashMap<>();
+	public Set<SocketSession> connections = ConcurrentHashMap.newKeySet();
 
 	private ServerConnectionManager() {
 
@@ -41,16 +39,15 @@ public class ServerConnectionManager {
 	}
 
 	public void addSession(SocketSession session) {
-		connections.put(session.getRemoteAddress(), session);
+		connections.add(session);
 	}
 
 	public boolean removeSession(SocketSession session) {
-		return connections.remove(session.getRemoteAddress()) != null;
+		return connections.remove(session);
 	}
 
 	public boolean hasTask() {
-		Collection<SocketSession> collection = connections.values();
-		for (SocketSession session : collection) {
+		for (SocketSession session : connections) {
 			if (!session.getFutures().isEmpty()) {
 				return true;
 			}
@@ -59,18 +56,8 @@ public class ServerConnectionManager {
 	}
 
 	public void closeNow() {
-		Collection<SocketSession> collection = connections.values();
-		for (SocketSession session : collection) {
+		for (SocketSession session : connections) {
 			session.close();
-		}
-	}
-
-	public void close() {
-		Collection<SocketSession> collection = connections.values();
-		for (SocketSession session : collection) {
-			if (session.getFutures().isEmpty()) {
-				session.close();
-			}
 		}
 	}
 

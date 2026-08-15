@@ -19,5 +19,9 @@
 			<groupId>club.dawdler</groupId>
 			<artifactId>dawdler-discovery-center-consul-core</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-discovery-center-client-plug</artifactId>
+		</dependency>
 	</dependencies>
 </project>

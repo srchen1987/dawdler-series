@@ -21,7 +21,7 @@ import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class DawdlerClassLoader extends URLClassLoader {
 	private static final Logger logger = LoggerFactory.getLogger(DawdlerClassLoader.class);
 	private URL binPath;
-	protected final WeakHashMap<String, URL> urlCache = new WeakHashMap<>();
+	protected final ConcurrentHashMap<String, URL> urlCache = new ConcurrentHashMap<>();
 
 	public DawdlerClassLoader(URL[] urls, ClassLoader parent) {
 		super(urls, parent);

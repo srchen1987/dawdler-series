@@ -19,12 +19,13 @@ package club.dawdler.server.net.aio.session;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.charset.StandardCharsets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import club.dawdler.core.net.aio.session.AbstractSocketSession;
-import club.dawdler.core.serializer.SerializeDecider;
+import club.dawdler.serializer.SerializeDecider;
 import club.dawdler.server.bootstrap.ServerConnectionManager;
 import club.dawdler.server.context.DawdlerServerContext;
 import club.dawdler.server.thread.processor.DataProcessor;
@@ -51,10 +52,17 @@ public class SocketSession extends AbstractSocketSession {
 		this.dawdlerServerContext = dawdlerServerContext;
 	}
 
-	public synchronized void close() {
-		if (close.compareAndSet(false, true)) {
+	public void close() {
+		synchronized (writeLock) {
+			if (!close.compareAndSet(false, true)) {
+				return;
+			}
 			if (ioHandler != null) {
-				ioHandler.channelClose(this);
+				try {
+					ioHandler.channelClose(this);
+				} catch (Throwable e) {
+					logger.error("ioHandler.channelClose throw exception, session:{}", describe, e);
+				}
 			}
 			ServerConnectionManager.getInstance().removeSession(this);
 			if (writeBuffer != null) {
@@ -98,7 +106,11 @@ public class SocketSession extends AbstractSocketSession {
 		if (path == null) {
 			if (pathLength > 0) {
 				if (position == 0) {
-					dataLength = dataLength - pathLength - 2;
+					dataLength = dataLength - pathLength - 1;
+					if (dataLength < 0) {
+						throw new IllegalArgumentException("invalid dataLength: " + dataLength + ", pathLength: "
+								+ pathLength + ", from: " + getRemoteAddress());
+					}
 					appendData = new byte[dataLength];
 				}
 				super.appendData(data);
@@ -108,16 +120,20 @@ public class SocketSession extends AbstractSocketSession {
 				return;
 			} else {
 				pathLength = data[0];
-				dataLength = dataLength - pathLength - 2;
+				if (pathLength <= 0) {
+					throw new IllegalArgumentException("invalid pathLength: " + pathLength + ", dataLength: "
+							+ dataLength + ", from: " + getRemoteAddress());
+				}
+				dataLength = dataLength - pathLength - 1;
+				if (dataLength < 0) {
+					throw new IllegalArgumentException("invalid dataLength: " + dataLength + ", pathLength: "
+							+ pathLength + ", from: " + getRemoteAddress());
+				}
 				appendData = new byte[dataLength];
 				if (data.length >= pathLength + 1) {
-					int i = 0;
 					byte[] pathByte = new byte[pathLength];
-					for (int j = 1; j < pathLength + 1; j++) {
-						pathByte[i] = data[j];
-						i++;
-					}
-					path = new String(pathByte);
+					System.arraycopy(data, 1, pathByte, 0, pathLength);
+					path = new String(pathByte, StandardCharsets.UTF_8);
 					if (data.length >= pathLength + 2) {
 						byte[] temp = data;
 						data = new byte[data.length - pathLength - 1];
@@ -133,10 +149,8 @@ public class SocketSession extends AbstractSocketSession {
 
 	private void swapPathByte() {
 		byte[] pathByte = new byte[pathLength];
-		for (int i = 1; i < pathByte.length + 1; i++) {
-			pathByte[i - 1] = appendData[i];
-		}
-		path = new String(pathByte);
+		System.arraycopy(appendData, 1, pathByte, 0, pathLength);
+		path = new String(pathByte, StandardCharsets.UTF_8);
 		int size = pathLength + 1;
 		position -= size;
 		if (position == 0) {
@@ -159,21 +173,25 @@ public class SocketSession extends AbstractSocketSession {
 		compress = (1 & data) == 1;
 		data = (byte) (data >> 1);
 		serializer = SerializeDecider.decide(data);
-		if (buffer.remaining() > 0) {
-			if (path == null) {
-				pathLength = buffer.get();
-				if (buffer.remaining() > pathLength) {
-					byte[] pathByte = new byte[pathLength];
-					buffer.get(pathByte);
-					path = new String(pathByte);
-					dataLength = dataLength - pathLength - 2;
-				}
-			} else {
-				dataLength = dataLength - 1;
+		dataLength = dataLength - 1;
+		if (buffer.remaining() > 0 && path == null) {
+			pathLength = buffer.get();
+			if (pathLength <= 0) {
+				throw new IllegalArgumentException("invalid pathLength: " + pathLength + ", dataLength: "
+						+ dataLength + ", from: " + getRemoteAddress());
 			}
-			appendData = new byte[dataLength];
+			if (buffer.remaining() > pathLength) {
+				byte[] pathByte = new byte[pathLength];
+				buffer.get(pathByte);
+				path = new String(pathByte, StandardCharsets.UTF_8);
+				dataLength = dataLength - pathLength - 1;
+			}
 		}
-
+		if (dataLength < 0) {
+			throw new IllegalArgumentException("invalid dataLength: " + dataLength + ", pathLength: "
+					+ pathLength + ", path: " + path + ", from: " + getRemoteAddress());
+		}
+		appendData = new byte[dataLength];
 	}
 
 	public void setDataLength(int dataLength) {

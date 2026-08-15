@@ -42,7 +42,6 @@ import club.dawdler.core.scan.component.reader.ClassStructureParser.ClassStructu
 import club.dawdler.util.IOUtil;
 import club.dawdler.util.SunReflectionFactoryInstantiator;
 import club.dawdler.util.XmlObject;
-import club.dawdler.util.XmlTool;
 import club.dawdler.util.aspect.AspectHolder;
 import club.dawdler.util.reflectasm.ParameterNameReader;
 import club.dawdler.util.spring.antpath.Resource;
@@ -149,7 +148,7 @@ public class ClientPlugClassLoader {
 				try {
 					XmlObject xmlo = new XmlObject(aopXmlInput);
 					for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-						String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
+						String className = XmlObject.getElementAttribute(aspectNode.getAttributes(), "name");
 						if (className != null) {
 							String fileName = className.replace(".", "/") + ".class";
 							try (InputStream classInput = classLoader.getResourceAsStream(fileName)) {

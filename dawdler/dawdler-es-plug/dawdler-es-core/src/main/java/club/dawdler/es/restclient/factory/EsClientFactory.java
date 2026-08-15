@@ -21,27 +21,26 @@ import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.Base64;
 
 import javax.net.ssl.SSLContext;
 
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
-import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.ssl.SSLContexts;
-import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
+import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
+import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
+import org.apache.hc.client5.http.ssl.TrustSelfSignedStrategy;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.ssl.SSLContexts;
+import org.apache.hc.core5.util.Timeout;
 
 import club.dawdler.util.DawdlerTool;
-
 import co.elastic.clients.elasticsearch.ElasticsearchClient;
 import co.elastic.clients.json.jackson.JacksonJsonpMapper;
 import co.elastic.clients.transport.ElasticsearchTransport;
-import co.elastic.clients.transport.rest_client.RestClientTransport;
+import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5Client;
+import co.elastic.clients.transport.rest5_client.low_level.Rest5ClientBuilder;
 
 /**
  * @author jackson.song
@@ -72,7 +71,6 @@ public class EsClientFactory {
 
 	public ElasticsearchClient create() throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException,
 			CertificateException, IOException {
-		CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 		final SSLContext sslContext;
 		boolean isSSL = false;
 		if (keystorePassword != null && keystorePassword.length() > 0 && keystorePath != null
@@ -87,22 +85,30 @@ public class EsClientFactory {
 			sslContext = null;
 		}
 		HttpHost[] httpHostArray = getHttpHosts(isSSL);
+		Rest5ClientBuilder builder = Rest5Client.builder(httpHostArray);
 		if (username != null && password != null && username.length() > 0 && password.length() > 0) {
-			credentialsProvider.setCredentials(AuthScope.ANY, new UsernamePasswordCredentials(username, password));
+			String cred = Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
+			builder.setDefaultHeaders(new Header[] { new BasicHeader("Authorization", "Basic " + cred) });
 		}
-		RestClient restClient = RestClient.builder(httpHostArray)
-				.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
-					@Override
-					public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder requestConfigBuilder) {
-						return requestConfigBuilder.setConnectTimeout(connectTimeout)
-								.setConnectionRequestTimeout(connectionRequestTimeout).setSocketTimeout(socketTimeout);
-					}
-				})
-				.setHttpClientConfigCallback(
-						httpClientBuilder -> httpClientBuilder.setDefaultCredentialsProvider(credentialsProvider)
-								.setSSLHostnameVerifier(NoopHostnameVerifier.INSTANCE).setSSLContext(sslContext))
-				.build();
-		ElasticsearchTransport transport = new RestClientTransport(restClient, new JacksonJsonpMapper());
+		if (sslContext != null) {
+			builder.setConnectionManagerCallback(connectionManagerBuilder -> connectionManagerBuilder.setTlsStrategy(
+					new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE)));
+		}
+		builder.setConnectionConfigCallback(connectConf -> {
+			if (connectTimeout > 0) {
+				connectConf.setConnectTimeout(Timeout.ofMilliseconds(connectTimeout));
+			}
+			if (socketTimeout > 0) {
+				connectConf.setSocketTimeout(Timeout.ofMilliseconds(socketTimeout));
+			}
+		});
+		builder.setRequestConfigCallback(requestConf -> {
+			if (connectionRequestTimeout > 0) {
+				requestConf.setConnectionRequestTimeout(Timeout.ofMilliseconds(connectionRequestTimeout));
+			}
+		});
+		Rest5Client restClient = builder.build();
+		ElasticsearchTransport transport = new Rest5ClientTransport(restClient, new JacksonJsonpMapper());
 		return new ElasticsearchClient(transport);
 	}
 
@@ -111,8 +117,8 @@ public class EsClientFactory {
 		HttpHost[] httpHostArray = new HttpHost[split.length];
 		for (int i = 0; i < split.length; i++) {
 			String item = split[i];
-			httpHostArray[i] = new HttpHost(item.split(":")[0], Integer.parseInt(item.split(":")[1]),
-					isSSL ? "https" : "http");
+			httpHostArray[i] = new HttpHost(isSSL ? "https" : "http", item.split(":")[0],
+					Integer.parseInt(item.split(":")[1]));
 		}
 		return httpHostArray;
 	}

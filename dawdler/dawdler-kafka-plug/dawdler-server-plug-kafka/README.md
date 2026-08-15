@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-实现dawdler-server端注入KafkaProducer与KafkaListener注解的功能.
+实现dawdler-server端注入KafkaProvider与KafkaListener注解的功能.
 
 ### 1. pom中引入依赖
 
@@ -13,7 +13,7 @@
 
 ### 2. 使用方式
 
-生产者: 通过@KafkaInjector注解标识全局变量为KafkaProducer类型的变量即可.
+生产者: 通过@KafkaInjector注解标识全局变量为KafkaProvider类型的变量即可.
 
 消费者: 通过@KafkaListener标识消费者方法,方法参数为Message类型.
 
@@ -22,14 +22,13 @@
  public class UserServiceImpl implements UserService {
 
     @KafkaInjector("myKafka")//myKafka为配置文件的名称,不包含后缀properties
-    KafkaProducer kafkaProducer;
+    KafkaProvider kafkaProvider;
 
     public void pushMessage(String message) {
-        kafkaProducer.send("test-topic", message.getBytes());//使用kafkaProducer对象
-        return null;
+        kafkaProvider.publish("test-topic", message.getBytes());//使用kafkaProvider对象
     }
 
-    @KafkaListener(fileName = "myKafka", topic = "test-topic", groupId = "test-group") //监听test-topic主题
+    @KafkaListener(fileName = "myKafka", topic = "test-topic") //监听test-topic主题
     public void consumer(Message message) {
         System.out.println(new String(message.getBody()));
     }

@@ -70,6 +70,12 @@ public @interface RequestMapping {
 	 */
 	String exceptionHandler() default "";//会根据ViewType自动选择，如果有需要可以扩展，参考HttpExceptionHolder的register方法，可以在监听器启动时扩展，一般不会考虑扩展所以没采用SPI方式配置
 
+	/**
+	 * 响应的Content-Type设置，模仿springmvc的produces，如 "text/event-stream"
+	 * 取第一个非空值作为响应的Content-Type，优先于ViewType的默认设置，方便实现SSE等场景
+	 */
+	String[] produces() default {};
+
 	enum ViewType {
 		json, jsp, velocity
 	}

@@ -60,7 +60,7 @@ public class ConfigContentDecryptor {
 			try {
 				return escapeExprSpecialWord(aesSecurityPlus.decrypt(t.group(1)));
 			} catch (Exception e) {
-				logger.error("", e);
+				logger.error("Failed to decrypt config content: {}", t.group(1), e);
 			}
 			return null;
 		});

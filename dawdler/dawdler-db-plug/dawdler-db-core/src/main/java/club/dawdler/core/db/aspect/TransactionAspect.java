@@ -61,7 +61,6 @@ public class TransactionAspect {
 	private RWSplittingDataSourceManager dataSourceManager = RWSplittingDataSourceManager.getInstance();
 	private static final AtomicInteger INDEX = new AtomicInteger(0);
 	private static final JexlEngine JEXL_ENGINE = JexlEngineFactory.getJexlEngine();
-	private SubRule subRule;
 
 	@Around("@annotation(club.dawdler.core.db.annotation.DBTransaction)")
 	public Object execute(ProceedingJoinPoint pjp) throws Throwable {
@@ -122,8 +121,8 @@ public class TransactionAspect {
 									"subDatabase expression parameter not found.");
 						}
 
-						subRule = SubRuleCache.getSubRule(subDatabase.configPath(), subDatabase.subRuleType());
-						subfix = subRule.delimiter().concat(subRule.getRuleSubfix(parameterValue));
+					SubRule subRule = SubRuleCache.getSubRule(subDatabase.configPath(), subDatabase.subRuleType());
+					subfix = subRule.delimiter().concat(subRule.getRuleSubfix(parameterValue));
 					}
 					readStatus = new JdbcReadConnectionStatus(dbt);
 					if (dbt.readConfig() == READ_CONFIG.idem) {
@@ -137,7 +136,7 @@ public class TransactionAspect {
 								readStatus.setCurrentConn(readConnectionHolder);
 							} else {
 								if (mappingDecision.needBalance()) {
-									index = Math.abs(INDEX.getAndIncrement());
+									index = INDEX.getAndIncrement() & Integer.MAX_VALUE;
 								}
 								DataSource dataSource = mappingDecision.getReadDataSource(subfix, index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
@@ -162,7 +161,7 @@ public class TransactionAspect {
 								readStatus.setCurrentConn(readConnectionHolder);
 							} else {
 								if (mappingDecision.needBalance()) {
-									index = Math.abs(INDEX.getAndIncrement());
+									index = INDEX.getAndIncrement() & Integer.MAX_VALUE;
 								}
 								DataSource dataSource = mappingDecision.getReadDataSource(subfix, index);
 								ReadConnectionHolder readConnectionHolder = new ReadConnectionHolder(dataSource);
@@ -184,7 +183,7 @@ public class TransactionAspect {
 									readStatus.setCurrentConn(synReadObj.getReadConnectionHolder());
 								} else {
 									if (mappingDecision.needBalance()) {
-										index = Math.abs(INDEX.getAndIncrement());
+										index = INDEX.getAndIncrement() & Integer.MAX_VALUE;
 									}
 									DataSource dataSource = mappingDecision.getReadDataSource(subfix, index);
 									readStatus.setOldConn(synReadObj.getReadConnectionHolder());
@@ -201,7 +200,7 @@ public class TransactionAspect {
 					synReadObj.requested();
 					if (mode != MODE.readOnly && mappingDecision != null) {
 						if (mappingDecision.needBalance()) {
-							index = Math.abs(INDEX.getAndIncrement());
+							index = INDEX.getAndIncrement() & Integer.MAX_VALUE;
 						}
 						DataSource dataSource = mappingDecision.getWriteDataSource(subfix, index);
 						manager = LocalConnectionFactory.getManager(dataSource);
@@ -224,11 +223,12 @@ public class TransactionAspect {
 			throw e;
 		} finally {
 			doCommit(tranStatus, manager);
-			if (synReadObj != null) {
-				if (synReadObj.getReadConnectionHolder() != null
+			if (readStatus != null && synReadObj != null) {
+				ReadConnectionHolder currentConn = readStatus.getCurrentConn();
+				if (currentConn != null && synReadObj.getReadConnectionHolder() != null
 						&& !synReadObj.getReadConnectionHolder().isUseWriteConnection()) {
 					try {
-						readStatus.getCurrentConn().released();
+						currentConn.released();
 					} catch (SQLException e) {
 						logger.error("", e);
 					}

@@ -18,8 +18,6 @@ package club.dawdler.breaker.metric;
 
 import java.util.concurrent.atomic.LongAdder;
 
-import club.dawdler.util.JVMTimeProvider;
-
 /**
  * @author jackson.song
  * @version V1.0
@@ -31,7 +29,7 @@ public class MetricBase implements Metric {
 
 	private final LongAdder fail = new LongAdder();
 
-	private long startTime;
+	private volatile long startTime;
 
 	public MetricBase(long startTime) {
 		this.startTime = startTime;
@@ -56,11 +54,6 @@ public class MetricBase implements Metric {
 	@Override
 	public long getStartTime() {
 		return startTime;
-	}
-
-	@Override
-	public long restStartTime() {
-		return JVMTimeProvider.currentTimeMillis();
 	}
 
 	@Override

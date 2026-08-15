@@ -36,5 +36,4 @@ public class AspectHolder {
 		return classfileBuffer;
 	}
 
-
 }

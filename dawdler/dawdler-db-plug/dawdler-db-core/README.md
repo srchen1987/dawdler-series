@@ -63,15 +63,15 @@ public @interface DBTransaction {
 
 ### 3. 数据源配置
 
-数据源支持配置在本地properties配置文件,也支持配置在统一配置中心.(优先找本地配置文件,支持多环境配置.)
+数据源支持配置在本地properties配置文件,也支持配置在统一配置中心.(优先找本地配置文件,支持多环境配置,参考[多环境配置](../../../doc/dawdler-profiles.active-README.md).)
 
-示例:
+示例(配置文件位于项目classpath下):
 
 userDataSource_read.properties
 
 ```properties
 type: com.zaxxer.hikari.HikariDataSource
-jdbcUrl: jdbc:mysql://127.0.0.1:3306/mydb?characterEncoding=utf8&amp;useSSL=false
+jdbcUrl: jdbc:mysql://127.0.0.1:3306/mydb?characterEncoding=utf8&useSSL=false
 driverClassName: com.mysql.cj.jdbc.Driver
 username: root
 password: 
@@ -114,7 +114,7 @@ dawdler支持读写分离的配置,由datasource-expression节点来进行配置
 
 dawdler支持水平分库的配置,由SubDatabase注解来进行配置.
 
-注意: 需要配置分库规则对应的数据源,否则会导找不到对应的数据库. 如 userDataSource_write_0,userDataSource_write_1,userDataSource_write_2. userDataSource_read_0,userDataSource_read_1,userDataSource_read_2. 如果没有用读写分离,则只需要配置userDataSource_0,userDataSource_1,userDataSource_2.
+注意: 需要配置分库规则对应的数据源,否则会导致找不到对应的数据库. 如 userDataSource_write_0,userDataSource_write_1,userDataSource_write_2. userDataSource_read_0,userDataSource_read_1,userDataSource_read_2. 如果没有用读写分离,则只需要配置userDataSource_0,userDataSource_1,userDataSource_2.
 
 ```java
 /**

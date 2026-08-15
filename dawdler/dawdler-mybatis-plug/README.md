@@ -2,7 +2,7 @@
 
 ## 模块介绍
 
-通过mybatis实现的数据库操作插件,注入mapper到service,session变更为单例模式,支持读写分离.
+通过mybatis实现的数据库操作插件,注入mapper到service,SqlSession变更为单例模式,支持读写分离.
 
 ### 1. 子模块介绍
 

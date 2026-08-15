@@ -27,6 +27,7 @@ import club.dawdler.clientplug.web.handler.ViewForward;
 import club.dawdler.clientplug.web.handler.ViewForward.ResponseType;
 import club.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import club.dawdler.util.JsonProcessUtil;
+import club.dawdler.util.spring.MediaType;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,7 +46,9 @@ public class JsonDisplayPlug extends AbstractDisplayPlug {
 		logException(wf);
 		HttpServletRequest request = wf.getRequest();
 		HttpServletResponse response = wf.getResponse();
-		response.setContentType(MIME_TYPE_JSON);
+		if (response.getContentType() == null) {
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		}
 		String json = null;
 		if (wf.getInvokeException() != null) {
 			wf.setStatus(ResponseType.ERROR);

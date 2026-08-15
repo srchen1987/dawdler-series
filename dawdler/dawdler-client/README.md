@@ -26,7 +26,7 @@
     <!-- channel-group-id 标识id 一般用于@Service(标识id),在服务器端是dawdler下deploys下部署的项目名称.
  connection-num 连接数
  session-num 会话数
- serializer 序列化方式(1,jdk默认,2 kroy,支持扩展)
+ serializer 序列化方式(1,jdk默认,2 kryo,支持扩展)
  user 帐号
  password 密码
   -->
@@ -40,7 +40,7 @@ client-conf.xml支持多环境配置 参考[统一配置中心与多环境支持
 
 ```java
 public static void main(String[] args) throws Exception {
-  Transaction tr = TransactionProvider.getTransaction("simple-service");//simple-servic为服务名
+  Transaction tr = TransactionProvider.getTransaction("simple-service");//simple-service为服务名
   tr.setServiceName("club.dawdler.demo.service.HelloService");//接口全名
   tr.setMethod("say");//方法名
   tr.addString("jackson");//参数 String类型并传值 Transaction有一系列传参方法 具体查看Transaction

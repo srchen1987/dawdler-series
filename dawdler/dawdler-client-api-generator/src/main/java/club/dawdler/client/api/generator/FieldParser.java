@@ -46,7 +46,7 @@ import club.dawdler.client.api.generator.util.CommentUtils;
 public class FieldParser {
 
 	public static void parserFields(JavaClass javaClass, Map<String, ClassStruct> classStructs,
-			Map<String, MethodParameterData> params, boolean isArray, Map<String, Object> definitionsMap) {
+			Map<String, MethodParameterData> params, boolean isArray, Map<String, Object> definitionsMap, String in) {
 		List<JavaField> fields = javaClass.getFields();
 		JavaClass superJavaClass = javaClass.getSuperJavaClass();
 		while (!superJavaClass.getBinaryName().equals("java.lang.Object")) {
@@ -59,7 +59,7 @@ public class FieldParser {
 				if (parameterData == null) {
 					parameterData = new MethodParameterData();
 					parameterData.setName(field.getName());
-					parameterData.setIn("query");
+					parameterData.setIn(in);
 					if (!field.getType().isEnum()) {
 						parameterData.setRequired(false);
 						params.put(field.getName(), parameterData);
@@ -71,7 +71,7 @@ public class FieldParser {
 							parameterData.setSchema(new SchemaData());
 						}
 						TypeDataParser.convertion(field.getType(), parameterData, classStructs, params, isArray,
-								definitionsMap);
+								definitionsMap, in);
 					} else {
 						SchemaData schema = new SchemaData();
 						String typeName = field.getType().getFullyQualifiedName();

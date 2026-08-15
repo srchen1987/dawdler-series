@@ -17,7 +17,6 @@
 package club.dawdler.client;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,7 +36,7 @@ import club.dawdler.util.HashedWheelTimerSingleCreator;
 public class ConnectionPool {
 	private static final Logger logger = LoggerFactory.getLogger(ConnectionPool.class);
 	private static final ConcurrentHashMap<String, ConnectionPool> GROUPS = new ConcurrentHashMap<>();
-	private static final Map<String, ServerChannelGroup> SERVER_CHANNEL_GROUPS = new HashMap<>();
+	private static final Map<String, ServerChannelGroup> SERVER_CHANNEL_GROUPS = new ConcurrentHashMap<>();
 	private List<DawdlerConnection> connections = new CopyOnWriteArrayList<>();
 	private String groupName;
 
@@ -50,14 +49,11 @@ public class ConnectionPool {
 
 	public static void addServerChannelGroup(String gid, ServerChannelGroup serverChannelGroup) {
 		SERVER_CHANNEL_GROUPS.put(gid, serverChannelGroup);
-		ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
-		if (cp == null) {
-			cp = new ConnectionPool();
-			cp.groupName = gid;
-			addGroup(gid, cp);
-			if (serverChannelGroup.getHost() != null && !serverChannelGroup.getHost().equals("")) {
-				cp.addConnection(gid, serverChannelGroup.getHost());
-			}
+		ConnectionPool cp = new ConnectionPool();
+		cp.groupName = gid;
+		boolean isNew = GROUPS.putIfAbsent(gid, cp) == null;
+		if (isNew && serverChannelGroup.getHost() != null && !serverChannelGroup.getHost().equals("")) {
+			cp.addConnection(gid, serverChannelGroup.getHost());
 		}
 	}
 
@@ -91,10 +87,6 @@ public class ConnectionPool {
 
 	public static ConnectionPool getConnectionPool(String groupName) {
 		return GROUPS.get(groupName);
-	}
-
-	public static ConnectionPool addGroup(String groupName, ConnectionPool cp) {
-		return GROUPS.putIfAbsent(groupName, cp);
 	}
 
 	/**

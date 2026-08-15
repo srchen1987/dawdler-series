@@ -2,28 +2,20 @@
 
 ## v0.1.3
 
-加入date类型支持
+- 加入date类型支持
 
 ## v0.1.4
 
 - 修复0.1.3加入的Dateformat 默认参数不生效的问题
-
-- 加入kafka模块(采用ai编写95%以上代码)
-
+- 加入kafka模块
 - 加入tomcat模块的支持
-
 - 加入boot web配置 错误页面
-
 - 加入boot web配置 支持https
-
 - 升级jedis客户端
-
 - 更新部分文档
 
 ## v0.1.5
 
 - 升级部分组件
-
 - 根pom中的maven插件版本号定义到properties
-
 - 添加支持jdk25版本的分支

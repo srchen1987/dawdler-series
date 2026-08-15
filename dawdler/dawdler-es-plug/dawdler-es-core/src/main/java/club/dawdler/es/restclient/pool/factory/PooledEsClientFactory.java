@@ -24,7 +24,7 @@ import org.apache.commons.pool2.impl.GenericObjectPool;
 import club.dawdler.es.restclient.factory.EsClientFactory;
 import club.dawdler.es.restclient.wrapper.ElasticSearchClient;
 
-import co.elastic.clients.transport.rest_client.RestClientTransport;
+import co.elastic.clients.transport.rest5_client.Rest5ClientTransport;
 
 /**
  * @author jackson.song
@@ -56,7 +56,7 @@ public class PooledEsClientFactory extends BasePooledObjectFactory<ElasticSearch
 	@Override
 	public boolean validateObject(PooledObject<ElasticSearchClient> p) {
 		ElasticSearchClient client = p.getObject();
-		return ((RestClientTransport) client.getElasticsearchClient()._transport()).restClient().isRunning();
+		return ((Rest5ClientTransport) client.getElasticsearchClient()._transport()).restClient().isRunning();
 	}
 
 	@Override

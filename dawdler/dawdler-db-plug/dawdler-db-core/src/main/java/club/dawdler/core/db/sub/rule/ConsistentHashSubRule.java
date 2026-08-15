@@ -20,8 +20,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * @author jackson.song
@@ -33,7 +32,7 @@ public class ConsistentHashSubRule implements SubRule {
 
 	private List<String> nodes;
 
-	private final SortedMap<Long, String> circle = new TreeMap<>();
+	private final ConcurrentSkipListMap<Long, String> circle = new ConcurrentSkipListMap<>();
 
 	@Override
 	public String getRuleSubfix(Object key) {
@@ -79,11 +78,11 @@ public class ConsistentHashSubRule implements SubRule {
 			return null;
 		}
 		long hashValue = hash(key);
-		if (!circle.containsKey(hashValue)) {
-			SortedMap<Long, String> tailMap = circle.tailMap(hashValue);
-			hashValue = tailMap.isEmpty() ? circle.firstKey() : tailMap.firstKey();
+		Map.Entry<Long, String> entry = circle.ceilingEntry(hashValue);
+		if (entry == null) {
+			entry = circle.firstEntry();
 		}
-		return circle.get(hashValue);
+		return entry == null ? null : entry.getValue();
 	}
 
 	public Map<Long, String> getCircle() {

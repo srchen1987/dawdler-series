@@ -19,3 +19,7 @@ consul实现注册中心的根模块,具体参考 [dawdler-discovery-center-cons
 ### 4. dawdler-discovery-center-server-plug模块
 
 server端注册中心的根模块,具体参考 [dawdler-discovery-center-server-plug](dawdler-discovery-center-server-plug/README.md)
+
+### 5. dawdler-discovery-center-client-plug模块
+
+客户端注册中心的根模块,具体参考 [dawdler-discovery-center-client-plug](dawdler-discovery-center-client-plug/README.md)

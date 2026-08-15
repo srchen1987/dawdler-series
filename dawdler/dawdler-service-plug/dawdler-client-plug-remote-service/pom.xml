@@ -8,7 +8,7 @@
 		<version>0.1.5-jdk21-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-client-plug-remote-service</artifactId>
-	<name>dawdler-client-plug-service</name>
+	<name>dawdler-client-plug-remote-service</name>
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>

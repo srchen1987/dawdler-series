@@ -16,8 +16,10 @@
  */
 package club.dawdler.clientplug.discovery.consul.resource;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,9 +38,13 @@ import club.dawdler.client.ConnectionPool.Action;
 import club.dawdler.client.conf.ClientConfig;
 import club.dawdler.client.conf.ClientConfig.ServerChannelGroup;
 import club.dawdler.client.conf.ClientConfigParser;
+import club.dawdler.client.plug.discoverycenter.AbstractServerDiscoveryCenterLifeCycle;
+import club.dawdler.clientplug.web.conf.WebConfigParser;
+import club.dawdler.clientplug.web.health.HealthCheck;
 import club.dawdler.core.annotation.Order;
-import club.dawdler.core.component.resource.ComponentLifeCycle;
 import club.dawdler.core.discovery.consul.ConsulDiscoveryCenter;
+import club.dawdler.core.discovery.consul.ConsulDiscoveryCenter.HealthCheckTypes;
+import club.dawdler.core.discoverycenter.DiscoveryCenter;
 import club.dawdler.core.thread.DefaultThreadFactory;
 
 /**
@@ -47,7 +53,7 @@ import club.dawdler.core.thread.DefaultThreadFactory;
  * consul注册中心初始化与销毁
  */
 @Order(club.dawdler.core.order.Order.LOWEST_PRECEDENCE - 1)
-public class ConsulLifeCycle implements ComponentLifeCycle {
+public class ConsulLifeCycle extends AbstractServerDiscoveryCenterLifeCycle {
 	private ConsulDiscoveryCenter consulDiscoveryCenter = null;
 	private ExecutorService executor = null;
 	private static final int DEFAULT_WAIT_TIME = 10000;
@@ -64,7 +70,7 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 		executor = Executors.newFixedThreadPool(sgs.size(), new DefaultThreadFactory("consulPullThread#"));
 		Semaphore semaphore = new Semaphore(sgs.size());
 		for (ServerChannelGroup sg : sgs) {
-			String gid = sg.getGroupId();
+			String gid = sg.getGroupId(); 
 			ConnectionPool.addServerChannelGroup(gid, sg);
 			executor.execute(() -> {
 				long lastIndex = -1;
@@ -101,16 +107,19 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 							});
 
 						});
-
 						ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 						for (String k : newSet) {
 							if (!oldSet.contains(k) && cp != null) {
-								cp.doChange(gid, Action.ACTION_ADD, getServiceAddress(k));
+								String serviceAddress = getServiceAddress(k);
+								cp.doChange(gid, Action.ACTION_ADD,serviceAddress);
+								consulDiscoveryCenter.getServiceList(gid).add(serviceAddress);
 							}
 						}
 						for (String k : oldSet) {
 							if (!newSet.contains(k) && cp != null) {
-								cp.doChange(gid, Action.ACTION_DEL, getServiceAddress(k));
+								String serviceAddress = getServiceAddress(k);
+								cp.doChange(gid, Action.ACTION_DEL, serviceAddress);
+								consulDiscoveryCenter.getServiceList(gid).remove(serviceAddress);
 							}
 						}
 						oldSet = newSet;
@@ -145,6 +154,33 @@ public class ConsulLifeCycle implements ComponentLifeCycle {
 		if (consulDiscoveryCenter != null) {
 			consulDiscoveryCenter.destroy();
 		}
+	}
+
+	@Override
+	public void afterInit() throws Throwable {
+		if (webApplicationConfig == null) {
+			return;
+		}
+		ConsulDiscoveryCenter discoveryCenter = ConsulDiscoveryCenter.getInstance();
+		Map<String, Object> attributes = new HashMap<>();
+		if (discoveryCenter.getHealthCheckType().equals(HealthCheckTypes.HTTP.getName())) {
+			HealthCheck healthCheck = WebConfigParser.getWebConfig().getHealthCheck();
+			if (!healthCheck.isCheck()) {
+				throw new java.lang.IllegalArgumentException(
+						"use consul to discovery-center must open health-check in web-conf.xml!");
+			}
+			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_PORT, webApplicationConfig.getPort());
+			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_SCHEME, webApplicationConfig.getScheme());
+			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_USERNAME, healthCheck.getUsername());
+			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_PASSWORD, healthCheck.getPassword());
+			attributes.put(ConsulDiscoveryCenter.HEALTH_CHECK_URI, healthCheck.getUri());
+		}
+		addProvider(attributes);
+	}
+
+	@Override
+	public DiscoveryCenter getDiscoveryCenter() throws Exception {
+		return ConsulDiscoveryCenter.getInstance();
 	}
 
 }

@@ -18,6 +18,7 @@ package club.dawdler.core.compression;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
@@ -28,44 +29,48 @@ import java.util.zip.Inflater;
  */
 public class ZLibCompression implements CompressionAlgorithm {
 
+	private static final int BUFFER_SIZE = 8192;
+
 	public byte[] compress(byte[] buffer) throws IOException {
-		byte[] output;
 		Deflater compressor = new Deflater();
-		compressor.reset();
-		compressor.setInput(buffer);
-		compressor.finish();
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
 		try {
-			byte[] buf = new byte[2048];
+			compressor.setInput(buffer);
+			compressor.finish();
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
+			byte[] buf = new byte[BUFFER_SIZE];
 			while (!compressor.finished()) {
 				int i = compressor.deflate(buf);
 				bos.write(buf, 0, i);
 			}
-			output = bos.toByteArray();
+			return bos.toByteArray();
 		} catch (Exception e) {
-			output = buffer;
+			throw new IOException("ZLib compress failed.", e);
+		} finally {
+			compressor.end();
 		}
-		compressor.end();
-		return output;
 	}
 
 	public byte[] decompress(byte[] buffer) throws IOException {
-		byte[] output;
 		Inflater decompressor = new Inflater();
-		decompressor.reset();
-		decompressor.setInput(buffer);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
 		try {
-			byte[] buf = new byte[1024];
+			decompressor.setInput(buffer);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream(buffer.length);
+			byte[] buf = new byte[BUFFER_SIZE];
 			while (!decompressor.finished()) {
 				int i = decompressor.inflate(buf);
+				if (i == 0) {
+					if (decompressor.needsInput() || decompressor.needsDictionary()) {
+						throw new DataFormatException("ZLib decompress data is incomplete or corrupted.");
+					}
+					break;
+				}
 				bos.write(buf, 0, i);
 			}
-			output = bos.toByteArray();
-		} catch (Exception e) {
-			output = buffer;
+			return bos.toByteArray();
+		} catch (DataFormatException e) {
+			throw new IOException("ZLib decompress failed.", e);
+		} finally {
+			decompressor.end();
 		}
-		decompressor.end();
-		return output;
 	}
 }

@@ -7,13 +7,11 @@ module dawdler.es.core {
 	requires java.base;
 	requires dawdler.core;
 	requires dawdler.util;
-	requires org.apache.httpcomponents.httpcore;
-	requires org.apache.httpcomponents.httpclient;
 	requires org.apache.commons.pool2;
-	requires org.apache.httpcomponents.httpcore.nio;
-	requires org.apache.httpcomponents.httpasyncclient;
+	requires org.apache.httpcomponents.core5.httpcore5;
+	requires org.apache.httpcomponents.client5.httpclient5;
 	requires transitive elasticsearch.java;
-	requires transitive elasticsearch.rest.client;
+	requires transitive elasticsearch.rest5.client;
 
 	exports club.dawdler.es.restclient;
 
