@@ -1,0 +1,218 @@
+dawdler/dawdler-db-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-mybatis-plug/dawdler-server-plug-mybatis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-server/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-load-bean/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-pinpoint-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-load-plug/dawdler-client-plug-load/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-config-center/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 8,17
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-discovery-center-consul-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-session/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-db-plug/dawdler-db-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-rabbitmq-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-api-generator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/dawdler-cache-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dependencies/dawdler-web-dependencies/pom.xml
+  h_82990a09bc17b5 8,130-142
+dawdler/dawdler-load-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 1-29
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-server-plug-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-server-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-config-center/dawdler-config-center-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-config-center/dawdler-config-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/dawdler-client-plug-es/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-load-plug/dawdler-server-plug-load/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/dawdler-dao-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-api/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/pom.xml
+  h_82990a09bc17b5 8,18
+dawdler/dawdler-schedule-plug/dawdler-client-plug-schedule/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/pom.xml
+  h_82990a09bc17b5 1-22
+dawdler/dawdler-mybatis-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-server-logback/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/dawdler-local-service-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/dawdler-server-plug-es/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-serialization/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-web/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-kafka-plug/dawdler-kafka-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 8,17
+dawdler/dawdler-dao-plug/dawdler-server-plug-dao/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 1-29
+dawdler/dawdler-rabbitmq-plug/dawdler-server-plug-rabbitmq/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/dawdler-cache-caffeine/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/dawdler-remote-service-core/pom.xml
+  h_82990a09bc17b5 8
+README.md
+  h_82990a09bc17b5 3,17,53,61,73,191-202,223,236,283
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/dawdler-client-plug-dao/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-rabbitmq-plug/dawdler-client-plug-rabbitmq/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-discovery-center-zookeeper-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-encrypt-generator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/impl/RoundRobinLoadBalance.java
+  h_82990a09bc17b5 31,40
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/pom.xml
+  h_82990a09bc17b5 1-23
+dawdler/dawdler-service-plug/dawdler-client-plug-remote-service/pom.xml
+  h_82990a09bc17b5 8,11
+dawdler/dawdler-mybatis-plug/dawdler-mybatis-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dependencies/dawdler-services-dependencies/pom.xml
+  h_82990a09bc17b5 8,65-74,200-203,206-214,245-253
+dawdler/dawdler-web-gateway/pom.xml
+  h_82990a09bc17b5 1-36
+dawdler/dawdler-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/dawdler-client-plug-local-service/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-mybatis-plug/dawdler-client-plug-mybatis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-kafka-plug/dawdler-server-plug-kafka/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-client-plug-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dependencies/dawdler-load-web-dependencies/pom.xml
+  h_82990a09bc17b5 8,192-200
+dawdler/dawdler-distributed-transaction/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-kafka-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-validator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/pom.xml
+  h_82990a09bc17b5 1-22
+dawdler/dawdler-kafka-plug/dawdler-client-plug-kafka/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-db-plug/dawdler-server-plug-db/pom.xml
+  h_82990a09bc17b5 8
+dawdler/pom.xml
+  h_82990a09bc17b5 7,38,47,170,176-188,270-272,480-482,490-494,620-622,624-638,794,817-818
+dawdler/dawdler-schedule-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/dawdler-es-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-velocity/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/dawdler-client-i18n/pom.xml
+  h_82990a09bc17b5 1-17
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-server-plug-config-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/pom.xml
+  h_82990a09bc17b5 1-26
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-client-plug-jedis/pom.xml
+  h_82990a09bc17b5 8
+changeLog.md
+  h_82990a09bc17b5 5,22-23,25-30
+dawdler/dawdler-i18n-plug/pom.xml
+  h_82990a09bc17b5 1-18
+dawdler/dawdler-circuit-breaker/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-util/pom.xml
+  h_82990a09bc17b5 7
+dawdler/dawdler-cache-plug/dawdler-cache-jedis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-db-plug/dawdler-client-plug-db/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-server-plug-jedis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/dawdler-server-plug-local-service/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/dawdler-server-plug-remote-service/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/dawdler-service-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-client-plug-config-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-schedule-plug/dawdler-schedule-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-encrypt-generator/README.md
+  h_82990a09bc17b5 22,60
+dawdler/dawdler-schedule-plug/dawdler-server-plug-schedule/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-server-plug-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dependencies/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 8,22-24
+dawdler/dawdler-client-plug-jwt/pom.xml
+  h_82990a09bc17b5 1-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "44003ffe5919d87830b9b516fc3713841b6ea896",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  }
+}
