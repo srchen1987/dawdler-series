@@ -1,0 +1,112 @@
+dawdler/dawdler-web-gateway/README.md
+  s_a4ab345429ae63::t_1bb34826b0089a 317-335,339-340
+  s_a4ab345429ae63::t_0bc4e160df71c3 47-48
+  s_a4ab345429ae63::t_7e60132f65797e 135-141
+  s_a4ab345429ae63::t_3b8cc86d292caa 166-167
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/aio/session/AbstractSocketSession.java
+  s_a4ab345429ae63::t_c78784cad17eaf 89-90
+  s_a4ab345429ae63::t_0aa884f4a7429a 56
+  s_a4ab345429ae63::t_a3e4f6be9b272f 287-291,297-306
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/message/RedisMessageOperator.java
+  s_a4ab345429ae63::t_230fd532b098da 159
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/AnnotationUrlHandler.java
+  s_a4ab345429ae63::t_3988e810a4b15a 21-22,25
+  s_a4ab345429ae63::t_289de50ca4bc4c 88,90,95-97,102-104,112-113,117-121
+  s_a4ab345429ae63::t_2022daf35cbc31 99,105-111,114-116
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/club/dawdler/distributed/transaction/repository/RedisRepository.java
+  s_a4ab345429ae63::t_4763b172996549 123
+  h_82990a09bc17b5 81,98,162
+  s_a4ab345429ae63::t_0cb297a63b6bef 93-97,99-102
+  s_a4ab345429ae63::t_6994fad1cf2f2d 112
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/store/RedisSessionStore.java
+  h_82990a09bc17b5 128,173
+dawdler/dawdler-db-plug/dawdler-db-core/src/main/java/club/dawdler/core/db/aspect/TransactionAspect.java
+  s_43cb80fc91b810::t_ae296736fb1656 139,164,186,203
+  s_a4ab345429ae63::t_abb29528b35882 124-125
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/src/main/java/club/dawdler/conf/client/consul/impl/ConsulConfigClient.java
+  s_bd3e8671307a0e::t_0f610674418b5f 68
+  h_82990a09bc17b5 82
+dawdler/dawdler-client/src/main/java/club/dawdler/client/Transaction.java
+  s_a4ab345429ae63::t_8370cbd6c8e3bd 207,209,211,213
+  s_a4ab345429ae63::t_68ef53f646673f 208
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/WebSocketProxyHandler.java
+  s_a4ab345429ae63::t_c91ce0502ab58e 93-94,103-116
+  s_a4ab345429ae63::t_09981b78943a49 123-129,174-175,177-189,191,193-202,204-223,227,229,231,235
+  s_a4ab345429ae63::t_62803b4f54f6f9 73,75-78
+  s_a4ab345429ae63::t_3875fffd0201d9 35-37,42
+  s_a4ab345429ae63::t_623e0657018c59 241-242
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/ViewForward.java
+  s_a4ab345429ae63::t_1f6d3e3a768e88 190,192,194,198-201,203,207,211,215,219,223,227,231,235,239,243,247,263,267,271,275,279,283,287
+  s_a4ab345429ae63::t_bcca818e30940f 22
+  s_a4ab345429ae63::t_a77ff3203a87bb 255
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/WebSocketProxyUpgradeHandler.java
+  s_a4ab345429ae63::t_d5910d8ce27f18 22
+  s_a4ab345429ae63::t_f93df380729ca2 109-115
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/README.md
+  h_82990a09bc17b5 19,42
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/impl/RoundRobinLoadBalance.java
+  h_82990a09bc17b5 31,47-51
+  s_a4ab345429ae63::t_c12dc2c8f2cb69 40
+dawdler/dawdler-client/src/main/java/club/dawdler/client/ConnectionPool.java
+  s_a4ab345429ae63::t_a4435cd1cef543 39
+  s_a4ab345429ae63::t_5ace389db365c5 52-55
+  s_a4ab345429ae63::t_c7e5297b06ecf7 56
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/GatewayOptions.java
+  s_a4ab345429ae63::t_3b8cccaa2790dc 281-296
+  s_a4ab345429ae63::t_d5822108eaf2e7 219-233
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/impl/RandomLoadBalance.java
+  s_a4ab345429ae63::t_1fb81953223997 39,44
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/LoadBalanceFactory.java
+  h_82990a09bc17b5 21,30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "4a76f090739a95bc6080c18b992f2e6c9afbc29c",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  },
+  "sessions": {
+    "s_43cb80fc91b810": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_04d75b741ffe1bJy4yQjpaxxq4",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-91e221049208c33f",
+        "edit_kind": "file_edit",
+        "session_id": "ses_04d75b741ffe1bJy4yQjpaxxq4"
+      }
+    },
+    "s_a4ab345429ae63": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_04dac56d6ffe4de7zrVZylOxw4",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-b9c8f46336391ec6",
+        "edit_kind": "file_edit",
+        "session_id": "ses_04dac56d6ffe4de7zrVZylOxw4"
+      }
+    },
+    "s_bd3e8671307a0e": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1785406902811",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool": "github-copilot-tab",
+        "edit_kind": "file_edit"
+      }
+    }
+  }
+}
