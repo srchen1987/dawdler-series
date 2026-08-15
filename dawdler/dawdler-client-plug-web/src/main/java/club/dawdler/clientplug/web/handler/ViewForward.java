@@ -19,6 +19,7 @@ package club.dawdler.clientplug.web.handler;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 import club.dawdler.clientplug.web.annotation.RequestMapping;
 import club.dawdler.clientplug.web.upload.UploadFile;
@@ -186,108 +187,64 @@ public class ViewForward {
 		return getRequestMapping().viewType().name();
 	}
 
-	public int paramInt(String paramName) {
+	private <T> T parseParam(String paramName, Function<String, T> parser, T defaultValue) {
 		try {
-			return Integer.parseInt(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return 0;
-		}
-	}
-
-	public int paramInt(String paramName, int defaultValue) {
-		try {
-			return Integer.parseInt(getRequest().getParameter(paramName));
+			return parser.apply(paramString(paramName));
 		} catch (Exception e) {
 			return defaultValue;
 		}
 	}
 
+	public int paramInt(String paramName) {
+		return parseParam(paramName, Integer::valueOf, 0);
+	}
+
+	public int paramInt(String paramName, int defaultValue) {
+		return parseParam(paramName, Integer::valueOf, defaultValue);
+	}
+
 	public long paramLong(String paramName) {
-		try {
-			return Long.parseLong(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return 0;
-		}
+		return parseParam(paramName, Long::valueOf, 0L);
 	}
 
 	public long paramLong(String paramName, long value) {
-		try {
-			return Long.parseLong(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return value;
-		}
+		return parseParam(paramName, Long::valueOf, value);
 	}
 
 	public short paramShort(String paramName) {
-		try {
-			return Short.parseShort(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return 0;
-		}
+		return parseParam(paramName, Short::valueOf, (short) 0);
 	}
 
 	public short paramShort(String paramName, short value) {
-		try {
-			return Short.parseShort(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return value;
-		}
+		return parseParam(paramName, Short::valueOf, value);
 	}
 
 	public byte paramByte(String paramName) {
-		try {
-			return Byte.parseByte(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return 0;
-		}
+		return parseParam(paramName, Byte::valueOf, (byte) 0);
 	}
 
 	public byte paramByte(String paramName, byte value) {
-		try {
-			return Byte.parseByte(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return value;
-		}
+		return parseParam(paramName, Byte::valueOf, value);
 	}
 
 	public float paramFloat(String paramName, float value) {
-		try {
-			return Float.parseFloat(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return value;
-		}
+		return parseParam(paramName, Float::valueOf, value);
 	}
 
 	public float paramFloat(String paramName) {
-		try {
-			return Float.parseFloat(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return 0.0f;
-		}
+		return parseParam(paramName, Float::valueOf, 0.0f);
 	}
 
 	public double paramDouble(String paramName) {
-		try {
-			return Double.parseDouble(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return 0.00d;
-		}
+		return parseParam(paramName, Double::valueOf, 0.00d);
 	}
 
 	public double paramDouble(String paramName, double value) {
-		try {
-			return Double.parseDouble(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return value;
-		}
+		return parseParam(paramName, Double::valueOf, value);
 	}
 
 	public boolean paramBoolean(String paramName) {
-		try {
-			return Boolean.parseBoolean(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return false;
-		}
+		return parseParam(paramName, Boolean::valueOf, false);
 	}
 
 	public String paramString(String paramName) {
@@ -295,7 +252,7 @@ public class ViewForward {
 	}
 
 	public String paramString(String paramName, String defaultValue) {
-		String value = getRequest().getParameter(paramName);
+		String value = paramString(paramName);
 		if (value == null) {
 			return defaultValue;
 		}
@@ -303,59 +260,31 @@ public class ViewForward {
 	}
 
 	public Integer paramObjectInt(String paramName) {
-		try {
-			return Integer.parseInt(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return null;
-		}
+		return parseParam(paramName, Integer::valueOf, null);
 	}
 
 	public Long paramObjectLong(String paramName) {
-		try {
-			return Long.parseLong(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return null;
-		}
+		return parseParam(paramName, Long::valueOf, null);
 	}
 
 	public Short paramObjectShort(String paramName) {
-		try {
-			return Short.parseShort(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return null;
-		}
+		return parseParam(paramName, Short::valueOf, null);
 	}
 
 	public Byte paramObjectByte(String paramName) {
-		try {
-			return Byte.parseByte(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return null;
-		}
+		return parseParam(paramName, Byte::valueOf, null);
 	}
 
 	public Float paramObjectFloat(String paramName) {
-		try {
-			return Float.parseFloat(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return null;
-		}
+		return parseParam(paramName, Float::valueOf, null);
 	}
 
 	public Double paramObjectDouble(String paramName) {
-		try {
-			return Double.parseDouble(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return null;
-		}
+		return parseParam(paramName, Double::valueOf, null);
 	}
 
 	public Boolean paramObjectBoolean(String paramName) {
-		try {
-			return Boolean.parseBoolean(getRequest().getParameter(paramName));
-		} catch (Exception e) {
-			return null;
-		}
+		return parseParam(paramName, Boolean::valueOf, null);
 	}
 
 	public String[] paramValues(String paramName) {

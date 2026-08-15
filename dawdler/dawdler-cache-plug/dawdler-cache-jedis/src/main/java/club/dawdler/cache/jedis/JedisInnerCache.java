@@ -16,6 +16,7 @@
  */
 package club.dawdler.cache.jedis;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Optional;
 import java.util.Set;
@@ -23,11 +24,12 @@ import java.util.function.Consumer;
 
 import club.dawdler.cache.CacheConfig;
 import club.dawdler.cache.exception.KeyExpressionException;
-import club.dawdler.core.serializer.SerializeDecider;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.SerializeDecider;
+import club.dawdler.serializer.Serializer;
 import club.dawdler.jedis.JedisOperator;
 import club.dawdler.jedis.JedisOperatorFactory;
 import club.dawdler.util.ClassUtil;
+import redis.clients.jedis.params.SetParams;
 
 /**
  * @author jackson.song
@@ -59,7 +61,7 @@ public class JedisInnerCache {
 	}
 
 	public Object get(Object key) throws Exception {
-		byte[] byteKey = convertKey(key).getBytes();
+		byte[] byteKey = convertKeyToBytes(key);
 		byte[] data = jedisOperator.get(byteKey);
 		if (data != null) {
 			Object obj = serializer.deserialize(data);
@@ -72,11 +74,11 @@ public class JedisInnerCache {
 	}
 
 	public void del(Object key) {
-		jedisOperator.del(convertKey(key).getBytes());
+		jedisOperator.del(convertKeyToBytes(key));
 	}
 
 	public void delAll() {
-		Optional.ofNullable(jedisOperator.keys((keyPrefix + "*").getBytes())).ifPresent(new Consumer<Set<byte[]>>() {
+		Optional.ofNullable(jedisOperator.keys((keyPrefix + "*").getBytes(StandardCharsets.UTF_8))).ifPresent(new Consumer<Set<byte[]>>() {
 			@Override
 			public void accept(Set<byte[]> keys) {
 				if (!keys.isEmpty()) {
@@ -88,10 +90,12 @@ public class JedisInnerCache {
 	}
 
 	public void put(Object key, Object value) throws Exception {
+		byte[] byteKey = convertKeyToBytes(key);
+		byte[] data = serializer.serialize(value);
 		if (expireAfterWriteSeconds != null) {
-			jedisOperator.setex((convertKey(key).getBytes()), expireAfterWriteSeconds, serializer.serialize(value));
+			jedisOperator.set(byteKey, data, SetParams.setParams().ex(expireAfterWriteSeconds));
 		} else {
-			jedisOperator.set(convertKey(key).getBytes(), serializer.serialize(value));
+			jedisOperator.set(byteKey, data);
 		}
 	}
 
@@ -101,6 +105,10 @@ public class JedisInnerCache {
 			throw new KeyExpressionException("key type must be String or primitive or primitive wrapper !");
 		}
 		return keyPrefix + key.toString();
+	}
+
+	private byte[] convertKeyToBytes(Object key) {
+		return convertKey(key).getBytes(StandardCharsets.UTF_8);
 	}
 
 }

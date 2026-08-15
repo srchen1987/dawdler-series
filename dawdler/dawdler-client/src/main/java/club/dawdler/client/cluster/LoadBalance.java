@@ -27,13 +27,9 @@ import club.dawdler.core.bean.RequestBean;
  */
 public interface LoadBalance<T, K extends Object> {
 
-	LoadBalance<T, K> preSelect(RequestBean request);
-
 	T select(RequestBean request, List<T> connections);
 
 	T doSelect(RequestBean request, List<T> connections);
-
-	K getKey();
 
 	String getName();
 }

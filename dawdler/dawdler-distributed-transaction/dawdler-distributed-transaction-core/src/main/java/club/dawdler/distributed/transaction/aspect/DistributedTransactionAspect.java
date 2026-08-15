@@ -87,7 +87,16 @@ public class DistributedTransactionAspect {
 				obj = pjp.proceed();
 			} catch (Throwable e) {
 				if (!dc.isIntervene()) {
-					cancel(action, globalTxId);
+					try {
+						if (logger.isDebugEnabled()) {
+							logger.debug("transaction proceed exception cancel sponsor:{} action:{} ",
+									dc.getGlobalTxId(), action);
+						}
+						cancel(action, globalTxId);
+					} catch (Throwable cancelEx) {
+						logger.error("distributed_transaction_cancel sponsor:{} action:{}", dc.getGlobalTxId(),
+								action, cancelEx);
+					}
 				}
 				if (logger.isDebugEnabled()) {
 					logger.debug("transaction proceed exception sponsor:{} action:{} ", dc.getGlobalTxId(), action);

@@ -16,7 +16,7 @@ consul:
  port: 8500
  separator: 
  token: 
- wait-time: 10
+ wait-time: 10000
  watch-keys: 
  - /orderConfig
  - /user
@@ -39,7 +39,7 @@ separator:分割符 一般无须配置,只在keys的场景有意义,如以下请
 
 token: 用于身份校验
 
-wait-time: 轮询超时长,单位秒数
+wait-time: 轮询超时时长,单位为毫秒
 
 watch-keys: 监控的key,是一个list列表,只有被监控的key有变化才会刷新相关配置,也可以通过 ```/``` 来监控所有的keys.
 

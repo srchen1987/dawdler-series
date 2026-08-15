@@ -32,7 +32,7 @@
     <certificatePath>key/dawdler.cer</certificatePath>
     <server-channel-group channel-group-id="user-load-web"
                           connection-num="1"
-                          sessionNum="4" serializer="2"
+                          session-num="4" serializer="2"
                           user="global_user" password="global_password">
     </server-channel-group>
   

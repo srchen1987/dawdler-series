@@ -64,7 +64,7 @@ public class ConfigContentDecryptor {
 				try {
 					word = aesSecurityPlus.decrypt(matcher.group(1));
 				} catch (Exception e) {
-					logger.error("{}", matcher.group(1), e);
+					logger.error("Failed to decrypt config content: {}", matcher.group(1), e);
 					continue;
 				}
 				matcher.appendReplacement(sb, escapeExprSpecialWord(word));

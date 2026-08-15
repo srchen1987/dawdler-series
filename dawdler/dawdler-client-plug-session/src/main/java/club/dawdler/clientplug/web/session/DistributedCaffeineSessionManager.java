@@ -38,8 +38,8 @@ public class DistributedCaffeineSessionManager extends AbstractDistributedSessio
 		sessions = Caffeine.newBuilder().maximumSize(maxSize).expireAfterAccess(maxInactiveInterval, TimeUnit.SECONDS)
 				.build(key -> null);
 		if (defense) {
-			ipBlacklist = Caffeine.newBuilder().maximumSize(maxSize)
-					.expireAfterWrite(maxInactiveInterval, TimeUnit.SECONDS).build(key -> null);
+			ipBlacklist = Caffeine.newBuilder().maximumSize(ipMaxSize)
+					.expireAfterWrite(ipMaxInactiveInterval, TimeUnit.SECONDS).build(key -> null);
 		}
 	}
 

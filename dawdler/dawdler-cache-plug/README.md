@@ -4,14 +4,10 @@
 
 cache模块的支持,具体使用方式请参考dawdler-cache-core模块.
 
-### 1. dawdler-cache-core模块
+### 1. 子模块介绍
 
-cache的核心模块,具体参考 [dawdler-cache-core](./dawdler-cache-core/README.md)
+[dawdler-cache-core](./dawdler-cache-core/README.md) cache核心模块
 
-### 2. dawdler-cache-caffeine模块
+[dawdler-cache-caffeine](./dawdler-cache-caffeine/README.md) caffeine实现的cache模块
 
-caffeine实现的cache模块,具体参考 [dawdler-cache-caffeine](dawdler-cache-caffeine/README.md)
-
-### 3. dawdler-cache-jedis模块
-
-jedis实现的cache模块,具体参考 [dawdler-cache-jedis](dawdler-cache-jedis/README.md)
+[dawdler-cache-jedis](./dawdler-cache-jedis/README.md) jedis实现的cache模块

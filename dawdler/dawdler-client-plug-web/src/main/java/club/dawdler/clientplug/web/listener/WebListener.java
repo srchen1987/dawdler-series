@@ -17,9 +17,13 @@
 package club.dawdler.clientplug.web.listener;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,12 +38,9 @@ import club.dawdler.core.component.resource.ComponentLifeCycle;
 import club.dawdler.core.component.resource.ComponentLifeCycleProvider;
 import club.dawdler.core.loader.DeployClassLoader;
 import club.dawdler.core.order.OrderData;
-import club.dawdler.core.serializer.SerializeDecider;
+import club.dawdler.serializer.SerializeDecider;
 import club.dawdler.core.shutdown.ContainerGracefulShutdown;
 import club.dawdler.core.shutdown.ContainerShutdownProvider;
-
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
 
 /**
  * @author jackson.song
@@ -60,15 +61,10 @@ public class WebListener implements ServletContextListener {
 				classLoader = new DawdlerWebDeployClassLoader(tcl);
 			} catch (Exception e) {
 				logger.error("", e);
-				throw new RuntimeException("Web application failed to start !", e);
-			}
-			finally{
-				try {
-					if(classLoader != null){
-						classLoader.close();
-					}
-				} catch (IOException e) {
+				if (classLoader != null) {
+					try { classLoader.close(); } catch (IOException ignored) {}
 				}
+				throw new RuntimeException("Web application failed to start !", e);
 			}
 		} else {
 			classLoader = (DeployClassLoader) tcl;
@@ -82,10 +78,9 @@ public class WebListener implements ServletContextListener {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 				lifeCycle.getData().prepareInit();
 			}
-			if (webConfig != null) {
-				CustomComponentOperator.scanAndInject(classLoader, customComponentInjectorList,
-					webConfig.getPackagePaths());
-			}
+			
+			CustomComponentOperator.scanAndInject(classLoader, customComponentInjectorList,
+					webConfig != null ? webConfig.getPackagePaths() : new HashSet<>());
 			
 			for (int i = 0; i < lifeCycleList.size(); i++) {
 				OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);

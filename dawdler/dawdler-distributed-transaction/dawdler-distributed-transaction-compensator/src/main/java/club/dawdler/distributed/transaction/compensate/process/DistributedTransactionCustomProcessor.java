@@ -40,7 +40,7 @@ public abstract class DistributedTransactionCustomProcessor {
 		processors.forEach(processor -> {
 			String action = processor.action;
 			try {
-				RemoteServiceInjector.injectRemoteService(processors);
+				RemoteServiceInjector.injectRemoteService(processor);
 			} catch (Throwable e) {
 				logger.error("", e);
 			}

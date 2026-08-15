@@ -41,10 +41,10 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 		Field[] fields = service.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Repository resource = field.getAnnotation(Repository.class);
-			Class<?> serviceClass = field.getType();
-			if (resource != null && serviceClass.isInterface()) {
+			Class<?> mapperClass = field.getType();
+			if (resource != null && mapperClass.isInterface()) {
 				field.setAccessible(true);
-				field.set(service, sqlSession.getMapper(serviceClass));
+				field.set(service, sqlSession.getMapper(mapperClass));
 			}
 		}
 	}

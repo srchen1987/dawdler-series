@@ -28,11 +28,11 @@ import club.dawdler.clientplug.web.annotation.RequestMapping;
 import club.dawdler.clientplug.web.bind.RequestMethodProcessor;
 import club.dawdler.clientplug.web.interceptor.HandlerInterceptor;
 import club.dawdler.clientplug.web.interceptor.InterceptorProvider;
-import club.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import club.dawdler.clientplug.web.plugs.DisplaySwitcher;
 import club.dawdler.core.order.OrderData;
 import club.dawdler.util.ClassUtil;
 import club.dawdler.util.JsonProcessUtil;
+import club.dawdler.util.spring.MediaType;
 
 /**
  * @author jackson.song
@@ -88,12 +88,14 @@ public abstract class AbstractUrlHandler {
 				try {
 					if (result.getClass() == String.class || ClassUtil.isSimpleValueType(result.getClass())) {
 						if (response.getContentType() == null) {
-							response.setContentType(AbstractDisplayPlug.MIME_TYPE_TEXT_HTML);
+							response.setContentType(MediaType.TEXT_HTML_UTF8_VALUE);
 						}
 						out.print(result);
 						out.flush();
 					} else {
-						response.setContentType(AbstractDisplayPlug.MIME_TYPE_JSON);
+						if (response.getContentType() == null) {
+							response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+						}
 						if (viewForward.isJsonIgnoreNull()) {
 							JsonProcessUtil.ignoreNullBeanToJson(out, result);
 						} else {

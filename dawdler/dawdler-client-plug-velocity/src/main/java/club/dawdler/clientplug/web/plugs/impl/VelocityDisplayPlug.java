@@ -48,6 +48,7 @@ import club.dawdler.clientplug.web.annotation.RequestMapping.ViewType;
 import club.dawdler.clientplug.web.handler.ViewForward;
 import club.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import club.dawdler.util.PropertiesUtil;
+import club.dawdler.util.spring.MediaType;
 
 /**
  * @author jackson.song
@@ -71,7 +72,9 @@ public class VelocityDisplayPlug extends AbstractDisplayPlug {
 		logException(wf);
 		HttpServletRequest request = wf.getRequest();
 		HttpServletResponse response = wf.getResponse();
-		response.setContentType(MIME_TYPE_TEXT_HTML);
+		if (response.getContentType() == null) {
+			response.setContentType(MediaType.TEXT_HTML_UTF8_VALUE);
+		}
 		if (wf.getInvokeException() != null) {
 			try {
 				response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Internal Server Error!");

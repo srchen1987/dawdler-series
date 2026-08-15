@@ -32,7 +32,7 @@ import club.dawdler.core.thread.InvokeFuture;
 
 /**
  * @author jackson.song
- * @version V2.0
+ * @version V1.0
  * 客户端调用服务器端的行为
  */
 public class Transaction {
@@ -204,15 +204,13 @@ public class Transaction {
 		request.setFuzzy(fuzzy);
 		request.setAsync(async);
 		request.setAttachments(attachments);
-		DawdlerConnection con = LoadBalanceFactory
-				.<DawdlerConnection, Object>getLoadBalance(loadBalance == null ? defaultLoadBalance : loadBalance)
-				.preSelect(request).select(request, connections);
+		String lbName = loadBalance == null ? defaultLoadBalance : loadBalance;
+		DawdlerConnection con = LoadBalanceFactory.<DawdlerConnection, Object>getLoadBalance(lbName)
+				.select(request, connections);
 		checkConnection(con);
-		List<SocketSession> sessionList = LoadBalanceFactory
-				.<List<SocketSession>, Object>getLoadBalance(loadBalance == null ? defaultLoadBalance : loadBalance)
+		List<SocketSession> sessionList = LoadBalanceFactory.<List<SocketSession>, Object>getLoadBalance(lbName)
 				.select(request, con.getSessions());
-		SocketSession socketSession = LoadBalanceFactory
-				.<SocketSession, Object>getLoadBalance(loadBalance == null ? defaultLoadBalance : loadBalance)
+		SocketSession socketSession = LoadBalanceFactory.<SocketSession, Object>getLoadBalance(lbName)
 				.select(request, sessionList);
 		request.setSeq(socketSession.getSequence());
 		Object obj;
@@ -233,6 +231,9 @@ public class Transaction {
 			try {
 				con.getSemaphore().acquire();
 			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+            	throw new RuntimeException("Connection check interrupted", e);
+
 			}
 		}
 	}

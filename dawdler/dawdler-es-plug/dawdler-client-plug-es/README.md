@@ -23,7 +23,7 @@
     EsOperator esOperator;
 
     @RequestMapping(value = "/product/search", method = RequestMethod.GET)
-    public List<Product> productSearch(String userId) {
+    public List<Product> productSearch(String userId) throws IOException {
         List<Product> list = termQuery("product", "name", "电冰箱", "addTime", 0, 10, false, Product.class);
         return list;
     }

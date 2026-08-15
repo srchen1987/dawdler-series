@@ -16,6 +16,7 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.util.regex.Matcher;
 
@@ -33,7 +34,6 @@ public class MaximumRuleOperator extends RegexRuleOperator {
 
 	@Override
 	public String validate(Object value, Matcher matcher) {
-		boolean flag = true;
 		BigDecimal maximum = new BigDecimal(matcher.group(1));
 		String error = "不能大于数字" + maximum.toString() + "!";
 
@@ -41,48 +41,39 @@ public class MaximumRuleOperator extends RegexRuleOperator {
 			return null;
 		}
 
-		if (value instanceof String) {
-			if (isEmpty(value.toString())) {
-				return null;
-			}
-
-			BigDecimal v = null;
-			try {
-				v = new BigDecimal((String) value);
-			} catch (Exception e) {
-				// 无法解析为数字，跳过验证
-				return null;
-			}
-
-			if (v.compareTo(maximum) > 0) {
-				return error;
-			}
-		}
-
-		if (value instanceof String[]) {
-			String[] values = (String[]) value;
-			for (String v : values) {
-				if (isEmpty(v)) {
+		if (value.getClass().isArray()) {
+			int length = Array.getLength(value);
+			for (int i = 0; i < length; i++) {
+				Object element = Array.get(value, i);
+				if (element == null) {
 					continue;
 				}
-
-				BigDecimal dv = null;
+				String str = element.toString();
+				if (isEmpty(str)) {
+					continue;
+				}
 				try {
-					dv = new BigDecimal(v);
+					BigDecimal dv = new BigDecimal(str);
+					if (dv.compareTo(maximum) > 0) {
+						return error;
+					}
 				} catch (Exception e) {
-					// 无法解析为数字，跳过该项
 					continue;
 				}
-
-				if (dv.compareTo(maximum) > 0) {
-					flag = false;
-					break;
-				}
 			}
-		}
-
-		if (!flag) {
-			return error;
+		} else {
+			String str = value.toString();
+			if (isEmpty(str)) {
+				return null;
+			}
+			try {
+				BigDecimal v = new BigDecimal(str);
+				if (v.compareTo(maximum) > 0) {
+					return error;
+				}
+			} catch (Exception e) {
+				return null;
+			}
 		}
 
 		return null;

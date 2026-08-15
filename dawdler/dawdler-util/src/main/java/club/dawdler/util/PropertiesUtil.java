@@ -108,6 +108,9 @@ public class PropertiesUtil {
 				inStream.close();
 			}
 		}
+		ps.forEach((k,v)->{
+			ps.put(k, SystemVariableUtil.resolveStringPlaceholders(v.toString()));
+		});
 		if (ConfigContentDecryptor.useDecrypt()) {
 			Properties processedPs = new Properties();
 			Set<Entry<Object, Object>> entrySet = ps.entrySet();
