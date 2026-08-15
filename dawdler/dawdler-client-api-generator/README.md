@@ -88,7 +88,7 @@ docker pull docker.swagger.io/swaggerapi/swagger-ui
 docker run -d -p 80:8080 -e BASE_URL=/swagger -e SWAGGER_JSON=/foo/demo-api.json -e DEFAULT_RESPONSES_EXPAND_DEPTH=10  -e DEFAULT_MODELS_EXPAND_DEPTH=10 -e DEFAULT_MODEL_EXPAND_DEPTH=10  -v {api-json所在目录}:/foo docker.swagger.io/swaggerapi/swagger-ui
 ```
 
-访问 [http://localhost/swagger](http://localhost/swagger) 既可使用.
+访问 [http://localhost/swagger](http://localhost/swagger) 即可使用.
 
 ### 4. 已支持javaDoc的Tag/注解/对象
 

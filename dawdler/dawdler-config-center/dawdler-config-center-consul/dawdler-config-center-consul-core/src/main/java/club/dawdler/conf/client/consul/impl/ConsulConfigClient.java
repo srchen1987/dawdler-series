@@ -57,7 +57,7 @@ public class ConsulConfigClient implements ConfigClient {
 	private ExecutorService executor = null;
 	private List<String> watchKeys;
 	/**
-	 * separator 分割符 只在keys的场景有意义，如以下请求 设 目前已有目录 /config/config-uat
+	 * separator 分隔符 只在keys的场景有意义，如以下请求 设 目前已有目录 /config/config-uat
 	 * /config/config-dev /config/config
 	 * http://localhost:8500/v1/kv/config?keys&separator=-&wait=5s&index=2 返回 [
 	 * "config/config", "config/config-" ]
