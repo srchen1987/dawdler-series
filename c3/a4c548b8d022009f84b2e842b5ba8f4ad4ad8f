@@ -1,0 +1,885 @@
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/TypeDataParser.java
+  s_977afa898a263c::t_25529f8e32fb85 37,74,89
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/club/dawdler/distributed/transaction/repository/TransactionRepository.java
+  h_82990a09bc17b5 22
+dawdler/dawdler-client/src/main/java/club/dawdler/client/ConnectionPool.java
+  s_1478890329169c::t_5bad176f2603f0 39,52-56
+dawdler/dawdler-rabbitmq-plug/dawdler-client-plug-rabbitmq/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-web-gateway/README.md
+  s_1478890329169c::t_5bad176f2603f0 34,47-152,154-321
+  h_82990a09bc17b5 322
+  s_3ebe8dd6d8f50c::t_542a0ef19d6563 5
+dawdler/dawdler-client/README.md
+  s_1478890329169c::t_5bad176f2603f0 29,43
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/ViewForward.java
+  s_1478890329169c::t_62d6432aab5f28 22,190,192,194,198-201,203,207,211,215,219,223,227,231,235,239,243,247,255,263,267,271,275,279,283,287
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/src/main/java/club/dawdler/distributed/transaction/compensate/timers/CompensationTimer.java
+  s_1478890329169c::t_5bad176f2603f0 30,47,50-53,55,61-62,74-77,80-87,89,99
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/message/RedisMessageOperator.java
+  s_1478890329169c::t_62d6432aab5f28 160
+  h_82990a09bc17b5 29
+dawdler/dawdler-load-bean/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/src/main/java/module-info.java
+  s_3ebe8dd6d8f50c::t_477a034b8efe17 1-14
+dawdler/dawdler-db-plug/dawdler-db-core/src/main/java/club/dawdler/core/db/datasource/RWSplittingDataSourceManager.java
+  s_1478890329169c::t_5bad176f2603f0 54
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/club/dawdler/distributed/transaction/aspect/DistributedTransactionAspect.java
+  s_1478890329169c::t_5bad176f2603f0 90-99
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/AnnotationUrlHandler.java
+  s_1478890329169c::t_62d6432aab5f28 21-23,26,91,93,98-100,102,105-124
+  s_977afa898a263c::t_89d048e31e27f9 54,56,60-62,65-69,71-75,81-88,90,94-95,101,264-267,270-273
+dawdler/dawdler-core/src/main/java/club/dawdler/core/component/injector/CustomComponentOperator.java
+  s_977afa898a263c::t_25529f8e32fb85 48-54
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-api/src/main/java/club/dawdler/distributed/transaction/context/DistributedTransactionContext.java
+  s_1478890329169c::t_5bad176f2603f0 36
+dawdler/dawdler-client/src/main/java/club/dawdler/client/processor/DataProcessor.java
+  h_82990a09bc17b5 28
+dawdler/dawdler-client/src/main/java/club/dawdler/client/Transaction.java
+  s_1478890329169c::t_5bad176f2603f0 35,207-209,211,213,234-236
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/classloader/DawdlerWebDeployClassLoader.java
+  s_977afa898a263c::t_89d048e31e27f9 29-30,131-143
+  s_977afa898a263c::t_a85ea018350698 33
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/src/main/java/club/dawdler/rabbitmq/channel/ChannelWrapperHandler.java
+  s_977afa898a263c::t_25529f8e32fb85 48-53
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/src/main/java/club/dawdler/conf/client/consul/impl/ConsulConfigClient.java
+  s_1478890329169c::t_5bad176f2603f0 68,82,129
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/buffer/DawdlerByteBuffer.java
+  s_1478890329169c::t_5bad176f2603f0 22-24,31,60
+dawdler/dawdler-util/src/main/java/club/dawdler/util/spring/MediaType.java
+  s_8b80e1f01c4440::t_9c566543cdbfb3 1-76
+dawdler/dawdler-client-api-generator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-load-plug/dawdler-client-plug-load/src/main/java/club/dawdler/clientplug/load/resource/LoadLifeCycle.java
+  s_977afa898a263c::t_25529f8e32fb85 1-16,20,72-77,83,85,92
+dawdler/dawdler-db-plug/dawdler-db-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-util/src/main/java/club/dawdler/util/PropertiesUtil.java
+  s_977afa898a263c::t_25529f8e32fb85 111-113
+dawdler/dawdler-server/src/main/java/club/dawdler/server/deploys/ServiceRoot.java
+  s_1478890329169c::t_5bad176f2603f0 125
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/GatewayConfigParser.java
+  s_1478890329169c::t_5bad176f2603f0 17,22-23,27-28,30,32-33,35-40,43-44
+dawdler/dawdler-i18n-plug/dawdler-client-i18n/README.md
+  s_1ecc2641177b12::t_1851ed4a5fb06e 5
+dawdler/dawdler-load-plug/dawdler-client-plug-load/README.md
+  s_1478890329169c::t_5bad176f2603f0 35
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/classloader/ClientPlugClassLoader.java
+  s_977afa898a263c::t_89d048e31e27f9 151
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-client-plug-jedis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/pom.xml
+  s_977afa898a263c::t_0fbb4a93051ed9 1-7,9-23
+  h_82990a09bc17b5 8
+dawdler/dawdler-distributed-transaction/README.md
+  s_1478890329169c::t_5bad176f2603f0 7,21,27-35,42,49,56,58,66,79,83,101,117,155-157,159,162,172,178,184-186,245,251,263,266,269-271,320-323
+dawdler/dawdler-pinpoint-plug/README.md
+  s_1478890329169c::t_62d6432aab5f28 37,51,80,83,89,135
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/module-info.java
+  s_52436ba4867a4c::t_9027ff708bff52 11-12,14
+dawdler/dawdler-config-center/dawdler-config-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-server-logback/README.md
+  s_977afa898a263c::t_b4b31793d05567 1-75
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/impl/RoundRobinLoadBalance.java
+  s_1478890329169c::t_5bad176f2603f0 31,40
+dawdler/dawdler-core/src/main/java/club/dawdler/core/component/injector/CustomComponentInjector.java
+  s_977afa898a263c::t_25529f8e32fb85 58,63-67
+dawdler/dawdler-schedule-plug/dawdler-schedule-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 5
+  s_1ecc2641177b12::t_17dc21d078d29c 56
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/RouteScheme.java
+  s_1478890329169c::t_5bad176f2603f0 1-139
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/SetPathFilter.java
+  s_1478890329169c::t_5bad176f2603f0 1-30,32-83
+dawdler/dawdler-dependencies/dawdler-load-web-dependencies/README.md
+  s_1ecc2641177b12::t_4d95c21574e61a 1
+changeLog.md
+  s_1478890329169c::t_5bad176f2603f0 5,10
+  h_82990a09bc17b5 22-30
+dawdler/dawdler-client-plug-web/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-kafka-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebApplicationConfig.java
+  s_977afa898a263c::t_b4b31793d05567 17,21,26,28-32,34-38,41-42,45-51,53-55,57-63,65-66,69-70
+dawdler/dawdler-kafka-plug/dawdler-server-plug-kafka/README.md
+  s_1478890329169c::t_5bad176f2603f0 5,16,25,28,31
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-server-plug-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dependencies/dawdler-web-dependencies/pom.xml
+  h_82990a09bc17b5 8
+  s_977afa898a263c::t_89d048e31e27f9 131-144
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/buffer/ByteBufferPooledFactory.java
+  s_1478890329169c::t_5bad176f2603f0 42-43
+dawdler/dawdler-server/src/main/java/club/dawdler/server/net/aio/session/SocketSession.java
+  s_977afa898a263c::t_25529f8e32fb85 22,135-136,152-153
+  h_82990a09bc17b5 28
+  s_1478890329169c::t_62d6432aab5f28 55-59,61-65,109-113,123-131,176-187,190-194
+dawdler/dawdler-cache-plug/dawdler-cache-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 7-14,139,185,187,195,197
+dawdler/dawdler-web-gateway/pom.xml
+  h_82990a09bc17b5 8,11
+  s_977afa898a263c::t_0fbb4a93051ed9 1-7,9-10,12-36
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/StripPrefixFilter.java
+  s_1478890329169c::t_5bad176f2603f0 1-25,27-76
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/bind/resolver/impl/AbstractMethodArgumentResolver.java
+  s_1478890329169c::t_5bad176f2603f0 19-25,29-33,38,61-178
+dawdler/dawdler-db-plug/dawdler-server-plug-db/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-db-plug/dawdler-db-core/src/main/java/club/dawdler/core/db/aspect/TransactionAspect.java
+  s_1478890329169c::t_5bad176f2603f0 124-125,139,164,186,203,226-228,231
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/src/main/java/club/dawdler/gateway/discovery/zookeeper/resource/ZookeeperLifeCycle.java
+  s_1478890329169c::t_5bad176f2603f0 1-140
+dawdler/dawdler-db-plug/dawdler-client-plug-db/src/main/java/club/dawdler/clientplug/db/resource/TransactionLifeCycle.java
+  s_977afa898a263c::t_25529f8e32fb85 43-45
+dawdler/dawdler-service-plug/dawdler-local-service-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/README.md
+  s_1478890329169c::t_5bad176f2603f0 7,9,11,13
+dawdler/dawdler-util/src/main/java/club/dawdler/util/HashedWheelTimer.java
+  h_82990a09bc17b5 68-71
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 19,42
+dawdler/dawdler-web-gateway/src/main/resources/gateway-demo.yml
+  s_1478890329169c::t_5bad176f2603f0 1-99
+dawdler/dawdler-util/src/main/java/club/dawdler/util/YAMLUtil.java
+  s_977afa898a263c::t_25529f8e32fb85 74,76
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/RouteDefinition.java
+  s_1478890329169c::t_5bad176f2603f0 1-82
+dawdler/dawdler-pinpoint-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/lock/JedisDistributedLock.java
+  s_0626080a7f0678::t_d46047e868dd28 44-45
+  s_0626080a7f0678::t_b80a8abd930e26 100
+  h_82990a09bc17b5 186
+  s_0626080a7f0678::t_a5d337e2dfe297 95
+  s_0626080a7f0678::t_c1623c7fae678f 20,46-47,54-59,88,103-107,109-111,114-115,120,125-135,148,163-164,168,177,181
+  s_0626080a7f0678::t_fc4c38b747555d 173
+  s_0626080a7f0678::t_9e62f68c1255b4 89
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/MethodParser.java
+  s_977afa898a263c::t_89d048e31e27f9 93,261,304,391,441-449,452-459,469-472,477-478
+dawdler/dawdler-rabbitmq-plug/dawdler-client-plug-rabbitmq/README.md
+  s_1ecc2641177b12::t_7cc4359ba52fce 16
+dawdler/dawdler-client-plug-velocity/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/PredicateDefinition.java
+  s_1478890329169c::t_5bad176f2603f0 1-63
+dawdler/dawdler-server/src/main/java/club/dawdler/server/thread/processor/BusyResponseRejectedExecutionHandler.java
+  s_1478890329169c::t_5bad176f2603f0 1-43
+dawdler/dawdler-mybatis-plug/dawdler-client-plug-mybatis/README.md
+  s_1ecc2641177b12::t_51b5edc2b14960 16
+  s_1478890329169c::t_5bad176f2603f0 18,32
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/pom.xml
+  s_977afa898a263c::t_89d048e31e27f9 17
+  h_82990a09bc17b5 8
+dawdler/dawdler-dependencies/dawdler-services-dependencies/pom.xml
+  s_977afa898a263c::t_89d048e31e27f9 65-74,200-214,245-250
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/dawdler-server-plug-i18n/pom.xml
+  s_977afa898a263c::t_0fbb4a93051ed9 1-6,8-22
+  h_82990a09bc17b5 7
+dawdler/dawdler-config-center/dawdler-config-center-core/src/main/java/club/dawdler/conf/cache/ConfigDataCache.java
+  s_977afa898a263c::t_25529f8e32fb85 22-27,34,51-58
+dawdler/dawdler-client-plug-validator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/src/main/resources/distributed-transaction-compensator.properties
+  s_1478890329169c::t_5bad176f2603f0 1-7
+dawdler/dawdler-redis-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-jwt/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/dawdler-cache-jedis/README.md
+  s_1478890329169c::t_5bad176f2603f0 31
+dawdler/dawdler-dependencies/dawdler-load-web-dependencies/pom.xml
+  h_82990a09bc17b5 8
+  s_977afa898a263c::t_89d048e31e27f9 193-203
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/src/main/java/club/dawdler/distributed/transaction/compensate/config/CompensationConfig.java
+  s_1478890329169c::t_5bad176f2603f0 1-82
+dawdler/dawdler-service-plug/dawdler-server-plug-local-service/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/aio/handler/ReaderHandler.java
+  s_977afa898a263c::t_25529f8e32fb85 46-47,49-71,73-105,107-116,118-125,127,129,132-135,138,141-143,145-161,164-169,172-174
+  s_1478890329169c::t_5bad176f2603f0 181
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/README.md
+  s_1478890329169c::t_5bad176f2603f0 13-38
+dawdler/dawdler-service-plug/dawdler-remote-service-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-load-plug/dawdler-server-plug-load/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/README.md
+  s_977afa898a263c::t_25529f8e32fb85 22-25
+dawdler/dawdler-client-plug-validator/README.md
+  s_1478890329169c::t_5bad176f2603f0 205,342,525
+  s_1ecc2641177b12::t_9f09d0e1dff9c0 470
+dawdler/dawdler-client-plug-web/README.md
+  s_1ecc2641177b12::t_47b667089d5bbc 448
+  s_1ecc2641177b12::t_81260f9bd02c34 22
+  s_1ecc2641177b12::t_1d66485dc0fcc6 465
+  s_1ecc2641177b12::t_21d2bcb762c3d0 539
+  s_1478890329169c::t_5bad176f2603f0 95,97,101-102,109-121,208
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/GatewayConfig.java
+  s_1478890329169c::t_5bad176f2603f0 1-49
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/GatewayOptions.java
+  s_1478890329169c::t_5bad176f2603f0 1-22,24-216,219-226,231-298
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-server-logback/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/impl/RandomLoadBalance.java
+  s_1478890329169c::t_5bad176f2603f0 39
+dawdler/dawdler-service-plug/dawdler-remote-service-core/README.md
+  s_1ecc2641177b12::t_4f821878f9b829 39
+  s_1478890329169c::t_5bad176f2603f0 41
+dawdler/dawdler-discovery-center/dawdler-discovery-center-server-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client/src/main/java/club/dawdler/client/net/aio/session/SocketSession.java
+  h_82990a09bc17b5 34
+  s_1478890329169c::t_62d6432aab5f28 80-84,86-90
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/GatewayPathFilterFactory.java
+  s_1478890329169c::t_5bad176f2603f0 1-49
+dawdler/dawdler-mybatis-plug/dawdler-client-plug-mybatis/src/main/java/club/dawdler/clientplug/db/mybatis/create/listener/InjectMapperCreateListener.java
+  s_977afa898a263c::t_25529f8e32fb85 40-41,43
+dawdler/dawdler-service-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/dawdler-cache-caffeine/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-server/src/main/java/club/dawdler/server/net/aio/handler/AcceptorHandler.java
+  s_977afa898a263c::t_25529f8e32fb85 46,73
+dawdler/dawdler-server-logback/src/main/java/club/dawdler/server/log/DawdlerLogbackServiceProvider.java
+  s_977afa898a263c::t_89d048e31e27f9 25,75,81
+dawdler/dawdler-encrypt-generator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-server/src/main/java/club/dawdler/server/thread/processor/DataProcessor.java
+  h_82990a09bc17b5 35
+  s_1478890329169c::t_d30e9431a52ad9 30,80-113,117-118,120,122-123,125-127,129-164,177-182,193-207,210-220
+dawdler/dawdler-util/src/main/java/club/dawdler/util/ResourceBundleUtil.java
+  s_977afa898a263c::t_b4b31793d05567 1-44
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-discovery-center-zookeeper-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 19-20,32-47
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebConfigParser.java
+  s_977afa898a263c::t_25529f8e32fb85 68-74
+dawdler/dawdler-client/src/main/java/club/dawdler/client/cluster/LoadBalanceFactory.java
+  s_1478890329169c::t_5bad176f2603f0 21,30
+dawdler/dawdler-schedule-plug/dawdler-server-plug-schedule/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/listener/WebListener.java
+  h_82990a09bc17b5 41
+  s_977afa898a263c::t_89d048e31e27f9 20,27,64-65,67,81-83
+  s_977afa898a263c::t_0be4a2685ecbc5 25-26
+dawdler/dawdler-dependencies/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/UnifiedJedisFactory.java
+  s_977afa898a263c::t_25529f8e32fb85 115,117,121
+  s_1478890329169c::t_5bad176f2603f0 19,73,88
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 8
+  s_977afa898a263c::t_89d048e31e27f9 17
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/README.md
+  s_1ecc2641177b12::t_60f8d5907532c5 30
+  s_1478890329169c::t_5bad176f2603f0 34-35
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/ServiceInstancePool.java
+  s_1478890329169c::t_5bad176f2603f0 1-26,28-69
+dawdler/dawdler-client-plug-velocity/README.md
+  s_1478890329169c::t_5bad176f2603f0 39-40,48,56
+  s_1ecc2641177b12::t_8cd42dd7eb6f5a 34
+dawdler/dawdler-es-plug/dawdler-es-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 68-69,82,85,87,89,91
+dawdler/dawdler-kafka-plug/dawdler-server-plug-kafka/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/dawdler-es-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/dawdler-client-plug-es/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/dawdler-cache-caffeine/README.md
+  s_1478890329169c::t_5bad176f2603f0 31
+dawdler/dawdler-mybatis-plug/dawdler-server-plug-mybatis/src/main/java/club/dawdler/serverplug/db/mybatis/listener/InjectServiceCreateListener.java
+  s_977afa898a263c::t_25529f8e32fb85 44-45,47
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/ForwardRoutingHandler.java
+  s_977afa898a263c::t_0fbb4a93051ed9 1-33,36,38-97
+  s_1478890329169c::t_62d6432aab5f28 34-35
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-server-plug-config-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-util/src/main/java/club/dawdler/util/JsonProcessUtil.java
+  s_977afa898a263c::t_25529f8e32fb85 53,190,199,215
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/src/main/java/module-info.java
+  s_3ebe8dd6d8f50c::t_0f455b104615dc 1-14
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-client-plug-jedis/README.md
+  s_1ecc2641177b12::t_cc32c585f17e7e 36
+dawdler/dawdler-client-plug-session/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/dawdler-client-plug-dao/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-util/src/main/java/club/dawdler/util/ConfigContentDecryptor.java
+  h_82990a09bc17b5 63
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/FieldParser.java
+  s_977afa898a263c::t_89d048e31e27f9 49,62,74
+dawdler/dawdler-mybatis-plug/README.md
+  s_1478890329169c::t_5bad176f2603f0 5
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/src/main/java/club/dawdler/rabbitmq/connection/pool/factory/AMQPConnectionFactory.java
+  s_977afa898a263c::t_25529f8e32fb85 81-106
+dawdler/dawdler-server/README.md
+  s_1ecc2641177b12::t_95e80dcc30d8fe 100
+  s_1ecc2641177b12::t_56a31b7b5799b2 40,50,96
+  s_1ecc2641177b12::t_0920817888d8d7 104
+  s_1ecc2641177b12::t_20e936505a216e 275
+dawdler/dawdler-util/src/main/java/club/dawdler/util/ClassUtil.java
+  s_977afa898a263c::t_25529f8e32fb85 182-187
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-discovery-center-consul-core/src/main/java/club/dawdler/core/discovery/consul/ConsulDiscoveryCenter.java
+  s_1478890329169c::t_5bad176f2603f0 31,156
+  s_977afa898a263c::t_25529f8e32fb85 30,44-46,68,152-155,157-160
+dawdler/dawdler-client/src/main/java/club/dawdler/client/DawdlerConnection.java
+  h_82990a09bc17b5 58-59
+  s_1478890329169c::t_62d6432aab5f28 55,368,379-380,399-400,420,426
+  s_977afa898a263c::t_25529f8e32fb85 26,159,348,359-363,369-370,377,386,388-391,396
+dawdler/dawdler-db-plug/dawdler-db-core/src/main/java/club/dawdler/core/db/sub/rule/ConsistentHashSubRule.java
+  s_1478890329169c::t_5bad176f2603f0 23,35,81-83,85
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-client-plug-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-config-center-consul-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-load-plug/dawdler-client-plug-load/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/FilterDefinition.java
+  s_1478890329169c::t_5bad176f2603f0 1-63
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-server-plug-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-encrypt-generator/README.md
+  h_82990a09bc17b5 22,60
+dawdler/pom.xml
+  s_8b80e1f01c4440::t_daa6e84869a080 257-259
+  s_774ea97b9523ec::t_d3e15f0ed20457 42,45,48-52,55-58,60-63,67,70,73,75-76,78-80
+  s_52436ba4867a4c::t_52e271d6974a28 66
+  h_82990a09bc17b5 7,38,68
+  s_5c8773c60df65f::t_3c78a23a199252 39-41
+  s_977afa898a263c::t_89d048e31e27f9 467-469,475-479,605-623,819-820
+  s_9b581c2adf2360::t_e4f6cc0d081fad 661-676
+  s_8b80e1f01c4440::t_98a6624073ac8d 795
+  s_5c8773c60df65f::t_a4edd4a10d9145 47
+  s_5c8773c60df65f::t_3435892a219f94 77
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/plugs/PlugFactory.java
+  s_1478890329169c::t_62d6432aab5f28 47-48
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-discovery-center-consul-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/filter/ViewFilter.java
+  s_1478890329169c::t_62d6432aab5f28 21,51-52,69-70,109-112,118-130,146-150
+  s_977afa898a263c::t_89d048e31e27f9 24,96-102
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-compensator/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/aio/session/AbstractSocketSession.java
+  h_82990a09bc17b5 137,142
+  s_977afa898a263c::t_25529f8e32fb85 29,85,297,303,338-339
+  s_1478890329169c::t_62d6432aab5f28 56,66-67,86,89-90,168-169,171-181,298-302,308-309,313,316
+dawdler/dawdler-schedule-plug/dawdler-client-plug-schedule/pom.xml
+  h_82990a09bc17b5 8
+README.md
+  h_82990a09bc17b5 3
+  s_9139ed237d321e::t_b42eb38f436b8b 181
+  s_1ecc2641177b12::t_acab365ccdad24 227
+  s_1ecc2641177b12::t_51c5f50531382f 287
+  s_9139ed237d321e::t_312139fd5a9920 199,202-205
+  s_9139ed237d321e::t_c5c7b1d8bebb0f 195
+  s_977afa898a263c::t_89d048e31e27f9 196-198,200-201,206
+  s_1ecc2641177b12::t_689e018ab78872 61
+  s_1ecc2641177b12::t_1e75cbcaf4b424 73
+  s_1ecc2641177b12::t_a4f7412cb21c96 17,53
+dawdler/dawdler-config-center/dawdler-config-center-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 47-48,65,88
+dawdler/dawdler-service-plug/dawdler-client-plug-local-service/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 37
+dawdler/dawdler-server/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-server-plug-jedis/README.md
+  s_1ecc2641177b12::t_7e519aa660bb96 36
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 7-14,25
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/bind/resolver/impl/BasicsTypeMethodArgumentResolver.java
+  s_977afa898a263c::t_89d048e31e27f9 62
+dawdler/dawdler-server/src/main/java/club/dawdler/server/conf/ServerConfigParser.java
+  s_977afa898a263c::t_25529f8e32fb85 19-23,48,59
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/filter/GatewayFilter.java
+  s_977afa898a263c::t_0fbb4a93051ed9 1-46,53-192
+  s_1478890329169c::t_62d6432aab5f28 47-52
+dawdler/dawdler-rabbitmq-plug/dawdler-rabbitmq-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/pom.xml
+  h_82990a09bc17b5 7
+  s_977afa898a263c::t_0fbb4a93051ed9 1-6,8-18
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-client-plug-discovery-center-zookeeper/src/main/java/club/dawdler/clientplug/discovery/zookeeper/ZkDiscoveryCenterClient.java
+  s_1478890329169c::t_5bad176f2603f0 74-78
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/WebSocketProxyHandler.java
+  s_977afa898a263c::t_0fbb4a93051ed9 1-34,38-41,43-58,61,63-76,79-86,101-139,156,158,169,175,191-192,194,196,198-200,202-206,209-510
+  s_1478890329169c::t_17d22bc40efb23 35-37,42,59-60,77-78,87-100,140-155,157,159-168,170-174,176-190,193,195,197,201,207-208
+dawdler/dawdler-es-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-api-generator/src/main/java/club/dawdler/client/api/generator/WebApiGenerator.java
+  s_977afa898a263c::t_25529f8e32fb85 68
+dawdler/dawdler-server/src/main/java/club/dawdler/server/loader/DawdlerClassLoader.java
+  s_1478890329169c::t_5bad176f2603f0 24,37
+dawdler/dawdler-mybatis-plug/dawdler-mybatis-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 7-14,25,38,64,114,116,128,162
+  s_1ecc2641177b12::t_bbdba38d3c8af3 68
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/src/main/java/club/dawdler/clientplug/discovery/consul/resource/ConsulLifeCycle.java
+  s_977afa898a263c::t_25529f8e32fb85 19,22,41-43,46-47,56,73,113-115,120-122,159-183
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md
+  h_82990a09bc17b5 78-80,82,88,90
+  s_1ecc2641177b12::t_e0fb632803592f 57
+  s_1478890329169c::t_62d6432aab5f28 61-62,71,73,102,132,134
+dawdler/dawdler-es-plug/README.md
+  s_1478890329169c::t_5bad176f2603f0 9
+dawdler/dawdler-serialization/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-util/src/main/java/club/dawdler/util/XmlTool.java
+  s_977afa898a263c::t_25529f8e32fb85 69
+dawdler/dawdler-client-plug-velocity/src/main/java/club/dawdler/clientplug/velocity/direct/XssUtil.java
+  s_977afa898a263c::t_25529f8e32fb85 1-16
+dawdler/dawdler-rabbitmq-plug/dawdler-server-plug-rabbitmq/README.md
+  s_1ecc2641177b12::t_527c110c5056cb 16
+dawdler/dawdler-rabbitmq-plug/dawdler-server-plug-rabbitmq/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-discovery-center-zookeeper-core/src/main/java/club/dawdler/core/discovery/zookeeper/ZkDiscoveryCenter.java
+  s_1478890329169c::t_5bad176f2603f0 23-24,33-34,46,51,54,71-73,91,111-136
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/SessionOperator.java
+  h_82990a09bc17b5 30
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/RouteResolver.java
+  s_1478890329169c::t_5bad176f2603f0 1-155,157-180
+dawdler/dawdler-cache-plug/dawdler-cache-core/src/main/java/club/dawdler/cache/CacheConfig.java
+  h_82990a09bc17b5 21
+dawdler/dawdler-circuit-breaker/src/main/java/club/dawdler/breaker/SlideTimeWindows.java
+  s_1478890329169c::t_5bad176f2603f0 43-53,63-81,84-86,89-91,96,100
+dawdler/dawdler-web-gateway/src/main/java/module-info.java
+  s_3ebe8dd6d8f50c::t_f00e2a9123026e 10
+  s_3ebe8dd6d8f50c::t_397f7cc1683ee7 1-9,11-22
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/club/dawdler/es/restclient/EsOperator.java
+  s_633d48530b814a::t_3e7414fe871f6f 638-660
+  s_633d48530b814a::t_364a9f6f023404 1230-1254
+  s_52436ba4867a4c::t_868fe8578c15c2 33-34
+  s_52436ba4867a4c::t_0101970032830f 145,148
+  s_52436ba4867a4c::t_9865461192b07f 214-216
+  s_52436ba4867a4c::t_3c34ef8234d0bc 116
+  s_52436ba4867a4c::t_a9801936829971 133
+  s_52436ba4867a4c::t_8c97ade893467c 57-58
+  s_52436ba4867a4c::t_5f1f7e0828411e 30
+  s_52436ba4867a4c::t_c3869c438a1137 72-73
+  s_52436ba4867a4c::t_428fa08fc32788 228-229
+  s_52436ba4867a4c::t_9ccbe075f4c44b 176-177,180
+  s_633d48530b814a::t_392648a3ee2097 750-772
+  s_52436ba4867a4c::t_5f8c658cbfe0ee 140
+  s_633d48530b814a::t_703b75438533fb 871-894
+  s_52436ba4867a4c::t_8287faf343e115 1011,1014-1015,1017,1021,1024-1025,1027,1029,1033-1034,1038-1045
+  s_633d48530b814a::t_13de3f432ebf8a 1081,1093-1094
+  s_633d48530b814a::t_bca636a254e741 1155-1177
+  s_633d48530b814a::t_00ce6725078877 1679-1701
+  s_52436ba4867a4c::t_95e7d71ed313f5 290-316
+  s_52436ba4867a4c::t_6139fae0eae9b1 238-239,244
+  s_52436ba4867a4c::t_9c840fd11b60b6 912-937
+  s_633d48530b814a::t_70481abd1acde7 1527-1551
+  s_633d48530b814a::t_3dae3787c43851 1604-1626
+  s_633d48530b814a::t_05698c0292e1ad 1820-1841
+dawdler/dawdler-db-plug/dawdler-server-plug-db/README.md
+  s_1478890329169c::t_5bad176f2603f0 16
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/fire/WebComponentClassLoaderFire.java
+  s_977afa898a263c::t_25529f8e32fb85 117-119,145-147,150-151
+dawdler/dawdler-client-api-generator/README.md
+  s_977afa898a263c::t_89d048e31e27f9 5,47,82
+  s_1478890329169c::t_f615819ae69312 88,93,95,120,136,140
+  s_1ecc2641177b12::t_2ca66a97038ef7 146
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/handler/PathMappingData.java
+  s_1478890329169c::t_5bad176f2603f0 25,38,40,83,87,99
+  s_977afa898a263c::t_b4b31793d05567 17,19-22,24,27,32-34,36,42-61,63,66-71,73-78,80-81,84-85,88-94,96,100-104
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/store/RedisSessionStore.java
+  s_1478890329169c::t_62d6432aab5f28 128,173
+  h_82990a09bc17b5 29
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-gateway-discovery-center-zookeeper/pom.xml
+  h_82990a09bc17b5 7
+  s_977afa898a263c::t_0fbb4a93051ed9 1-6,8-29
+dawdler/dawdler-db-plug/dawdler-client-plug-db/README.md
+  s_1ecc2641177b12::t_aaf1a3dffeff9d 16
+dawdler/dawdler-rabbitmq-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/dawdler-dao-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/src/main/java/module-info.java
+  s_977afa898a263c::t_2ae23b5c2a53d7 11-12
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/WebSocketProxyUpgradeHandler.java
+  s_1478890329169c::t_62d6432aab5f28 22,37-38,92-98
+  s_977afa898a263c::t_0fbb4a93051ed9 1-21,23-36,41-91,99-176
+dawdler/dawdler-circuit-breaker/src/main/java/club/dawdler/breaker/filter/CircuitBreakerFilter.java
+  s_1478890329169c::t_5bad176f2603f0 43,65,71,80-86
+dawdler/dawdler-util/src/main/java/club/dawdler/util/XmlObject.java
+  s_977afa898a263c::t_89d048e31e27f9 439,444-448,451,456-460
+dawdler/dawdler-service-plug/dawdler-remote-service-core/src/main/java/club/dawdler/remote/service/factory/ServiceFactory.java
+  s_977afa898a263c::t_25529f8e32fb85 47
+  s_1478890329169c::t_5bad176f2603f0 22-23,90-95,99,101-103,106-107,109-110,112-113,115-118,121-135,144-154,158-160,162-164,172-188
+doc/dawdler-profiles.active-README.md
+  s_977afa898a263c::t_25529f8e32fb85 40,60-64,66,68-77
+  s_1ecc2641177b12::t_398ea385ff4e7e 22
+  s_1478890329169c::t_5bad176f2603f0 65,67,78
+dawdler/dawdler-server/src/main/java/club/dawdler/server/bootstrap/ServerConnectionManager.java
+  s_977afa898a263c::t_25529f8e32fb85 19,31,42,46,50,59
+dawdler/dawdler-core/src/main/java/club/dawdler/core/thread/InvokeFuture.java
+  s_977afa898a263c::t_89d048e31e27f9 36-40,54,68-70,104-106
+dawdler/dawdler-core/src/main/java/club/dawdler/core/compression/ZLibCompression.java
+  s_1478890329169c::t_5bad176f2603f0 37-40,45,48-49,56-58,69,72-73
+  s_977afa898a263c::t_25529f8e32fb85 21,32-33,47,61-66,70-71
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/wrapper/BodyReaderHttpServletRequestWrapper.java
+  s_977afa898a263c::t_89d048e31e27f9 1-16,32-36
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/HttpProxyHandler.java
+  s_977afa898a263c::t_0fbb4a93051ed9 1-48,50-54,61-96,102-105,107-158,161,163-164,167-168,170-171,174-177,179-182,201-203,220,222-223,235,237,240-244,246-253,264,266,274-277,279,303-305,308,313-317,321,327,330-348,454-456,470-480
+  s_1478890329169c::t_62d6432aab5f28 55-60
+  h_82990a09bc17b5 49,97-101,230
+dawdler/dawdler-client/src/main/java/club/dawdler/client/net/aio/handler/ConnectorHandler.java
+  s_977afa898a263c::t_25529f8e32fb85 42-57,61-65
+dawdler/dawdler-jakarta-fileupload/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-core/src/main/java/club/dawdler/distributed/transaction/repository/RedisRepository.java
+  s_1478890329169c::t_942714a3c4844d 34-35,82,95-98,108,119,158,173-187,190
+  h_82990a09bc17b5 31
+dawdler/dawdler-i18n-plug/dawdler-client-plug-i18n/pom.xml
+  s_977afa898a263c::t_0fbb4a93051ed9 1-6,8-26
+  h_82990a09bc17b5 7
+dawdler/dawdler-dao-plug/dawdler-dao-core/src/main/java/club/dawdler/core/db/dao/BaseDataImpl.java
+  s_1478890329169c::t_5bad176f2603f0 227,231-239,244,263-264,266-267
+dawdler/dawdler-db-plug/dawdler-client-plug-db/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-mybatis-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-schedule-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-db-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/club/dawdler/es/restclient/factory/EsClientFactory.java
+  s_52436ba4867a4c::t_35a99448449c43 24,28-35,41-43,88,90-95,97-111,120-121
+dawdler/dawdler-mybatis-plug/dawdler-server-plug-mybatis/README.md
+  s_1478890329169c::t_5bad176f2603f0 16,18,32
+dawdler/dawdler-schedule-plug/dawdler-schedule-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-config-center/dawdler-config-center-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-core/src/main/java/club/dawdler/core/httpserver/DawdlerHttpServer.java
+  s_1478890329169c::t_5bad176f2603f0 23,25,46,77-82,98-108
+dawdler/dawdler-service-plug/dawdler-client-plug-remote-service/pom.xml
+  h_82990a09bc17b5 8
+  s_977afa898a263c::t_89d048e31e27f9 11
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebConfig.java
+  s_977afa898a263c::t_25529f8e32fb85 32-33,47-54
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-server-plug-jedis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-web/src/main/resources/web-conf.xsd
+  s_977afa898a263c::t_25529f8e32fb85 9-16
+dawdler/dawdler-config-center/dawdler-config-center-consul/dawdler-client-plug-config-center-consul/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-mybatis-plug/dawdler-client-plug-mybatis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-server/src/main/java/club/dawdler/server/deploys/AbstractService.java
+  s_977afa898a263c::t_25529f8e32fb85 20,36,117-118
+  s_1478890329169c::t_5bad176f2603f0 76,145-148,274-278
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/pom.xml
+  s_977afa898a263c::t_0fbb4a93051ed9 1-6,8-29
+  h_82990a09bc17b5 7
+dawdler/dawdler-i18n-plug/dawdler-i18n-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 1-128
+dawdler/dawdler-es-plug/dawdler-server-plug-es/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-serialization/README.md
+  h_82990a09bc17b5 16,22,24
+dawdler/dawdler-core/src/main/java/club/dawdler/core/net/buffer/PoolBuffer.java
+  s_977afa898a263c::t_25529f8e32fb85 20,22,34,52,67-68
+dawdler/dawdler-cache-plug/dawdler-cache-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/dawdler-dao-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 80,92-97
+dawdler/dawdler-es-plug/dawdler-client-plug-es/README.md
+  s_1478890329169c::t_5bad176f2603f0 26
+dawdler/dawdler-mybatis-plug/dawdler-server-plug-mybatis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-kafka-plug/dawdler-kafka-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/README.md
+  s_1478890329169c::t_5bad176f2603f0 5
+dawdler/dawdler-discovery-center/pom.xml
+  s_977afa898a263c::t_89d048e31e27f9 18
+  h_82990a09bc17b5 8
+dawdler/dawdler-distributed-transaction/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/README.md
+  s_977afa898a263c::t_25529f8e32fb85 18-21
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-client-plug-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 8
+  s_977afa898a263c::t_89d048e31e27f9 22-25
+dawdler/dawdler-db-plug/dawdler-db-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 66,68,74
+  s_1ecc2641177b12::t_e7dd9feca7ae43 117
+dawdler/dawdler-load-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-dao-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/README.md
+  s_1ecc2641177b12::t_4b99f7740bba42 15
+dawdler/dawdler-core/src/main/java/club/dawdler/core/loader/DeployClassLoader.java
+  s_977afa898a263c::t_89d048e31e27f9 173
+dawdler/dawdler-dao-plug/dawdler-server-plug-dao/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/pom.xml
+  h_82990a09bc17b5 8
+  s_977afa898a263c::t_0fbb4a93051ed9 1-7,9-22
+dawdler/dawdler-discovery-center/dawdler-discovery-center-core/README.md
+  s_1478890329169c::t_5bad176f2603f0 5,54-57,59
+dawdler/dawdler-cache-plug/dawdler-cache-jedis/src/main/java/club/dawdler/cache/jedis/JedisInnerCache.java
+  h_82990a09bc17b5 27-28
+  s_1478890329169c::t_62d6432aab5f28 19,32,64,77,81,93-94,96,98,110-111
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-es-plug/dawdler-server-plug-es/README.md
+  s_1478890329169c::t_5bad176f2603f0 26
+dawdler/dawdler-util/pom.xml
+  h_82990a09bc17b5 7
+dawdler/dawdler-service-plug/dawdler-service-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/dawdler-discovery-center-zookeeper-core/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client-plug-session/src/main/java/club/dawdler/clientplug/web/session/DawdlerSessionFilter.java
+  s_977afa898a263c::t_89d048e31e27f9 252-253
+  h_82990a09bc17b5 33-34
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/RewritePathFilter.java
+  s_1478890329169c::t_5bad176f2603f0 1-28,30-69
+dawdler/dawdler-cache-plug/dawdler-cache-jedis/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-service-plug/dawdler-server-plug-remote-service/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-kafka-plug/dawdler-kafka-core/README.md
+  s_1ecc2641177b12::t_684dbbebb967c9 128
+  s_1478890329169c::t_5bad176f2603f0 82-83,244,247-253
+dawdler/dawdler-cache-plug/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-cache-plug/dawdler-cache-caffeine/src/main/java/club/dawdler/cache/caffeine/CaffeineCache.java
+  s_1478890329169c::t_5bad176f2603f0 77-80
+dawdler/dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/annotation/JedisLockInjector.java
+  s_977afa898a263c::t_25529f8e32fb85 1-16
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/filter/GatewayPathFilter.java
+  s_1478890329169c::t_5bad176f2603f0 1-31
+dawdler/dawdler-distributed-transaction/dawdler-distributed-transaction-api/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-circuit-breaker/src/main/java/club/dawdler/breaker/metric/MetricBase.java
+  s_1478890329169c::t_5bad176f2603f0 32
+dawdler/dawdler-circuit-breaker/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-i18n-plug/dawdler-client-i18n/pom.xml
+  h_82990a09bc17b5 7
+  s_977afa898a263c::t_0fbb4a93051ed9 1-6,8-17
+dawdler/dawdler-server/src/main/java/club/dawdler/server/deploys/AbstractServiceRoot.java
+  s_1478890329169c::t_62d6432aab5f28 40,73-74,92
+dawdler/dawdler-config-center/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-client/src/main/java/club/dawdler/client/filter/FilterProvider.java
+  s_1478890329169c::t_5bad176f2603f0 30
+dawdler/dawdler-serialization/src/main/java/module-info.java
+  h_82990a09bc17b5 1-3,12
+dawdler/dawdler-es-plug/dawdler-es-core/src/main/java/club/dawdler/es/restclient/pool/factory/PooledEsClientFactory.java
+  s_52436ba4867a4c::t_a26dc1d29aecdd 27
+  s_52436ba4867a4c::t_3278a20cb550c1 59
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/src/main/java/module-info.java
+  s_977afa898a263c::t_dd52384bb065ae 21
+  s_977afa898a263c::t_e9491339d687ea 17-20,22,24
+dawdler/dawdler-service-plug/dawdler-service-core/README.md
+  s_1ecc2641177b12::t_47d7849b9fd78a 29
+  s_1478890329169c::t_62d6432aab5f28 31
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/health/WebHealth.java
+  s_1478890329169c::t_5bad176f2603f0 25-27,44,47,52-73
+dawdler/dawdler-util/src/main/java/club/dawdler/util/spring/MimeType.java
+  s_8b80e1f01c4440::t_ecf07dfaf568b5 1-330
+dawdler/dawdler-client/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-discovery-center/dawdler-discovery-center-zookeeper/README.md
+  s_977afa898a263c::t_25529f8e32fb85 18-21
+dawdler/dawdler-util/src/main/java/club/dawdler/util/SystemVariableUtil.java
+  s_977afa898a263c::t_b4b31793d05567 1-66
+dawdler/dawdler-core/src/main/java/club/dawdler/core/exception/ServerBusyException.java
+  s_1478890329169c::t_5bad176f2603f0 1-30
+dawdler/dawdler-client-plug-validator/src/main/java/club/dawdler/clientplug/web/validator/webbind/ValidateResourceLoader.java
+  s_977afa898a263c::t_25529f8e32fb85 47-48,53,78,85-87,108,115-116,123,132-134,138-140,181,191,193,197-198
+dawdler/dawdler-kafka-plug/dawdler-client-plug-kafka/README.md
+  s_1478890329169c::t_5bad176f2603f0 5,16,25,29,32
+dawdler/dawdler-kafka-plug/dawdler-client-plug-kafka/pom.xml
+  h_82990a09bc17b5 8
+dawdler/dawdler-mybatis-plug/dawdler-mybatis-core/pom.xml
+  h_82990a09bc17b5 8
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "c3a4c548b8d022009f84b2e842b5ba8f4ad4ad8f",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  },
+  "sessions": {
+    "s_0626080a7f0678": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_02f35bc85ffewWSJuknl67n9LB",
+        "model": "deepseek-v3-0324"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_02f35bc85ffewWSJuknl67n9LB",
+        "edit_kind": "file_edit",
+        "tool_use_id": "chatcmpl-tool-825bf736869aa980"
+      }
+    },
+    "s_1478890329169c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "7950fdbc-da26-4410-a3f7-62a0ea6806d0",
+        "model": "claude-opus-5"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "toolu_bdrk_01JASP3VNV5TvHiHBV7BCkRY",
+        "transcript_path": "/home/srchen/.claude/projects/-home-srchen-github-dawdler-series-jdk17-dawdler-series/7950fdbc-da26-4410-a3f7-62a0ea6806d0.jsonl",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_1ecc2641177b12": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_04dc00a27ffeDzl739YCHrbPb4",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_04dc00a27ffeDzl739YCHrbPb4",
+        "tool_use_id": "chatcmpl-tool-bad2c50416d14ec3",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_3ebe8dd6d8f50c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_04e033f71ffeSxVYJB0gPdc9a5",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "session_id": "ses_04e033f71ffeSxVYJB0gPdc9a5",
+        "tool_use_id": "chatcmpl-tool-903b84b8efc97c02"
+      }
+    },
+    "s_52436ba4867a4c": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_029e051b5ffeuZRWG9p7FYQxei",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-bcc3a10cf9ffea12",
+        "edit_kind": "file_edit",
+        "session_id": "ses_029e051b5ffeuZRWG9p7FYQxei"
+      }
+    },
+    "s_5c8773c60df65f": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_029e65b0effeULUxQbUuPHO3It",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool_use_id": "chatcmpl-tool-b9b247c67745a46d",
+        "session_id": "ses_029e65b0effeULUxQbUuPHO3It"
+      }
+    },
+    "s_633d48530b814a": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_029d2d7a7ffexX0ioQBJYFBp7a",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_029d2d7a7ffexX0ioQBJYFBp7a",
+        "edit_kind": "file_edit",
+        "tool_use_id": "chatcmpl-tool-8a05b02b4fb62155"
+      }
+    },
+    "s_774ea97b9523ec": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_029f21ac7ffenU3kmv82L0H7W2",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "session_id": "ses_029f21ac7ffenU3kmv82L0H7W2",
+        "tool_use_id": "chatcmpl-tool-8d41ae58220919ba",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_8b80e1f01c4440": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_000225fd9ffeoI6jMeOXBJRcc6",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-9bbec8fb95f2a2ed",
+        "edit_kind": "file_edit",
+        "session_id": "ses_000225fd9ffeoI6jMeOXBJRcc6"
+      }
+    },
+    "s_9139ed237d321e": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_ffc14e46fffeqwi8EuQrRbIdZ1",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-93434489761ae64c",
+        "session_id": "ses_ffc14e46fffeqwi8EuQrRbIdZ1",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_977afa898a263c": {
+      "agent_id": {
+        "tool": "opencode",
+        "id": "ses_04e35cef9ffeZbifgzDo8uJwKJ",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool_use_id": "chatcmpl-tool-9a97441125534d44",
+        "session_id": "ses_04e35cef9ffeZbifgzDo8uJwKJ",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_9b581c2adf2360": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_02d173f0affeXGeOpU6ABreQ59",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "session_id": "ses_02d173f0affeXGeOpU6ABreQ59",
+        "tool_use_id": "chatcmpl-tool-a5737b5e69d2bfa8"
+      }
+    }
+  }
+}
