@@ -307,7 +307,7 @@ dawdler-validator.js 是一套兼容后台验证表达式的前端框架.
 
 #### 6.1 使用方式
 
-引入dawdler-validator.js,内部提供了一个实例sir_validator(sir是为了纪念linuxsir,linuxsir当年就采用这个这个变量名).
+引入dawdler-validator.js,内部提供了一个实例sir_validator(sir是为了纪念linuxsir,linuxsir当年就采用这个变量名).
 
 可以重新声明一个对象
 

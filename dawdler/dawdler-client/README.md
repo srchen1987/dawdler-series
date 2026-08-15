@@ -27,7 +27,7 @@
  connection-num 连接数
  session-num 会话数
  serializer 序列化方式(1,jdk默认,2 kryo,支持扩展)
- user 帐号
+ user 账号
  password 密码
   -->
     </server-channel-group>

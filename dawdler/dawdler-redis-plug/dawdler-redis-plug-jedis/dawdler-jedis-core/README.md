@@ -58,7 +58,7 @@ timeout=10000
 database=0
 ```
 
-配置文件支持多环境、统一配置中心、加密、变量替换,参考[多环境配置](../../../doc/dawdler-profiles.active-README.md).
+配置文件支持多环境、统一配置中心、加密、变量替换,参考[多环境配置](../../../../doc/dawdler-profiles.active-README.md).
 
 ### 3. JedisInjector注解
 

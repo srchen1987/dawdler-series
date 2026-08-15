@@ -73,6 +73,6 @@ description: "This is ${app.name:DefaultApp} running on port 9090"
 
 变量替换的优先级 System.getProperty > System.getenv
 
-例子中的${app.name} 先从System.getProperty("app.name")中获取 如果获取不到则通过System.getenv("app.name")获取 如果获取不到则为${app.name}.
+例子中的`${app.name}` 先从System.getProperty("app.name")中获取 如果获取不到则通过System.getenv("app.name")获取 如果获取不到则为`${app.name}`.
 
-例子中的${API_URL:http://localhost:3000} 先从System.getProperty("API_URL")中获取 如果获取不到则通过System.getenv("API_URL")获取 如果获取不到则为http://localhost:3000.
+例子中的`${API_URL:http://localhost:3000}` 先从System.getProperty("API_URL")中获取 如果获取不到则通过System.getenv("API_URL")获取 如果获取不到则为`http://localhost:3000`.
