@@ -1,0 +1,16 @@
+changeLog.md
+  h_82990a09bc17b5 22-30
+README.md
+  h_82990a09bc17b5 3
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "05eff21098026e48270751a37b7d91fa7a4e3166",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  }
+}

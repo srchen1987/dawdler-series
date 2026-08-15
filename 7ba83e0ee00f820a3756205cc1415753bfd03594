@@ -1,0 +1,24 @@
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebConfigParser.java
+  h_82990a09bc17b5 68-74
+dawdler/pom.xml
+  h_82990a09bc17b5 245-274,470-474,762
+dawdler/dawdler-discovery-center/pom.xml
+  h_82990a09bc17b5 18
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 17
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-discovery-center-consul-core/src/main/java/club/dawdler/core/discovery/consul/ConsulDiscoveryCenter.java
+  h_82990a09bc17b5 30,68,80,153-156,158-161
+dawdler/dawdler-client-plug-web/src/main/java/club/dawdler/clientplug/web/conf/WebConfig.java
+  h_82990a09bc17b5 32-33,47-54
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "7ba83e0ee00f820a3756205cc1415753bfd03594",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  }
+}

@@ -1,0 +1,187 @@
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/src/main/java/module-info.java
+  s_71b8caa654ad66::t_70654f75314075 2
+  h_82990a09bc17b5 1,3-10
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/filter/GatewayFilter.java
+  s_c25bfe918013b3::t_66b3db5e0fe2cb 92
+  s_7e0b08814afaa1::t_d3ad0653b29541 106-107
+  s_7e0b08814afaa1::t_83a9c8a5960234 103
+  s_f7dd73fc3685f1::t_3e6b9c280403dd 41
+  s_7e0b08814afaa1::t_523e15b4e4a28e 101-102,105,108-109,111-114
+  s_7e0b08814afaa1::t_a2b98709029c0d 91,97-99,104,110
+  s_7e0b08814afaa1::t_740c2e419c98e6 128-132,142-165
+  s_7e0b08814afaa1::t_d90d46e1368f28 30
+  s_7e0b08814afaa1::t_55fb14badfdaa5 140-141
+  s_3576b0d40d38cd::t_e68105e54cd213 84
+dawdler/dawdler-discovery-center/dawdler-discovery-center-consul/dawdler-gateway-discovery-center-consul/pom.xml
+  h_82990a09bc17b5 1-25
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/Test.java
+  h_82990a09bc17b5 1-9,12-31
+  s_445315dee44a53::t_54d6d62091bc49 10-11
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/RouteScheme.java
+  h_82990a09bc17b5 1-146
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/config/RouteDefinition.java
+  h_82990a09bc17b5 1-76
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/HttpProxyHandler.java
+  s_88bdb2614b3571::t_ea16b31cfcc1cb 29
+  s_7e0b08814afaa1::t_233228a21338e0 210,216-222
+  s_7e0b08814afaa1::t_2ed687904dd106 130-131
+  s_88bdb2614b3571::t_36e2b9f47a9101 36
+  s_88bdb2614b3571::t_ce207ea28aa779 20
+  s_7e0b08814afaa1::t_fd193c25af7f41 37
+  s_7e0b08814afaa1::t_798254702295fa 140-141
+  s_7e0b08814afaa1::t_a59dcfcc1aca9d 59
+  s_88bdb2614b3571::t_c5f659759a6002 160,163
+  s_88bdb2614b3571::t_bc89922302d43c 149-154,156-157,161-162,164-167
+  s_88bdb2614b3571::t_160dc7d1ba8776 159
+  s_88bdb2614b3571::t_1deb61d8f3f641 64-70
+  h_82990a09bc17b5 1-19,21-22,24-28,30-31,35,38-43,45-46,48-49,52-58,60-63,72,123-125,127-129,132-139,158,179,208-209,211-215,223-234,240
+  s_88bdb2614b3571::t_5cac226c95f920 23
+  s_88bdb2614b3571::t_ca27ff6e547fcc 237-239
+  s_88bdb2614b3571::t_e1b2d1802f7ef3 148,172-178
+  s_88bdb2614b3571::t_4cb306906da6a1 32-34,44,47,50-51,71,73-122,126,142-147,155,169,171,180-207,235-236
+  s_88bdb2614b3571::t_202e19254f405a 168,170
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/pom.xml
+  h_82990a09bc17b5 1-22
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/listener/GatewayWebListener.java
+  h_82990a09bc17b5 36
+dawdler/dawdler-web-gateway/pom.xml
+  h_82990a09bc17b5 1-75
+dawdler/dawdler-discovery-center/dawdler-discovery-center-client-plug/src/main/java/module-info.java
+  h_82990a09bc17b5 1,3-9
+  s_79c9d0d400341e::t_f1feef2927f67a 2
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/handler/WebSocketProxyHandler.java
+  s_7e0b08814afaa1::t_2098541695de5d 55
+  s_7e0b08814afaa1::t_7e7ebd2179a659 31
+  s_7e0b08814afaa1::t_bef012930bac3a 76-97
+  s_7e0b08814afaa1::t_3ef3c98f5a1bd2 26
+  s_7e0b08814afaa1::t_5efb6e2bd1eba1 46
+dawdler/dawdler-web-gateway/src/main/java/club/dawdler/web/gateway/route/RouteResolver.java
+  s_bf1da8f018c1a3::t_9ab4a175b7504d 37-42,44,47-54
+  s_bf1da8f018c1a3::t_e742b6fcdd70e4 119-184
+  h_82990a09bc17b5 43,45-46,55-61,91,95-97
+  s_bf1da8f018c1a3::t_24780df23252b5 19-28
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.3",
+  "base_commit_sha": "8d8e00b268c06fbccea589457236d123384f6347",
+  "prompts": {},
+  "humans": {
+    "h_82990a09bc17b5": {
+      "author": "srchen1987 <suxuan696@163.com>"
+    }
+  },
+  "sessions": {
+    "s_3576b0d40d38cd": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1781252788218",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool": "github-copilot-tab"
+      }
+    },
+    "s_445315dee44a53": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1783389625208",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool": "github-copilot-tab"
+      }
+    },
+    "s_71b8caa654ad66": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1784100248479",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool": "github-copilot-tab"
+      }
+    },
+    "s_79c9d0d400341e": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1784104116432",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool": "github-copilot-tab",
+        "edit_kind": "file_edit"
+      }
+    },
+    "s_7e0b08814afaa1": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_144a8b749ffejJIcrNukAGQBuk",
+        "model": "deepseek-v3-0324"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool_use_id": "call_f0d69abe38064ea3aacce597",
+        "session_id": "ses_144a8b749ffejJIcrNukAGQBuk"
+      }
+    },
+    "s_88bdb2614b3571": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_136d41300ffemTUYA1S5eKZTEr",
+        "model": "deepseek-v3-0324"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "session_id": "ses_136d41300ffemTUYA1S5eKZTEr",
+        "tool_use_id": "call_d1e17cd696594291b59632cc"
+      }
+    },
+    "s_bf1da8f018c1a3": {
+      "agent_id": {
+        "tool": "kilo",
+        "id": "ses_0c59ebf59ffeBRkTDQBQmMkS8c",
+        "model": "glm-5.2"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool_use_id": "chatcmpl-tool-97c185e0e25ff6bc",
+        "session_id": "ses_0c59ebf59ffeBRkTDQBQmMkS8c"
+      }
+    },
+    "s_c25bfe918013b3": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1781252804854",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "edit_kind": "file_edit",
+        "tool": "github-copilot-tab"
+      }
+    },
+    "s_f7dd73fc3685f1": {
+      "agent_id": {
+        "tool": "github-copilot-tab",
+        "id": "ai_tab-1781252917039",
+        "model": "default"
+      },
+      "human_author": "srchen1987 <suxuan696@163.com>",
+      "custom_attributes": {
+        "tool": "github-copilot-tab",
+        "edit_kind": "file_edit"
+      }
+    }
+  }
+}
