@@ -19,7 +19,7 @@ package club.dawdler.distributed.transaction.repository;
 import java.util.List;
 import java.util.Map;
 
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.Serializer;
 import club.dawdler.distributed.transaction.context.DistributedTransactionContext;
 
 /**

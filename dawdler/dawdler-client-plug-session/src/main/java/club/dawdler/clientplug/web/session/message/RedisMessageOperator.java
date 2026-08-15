@@ -26,7 +26,7 @@ import club.dawdler.clientplug.web.session.SessionOperator;
 import club.dawdler.clientplug.web.session.http.DawdlerHttpSession;
 import club.dawdler.clientplug.web.session.store.RedisSessionStore;
 import club.dawdler.clientplug.web.session.store.SessionStore;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.Serializer;
 import club.dawdler.jedis.UnifiedJedisWarpper;
 import javax.servlet.http.HttpSessionEvent;
 import redis.clients.jedis.AbstractPipeline;
@@ -156,7 +156,7 @@ public class RedisMessageOperator implements MessageOperator {
 						try {
 							byte[] valueByte = sessionStore.getAttribute(sessionKey, attribute);
 							if (valueByte != null) {
-								session.setAttributeFromNotify(sessionKey, serializer.deserialize(valueByte));
+								session.setAttributeFromNotify(attribute, serializer.deserialize(valueByte));
 							}
 						} catch (Exception e) {
 							logger.error("", e);

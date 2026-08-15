@@ -71,6 +71,11 @@ public class ZkDiscoveryCenterClient {
 					return;
 				}
 				logger.info(gid + " " + action + " " + provider);
+				if (action == Action.ACTION_ADD) {
+					zkDiscoveryCenter.addToServiceListCache(gid, provider);
+				} else {
+					zkDiscoveryCenter.removeFromServiceListCache(gid, provider);
+				}
 				ConnectionPool cp = ConnectionPool.getConnectionPool(gid);
 				if (cp != null) {
 					cp.doChange(gid, action, provider);

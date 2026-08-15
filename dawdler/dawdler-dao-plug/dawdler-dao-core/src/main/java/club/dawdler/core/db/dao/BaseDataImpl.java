@@ -224,23 +224,24 @@ public class BaseDataImpl implements BaseData {
 	}
 
 	public long insertPrepareGetKey(String sql, Object... values) throws SQLException {
-		PreparedStatement ps = getWritePrepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-		int sum = values != null ? values.length : 0;
-		for (int i = 0; i < sum; i++) {
-			ps.setObject(i + 1, values[i]);
-		}
-		int i = ps.executeUpdate();
-		if (i == 0) {
-			ps.close();
-			return 0;
-		}
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 		long id = 0;
 		try {
+			ps = getWritePrepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			int sum = values != null ? values.length : 0;
+			for (int i = 0; i < sum; i++) {
+				ps.setObject(i + 1, values[i]);
+			}
+			int i = ps.executeUpdate();
+			if (i == 0) {
+				return 0;
+			}
 			rs = ps.getGeneratedKeys();
 			if (rs.next()) {
 				id = rs.getLong(1);
 			}
+			return id;
 		} finally {
 			try {
 				if (ps != null) {
@@ -256,13 +257,14 @@ public class BaseDataImpl implements BaseData {
 			}
 
 		}
-		return id;
 	}
 
 	public List<Map<String, Object>> queryListMaps(String sql) throws SQLException {
-		Statement st = getReadStatement();
-		ResultSet rs = st.executeQuery(sql);
+		Statement st = null;
+		ResultSet rs = null;
 		try {
+			st = getReadStatement();
+			rs = st.executeQuery(sql);
 			return DataAutomaticNewV2.buildMaps(rs);
 		} finally {
 			try {

@@ -34,5 +34,4 @@ public interface Metric {
 
 	void reset(long startTime);
 
-	long restStartTime();
 }

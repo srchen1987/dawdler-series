@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-discovery-center</artifactId>
-		<version>0.1.5-jdk1.8-RELEASES</version>
+		<version>0.1.6-jdk1.8-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-discovery-center-consul</artifactId>
 	<name>dawdler-discovery-center-consul</name>
@@ -14,5 +14,6 @@
 		<module>dawdler-discovery-center-consul-core</module>
 		<module>dawdler-server-plug-discovery-center-consul</module>
 		<module>dawdler-client-plug-discovery-center-consul</module>
+		<module>dawdler-gateway-discovery-center-consul</module>
 	</modules>
 </project>

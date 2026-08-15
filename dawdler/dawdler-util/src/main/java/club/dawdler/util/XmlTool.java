@@ -19,7 +19,6 @@ package club.dawdler.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.ErrorHandler;
@@ -67,54 +66,6 @@ public final class XmlTool {
 		}
 		return list;
 	}
-
-	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute, String defaultValue) {
-		Node attr = namedNodeMap.getNamedItem(attribute);
-		if (attr == null) {
-			return defaultValue;
-		}
-		return attr.getNodeValue();
-	}
-
-	public static int getElementAttribute2Int(NamedNodeMap namedNodeMap, String attribute, int defaultValue) {
-		Node attr = namedNodeMap.getNamedItem(attribute);
-		if (attr == null) {
-			return defaultValue;
-		}
-		try {
-			return Integer.parseInt(attr.getNodeValue().trim());
-		} catch (NumberFormatException e) {
-			return defaultValue;
-		}
-	}
-
-	public static boolean getElementAttribute2Boolean(NamedNodeMap namedNodeMap, String attribute,
-			boolean defaultValue) {
-		Node attr = namedNodeMap.getNamedItem(attribute);
-		if (attr == null) {
-			return defaultValue;
-		}
-		try {
-			return Boolean.parseBoolean(attr.getNodeValue().trim());
-		} catch (NumberFormatException e) {
-			return defaultValue;
-		}
-	}
-
-	public static long getElementAttribute2Long(NamedNodeMap namedNodeMap, String attribute, long defaultValue) {
-		Node attr = namedNodeMap.getNamedItem(attribute);
-		if (attr == null) {
-			return defaultValue;
-		}
-		try {
-			return Long.parseLong(attr.getNodeValue().trim());
-		} catch (NumberFormatException e) {
-			return defaultValue;
-		}
-	}
-
-	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute) {
-		return getElementAttribute(namedNodeMap, attribute, null);
-	}
+ 
 
 }

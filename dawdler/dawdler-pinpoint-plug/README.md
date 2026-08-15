@@ -34,7 +34,7 @@ hbase2.x 版本请下载:
 
 #### 3.1 下载pinpoint-dawdler-plugin
 
-[dawdler-plugin](https://raw.githubusercontent.com/srchen1987/pinpoint-plugins/2.5.2/pinpoint-dawdler-plugin-2.5.2.jar)  此包是构建后的dawdler-pinpoint-plug插件.
+[pinpoint-dawdler-plugin](https://raw.githubusercontent.com/srchen1987/pinpoint-plugins/2.5.2/pinpoint-dawdler-plugin-2.5.2.jar)  此包是构建后的dawdler-pinpoint-plug插件.
 
 #### 3.2 hbase1版本
 
@@ -48,6 +48,7 @@ mkdir -p BOOT-INF/lib/
 cp pinpoint-dawdler-plugin-2.5.2.jar BOOT-INF/lib/
 
 # tomcat10需要此jar包 如果用的tomcat9或之前请忽略此步骤
+# pinpoint-tomcat-plugin-2.5.2.jar 需从pinpoint发布包中获取
 cp pinpoint-tomcat-plugin-2.5.2.jar BOOT-INF/lib/
 
 #将插件加入到 pinpoint-web-boot-2.5.2.jar
@@ -76,15 +77,16 @@ mkdir -p BOOT-INF/lib/
 cp pinpoint-dawdler-plugin-2.5.2.jar BOOT-INF/lib/
 
 # tomcat10需要此jar包 如果用的tomcat9或之前请忽略此步骤
+# pinpoint-tomcat-plugin-2.5.2.jar 需从pinpoint发布包中获取
 cp pinpoint-tomcat-plugin-2.5.2.jar BOOT-INF/lib/
 
-#将插件加入到 pinpoint-web-boot-2.5.2.jar
+#将插件加入到 pinpoint-hbase2-web-boot-2.5.2.jar
 jar -uvf0 pinpoint-hbase2-web-boot-2.5.2.jar BOOT-INF/lib
 
 #如果是zip 请使用 
 zip -r0 pinpoint-hbase2-web-boot-2.5.2.jar BOOT-INF/lib 
 
-#将插件加入到 pinpoint-collector-boot-2.5.2.jar
+#将插件加入到 pinpoint-hbase2-collector-boot-2.5.2.jar
 jar -uvf0 pinpoint-hbase2-collector-boot-2.5.2.jar BOOT-INF/lib
 
 #如果是zip 请使用 
@@ -130,7 +132,7 @@ profiler.dawdler.bootstrap.main=club.dawdler.server.bootstrap.Bootstrap
 
 ```shell
 
-JAVA_OPTS="-javaagent:pinpoint-agent-2.5.2/pinpoint-bootstrap.jar -Dpinpoint.config=pinpoint-agent-2.5.2/pinpoint-root.config -Dpinpoint.agentId=user-api-01 -Dpinpoint.applicationName=user-api -Dpinpoint.applicationName=user-api";
+JAVA_OPTS="-javaagent:pinpoint-agent-2.5.2/pinpoint-bootstrap.jar -Dpinpoint.config=pinpoint-agent-2.5.2/pinpoint-root.config -Dpinpoint.agentId=user-api-01 -Dpinpoint.applicationName=user-api";
 
 
 ```

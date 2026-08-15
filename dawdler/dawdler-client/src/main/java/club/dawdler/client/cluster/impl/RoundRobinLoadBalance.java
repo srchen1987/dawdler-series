@@ -28,7 +28,7 @@ import club.dawdler.core.bean.RequestBean;
  * RoundRobin方式负载均衡实现
  */
 public class RoundRobinLoadBalance<T> extends AbstractLoadBalance<T, Integer> {
-	AtomicInteger index = new AtomicInteger(0);
+	private final AtomicInteger index = new AtomicInteger(0);
 
 	public RoundRobinLoadBalance() {
 		super("roundRobin");
@@ -37,17 +37,7 @@ public class RoundRobinLoadBalance<T> extends AbstractLoadBalance<T, Integer> {
 	@Override
 	public T doSelect(RequestBean request, List<T> connections) {
 		int size = connections.size();
-		return connections.get(Math.abs(index.get()) % size);
+		return connections.get((index.getAndIncrement() & Integer.MAX_VALUE) % size);
 	}
 
-	@Override
-	public RoundRobinLoadBalance<T> preSelect(RequestBean request) {
-		index.getAndIncrement();
-		return this;
-	}
-
-	@Override
-	public Integer getKey() {
-		return index.get();
-	}
 }

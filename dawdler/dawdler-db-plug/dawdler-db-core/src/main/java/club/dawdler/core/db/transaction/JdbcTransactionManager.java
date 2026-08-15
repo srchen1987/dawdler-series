@@ -152,7 +152,6 @@ public class JdbcTransactionManager implements TransactionManager {
 		if (defStatus.isSuspend()) {
 			throw new SQLException("the Transaction has Suspend.");
 		}
-		//
 		TransactionObject tranConn = defStatus.getTranConn();
 		defStatus.setSuspendConn(tranConn);
 		LocalConnectionFactory.removeCurrentConnectionHolder(dataSource);
@@ -178,7 +177,7 @@ public class JdbcTransactionManager implements TransactionManager {
 		TransactionObject tranObj = defStatus.getTranConn();
 		Isolation transactionIsolation = tranObj.getOriIsolationLevel();
 		if (transactionIsolation != null) {
-			tranObj.getHolder().getConnection().setTransactionIsolation(transactionIsolation.ordinal());
+			tranObj.getHolder().getConnection().setTransactionIsolation(transactionIsolation.value());
 		}
 		tranObj.getHolder().released();
 		tranObj.stopTransaction();
@@ -200,7 +199,7 @@ public class JdbcTransactionManager implements TransactionManager {
 		Isolation originalIsolationLevel = null;
 		if (defStatus.getIsolationLevel() != Isolation.DEFAULT) {
 			int isolationLevel = con.getTransactionIsolation();
-			holder.getConnection().setTransactionIsolation(defStatus.getIsolationLevel().ordinal());
+			holder.getConnection().setTransactionIsolation(defStatus.getIsolationLevel().value());
 			originalIsolationLevel = Isolation.valueOf(isolationLevel);
 		}
 		return new TransactionObject(holder, originalIsolationLevel, this.getDataSource());

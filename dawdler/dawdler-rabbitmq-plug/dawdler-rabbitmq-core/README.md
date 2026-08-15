@@ -27,9 +27,11 @@ pool.minIdle=0 #最小空闲数
 pool.maxIdle=4 #最大空闲数
 confirmSelect=true #开启confirm模式 一般配合ConfirmListener使用,参考RabbitProvider中publishIfFailedRetry方法
 channel.size=16 #每个connection中的channel数量
-channel.getTimeout=15000 #获取channel的超时事件(单位毫秒)
+channel.getTimeout=15000 #获取channel的超时时间(单位毫秒)
 ttlTime=5000 #消费者消费失败后重试的时间单位ms,需要配合@RabbitListener来使用 
 ```
+
+配置文件支持多环境、统一配置中心、加密、变量替换,参考[多环境配置](../../../doc/dawdler-profiles.active-README.md).
 
 ### 3. RabbitInjector注解
 

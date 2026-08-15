@@ -39,13 +39,11 @@ import club.dawdler.server.net.aio.session.SocketSession;
 public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChannel, DawdlerServerContext> {
 	private static final Logger logger = LoggerFactory.getLogger(AcceptorHandler.class);
 	private static final ReaderHandler readerHandler = new ReaderHandler();
-	private DawdlerServerContext dawdlerServerContext;
 
 	@Override
 	public void completed(AsynchronousSocketChannel channel, DawdlerServerContext dawdlerServerContext) {
-		this.dawdlerServerContext = dawdlerServerContext;
 		AsynchronousServerSocketChannel serverChannel = dawdlerServerContext.getAsynchronousServerSocketChannel();
-		config(channel);
+		config(channel, dawdlerServerContext);
 		SocketSession socketSession = null;
 		try {
 			socketSession = new SocketSession(channel);
@@ -72,7 +70,7 @@ public class AcceptorHandler implements CompletionHandler<AsynchronousSocketChan
 
 	}
 
-	public void config(AsynchronousSocketChannel channel) {
+	public void config(AsynchronousSocketChannel channel, DawdlerServerContext dawdlerServerContext) {
 		Server server = dawdlerServerContext.getServerConfig().getServer();
 		try {
 			channel.setOption(StandardSocketOptions.TCP_NODELAY, server.isTcpNoDelay());

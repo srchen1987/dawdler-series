@@ -16,6 +16,7 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.lang.reflect.Array;
 import java.util.regex.Matcher;
 
 /**
@@ -34,18 +35,22 @@ public class ContainRuleOperator extends RegexRuleOperator {
 		String[] valueArray = values.split(",");
 		String error = "必须包含[" + values + "]其中一项!";
 		if (value == null) {
-			return error;
+			return null;
 		}
-		if (value instanceof String) {
-			if (!validate(valueArray, value.toString())) {
-				return error;
-			}
-		} else if (value instanceof String[]) {
-			String[] valuesArrayTemp = (String[]) value;
-			for (String v : valuesArrayTemp) {
-				if (!validate(valueArray, v)) {
+		if (value.getClass().isArray()) {
+			int length = Array.getLength(value);
+			for (int i = 0; i < length; i++) {
+				Object element = Array.get(value, i);
+				if (element == null) {
+					continue;
+				}
+				if (!validate(valueArray, element.toString())) {
 					return error;
 				}
+			}
+		} else {
+			if (!validate(valueArray, value.toString())) {
+				return error;
 			}
 		}
 		return null;

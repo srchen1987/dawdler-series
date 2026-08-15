@@ -27,11 +27,12 @@ import club.dawdler.core.bean.RequestBean;
 import club.dawdler.core.bean.ResponseBean;
 import club.dawdler.core.compression.strategy.CompressionWrapper;
 import club.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
+import club.dawdler.core.exception.ServerBusyException;
 import club.dawdler.core.handler.IoHandler;
 import club.dawdler.core.handler.IoHandlerFactory;
 import club.dawdler.core.net.buffer.DawdlerByteBuffer;
 import club.dawdler.core.net.buffer.PoolBuffer;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.Serializer;
 import club.dawdler.core.service.bean.ServicesBean;
 import club.dawdler.core.service.processor.ServiceExecutor;
 import club.dawdler.core.thread.InvokeFuture;
@@ -76,54 +77,93 @@ public class DataProcessor implements Runnable {
 
 	}
 
+	public void rejectBusy() {
+		long seq = -1L;
+		try {
+			byte[] payload = data;
+			if (compress) {
+				payload = ThresholdCompressionStrategy.staticSingle().decompress(data);
+			}
+			Object obj = serializer.deserialize(payload);
+			if (!(obj instanceof RequestBean)) {
+				logger.warn("Reject busy but request is not a RequestBean, closing session. from={}",
+						socketSession.getRemoteAddress());
+				socketSession.close();
+				return;
+			}
+			seq = ((RequestBean) obj).getSeq();
+		} catch (Throwable e) {
+			logger.warn("Reject busy but deserialize failed, closing session. from={}",
+					socketSession.getRemoteAddress(), e);
+			socketSession.close();
+			return;
+		}
+		try {
+			ResponseBean busy = new ResponseBean();
+			busy.setSeq(seq);
+			busy.setCause(new ServerBusyException("server busy, please retry later"));
+			data = serializer.serialize(busy);
+			write();
+		} catch (Throwable e) {
+			logger.warn("Reject busy but write failed, closing session. from={}", socketSession.getRemoteAddress(),
+					e);
+			socketSession.close();
+		}
+	}
+
 	public void process() throws Exception {
 		String path = socketSession.getPath();
 		Service service = ServiceRoot.getService(path);
-		if (compress) {
-			data = ThresholdCompressionStrategy.staticSingle().decompress(data);
-		}
-		Object obj = serializer.deserialize(data);
-		if (ioHandler != null) {
-			ioHandler.messageReceived(socketSession, obj);
-		}
-		if (obj instanceof RequestBean) {
-			RequestBean requestBean = (RequestBean) obj;
-			if (!socketSession.isAuthored()) {
-				throw new IllegalAccessException("unauthorized access !");
-			}
-			String serviceName = requestBean.getServiceName();
-			ServicesBean servicesBean = null;
+		ClassLoader prevClassLoader = Thread.currentThread().getContextClassLoader();
+		try {
 			if (service != null) {
-				servicesBean = service.getServicesBean(serviceName);
+				Thread.currentThread().setContextClassLoader(service.getClassLoader());
 			}
-			ResponseBean responseBean = new ResponseBean();
-			responseBean.setSeq(requestBean.getSeq());
-			InvokeFuture<Object> invoke = new InvokeFuture<>();
-			socketSession.getFutures().put(requestBean.getSeq(), invoke);
-			try {
-				if (servicesBean != null) {
-					ServiceExecutor serviceExecutor = service.getServiceExecutor();
-					RequestWrapper requestWrapper = new RequestWrapper(requestBean, servicesBean, serviceExecutor,
-							socketSession);
-					service.getFilterProvider().doFilter(requestWrapper, responseBean);
-				} else {
-					responseBean.setCause(new ClassNotFoundException(serviceName + " in path :( " + path + " )"));
+			if (compress) {
+				data = ThresholdCompressionStrategy.staticSingle().decompress(data);
+			}
+			Object obj = serializer.deserialize(data);
+			if (ioHandler != null) {
+				ioHandler.messageReceived(socketSession, obj);
+			}
+			if (obj instanceof RequestBean) {
+				RequestBean requestBean = (RequestBean) obj;
+				if (!socketSession.isAuthored()) {
+					throw new IllegalAccessException("unauthorized access !");
 				}
-			} finally {
-				socketSession.getFutures().remove(requestBean.getSeq());
-			}
-			data = serializer.serialize(responseBean);
-			write();
-		} else if (obj instanceof AuthRequestBean) {
-			AuthRequestBean authRequest = (AuthRequestBean) obj;
-			AuthResponseBean authResponse = new AuthResponseBean();
-			ServerConfig serverConfig = socketSession.getDawdlerServerContext().getServerConfig();
-			boolean success = false;
-			try {
-				success = serverConfig.auth(authRequest.getPath(), authRequest.getUser(), authRequest.getPassword());
-			} catch (Exception e) {
-				logger.error("", e);
-			}
+				String serviceName = requestBean.getServiceName();
+				ServicesBean servicesBean = null;
+				if (service != null) {
+					servicesBean = service.getServicesBean(serviceName);
+				}
+				ResponseBean responseBean = new ResponseBean();
+				responseBean.setSeq(requestBean.getSeq());
+				InvokeFuture<Object> invoke = new InvokeFuture<>();
+				socketSession.getFutures().put(requestBean.getSeq(), invoke);
+				try {
+					if (servicesBean != null) {
+						ServiceExecutor serviceExecutor = service.getServiceExecutor();
+						RequestWrapper requestWrapper = new RequestWrapper(requestBean, servicesBean, serviceExecutor,
+								socketSession);
+						service.getFilterProvider().doFilter(requestWrapper, responseBean);
+					} else {
+						responseBean.setCause(new ClassNotFoundException(serviceName + " in path :( " + path + " )"));
+					}
+				} finally {
+					socketSession.getFutures().remove(requestBean.getSeq());
+				}
+				data = serializer.serialize(responseBean);
+				write();
+			} else if (obj instanceof AuthRequestBean) {
+				AuthRequestBean authRequest = (AuthRequestBean) obj;
+				AuthResponseBean authResponse = new AuthResponseBean();
+				ServerConfig serverConfig = socketSession.getDawdlerServerContext().getServerConfig();
+				boolean success = false;
+				try {
+					success = serverConfig.auth(authRequest.getPath(), authRequest.getUser(), authRequest.getPassword());
+				} catch (Exception e) {
+					logger.error("", e);
+				}
 			if (success) {
 				authResponse.setSuccess(true);
 				socketSession.setAuthored(true);
@@ -136,10 +176,13 @@ public class DataProcessor implements Runnable {
 			}
 			data = serializer.serialize(authResponse);
 			write();
-		} else {
-			throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
+			} else {
+				throw new IllegalAccessException("Invalid request!" + obj.getClass().getName());
+			}
+			data = null;
+		} finally {
+			Thread.currentThread().setContextClassLoader(prevClassLoader);
 		}
-		data = null;
 	}
 
 	public void write() throws Exception {
@@ -149,33 +192,34 @@ public class DataProcessor implements Runnable {
 			if (socketSession.isClose()) {
 				return;
 			}
-			DawdlerByteBuffer dawdlerByteBuffer = socketSession.getWriteBuffer();
-			ByteBuffer buffer = dawdlerByteBuffer.getByteBuffer();
-			int size = data.length + 1;
-			int capacity = size + 4;
-			PoolBuffer pool = null;
-			try {
-				if (capacity > SocketSession.CAPACITY) {
-					pool = PoolBuffer.selectPool(capacity);
-					if (pool == null) {
-						buffer = ByteBuffer.allocate(capacity);
-						logger.warn("The serialized object is too large.\t size :" + capacity);
-					} else {
-						dawdlerByteBuffer = pool.getByteBuffer();
-						buffer = dawdlerByteBuffer.getByteBuffer();
-					}
-				}
-				buffer.putInt(size);
-				buffer.put((byte) (compressionWrapper.isCompressed() ? headData | 1 : headData));
-				buffer.put(data);
-				buffer.flip();
-				socketSession.write(buffer);
-			} finally {
-				buffer.clear();
-				if (pool != null) {
-					pool.release(dawdlerByteBuffer);
+		DawdlerByteBuffer dawdlerByteBuffer = socketSession.getWriteBuffer();
+		ByteBuffer buffer = dawdlerByteBuffer.getByteBuffer();
+		int size = data.length + 1;
+		int capacity = size + 4;
+		PoolBuffer pool = null;
+		DawdlerByteBuffer pooledBuffer = null;
+		try {
+			if (capacity > SocketSession.CAPACITY) {
+				pool = PoolBuffer.selectPool(capacity);
+				if (pool == null) {
+					buffer = ByteBuffer.allocate(capacity);
+					logger.warn("The serialized object is too large.\t size :" + capacity);
+				} else {
+					pooledBuffer = pool.getByteBuffer();
+					buffer = pooledBuffer.getByteBuffer();
 				}
 			}
+			buffer.putInt(size);
+			buffer.put((byte) (compressionWrapper.isCompressed() ? headData | 1 : headData));
+			buffer.put(data);
+			buffer.flip();
+			socketSession.write(buffer);
+		} finally {
+			buffer.clear();
+			if (pooledBuffer != null) {
+				pool.release(pooledBuffer);
+			}
+		}
 		}
 	}
 }

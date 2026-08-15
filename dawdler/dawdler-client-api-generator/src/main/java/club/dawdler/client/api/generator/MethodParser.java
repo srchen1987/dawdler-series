@@ -59,6 +59,7 @@ import club.dawdler.clientplug.web.annotation.RequestMapping.RequestMethod;
 import club.dawdler.clientplug.web.annotation.RequestParam;
 import club.dawdler.clientplug.web.annotation.SessionAttribute;
 import club.dawdler.clientplug.web.upload.UploadFile;
+import club.dawdler.util.spring.MediaType;
 
 /**
  * @author jackson.song
@@ -66,8 +67,6 @@ import club.dawdler.clientplug.web.upload.UploadFile;
  * 方法解析器
  */
 public class MethodParser {
-	public static final String MIME_TYPE_TEXT_HTML = "text/html";
-	public static final String MIME_TYPE_JSON = "application/json";
 
 	private MethodParser() {
 	}
@@ -91,7 +90,7 @@ public class MethodParser {
 		}
 	};
 
-	public static void generateMethodParamCode(Map<String, Object> pathMap,
+	public static void generateMethodParamCode(Map<String, Map<String, Object>> pathMap,
 			Map<String, ClassStruct> classStructs, Map<String, Object> definitionsMap, JavaClass javaClass,
 			JavaAnnotation requestMappingAnnotation) {
 		List<JavaMethod> methods = javaClass.getMethods();
@@ -259,7 +258,7 @@ public class MethodParser {
 					Map<String, Map<String, SchemaData>> content = new HashMap<>();
 					Map<String, SchemaData> schemaDataMap = new HashMap<>();
 					schemaDataMap.put("schema", requestBodyData);
-					content.put(MIME_TYPE_JSON, schemaDataMap);
+					content.put(MediaType.APPLICATION_JSON_VALUE, schemaDataMap);
 					requestBodyMap.setContent(content);
 					elements.put("requestBody", requestBodyMap);
 				} else {
@@ -302,7 +301,7 @@ public class MethodParser {
 								methodParameterMap.put(parameterData.getName(), parameterData);
 								TypeDataParser.convertion(javaParameter.getType(), parameterData, classStructs,
 										methodParameterMap,
-										false, definitionsMap);
+										false, definitionsMap, in);
 							}
 						} else {
 							schema.setDescription(parameterData.getDescription());
@@ -389,7 +388,7 @@ public class MethodParser {
 							methodParameterMap.put(parameterData.getName(), parameterData);
 							TypeDataParser.convertion(javaParameter.getType(), parameterData, classStructs,
 									methodParameterMap,
-									false, definitionsMap);
+									false, definitionsMap, in);
 						}
 
 					}
@@ -439,10 +438,25 @@ public class MethodParser {
 					if (requestClassMappingArray != null) {
 						int i = 0;
 						for (String classMapping : requestClassMappingArray) {
-							pathMap.put(classMapping + mapping, createHttpMethod(httpMethods, elements, method, i++));
+							mapping = classMapping + mapping;
+							Map<String, Object> httpMethodMap = pathMap.get(mapping);
+							if (httpMethodMap != null) {
+								pathMap.put(mapping,
+										createHttpMethod(httpMethods, elements, method, mapping, httpMethodMap, i++));
+							} else {
+								pathMap.put(mapping,
+										createHttpMethod(httpMethods, elements, method, mapping, null, i++));
+							}
 						}
 					} else {
-						pathMap.put(mapping, createHttpMethod(httpMethods, elements, method, null));
+						Map<String, Object> httpMethodMap = pathMap.get(mapping);
+						if (httpMethodMap != null) {
+							pathMap.put(mapping,
+									createHttpMethod(httpMethods, elements, method, mapping, httpMethodMap, null));
+						} else {
+							pathMap.put(mapping, createHttpMethod(httpMethods, elements, method, mapping, null, null));
+						}
+
 					}
 
 				}
@@ -452,13 +466,16 @@ public class MethodParser {
 	}
 
 	private static Map<String, Object> createHttpMethod(List<String> httpMethods, Map<String, Object> elements,
-			JavaMethod method, Integer index) {
-		Map<String, Object> httpMethodMap = new LinkedHashMap<>();
+			JavaMethod method, String mapping, Map<String, Object> httpMethodMap, Integer index) {
+		if (httpMethodMap == null) {
+			httpMethodMap = new LinkedHashMap<>();
+		}
 		for (String httpMethod : httpMethods) {
 			Map<String, Object> elementsCopy = new LinkedHashMap<>();
 			elementsCopy.putAll(elements);
 			elementsCopy.put("operationId",
-					method.getName() + "Using" + httpMethod.toUpperCase() + (index == null ? "" : "_" + index));
+					method.getName() + "Using" + httpMethod.toUpperCase() + "_" + mapping
+							+ (index == null ? "" : "_" + index));
 			httpMethodMap.put(httpMethod, elementsCopy);
 		}
 		return httpMethodMap;
@@ -521,7 +538,7 @@ public class MethodParser {
 	}
 
 	public static Map<String, Object> getResponse(JavaType returnType, Map<String, Object> definitionsMap) {
-		String responseType = MIME_TYPE_JSON;
+		String responseType = MediaType.APPLICATION_JSON_VALUE;
 		Map<String, Object> response = new LinkedHashMap<>();
 		SchemaData schema = new SchemaData();
 		String genericFullyQualifiedName = returnType.getGenericFullyQualifiedName();
@@ -541,7 +558,7 @@ public class MethodParser {
 			} else {
 				schema.setType(type.getType());
 				schema.setFormat(type.getFormat());
-				responseType = MIME_TYPE_TEXT_HTML;
+				responseType = MediaType.TEXT_HTML_VALUE;
 			}
 		} else {
 			String $ref;

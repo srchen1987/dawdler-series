@@ -71,13 +71,10 @@ public class YAMLUtil {
 				inStream.close();
 			}
 		}
-		String content;
+		String content = SystemVariableUtil.resolveStringPlaceholders(sb.toString());
 		if (ConfigContentDecryptor.useDecrypt()) {
-			content = ConfigContentDecryptor.decryptAndReplaceTag(sb.toString());
-		} else {
-			content = sb.toString();
+			content = ConfigContentDecryptor.decryptAndReplaceTag(content);
 		}
-
 		return YAMLMapperFactory.getYAMLMapper().readValue(content, clazz);
 	}
 

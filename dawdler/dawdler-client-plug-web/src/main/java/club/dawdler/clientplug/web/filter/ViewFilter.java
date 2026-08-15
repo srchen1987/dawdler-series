@@ -18,6 +18,7 @@ package club.dawdler.clientplug.web.filter;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 import javax.servlet.Filter;
@@ -30,15 +31,16 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import club.dawdler.clientplug.web.conf.WebConfig;
 import club.dawdler.clientplug.web.conf.WebConfigParser;
 import club.dawdler.clientplug.web.handler.AbstractUrlHandler;
 import club.dawdler.clientplug.web.handler.AnnotationUrlHandler;
 import club.dawdler.clientplug.web.health.HealthCheck;
 import club.dawdler.clientplug.web.health.WebHealth;
-import club.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import club.dawdler.clientplug.web.plugs.PlugFactory;
 import club.dawdler.clientplug.web.wrapper.BodyReaderHttpServletRequestWrapper;
 import club.dawdler.util.JsonProcessUtil;
+import club.dawdler.util.spring.MediaType;
 
 /**
  * @author jackson.song
@@ -46,6 +48,8 @@ import club.dawdler.util.JsonProcessUtil;
  * 请求处理过滤器
  */
 public class ViewFilter implements Filter {
+	private static final String DEFAULT_CHARSET = StandardCharsets.UTF_8.name();
+
 	private AbstractUrlHandler annotationUrlHandler;
 	private WebHealth webHealth;
 	private String healthUri;
@@ -62,8 +66,8 @@ public class ViewFilter implements Filter {
 			return;
 		}
 		method = method.toUpperCase();
-		response.setCharacterEncoding("utf-8");
-		request.setCharacterEncoding("utf-8");
+		response.setCharacterEncoding(DEFAULT_CHARSET);
+		request.setCharacterEncoding(DEFAULT_CHARSET);
 		String uri = request.getRequestURI();
 		String contextPath = request.getContextPath() + "/";
 		String uriShort = uri.substring(uri.indexOf(contextPath) + contextPath.length() - 1);
@@ -71,7 +75,7 @@ public class ViewFilter implements Filter {
 			return;
 		}
 		String type = request.getHeader("Content-Type");
-		boolean isJson = type != null && AbstractDisplayPlug.MIME_TYPE_JSON.contains(type);
+		boolean isJson = type != null && MediaType.APPLICATION_JSON_UTF8_VALUE.contains(type);
 		if (isJson) {
 			request = new BodyReaderHttpServletRequestWrapper(request);
 		}
@@ -89,31 +93,41 @@ public class ViewFilter implements Filter {
 		ServletContext servletContext = config.getServletContext();
 		annotationUrlHandler = new AnnotationUrlHandler();
 		PlugFactory.initFactory(servletContext);
-		healthCheck = WebConfigParser.getWebConfig().getHealthCheck();
-		if (healthCheck != null && healthCheck.isCheck()) {
-			healthUri = healthCheck.getUri() == null ? "/health" : healthCheck.getUri();
-			webHealth = new WebHealth(servletContext.getContextPath(), healthCheck);
+		WebConfig webConfig = WebConfigParser.getWebConfig();
+		if (webConfig != null) {
+			healthCheck = webConfig.getHealthCheck();
+			if (healthCheck != null && healthCheck.isCheck()) {
+				healthUri = healthCheck.getUri() == null ? "/health" : healthCheck.getUri();
+				webHealth = new WebHealth(servletContext.getContextPath(), healthCheck);
+			}
 		}
 
 	}
 
 	@Override
 	public void destroy() {
-
+		if (webHealth != null) {
+			webHealth.shutdown();
+			webHealth = null;
+		}
 	}
 
 	private boolean isHealthCheck(String uriShort, HttpServletRequest request, HttpServletResponse response)
 			throws IOException {
 		if (healthUri != null && healthUri.equals(uriShort)) {
-			if (healthCheck.getUsername() != null && healthCheck.getPassword() != null) {
-				String header = request.getHeader("authorization");
-				if (header != null && header.startsWith("Basic ")) {
-					String base64String = header.substring(header.indexOf(" ") + 1);
-					String localBase64String = Base64.getEncoder()
-							.encodeToString((healthCheck.getUsername() + ":" + healthCheck.getPassword()).getBytes());
-					if (base64String.equals(localBase64String)) {
-						printHealth(response);
-						return true;
+			String username = healthCheck.getUsername();
+			String password = healthCheck.getPassword();
+			if (username != null || password != null) {
+				if (username != null && password != null) {
+					String header = request.getHeader("authorization");
+					if (header != null && header.startsWith("Basic ")) {
+						String base64String = header.substring(header.indexOf(" ") + 1);
+						String localBase64String = Base64.getEncoder()
+								.encodeToString((username + ":" + password).getBytes());
+						if (base64String.equals(localBase64String)) {
+							printHealth(response);
+							return true;
+						}
 					}
 				}
 				response.setStatus(401);
@@ -129,11 +143,11 @@ public class ViewFilter implements Filter {
 	}
 
 	private void printHealth(HttpServletResponse response) throws IOException {
-		response.setContentType(AbstractDisplayPlug.MIME_TYPE_JSON);
-		OutputStream out = response.getOutputStream();
-		JsonProcessUtil.beanToJson(out, webHealth.getServiceHealth());
-		out.flush();
-		out.close();
+		response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+		try (OutputStream out = response.getOutputStream()) {
+			JsonProcessUtil.beanToJson(out, webHealth.getServiceHealth());
+			out.flush();
+		}
 	}
 
 }

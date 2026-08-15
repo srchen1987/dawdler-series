@@ -22,16 +22,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import club.dawdler.core.serializer.SerializeDecider;
 import club.dawdler.distributed.transaction.context.DistributedTransactionContext;
 import club.dawdler.jedis.UnifiedJedisFactory;
+import club.dawdler.serializer.SerializeDecider;
 import club.dawdler.util.PropertiesUtil;
 import redis.clients.jedis.UnifiedJedis;
+import redis.clients.jedis.params.ScanParams;
+import redis.clients.jedis.resps.ScanResult;
 
 /**
  * @author jackson.song
@@ -78,7 +79,7 @@ public class RedisRepository extends TransactionRepository {
 			@Override
 			public Integer execute(UnifiedJedis unifiedJedis) {
 				byte[] globalKey = (PREFIX + transaction.getGlobalTxId()).getBytes();
-				unifiedJedis.hmset(globalKey, map);
+				unifiedJedis.hset(globalKey, map);
 				unifiedJedis.expire(globalKey, expireTime);
 				return 1;
 			}
@@ -91,15 +92,10 @@ public class RedisRepository extends TransactionRepository {
 			@Override
 			public Integer execute(UnifiedJedis unifiedJedis) throws Exception {
 				byte[] data = serializer.serialize(transaction);
-				Map<byte[], byte[]> map = unifiedJedis.hgetAll(transaction.getGlobalTxId().getBytes());
-				if (map != null) {
-					map.put(transaction.getBranchTxId().getBytes(), data);
-					byte[] globalKey = (PREFIX + transaction.getGlobalTxId()).getBytes();
-					unifiedJedis.hmset(globalKey, map);
-					unifiedJedis.expire(globalKey, expireTime);
-					return 1;
-				}
-				return 0;
+				byte[] globalKey = (PREFIX + transaction.getGlobalTxId()).getBytes();
+				unifiedJedis.hset(globalKey, transaction.getBranchTxId().getBytes(), data);
+				unifiedJedis.expire(globalKey, expireTime);
+				return 1;
 			}
 		});
 	}
@@ -109,7 +105,7 @@ public class RedisRepository extends TransactionRepository {
 		return execute(unifiedJedis, new JedisExecutor<Integer>() {
 			@Override
 			public Integer execute(UnifiedJedis unifiedJedis) {
-				unifiedJedis.hdel((PREFIX + globalTxId), branchTxId);
+				unifiedJedis.hdel((PREFIX + globalTxId).getBytes(), branchTxId.getBytes());
 				return 1;
 			}
 		});
@@ -120,7 +116,7 @@ public class RedisRepository extends TransactionRepository {
 		return execute(unifiedJedis, new JedisExecutor<Integer>() {
 			@Override
 			public Integer execute(UnifiedJedis unifiedJedis) {
-				unifiedJedis.del(globalTxId);
+				unifiedJedis.del((PREFIX + globalTxId));
 				return 1;
 			}
 		});
@@ -159,7 +155,7 @@ public class RedisRepository extends TransactionRepository {
 				}
 				if (!map.isEmpty()) {
 					byte[] globalKey = (PREFIX + globalTxId).getBytes();
-					unifiedJedis.hmset(globalKey, map);
+					unifiedJedis.hset(globalKey, map);
 					unifiedJedis.expire(globalKey, expireTime);
 				}
 				return 1;
@@ -174,17 +170,24 @@ public class RedisRepository extends TransactionRepository {
 			@Override
 			public List<DistributedTransactionContext> execute(UnifiedJedis unifiedJedis) throws Exception {
 				List<DistributedTransactionContext> list = new ArrayList<>();
-				Set<byte[]> mkeys = unifiedJedis.keys((PREFIX + "*").getBytes());
-				for (byte[] keys : mkeys) {
-					Collection<byte[]> collection = unifiedJedis.hgetAll(keys).values();
-					for (byte[] bs : collection) {
-						DistributedTransactionContext dc = (DistributedTransactionContext) serializer.deserialize(bs);
-						int now = (int) (System.currentTimeMillis() / 1000);
-						if ((now - dc.getAddtime()) > seconds) {
-							list.add(dc);
+				ScanParams scanParams = new ScanParams();
+				scanParams.match(PREFIX + "*");
+				scanParams.count(100);
+				String cursor = ScanParams.SCAN_POINTER_START;
+				do {
+					ScanResult<String> scanResult = unifiedJedis.scan(cursor, scanParams);
+					cursor = scanResult.getCursor();
+					for (String key : scanResult.getResult()) {
+						Collection<byte[]> collection = unifiedJedis.hgetAll(key.getBytes()).values();
+						for (byte[] bs : collection) {
+							DistributedTransactionContext dc = (DistributedTransactionContext) serializer.deserialize(bs);
+							int now = (int) (System.currentTimeMillis() / 1000);
+							if ((now - dc.getAddtime()) > seconds) {
+								list.add(dc);
+							}
 						}
 					}
-				}
+				} while (!ScanParams.SCAN_POINTER_START.equals(cursor));
 				return list;
 			}
 		});

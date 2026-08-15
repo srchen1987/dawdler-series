@@ -1,0 +1,99 @@
+# ============================================================================
+# 网关运行时选项 (options)
+# ----------------------------------------------------------------------------
+# 所有字段均已内置与历史硬编码值一致的默认值,省略 options 段或单个字段时
+# 行为与升级前完全一致.以下为完整字段说明,实际使用时按需配置即可.
+#
+# 命名约定: 键名须为 camelCase (与 Java 字段名逐字匹配).
+# ----------------------------------------------------------------------------
+options:
+    # ---- Vert.x 运行时线程模型 ----
+    vertx:
+        # 事件循环线程数; 0 = Vert.x 默认 (2 * CPU 核心数)
+        eventLoopPoolSize: 0
+        # worker 线程池大小; 0 = Vert.x 默认 (20)
+        # 阻塞的 Servlet I/O (请求体读取 / 响应体回写) 经 executeBlocking 在此池执行,
+        # 高并发下 20 偏小, 建议按并发量调大 (如 64 ~ 256)
+        workerPoolSize: 0
+
+    # ---- HTTP / HTTPS 反向代理 ----
+    # 注意单位: connectTimeout 为毫秒; idleTimeout / keepAliveTimeout 为秒
+    # (与 Vert.x HttpClientOptions 原生单位一致)
+    httpProxy:
+        # Servlet 异步上下文超时 (毫秒); 0 = 不超时
+        asyncTimeout: 30000
+        # 上游连接建立超时 (毫秒); 0 = Vert.x 默认
+        connectTimeout: 0
+        # 连接空闲超时 (秒); 0 = 不超时
+        idleTimeout: 0
+        # 连接池最大连接数; Vert.x 原生默认仅 5, 网关默认 200
+        # 压测 / 高并发应按目标在飞请求数调大 (如 500 ~ 1000); 0 = 回退 Vert.x 默认 (不推荐)
+        maxPoolSize: 200
+        # 是否启用 HTTP Keep-Alive
+        keepAlive: true
+        # Keep-Alive 超时 (秒); 0 = Vert.x 默认
+        keepAliveTimeout: 0
+        # HTTPS 是否信任所有证书 (跳过证书校验); 默认 false 走 JDK truststore
+        trustAll: false
+        # 请求体流式转发 buffer 大小 (字节)
+        requestBufferSize: 8192
+
+    # ---- WebSocket / wss 反向代理 ----
+    # 所有时间字段单位均为毫秒
+    webSocketProxy:
+        # 上游 TCP 连接等待超时 (毫秒)
+        connectTimeout: 12000
+        # 上游 WebSocket 握手等待超时 (毫秒)
+        handshakeTimeout: 15000
+        # NetClient 连接建立超时 (毫秒)
+        netConnectTimeout: 10000
+        # 握手响应头最大字节, 超限直接判定握手失败
+        maxHeaderSize: 65536
+        # wss 是否信任所有证书 (跳过证书校验)
+        trustAll: true
+        # 客户端 -> 上游读取 buffer 大小 (字节)
+        readBufferSize: 8192
+
+# ============================================================================
+# 路由配置
+# ============================================================================
+routes:
+    - id: user-facade
+      uri: lb://user-web-api
+      predicates:
+        - Path=/api-user/**
+      filters:
+        - StripPrefix=1
+    - id: user-facade1
+      uri: lb:ws://user-web-api
+      predicates:
+        - Path=/ws-api-user/**
+      filters:
+        - StripPrefix=1
+    - id: http-service
+      uri: http://httpbin.org
+      predicates:
+        - Path=/http-service/**
+      filters:
+        - StripPrefix=1
+
+    - id: https-service
+      uri: https://httpbin.org
+      predicates:
+        - Path=/https-service/**
+      filters:
+        - StripPrefix=1
+
+    - id: websocket-service
+      uri: ws://echo.websocket.org
+      predicates:
+        - Path=/ws-service/**
+      filters:
+        - StripPrefix=1
+
+    - id: secure-websocket-service
+      uri: wss://echo.websocket.org
+      predicates:
+        - Path=/wss-service/**
+      filters:
+        - StripPrefix=1

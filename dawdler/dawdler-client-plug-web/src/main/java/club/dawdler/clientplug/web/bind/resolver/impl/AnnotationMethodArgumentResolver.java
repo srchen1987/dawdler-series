@@ -18,9 +18,6 @@ package club.dawdler.clientplug.web.bind.resolver.impl;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,7 +27,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import club.dawdler.clientplug.web.annotation.CookieValue;
-import club.dawdler.clientplug.web.annotation.DateTimeFormat;
 import club.dawdler.clientplug.web.annotation.PathVariable;
 import club.dawdler.clientplug.web.annotation.QueryParam;
 import club.dawdler.clientplug.web.annotation.RequestAttribute;
@@ -42,7 +38,6 @@ import club.dawdler.clientplug.web.bind.param.RequestParamFieldData;
 import club.dawdler.clientplug.web.exception.ConvertException;
 import club.dawdler.clientplug.web.handler.ViewForward;
 import club.dawdler.clientplug.web.handler.WebValidateExecutor;
-import club.dawdler.clientplug.web.plugs.AbstractDisplayPlug;
 import club.dawdler.clientplug.web.util.CookieUtil;
 import club.dawdler.clientplug.web.validator.ValidateParser;
 import club.dawdler.clientplug.web.validator.entity.ControlField;
@@ -52,7 +47,7 @@ import club.dawdler.util.ClassUtil;
 import club.dawdler.util.DateUtil;
 import club.dawdler.util.JsonProcessUtil;
 import club.dawdler.util.JsonProcessUtil.TypeReferenceType;
-import club.dawdler.util.SunReflectionFactoryInstantiator;
+import club.dawdler.util.spring.MediaType;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -125,7 +120,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (type == String.class) {
 							target = requestWrapper.getBody();
 						} else if (request.getContentType() != null
-								&& AbstractDisplayPlug.MIME_TYPE_JSON.contains(request.getContentType())) {
+								&& MediaType.APPLICATION_JSON_UTF8_VALUE.contains(request.getContentType())) {
 							target = JsonProcessUtil.jsonToBean(requestWrapper.getBody(),
 									new TypeReferenceType(requestParamFieldData.getParameterType()));
 						}
@@ -133,7 +128,7 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 						if (type == String.class) {
 							target = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
 						} else if (request.getContentType() != null
-								&& AbstractDisplayPlug.MIME_TYPE_JSON.contains(request.getContentType())) {
+								&& MediaType.APPLICATION_JSON_UTF8_VALUE.contains(request.getContentType())) {
 							target = JsonProcessUtil.jsonToBean(request.getInputStream(),
 									new TypeReferenceType(requestParamFieldData.getParameterType()));
 						}
@@ -330,7 +325,8 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 					Collection<?> collection = (Collection<?>) value;
 					String[] array = new String[collection.size()];
 					int index = 0;
-					for (Object obj : collection) {	if (obj instanceof String) {
+					for (Object obj : collection) {
+						if (obj instanceof String) {
 							String valueString = (String) obj;
 							array[index] = valueString;
 						} else if (ClassUtil.isSimpleValueType(type)) {
@@ -353,11 +349,6 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 
 	}
 
-	public boolean matchType(Class<?> type) {
-	return !(type.getPackage().getName().startsWith("java.") || type.isInterface()
-				|| type.isAnonymousClass() || Modifier.isAbstract(type.getModifiers()));
-	}
-
 	public String[] getHeaders(HttpServletRequest request, String paramName) {
 		Enumeration<String> enums = request.getHeaders(paramName);
 		List<String> headers = new ArrayList<>();
@@ -367,110 +358,6 @@ public class AnnotationMethodArgumentResolver extends AbstractMethodArgumentReso
 			}
 		}
 		return headers.toArray(new String[0]);
-	}
-
-	public Object setField(Class<?> type, ViewForward viewForward, Object instance, String uri)
-			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
-			NoSuchMethodException, SecurityException {
-		if (!matchType(type) || type.isArray()) {
-			return instance;
-		}
-		if (instance == null) {
-			instance = SunReflectionFactoryInstantiator.newInstance(type);
-		}
-
-		do {
-			Field[] fields = type.getDeclaredFields();
-			setField(fields, type, viewForward, instance, uri);
-			type = type.getSuperclass();
-		} while (type != null && type != Object.class);
-
-		return instance;
-	}
-
-	public void setField(Field[] fields, Class<?> type, ViewForward viewForward, Object instance, String uri)
-			throws IllegalArgumentException, IllegalAccessException, InstantiationException, InvocationTargetException,
-			NoSuchMethodException, SecurityException {
-		for (Field field : fields) {
-			if ((Modifier.isFinal(field.getModifiers())) || Modifier.isStatic(field.getModifiers())) {
-				continue;
-			}
-			field.setAccessible(true);
-			String typeName = field.getName();
-			Class<?> fieldType = field.getType();
-			DateTimeFormat dateTimeFormat = fieldType.getAnnotation(DateTimeFormat.class);
-			String pattern = null;
-			DateTimeFormatter formatter = null;
-			if (dateTimeFormat != null) {
-				pattern = dateTimeFormat.pattern();
-				if (dateTimeFormat.iso() == DateTimeFormat.ISO.BASED) {
-					formatter = DateUtil.getISODateTimeFormatter(fieldType);
-				}
-			}
-			Object fieldValue = null;
-			if (String.class == fieldType) {
-				fieldValue = viewForward.paramString(typeName);
-			} else if (ClassUtil.isSimpleValueType(fieldType)) {
-				String value = viewForward.paramString(typeName);
-				if (value == null && type.isPrimitive()) {
-					throw new ConvertException(
-							uri + ":" + typeName + " value null can't convert " + fieldType.getName() + "!");
-				}
-				try {
-					fieldValue = ClassUtil.convert(value, fieldType);
-				} catch (Exception e) {
-					throw new ConvertException(
-							uri + ":" + typeName + " value " + value + " can't convert " + fieldType.getName() + "!");
-				}
-
-			} else if (String[].class == fieldType) {
-				fieldValue = viewForward.paramString(typeName);
-			} else if (ClassUtil.isSimpleArrayType(fieldType)) {
-				String[] values = viewForward.paramValues(typeName);
-				try {
-					fieldValue = ClassUtil.convertArray(values, fieldType);
-				} catch (Exception e) {
-					throw new ConvertException(uri + ":" + typeName + " value " + Arrays.toString(values)
-							+ " can't convert " + type.getName() + "!");
-				}
-				if (fieldValue == null && type.getComponentType().isPrimitive()) {
-					throw new ConvertException(
-							uri + ":" + typeName + " value null can't convert " + fieldType.getName() + "!");
-				}
-			} else if ((fieldValue = DateUtil.convertToDate(viewForward.paramString(typeName), pattern, type,
-					formatter)) != null) {
-			} else if (DateUtil.isDateTypeArray(fieldType)) {
-				fieldValue = DateUtil.convertToDateArray(viewForward.paramValues(typeName), pattern,
-						type.getComponentType(), formatter);
-			} else if (type.isArray() && type.getComponentType().isEnum()) {
-				String[] values = viewForward.paramValues(typeName);
-				if (values != null) {
-					fieldValue = ClassUtil.createEnumArray((Class<Enum>) type.getComponentType(), values);
-					try {
-					} catch (Exception e) {
-						throw new ConvertException(
-								uri + ":" + typeName + " value " + Arrays.toString(values) + " can't convert "
-										+ fieldType.getName() + "!");
-					}
-				}
-			} else if (type.isEnum()) {
-				String value = viewForward.paramString(typeName);
-				if (value != null) {
-					try {
-						fieldValue = Enum.valueOf((Class<Enum>) type, value);
-					} catch (Exception e) {
-						throw new ConvertException(
-								uri + ":" + typeName + " value " + value + " can't convert " + fieldType.getName()
-										+ "!");
-					}
-				}
-			} else {
-				field.set(instance, setField(fieldType, viewForward, null, uri));
-			}
-			if (fieldValue != null) {
-				field.set(instance, fieldValue);
-			}
-		}
 	}
 
 }

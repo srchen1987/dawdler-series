@@ -179,8 +179,12 @@ public class ClassUtil {
 			return null;
 		}
 		if (type == String.class) {
-			value = value.toString();
-		} else if (type == int.class || type == Integer.class) {
+			return (T) value;
+		}
+		if("".equals(value.toString())){
+			return null;
+		}
+		if (type == int.class || type == Integer.class) {
 			value = Integer.parseInt(value.toString());
 		} else if (type == long.class || type == Long.class) {
 			value = Long.parseLong(value.toString());

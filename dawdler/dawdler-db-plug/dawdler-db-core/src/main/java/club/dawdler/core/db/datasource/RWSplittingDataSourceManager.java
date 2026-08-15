@@ -51,7 +51,7 @@ public class RWSplittingDataSourceManager {
 	private final Map<String, MappingDecision> packagesAntPath = new LinkedHashMap<>();
 	private final DbConfig dbConfig;
 	private static final AntPathMatcher antPathMatcher = AntPathMatcher.DEFAULT_INSTANCE;
-	private static RWSplittingDataSourceManager instance;
+	private static volatile RWSplittingDataSourceManager instance;
 
 	public static final RWSplittingDataSourceManager getInstance() {
 		return instance;

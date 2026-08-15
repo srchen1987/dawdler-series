@@ -25,8 +25,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.xml.xpath.XPathExpressionException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.NamedNodeMap;
@@ -36,7 +34,6 @@ import club.dawdler.clientplug.web.validator.entity.ControlField;
 import club.dawdler.clientplug.web.validator.entity.ControlValidator;
 import club.dawdler.clientplug.web.validator.entity.ControlValidator.MappingFieldType;
 import club.dawdler.util.XmlObject;
-import club.dawdler.util.XmlTool;
 
 /**
  * @author jackson.song
@@ -47,12 +44,13 @@ public class ValidateResourceLoader {
 	private static final Logger logger = LoggerFactory.getLogger(ValidateResourceLoader.class);
 
 	public static ControlValidator getControlValidator(Class<?> controlClass) {
-		InputStream input = controlClass.getResourceAsStream(controlClass.getSimpleName() + "-validator.xml");
+		String path = controlClass.getSimpleName() + "-validator.xml";
+		InputStream input = controlClass.getResourceAsStream(path);
 		if (input != null) {
 			try {
 				return loadRules(input);
 			} catch (Exception e) {
-				logger.error("", e);
+				logger.error("{}",path, e);
 				return null;
 			} finally {
 				try {
@@ -77,16 +75,16 @@ public class ValidateResourceLoader {
 		return cv;
 	}
 
-	private static void parserGlobal(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
+	private static void parserGlobal(XmlObject xmlObject, ControlValidator cv) throws Exception {
 		cv.initGlobalControlFieldsCache();
 		List<Node> globalList = xmlObject.selectNodes("/ns:validator/ns:global-validator/ns:validator");
 		if (globalList != null && !globalList.isEmpty()) {
 			for (Node node : globalList) {
 				Map<String, ControlField> globals = new LinkedHashMap<String, ControlField>();
 				NamedNodeMap namedNodeMap = node.getAttributes();
-				String refgid = XmlTool.getElementAttribute(namedNodeMap, "refgid");
-				String ref = XmlTool.getElementAttribute(namedNodeMap, "ref");
-				String type = XmlTool.getElementAttribute(namedNodeMap, "type");
+				String refgid = XmlObject.getElementAttribute(namedNodeMap, "refgid");
+				String ref = XmlObject.getElementAttribute(namedNodeMap, "ref");
+				String type = XmlObject.getElementAttribute(namedNodeMap, "type");
 				if (refgid != null) {
 					Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
 					if (fieldGroup != null) {
@@ -107,22 +105,22 @@ public class ValidateResourceLoader {
 		}
 	}
 
-	private static void parserFields(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
+	private static void parserFields(XmlObject xmlObject, ControlValidator cv) throws Exception {
 		List<Node> fieldsList = xmlObject.selectNodes("/ns:validator/ns:validator-fields/ns:validator-field");
 		if (fieldsList != null) {
 			Map<String, ControlField> fields = new LinkedHashMap<String, ControlField>();
 			cv.setControlFields(fields);
 			for (Node node : fieldsList) {
 				NamedNodeMap namedNodeMap = node.getAttributes();
-				String name = XmlTool.getElementAttribute(namedNodeMap, "name");
-				String explain = XmlTool.getElementAttribute(namedNodeMap, "explain");
+				String name = XmlObject.getElementAttribute(namedNodeMap, "name");
+				String explain = XmlObject.getElementAttribute(namedNodeMap, "explain");
 				String rules = node.getTextContent().trim();
 				fields.put(name, new ControlField(name, rules, explain));
 			}
 		}
 	}
 
-	private static void parserMapping(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
+	private static void parserMapping(XmlObject xmlObject, ControlValidator cv) throws Exception {
 		List<Node> mappingList = xmlObject.selectNodes("/ns:validator/ns:validator-mappings/ns:validator-mapping");
 		if (mappingList != null && !mappingList.isEmpty()) {
 			for (Node mappingNode : mappingList) {
@@ -131,15 +129,15 @@ public class ValidateResourceLoader {
 				if (cv.getGlobalControlFields() != null && !cv.getGlobalControlFields().isEmpty()) {
 					mappings.putAll(cv.getGlobalControlFields());
 				}
-				String mname = XmlTool.getElementAttribute(namedNodeMap, "name");
-				String skip = XmlTool.getElementAttribute(namedNodeMap, "skip");
-				List<Node> vlist = XmlTool.getNodes(mappingNode.getChildNodes());
+				String mname = XmlObject.getElementAttribute(namedNodeMap, "name");
+				String skip = XmlObject.getElementAttribute(namedNodeMap, "skip");
+				List<Node> vlist = XmlObject.getNodes(mappingNode.getChildNodes());
 				if (vlist != null) {
 					for (Node validatorNode : vlist) {
 						NamedNodeMap validatorNamedNodeMap = validatorNode.getAttributes();
-						String refgid = XmlTool.getElementAttribute(validatorNamedNodeMap, "refgid");
-						String ref = XmlTool.getElementAttribute(validatorNamedNodeMap, "ref");
-						String type = XmlTool.getElementAttribute(validatorNamedNodeMap, "type");
+						String refgid = XmlObject.getElementAttribute(validatorNamedNodeMap, "refgid");
+						String ref = XmlObject.getElementAttribute(validatorNamedNodeMap, "ref");
+						String type = XmlObject.getElementAttribute(validatorNamedNodeMap, "type");
 						MappingFieldType mappingFieldType = ControlValidator.getMappingFieldType(type);
 						if (refgid != null) {
 							Map<String, ControlField> fieldGroup = cv.getFieldGroups().get(refgid);
@@ -180,7 +178,7 @@ public class ValidateResourceLoader {
 		}
 	}
 
-	private static void parserFieldsGroups(XmlObject xmlObject, ControlValidator cv) throws XPathExpressionException {
+	private static void parserFieldsGroups(XmlObject xmlObject, ControlValidator cv) throws Exception {
 		Map<String, ControlField> fields = cv.getControlFields();
 		List<Node> groupsList = xmlObject
 				.selectNodes("/ns:validator/ns:validator-fields-groups/ns:validator-fields-group");
@@ -190,14 +188,14 @@ public class ValidateResourceLoader {
 			Map<String, Map<String, String>> relation = new LinkedHashMap<String, Map<String, String>>();
 			for (Node groupsNode : groupsList) {
 				Map<String, ControlField> gfields = new LinkedHashMap<>();
-				String gid = XmlTool.getElementAttribute(groupsNode.getAttributes(), "id");
+				String gid = XmlObject.getElementAttribute(groupsNode.getAttributes(), "id");
 				groups.put(gid, gfields);
-				List<Node> validatorList = XmlTool.getNodes(groupsNode.getChildNodes());
+				List<Node> validatorList = XmlObject.getNodes(groupsNode.getChildNodes());
 				if (validatorList != null) {
 					for (Node node : validatorList) {
 						NamedNodeMap namedNodeMap = node.getAttributes();
-						String agid = XmlTool.getElementAttribute(namedNodeMap, "refgid");
-						String aref = XmlTool.getElementAttribute(namedNodeMap, "ref");
+						String agid = XmlObject.getElementAttribute(namedNodeMap, "refgid");
+						String aref = XmlObject.getElementAttribute(namedNodeMap, "ref");
 						if (agid != null) {
 							Map<String, String> rmap = relation.get(gid);
 							if (rmap == null) {

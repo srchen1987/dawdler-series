@@ -30,8 +30,8 @@ import club.dawdler.clientplug.web.session.message.MessageOperator;
 import club.dawdler.clientplug.web.session.message.RedisMessageOperator;
 import club.dawdler.clientplug.web.session.store.RedisSessionStore;
 import club.dawdler.clientplug.web.session.store.SessionStore;
-import club.dawdler.core.serializer.SerializeDecider;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.SerializeDecider;
+import club.dawdler.serializer.Serializer;
 import club.dawdler.jedis.UnifiedJedisFactory;
 import club.dawdler.jedis.UnifiedJedisWarpper;
 import club.dawdler.util.PropertiesUtil;
@@ -249,7 +249,8 @@ public class DawdlerSessionFilter implements Filter {
 				String token = null;
 				if (supportHead) {
 					token = request.getHeader(tokenName);
-				} else if (supportParam) {
+				}
+				if (token == null && supportParam) {
 					token = request.getParameter(tokenName);
 				}
 				if (token != null) {

@@ -19,7 +19,7 @@
 
 项目中存在session-redis.properties与session-redis-uat.properties两个配置文件,如果启动参数中有设置 ```-Ddawdler.profiles.active=uat``` 则读取到的是session-redis-uat.properties.
 
-本地配置文件优先与统一配置中心的配置.
+本地配置文件优先于统一配置中心的配置.
 
 ## 3. 已支持的组件配置文件列表
 
@@ -37,7 +37,7 @@
 
 ## 4. 其他组件的配置
 
-系统中实现的组件配置全部支持多环境配置、统一配置中心、加密功能.
+系统中实现的组件配置全部支持多环境配置、统一配置中心、加密、变量替换功能.
 
 如redis、es、rabbitmq、kafka.
 
@@ -57,3 +57,22 @@ JedisOperator jedisOperator;
 KafkaProvider kafkaProvider;
 }
 ```
+
+## 5. 变量替换
+
+在所有的xml、properties、yml、统一配置中心中都支持变量替换
+
+用yml来举例:
+
+```yml
+name: "${app.name}"
+port: 9090
+url: "${API_URL:http://localhost:3000}"
+description: "This is ${app.name:DefaultApp} running on port 9090"
+```
+
+变量替换的优先级 System.getProperty > System.getenv
+
+例子中的${app.name} 先从System.getProperty("app.name")中获取 如果获取不到则通过System.getenv("app.name")获取 如果获取不到则为${app.name}.
+
+例子中的${API_URL:http://localhost:3000} 先从System.getProperty("API_URL")中获取 如果获取不到则通过System.getenv("API_URL")获取 如果获取不到则为http://localhost:3000.

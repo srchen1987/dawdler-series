@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>club.dawdler</groupId>
+		<artifactId>dawdler-i18n-plug</artifactId>
+		<version>0.1.6-jdk1.8-RELEASES</version>
+	</parent>
+	<artifactId>dawdler-server-plug-i18n</artifactId>
+	<name>dawdler-server-plug-i18n</name>
+	<dependencies>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-server</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-i18n-core</artifactId>
+		</dependency>
+	</dependencies>
+</project>

@@ -65,6 +65,8 @@ pool.testOnCreate=false
 pool.testOnReturn=false
 ```
 
+配置文件支持多环境、统一配置中心、加密、变量替换,参考[多环境配置](../../../doc/dawdler-profiles.active-README.md).
+
 ### 3. EsInjector注解
 
 用于注入EsOperator,EsOperator的方法参考ElasticsearchClient类官方文档.
@@ -77,16 +79,16 @@ pool.testOnReturn=false
 
 [dawdler-client-plug-es 实现web端注入功能.](../dawdler-client-plug-es/README.md)
 
-### 4. 非dawdler架构下的使用方式
+### 4. 在非dawdler架构下的使用方式
 
 ```java
-//通过调用ElasticSearchClientFactory的getInstance方法
+//通过调用ElasticSearchClientFactory的getInstance方法获取工厂实例
 
-public ElasticSearchClientFactory(String fileName);
+public static ElasticSearchClientFactory getInstance(String fileName) throws Exception;
 
-//通过调用此方法来获取ElasticSearchClientFactory ,fileName是不包含后缀.properties.
+//fileName是不包含后缀.properties的配置文件名.
 
-//ElasticSearchClientFactory.getElasticSearchClient()可获取ElasticSearchClient对象,通过ElasticSearchClient对象调用getRestHighLevelClient可获取getElasticsearchClient对象对es进行操作,当调用结束时需调用ElasticSearchClient的close方法进行资源回收.
+//通过工厂实例调用getElasticSearchClient方法获取ElasticSearchClient对象,再通过ElasticSearchClient对象的getElasticsearchClient方法获取ElasticsearchClient对象对es进行操作,当调用结束时需调用ElasticSearchClient的close方法将对象归还连接池.
 
 //例如：传入fileName为myEs,则需要在项目的classPath中创建配置文件myEs.properties.
 
@@ -95,13 +97,3 @@ public ElasticSearchClientFactory(String fileName);
 注意：ElasticSearchClientFactory在客户端和服务器端中运行无需手动关闭,dawdler会自动进行关闭相关资源.
 
 在非dawdler架构下使用需要调用 ElasticSearchClientFactory.shutdownAll(); 来释放资源.
-
-### 5. 吐槽ES客户端的设计
-
-1、7.15之后不推荐使用RestHighLevelClient 吐槽RestHighLevelClient类的设计
-
-RestHighLevelClient类很多方法被设置成了final,特别是close这种方法,导致开发者无法应用cglib这种动态代理的模式来拦截close方法(因为没有实现接口更没办法应用jdk的动态代理来实现).如果想重写close方法就必须用wrapper这种方式,又不能继承这个RestHighLevelClient,不伦不类这个词比较适合这种情况.
-
-2、7.15之后推荐使用elasticsearch-java
-
-ElasticsearchClient类没有实现接口 无法通过jdk来做动态代理.

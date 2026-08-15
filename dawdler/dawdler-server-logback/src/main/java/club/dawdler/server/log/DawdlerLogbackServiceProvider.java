@@ -22,7 +22,7 @@ import java.util.Map;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.IMarkerFactory;
 import org.slf4j.helpers.BasicMarkerFactory;
-import org.slf4j.helpers.Util;
+import org.slf4j.helpers.Reporter;
 import org.slf4j.spi.MDCAdapter;
 import org.slf4j.spi.SLF4JServiceProvider;
 
@@ -72,13 +72,13 @@ public class DawdlerLogbackServiceProvider implements SLF4JServiceProvider {
 				try {
 					new DawdlerLogbackContextInitializer(context).autoConfig();
 				} catch (JoranException je) {
-					Util.report("Failed to auto configure default logger context", je);
+					 Reporter.error("Failed to auto configure default logger context", je);
 				}
 				if (!StatusUtil.contextHasStatusListener(context)) {
 					StatusPrinter.printInCaseOfErrorsOrWarnings(context);
 				}
 			} catch (Exception t) { // see LOGBACK-1159
-				Util.report("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
+				Reporter.error("Failed to instantiate [" + LoggerContext.class.getName() + "]", t);
 			}
 			context.setMDCAdapter(mdcAdapter);
 			context.start();

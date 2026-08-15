@@ -16,6 +16,8 @@
  */
 package club.dawdler.clientplug.web.validator.operators;
 
+import java.lang.reflect.Array;
+
 /**
  * @author jackson.song
  * @version V1.0
@@ -38,14 +40,11 @@ public class NotEmptyRuleOperator extends StringRuleOperator {
 		boolean flag = true;
 		if (value instanceof String) {
 			flag = !((String) value).trim().equals("");
-		} else if (value instanceof String[]) {
-			String[] values = (String[]) value;
-			for (String v : values) {
-				if (v == null) {
-					flag = false;
-					break;
-				}
-				if (v.trim().equals("")) {
+		} else if (value.getClass().isArray()) {
+			int length = Array.getLength(value);
+			for (int i = 0; i < length; i++) {
+				Object element = Array.get(value, i);
+				if (element == null || (element instanceof String && ((String) element).trim().equals(""))) {
 					flag = false;
 					break;
 				}
