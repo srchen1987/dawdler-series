@@ -15,3 +15,7 @@ zookeeper实现注册中心的服务端模块,具体参考 [dawdler-server-plug-
 ### 3. dawdler-client-plug-discovery-center-zookeeper
 
 zookeeper实现注册中心的客户端模块,具体参考 [dawdler-client-plug-discovery-center-zookeeper](dawdler-client-plug-discovery-center-zookeeper/README.md)
+
+### 4. dawdler-gateway-discovery-center-zookeeper
+
+zookeeper实现注册中心的网关模块,具体参考 [dawdler-gateway-discovery-center-zookeeper](dawdler-gateway-discovery-center-zookeeper/README.md)

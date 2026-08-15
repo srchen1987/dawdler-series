@@ -27,10 +27,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import club.dawdler.core.discoverycenter.DiscoveryCenter;
-import club.dawdler.util.PropertiesUtil;
 import com.ecwid.consul.transport.TLSConfig;
 import com.ecwid.consul.transport.TLSConfig.KeyStoreInstanceType;
 import com.ecwid.consul.v1.ConsulClient;
@@ -41,8 +41,9 @@ import com.ecwid.consul.v1.agent.model.NewService.Check;
 import com.ecwid.consul.v1.agent.model.Self.Config;
 import com.ecwid.consul.v1.catalog.CatalogServiceRequest;
 import com.ecwid.consul.v1.catalog.model.CatalogService;
-import com.ecwid.consul.v1.health.HealthServicesRequest;
-import com.ecwid.consul.v1.health.model.Check.CheckStatus;
+
+import club.dawdler.core.discoverycenter.DiscoveryCenter;
+import club.dawdler.util.PropertiesUtil;
 
 /**
  * @author jackson.song
@@ -64,6 +65,7 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 	private ConsulRawClient consulRawClient;
 	private TLSConfig config;
 	private String token;
+	private static final Map<String, List<String>> SERVICE_DATA_CACHE = new ConcurrentHashMap<>();
 
 	private String healthCheckType = HealthCheckTypes.TCP.name;
 
@@ -147,20 +149,18 @@ public class ConsulDiscoveryCenter implements DiscoveryCenter {
 
 	@Override
 	public List<String> getServiceList(String path) throws Exception {
-		HealthServicesRequest healthServicesRequest = HealthServicesRequest.newBuilder().setToken(token)
-				.setPassing(true).build();
-		Response<List<com.ecwid.consul.v1.health.model.HealthService>> response = client.getHealthServices(path,
-				healthServicesRequest);
-		List<String> serviceList = new ArrayList<>();
-		response.getValue().forEach((c) -> {
-			c.getChecks().forEach((check) -> {
-				if (!check.getServiceId().equals("") && check.getStatus() == CheckStatus.PASSING) {
-					serviceList.add(check.getServiceId());
-				}
-			});
-		});
+		List<String> serviceListCache = SERVICE_DATA_CACHE.get(path);
+		if (serviceListCache != null) {
+			return serviceListCache;
+		}
+		List<String> serviceList = new CopyOnWriteArrayList<>();
+		List<String> preList = SERVICE_DATA_CACHE.putIfAbsent(path, serviceList);
+		if (preList != null) {
+			return preList;
+		}
 		return serviceList;
 	}
+
 
 	@Override
 	public boolean addProvider(String path, String value, Map<String, Object> attributes) throws Exception {

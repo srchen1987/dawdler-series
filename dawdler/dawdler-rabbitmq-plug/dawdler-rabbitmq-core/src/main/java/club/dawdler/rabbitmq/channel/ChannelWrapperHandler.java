@@ -45,7 +45,12 @@ public class ChannelWrapperHandler implements InvocationHandler {
 		String name = method.getName();
 		if (name.equals("close")) {
 			synchronized (channels) {
-				channels.addLast((Channel) proxy);
+				if(proxy instanceof Channel) {
+					Channel channel = (Channel) proxy;
+					if(channel.isOpen()){
+						channels.addLast((Channel) proxy);
+					}
+				}
 			}
 			semaphore.release();
 			return null;

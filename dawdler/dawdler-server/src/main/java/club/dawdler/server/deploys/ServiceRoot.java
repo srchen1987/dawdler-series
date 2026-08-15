@@ -121,8 +121,8 @@ public class ServiceRoot extends AbstractServiceRoot {
 					System.err.println(deployData.deployName + " startup failed!");
 					Service service = SERVICES.remove(deployData.deployName);
 					if (service != null) {
-						service.status(Status.DOWN);
 						service.cause(e);
+						service.status(Status.DOWN);
 						service.prepareStop();
 						service.stop();
 					}

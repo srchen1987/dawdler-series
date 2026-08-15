@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.1.5-jdk25-RELEASES</version>
+		<version>0.1.6-jdk25-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-load-web-dependencies</artifactId>
 	<name>dawdler-load-web-dependencies</name>
@@ -186,6 +186,18 @@
 			<dependency>
 				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-service-core</artifactId>
+				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-kafka-core</artifactId>
+				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-i18n-core</artifactId>
 				<version>${dawdler.build.version}</version>
 				<scope>provided</scope>
 			</dependency>

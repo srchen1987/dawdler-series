@@ -18,7 +18,7 @@ package club.dawdler.cache;
 
 import java.time.Duration;
 
-import club.dawdler.core.serializer.SerializeDecider.SerializeType;
+import club.dawdler.serializer.SerializeDecider.SerializeType;
 
 /**
  * @author jackson.song

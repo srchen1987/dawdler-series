@@ -55,9 +55,16 @@ public interface CustomComponentInjector {
 	}
 
 	/**
-	 * 扫描包路径
+	 * 扫描包路径(只对本InJector生效)
 	 */
 	default String[] scanLocations() {
+		return null;
+	}
+
+	/**
+	 * 扫描包路径(对所有的InJector生效,等同于Web和Server端的packagePaths)
+	 */
+	default String[] scanLocationsForAllInjector() {
 		return null;
 	}
 	

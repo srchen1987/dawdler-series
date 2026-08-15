@@ -8,6 +8,8 @@ module dawdler.client.plug.discovery.center.consul {
 	requires dawdler.discovery.center.core;
 	requires dawdler.client;
 	requires dawdler.discovery.center.consul.core;
+	requires dawdler.discovery.center.client.plug;
+	requires dawdler.client.plug.web;
 	requires consul.api;
 
 	uses ComponentLifeCycle;

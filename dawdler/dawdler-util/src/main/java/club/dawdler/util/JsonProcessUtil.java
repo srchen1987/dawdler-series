@@ -50,7 +50,7 @@ public class JsonProcessUtil {
 	static {
 		MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 		NON_EMPTY_MAPPER.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-		NON_EMPTY_MAPPER.setSerializationInclusion(Include.NON_NULL);
+		NON_EMPTY_MAPPER.setDefaultPropertyInclusion(Include.NON_NULL);
 		JavaTimeModule javaTimeModule = new JavaTimeModule();
 
 		javaTimeModule.addSerializer(LocalDate.class,
@@ -187,7 +187,7 @@ public class JsonProcessUtil {
 	}
 
 	public static String ignoreNullBeanToJson(Object obj) {
-		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		try {
 			return mapper.writeValueAsString(obj);
 		} catch (Exception e) {
@@ -196,7 +196,7 @@ public class JsonProcessUtil {
 	}
 
 	public static byte[] ignoreNullBeanToJsonByte(Object obj) {
-		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		try {
 			return mapper.writeValueAsBytes(obj);
 		} catch (Exception e) {
@@ -212,7 +212,7 @@ public class JsonProcessUtil {
 
 	public static void ignoreNullBeanToJson(OutputStream out, Object obj)
 			throws JsonGenerationException, JsonMappingException, IOException {
-		ObjectMapper mapper = JsonProcessUtil.getMapperInstance();
+		ObjectMapper mapper = JsonProcessUtil.getNonEmptyMapperInstance();
 		mapper.writeValue(out, obj);
 	}
 

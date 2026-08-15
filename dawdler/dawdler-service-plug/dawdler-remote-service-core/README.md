@@ -36,9 +36,9 @@ public @interface RemoteService {
 public @interface RemoteServiceAssistant {
     boolean async() default false;// 在客户端有效,是否为异步执行.
 
-    int timeout() default 120;// 在调用端有效,调用远程服务的超时事件,单位为秒,默认120秒.
+    int timeout() default 120;// 在调用端有效,调用远程服务的超时时间,单位为秒,默认120秒.
 
-    boolean fuzzy() default true;// 在调用端有效,是否模糊匹配方法,默认为true,模糊匹配根据方法名与参数个数进行匹配,非模糊匹配会根据方法名与参数类型进行精确匹配.模糊匹配效率高,如果一个服务实现类中存在相同方法相同参数个数时需要设置此参数为true.
+    boolean fuzzy() default true;// 在调用端有效,是否模糊匹配方法,默认为true,模糊匹配根据方法名与参数个数进行匹配,非模糊匹配会根据方法名与参数类型进行精确匹配.模糊匹配效率高,如果一个服务实现类中存在相同方法相同参数个数时需要设置此参数为false以精确匹配.
 
     String loadBalance() default "roundRobin";// 调用端有效,负载方式
 }

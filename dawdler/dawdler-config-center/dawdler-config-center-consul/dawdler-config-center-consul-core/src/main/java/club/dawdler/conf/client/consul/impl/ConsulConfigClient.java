@@ -45,7 +45,6 @@ import club.dawdler.conf.cache.ConfigMappingDataCache;
 import club.dawdler.conf.cache.PathMappingTargetCache;
 import club.dawdler.conf.client.ConfigClient;
 import club.dawdler.core.thread.DefaultThreadFactory;
-import club.dawdler.util.ConfigContentDecryptor;
 
 /**
  * @author jackson.song
@@ -66,7 +65,7 @@ public class ConsulConfigClient implements ConfigClient {
 	 */
 	private String separator;
 	private String token;
-	private int waitTime;
+	private long waitTime;
 	private AtomicBoolean destroyed = new AtomicBoolean();
 	private static Logger logger = LoggerFactory.getLogger(ConsulConfigClient.class);
 	private Map<String, Object> conf;
@@ -80,7 +79,7 @@ public class ConsulConfigClient implements ConfigClient {
 		separator = (String) conf.get("separator");
 		token = (String) conf.get("token");
 		try {
-			waitTime = Integer.parseInt(conf.get("wait-time").toString());
+			waitTime = Long.parseLong(conf.get("wait-time").toString());
 		} catch (Exception e) {
 			waitTime = DEFAULT_WAIT_TIME;
 		}
@@ -127,7 +126,7 @@ public class ConsulConfigClient implements ConfigClient {
 							Response<List<String>> responseKeys = client.getKVKeysOnly(watchKey, separator, token,
 									new QueryParams(waitTime, index));
 							if (responseKeys == null) {
-								Thread.sleep(waitTime * DEFAULT_WAIT_TIME);
+								Thread.sleep(waitTime);
 								logger.error("not found watchKey {} !", watchKey);
 								continue;
 							}
@@ -194,14 +193,6 @@ public class ConsulConfigClient implements ConfigClient {
 			}
 			ConfigData configData = ConfigDataCache.getConfigData(key);
 			if (configData == null || configData.getVersion() != getValue.getModifyIndex()) {
-				if (ConfigContentDecryptor.useDecrypt()) {
-					try {
-						value = ConfigContentDecryptor.decryptAndReplaceTag(value);
-					} catch (Exception e) {
-						logger.error("", e);
-						continue;
-					}
-				}
 				ConfigDataCache.addConfigData(key, value, getValue.getModifyIndex());
 				ConfigMappingDataCache.removeMappingData(key);
 				PathMappingTargetCache.rebindAllByPath(key);

@@ -37,7 +37,7 @@ server-conf.xml 是dawdler服务器的核心配置文件.
   <user username="global_user" password="global_password" />
   <user username="global_user_1" password="global_password" />
  </global-auth>
- <!-- 全局通用的用户,user节点中username属性第是用户名,password是密码. -->
+ <!-- 全局通用的用户,user节点中username属性是用户名,password是密码. -->
  <module-auth>
   <module name="user-service">
    <user username="user1" password="user1password" />
@@ -47,7 +47,7 @@ server-conf.xml 是dawdler服务器的核心配置文件.
   <module name="order-service">
    <user username="order_user1" password="user1password" />
   </module>
- </module-auth><!-- 模块下的用户,module中的name指定模块名,user节点中username属性第是用户名,password是密码 -->
+ </module-auth><!-- 模块下的用户,module中的name指定模块名,user节点中username属性是用户名,password是密码 -->
 
  <health-check check="on" scheme="https" port="19001" backlog="0" username="jackson" password="jackson.song">
  <elasticSearch check="on" />
@@ -94,15 +94,15 @@ virtualThread 是否启用虚拟线程
 
 ##### global-auth节点
 
-用于配置整个dawdler服务器的全局用户,user节点中username属性第是用户名,password是密码,全局用户可以用于客户端调用本服务器内部部署的所有服务的认证.
+用于配置整个dawdler服务器的全局用户,user节点中username属性是用户名,password是密码,全局用户可以用于客户端调用本服务器内部部署的所有服务的认证.
 
 ##### module-auth节点
 
- 用户配置指定模块下的用户,module中的name指定模块名,user节点中username属性第是用户名,password是密码.
+ 用于配置指定模块下的用户,module中的name指定模块名,user节点中username属性是用户名,password是密码.
 
 ##### health-check节点
 
-用于做健康检测的配置,可以为k8s的liveness,readiness提供该服务.如果设有带(Basic Authentication)的认证,请通过head头加入Authorization头信息.
+用于做健康检测的配置,可以为k8s的liveness,readiness提供该服务.如果设置了(Basic Authentication)的认证,请通过header加入Authorization头信息.
 
 check="on" 为开启健康检测,off为关闭.关闭后不会开启http/https服务.
 
@@ -273,7 +273,7 @@ public class InjectServiceCreateListener implements DawdlerServiceCreateListener
 
 ### 6. aop使用方式
 
-dawdler的aop支持采用aspjectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
+dawdler的aop支持采用aspectJ来实现,没有采用Load-time weaving和cglib(spring的实现)方式.
 
 适用范围：dawdler服务端部署的所有类
 

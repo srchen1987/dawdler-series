@@ -16,6 +16,7 @@
  */
 package club.dawdler.jedis;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
@@ -29,7 +30,6 @@ import redis.clients.jedis.ClientSetInfoConfig;
 import redis.clients.jedis.ConnectionPoolConfig;
 import redis.clients.jedis.DefaultJedisClientConfig;
 import redis.clients.jedis.HostAndPort;
-import redis.clients.jedis.HostAndPortMapper;
 import redis.clients.jedis.JedisClientConfig;
 import redis.clients.jedis.Protocol;
 import redis.clients.jedis.RedisClient;
@@ -70,7 +70,7 @@ public final class UnifiedJedisFactory {
 						ConnectionPoolConfig.DEFAULT_MAX_IDLE,
 				ps);
 		long maxWaitMillis = PropertiesUtil.getIfNullReturnDefaultValueLong("pool.maxWaitMillis",
-				ConnectionPoolConfig.DEFAULT_MAX_WAIT_MILLIS, ps);
+				ConnectionPoolConfig.DEFAULT_MAX_WAIT.toMillis(), ps);
 				int maxTotal = PropertiesUtil.getIfNullReturnDefaultValueInt("pool.maxTotal",
 				ConnectionPoolConfig.DEFAULT_MAX_TOTAL,
 				ps);
@@ -85,7 +85,7 @@ public final class UnifiedJedisFactory {
 		poolConfig.setMaxTotal(maxTotal);
 		poolConfig.setMaxIdle(maxIdle);
 		poolConfig.setMinIdle(minIdle);
-		poolConfig.setMaxWaitMillis(maxWaitMillis);
+		poolConfig.setMaxWait(Duration.ofMillis(maxWaitMillis));
 		poolConfig.setTestOnBorrow(testOnBorrow);
 		poolConfig.setTestOnCreate(testOnCreate);
 		poolConfig.setTestOnReturn(testOnReturn);
@@ -112,16 +112,13 @@ public final class UnifiedJedisFactory {
 		} else {
 			String host = ps.getProperty("host");
 			int port = PropertiesUtil.getIfNullReturnDefaultValueInt("port", 5672, ps);
-			HostAndPortMapper hostAndPortMapper = (hostAndPort) -> {
-				return hostAndPort;
-			};
-			hostAndPortMapper.getHostAndPort(new HostAndPort(host, port));
+			HostAndPort hostAndPort = new HostAndPort(host, port);
 			JedisClientConfig jedisClientConfig = DefaultJedisClientConfig.builder()
-					.hostAndPortMapper(hostAndPortMapper).socketTimeoutMillis(timeout).connectionTimeoutMillis(timeout).
+					.socketTimeoutMillis(timeout).connectionTimeoutMillis(timeout).
 					clientName(clientName).clientSetInfoConfig(clientSetInfoConfig).blockingSocketTimeoutMillis(blockingSocketTimeoutMillis)
 					.database(database).user(user).password(password)
 					.build();
-			unifiedJedis = RedisClient.builder().poolConfig(poolConfig).clientConfig(jedisClientConfig).build();
+			unifiedJedis = RedisClient.builder().poolConfig(poolConfig).clientConfig(jedisClientConfig).hostAndPort(hostAndPort).build();
 		}
 		return new UnifiedJedisWarpper(unifiedJedis, database, failoverTryCount, failoverIntervalMillis);
 	}

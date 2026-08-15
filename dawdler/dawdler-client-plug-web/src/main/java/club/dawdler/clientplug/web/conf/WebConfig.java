@@ -29,6 +29,8 @@ import club.dawdler.clientplug.web.health.HealthCheck;
  */
 public class WebConfig {
 
+	private WebApplicationConfig webApplicationConfig;
+	
 	private List<Map<String, String>> dataSourceExpressions;
 
 	private List<Map<String, String>> decisions;
@@ -41,6 +43,15 @@ public class WebConfig {
 	 * 扫描路径
 	 */
 	private Set<String> packagePaths;
+
+	public WebApplicationConfig getWebApplicationConfig() {
+		return webApplicationConfig;
+	}
+
+	public void setWebApplicationConfig(WebApplicationConfig webApplicationConfig) {
+		this.webApplicationConfig = webApplicationConfig;
+	}
+
 
 	public List<Map<String, String>> getDataSourceExpressions() {
 		return dataSourceExpressions;

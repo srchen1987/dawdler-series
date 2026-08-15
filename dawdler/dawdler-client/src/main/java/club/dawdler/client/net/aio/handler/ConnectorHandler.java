@@ -39,15 +39,33 @@ public class ConnectorHandler implements CompletionHandler<Void, SocketSession> 
 	private static final Logger logger = LoggerFactory.getLogger(ConnectorHandler.class);
 	private static final ReaderHandler readerHandler = new ReaderHandler();
 	private static final IoHandler ioHandler = IoHandlerFactory.getHandler();
+	private static volatile CertificateOperator cachedCertificate;
+	private static final Object CERT_LOCK = new Object();
+
+	private static CertificateOperator getCertificate() {
+		if (cachedCertificate == null) {
+			synchronized (CERT_LOCK) {
+				if (cachedCertificate == null) {
+					ClientConfig clientConfig = ClientConfigParser.getClientConfig();
+					if (clientConfig != null) {
+						cachedCertificate = new CertificateOperator(clientConfig.getCertificatePath());
+					}
+				}
+			}
+		}
+		return cachedCertificate;
+	}
 
 	@Override
 	public void completed(Void result, SocketSession session) {
-		ClientConfig clientConfig = ClientConfigParser.getClientConfig();
-		if (clientConfig == null) {
+		if (ClientConfigParser.getClientConfig() == null) {
+			return;
+		}
+		CertificateOperator certificate = getCertificate();
+		if (certificate == null) {
 			return;
 		}
 		Thread.currentThread().setContextClassLoader(session.getClassLoader());
-		CertificateOperator certificate = new CertificateOperator(clientConfig.getCertificatePath());
 		try {
 			session.init();
 		} catch (Exception e) {

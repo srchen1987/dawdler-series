@@ -15,3 +15,7 @@ consul实现注册中心的服务端模块,具体参考 [dawdler-server-plug-dis
 ### 3. dawdler-client-plug-discovery-center-consul
 
 consul实现注册中心的客户端模块,具体参考 [dawdler-client-plug-discovery-center-consul](dawdler-client-plug-discovery-center-consul/README.md)
+
+### 4. dawdler-gateway-discovery-center-consul
+
+consul实现注册中心的网关模块,具体参考 [dawdler-gateway-discovery-center-consul](dawdler-gateway-discovery-center-consul/README.md)

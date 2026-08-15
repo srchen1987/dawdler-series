@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.1.5-jdk25-RELEASES</version>
+		<version>0.1.6-jdk25-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-web-dependencies</artifactId>
 	<name>dawdler-web-dependencies</name>
@@ -32,16 +32,21 @@
 				<artifactId>dawdler-client-plug-validator</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>club.dawdler</groupId>
-				<artifactId>dawdler-client-plug-session</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>club.dawdler</groupId>
-				<artifactId>dawdler-client-plug-velocity</artifactId>
-				<version>${dawdler.build.version}</version>
-			</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-client-plug-session</artifactId>
+			<version>${dawdler.build.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-client-plug-jwt</artifactId>
+			<version>${dawdler.build.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>club.dawdler</groupId>
+			<artifactId>dawdler-client-plug-velocity</artifactId>
+			<version>${dawdler.build.version}</version>
+		</dependency>
 			<dependency>
 				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-client-plug-config-center-consul</artifactId>
@@ -125,6 +130,21 @@
 			<dependency>
 				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-client-plug-load</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-client-plug-kafka</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-client-i18n</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-client-plug-i18n</artifactId>
 				<version>${dawdler.build.version}</version>
 			</dependency>
 			<dependency>

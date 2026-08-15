@@ -16,13 +16,9 @@
  */
 package club.dawdler.server.deploys;
 
-import java.io.InputStream;
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -37,6 +33,7 @@ import org.slf4j.LoggerFactory;
 import club.dawdler.core.annotation.ListenerConfig;
 import club.dawdler.core.component.injector.CustomComponentInjectionProvider;
 import club.dawdler.core.component.injector.CustomComponentInjector;
+import club.dawdler.core.component.injector.CustomComponentOperator;
 import club.dawdler.core.component.resource.ComponentLifeCycle;
 import club.dawdler.core.component.resource.ComponentLifeCycleProvider;
 import club.dawdler.core.health.Health;
@@ -46,9 +43,6 @@ import club.dawdler.core.health.ServiceHealth;
 import club.dawdler.core.health.Status;
 import club.dawdler.core.loader.DeployClassLoader;
 import club.dawdler.core.order.OrderData;
-import club.dawdler.core.scan.DawdlerComponentScanner;
-import club.dawdler.core.scan.component.reader.ClassStructureParser;
-import club.dawdler.core.scan.component.reader.ClassStructureParser.ClassStructure;
 import club.dawdler.core.service.ServicesManager;
 import club.dawdler.core.service.bean.ServicesBean;
 import club.dawdler.core.service.processor.DefaultServiceExecutor;
@@ -60,9 +54,7 @@ import club.dawdler.server.filter.FilterProvider;
 import club.dawdler.server.listener.DawdlerListenerProvider;
 import club.dawdler.server.listener.DawdlerServiceListener;
 import club.dawdler.server.service.conf.ServicesConfig;
-import club.dawdler.util.SunReflectionFactoryInstantiator;
 import club.dawdler.util.spring.antpath.AntPathMatcher;
-import club.dawdler.util.spring.antpath.Resource;
 
 /**
  * @author jackson.song
@@ -81,7 +73,7 @@ public abstract class AbstractService implements Service {
 	private ServiceExecutor serviceExecutor = defaultServiceExecutor;
 	protected AntPathMatcher antPathMatcher;
 	protected volatile String status;
-	protected Throwable cause;
+	protected volatile Throwable cause;
 	protected HealthCheck healthCheck;
 	protected ExecutorService healthCheckExecutor;
 
@@ -119,62 +111,12 @@ public abstract class AbstractService implements Service {
 			}
 		}
 
-		Map<String, Resource> removeDuplicates = new LinkedHashMap<>();
-
 		List<OrderData<CustomComponentInjector>> customComponentInjectorList = CustomComponentInjectionProvider
 				.getInstance(deployName).getCustomComponentInjectors();
-		Set<String> packagePaths = servicesConfig.getPackagePaths();
-		if (packagePaths != null) {
-			for (String packageInClasses : packagePaths) {
-				Resource[] resources = DawdlerComponentScanner.getClasses(packageInClasses);
-				for (Resource resource : resources) {
-					removeDuplicates.putIfAbsent(resource.getURL().toString(), resource);
-				}
-			}
-		}
 
-		Collection<Resource> resources = removeDuplicates.values();
-		for (Resource resource : resources) {
-			InputStream input = null;
-			try {
-				input = resource.getInputStream();
-				ClassStructure classStructure = ClassStructureParser.parser(input);
-				if (classStructure != null) {
-					for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
-						CustomComponentInjector customComponentInjector = data.getData();
-						inject(resource, classStructure, customComponentInjector);
-					}
-				}
-			} finally {
-				if (input != null) {
-					input.close();
-				}
-			}
-		}
+		Set<String> packagePaths = servicesConfig.getPackagePaths() != null ? servicesConfig.getPackagePaths() : new HashSet<>();
+		CustomComponentOperator.scanAndInject(classLoader, customComponentInjectorList, packagePaths);
 
-		for (OrderData<CustomComponentInjector> data : customComponentInjectorList) {
-			CustomComponentInjector customComponentInjector = data.getData();
-			String[] scanLocations = customComponentInjector.scanLocations();
-			if (scanLocations != null) {
-				for (String scanLocation : scanLocations) {
-					Resource[] resourcesArray = DawdlerComponentScanner.getClasses(scanLocation);
-					for (Resource resource : resourcesArray) {
-						InputStream input = null;
-						try {
-							input = resource.getInputStream();
-							ClassStructure classStructure = ClassStructureParser.parser(input);
-							inject(resource, classStructure, customComponentInjector);
-						} finally {
-							if (input != null) {
-								input.close();
-							}
-						}
-					}
-				}
-			}
-		}
-
-		removeDuplicates.clear();
 		servicesManager.getDawdlerServiceCreateProvider().order();
 		servicesManager.fireCreate();
 		dawdlerListenerProvider.order();
@@ -199,11 +141,11 @@ public abstract class AbstractService implements Service {
 						} catch (InterruptedException e) {
 							Thread.currentThread().interrupt();
 						}
-						try {
-							orderData.getData().contextInitialized(dawdlerContext);
-						} catch (Exception e) {
-							throw new RuntimeException(e);
-						}
+					}
+					try {
+						orderData.getData().contextInitialized(dawdlerContext);
+					} catch (Exception e) {
+						throw new RuntimeException(e);
 					}
 				}, "listenerThread").start();
 			} else {
@@ -214,46 +156,6 @@ public abstract class AbstractService implements Service {
 		for (int i = 0; i < lifeCycleList.size(); i++) {
 			OrderData<ComponentLifeCycle> lifeCycle = lifeCycleList.get(i);
 			lifeCycle.getData().afterInit();
-		}
-	}
-
-	private void inject(Resource resource, ClassStructure classStructure,
-			CustomComponentInjector customComponentInjector) throws Throwable {
-		boolean match = false;
-		Class<?>[] matchTypes = customComponentInjector.getMatchTypes();
-		if (matchTypes != null) {
-			for (Class<?> matchType : matchTypes) {
-				if (classStructure.getInterfaces().contains(matchType.getName())) {
-					match = true;
-					break;
-				}
-				if (classStructure.getClassName().equals(matchType.getName())
-						|| classStructure.getSuperClasses().contains(matchType.getName())) {
-					match = true;
-					break;
-				}
-			}
-		}
-		if (!match) {
-			final Set<? extends Class<? extends Annotation>> annotationSet = customComponentInjector
-					.getMatchAnnotations();
-			if (annotationSet != null) {
-				for (Class<? extends Annotation> annotationType : annotationSet) {
-					if (classStructure.getAnnotationNames().contains(annotationType.getName())) {
-						match = true;
-						break;
-					}
-				}
-			}
-		}
-		if (match) {
-			Class<?> clazz = classLoader.findClassForDawdler(classStructure.getClassName(), resource,
-					customComponentInjector.useAop(), customComponentInjector.storeVariableNameByASM());
-			if (customComponentInjector.isInject() && !classStructure.isAbstract() && !classStructure.isAnnotation()
-					&& !classStructure.isInterface()) {
-				Object target = SunReflectionFactoryInstantiator.newInstance(clazz);
-				customComponentInjector.inject(clazz, target);
-			}
 		}
 	}
 
@@ -369,7 +271,11 @@ public abstract class AbstractService implements Service {
 		if (status.equals(Status.DOWN)) {
 			ServiceHealth serviceHealth = new ServiceHealth(deployName);
 			serviceHealth.setStatus(status);
-			serviceHealth.addComponent("error", cause.getClass().getName() + ":" + cause.getMessage());
+			if (cause != null) {
+				serviceHealth.addComponent("error", cause.getClass().getName() + ":" + cause.getMessage());
+			} else {
+				serviceHealth.addComponent("error", "unknown error");
+			}
 			return serviceHealth;
 		}
 		resetContextClassLoader();

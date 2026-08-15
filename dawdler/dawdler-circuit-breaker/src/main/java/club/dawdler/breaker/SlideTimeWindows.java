@@ -40,6 +40,17 @@ public class SlideTimeWindows {
 	private final ReentrantLock lock = new ReentrantLock();
 
 	public SlideTimeWindows(int intervalInMs, int windowsCount) {
+		if (intervalInMs <= 0) {
+			throw new IllegalArgumentException("intervalInMs must be positive: " + intervalInMs);
+		}
+		if (windowsCount <= 0) {
+			throw new IllegalArgumentException("windowsCount must be positive: " + windowsCount);
+		}
+		if (intervalInMs % windowsCount != 0) {
+			throw new IllegalArgumentException(
+					"intervalInMs must be divisible by windowsCount: intervalInMs=" + intervalInMs
+							+ ", windowsCount=" + windowsCount);
+		}
 		this.windowsCount = windowsCount;
 		this.intervalInMs = intervalInMs;
 		windowLengthInMs = intervalInMs / windowsCount;
@@ -49,37 +60,44 @@ public class SlideTimeWindows {
 	public Metric currentMetrics() {
 		long now = JVMTimeProvider.currentTimeMillis();
 		int index = getCurrentIdx(now);
-		while (true) {
-			Metric metrics = array.get(index);
-			long start = now - now % windowLengthInMs;
-			if (metrics == null) {
-				metrics = new MetricBase(start);
-				if (array.compareAndSet(index, null, metrics)) {
-					return metrics;
-				}
-				return array.get(index);
+		long start = now - now % windowLengthInMs;
+
+		Metric metrics = array.get(index);
+		if (metrics != null && metrics.getStartTime() == start) {
+			return metrics;
+		}
+
+		lock.lock();
+		try {
+			now = JVMTimeProvider.currentTimeMillis();
+			index = getCurrentIdx(now);
+			start = now - now % windowLengthInMs;
+
+			metrics = array.get(index);
+
+			if (metrics != null && metrics.getStartTime() == start) {
+				return metrics;
 			}
 
-			if (metrics.getStartTime() == start)
-				return metrics;
-			else {
-				if (lock.tryLock()) {
-					try {
-						metrics.reset(start);
-						return metrics;
-					} finally {
-						lock.unlock();
-					}
-				}
+			if (metrics == null) {
+				metrics = new MetricBase(start);
+				array.set(index, metrics);
+			} else if (start > metrics.getStartTime()) {
+				metrics.reset(start);
 			}
+
+			return metrics;
+		} finally {
+			lock.unlock();
 		}
 	}
 
 	public List<Metric> listCurrentMetrics() {
+		long currentTimeMillis = JVMTimeProvider.currentTimeMillis();
 		List<Metric> list = new ArrayList<>();
 		for (int i = 0; i < array.length(); i++) {
 			Metric mb = array.get(i);
-			if (mb == null || JVMTimeProvider.currentTimeMillis() - intervalInMs > mb.getStartTime()) {
+			if (mb == null || currentTimeMillis - intervalInMs > mb.getStartTime()) {
 				continue;
 			}
 			list.add(mb);

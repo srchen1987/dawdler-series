@@ -26,6 +26,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
@@ -35,7 +36,7 @@ import club.dawdler.core.handler.IoHandler;
 import club.dawdler.core.handler.IoHandlerFactory;
 import club.dawdler.core.net.buffer.BufferFactory;
 import club.dawdler.core.net.buffer.DawdlerByteBuffer;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.Serializer;
 import club.dawdler.core.thread.InvokeFuture;
 import club.dawdler.util.HashedWheelTimerSingleCreator;
 import club.dawdler.util.JVMTimeProvider;
@@ -52,8 +53,8 @@ public abstract class AbstractSocketSession {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractSocketSession.class);
 	private static final long WRITER_IDLE_TIMEMILLIS = 8000;
 	private static final long READER_IDLE_TIMEMILLIS = WRITER_IDLE_TIMEMILLIS * 15;
+	private static final long WRITE_TIMEOUT_MILLIS = 1000;
 	protected final AsynchronousSocketChannel channel;
-	private final Object writeLock = new Object();
 	private final CountDownLatch sessionInitLatch = new CountDownLatch(1);
 	private final AtomicLong sequence = new AtomicLong(0);
 	protected SocketAddress remoteAddress;
@@ -62,8 +63,8 @@ public abstract class AbstractSocketSession {
 	protected int remotePort;
 	protected volatile long lastReadTime;
 	protected volatile long lastWriteTime;
-	protected Timeout readerIdleTimeout;
-	protected Timeout writerIdleTimeout;
+	protected volatile Timeout readerIdleTimeout;
+	protected volatile Timeout writerIdleTimeout;
 	protected DawdlerByteBuffer readBuffer;
 	protected DawdlerByteBuffer writeBuffer;
 	protected int dataLength;
@@ -81,9 +82,12 @@ public abstract class AbstractSocketSession {
 	protected Map<Long, InvokeFuture<Object>> futures = new ConcurrentHashMap<>();
 	protected IoHandler ioHandler = IoHandlerFactory.getHandler();
 	protected ClassLoader classLoader;
-	private boolean authored;
+	protected final AtomicInteger inferiorCount = new AtomicInteger();
+	private volatile boolean authored;
 	private SessionState state = SessionState.RECEIVE;
 	private boolean server;
+	protected final Object writeLock = new Object();
+	private final ByteBuffer heartbeatBuffer = ByteBuffer.allocate(4);
 
 	protected AbstractSocketSession(AsynchronousSocketChannel channel, boolean server) throws Exception {
 		this.channel = channel;
@@ -130,10 +134,12 @@ public abstract class AbstractSocketSession {
 		remotePort = ((InetSocketAddress) remoteAddress).getPort();
 		readBuffer = BufferFactory.createDirectBuffer(CAPACITY);
 		writeBuffer = BufferFactory.createDirectBuffer(CAPACITY);
-		writerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new WriterIdleTimeoutTask(),
-				WRITER_IDLE_TIMEMILLIS, TimeUnit.MILLISECONDS);
-		readerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new ReaderIdleTimeoutTask(),
-				READER_IDLE_TIMEMILLIS, TimeUnit.MILLISECONDS);
+		if(!HashedWheelTimerSingleCreator.getHashedWheelTimer().isShutdown()) {
+			writerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new WriterIdleTimeoutTask(),
+					WRITER_IDLE_TIMEMILLIS, TimeUnit.MILLISECONDS);
+			readerIdleTimeout = HashedWheelTimerSingleCreator.getHashedWheelTimer().newTimeout(new ReaderIdleTimeoutTask(),
+					READER_IDLE_TIMEMILLIS, TimeUnit.MILLISECONDS);
+		}
 	}
 
 	public SocketAddress getLocalAddress() {
@@ -159,11 +165,20 @@ public abstract class AbstractSocketSession {
 	}
 
 	public void appendData(byte[] data) {
-		if (data.length > 0) {
-			System.arraycopy(data, 0, appendData, position, data.length);
-			position += data.length;
+		if (data == null || data.length == 0) {
+			return;
 		}
-
+		if (appendData == null) {
+			throw new IllegalStateException("appendData is null, protocol error, dataLength=" + dataLength
+					+ ", position=" + position + ", path=" + path + ", from=" + getRemoteAddress());
+		}
+		if (position < 0 || position + data.length > appendData.length) {
+			throw new IndexOutOfBoundsException("appendData overflow, position=" + position + ", dataLen="
+					+ data.length + ", capacity=" + appendData.length + ", dataLength=" + dataLength + ", path="
+					+ path + ", from=" + getRemoteAddress());
+		}
+		System.arraycopy(data, 0, appendData, position, data.length);
+		position += data.length;
 	}
 
 	public byte[] getAppendData() {
@@ -279,37 +294,33 @@ public abstract class AbstractSocketSession {
 	public abstract void messageCompleted();
 
 	public void sentHeartbeat() {
-		ByteBuffer bf = ByteBuffer.allocate(4);
-		bf.putInt(0);
-		bf.flip();
+		ByteBuffer bf;
+		synchronized (heartbeatBuffer) {
+			heartbeatBuffer.clear();
+			heartbeatBuffer.putInt(0);
+			heartbeatBuffer.flip();
+			bf = heartbeatBuffer.duplicate();
+		}
 		write(bf);
 	}
 
 	public void write(ByteBuffer obj) {
-		setLastWriteTime(JVMTimeProvider.currentTimeMillis());
-		synchronized (this) {
+		synchronized (writeLock) {
+			setLastWriteTime(JVMTimeProvider.currentTimeMillis());
 			try {
 				while (obj.hasRemaining()) {
 					Future<Integer> future = channel.write(obj);
-					future.get(1000, TimeUnit.MILLISECONDS);
+					future.get(WRITE_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS);
 				}
 			} catch (Exception e) {
-				logger.error("", e);
+				logger.error("Write failed, closing session. " + describe, e);
 				close();
-			} finally {
-				obj.clear();
-				obj = null;
-				// release buffer
 			}
 		}
 	}
 
 	public boolean isServer() {
 		return server;
-	}
-
-	public Object getWriteLock() {
-		return writeLock;
 	}
 
 	public boolean isNeedNext() {
@@ -322,6 +333,10 @@ public abstract class AbstractSocketSession {
 
 	public long getSequence() {
 		return sequence.incrementAndGet();
+	}
+
+	public AtomicInteger getInferiorCount() {
+		return inferiorCount;
 	}
 
 	public ClassLoader getClassLoader() {

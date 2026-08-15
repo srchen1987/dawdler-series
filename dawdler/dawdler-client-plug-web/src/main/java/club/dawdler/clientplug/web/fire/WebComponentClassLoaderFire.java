@@ -114,8 +114,9 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 					String mapping = prefix == null ? requestMappingPath : (prefix + requestMappingPath);
 					RequestUrlData preRequestUrlData = AnnotationUrlHandler.registMapping(mapping, requestUrlData);
 					if (preRequestUrlData != null) {
-						logger.error("regist {} failed because it was registered at {} {}", mapping,
-								preRequestUrlData.getTarget().getClass().getName(), preRequestUrlData.getMethod());
+						logger.error("regist {} failed because the same path and method was registered at {} {}",
+								mapping, preRequestUrlData.getTarget().getClass().getName(),
+								preRequestUrlData.getMethod());
 					}
 				}
 			}
@@ -141,9 +142,13 @@ public class WebComponentClassLoaderFire implements RemoteClassLoaderFire {
 		for (Method method : methods) {
 			RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);
 			if (requestMapping != null && requestMapping.value().length > 0) {
+				RequestUrlData requestUrlData = new RequestUrlData();
+				requestUrlData.setMethod(method);
+				requestUrlData.setRequestMapping(requestMapping);
 				for (String requestMappingPath : requestMapping.value()) {
 					AnnotationUrlHandler
-							.removeMapping(prefix == null ? requestMappingPath : (prefix + requestMappingPath));
+							.removeMapping(prefix == null ? requestMappingPath : (prefix + requestMappingPath),
+									requestUrlData);
 				}
 			}
 		}

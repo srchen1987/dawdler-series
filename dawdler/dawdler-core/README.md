@@ -34,7 +34,7 @@ public interface ComponentLifeCycle {
 
 在服务端(dawdler)中的顺序 prepareInit > init > DawdlerServiceListener
 
-具体实现可参考 redis、rabbitmq等组件相关实现该接口的类.
+具体实现可参考 [JedisLifeCycle.java](../dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/src/main/java/club/dawdler/jedis/resource/JedisLifeCycle.java)、[RabbitLifeCycle.java](../dawdler-rabbitmq-plug/dawdler-rabbitmq-core/src/main/java/club/dawdler/rabbitmq/resource/RabbitLifeCycle.java) 等组件相关实现该接口的类.
 
 ### 3. CustomComponentInjector 定制化组件注入器
 

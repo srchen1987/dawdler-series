@@ -17,8 +17,9 @@
 package club.dawdler.core.net.buffer;
 
 import java.time.Duration;
-import java.util.TreeSet;
+import java.util.NavigableSet;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -30,7 +31,7 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
  */
 public class PoolBuffer {
 	private static final ConcurrentHashMap<Integer, PoolBuffer> POOL_BUFFERS = new ConcurrentHashMap<>();
-	private static final TreeSet<Integer> ORDER = new TreeSet<>();
+	private static final NavigableSet<Integer> ORDER = new ConcurrentSkipListSet<>();
 
 	static {
 		addPool(1024 * 32);
@@ -48,7 +49,7 @@ public class PoolBuffer {
 		poolConfig.setMinIdle(1);
 		poolConfig.setMaxIdle(4);
 		poolConfig.setMaxTotal(32);
-		poolConfig.setSoftMinEvictableIdleTime(Duration.ofMillis(180000));
+		poolConfig.setSoftMinEvictableIdleDuration(Duration.ofMillis(180000));
 		objectPool = new GenericObjectPool<DawdlerByteBuffer>(factory, poolConfig);
 	}
 
@@ -63,14 +64,8 @@ public class PoolBuffer {
 	}
 
 	public static PoolBuffer selectPool(int capacity) {
-		int key = 0;
-		for (int num : ORDER) {
-			if (num >= capacity) {
-				key = num;
-				break;
-			}
-		}
-		if (key == 0) {
+		Integer key = ORDER.ceiling(capacity);
+		if (key == null) {
 			return null;
 		}
 		return POOL_BUFFERS.get(key);

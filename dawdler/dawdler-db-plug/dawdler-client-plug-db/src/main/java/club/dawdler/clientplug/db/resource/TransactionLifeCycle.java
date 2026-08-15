@@ -40,6 +40,9 @@ public class TransactionLifeCycle implements ComponentLifeCycle {
 	@Override
 	public void prepareInit() throws Throwable {
 		WebConfig webConfig = WebConfigParser.getWebConfig();
+		if(webConfig == null) {
+			throw new IllegalStateException("webConfig.xml is not found !");
+		}
 		DbConfig dbConfig = new DbConfig();
 		List<Decision> decisions = new ArrayList<>();
 		List<DataSourceExpression> dataSourceExpressions = new ArrayList<>();

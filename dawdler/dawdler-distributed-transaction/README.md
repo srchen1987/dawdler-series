@@ -4,7 +4,7 @@
 
 分布式事务模块的根模块.
 
-分布式事务架构原理
+### 分布式事务架构原理
 
 分布式事务有三种状态: trying(尝试中),confirm(已确认),cancel(取消).
 
@@ -18,36 +18,44 @@
 
 4、执行过程中发起者调用参与者出现异常或自定义的TransactionInterceptInvoker标识事务为cancel状态,将redis中存储的事务标识为cancel状态并进行事务回滚(发送mq消息).如果参与者全部执行完成(没有被标识为回滚状态)则将redis中存储设为confirm状态并进行事务提交(发送mq消息).
 
-补偿器模块
+### 补偿器模块
 
 1、消费到发起者发送过来的消息后执行对应的业务方法(注意:需要实现幂等),执行成功后会删除redis存储的对应的分支事务信息.
 
 2、定时补偿器会定期执行指定时间范围的事务,防止mq消费后执行失败的事务不再执行(一般为服务宕机或网络不可用).
 
-### 1. web端的pom中引入依赖
+### 1. 子模块介绍
+
+[dawdler-distributed-transaction-core 分布式事务核心模块](./dawdler-distributed-transaction-core/README.md)
+
+[dawdler-distributed-transaction-api 分布式事务公共类与注解模块](./dawdler-distributed-transaction-api/README.md)
+
+[dawdler-distributed-transaction-compensator 补偿器模块](./dawdler-distributed-transaction-compensator/README.md)
+
+### 2. web端的pom中引入依赖
 
 ```xml
 <groupId>club.dawdler</groupId>
 <artifactId>dawdler-distributed-transaction-client</artifactId>
 ```
 
-### 2. dawdler服务端的pom中引入依赖
+### 3. dawdler服务端的pom中引入依赖
 
 ```xml
 <groupId>club.dawdler</groupId>
 <artifactId>dawdler-distributed-transaction-server</artifactId>
 ```
 
-### 3. web端补偿器模块的pom中引入依赖
+### 4. web端补偿器模块的pom中引入依赖
 
 ```xml
 <groupId>club.dawdler</groupId>
 <artifactId>dawdler-distributed-transaction-compensator</artifactId>
 ```
 
-### 4. 使用方式
+### 5. 使用方式
 
-#### 4.1 配置分布式事务
+#### 5.1 配置分布式事务
 
 将需要加入分布式事务管理的服务进行配置,分布式事务分为发起者与参与者.
 
@@ -55,7 +63,7 @@
 
 举例 下订单的一个业务中,有以下3个服务(具体可以参考示例)：
 
-##### 4.1.1 订单服务
+##### 5.1.1 订单服务
 
 api层定义接口
 
@@ -68,12 +76,11 @@ public interface OrderService {
  public boolean createOrder(Integer userId, Integer productId, BigDecimal amount);
 
  public boolean updateStatusOrder(DistributedTransactionContext context, String status);
+ }
 }
-
-.
 ```
 
-##### 4.1.2 用户服务
+##### 5.1.2 用户服务
 
 api层定义接口
 
@@ -91,7 +98,7 @@ public interface UserService {
 
 ```
 
-##### 4.1.3 商品库存服务
+##### 5.1.3 商品库存服务
 
 api层定义接口
 
@@ -107,7 +114,7 @@ public interface ProductService {
 }
 ```
 
-##### 4.1.4 下单的web接口
+##### 5.1.4 下单的web接口
 
 web端将发起者声明在web接口中(分布式事务框架也支持将发起者放在服务端做,服务端再调用多个服务,一般不建议这么做).
 
@@ -145,12 +152,14 @@ public class OrderController {
    return result;
   }
 
-  result = productService.tryDeductStock(productId, stock);//扣减库存
-  return result;
+   result = productService.tryDeductStock(productId, stock);//扣减库存
+   return result;
+  }
  }
+}
 ```
 
-#### 4.2 配置redis
+#### 5.2 配置redis
 
 redis用于存储事务状态,防止服务意外崩溃或停机造成事务状态不可溯的情况.
 
@@ -160,19 +169,21 @@ redis用于存储事务状态,防止服务意外崩溃或停机造成事务状�
 
 redis的配置参考[dawdler-redis-plug](../dawdler-redis-plug/dawdler-redis-plug-jedis/dawdler-jedis-core/README.md#2-properties文件说明)
 
-#### 4.3 配置rabbitmq
+#### 5.3 配置rabbitmq
 
 mq用于实时消息通知事务参与者去执行对应的服务.配置文件为distributed-transaction-rabbitmq.properties.
 
 rabbitmq的配置参考[dawdler-rabbitmq-plug](../dawdler-rabbitmq-plug/dawdler-rabbitmq-core/README.md#2-properties文件说明)
 
-#### 4.4 配置事务补偿器
+#### 5.4 配置事务补偿器
 
 创建一个项目在maven中依赖补偿器模块,补偿器在web端启动,补偿器中包含消费rabbitmq消息调用对应服务的功能,同时也支持定时读取redis中未处理完的事务进行补偿处理.
 
 配置redis与rabbitmq在事务管理器的classpath下.具体配置参考上面的redis配置与rabbitmq的配置(注意:补偿器中的redis配置和rabbitmq的配置要与发起端的是一致的).
 
-##### 4.4.1 配置Processor
+补偿器自身的调优参数通过 `distributed-transaction-compensator.properties` 配置,包含定时器初始延迟、执行间隔、最大重试次数等,详见 [dawdler-distributed-transaction-compensator](dawdler-distributed-transaction-compensator/README.md).
+
+##### 5.4.1 配置Processor
 
 Processor是分布式事务参与者的处理器.
 
@@ -231,13 +242,13 @@ public class OrderCompensator extends DistributedTransactionCustomProcessor {
 
 将以上的处理器通过SPI方式进行注入,META-INF/services/club.dawdler.distributed.transaction.compensate.process.DistributedTransactionCustomProcessor 文件中内容如下:
 
-```java
+```
 com.anywide.shop.compensator.OrderCompensator
 com.anywide.shop.compensator.ProductCompensator
 com.anywide.shop.compensator.UserCompensator
 ```
 
-#### 4.5 分布式事务执行失败留存时间与延迟处理时间配置
+#### 5.5 分布式事务执行失败留存时间与延迟处理时间配置
 
 留存时间配置项:
 
@@ -249,13 +260,15 @@ expireTime=259200 #存留在redis中的时间为259200秒,如果不配置默认�
 
 在补偿器模块中的classpath下可以通过配置distributed-transaction.properties来设定延迟处理时间.
 
-如果有参与者的服务不可用,补偿器定时器每15秒执行一次,此参数设置为只查询60秒以外的事务进行补偿,因为不可用的服务还尚未启动,没有必要进行补偿.
+如果有参与者的服务不可用,补偿器定时器每15秒执行一次(可通过 `distributed-transaction-compensator.properties` 的 `delaySeconds` 调整),此参数设置为只查询60秒以外的事务进行补偿,因为不可用的服务还尚未启动,没有必要进行补偿.
 
 ```properties
-compensateLater=60 #存留在redis中的时间为60秒,如果不配置默认为60秒.
+compensateLater=60 #只查询60秒以外的事务进行补偿,如果不配置默认为60秒.
 ```
 
-#### 4.6 自定义响应结果回滚设置
+补偿器对状态卡在 TRYING(如 sponsor 决策时 Redis 更新失败)的分支,超时后会强制按 CANCEL 回滚,符合 TCC 规范防止资源悬挂.单个分支补偿次数达到上限(默认50,可通过 `maxRetryTimes` 调整)后不再重试并告警.
+
+#### 5.6 自定义响应结果回滚设置
 
 分布式事务框架会在调用参与者的服务出现异常时回滚整个事务,如果有特殊需求需要使用TransactionInterceptInvokerHolder来扩展,例如下订单需要以下步骤:
 
@@ -304,6 +317,9 @@ compensateLater=60 #存留在redis中的时间为60秒,如果不配置默认为6
    resultMap.put("msg", "库存不足!");//设置具体原因
    return resultMap;
   }
-  //...省略以下入库明细记录的代码 如有需要参考具体分布式事务的例子
+   //...省略以下入库明细记录的代码 如有需要参考具体分布式事务的例子
+   return resultMap;
+  }
+ }
 }
 ```

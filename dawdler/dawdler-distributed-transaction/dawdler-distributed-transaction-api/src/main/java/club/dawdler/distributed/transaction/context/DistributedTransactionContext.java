@@ -33,7 +33,7 @@ public class DistributedTransactionContext implements Serializable, Cloneable {
 	/**
 	 * 整个事务取消
 	 */
-	private boolean cancel = false;
+	private volatile boolean cancel = false;
 	/**
 	 * 状态 trying cancel confirm
 	 */

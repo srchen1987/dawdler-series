@@ -34,7 +34,7 @@ import club.dawdler.client.api.generator.util.ClassTypeUtil;
 public class TypeDataParser {
 
 	public static void convertion(JavaType javaType, MethodParameterData parameterData,
-			Map<String, ClassStruct> classStructs, Map<String, MethodParameterData> params, boolean isArray, Map<String, Object> definitionsMap) {
+			Map<String, ClassStruct> classStructs, Map<String, MethodParameterData> params, boolean isArray, Map<String, Object> definitionsMap, String in) {
 		String typeName = javaType.getFullyQualifiedName();
 		boolean typeArray = typeName.endsWith("[]");
 		boolean collection = ClassTypeUtil.isArray(javaType.getBinaryName());
@@ -71,7 +71,7 @@ public class TypeDataParser {
 					if (params != null) {
 						params.remove(parameterData.getName());
 					}
-					FieldParser.parserFields(classStruct.getJavaClass(), classStructs, params, true, definitionsMap);
+					FieldParser.parserFields(classStruct.getJavaClass(), classStructs, params, true, definitionsMap, in);
 				}
 			}
 		} else {
@@ -86,7 +86,7 @@ public class TypeDataParser {
 				}
 				ClassStruct classStruct = classStructs.get(typeName);
 				if (classStruct != null) {
-					FieldParser.parserFields(classStruct.getJavaClass(), classStructs, params, false,definitionsMap);
+					FieldParser.parserFields(classStruct.getJavaClass(), classStructs, params, false,definitionsMap, in);
 				}
 			}
 		}

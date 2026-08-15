@@ -74,6 +74,10 @@ public class CaffeineCache implements Cache {
 
 	@Override
 	public void put(Object key, Object value) {
+		if (value == null) {
+			cache.invalidate(key);
+			return;
+		}
 		cache.put(key, value);
 	}
 

@@ -16,7 +16,6 @@
  */
 package club.dawdler.core.thread;
 
-import java.nio.channels.Channel;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -34,12 +33,11 @@ import club.dawdler.core.exception.DawdlerOperateException;
  */
 public class InvokeFuture<V> {
 	protected Logger logger = LoggerFactory.getLogger(getClass());
-	protected V result;
-	protected AtomicBoolean done = new AtomicBoolean(false);
-	protected AtomicBoolean success = new AtomicBoolean(false);
-	protected Semaphore semaphore = new Semaphore(0);
-	protected Throwable cause;
-	protected Channel channel;
+	protected volatile V result;
+	protected final AtomicBoolean done = new AtomicBoolean(false);
+	protected final AtomicBoolean success = new AtomicBoolean(false);
+	protected final Semaphore semaphore = new Semaphore(0);
+	protected volatile Throwable cause;
 
 	public InvokeFuture() {
 	}
@@ -53,7 +51,7 @@ public class InvokeFuture<V> {
 			try {
 				semaphore.acquire();
 			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
+				throw new DawdlerOperateException(e);
 			}
 
 		}
@@ -67,8 +65,10 @@ public class InvokeFuture<V> {
 	}
 
 	public void setResult(V result) {
+		if (!done.compareAndSet(false, true)) {
+			return;
+		}
 		this.result = result;
-		done.set(true);
 		success.set(true);
 		semaphore.release();
 	}
@@ -101,18 +101,12 @@ public class InvokeFuture<V> {
 	}
 
 	public void setCause(Throwable cause) {
+		if (!done.compareAndSet(false, true)) {
+			return;
+		}
 		this.cause = cause;
-		done.set(true);
 		success.set(false);
 		semaphore.release();
-	}
-
-	public Channel getChannel() {
-		return channel;
-	}
-
-	public void setChannel(Channel channel) {
-		this.channel = channel;
 	}
 
 }

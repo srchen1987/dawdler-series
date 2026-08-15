@@ -23,6 +23,7 @@ import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousChannelGroup;
 import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
@@ -51,10 +52,11 @@ import club.dawdler.core.compression.strategy.CompressionWrapper;
 import club.dawdler.core.compression.strategy.ThresholdCompressionStrategy;
 import club.dawdler.core.handler.IoHandler;
 import club.dawdler.core.handler.IoHandlerFactory;
+import club.dawdler.core.net.aio.session.AbstractSocketSession;
 import club.dawdler.core.net.buffer.DawdlerByteBuffer;
 import club.dawdler.core.net.buffer.PoolBuffer;
-import club.dawdler.core.serializer.SerializeDecider;
-import club.dawdler.core.serializer.Serializer;
+import club.dawdler.serializer.SerializeDecider;
+import club.dawdler.serializer.Serializer;
 
 /**
  * @author jackson.song
@@ -154,7 +156,7 @@ public class DawdlerConnection {
 			SocketSession socketSession = null;
 			try {
 				client = AsynchronousSocketChannel.open(asynchronousChannelGroup);
-				// config(client);
+				config(client);
 				socketSession = new SocketSession(client);
 				socketSession.setClassLoader(Thread.currentThread().getContextClassLoader());
 				socketSession.setDawdlerConnection(this);
@@ -343,91 +345,60 @@ public class DawdlerConnection {
 		byte[] data = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
 		data = cr.getBuffer();
-		synchronized (socketSession) {
-			DawdlerByteBuffer dawdlerByteBuffer = socketSession.getWriteBuffer();
-			ByteBuffer byteBuffer = null;
-			PoolBuffer poolBuffer = null;
-			byte[] pathBytes = path.getBytes();
-			byte pathLength = (byte) pathBytes.length;
-			int size = data.length + 2 + pathLength;
-			int capacity = size + 4;
-			try {
-				if (capacity > SocketSession.CAPACITY) {
-					poolBuffer = PoolBuffer.selectPool(capacity);
-					if (poolBuffer == null) {
-						byteBuffer = ByteBuffer.allocate(capacity);
-						logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
-								+ capacity);
-					} else {
-						dawdlerByteBuffer = poolBuffer.getByteBuffer();
-						byteBuffer = dawdlerByteBuffer.getByteBuffer();
-					}
-				} else {
-					byteBuffer = dawdlerByteBuffer.getByteBuffer();
-				}
-				byteBuffer.putInt(size);
-				int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
-				byteBuffer.put((byte) head);
-				byteBuffer.put(pathLength);
-				byteBuffer.put(pathBytes);
-				byteBuffer.put(data);
-				byteBuffer.flip();
-				socketSession.write(byteBuffer);
-			} finally {
-				if(byteBuffer != null){
-					byteBuffer.clear();
-				}
-				if (poolBuffer != null) {
-					poolBuffer.release(dawdlerByteBuffer);
-				}
-
-			}
-		}
+		writeFrame(socketSession, data, path.getBytes(StandardCharsets.UTF_8), cr);
 	}
 
 	public void write(Object obj, SocketSession socketSession) throws Exception {
 		if (ioHandler != null) {
 			ioHandler.messageSent(socketSession, obj);
 		}
-
 		Serializer serializer = SerializeDecider.decide((byte) this.serializer);
 		byte[] data = serializer.serialize(obj);
 		CompressionWrapper cr = ThresholdCompressionStrategy.staticSingle().compress(data);
 		data = cr.getBuffer();
+		writeFrame(socketSession, data, null, cr);
+	}
+
+	private void writeFrame(SocketSession socketSession, byte[] data, byte[] pathBytes, CompressionWrapper cr)
+			throws Exception {
 		synchronized (socketSession) {
 			DawdlerByteBuffer dawdlerByteBuffer = socketSession.getWriteBuffer();
 			ByteBuffer byteBuffer = null;
 			PoolBuffer poolBuffer = null;
-			int size = data.length + 1;
+			DawdlerByteBuffer pooledBuffer = null;
+			int pathLength = pathBytes != null ? pathBytes.length : 0;
+			int size = data.length + (pathBytes != null ? 2 + pathLength : 1);
 			int capacity = size + 4;
 			try {
 				if (capacity > SocketSession.CAPACITY) {
 					poolBuffer = PoolBuffer.selectPool(capacity);
 					if (poolBuffer == null) {
 						byteBuffer = ByteBuffer.allocate(capacity);
-						logger.warn("The serialized object(" + obj.getClass().getName() + ") is too large.\t size :"
-								+ capacity);
+						logger.warn("The serialized object is too large.\t size :" + capacity);
 					} else {
-						dawdlerByteBuffer = poolBuffer.getByteBuffer();
-						byteBuffer = dawdlerByteBuffer.getByteBuffer();
+						pooledBuffer = poolBuffer.getByteBuffer();
+						byteBuffer = pooledBuffer.getByteBuffer();
 					}
 				} else {
 					byteBuffer = dawdlerByteBuffer.getByteBuffer();
 				}
 				byteBuffer.putInt(size);
-				int head = cr.isCompressed() ? this.serializer << 1 | 1 : this.serializer << 1;
+				int head = cr.isCompressed() ? (serializer << 1) | 1 : (serializer << 1);
 				byteBuffer.put((byte) head);
+				if (pathBytes != null) {
+					byteBuffer.put((byte) pathLength);
+					byteBuffer.put(pathBytes);
+				}
 				byteBuffer.put(data);
 				byteBuffer.flip();
 				socketSession.write(byteBuffer);
 			} finally {
-				if(byteBuffer != null){
+				if (byteBuffer != null) {
 					byteBuffer.clear();
 				}
-				if (poolBuffer != null) {
-					poolBuffer.release(dawdlerByteBuffer);
+				if (pooledBuffer != null) {
+					poolBuffer.release(pooledBuffer);
 				}
-
 			}
 		}
 	}
@@ -446,13 +417,13 @@ public class DawdlerConnection {
 			logger.error("", e);
 		}
 		try {
-			channel.setOption(StandardSocketOptions.SO_SNDBUF, 16 * 1024);
+			channel.setOption(StandardSocketOptions.SO_SNDBUF, AbstractSocketSession.CAPACITY);
 		} catch (IOException e) {
 			logger.error("", e);
 		}
 
 		try {
-			channel.setOption(StandardSocketOptions.SO_RCVBUF, 16 * 1024);
+			channel.setOption(StandardSocketOptions.SO_RCVBUF, AbstractSocketSession.CAPACITY);
 		} catch (IOException e) {
 			logger.error("", e);
 		}

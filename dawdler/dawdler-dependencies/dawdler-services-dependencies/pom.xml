@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>club.dawdler</groupId>
 		<artifactId>dawdler-dependencies</artifactId>
-		<version>0.1.5-jdk25-RELEASES</version>
+		<version>0.1.6-jdk25-RELEASES</version>
 	</parent>
 	<artifactId>dawdler-services-dependencies</artifactId>
 	<name>dawdler-services-dependencies</name>
@@ -51,6 +51,18 @@
 			<dependency>
 				<groupId>club.dawdler</groupId>
 				<artifactId>dawdler-load-bean</artifactId>
+				<version>${dawdler.build.version}</version>
+				<scope>provided</scope>
+				<exclusions>
+					<exclusion>
+						<groupId>*</groupId>
+						<artifactId>*</artifactId>
+					</exclusion>
+				</exclusions>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-server-plug-load</artifactId>
 				<version>${dawdler.build.version}</version>
 				<scope>provided</scope>
 				<exclusions>
@@ -186,6 +198,21 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-server-plug-kafka</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-client-i18n</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>club.dawdler</groupId>
+				<artifactId>dawdler-server-plug-i18n</artifactId>
+				<version>${dawdler.build.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
 				<version>${slf4j.version}</version>
@@ -213,6 +240,12 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-pool2</artifactId>
 				<version>${commons-pool2.version}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-jexl3</artifactId>
+				<version>${commons-jexl3.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>

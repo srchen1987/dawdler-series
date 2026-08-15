@@ -19,12 +19,16 @@ package club.dawdler.core.net.buffer;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author jackson.song
  * @version V1.0
  *
  */
 public class DawdlerByteBuffer {
+	private static final Logger logger = LoggerFactory.getLogger(DawdlerByteBuffer.class);
 	private ByteBuffer byteBuffer;
 	private long addr;
 
@@ -53,6 +57,7 @@ public class DawdlerByteBuffer {
 			try {
 				DirectBufferCreator.freeMemory(addr);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+				logger.error("Free direct buffer memory failed, addr={}", addr, e);
 			}
 		} else {
 			byteBuffer.clear();

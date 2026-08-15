@@ -436,20 +436,28 @@ public final class XmlObject {
 		return list;
 	}
 
-	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute, String defaultValue) {
+	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute, String defaultValue) throws Exception {
 		Node attr = namedNodeMap.getNamedItem(attribute);
 		if (attr == null) {
 			return defaultValue;
 		}
-		return attr.getNodeValue();
+		String value = SystemVariableUtil.resolveStringPlaceholders(attr.getNodeValue());
+		if (ConfigContentDecryptor.useDecrypt()) {
+			return ConfigContentDecryptor.decryptAndReplaceTag(value);
+		}
+		return value;
 	}
 
-	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute) {
+	public static String getElementAttribute(NamedNodeMap namedNodeMap, String attribute) throws Exception {
 		Node attr = namedNodeMap.getNamedItem(attribute);
 		if (attr == null) {
 			return null;
 		}
-		return attr.getNodeValue();
+		String value = SystemVariableUtil.resolveStringPlaceholders(attr.getNodeValue());
+		if (ConfigContentDecryptor.useDecrypt()) {
+			return ConfigContentDecryptor.decryptAndReplaceTag(value);
+		}
+		return value;
 	}
 
 	public static int getElementAttribute2Int(NamedNodeMap namedNodeMap, String attribute, int defaultValue) {

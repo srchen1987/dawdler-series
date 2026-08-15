@@ -16,9 +16,9 @@
  */
 package club.dawdler.client.cluster;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ServiceLoader;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author jackson.song
@@ -27,7 +27,7 @@ import java.util.ServiceLoader;
  */
 public class LoadBalanceFactory<T, K> {
 	@SuppressWarnings("rawtypes")
-	private static final Map<String, LoadBalance> LOAD_BALANCES = new HashMap<>();
+	private static final Map<String, LoadBalance> LOAD_BALANCES = new ConcurrentHashMap<>();
 	static {
 		@SuppressWarnings("rawtypes")
 		ServiceLoader<LoadBalance> loader = ServiceLoader.load(LoadBalance.class);

@@ -32,7 +32,6 @@ import org.w3c.dom.Node;
 
 import club.dawdler.core.context.DawdlerRuntimeContext;
 import club.dawdler.util.XmlObject;
-import club.dawdler.util.XmlTool;
 import club.dawdler.util.aspect.AspectHolder;
 import jdk.internal.loader.Resource;
 import jdk.internal.perf.PerfCounter;
@@ -171,7 +170,7 @@ public interface DeployClassLoader extends Closeable {
 				try {
 					XmlObject xmlo = new XmlObject(aopXmlInput);
 					for (Node aspectNode : xmlo.selectNodes("/aspectj/aspects/aspect")) {
-						String className = XmlTool.getElementAttribute(aspectNode.getAttributes(), "name");
+						String className = XmlObject.getElementAttribute(aspectNode.getAttributes(), "name");
 						if (className != null) {
 							findClassForDawdler(className, true, false);
 						}

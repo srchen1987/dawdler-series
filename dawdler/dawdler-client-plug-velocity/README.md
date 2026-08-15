@@ -31,13 +31,13 @@ runtime.custom_directives=club.dawdler.clientplug.velocity.direct.PageDirect,clu
 
 #### 3.1 分页指令 #pages
 
-\#page指令提供一行代码分页的功能,应用如下：
+\#pages指令提供一行代码分页的功能,应用如下：
 
 示例1：
 
 ```html
-//其中~p 是一个标识 固定写法,用来传递动态页的标识
-//生成 首页 上一页 1 2 3 4 5 6 7 8 9 下一页 尾页
+<!-- 其中~p 是一个标识 固定写法,用来传递动态页的标识 -->
+<!-- 生成 首页 上一页 1 2 3 4 5 6 7 8 9 下一页 尾页 -->
 #pages("user/list.html?page=~p")
 
 ```
@@ -45,7 +45,7 @@ runtime.custom_directives=club.dawdler.clientplug.velocity.direct.PageDirect,clu
 示例2：
 
 ```html
-//生成 首页 上一页 1 2 3 4 5 6 7 8 9 下一页 尾页 增加额外参数visible
+<!-- 生成 首页 上一页 1 2 3 4 5 6 7 8 9 下一页 尾页 增加额外参数visible -->
 #pages("user/list.html?page=~p&visible=1")
 
 ```
@@ -53,7 +53,7 @@ runtime.custom_directives=club.dawdler.clientplug.velocity.direct.PageDirect,clu
 示例3：
 
 ```html
-//adminStyle是自定义的一种样式,示例1、示例2中未传入样式则采用系统默认.
+<!-- adminStyle是自定义的一种样式,示例1、示例2中未传入样式则采用系统默认. -->
 #pages("user/list.html?page=~p&visible=1","adminStyle")
 
 ```

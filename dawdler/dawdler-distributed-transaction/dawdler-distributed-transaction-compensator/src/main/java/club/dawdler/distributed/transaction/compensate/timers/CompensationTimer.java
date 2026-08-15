@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import club.dawdler.distributed.transaction.TransactionStatus;
+import club.dawdler.distributed.transaction.compensate.config.CompensationConfig;
 import club.dawdler.distributed.transaction.context.DistributedTransactionContext;
 import club.dawdler.distributed.transaction.message.MessageSender;
 import club.dawdler.distributed.transaction.message.amqp.rabbitmq.AMQPSender;
@@ -43,15 +44,22 @@ public class CompensationTimer implements Runnable {
 	private TransactionRepository transactionRepository;
 	private MessageSender messageSender;
 	private ScheduledExecutorService scheduled;
+	private final CompensationConfig config;
 
 	public CompensationTimer(TransactionRepository transactionRepository) {
+		this(transactionRepository, CompensationConfig.getInstance());
+	}
+
+	public CompensationTimer(TransactionRepository transactionRepository, CompensationConfig config) {
 		this.transactionRepository = transactionRepository;
+		this.config = config;
 		messageSender = new AMQPSender();
 	}
 
 	public void start() {
 		scheduled = Executors.newScheduledThreadPool(1);
-		scheduled.scheduleWithFixedDelay(this, 15, 15, TimeUnit.SECONDS);
+		scheduled.scheduleWithFixedDelay(this, config.getInitialDelaySeconds(), config.getDelaySeconds(),
+				TimeUnit.SECONDS);
 	}
 
 	public void shutdown() {
@@ -63,12 +71,22 @@ public class CompensationTimer implements Runnable {
 		try {
 			List<DistributedTransactionContext> list = transactionRepository.findALLBySecondsLater();
 			for (DistributedTransactionContext dc : list) {
-				String trying = TransactionStatus.TRYING;
-				if (trying.equals(dc.getStatus())) {
+				if (dc.getRetryTime() >= config.getMaxRetryTimes()) {
+					logger.warn(
+							"transaction exceeds max retry times, give up. globalTxId:{} branchTxId:{} action:{} retryTime:{}",
+							dc.getGlobalTxId(), dc.getBranchTxId(), dc.getAction(), dc.getRetryTime());
 					continue;
 				}
+				String status = dc.getStatus();
+				if (TransactionStatus.TRYING.equals(status)) {
+					if (logger.isDebugEnabled()) {
+						logger.debug("transaction trying timeout, force cancel. globalTxId:{} branchTxId:{} action:{}",
+								dc.getGlobalTxId(), dc.getBranchTxId(), dc.getAction());
+					}
+					status = TransactionStatus.CANCEL;
+				}
 				Map<String, Object> data = new HashMap<>(8);
-				data.put("status", dc.getStatus());
+				data.put("status", status);
 				data.put("action", dc.getAction());
 				data.put("globalTxId", dc.getGlobalTxId());
 				String msg = JsonProcessUtil.beanToJson(data);
@@ -78,7 +96,7 @@ public class CompensationTimer implements Runnable {
 				messageSender.sent(msg);
 			}
 		} catch (Exception e) {
-			logger.error("", e);
+			logger.error("compensation timer error", e);
 		}
 	}
 

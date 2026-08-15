@@ -65,6 +65,10 @@ public class HashedWheelTimer implements Timer {
 		return workerState;
 	}
 
+	public boolean isShutdown() {
+		return workerState.get() == WORKER_STATE_SHUTDOWN;
+	}
+
 	final long tickDuration;
 	final Set<HashedWheelTimeout>[] wheel;
 	final int mask;

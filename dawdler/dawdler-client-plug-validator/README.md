@@ -137,8 +137,6 @@ nm32=notEmpty&maxLength:32
 
 用于定义全局验证规则的配置文件,全局验证规则可以通过validator-fields-group来引用,也可以通过validator-mapping来引用.
 
-```xml
-
 示例：
 
 ```xml
@@ -204,7 +202,7 @@ public class NumberRuleOperator extends StringRuleOperator {
 public class MaxLengthRuleOperator extends RegexRuleOperator {
  public static final String RULE_KEY = "^maxLength:([1-9]{1}\\d*$)";//正则表达式
 
- public maxLengthRuMaxLengthRuleOperatorleOperator() {
+ public MaxLengthRuleOperator() {
   super(RULE_KEY);
  }
 //以下是实现
@@ -341,7 +339,7 @@ alertFunction： 提示方法或提示组件的id. [参考alertFunction的例子
 
 buildFunction： 绑定触发验证事件.[参考buildFunction的例子](#623-buildfunction的示例)
 
-##### 6.2.1 添加验证规则添加规则的示例
+##### 6.2.1 添加验证规则的示例
 
 示例1：
 
@@ -469,7 +467,7 @@ sir_validator.setRule("username","notEmpty");
 
 #### 6.7 添加不跳过空校验的表达式
 
-通过调用addNoSkip来添加不跳过空验证的表达式,系统自带三个notEmpty、maxItems、minItems.这三个表达式都会在控件值为空的情况下执行的,因为当件值为空时默认情况下验证框架不会执行验证的表达式.
+通过调用addNoSkip来添加不跳过空验证的表达式,系统自带三个notEmpty、maxItems、minItems.这三个表达式都会在控件值为空的情况下执行的,因为当控件值为空时默认情况下验证框架不会执行验证的表达式.
 
 示例：
 
@@ -524,7 +522,7 @@ sir_validator.buildFormValidate("myform");
 
 #### 6.10 加载通过html属性配置的验证规则(不常用)
 
-通过调用buildFormValidateAutoRule加载通过dom属性配置的验证规则,第一个参数方法绑定form提交事件,buildFormValidate的参数为form的id,第二个参数为boolean类型,是否绑定form提交事件.
+通过调用buildFormValidateAutoRule加载通过dom属性配置的验证规则,第一个参数为form的id,第二个参数为boolean类型,是否绑定form提交事件.
 
 以下示例中在html的控件中定义了验证框架的相关属性,其属性与通过对象方式传入的方式完全相同.
 一般不推荐这种方式,除非采用了动态表单(dawdler-client-plug-velocity 模块中实现的)会自动生成相关属性.
